@@ -50,6 +50,20 @@ import java.util.zip.ZipFile;
 public abstract class PluginManager<T extends Plugin>
 {
     /**
+     * Global class loader for all plugin managers implementations.
+     *
+     * @see #getGlobalClassLoader()
+     */
+    protected static PluginClassLoader globalClassLoader;
+
+    /**
+     * Local class loader for this specific plugin manager implementation.
+     *
+     * @see #getLocalClassLoader()
+     */
+    protected PluginClassLoader localClassLoader;
+
+    /**
      * Plugins listeners.
      */
     protected List<PluginsListener<T>> listeners = new ArrayList<PluginsListener<T>> ( 1 );
@@ -140,10 +154,10 @@ public abstract class PluginManager<T extends Plugin>
     protected FileFilter fileFilter;
 
     /**
-     * Whether should create exclusive class loader for each plugin or not.
-     * Be aware that you might experience various classpath issues with exclusive class loaders unless you know what you are doing.
+     * Class loader type used by this manager to load plugins.
+     * Be aware that different types might have a heavy impact on classes availability across your application.
      */
-    protected boolean createNewClassLoader = false;
+    protected ClassLoaderType classLoaderType = ClassLoaderType.manager;
 
     /**
      * Constructs new plugin manager.
@@ -925,22 +939,54 @@ public abstract class PluginManager<T extends Plugin>
                 try
                 {
                     // Choosing class loader
-                    final ClassLoader cl = getClass ().getClassLoader ();
-                    final ClassLoader classLoader;
-                    if ( createNewClassLoader || !( cl instanceof URLClassLoader ) )
+                    final ClassLoader cl;
+                    switch ( classLoaderType )
                     {
-                        // todo Use single class loader for all plugins within this manager (or all managers?)
-                        // Create new class loader
-                        classLoader = URLClassLoader.newInstance ( jarPaths.toArray ( new URL[ jarPaths.size () ] ), cl );
+                        case system:
+                        {
+                            cl = ClassLoader.getSystemClassLoader ();
+                            break;
+                        }
+                        case manager:
+                        default:
+                        {
+                            cl = getClass ().getClassLoader ();
+                            break;
+                        }
+                        case global:
+                        {
+                            cl = getGlobalClassLoader ();
+                            break;
+                        }
+                        case local:
+                        {
+                            cl = getLocalClassLoader ();
+                            break;
+                        }
+                        case separate:
+                        {
+                            cl = createPluginClassLoader ( new URL[ 0 ] );
+                            break;
+                        }
+                    }
+
+                    // Obtaining {@link URLClassLoader}
+                    final URLClassLoader classLoader;
+                    if ( cl instanceof URLClassLoader )
+                    {
+                        // Use current class loader
+                        classLoader = ( URLClassLoader ) cl;
                     }
                     else
                     {
-                        // Use current class loader
-                        classLoader = cl;
-                        for ( final URL url : jarPaths )
-                        {
-                            ReflectUtils.callMethodSafely ( classLoader, "addURL", url );
-                        }
+                        // Create new class loader
+                        classLoader = new PluginClassLoader ( jarPaths.toArray ( new URL[ jarPaths.size () ] ), cl );
+                    }
+
+                    // Adding all plugin paths
+                    for ( final URL url : jarPaths )
+                    {
+                        ReflectUtils.callMethodSafely ( classLoader, "addURL", url );
                     }
 
                     // Loading plugin
@@ -1330,23 +1376,23 @@ public abstract class PluginManager<T extends Plugin>
     }
 
     /**
-     * Returns whether should create new class loader for each loaded plugin or not.
+     * Returns class loader type used by this manager to load plugins.
      *
-     * @return true if should create new class loader for each loaded plugin, false otherwise
+     * @return class loader type used by this manager to load plugins
      */
-    public boolean isCreateNewClassLoader ()
+    public ClassLoaderType getClassLoaderType ()
     {
-        return createNewClassLoader;
+        return classLoaderType;
     }
 
     /**
-     * Sets whether should create new class loader for each loaded plugin or not.
+     * Sets class loader type used by this manager to load plugins.
      *
-     * @param createNewClassLoader whether should create new class loader for each loaded plugin or not
+     * @param classLoaderType class loader type used by this manager to load plugins
      */
-    public void setCreateNewClassLoader ( final boolean createNewClassLoader )
+    public void setClassLoaderType ( final ClassLoaderType classLoaderType )
     {
-        this.createNewClassLoader = createNewClassLoader;
+        this.classLoaderType = classLoaderType;
     }
 
     /**
@@ -1562,5 +1608,56 @@ public abstract class PluginManager<T extends Plugin>
         {
             listener.pluginsInitialized ( CollectionUtils.copy ( plugins ) );
         }
+    }
+
+    /**
+     * Returns local class loader for this specific plugin manager implementation.
+     *
+     * @return local class loader for this specific plugin manager implementation
+     */
+    protected PluginClassLoader getLocalClassLoader ()
+    {
+        if ( localClassLoader == null )
+        {
+            synchronized ( this )
+            {
+                if ( localClassLoader == null )
+                {
+                    localClassLoader = createPluginClassLoader ( new URL[ 0 ] );
+                }
+            }
+        }
+        return localClassLoader;
+    }
+
+    /**
+     * Returns global class loader for all plugin managers implementations.
+     *
+     * @return global class loader for all plugin managers implementations
+     */
+    protected static PluginClassLoader getGlobalClassLoader ()
+    {
+        if ( globalClassLoader == null )
+        {
+            synchronized ( PluginManager.class )
+            {
+                if ( globalClassLoader == null )
+                {
+                    globalClassLoader = createPluginClassLoader ( new URL[ 0 ] );
+                }
+            }
+        }
+        return globalClassLoader;
+    }
+
+    /**
+     * Returns new plugin class loader for this specific plugin manager implementation.
+     *
+     * @param classpath class loader classpath
+     * @return new plugin class loader for this specific plugin manager implementation
+     */
+    protected static PluginClassLoader createPluginClassLoader ( final URL[] classpath )
+    {
+        return new PluginClassLoader ( classpath, PluginManager.class.getClassLoader () );
     }
 }
