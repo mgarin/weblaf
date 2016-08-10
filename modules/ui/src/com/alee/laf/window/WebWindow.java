@@ -17,6 +17,7 @@
 
 package com.alee.laf.window;
 
+import com.alee.laf.rootpane.WRootPaneUI;
 import com.alee.laf.rootpane.WebRootPane;
 import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.managers.focus.DefaultFocusTracker;
@@ -53,7 +54,7 @@ import java.util.Map;
  */
 
 public class WebWindow<T extends WebWindow<T>> extends JWindow
-        implements Styleable, Paintable, PaddingSupport, WindowEventMethods, SettingsMethods, WindowMethods<T>
+        implements Styleable, Paintable, PaddingMethods, WindowEventMethods, SettingsMethods, WindowMethods<T>
 {
     /**
      * Whether should close window on focus loss or not.
@@ -438,56 +439,45 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
     @Override
     public Insets getPadding ()
     {
-        return getRootPaneWebUI ().getPadding ();
+        return PaddingMethodsImpl.getPadding ( getRootPane () );
     }
 
-    /**
-     * Sets new padding.
-     *
-     * @param padding new padding
-     */
+    @Override
     public void setPadding ( final int padding )
     {
-        setPadding ( padding, padding, padding, padding );
+        PaddingMethodsImpl.setPadding ( getRootPane (), padding );
     }
 
-    /**
-     * Sets new padding.
-     *
-     * @param top    new top padding
-     * @param left   new left padding
-     * @param bottom new bottom padding
-     * @param right  new right padding
-     */
+    @Override
     public void setPadding ( final int top, final int left, final int bottom, final int right )
     {
-        setPadding ( new Insets ( top, left, bottom, right ) );
+        PaddingMethodsImpl.setPadding (  getRootPane (), top, left, bottom, right );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        getRootPaneWebUI ().setPadding ( padding );
+        PaddingMethodsImpl.setPadding (  getRootPane (), padding );
     }
 
     /**
-     * Returns Web-UI applied to this class.
+     * Returns the look and feel (L&amp;F) object that renders this component.
      *
-     * @return Web-UI applied to this class
+     * @return the {@link com.alee.laf.rootpane.WRootPaneUI} object that renders this component
      */
-    protected WebRootPaneUI getWebUI ()
+    public WRootPaneUI getUI ()
     {
-        return getRootPaneWebUI ();
+        return ( WRootPaneUI ) getRootPane ().getUI ();
     }
 
     /**
-     * Returns Web-UI applied to root pane used by this window.
+     * Sets the L&amp;F object that renders this component.
      *
-     * @return Web-UI applied to root pane used by this window
+     * @param ui {@link WRootPaneUI}
      */
-    protected WebRootPaneUI getRootPaneWebUI ()
+    public void setUI ( final WRootPaneUI ui )
     {
-        return ( WebRootPaneUI ) getRootPane ().getUI ();
+        getRootPane ().setUI ( ui );
     }
 
     @Override

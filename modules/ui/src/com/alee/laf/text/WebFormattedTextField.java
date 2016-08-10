@@ -62,7 +62,7 @@ import java.util.Map;
  */
 
 public class WebFormattedTextField extends JFormattedTextField
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, DocumentEventMethods, EventMethods, ToolTipMethods,
+        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, DocumentEventMethods, EventMethods, ToolTipMethods,
         LanguageMethods, SettingsMethods, FontMethods<WebFormattedTextField>, SizeMethods<WebFormattedTextField>
 {
     /**
@@ -211,7 +211,7 @@ public class WebFormattedTextField extends JFormattedTextField
      */
     public String getInputPrompt ()
     {
-        return getWebUI ().getInputPrompt ();
+        return getUI ().getInputPrompt ();
     }
 
     /**
@@ -221,7 +221,7 @@ public class WebFormattedTextField extends JFormattedTextField
      */
     public void setInputPrompt ( final String text )
     {
-        getWebUI ().setInputPrompt ( text );
+        getUI ().setInputPrompt ( text );
     }
 
     /**
@@ -231,7 +231,7 @@ public class WebFormattedTextField extends JFormattedTextField
      */
     public JComponent getLeadingComponent ()
     {
-        return getWebUI ().getLeadingComponent ();
+        return getUI ().getLeadingComponent ();
     }
 
     /**
@@ -241,7 +241,7 @@ public class WebFormattedTextField extends JFormattedTextField
      */
     public void setLeadingComponent ( final JComponent leadingComponent )
     {
-        getWebUI ().setLeadingComponent ( leadingComponent );
+        getUI ().setLeadingComponent ( leadingComponent );
     }
 
     /**
@@ -249,7 +249,7 @@ public class WebFormattedTextField extends JFormattedTextField
      */
     public void removeLeadingComponent ()
     {
-        getWebUI ().removeLeadingComponent ();
+        getUI ().removeLeadingComponent ();
     }
 
     /**
@@ -259,7 +259,7 @@ public class WebFormattedTextField extends JFormattedTextField
      */
     public JComponent getTrailingComponent ()
     {
-        return getWebUI ().getTrailingComponent ();
+        return getUI ().getTrailingComponent ();
     }
 
     /**
@@ -269,7 +269,7 @@ public class WebFormattedTextField extends JFormattedTextField
      */
     public void setTrailingComponent ( final JComponent trailingComponent )
     {
-        getWebUI ().setTrailingComponent ( trailingComponent );
+        getUI ().setTrailingComponent ( trailingComponent );
     }
 
     /**
@@ -277,7 +277,7 @@ public class WebFormattedTextField extends JFormattedTextField
      */
     public void removeTrailingComponent ()
     {
-        getWebUI ().removeTrailingComponent ();
+        getUI ().removeTrailingComponent ();
     }
 
     @Override
@@ -377,102 +377,88 @@ public class WebFormattedTextField extends JFormattedTextField
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
-        return getWebUI ().provideShape ();
+        return ShapeMethodsImpl.getShape ( this );
     }
 
     @Override
     public Insets getMargin ()
     {
-        return getWebUI ().getMargin ();
+        return MarginMethodsImpl.getMargin ( this );
     }
 
-    /**
-     * Sets new margin.
-     *
-     * @param margin new margin
-     */
+    @Override
     public void setMargin ( final int margin )
     {
-        setMargin ( margin, margin, margin, margin );
+        MarginMethodsImpl.setMargin ( this, margin );
     }
 
-    /**
-     * Sets new margin.
-     *
-     * @param top    new top margin
-     * @param left   new left margin
-     * @param bottom new bottom margin
-     * @param right  new right margin
-     */
+    @Override
     public void setMargin ( final int top, final int left, final int bottom, final int right )
     {
-        setMargin ( new Insets ( top, left, bottom, right ) );
+        MarginMethodsImpl.setMargin ( this, top, left, bottom, right );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        getWebUI ().setMargin ( margin );
+        MarginMethodsImpl.setMargin ( this, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return getWebUI ().getPadding ();
+        return PaddingMethodsImpl.getPadding ( this );
     }
 
-    /**
-     * Sets new padding.
-     *
-     * @param padding new padding
-     */
+    @Override
     public void setPadding ( final int padding )
     {
-        setPadding ( padding, padding, padding, padding );
+        PaddingMethodsImpl.setPadding ( this, padding );
     }
 
-    /**
-     * Sets new padding.
-     *
-     * @param top    new top padding
-     * @param left   new left padding
-     * @param bottom new bottom padding
-     * @param right  new right padding
-     */
+    @Override
     public void setPadding ( final int top, final int left, final int bottom, final int right )
     {
-        setPadding ( new Insets ( top, left, bottom, right ) );
+        PaddingMethodsImpl.setPadding ( this, top, left, bottom, right );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        getWebUI ().setPadding ( padding );
+        PaddingMethodsImpl.setPadding ( this, padding );
     }
 
     /**
-     * Returns Web-UI applied to this class.
+     * Returns the look and feel (L&amp;F) object that renders this component.
      *
-     * @return Web-UI applied to this class
+     * @return the {@link WFormattedTextFieldUI} object that renders this component
      */
-    private WebFormattedTextFieldUI getWebUI ()
+    @Override
+    public WFormattedTextFieldUI getUI ()
     {
-        return ( WebFormattedTextFieldUI ) getUI ();
+        return ( WFormattedTextFieldUI ) super.getUI ();
     }
 
     /**
-     * Installs a Web-UI into this component.
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WFormattedTextFieldUI}
      */
+    public void setUI ( final WFormattedTextFieldUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebFormattedTextFieldUI ) )
+        if ( getUI () == null || !( getUI () instanceof WFormattedTextFieldUI ) )
         {
             try
             {
-                setUI ( ( WebFormattedTextFieldUI ) UIManager.getUI ( this ) );
+                setUI ( ( WFormattedTextFieldUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

@@ -27,6 +27,6 @@ import com.alee.painter.SpecificPainter;
  * @author Mikle Garin
  */
 
-public interface ICanvasPainter<E extends WebCanvas, U extends WebCanvasUI> extends SpecificPainter<E, U>
+public interface ICanvasPainter<E extends WebCanvas, U extends WCanvasUI> extends SpecificPainter<E, U>
 {
 }

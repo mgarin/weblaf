@@ -137,6 +137,13 @@ public interface DecorationState
     public static final String indeterminate = "indeterminate";
 
     /**
+     * Used to provide visited state for link-type components.
+     *
+     * @see com.alee.extended.link.LinkPainter#getDecorationStates()
+     */
+    public static final String visited = "visited";
+
+    /**
      * Used to provide tree node leaf state.
      *
      * @see com.alee.laf.tree.WebTreeCellRenderer#getStates()

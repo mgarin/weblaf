@@ -10,6 +10,7 @@ import java.awt.*;
  * Be aware that if you specify your own border into those components this option will have no effect.
  *
  * @author Mikle Garin
+ * @see MarginMethods
  */
 
 public interface MarginSupport

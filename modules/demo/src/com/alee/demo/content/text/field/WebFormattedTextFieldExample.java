@@ -17,10 +17,10 @@
 
 package com.alee.demo.content.text.field;
 
-import com.alee.demo.api.*;
 import com.alee.demo.DemoIcons;
 import com.alee.demo.DemoStyles;
-import com.alee.extended.image.WebImage;
+import com.alee.demo.api.*;
+import com.alee.laf.label.WebLabel;
 import com.alee.laf.text.WebFormattedTextField;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
@@ -97,7 +97,7 @@ public class WebFormattedTextFieldExample extends AbstractExample
             final WebFormattedTextField textField = new WebFormattedTextField ( createFormatter ( mask ) );
             textField.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
             textField.setInputPrompt ( getPreviewLanguagePrefix () + "prompt" );
-            textField.setLeadingComponent ( new WebImage ( DemoStyles.leadingImage, icon ) );
+            textField.setLeadingComponent ( new WebLabel ( DemoStyles.leadingImage, icon ) );
             textField.setColumns ( 20 );
             textField.setValue ( value );
             return CollectionUtils.asList ( textField );

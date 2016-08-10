@@ -198,7 +198,6 @@ public class StyleEditor extends WebFrame
         split = new WebSplitPane ( StyleId.styleeditorSplit.at ( StyleEditor.this ), WebSplitPane.HORIZONTAL_SPLIT, true );
         split.setDividerLocation ( 350 );
         split.setDividerSize ( 8 );
-        split.setDrawDividerBorder ( true );
         split.setOneTouchExpandable ( true );
         container.add ( split, BorderLayout.CENTER );
 
@@ -482,7 +481,7 @@ public class StyleEditor extends WebFrame
         //
 
         final WebFileTree homeFileTree = new WebFileTree ( FileUtils.getUserHomePath () );
-        homeFileTree.setAutoExpandSelectedNode ( false );
+        homeFileTree.setExpandSelected ( false );
         homeFileTree.setShowsRootHandles ( true );
         homeFileTree.setSelectionStyle ( TreeSelectionStyle.group );
         homeFileTree.onKeyRelease ( Hotkey.SPACE, new KeyEventRunnable ()

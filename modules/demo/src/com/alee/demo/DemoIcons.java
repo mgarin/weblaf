@@ -28,6 +28,11 @@ import com.alee.managers.icon.LazyIcon;
 public final class DemoIcons
 {
     /**
+     * Application icon.
+     */
+    public static final LazyIcon icon16 = new LazyIcon ( "icon16", 16, 16 );
+
+    /**
      * General purpose 36x36 icons.
      */
     public static final LazyIcon compass36 = new LazyIcon ( "compass36", 36, 36 );

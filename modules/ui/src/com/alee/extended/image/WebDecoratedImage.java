@@ -17,7 +17,7 @@
 
 package com.alee.extended.image;
 
-import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.ShapeMethods;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageFilterUtils;
 import com.alee.utils.ImageUtils;
@@ -32,7 +32,7 @@ import java.awt.image.BufferedImage;
  * @author Mikle Garin
  */
 
-public class WebDecoratedImage extends JComponent implements SwingConstants, ShapeProvider
+public class WebDecoratedImage extends JComponent implements SwingConstants, ShapeMethods
 {
     private ImageIcon icon;
     private ImageIcon previewIcon;
@@ -590,7 +590,7 @@ public class WebDecoratedImage extends JComponent implements SwingConstants, Sha
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         final Point location = getPreviewLocation ();
         return getBorderShape ( location.x, location.y );

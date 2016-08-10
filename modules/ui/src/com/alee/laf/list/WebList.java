@@ -17,6 +17,8 @@
 
 package com.alee.laf.list;
 
+import com.alee.laf.list.behavior.ListHoverSelectionBehavior;
+import com.alee.laf.list.behavior.ListSelectionScrollBehavior;
 import com.alee.laf.list.editor.DefaultListCellEditor;
 import com.alee.laf.list.editor.ListCellEditor;
 import com.alee.laf.list.editor.ListEditListener;
@@ -54,7 +56,7 @@ import java.util.List;
  */
 
 public class WebList extends JList
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, FontMethods<WebList>,
+        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods, FontMethods<WebList>,
         SizeMethods<WebList>
 {
     /**
@@ -507,23 +509,13 @@ public class WebList extends JList
     }
 
     /**
-     * Returns current mousover index.
-     *
-     * @return current mousover index
-     */
-    public int getHoverIndex ()
-    {
-        return getWebUI ().getHoverIndex ();
-    }
-
-    /**
      * Returns tree selection style.
      *
      * @return tree selection style
      */
     public ListSelectionStyle getSelectionStyle ()
     {
-        return getWebUI ().getSelectionStyle ();
+        return getUI ().getSelectionStyle ();
     }
 
     /**
@@ -533,7 +525,7 @@ public class WebList extends JList
      */
     public void setSelectionStyle ( final ListSelectionStyle style )
     {
-        getWebUI ().setSelectionStyle ( style );
+        getUI ().setSelectionStyle ( style );
     }
 
     /**
@@ -543,7 +535,7 @@ public class WebList extends JList
      */
     public boolean isSelectOnHover ()
     {
-        return getWebUI ().isSelectOnHover ();
+        return ListHoverSelectionBehavior.isInstalled ( this );
     }
 
     /**
@@ -553,7 +545,20 @@ public class WebList extends JList
      */
     public void setSelectOnHover ( final boolean select )
     {
-        getWebUI ().setSelectOnHover ( select );
+        if ( select )
+        {
+            if ( !isSelectOnHover () )
+            {
+                ListHoverSelectionBehavior.install ( this );
+            }
+        }
+        else
+        {
+            if ( isSelectOnHover () )
+            {
+                ListHoverSelectionBehavior.uninstall ( this );
+            }
+        }
     }
 
     /**
@@ -563,7 +568,7 @@ public class WebList extends JList
      */
     public boolean isScrollToSelection ()
     {
-        return getWebUI ().isScrollToSelection ();
+        return ListSelectionScrollBehavior.isInstalled ( this );
     }
 
     /**
@@ -573,7 +578,20 @@ public class WebList extends JList
      */
     public void setScrollToSelection ( final boolean scroll )
     {
-        getWebUI ().setScrollToSelection ( scroll );
+        if ( scroll )
+        {
+            if ( !isScrollToSelection () )
+            {
+                ListSelectionScrollBehavior.install ( this );
+            }
+        }
+        else
+        {
+            if ( isScrollToSelection () )
+            {
+                ListSelectionScrollBehavior.uninstall ( this );
+            }
+        }
     }
 
     @Override
@@ -666,82 +684,6 @@ public class WebList extends JList
         return StyleManager.resetPainter ( this );
     }
 
-    @Override
-    public Shape provideShape ()
-    {
-        return getWebUI ().provideShape ();
-    }
-
-    @Override
-    public Insets getMargin ()
-    {
-        return getWebUI ().getMargin ();
-    }
-
-    /**
-     * Sets new margin.
-     *
-     * @param margin new margin
-     */
-    public void setMargin ( final int margin )
-    {
-        setMargin ( margin, margin, margin, margin );
-    }
-
-    /**
-     * Sets new margin.
-     *
-     * @param top    new top margin
-     * @param left   new left margin
-     * @param bottom new bottom margin
-     * @param right  new right margin
-     */
-    public void setMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        setMargin ( new Insets ( top, left, bottom, right ) );
-    }
-
-    @Override
-    public void setMargin ( final Insets margin )
-    {
-        getWebUI ().setMargin ( margin );
-    }
-
-    @Override
-    public Insets getPadding ()
-    {
-        return getWebUI ().getPadding ();
-    }
-
-    /**
-     * Sets new padding.
-     *
-     * @param padding new padding
-     */
-    public void setPadding ( final int padding )
-    {
-        setPadding ( padding, padding, padding, padding );
-    }
-
-    /**
-     * Sets new padding.
-     *
-     * @param top    new top padding
-     * @param left   new left padding
-     * @param bottom new bottom padding
-     * @param right  new right padding
-     */
-    public void setPadding ( final int top, final int left, final int bottom, final int right )
-    {
-        setPadding ( new Insets ( top, left, bottom, right ) );
-    }
-
-    @Override
-    public void setPadding ( final Insets padding )
-    {
-        getWebUI ().setPadding ( padding );
-    }
-
     /**
      * Adds hover listener.
      *
@@ -763,6 +705,16 @@ public class WebList extends JList
     }
 
     /**
+     * Returns hover listeners.
+     *
+     * @return hover listeners
+     */
+    public HoverListener[] getHoverListeners ()
+    {
+        return listenerList.getListeners ( HoverListener.class );
+    }
+
+    /**
      * Informs about hover object change.
      *
      * @param previous previous hover object
@@ -770,33 +722,95 @@ public class WebList extends JList
      */
     public void fireHoverChanged ( final Object previous, final Object current )
     {
-        for ( final HoverListener listener : listenerList.getListeners ( HoverListener.class ) )
+        for ( final HoverListener listener : getHoverListeners () )
         {
             listener.hoverChanged ( previous, current );
         }
     }
 
-    /**
-     * Returns Web-UI applied to this class.
-     *
-     * @return Web-UI applied to this class
-     */
-    public WebListUI getWebUI ()
+    @Override
+    public Shape getShape ()
     {
-        return ( WebListUI ) getUI ();
+        return ShapeMethodsImpl.getShape ( this );
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return MarginMethodsImpl.getMargin ( this );
+    }
+
+    @Override
+    public void setMargin ( final int margin )
+    {
+        MarginMethodsImpl.setMargin ( this, margin );
+    }
+
+    @Override
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        MarginMethodsImpl.setMargin ( this, top, left, bottom, right );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        MarginMethodsImpl.setMargin ( this, margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return PaddingMethodsImpl.getPadding ( this );
+    }
+
+    @Override
+    public void setPadding ( final int padding )
+    {
+        PaddingMethodsImpl.setPadding ( this, padding );
+    }
+
+    @Override
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        PaddingMethodsImpl.setPadding ( this, top, left, bottom, right );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        PaddingMethodsImpl.setPadding ( this, padding );
     }
 
     /**
-     * Installs a Web-UI into this component.
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WListUI} object that renders this component
      */
+    @Override
+    public WListUI getUI ()
+    {
+        return ( WListUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WListUI}
+     */
+    public void setUI ( final WListUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebListUI ) )
+        if ( getUI () == null || !( getUI () instanceof WListUI ) )
         {
             try
             {
-                setUI ( ( WebListUI ) UIManager.getUI ( this ) );
+                setUI ( ( WListUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

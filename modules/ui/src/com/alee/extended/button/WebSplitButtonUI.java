@@ -25,17 +25,15 @@ import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 
 /**
- * Custom UI for WebSplitButton component.
- * This UI is based on WebButtonUI and simply adds a few features.
+ * Custom UI for {@link WebSplitButton} component.
  *
  * @author Mikle Garin
  */
 
-public class WebSplitButtonUI extends BasicButtonUI implements ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
+public class WebSplitButtonUI extends WSplitButtonUI implements ShapeSupport, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
      * Component painter.
@@ -98,7 +96,7 @@ public class WebSplitButtonUI extends BasicButtonUI implements ShapeProvider, Ma
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( button, painter );
     }
@@ -129,11 +127,7 @@ public class WebSplitButtonUI extends BasicButtonUI implements ShapeProvider, Ma
         PainterSupport.updateBorder ( getPainter () );
     }
 
-    /**
-     * Returns whether or not mouse is currently over the split menu button.
-     *
-     * @return true if mouse is currently over the split menu button, false otherwise
-     */
+    @Override
     public boolean isOnSplit ()
     {
         return painter != null && painter.isOnSplit ();

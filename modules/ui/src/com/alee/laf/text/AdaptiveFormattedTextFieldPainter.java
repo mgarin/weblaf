@@ -7,17 +7,17 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Simple FormattedTextFieldPainter adapter class.
- * It is used to install simple non-specific painters into WebFormattedTextFieldUI.
+ * Simple {@link FormattedTextFieldPainter} adapter class.
+ * It is used to install simple non-specific painters into {@link WFormattedTextFieldUI}.
  *
  * @author Alexandr Zernov
  */
 
-public final class AdaptiveFormattedTextFieldPainter<E extends JFormattedTextField, U extends WebFormattedTextFieldUI>
+public final class AdaptiveFormattedTextFieldPainter<E extends JFormattedTextField, U extends WFormattedTextFieldUI>
         extends AdaptivePainter<E, U> implements IFormattedTextFieldPainter<E, U>
 {
     /**
-     * Constructs new AdaptiveFormattedTextFieldPainter for the specified painter.
+     * Constructs new {@link AdaptiveFormattedTextFieldPainter} for the specified painter.
      *
      * @param painter painter to adapt
      */

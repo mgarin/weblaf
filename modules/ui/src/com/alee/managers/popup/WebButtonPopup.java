@@ -575,7 +575,7 @@ public class WebButtonPopup extends WebInnerPopup
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return getPopupShape ( this );
     }

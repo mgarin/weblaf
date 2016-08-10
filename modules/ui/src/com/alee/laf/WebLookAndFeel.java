@@ -25,6 +25,7 @@ import com.alee.extended.dock.WebDockableFrameUI;
 import com.alee.extended.dock.WebDockablePaneUI;
 import com.alee.extended.image.WebImageUI;
 import com.alee.extended.label.WebStyledLabelUI;
+import com.alee.extended.link.WebLinkUI;
 import com.alee.extended.statusbar.WebStatusBarUI;
 import com.alee.extended.window.WebPopupUI;
 import com.alee.global.StyleConstants;
@@ -74,6 +75,7 @@ import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.basic.BasicLookAndFeel;
 import javax.swing.text.DefaultEditorKit;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.*;
@@ -112,6 +114,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String COMPONENT_ORIENTATION_PROPERTY = "componentOrientation";
     public static final String MARGIN_PROPERTY = "margin";
     public static final String ENABLED_PROPERTY = "enabled";
+    public static final String FOCUSABLE_PROPERTY = "focusable";
     public static final String MODEL_PROPERTY = "model";
     public static final String VIEWPORT_PROPERTY = "viewport";
     public static final String VERTICAL_SCROLLBAR_PROPERTY = "verticalScrollBar";
@@ -198,6 +201,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static String labelUI = WebLabelUI.class.getCanonicalName ();
     public static String styledLabelUI = WebStyledLabelUI.class.getCanonicalName ();
     public static String toolTipUI = WebToolTipUI.class.getCanonicalName ();
+    public static String linkUI = WebLinkUI.class.getCanonicalName ();
 
     /**
      * Button-related components.
@@ -453,6 +457,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "LabelUI", labelUI );
         table.put ( "StyledLabelUI", styledLabelUI );
         table.put ( "ToolTipUI", toolTipUI );
+        table.put ( "LinkUI", linkUI );
 
         // Button
         table.put ( "ButtonUI", buttonUI );
@@ -1074,7 +1079,11 @@ public class WebLookAndFeel extends BasicLookAndFeel
         }
         else
         {
-            final ImageIcon disabledIcon = icon instanceof ImageIcon ? ImageUtils.createDisabledCopy ( ( ImageIcon ) icon ) : null;
+            // todo Different disabled implementation for different icon types?
+            // todo For example ImageIcon, SvgIcon, GifIcon etc.
+            final BufferedImage image = ImageUtils.getBufferedImage ( icon );
+            final BufferedImage disabled = ImageUtils.createDisabledCopy ( image );
+            final ImageIcon disabledIcon = new ImageIcon ( disabled );
             disabledIcons.put ( icon, disabledIcon );
             return disabledIcon;
         }

@@ -22,9 +22,10 @@ import com.alee.demo.DemoIcons;
 import com.alee.demo.DemoStyles;
 import com.alee.extended.button.WebSwitch;
 import com.alee.extended.inspector.InterfaceInspector;
-import com.alee.extended.label.WebLinkLabel;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
+import com.alee.extended.link.UrlLinkAction;
+import com.alee.extended.link.WebLink;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.GroupingType;
 import com.alee.extended.syntax.SyntaxPreset;
@@ -290,14 +291,8 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
         if ( wiki != null )
         {
             final WebPanel infoBar = new WebPanel ( DemoStyles.infoBar, new HorizontalFlowLayout ( 4, false ) );
-
             infoBar.add ( new WebLabel ( "demo.content.example.wiki", DemoIcons.github16 ) );
-
-            final WebLinkLabel link = new WebLinkLabel ();
-            link.setLink ( getWikiArticleName (), wiki );
-            link.setIcon ( null );
-            infoBar.add ( link );
-
+            infoBar.add ( new WebLink ( getWikiArticleName (), new UrlLinkAction ( wiki ) ) );
             return infoBar;
         }
         return null;

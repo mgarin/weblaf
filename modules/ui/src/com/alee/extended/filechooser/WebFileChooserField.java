@@ -390,7 +390,7 @@ public class WebFileChooserField extends WebPanel
 
     private List<AbstractFileFilter> getAvailableFilters ()
     {
-        return webFileChooser == null ? null : webFileChooser.getAvailableFilters ();
+        return webFileChooser != null ? webFileChooser.getFileChooserPanel ().getAvailableFilters () : null;
     }
 
     public class FilePlate extends WebPanel

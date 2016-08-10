@@ -27,6 +27,6 @@ import com.alee.painter.SpecificPainter;
  * @author Mikle Garin
  */
 
-public interface IDockablePanePainter<E extends WebDockablePane, U extends WebDockablePaneUI> extends SpecificPainter<E, U>
+public interface IDockablePanePainter<E extends WebDockablePane, U extends WDockablePaneUI> extends SpecificPainter<E, U>
 {
 }

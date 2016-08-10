@@ -6,17 +6,17 @@ import com.alee.painter.Painter;
 import javax.swing.*;
 
 /**
- * Simple TabbedPanePainter adapter class.
- * It is used to install simple non-specific painters into WebTabbedPaneUI.
+ * Simple {@link TabbedPanePainter} adapter class.
+ * It is used to install simple non-specific painters into {@link WTabbedPaneUI}.
  *
  * @author Alexandr Zernov
  */
 
-public final class AdaptiveTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPaneUI> extends AdaptivePainter<E, U>
+public final class AdaptiveTabbedPanePainter<E extends JTabbedPane, U extends WTabbedPaneUI> extends AdaptivePainter<E, U>
         implements ITabbedPanePainter<E, U>
 {
     /**
-     * Constructs new AdaptiveTabbedPanePainter for the specified painter.
+     * Constructs new {@link AdaptiveTabbedPanePainter} for the specified painter.
      *
      * @param painter painter to adapt
      */

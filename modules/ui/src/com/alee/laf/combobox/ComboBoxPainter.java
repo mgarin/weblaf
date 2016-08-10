@@ -5,29 +5,26 @@ import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.CompareUtils;
-import com.alee.utils.MathUtils;
-import com.alee.utils.swing.PopupMenuAdapter;
+import com.alee.utils.swing.EditabilityListener;
+import com.alee.utils.swing.VisibilityListener;
 
 import javax.swing.*;
-import javax.swing.event.PopupMenuEvent;
 import java.awt.*;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.util.List;
 
 /**
+ * Basic painter for {@link JComboBox} component.
+ * It is used as {@link WebComboBoxUI} default painter.
+ *
+ * @param <E> component type
+ * @param <U> component UI type
+ * @param <D> decoration type
  * @author Alexandr Zernov
  */
 
-public class ComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI, D extends IDecoration<E, D>>
-        extends AbstractDecorationPainter<E, U, D> implements IComboBoxPainter<E, U>
+public class ComboBoxPainter<E extends JComboBox, U extends WComboBoxUI, D extends IDecoration<E, D>>
+        extends AbstractDecorationPainter<E, U, D> implements IComboBoxPainter<E, U>, EditabilityListener, VisibilityListener
 {
-    /**
-     * Listeners.
-     */
-    protected PopupMenuAdapter menuListener;
-    protected MouseWheelListener mouseWheelListener = null;
-
     /**
      * Painting variables.
      */
@@ -38,66 +35,17 @@ public class ComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI, D ext
     {
         super.install ( c, ui );
 
-        // Menu visibility listener
-        menuListener = new PopupMenuAdapter ()
-        {
-            @Override
-            public void popupMenuWillBecomeVisible ( final PopupMenuEvent e )
-            {
-                SwingUtilities.invokeLater ( new Runnable ()
-                {
-                    @Override
-                    public void run ()
-                    {
-                        updateDecorationState ();
-                    }
-                } );
-            }
-
-            @Override
-            public void popupMenuWillBecomeInvisible ( final PopupMenuEvent e )
-            {
-                SwingUtilities.invokeLater ( new Runnable ()
-                {
-                    @Override
-                    public void run ()
-                    {
-                        updateDecorationState ();
-                    }
-                } );
-            }
-        };
-        component.addPopupMenuListener ( menuListener );
-
-        // Rollover scrolling listener
-        mouseWheelListener = new MouseWheelListener ()
-        {
-            @Override
-            public void mouseWheelMoved ( final MouseWheelEvent e )
-            {
-                if ( ui.isMouseWheelScrollingEnabled () && component.isEnabled () && isFocused () )
-                {
-                    // Changing selection in case index actually changed
-                    final int index = component.getSelectedIndex ();
-                    final int newIndex = MathUtils.limit ( 0, index + e.getWheelRotation (), component.getModel ().getSize () - 1 );
-                    if ( newIndex != index )
-                    {
-                        component.setSelectedIndex ( newIndex );
-                    }
-                }
-            }
-        };
-        component.addMouseWheelListener ( mouseWheelListener );
+        // Combobox listeners
+        ui.addEditabilityListener ( this );
+        ui.addPopupVisibilityListener ( this );
     }
 
     @Override
     public void uninstall ( final E c, final U ui )
     {
-        // Removing listeners
-        component.removeMouseWheelListener ( mouseWheelListener );
-        mouseWheelListener = null;
-        component.removePopupMenuListener ( menuListener );
-        menuListener = null;
+        // Combobox listeners
+        ui.removePopupVisibilityListener ( this );
+        ui.removeEditabilityListener ( this );
 
         super.uninstall ( c, ui );
     }
@@ -114,6 +62,18 @@ public class ComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI, D ext
         {
             ui.getListBox ().setEnabled ( component.isEnabled () );
         }
+    }
+
+    @Override
+    public void editabilityChanged ( final boolean editable )
+    {
+        updateDecorationState ();
+    }
+
+    @Override
+    public void visibilityChanged ( final boolean visible )
+    {
+        updateDecorationState ();
     }
 
     @Override

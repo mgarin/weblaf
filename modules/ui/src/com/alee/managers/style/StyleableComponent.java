@@ -26,6 +26,7 @@ import com.alee.extended.date.WebDateField;
 import com.alee.extended.dock.WebDockableFrame;
 import com.alee.extended.dock.WebDockablePane;
 import com.alee.extended.image.WebImage;
+import com.alee.extended.link.WebLink;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.window.WebPopup;
@@ -72,6 +73,7 @@ public enum StyleableComponent implements IconSupport, TitleSupport
     label ( JLabel.class, "LabelUI", WebLookAndFeel.labelUI, StyleId.label ),
     styledlabel ( WebStyledLabel.class, "StyledLabelUI", WebLookAndFeel.styledLabelUI, StyleId.styledlabel ),
     tooltip ( JToolTip.class, "ToolTipUI", WebLookAndFeel.toolTipUI, StyleId.tooltip ),
+    link ( WebLink.class, "LinkUI", WebLookAndFeel.linkUI, StyleId.link ),
 
     /**
      * Button-related components.

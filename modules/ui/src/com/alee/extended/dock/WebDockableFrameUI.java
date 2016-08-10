@@ -52,14 +52,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Custom UI for {@link com.alee.extended.dock.WebDockableFrame} component.
+ * Custom UI for {@link WebDockableFrame} component.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
- * @see com.alee.extended.dock.WebDockablePane
+ * @see WebDockablePane
  */
 
-public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider, MarginSupport, PaddingSupport, PropertyChangeListener
+public class WebDockableFrameUI extends WDockableFrameUI implements ShapeSupport, MarginSupport, PaddingSupport, PropertyChangeListener
 {
     /**
      * Component painter.
@@ -476,12 +476,8 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
         closeButton.setLanguage ( "weblaf.ex.dockable.frame.close" );
     }
 
-    /**
-     * Returns minimum frame dialog size.
-     *
-     * @return minimum frame dialog size
-     */
-    protected Dimension getMinimumDialogSize ()
+    @Override
+    public Dimension getMinimumDialogSize ()
     {
         final Insets bi = frame.getInsets ();
         final Dimension ps = titlePanel.isVisible () ? titlePanel.getPreferredSize () : frame.getDockablePane ().getMinimumElementSize ();
@@ -524,7 +520,7 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( frame, painter );
     }

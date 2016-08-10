@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public interface IListPainter<E extends JList, U extends WebListUI> extends SpecificPainter<E, U>
+public interface IListPainter<E extends JList, U extends WListUI> extends SpecificPainter<E, U>
 {
     /**
      * Returns whether or not hover item decoration is supported by this list painter.

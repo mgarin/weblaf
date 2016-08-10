@@ -9,8 +9,8 @@
             <background>237,237,237</background>
         </component>
         <ui>
-            <paintButtons>true</paintButtons>
-            <paintTrack>false</paintTrack>
+            <displayButtons>true</displayButtons>
+            <displayTrack>false</displayTrack>
             <minimumThumbSize>25,25</minimumThumbSize>
         </ui>
         <painter>
@@ -78,16 +78,16 @@
             <opaque>true</opaque>
         </component>
         <ui>
-            <paintButtons>true</paintButtons>
-            <paintTrack>true</paintTrack>
+            <displayButtons>true</displayButtons>
+            <displayTrack>true</displayTrack>
         </ui>
     </style>
 
     <!-- Undecorated scrollbar -->
     <style type="scrollbar" id="undecorated">
         <ui>
-            <paintButtons>true</paintButtons>
-            <paintTrack>false</paintTrack>
+            <displayButtons>true</displayButtons>
+            <displayTrack>false</displayTrack>
         </ui>
     </style>
 
@@ -97,16 +97,16 @@
             <opaque>true</opaque>
         </component>
         <ui>
-            <paintButtons>false</paintButtons>
-            <paintTrack>true</paintTrack>
+            <displayButtons>false</displayButtons>
+            <displayTrack>true</displayTrack>
         </ui>
     </style>
 
     <!-- Undecorated button-less scrollbar -->
     <style type="scrollbar" id="undecorated-buttonless">
         <ui>
-            <paintButtons>false</paintButtons>
-            <paintTrack>false</paintTrack>
+            <displayButtons>false</displayButtons>
+            <displayTrack>false</displayTrack>
         </ui>
     </style>
 

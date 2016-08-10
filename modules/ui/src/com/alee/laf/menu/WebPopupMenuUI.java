@@ -26,16 +26,15 @@ import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicPopupMenuUI;
 import java.awt.*;
 
 /**
- * Custom UI for JPopupMenu component.
+ * Custom UI for {@link JPopupMenu} component.
  *
  * @author Mikle Garin
  */
 
-public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
+public class WebPopupMenuUI extends WPopupMenuUI implements ShapeSupport, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
      * Component painter.
@@ -97,7 +96,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider, M
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( popupMenu, painter );
     }
@@ -128,23 +127,13 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider, M
         PainterSupport.updateBorder ( getPainter () );
     }
 
-    /**
-     * Assists popup menu to allow it choose the best position relative to invoker.
-     * Its value nullified right after first usage to avoid popup menu display issues in future.
-     *
-     * @param way approximate popup menu display way
-     */
+    @Override
     public void setPopupMenuWay ( final PopupMenuWay way )
     {
         this.popupMenuWay = way;
     }
 
-    /**
-     * Returns currently set preferred popup menu display way.
-     * It might be null in case menu was just shown and this value wasn't updated afterwards.
-     *
-     * @return currently set preferred popup menu display way
-     */
+    @Override
     public PopupMenuWay getPopupMenuWay ()
     {
         return popupMenuWay;

@@ -17,53 +17,47 @@
 
 package com.alee.laf.list;
 
+import com.alee.laf.list.behavior.ListItemHoverBehavior;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicListUI;
 import java.awt.*;
 
 /**
- * Custom UI for JList component.
+ * Custom UI for {@link JList} component.
  *
  * @author Mikle Garin
  */
 
-public class WebListUI extends BasicListUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
-    /*
-     * Static fields from BasicListUI.
+    /**
+     * Static fields from {@link javax.swing.plaf.basic.BasicListUI}.
      */
     public final static int heightChanged = 1 << 8;
     public final static int widthChanged = 1 << 9;
 
     /**
-     * Style settings.
+     * List selection style.
      */
     protected ListSelectionStyle selectionStyle;
-    protected boolean selectOnHover;
-    protected boolean scrollToSelection;
 
     /**
      * Listeners.
      */
-    protected ListSelectionListener selectionTracker;
     protected ListItemHoverBehavior hoverCellTracker;
 
     /**
      * Component painter.
      */
-    @DefaultPainter (ListPainter.class)
+    @DefaultPainter ( ListPainter.class )
     protected IListPainter painter;
 
     /**
@@ -80,7 +74,7 @@ public class WebListUI extends BasicListUI implements ShapeProvider, MarginSuppo
      * @param c component that will use UI instance
      * @return instance of the WebListUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebListUI ();
@@ -97,47 +91,15 @@ public class WebListUI extends BasicListUI implements ShapeProvider, MarginSuppo
         // Installing UI
         super.installUI ( c );
 
-        // Selection listener
-        selectionTracker = new ListSelectionListener ()
-        {
-            @Override
-            public void valueChanged ( final ListSelectionEvent e )
-            {
-                if ( isScrollToSelection () && list.getSelectedIndex () != -1 )
-                {
-                    final int index = list.getLeadSelectionIndex ();
-                    final Rectangle selection = getCellBounds ( list, index, index );
-                    if ( selection != null && !selection.intersects ( list.getVisibleRect () ) )
-                    {
-                        list.scrollRectToVisible ( selection );
-                    }
-                }
-            }
-        };
-        list.addListSelectionListener ( selectionTracker );
-
         // Hover behavior
         hoverCellTracker = new ListItemHoverBehavior ( list, true )
         {
             @Override
-            public void hoverChanged ( final Object previous, final Object current )
+            public void hoverChanged ( final Integer previous, final Integer current )
             {
                 // Updating hover row
                 final int previousIndex = hoverIndex;
-                hoverIndex = indexOf ( current );
-
-                // Updating selection
-                if ( selectOnHover )
-                {
-                    if ( current != null )
-                    {
-                        list.setSelectedIndex ( hoverIndex );
-                    }
-                    else
-                    {
-                        list.clearSelection ();
-                    }
-                }
+                hoverIndex = current;
 
                 // Repainting nodes according to hover changes
                 // This occurs only if hover highlight is enabled
@@ -154,36 +116,11 @@ public class WebListUI extends BasicListUI implements ShapeProvider, MarginSuppo
                     provider.hoverCellChanged ( list, previousIndex, 0, hoverIndex, 0 );
                 }
 
-                // Informing {@link com.alee.laf.list.WebList} about hover object change
-                // This is performed here to avoid excessive listeners usage for the same purpose
+                // Informing {@link com.alee.laf.list.WebList} about hover index change
+                // This is performed here to avoid excessive hover listeners usage
                 if ( list instanceof WebList )
                 {
                     ( ( WebList ) list ).fireHoverChanged ( previous, current );
-                }
-            }
-
-            /**
-             * Returns index of the specified object inside the list.
-             * @param current object to retrieve index for
-             * @return index of the specified object inside the list
-             */
-            protected int indexOf ( final Object current )
-            {
-                final ListModel model = list.getModel ();
-                if ( model instanceof WebListModel )
-                {
-                    return ( ( WebListModel ) model ).indexOf ( current );
-                }
-                else
-                {
-                    for ( int i = 0; i < model.getSize (); i++ )
-                    {
-                        if ( CompareUtils.equals ( model.getElementAt ( i ), current ) )
-                        {
-                            return i;
-                        }
-                    }
-                    return -1;
                 }
             }
 
@@ -224,15 +161,13 @@ public class WebListUI extends BasicListUI implements ShapeProvider, MarginSuppo
         // Removing custom listeners
         hoverCellTracker.uninstall ();
         hoverCellTracker = null;
-        list.removeListSelectionListener ( selectionTracker );
-        selectionTracker = null;
 
         // Uninstalling UI
         super.uninstallUI ( c );
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( list, painter );
     }
@@ -291,89 +226,25 @@ public class WebListUI extends BasicListUI implements ShapeProvider, MarginSuppo
         }, this.painter, painter, IListPainter.class, AdaptiveListPainter.class );
     }
 
-    /**
-     * Returns current mousover index.
-     *
-     * @return current mousover index
-     */
+    @Override
     public int getHoverIndex ()
     {
         return hoverIndex;
     }
 
-    /**
-     * Returns list selection style.
-     *
-     * @return list selection style
-     */
+    @Override
     public ListSelectionStyle getSelectionStyle ()
     {
         return selectionStyle;
     }
 
-    /**
-     * Sets list selection style.
-     *
-     * @param style list selection style
-     */
+    @Override
     public void setSelectionStyle ( final ListSelectionStyle style )
     {
         this.selectionStyle = style;
     }
 
-    /**
-     * Returns whether or not cells should be selected on hover.
-     *
-     * @return true if cells should be selected on hover, false otherwise
-     */
-    public boolean isSelectOnHover ()
-    {
-        return selectOnHover;
-    }
-
-    /**
-     * Sets whether or not cells should be selected on hover.
-     *
-     * @param select whether or not cells should be selected on hover
-     */
-    public void setSelectOnHover ( final boolean select )
-    {
-        this.selectOnHover = select;
-    }
-
-    /**
-     * Returns whether to scroll list down to selection automatically or not.
-     *
-     * @return true if list is being automatically scrolled to selection, false otherwise
-     */
-    public boolean isScrollToSelection ()
-    {
-        return scrollToSelection;
-    }
-
-    /**
-     * Sets whether to scroll list down to selection automatically or not.
-     *
-     * @param scroll whether to scroll list down to selection automatically or not
-     */
-    public void setScrollToSelection ( final boolean scroll )
-    {
-        this.scrollToSelection = scroll;
-    }
-
-    /**
-     * Force list to update layout.
-     */
-    public void requestLayoutStateUpdate ()
-    {
-        updateLayoutStateNeeded++;
-    }
-
-    /**
-     * Returns tree cell renderer pane.
-     *
-     * @return tree cell renderer pane
-     */
+    @Override
     public CellRendererPane getCellRendererPane ()
     {
         return rendererPane;

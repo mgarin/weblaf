@@ -33,7 +33,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebStatusBarUI extends StatusBarUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebStatusBarUI extends WStatusBarUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -92,7 +92,7 @@ public class WebStatusBarUI extends StatusBarUI implements ShapeProvider, Margin
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( statusBar, painter );
     }

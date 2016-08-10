@@ -62,7 +62,7 @@ import java.util.Map;
  */
 
 public class WebTextField extends JTextField
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, DocumentEventMethods, EventMethods, ToolTipMethods,
+        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, DocumentEventMethods, EventMethods, ToolTipMethods,
         LanguageMethods, SettingsMethods, FontMethods<WebTextField>, SizeMethods<WebTextField>
 {
     /**
@@ -189,7 +189,7 @@ public class WebTextField extends JTextField
      */
     public String getInputPrompt ()
     {
-        return getWebUI ().getInputPrompt ();
+        return getUI ().getInputPrompt ();
     }
 
     /**
@@ -199,7 +199,7 @@ public class WebTextField extends JTextField
      */
     public void setInputPrompt ( final String text )
     {
-        getWebUI ().setInputPrompt ( text );
+        getUI ().setInputPrompt ( text );
     }
 
     /**
@@ -209,7 +209,7 @@ public class WebTextField extends JTextField
      */
     public JComponent getLeadingComponent ()
     {
-        return getWebUI ().getLeadingComponent ();
+        return getUI ().getLeadingComponent ();
     }
 
     /**
@@ -219,7 +219,7 @@ public class WebTextField extends JTextField
      */
     public void setLeadingComponent ( final JComponent leadingComponent )
     {
-        getWebUI ().setLeadingComponent ( leadingComponent );
+        getUI ().setLeadingComponent ( leadingComponent );
     }
 
     /**
@@ -227,7 +227,7 @@ public class WebTextField extends JTextField
      */
     public void removeLeadingComponent ()
     {
-        getWebUI ().removeLeadingComponent ();
+        getUI ().removeLeadingComponent ();
     }
 
     /**
@@ -237,7 +237,7 @@ public class WebTextField extends JTextField
      */
     public JComponent getTrailingComponent ()
     {
-        return getWebUI ().getTrailingComponent ();
+        return getUI ().getTrailingComponent ();
     }
 
     /**
@@ -247,7 +247,7 @@ public class WebTextField extends JTextField
      */
     public void setTrailingComponent ( final JComponent trailingComponent )
     {
-        getWebUI ().setTrailingComponent ( trailingComponent );
+        getUI ().setTrailingComponent ( trailingComponent );
     }
 
     /**
@@ -255,7 +255,7 @@ public class WebTextField extends JTextField
      */
     public void removeTrailingComponent ()
     {
-        getWebUI ().removeTrailingComponent ();
+        getUI ().removeTrailingComponent ();
     }
 
     @Override
@@ -355,102 +355,88 @@ public class WebTextField extends JTextField
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
-        return getWebUI ().provideShape ();
+        return ShapeMethodsImpl.getShape ( this );
     }
 
     @Override
     public Insets getMargin ()
     {
-        return getWebUI ().getMargin ();
+        return MarginMethodsImpl.getMargin ( this );
     }
 
-    /**
-     * Sets new margin.
-     *
-     * @param margin new margin
-     */
+    @Override
     public void setMargin ( final int margin )
     {
-        setMargin ( margin, margin, margin, margin );
+        MarginMethodsImpl.setMargin ( this, margin );
     }
 
-    /**
-     * Sets new margin.
-     *
-     * @param top    new top margin
-     * @param left   new left margin
-     * @param bottom new bottom margin
-     * @param right  new right margin
-     */
+    @Override
     public void setMargin ( final int top, final int left, final int bottom, final int right )
     {
-        setMargin ( new Insets ( top, left, bottom, right ) );
+        MarginMethodsImpl.setMargin ( this, top, left, bottom, right );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        getWebUI ().setMargin ( margin );
+        MarginMethodsImpl.setMargin ( this, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return getWebUI ().getPadding ();
+        return PaddingMethodsImpl.getPadding ( this );
     }
 
-    /**
-     * Sets new padding.
-     *
-     * @param padding new padding
-     */
+    @Override
     public void setPadding ( final int padding )
     {
-        setPadding ( padding, padding, padding, padding );
+        PaddingMethodsImpl.setPadding ( this, padding );
     }
 
-    /**
-     * Sets new padding.
-     *
-     * @param top    new top padding
-     * @param left   new left padding
-     * @param bottom new bottom padding
-     * @param right  new right padding
-     */
+    @Override
     public void setPadding ( final int top, final int left, final int bottom, final int right )
     {
-        setPadding ( new Insets ( top, left, bottom, right ) );
+        PaddingMethodsImpl.setPadding ( this, top, left, bottom, right );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        getWebUI ().setPadding ( padding );
+        PaddingMethodsImpl.setPadding ( this, padding );
     }
 
     /**
-     * Returns Web-UI applied to this class.
+     * Returns the look and feel (L&amp;F) object that renders this component.
      *
-     * @return Web-UI applied to this class
+     * @return the {@link WTextFieldUI} object that renders this component
      */
-    private WebTextFieldUI getWebUI ()
+    @Override
+    public WTextFieldUI getUI ()
     {
-        return ( WebTextFieldUI ) getUI ();
+        return ( WTextFieldUI ) super.getUI ();
     }
 
     /**
-     * Installs a Web-UI into this component.
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WTextFieldUI}
      */
+    public void setUI ( final WTextFieldUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebTextFieldUI ) )
+        if ( getUI () == null || !( getUI () instanceof WTextFieldUI ) )
         {
             try
             {
-                setUI ( ( WebTextFieldUI ) UIManager.getUI ( this ) );
+                setUI ( ( WTextFieldUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

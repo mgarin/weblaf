@@ -9,8 +9,6 @@
         </component>
         <ui>
             <selectionStyle>line</selectionStyle>
-            <expandSelected>false</expandSelected>
-            <selectOnHover>false</selectOnHover>
         </ui>
         <painter>
             <paintLines>true</paintLines>

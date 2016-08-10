@@ -30,10 +30,12 @@ import javax.swing.plaf.basic.BasicTableHeaderUI;
 import java.awt.*;
 
 /**
+ * Custom UI for {@link javax.swing.table.JTableHeader} component.
+ *
  * @author Mikle Garin
  */
 
-public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -102,7 +104,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeProvide
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( header, painter );
     }

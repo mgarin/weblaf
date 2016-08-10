@@ -33,7 +33,7 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public class WebDesktopIconUI extends BasicDesktopIconUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebDesktopIconUI extends BasicDesktopIconUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -137,7 +137,7 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements ShapeProvide
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( desktopIcon, painter );
     }

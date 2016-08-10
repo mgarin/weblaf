@@ -29,11 +29,13 @@ import javax.swing.plaf.basic.BasicMenuBarUI;
 import java.awt.*;
 
 /**
+ * Custom UI for {@link JMenuBar} component.
+ *
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
 
-public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebMenuBarUI extends BasicMenuBarUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -91,7 +93,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider, Margi
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( menuBar, painter );
     }

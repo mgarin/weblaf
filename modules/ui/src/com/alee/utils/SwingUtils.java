@@ -1532,6 +1532,41 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
+     * Returns index of the first occurrence of {@code mnemonic} within string {@code text}.
+     * Matching algorithm is not case-sensitive.
+     *
+     * @param text     text to search through, may be {@code null}
+     * @param mnemonic mnemonic to find the character for
+     * @return index into the string if exists, otherwise -1
+     */
+    public static int getMnemonicIndex ( final String text, final int mnemonic )
+    {
+        if ( text == null || mnemonic == '\0' )
+        {
+            return -1;
+        }
+
+        final char uc = Character.toUpperCase ( ( char ) mnemonic );
+        final char lc = Character.toLowerCase ( ( char ) mnemonic );
+
+        final int uci = text.indexOf ( uc );
+        final int lci = text.indexOf ( lc );
+
+        if ( uci == -1 )
+        {
+            return lci;
+        }
+        else if ( lci == -1 )
+        {
+            return uci;
+        }
+        else
+        {
+            return ( lci < uci ) ? lci : uci;
+        }
+    }
+
+    /**
      * Returns active application window.
      *
      * @return active application window

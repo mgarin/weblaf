@@ -25,14 +25,12 @@ import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.FileUtils;
-import com.alee.utils.filefilter.AbstractFileFilter;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileView;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.FileChooserUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -43,13 +41,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Custom UI for JFileChooser component.
+ * Custom UI for {@link JFileChooser} component.
  *
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
 
-public class WebFileChooserUI extends FileChooserUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -83,14 +81,6 @@ public class WebFileChooserUI extends FileChooserUI implements ShapeProvider, Ma
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebFileChooserUI ();
-    }
-
-    /**
-     * Constructs new WebFileChooserUI.
-     */
-    public WebFileChooserUI ()
-    {
-        super ();
     }
 
     /**
@@ -320,7 +310,7 @@ public class WebFileChooserUI extends FileChooserUI implements ShapeProvider, Ma
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( fileChooser, painter );
     }
@@ -379,74 +369,10 @@ public class WebFileChooserUI extends FileChooserUI implements ShapeProvider, Ma
         }, this.painter, painter, IFileChooserPainter.class, AdaptiveFileChooserPainter.class );
     }
 
-    /**
-     * Returns file chooser panel.
-     *
-     * @return file chooser panel
-     */
+    @Override
     public WebFileChooserPanel getFileChooserPanel ()
     {
         return fileChooserPanel;
-    }
-
-    /**
-     * Returns list of available file filters.
-     *
-     * @return list of available file filters
-     */
-    public List<AbstractFileFilter> getAvailableFilters ()
-    {
-        return fileChooserPanel.getAvailableFilters ();
-    }
-
-    /**
-     * Returns currently active file filter.
-     *
-     * @return currently active file filter
-     */
-    public AbstractFileFilter getActiveFileFilter ()
-    {
-        return fileChooserPanel.getActiveFileFilter ();
-    }
-
-    /**
-     * Returns whether file thumbnails are generated or not.
-     *
-     * @return true if file thumbnails are generated, false otherwise
-     */
-    public boolean isGenerateThumbnails ()
-    {
-        return fileChooserPanel.isGenerateThumbnails ();
-    }
-
-    /**
-     * Sets whether file thumbnails should be generated or not.
-     *
-     * @param generate whether file thumbnails should be generated or not
-     */
-    public void setGenerateThumbnails ( final boolean generate )
-    {
-        fileChooserPanel.setGenerateThumbnails ( generate );
-    }
-
-    /**
-     * Sets approve button text type.
-     *
-     * @param approveText approve button text type
-     */
-    public void setApproveButtonText ( final FileAcceptText approveText )
-    {
-        fileChooserPanel.setAcceptButtonText ( approveText );
-    }
-
-    /**
-     * Sets approve button language key.
-     *
-     * @param key approve button language key
-     */
-    public void setApproveButtonLanguage ( final String key )
-    {
-        fileChooserPanel.setAcceptButtonLanguage ( key );
     }
 
     @Override
@@ -459,16 +385,6 @@ public class WebFileChooserUI extends FileChooserUI implements ShapeProvider, Ma
     public FileView getFileView ( final JFileChooser fc )
     {
         return fileView;
-    }
-
-    /**
-     * Sets file view.
-     *
-     * @param fileView new file view
-     */
-    public void setFileView ( final WebFileView fileView )
-    {
-        this.fileView = fileView;
     }
 
     @Override

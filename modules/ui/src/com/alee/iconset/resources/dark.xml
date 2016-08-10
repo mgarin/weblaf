@@ -57,6 +57,18 @@
         <SvgFill selector="svg" color="white" />
         <SvgTransform selector="svg" scale="1.15,1.15" />
     </SvgIcon>
+    <SvgIcon id="globe" path="globe.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="globe-hover" path="globe.svg" size="16,16">
+        <SvgFill selector="svg" color="white" />
+    </SvgIcon>
+    <SvgIcon id="email" path="email.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="email-hover" path="email.svg" size="16,16">
+        <SvgFill selector="svg" color="white" />
+    </SvgIcon>
 
     <!-- Medium arrow icons -->
     <SvgIcon id="up" path="down.svg" size="16,16">

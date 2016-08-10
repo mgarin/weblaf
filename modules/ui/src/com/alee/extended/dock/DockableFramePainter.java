@@ -30,7 +30,7 @@ import com.alee.painter.decoration.IDecoration;
  * @author Mikle Garin
  */
 
-public class DockableFramePainter<E extends WebDockableFrame, U extends WebDockableFrameUI, D extends IDecoration<E, D>>
+public class DockableFramePainter<E extends WebDockableFrame, U extends WDockableFrameUI, D extends IDecoration<E, D>>
         extends AbstractDecorationPainter<E, U, D> implements IDockableFramePainter<E, U>
 {
     /**

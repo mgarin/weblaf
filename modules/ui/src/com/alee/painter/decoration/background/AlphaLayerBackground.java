@@ -67,7 +67,19 @@ public class AlphaLayerBackground<E extends JComponent, D extends IDecoration<E,
     @Override
     protected TexturePaint getTexturePaint ( final Rectangle bounds )
     {
-        final BufferedImage image = ImageUtils.createCompatibleImage ( size.width * 2, size.height * 2, Transparency.TRANSLUCENT );
+        final BufferedImage image = createTextureImage ();
+        final Rectangle anchor = new Rectangle ( bounds.x, bounds.y, image.getWidth (), image.getHeight () );
+        return new TexturePaint ( image, anchor );
+    }
+
+    /**
+     * Returns texture image.
+     *
+     * @return texture image
+     */
+    protected BufferedImage createTextureImage ()
+    {
+        final BufferedImage image = ImageUtils.createCompatibleImage ( size.width * 2, size.height * 2, Transparency.OPAQUE );
         final Graphics2D g2d = image.createGraphics ();
         if ( darkColor != null )
         {
@@ -82,7 +94,7 @@ public class AlphaLayerBackground<E extends JComponent, D extends IDecoration<E,
             g2d.fillRect ( 0, size.height, size.width, size.height );
         }
         g2d.dispose ();
-        return new TexturePaint ( image, new Rectangle ( bounds.x, bounds.y, image.getWidth (), image.getHeight () ) );
+        return image;
     }
 
     @Override

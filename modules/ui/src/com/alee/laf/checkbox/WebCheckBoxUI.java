@@ -25,16 +25,15 @@ import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicCheckBoxUI;
 import java.awt.*;
 
 /**
- * Custom UI for JCheckBox component.
+ * Custom UI for {@link JCheckBox} component.
  *
  * @author Mikle Garin
  */
 
-public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebCheckBoxUI extends WCheckBoxUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -97,7 +96,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider, Mar
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( checkBox, painter );
     }
@@ -156,11 +155,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider, Mar
         }, this.painter, painter, ICheckBoxPainter.class, AdaptiveCheckBoxPainter.class );
     }
 
-    /**
-     * Returns icon bounds.
-     *
-     * @return icon bounds
-     */
+    @Override
     public Rectangle getIconBounds ()
     {
         if ( painter != null )

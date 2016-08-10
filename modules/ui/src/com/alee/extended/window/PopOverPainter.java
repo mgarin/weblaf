@@ -21,7 +21,7 @@ import com.alee.extended.behavior.ComponentMoveBehavior;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.menu.AbstractPopupPainter;
 import com.alee.laf.menu.PopupStyle;
-import com.alee.laf.rootpane.WebRootPaneUI;
+import com.alee.laf.rootpane.WRootPaneUI;
 import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.AncestorAdapter;
@@ -35,15 +35,15 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * Basic painter for WebPopOver component.
- * It is used as default WebPopOver painter.
+ * Basic painter for {@link WebPopOver} component.
  *
  * @param <E> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public class PopOverPainter<E extends JRootPane, U extends WebRootPaneUI> extends AbstractPopupPainter<E, U> implements IPopOverPainter<E, U>
+public class PopOverPainter<E extends JRootPane, U extends WRootPaneUI> extends AbstractPopupPainter<E, U>
+        implements IPopOverPainter<E, U>
 {
     /**
      * Listeners.

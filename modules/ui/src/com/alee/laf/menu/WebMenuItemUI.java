@@ -29,13 +29,13 @@ import javax.swing.plaf.basic.BasicMenuItemUI;
 import java.awt.*;
 
 /**
- * Custom UI for JMenuItem component.
+ * Custom UI for {@link JMenuItem} component.
  *
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
 
-public class WebMenuItemUI extends BasicMenuItemUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebMenuItemUI extends BasicMenuItemUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -92,7 +92,7 @@ public class WebMenuItemUI extends BasicMenuItemUI implements ShapeProvider, Mar
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( menuItem, painter );
     }

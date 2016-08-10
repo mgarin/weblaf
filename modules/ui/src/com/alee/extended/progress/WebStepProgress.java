@@ -19,8 +19,11 @@ package com.alee.extended.progress;
 
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.global.StyleConstants;
-import com.alee.utils.*;
-import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.ShapeMethods;
+import com.alee.utils.CollectionUtils;
+import com.alee.utils.GraphicsUtils;
+import com.alee.utils.LafUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.extensions.SizeMethods;
 import com.alee.utils.swing.extensions.SizeMethodsImpl;
 
@@ -49,7 +52,7 @@ import java.util.List;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStepProgress">How to use WebStepProgress</a>
  */
 
-public class WebStepProgress extends JComponent implements SwingConstants, ShapeProvider, SizeMethods<WebStepProgress>
+public class WebStepProgress extends JComponent implements SwingConstants, ShapeMethods, SizeMethods<WebStepProgress>
 {
     /**
      * todo 1. Implement ShapeCache
@@ -980,7 +983,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return getBorderShape ();
     }

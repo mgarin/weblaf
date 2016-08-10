@@ -28,12 +28,12 @@ import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
- * Custom UI for {@link com.alee.extended.image.WebImage} component.
+ * Custom UI for {@link WebImage} component.
  *
  * @author Mikle Garin
  */
 
-public class WebImageUI extends ImageUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebImageUI extends WImageUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -92,7 +92,7 @@ public class WebImageUI extends ImageUI implements ShapeProvider, MarginSupport,
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( image, painter );
     }

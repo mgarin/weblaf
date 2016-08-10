@@ -27,15 +27,16 @@ import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicEditorPaneUI;
 import java.awt.*;
 
 /**
+ * Custom UI for {@link JEditorPane} component.
+ *
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
 
-public class WebEditorPaneUI extends BasicEditorPaneUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebEditorPaneUI extends WEditorPaneUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -103,7 +104,7 @@ public class WebEditorPaneUI extends BasicEditorPaneUI implements ShapeProvider,
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( editorPane, painter );
     }
@@ -162,21 +163,13 @@ public class WebEditorPaneUI extends BasicEditorPaneUI implements ShapeProvider,
         }, this.painter, painter, IEditorPanePainter.class, AdaptiveEditorPanePainter.class );
     }
 
-    /**
-     * Returns input prompt text.
-     *
-     * @return input prompt text
-     */
+    @Override
     public String getInputPrompt ()
     {
         return inputPrompt;
     }
 
-    /**
-     * Sets input prompt text.
-     *
-     * @param text input prompt text
-     */
+    @Override
     public void setInputPrompt ( final String text )
     {
         if ( !CompareUtils.equals ( text, this.inputPrompt ) )

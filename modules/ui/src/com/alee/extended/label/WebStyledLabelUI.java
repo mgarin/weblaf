@@ -25,16 +25,16 @@ import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicLabelUI;
 import java.awt.*;
 
 /**
  * Custom UI for {@link com.alee.extended.label.WebStyledLabel} component.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  */
 
-public class WebStyledLabelUI extends BasicLabelUI implements ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
+public class WebStyledLabelUI extends WStyledLabelUI implements ShapeSupport, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
      * Component painter.
@@ -97,7 +97,7 @@ public class WebStyledLabelUI extends BasicLabelUI implements ShapeProvider, Mar
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( label, painter );
     }

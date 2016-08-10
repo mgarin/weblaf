@@ -23,8 +23,8 @@ import com.alee.painter.decoration.IDecoration;
 import javax.swing.*;
 
 /**
- * Basic painter for JScrollPane component.
- * It is used as WebScrollPaneUI default painter.
+ * Basic painter for {@link JScrollPane} component.
+ * It is used as {@link WebScrollPaneUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type

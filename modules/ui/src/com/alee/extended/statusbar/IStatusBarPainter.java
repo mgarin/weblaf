@@ -27,6 +27,6 @@ import com.alee.painter.SpecificPainter;
  * @author Mikle Garin
  */
 
-public interface IStatusBarPainter<E extends WebStatusBar, U extends WebStatusBarUI> extends SpecificPainter<E, U>
+public interface IStatusBarPainter<E extends WebStatusBar, U extends WStatusBarUI> extends SpecificPainter<E, U>
 {
 }

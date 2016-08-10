@@ -19,8 +19,8 @@ import java.util.Dictionary;
 import java.util.Enumeration;
 
 /**
- * Basic painter for JSlider component.
- * It is used as WebSliderUI default painter.
+ * Basic painter for {@link JSlider} component.
+ * It is used as {@link WebSliderUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type

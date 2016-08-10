@@ -50,7 +50,7 @@ import java.util.Map;
  */
 
 public class WebTabbedPane extends JTabbedPane
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, LanguageMethods, SettingsMethods,
+        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, LanguageMethods, SettingsMethods,
         FontMethods<WebTabbedPane>
 {
     /**
@@ -177,94 +177,24 @@ public class WebTabbedPane extends JTabbedPane
         return index != -1 ? getBoundsAt ( index ) : null;
     }
 
-    public boolean isRotateTabInsets ()
-    {
-        return getWebUI ().isRotateTabInsets ();
-    }
-
-    public void setRotateTabInsets ( final boolean rotateTabInsets )
-    {
-        getWebUI ().setRotateTabInsets ( rotateTabInsets );
-    }
-
-    public Insets getContentInsets ()
-    {
-        return getWebUI ().getContentInsets ();
-    }
-
-    public void setContentInsets ( final Insets contentInsets )
-    {
-        getWebUI ().setContentInsets ( contentInsets );
-    }
-
-    public Insets getTabInsets ()
-    {
-        return getWebUI ().getTabInsets ();
-    }
-
-    public void setTabInsets ( final Insets tabInsets )
-    {
-        getWebUI ().setTabInsets ( tabInsets );
-    }
-
-    public void setSelectedForegroundAt ( final int tabIndex, final Color foreground )
-    {
-        getWebUI ().setSelectedForegroundAt ( tabIndex, foreground );
-    }
-
-    public Color getSelectedForegroundAt ( final int tabIndex )
-    {
-        return getWebUI ().getSelectedForegroundAt ( tabIndex );
-    }
-
-    public void setBackgroundPainterAt ( final int tabIndex, final Painter painter )
-    {
-        getWebUI ().setBackgroundPainterAt ( tabIndex, painter );
-    }
-
-    public Painter getBackgroundPainterAt ( final int tabIndex )
-    {
-        return getWebUI ().getBackgroundPainterAt ( tabIndex );
-    }
-
     public TabbedPaneStyle getTabbedPaneStyle ()
     {
-        return getWebUI ().getTabbedPaneStyle ();
+        return getUI ().getTabbedPaneStyle ();
     }
 
     public void setTabbedPaneStyle ( final TabbedPaneStyle tabbedPaneStyle )
     {
-        getWebUI ().setTabbedPaneStyle ( tabbedPaneStyle );
-    }
-
-    public int getTabRunIndent ()
-    {
-        return getWebUI ().getTabRunIndent ();
-    }
-
-    public void setTabRunIndent ( final int tabRunIndent )
-    {
-        getWebUI ().setTabRunIndent ( tabRunIndent );
-    }
-
-    public int getTabOverlay ()
-    {
-        return getWebUI ().getTabOverlay ();
-    }
-
-    public void setTabOverlay ( final int tabOverlay )
-    {
-        getWebUI ().setTabOverlay ( tabOverlay );
+        getUI ().setTabbedPaneStyle ( tabbedPaneStyle );
     }
 
     public TabStretchType getTabStretchType ()
     {
-        return getWebUI ().getTabStretchType ();
+        return getUI ().getTabStretchType ();
     }
 
     public void setTabStretchType ( final TabStretchType tabStretchType )
     {
-        getWebUI ().setTabStretchType ( tabStretchType );
+        getUI ().setTabStretchType ( tabStretchType );
     }
 
     @Override
@@ -364,102 +294,88 @@ public class WebTabbedPane extends JTabbedPane
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
-        return getWebUI ().provideShape ();
+        return ShapeMethodsImpl.getShape ( this );
     }
 
     @Override
     public Insets getMargin ()
     {
-        return getWebUI ().getMargin ();
+        return MarginMethodsImpl.getMargin ( this );
     }
 
-    /**
-     * Sets new margin.
-     *
-     * @param margin new margin
-     */
+    @Override
     public void setMargin ( final int margin )
     {
-        setMargin ( margin, margin, margin, margin );
+        MarginMethodsImpl.setMargin ( this, margin );
     }
 
-    /**
-     * Sets new margin.
-     *
-     * @param top    new top margin
-     * @param left   new left margin
-     * @param bottom new bottom margin
-     * @param right  new right margin
-     */
+    @Override
     public void setMargin ( final int top, final int left, final int bottom, final int right )
     {
-        setMargin ( new Insets ( top, left, bottom, right ) );
+        MarginMethodsImpl.setMargin ( this, top, left, bottom, right );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        getWebUI ().setMargin ( margin );
+        MarginMethodsImpl.setMargin ( this, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return getWebUI ().getPadding ();
+        return PaddingMethodsImpl.getPadding ( this );
     }
 
-    /**
-     * Sets new padding.
-     *
-     * @param padding new padding
-     */
+    @Override
     public void setPadding ( final int padding )
     {
-        setPadding ( padding, padding, padding, padding );
+        PaddingMethodsImpl.setPadding ( this, padding );
     }
 
-    /**
-     * Sets new padding.
-     *
-     * @param top    new top padding
-     * @param left   new left padding
-     * @param bottom new bottom padding
-     * @param right  new right padding
-     */
+    @Override
     public void setPadding ( final int top, final int left, final int bottom, final int right )
     {
-        setPadding ( new Insets ( top, left, bottom, right ) );
+        PaddingMethodsImpl.setPadding ( this, top, left, bottom, right );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        getWebUI ().setPadding ( padding );
+        PaddingMethodsImpl.setPadding ( this, padding );
     }
 
     /**
-     * Returns Web-UI applied to this class.
+     * Returns the look and feel (L&amp;F) object that renders this component.
      *
-     * @return Web-UI applied to this class
+     * @return the {@link WTabbedPaneUI} object that renders this component
      */
-    public WebTabbedPaneUI getWebUI ()
+    @Override
+    public WTabbedPaneUI getUI ()
     {
-        return ( WebTabbedPaneUI ) getUI ();
+        return ( WTabbedPaneUI ) super.getUI ();
     }
 
     /**
-     * Installs a Web-UI into this component.
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WTabbedPaneUI}
      */
+    public void setUI ( final WTabbedPaneUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebTabbedPaneUI ) )
+        if ( getUI () == null || !( getUI () instanceof WTabbedPaneUI ) )
         {
             try
             {
-                setUI ( ( WebTabbedPaneUI ) UIManager.getUI ( this ) );
+                setUI ( ( WTabbedPaneUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

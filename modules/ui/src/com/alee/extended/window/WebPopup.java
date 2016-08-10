@@ -56,7 +56,7 @@ import java.util.List;
  * @see PopupPainter
  */
 
-public class WebPopup<T extends WebPopup<T>> extends WebContainer<WebPopupUI, T>
+public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
         implements Popup, PopupMethods, WindowMethods<WebPopupWindow>
 {
     /**
@@ -1175,38 +1175,29 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<WebPopupUI, T>
      *
      * @return the StatusBarUI object that renders this component
      */
-    public PopupUI getUI ()
+    public WPopupUI getUI ()
     {
-        return ( PopupUI ) ui;
+        return ( WPopupUI ) ui;
     }
 
     /**
      * Sets the L&amp;F object that renders this component.
      *
-     * @param ui {@link com.alee.extended.window.PopupUI}
+     * @param ui {@link WPopupUI}
      */
-    public void setUI ( final PopupUI ui )
+    public void setUI ( final WPopupUI ui )
     {
         super.setUI ( ui );
     }
 
     @Override
-    public WebPopupUI getWebUI ()
-    {
-        return ( WebPopupUI ) getUI ();
-    }
-
-    /**
-     * Installs a Web-UI into this component.
-     */
-    @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebPopupUI ) )
+        if ( getUI () == null || !( getUI () instanceof WPopupUI ) )
         {
             try
             {
-                setUI ( ( WebPopupUI ) UIManager.getUI ( this ) );
+                setUI ( ( WPopupUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

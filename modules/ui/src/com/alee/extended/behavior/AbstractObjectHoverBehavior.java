@@ -17,6 +17,7 @@
 
 package com.alee.extended.behavior;
 
+import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.drag.DragListener;
 import com.alee.managers.drag.DragManager;
 import com.alee.utils.CompareUtils;
@@ -33,13 +34,24 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
+ * Abstract behavior that provides hover events for any component containing multiple items.
+ * It uses mouse enter/exit/move events and component resized/moved/shown/hidden events to track hover index.
+ * It might seem excessive, but simple move listener does not cover whole variety of possible cases when hover index can be changed.
+ * <p/>
+ * Implementing {@link #getObjectAt(java.awt.Point)} and {@link #hoverChanged(Object, Object)} methods is sufficient for further usage of
+ * this behavior in any custom component it is being implemented for.
+ *
+ * @param <C> component type
+ * @param <V> hovered element type
  * @author Mikle Garin
  */
 
 public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> extends MouseAdapter
-        implements ComponentListener, AncestorListener, DragListener, Behavior
+        implements ComponentListener, AncestorListener, DragListener, PropertyChangeListener, Behavior
 {
     /**
      * Component into which this behavior is installed.
@@ -49,7 +61,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     /**
      * Whether or not behavior should only track hover events when component is enabled.
      */
-    protected boolean enabledOnly;
+    protected final boolean enabledOnly;
 
     /**
      * Current hover object.
@@ -90,6 +102,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
         component.addAncestorListener ( this );
         component.addComponentListener ( this );
         DragManager.addDragListener ( this );
+        component.addPropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, this );
     }
 
     /**
@@ -97,6 +110,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
      */
     public void uninstall ()
     {
+        component.removePropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, this );
         DragManager.removeDragListener ( this );
         component.removeComponentListener ( this );
         component.removeAncestorListener ( this );
@@ -104,47 +118,26 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
         component.removeMouseListener ( this );
     }
 
-    /**
-     * Returns whether or not behavior should only track hover events when component is enabled.
-     *
-     * @return true if behavior should only track hover events when component is enabled, false otherwise
-     */
-    public boolean isEnabledOnly ()
+    @Override
+    public void mouseEntered ( final MouseEvent event )
     {
-        return enabledOnly;
-    }
-
-    /**
-     * Sets whether or not behavior should only track hover events when component is enabled.
-     *
-     * @param enabledOnly whether or not behavior should only track hover events when component is enabled
-     */
-    public void setEnabledOnly ( final boolean enabledOnly )
-    {
-        this.enabledOnly = enabledOnly;
-        updateHover ();
+        updateHover ( event );
     }
 
     @Override
-    public void mouseEntered ( final MouseEvent e )
+    public void mouseMoved ( final MouseEvent event )
     {
-        updateHover ( e );
+        updateHover ( event );
     }
 
     @Override
-    public void mouseMoved ( final MouseEvent e )
+    public void mouseDragged ( final MouseEvent event )
     {
-        updateHover ( e );
+        updateHover ( event );
     }
 
     @Override
-    public void mouseDragged ( final MouseEvent e )
-    {
-        updateHover ( e );
-    }
-
-    @Override
-    public void mouseExited ( final MouseEvent e )
+    public void mouseExited ( final MouseEvent event )
     {
         clearHover ();
     }
@@ -168,25 +161,25 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     @Override
-    public void componentResized ( final ComponentEvent e )
+    public void componentResized ( final ComponentEvent event )
     {
         updateHover ();
     }
 
     @Override
-    public void componentMoved ( final ComponentEvent e )
+    public void componentMoved ( final ComponentEvent event )
     {
         updateHover ();
     }
 
     @Override
-    public void componentShown ( final ComponentEvent e )
+    public void componentShown ( final ComponentEvent event )
     {
         updateHover ();
     }
 
     @Override
-    public void componentHidden ( final ComponentEvent e )
+    public void componentHidden ( final ComponentEvent event )
     {
         updateHover ();
     }
@@ -219,6 +212,22 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     public void finished ( final DragSourceDropEvent event )
     {
         updateHover ();
+    }
+
+    @Override
+    public void propertyChange ( final PropertyChangeEvent event )
+    {
+        if ( enabledOnly )
+        {
+            if ( component.isEnabled () )
+            {
+                updateHover ();
+            }
+            else
+            {
+                clearHover ();
+            }
+        }
     }
 
     /**
@@ -269,20 +278,27 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     /**
-     * Returns object at the specified point.
+     * Returns object at the specified location.
      *
-     * @param point hover point
-     * @return object at the specified point
+     * @param location hovered location
+     * @return object at the specified location
      */
-    protected abstract V getObjectAt ( Point point );
+    protected abstract V getObjectAt ( Point location );
 
     /**
      * Clears hover path.
      */
     protected void clearHover ()
     {
-        checkHoverChange ( null );
+        checkHoverChange ( getEmptyObject () );
     }
+
+    /**
+     * Returns empty hover object value.
+     *
+     * @return empty hover object value
+     */
+    protected abstract V getEmptyObject ();
 
     /**
      * Checks hover object change and fires event if it has changed.

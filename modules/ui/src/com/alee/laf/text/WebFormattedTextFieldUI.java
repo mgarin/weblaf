@@ -29,20 +29,19 @@ import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicFormattedTextFieldUI;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.beans.PropertyChangeEvent;
 
 /**
- * Custom UI for JFormattedTextField component.
+ * Custom UI for {@link JFormattedTextField} component.
  *
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
 
-public class WebFormattedTextFieldUI extends BasicFormattedTextFieldUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebFormattedTextFieldUI extends WFormattedTextFieldUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -133,7 +132,7 @@ public class WebFormattedTextFieldUI extends BasicFormattedTextFieldUI implement
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( field, painter );
     }
@@ -204,21 +203,13 @@ public class WebFormattedTextFieldUI extends BasicFormattedTextFieldUI implement
         }
     }
 
-    /**
-     * Returns input prompt text.
-     *
-     * @return input prompt text
-     */
+    @Override
     public String getInputPrompt ()
     {
         return inputPrompt;
     }
 
-    /**
-     * Sets input prompt text.
-     *
-     * @param text input prompt text
-     */
+    @Override
     public void setInputPrompt ( final String text )
     {
         if ( !CompareUtils.equals ( text, this.inputPrompt ) )
@@ -228,21 +219,13 @@ public class WebFormattedTextFieldUI extends BasicFormattedTextFieldUI implement
         }
     }
 
-    /**
-     * Returns field leading component.
-     *
-     * @return field leading component
-     */
+    @Override
     public JComponent getLeadingComponent ()
     {
         return leadingComponent;
     }
 
-    /**
-     * Sets field leading component.
-     *
-     * @param leadingComponent field leading component
-     */
+    @Override
     public void setLeadingComponent ( final JComponent leadingComponent )
     {
         if ( this.leadingComponent == leadingComponent )
@@ -272,9 +255,7 @@ public class WebFormattedTextFieldUI extends BasicFormattedTextFieldUI implement
         PainterSupport.updateBorder ( getPainter () );
     }
 
-    /**
-     * Removes field leading component.
-     */
+    @Override
     public void removeLeadingComponent ()
     {
         if ( this.leadingComponent != null )
@@ -285,21 +266,13 @@ public class WebFormattedTextFieldUI extends BasicFormattedTextFieldUI implement
         }
     }
 
-    /**
-     * Returns field trailing component.
-     *
-     * @return field trailing component
-     */
+    @Override
     public JComponent getTrailingComponent ()
     {
         return trailingComponent;
     }
 
-    /**
-     * Sets field trailing component.
-     *
-     * @param trailingComponent field trailing component
-     */
+    @Override
     public void setTrailingComponent ( final JComponent trailingComponent )
     {
         if ( this.trailingComponent == trailingComponent )
@@ -329,9 +302,7 @@ public class WebFormattedTextFieldUI extends BasicFormattedTextFieldUI implement
         PainterSupport.updateBorder ( getPainter () );
     }
 
-    /**
-     * Removes field trailing component.
-     */
+    @Override
     public void removeTrailingComponent ()
     {
         if ( this.trailingComponent != null )

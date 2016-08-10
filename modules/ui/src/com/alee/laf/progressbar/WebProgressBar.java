@@ -54,7 +54,7 @@ import java.util.Map;
  */
 
 public class WebProgressBar extends JProgressBar
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods, LanguageMethods,
+        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods, ToolTipMethods, LanguageMethods,
         FontMethods<WebProgressBar>, SizeMethods<WebProgressBar>
 {
     /**
@@ -287,94 +287,59 @@ public class WebProgressBar extends JProgressBar
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
-        return getWebUI ().provideShape ();
+        return ShapeMethodsImpl.getShape ( this );
     }
 
     @Override
     public Insets getMargin ()
     {
-        return getWebUI ().getMargin ();
+        return MarginMethodsImpl.getMargin ( this );
     }
 
-    /**
-     * Sets new margin.
-     *
-     * @param margin new margin
-     */
+    @Override
     public void setMargin ( final int margin )
     {
-        setMargin ( margin, margin, margin, margin );
+        MarginMethodsImpl.setMargin ( this, margin );
     }
 
-    /**
-     * Sets new margin.
-     *
-     * @param top    new top margin
-     * @param left   new left margin
-     * @param bottom new bottom margin
-     * @param right  new right margin
-     */
+    @Override
     public void setMargin ( final int top, final int left, final int bottom, final int right )
     {
-        setMargin ( new Insets ( top, left, bottom, right ) );
+        MarginMethodsImpl.setMargin ( this, top, left, bottom, right );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        getWebUI ().setMargin ( margin );
+        MarginMethodsImpl.setMargin ( this, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return getWebUI ().getPadding ();
+        return PaddingMethodsImpl.getPadding ( this );
     }
 
-    /**
-     * Sets new padding.
-     *
-     * @param padding new padding
-     */
+    @Override
     public void setPadding ( final int padding )
     {
-        setPadding ( padding, padding, padding, padding );
+        PaddingMethodsImpl.setPadding ( this, padding );
     }
 
-    /**
-     * Sets new padding.
-     *
-     * @param top    new top padding
-     * @param left   new left padding
-     * @param bottom new bottom padding
-     * @param right  new right padding
-     */
+    @Override
     public void setPadding ( final int top, final int left, final int bottom, final int right )
     {
-        setPadding ( new Insets ( top, left, bottom, right ) );
+        PaddingMethodsImpl.setPadding ( this, top, left, bottom, right );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        getWebUI ().setPadding ( padding );
+        PaddingMethodsImpl.setPadding ( this, padding );
     }
 
-    /**
-     * Returns Web-UI applied to this class.
-     *
-     * @return Web-UI applied to this class
-     */
-    private WebProgressBarUI getWebUI ()
-    {
-        return ( WebProgressBarUI ) getUI ();
-    }
-
-    /**
-     * Installs a Web-UI into this component.
-     */
     @Override
     public void updateUI ()
     {

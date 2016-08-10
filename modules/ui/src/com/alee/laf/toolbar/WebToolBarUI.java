@@ -37,7 +37,7 @@ import java.awt.event.WindowListener;
  * @author Alexandr Zernov
  */
 
-public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -99,7 +99,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Margi
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( toolBar, painter );
     }

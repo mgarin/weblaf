@@ -23,14 +23,14 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Base interface for JPopupMenu component painters.
+ * Base interface for {@link JPopupMenu} component painters.
  *
  * @param <E> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface IPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI> extends SpecificPainter<E, U>
+public interface IPopupMenuPainter<E extends JPopupMenu, U extends WPopupMenuUI> extends SpecificPainter<E, U>
 {
     /**
      * Prepares popup menu to be displayed.

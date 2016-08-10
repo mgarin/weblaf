@@ -3,14 +3,14 @@ package com.alee.extended.button;
 import com.alee.laf.button.IAbstractButtonPainter;
 
 /**
- * Base interface for WebSplitButton component painters.
+ * Base interface for {@link WebSplitButton} component painters.
  *
  * @param <E> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface ISplitButtonPainter<E extends WebSplitButton, U extends WebSplitButtonUI> extends IAbstractButtonPainter<E, U>
+public interface ISplitButtonPainter<E extends WebSplitButton, U extends WSplitButtonUI> extends IAbstractButtonPainter<E, U>
 {
     /**
      * Returns whether or not mouse is currently over the split menu button.

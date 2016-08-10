@@ -20,9 +20,8 @@ package com.alee.extended.progress;
 import com.alee.extended.panel.WebOverlay;
 import com.alee.global.StyleConstants;
 import com.alee.utils.GraphicsUtils;
+import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.ShapeProducer;
-import com.alee.utils.laf.WebShapeProducer;
 import com.alee.utils.swing.EmptyMouseAdapter;
 import com.alee.utils.swing.WebTimer;
 
@@ -41,7 +40,6 @@ public class WebProgressOverlay extends WebOverlay
     public static final String ANIMATOR_ID = "WebProgressOverlay.animator";
     public static final String OPACITY_ANIMATOR_ID = "WebProgressOverlay.opacityAnimator";
 
-    private ShapeProducer clipShapeProducer;
     private int progressWidth = 15;
     private int speed = 1;
     private Color progressColor = Color.GRAY;
@@ -65,25 +63,6 @@ public class WebProgressOverlay extends WebOverlay
         progressLayer = new ProgressLayer ();
         progressLayer.setVisible ( false );
         addOverlay ( progressLayer );
-    }
-
-    @Override
-    public void setComponent ( final Component component )
-    {
-        super.setComponent ( component );
-
-        // Default Web clip shape producer
-        setClipShapeProducer ( component != null ? new WebShapeProducer ( component ) : null );
-    }
-
-    public void setClipShapeProducer ( final ShapeProducer clipShapeProducer )
-    {
-        this.clipShapeProducer = clipShapeProducer;
-    }
-
-    public ShapeProducer getClipShapeProducer ()
-    {
-        return clipShapeProducer;
     }
 
     public boolean isShowLoad ()
@@ -283,7 +262,7 @@ public class WebProgressOverlay extends WebOverlay
                     final Graphics2D g2d = ( Graphics2D ) g;
                     final Object aa = GraphicsUtils.setupAntialias ( g2d );
 
-                    final Shape clip = getClipShape ();
+                    final Shape clip = LafUtils.getShape ( WebProgressOverlay.this.getComponent () );
                     final Shape oldClip = GraphicsUtils.intersectClip ( g2d, clip, clip != null );
 
                     // todo Draw correctly when width is less than height
@@ -320,18 +299,6 @@ public class WebProgressOverlay extends WebOverlay
                     GraphicsUtils.restoreClip ( g, oldClip, clip != null );
                     GraphicsUtils.restoreAntialias ( g2d, aa );
                 }
-            }
-        }
-
-        private Shape getClipShape ()
-        {
-            if ( clipShapeProducer != null )
-            {
-                return clipShapeProducer.produce ();
-            }
-            else
-            {
-                return null;
             }
         }
     }

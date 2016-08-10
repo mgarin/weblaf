@@ -18,9 +18,7 @@
 package com.alee.extended.label;
 
 import com.alee.painter.decoration.IDecoration;
-import com.alee.painter.decoration.content.AbstractStyledTextContent;
 import com.alee.painter.decoration.content.ContentPropertyListener;
-import com.alee.painter.decoration.content.TextWrap;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import javax.swing.plaf.basic.BasicHTML;
@@ -34,9 +32,10 @@ import java.util.List;
  * @param <D> decoration type
  * @param <I> content type
  * @author Alexandr Zernov
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  */
 
-@XStreamAlias ( "StyledLabelText" )
+@XStreamAlias ("StyledLabelText")
 public class StyledLabelTextContent<E extends WebStyledLabel, D extends IDecoration<E, D>, I extends StyledLabelTextContent<E, D, I>>
         extends AbstractStyledTextContent<E, D, I>
 {
@@ -58,6 +57,7 @@ public class StyledLabelTextContent<E extends WebStyledLabel, D extends IDecorat
             public void propertyChange ( final E c, final D d, final String property, final Object oldValue, final Object newValue )
             {
                 buildTextRanges ( c, d );
+                c.repaint ();
             }
         };
         c.addPropertyChangeListener ( WebStyledLabel.STYLE_RANGES_PROPERTY, listener );

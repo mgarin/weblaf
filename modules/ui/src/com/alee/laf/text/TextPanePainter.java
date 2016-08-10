@@ -15,7 +15,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class TextPanePainter<E extends JTextPane, U extends WebTextPaneUI, D extends IDecoration<E, D>>
+public class TextPanePainter<E extends JTextPane, U extends WTextPaneUI, D extends IDecoration<E, D>>
         extends AbstractTextAreaPainter<E, U, D> implements ITextPanePainter<E, U>
 {
     @Override

@@ -29,12 +29,12 @@ import javax.swing.plaf.basic.BasicProgressBarUI;
 import java.awt.*;
 
 /**
- * Custom UI extending BasicProgressBarUI.
+ * Custom UI for {@link JProgressBar} component.
  *
  * @author Mikle Garin
  */
 
-public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebProgressBarUI extends BasicProgressBarUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -96,7 +96,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( progressBar, painter );
     }

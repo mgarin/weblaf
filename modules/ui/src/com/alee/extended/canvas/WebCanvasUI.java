@@ -33,7 +33,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebCanvasUI extends CanvasUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebCanvasUI extends WCanvasUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -49,11 +49,11 @@ public class WebCanvasUI extends CanvasUI implements ShapeProvider, MarginSuppor
     protected Insets padding = null;
 
     /**
-     * Returns an instance of the WebCanvasUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebCanvasUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebCanvasUI
+     * @return instance of the {@link WebCanvasUI}
      */
     @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
@@ -92,7 +92,7 @@ public class WebCanvasUI extends CanvasUI implements ShapeProvider, MarginSuppor
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( canvas, painter );
     }

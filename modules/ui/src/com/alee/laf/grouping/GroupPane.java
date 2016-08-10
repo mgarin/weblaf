@@ -22,7 +22,7 @@ public class GroupPane extends WebPanel implements SwingConstants
      */
     public GroupPane ()
     {
-        this ( StyleId.grouppane );
+        this ( StyleId.auto );
     }
 
     /**
@@ -32,7 +32,7 @@ public class GroupPane extends WebPanel implements SwingConstants
      */
     public GroupPane ( final Component... components )
     {
-        this ( StyleId.grouppane, components );
+        this ( StyleId.auto, components );
     }
 
     /**
@@ -43,7 +43,7 @@ public class GroupPane extends WebPanel implements SwingConstants
      */
     public GroupPane ( final int orientation, final Component... components )
     {
-        this ( StyleId.grouppane, orientation, components );
+        this ( StyleId.auto, orientation, components );
     }
 
     /**
@@ -55,7 +55,7 @@ public class GroupPane extends WebPanel implements SwingConstants
      */
     public GroupPane ( final int columns, final int rows, final Component... components )
     {
-        this ( StyleId.grouppane, columns, rows, components );
+        this ( StyleId.auto, columns, rows, components );
     }
 
     /**
@@ -68,7 +68,7 @@ public class GroupPane extends WebPanel implements SwingConstants
      */
     public GroupPane ( final int orientation, final int columns, final int rows, final Component... components )
     {
-        this ( StyleId.grouppane, orientation, columns, rows, components );
+        this ( StyleId.auto, orientation, columns, rows, components );
     }
 
     /**
@@ -128,7 +128,7 @@ public class GroupPane extends WebPanel implements SwingConstants
      */
     public GroupPane ( final boolean groupButtons )
     {
-        this ( StyleId.grouppane, groupButtons, SwingConstants.HORIZONTAL, Integer.MAX_VALUE, 1 );
+        this ( StyleId.auto, groupButtons, SwingConstants.HORIZONTAL, Integer.MAX_VALUE, 1 );
     }
 
     /**
@@ -158,6 +158,12 @@ public class GroupPane extends WebPanel implements SwingConstants
         super ( id, new GroupPaneLayout ( orientation, columns, rows ) );
         setGroupButtons ( groupButtons );
         add ( components );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.grouppane;
     }
 
     /**

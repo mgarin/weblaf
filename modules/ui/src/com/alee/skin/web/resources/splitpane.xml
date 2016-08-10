@@ -8,11 +8,6 @@
             <opaque>true</opaque>
             <background>white</background>
         </component>
-        <ui>
-            <dragDividerColor>lightGray</dragDividerColor>
-            <dividerBorderColor>gray</dividerBorderColor>
-            <drawDividerBorder>false</drawDividerBorder>
-        </ui>
         <painter />
 
         <!-- Split one-touch collapse buttons -->

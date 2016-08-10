@@ -21,6 +21,7 @@ import com.alee.utils.CollectionUtils;
 import com.alee.utils.MergeUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.TextUtils;
+import com.alee.utils.swing.CursorType;
 import com.alee.utils.xml.ListToStringConverter;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -83,10 +84,22 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
     protected Float opacity;
 
     /**
+     * Custom component cursor for this decoration state.
+     */
+    @XStreamAsAttribute
+    protected CursorType cursor;
+
+    /**
      * Whether or not this decoration is applied only to a section of the component.
      * Provided explicitely by the painted using this decoration.
      */
     protected transient Boolean section;
+
+    /**
+     * Previously set cursor.
+     * Saved to avoid default component cursor removal.
+     */
+    protected transient Cursor previousCursor;
 
     @Override
     public String getId ()
@@ -97,13 +110,23 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
     @Override
     public void activate ( final E c )
     {
-        // Do nothing by default
+        final Cursor customCursor = getCursor ();
+        if ( customCursor != null )
+        {
+            previousCursor = c.getCursor ();
+            c.setCursor ( customCursor );
+        }
     }
 
     @Override
     public void deactivate ( final E c )
     {
-        // Do nothing by default
+        final Cursor customCursor = getCursor ();
+        if ( customCursor != null )
+        {
+            c.setCursor ( previousCursor );
+            previousCursor = null;
+        }
     }
 
     @Override
@@ -187,6 +210,16 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
         return opacity != null ? opacity : 1f;
     }
 
+    /**
+     * Returns custom component cursor for this decoration state or {@code null} if none provided.
+     *
+     * @return custom component cursor for this decoration state or {@code null} if none provided
+     */
+    public Cursor getCursor ()
+    {
+        return cursor != null ? cursor.getCursor () : null;
+    }
+
     @Override
     public int getBaseline ( final E c, final int width, final int height )
     {
@@ -206,6 +239,7 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
         visible = decoration.isOverwrite () || decoration.visible != null ? decoration.visible : visible;
         size = decoration.isOverwrite () || decoration.size != null ? decoration.size : size;
         opacity = decoration.isOverwrite () || decoration.opacity != null ? decoration.opacity : opacity;
+        cursor = decoration.isOverwrite () || decoration.cursor != null ? decoration.cursor : cursor;
         return ( I ) this;
     }
 

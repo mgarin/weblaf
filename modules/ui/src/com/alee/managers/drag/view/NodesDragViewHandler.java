@@ -143,7 +143,7 @@ public abstract class NodesDragViewHandler<E extends DefaultMutableTreeNode> imp
                         final Component r =
                                 tree.getCellRenderer ().getTreeCellRendererComponent ( tree, node, false, exp, leaf, row, false );
                         final Dimension ps = r.getPreferredSize ();
-                        tree.getCellRendererPane ().paintComponent ( g2d, r, null, 0, y, ps.width, ps.height );
+                        tree.getUI ().getCellRendererPane ().paintComponent ( g2d, r, null, 0, y, ps.width, ps.height );
                         y += ps.height;
                         count++;
                     }

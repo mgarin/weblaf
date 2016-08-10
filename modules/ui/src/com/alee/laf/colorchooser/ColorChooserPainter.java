@@ -6,8 +6,8 @@ import com.alee.painter.decoration.IDecoration;
 import javax.swing.*;
 
 /**
- * Basic painter for JColorChooser component.
- * It is used as WebColorChooserUI default painter.
+ * Basic painter for {@link JColorChooser} component.
+ * It is used as {@link WebColorChooserUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -15,7 +15,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class ColorChooserPainter<E extends JColorChooser, U extends WebColorChooserUI, D extends IDecoration<E, D>>
+public class ColorChooserPainter<E extends JColorChooser, U extends WColorChooserUI, D extends IDecoration<E, D>>
         extends AbstractContainerPainter<E, U, D> implements IColorChooserPainter<E, U>
 {
     /**

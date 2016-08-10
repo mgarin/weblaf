@@ -878,7 +878,7 @@
             <value lang="vi">Mở</value>
             <value lang="hu">Megnyit</value>
         </record>
-        <record key="choose">
+        <record key="custom">
             <value lang="en">Choose</value>
             <value lang="ru">Выбрать</value>
             <value lang="pl">Wybierz</value>

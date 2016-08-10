@@ -20,13 +20,13 @@ package com.alee.extended.window;
 import com.alee.painter.SpecificPainter;
 
 /**
- * Base interface for WebPopup component painters.
+ * Base interface for {@link WebPopup} component painters.
  *
  * @param <E> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface IPopupPainter<E extends WebPopup, U extends WebPopupUI> extends SpecificPainter<E, U>
+public interface IPopupPainter<E extends WebPopup, U extends WPopupUI> extends SpecificPainter<E, U>
 {
 }

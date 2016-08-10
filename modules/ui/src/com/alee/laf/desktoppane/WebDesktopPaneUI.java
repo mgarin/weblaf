@@ -29,10 +29,12 @@ import javax.swing.plaf.basic.BasicDesktopPaneUI;
 import java.awt.*;
 
 /**
+ * Custom UI for {@link WebDesktopPane} component.
+ *
  * @author Mikle Garin
  */
 
-public class WebDesktopPaneUI extends BasicDesktopPaneUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebDesktopPaneUI extends BasicDesktopPaneUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -96,7 +98,7 @@ public class WebDesktopPaneUI extends BasicDesktopPaneUI implements ShapeProvide
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( desktopPane, painter );
     }

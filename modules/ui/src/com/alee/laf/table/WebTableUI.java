@@ -42,12 +42,12 @@ import java.beans.PropertyChangeListener;
 import java.util.Date;
 
 /**
- * Custom UI for JTable component.
+ * Custom UI for {@link JTable} component.
  *
  * @author Mikle Garin
  */
 
-public class WebTableUI extends BasicTableUI implements ShapeProvider, MarginSupport, PaddingSupport, ScrollPaneCornerProvider
+public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupport, PaddingSupport, ScrollPaneCornerProvider
 {
     /**
      * Component painter.
@@ -167,7 +167,7 @@ public class WebTableUI extends BasicTableUI implements ShapeProvider, MarginSup
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( table, painter );
     }

@@ -28,15 +28,16 @@ import javax.swing.colorchooser.ColorSelectionModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicColorChooserUI;
 import java.awt.*;
 
 /**
+ * Custom UI for {@link JColorChooser} component.
+ *
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
 
-public class WebColorChooserUI extends BasicColorChooserUI implements  ShapeProvider, MarginSupport, PaddingSupport
+public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * todo 1. Implement base JColorChooser features
@@ -146,7 +147,7 @@ public class WebColorChooserUI extends BasicColorChooserUI implements  ShapeProv
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( chooser, painter );
     }
@@ -205,59 +206,70 @@ public class WebColorChooserUI extends BasicColorChooserUI implements  ShapeProv
         }, this.painter, painter, IColorChooserPainter.class, AdaptiveColorChooserPainter.class );
     }
 
+    @Override
     public boolean isShowButtonsPanel ()
     {
         return colorChooserPanel.isShowButtonsPanel ();
     }
 
-    public void setShowButtonsPanel ( final boolean showButtonsPanel )
+    @Override
+    public void setShowButtonsPanel ( final boolean display )
     {
-        colorChooserPanel.setShowButtonsPanel ( showButtonsPanel );
+        colorChooserPanel.setShowButtonsPanel ( display );
     }
 
+    @Override
     public boolean isWebOnlyColors ()
     {
         return colorChooserPanel.isWebOnlyColors ();
     }
 
-    public void setWebOnlyColors ( final boolean webOnlyColors )
+    @Override
+    public void setWebOnlyColors ( final boolean webOnly )
     {
-        colorChooserPanel.setWebOnlyColors ( webOnlyColors );
+        colorChooserPanel.setWebOnlyColors ( webOnly );
     }
 
-    public Color getOldColor ()
+    @Override
+    public Color getPreviousColor ()
     {
         return colorChooserPanel.getOldColor ();
     }
 
-    public void setOldColor ( final Color oldColor )
+    @Override
+    public void setPreviousColor ( final Color previous )
     {
-        colorChooserPanel.setOldColor ( oldColor );
+        colorChooserPanel.setOldColor ( previous );
     }
 
+    @Override
     public void resetResult ()
     {
         colorChooserPanel.resetResult ();
     }
 
+    @Override
     public void setResult ( final int result )
     {
         colorChooserPanel.setResult ( result );
     }
 
+    @Override
     public int getResult ()
     {
         return colorChooserPanel.getResult ();
     }
 
-    public void addColorChooserListener ( final ColorChooserListener colorChooserListener )
+    @Override
+    public void addColorChooserListener ( final ColorChooserListener listener )
     {
-        colorChooserPanel.addColorChooserListener ( colorChooserListener );
+        colorChooserPanel.addColorChooserListener ( listener );
     }
 
-    public void removeColorChooserListener ( final ColorChooserListener colorChooserListener )
+    @Override
+    public void removeColorChooserListener ( final ColorChooserListener listener )
     {
-        colorChooserPanel.removeColorChooserListener ( colorChooserListener );
+        colorChooserPanel.removeColorChooserListener ( listener );
     }
 
     @Override

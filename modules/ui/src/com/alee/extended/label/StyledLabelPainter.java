@@ -20,22 +20,21 @@ package com.alee.extended.label;
 import com.alee.laf.label.AbstractLabelPainter;
 import com.alee.painter.decoration.IDecoration;
 
-import javax.swing.*;
-
 /**
- * Basic painter for {@link com.alee.extended.label.WebStyledLabel} component.
- * It is used as {@link com.alee.extended.label.WebStyledLabelUI} default painter.
+ * Basic painter for {@link WebStyledLabel} component.
+ * It is used as {@link WebStyledLabelUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  */
 
-public class StyledLabelPainter<E extends WebStyledLabel, U extends WebStyledLabelUI, D extends IDecoration<E, D>>
-        extends AbstractLabelPainter<E, U, D> implements IStyledLabelPainter<E, U>, SwingConstants
+public class StyledLabelPainter<E extends WebStyledLabel, U extends WStyledLabelUI, D extends IDecoration<E, D>>
+        extends AbstractLabelPainter<E, U, D> implements IStyledLabelPainter<E, U>
 {
     /**
-     * Implementation is used completely from {@link com.alee.laf.label.AbstractLabelPainter}.
+     * Implementation is used completely from {@link AbstractLabelPainter}.
      */
 }

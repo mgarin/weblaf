@@ -25,8 +25,9 @@ import com.alee.laf.label.IAbstractLabelPainter;
  * @param <E> component type
  * @param <U> component UI type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  */
 
-public interface IStyledLabelPainter<E extends WebStyledLabel, U extends WebStyledLabelUI> extends IAbstractLabelPainter<E, U>
+public interface IStyledLabelPainter<E extends WebStyledLabel, U extends WStyledLabelUI> extends IAbstractLabelPainter<E, U>
 {
 }

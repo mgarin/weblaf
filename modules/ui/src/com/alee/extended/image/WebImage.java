@@ -42,8 +42,12 @@ import java.net.URL;
  * @see ImagePainter
  */
 
-public class WebImage extends WebComponent<WebImageUI, WebImage> implements SwingConstants
+public class WebImage extends WebComponent<WebImage,WImageUI> implements SwingConstants
 {
+    /**
+     * todo 1. Properly handle passed icons so they are not always saved to static raster image (issue with SvgIcon)
+     */
+
     /**
      * Component properties.
      */
@@ -427,37 +431,31 @@ public class WebImage extends WebComponent<WebImageUI, WebImage> implements Swin
     /**
      * Returns the look and feel (L&amp;F) object that renders this component.
      *
-     * @return the ImageUI object that renders this component
+     * @return the {@link WImageUI} object that renders this component
      */
-    public ImageUI getUI ()
+    public WImageUI getUI ()
     {
-        return ( ImageUI ) ui;
+        return ( WImageUI ) ui;
     }
 
     /**
      * Sets the L&amp;F object that renders this component.
      *
-     * @param ui {@link com.alee.extended.image.ImageUI}
+     * @param ui {@link WImageUI}
      */
-    public void setUI ( final ImageUI ui )
+    public void setUI ( final WImageUI ui )
     {
         super.setUI ( ui );
     }
 
     @Override
-    public WebImageUI getWebUI ()
-    {
-        return ( WebImageUI ) getUI ();
-    }
-
-    @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebImageUI ) )
+        if ( getUI () == null || !( getUI () instanceof WImageUI ) )
         {
             try
             {
-                setUI ( ( WebImageUI ) UIManager.getUI ( this ) );
+                setUI ( ( WImageUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

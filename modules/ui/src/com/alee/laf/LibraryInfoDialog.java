@@ -19,8 +19,10 @@ package com.alee.laf;
 
 import com.alee.extended.behavior.ComponentMoveBehavior;
 import com.alee.extended.image.WebImage;
-import com.alee.extended.label.WebLinkLabel;
 import com.alee.extended.layout.VerticalFlowLayout;
+import com.alee.extended.link.LinkAction;
+import com.alee.extended.link.UrlLinkAction;
+import com.alee.extended.link.WebLink;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
@@ -43,16 +45,17 @@ import com.alee.managers.popup.WebInnerPopup;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.version.VersionInfo;
 import com.alee.managers.version.VersionManager;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SystemUtils;
 import com.alee.utils.reflection.JarEntry;
 import com.alee.utils.reflection.JarStructure;
-import com.alee.utils.swing.extensions.FontMethodsImpl;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -204,8 +207,7 @@ public class LibraryInfoDialog extends WebFrame
 
         final WebImage icon = new WebImage ( WebLookAndFeel.getIcon ( 32 ) );
 
-        final WebLinkLabel version = new WebLinkLabel ( versionInfo.toString () );
-        version.setLink ( "http://weblookandfeel.com", false );
+        final WebLink version = new WebLink ( versionInfo.toString (), new UrlLinkAction ( "http://weblookandfeel.com" ) );
         version.setBoldFont ();
 
         final SimpleDateFormat sdf = new SimpleDateFormat ( "dd MMM yyyy", Locale.getDefault () );
@@ -224,10 +226,10 @@ public class LibraryInfoDialog extends WebFrame
     {
         final WebImage javaIcon = new WebImage ( new ImageIcon ( LibraryInfoDialog.class.getResource ( "icons/java.png" ) ) );
 
-        final WebLinkLabel javaVersion = new WebLinkLabel ();
+        final WebLink javaVersion = new WebLink ();
         javaVersion.setLanguage ( "weblaf.info.general.java.version", SystemUtils.getJavaVersionString () );
-        javaVersion.setLink ( "http://www.oracle.com/technetwork/java/javase/overview/", false );
-        FontMethodsImpl.setBoldFont ( javaVersion );
+        javaVersion.addAction ( new UrlLinkAction ( "http://www.oracle.com/technetwork/java/javase/overview/" ) );
+        javaVersion.setBoldFont ();
 
         final WebLabel javaName = new WebLabel ( SystemUtils.getJavaName () );
 
@@ -243,9 +245,8 @@ public class LibraryInfoDialog extends WebFrame
     {
         final WebImage osIcon = new WebImage ( SystemUtils.getOsIcon ( 32, false ) );
 
-        final WebLinkLabel version = new WebLinkLabel ( SystemUtils.getOsName () );
-        version.setLink ( SystemUtils.getOsSite (), false );
-        FontMethodsImpl.setBoldFont ( version );
+        final WebLink version = new WebLink ( SystemUtils.getOsName (), new UrlLinkAction ( SystemUtils.getOsSite () ) );
+        version.setBoldFont ();
 
         final WebLabel osVersion = new WebLabel ();
         osVersion.setLanguage ( "weblaf.info.general.os.arch", SystemUtils.getOsArch () );
@@ -276,65 +277,67 @@ public class LibraryInfoDialog extends WebFrame
             // Parsing available libraries info
             final WebPanel librariesPanel = new WebPanel ( new VerticalFlowLayout ( 0, 5 ) );
             librariesPanel.setMargin ( 5 );
-            for ( final JarEntry child : licensesFolder.getChildren () )
+            for ( final Map.Entry<String, String> library : librariesData.entrySet () )
             {
-                if ( child.getName ().endsWith ( ".txt" ) )
+                for ( final JarEntry child : licensesFolder.getChildren () )
                 {
-                    final String data = librariesData.get ( child.getName () );
-                    final int i = data.indexOf ( LIBRARY_DATA_SEPARATOR );
-                    final String name = data.substring ( 0, i );
-                    final String url = data.substring ( i + LIBRARY_DATA_SEPARATOR.length () );
-
-                    final WebLabel nameLabel = new WebLabel ( name );
-                    FontMethodsImpl.setBoldFont ( nameLabel );
-
-                    // Library license file
-                    final WebLinkLabel fileLink = new WebLinkLabel ( child.getName () );
-                    fileLink.setLink ( new Runnable ()
+                    if ( CompareUtils.equals ( library.getKey (), child.getName () ) )
                     {
-                        @Override
-                        public void run ()
+                        final String data = library.getValue ();
+                        final int i = data.indexOf ( LIBRARY_DATA_SEPARATOR );
+                        final String name = data.substring ( 0, i );
+                        final String url = data.substring ( i + LIBRARY_DATA_SEPARATOR.length () );
+
+                        final WebLabel nameLabel = new WebLabel ( name );
+                        nameLabel.setBoldFont ();
+
+                        // Library license file
+                        final WebLabel licenseLabel = new WebLabel ( "weblaf.info.libraries.license" );
+                        final WebLink licenseLink = new WebLink ( child.getName (), new LinkAction ()
                         {
-                            try
+                            @Override
+                            public void linkExecuted ( final ActionEvent event )
                             {
-                                final String license = FileUtils.readToString ( structure.getEntryInputStream ( child ) );
-                                final WebInnerPopup licensePopup = new WebInnerPopup ();
-                                final WebTextArea textArea = new WebTextArea ( license );
-                                textArea.setEditable ( false );
-                                licensePopup.add ( new WebScrollPane ( StyleId.scrollpaneUndecorated, textArea ) );
-                                licensePopup.showPopupAsModal ( fileLink, true, true );
-                                HotkeyManager.registerHotkey ( textArea, Hotkey.ESCAPE, new HotkeyRunnable ()
+                                try
                                 {
-                                    @Override
-                                    public void run ( final KeyEvent e )
+                                    final String license = FileUtils.readToString ( structure.getEntryInputStream ( child ) );
+                                    final WebInnerPopup licensePopup = new WebInnerPopup ();
+                                    final WebTextArea textArea = new WebTextArea ( license );
+                                    textArea.setEditable ( false );
+                                    licensePopup.add ( new WebScrollPane ( StyleId.scrollpaneUndecorated, textArea ) );
+                                    licensePopup.showPopupAsModal ( ( Component ) event.getSource (), true, true );
+                                    HotkeyManager.registerHotkey ( textArea, Hotkey.ESCAPE, new HotkeyRunnable ()
                                     {
-                                        licensePopup.hidePopup ();
-                                    }
-                                } );
+                                        @Override
+                                        public void run ( final KeyEvent e )
+                                        {
+                                            licensePopup.hidePopup ();
+                                        }
+                                    } );
+                                }
+                                catch ( final IOException e )
+                                {
+                                    Log.error ( this, e );
+                                }
                             }
-                            catch ( final IOException e )
-                            {
-                                Log.error ( this, e );
-                            }
-                        }
-                    } );
-                    final WebLabel licenseLabel = new WebLabel ();
-                    licenseLabel.setLanguage ( "weblaf.info.libraries.license" );
-                    final GroupPanel fileLinkPanel = new GroupPanel ( 5, licenseLabel, fileLink );
+                        } );
+                        final GroupPanel fileLinkPanel = new GroupPanel ( 5, licenseLabel, licenseLink );
 
-                    // Library site URL
-                    final WebLinkLabel urlLink = new WebLinkLabel ( url );
-                    urlLink.setLink ( url, false );
-                    final WebLabel siteLabel = new WebLabel ();
-                    siteLabel.setLanguage ( "weblaf.info.libraries.site" );
-                    final GroupPanel urlLinkPanel = new GroupPanel ( 5, siteLabel, urlLink );
+                        // Library site URL
+                        final WebLabel siteLabel = new WebLabel ( "weblaf.info.libraries.site" );
+                        final WebLink siteLink = new WebLink ( url, new UrlLinkAction ( url ) );
+                        final GroupPanel urlLinkPanel = new GroupPanel ( 5, siteLabel, siteLink );
 
-                    // Single library panel
-                    final GroupPanel libraryPanel = new GroupPanel ( false, nameLabel, fileLinkPanel, urlLinkPanel );
-                    libraryPanel.setStyleId ( StyleId.panelDecorated );
-                    libraryPanel.setMargin ( 5 );
-                    libraryPanel.setPreferredWidth ( 0 );
-                    librariesPanel.add ( libraryPanel );
+                        // Single library panel
+                        final GroupPanel libraryPanel = new GroupPanel ( false, nameLabel, fileLinkPanel, urlLinkPanel );
+                        libraryPanel.setStyleId ( StyleId.panelDecorated );
+                        libraryPanel.setMargin ( 5 );
+                        libraryPanel.setPadding ( 5 );
+                        libraryPanel.setPreferredWidth ( 0 );
+                        librariesPanel.add ( libraryPanel );
+
+                        break;
+                    }
                 }
             }
 
@@ -358,7 +361,7 @@ public class LibraryInfoDialog extends WebFrame
      */
     private Map<String, String> parseUrls ( final String librariesUrlText )
     {
-        final Map<String, String> librariesUrl = new HashMap<String, String> ();
+        final Map<String, String> librariesUrl = new LinkedHashMap<String, String> ();
         final StringTokenizer st = new StringTokenizer ( librariesUrlText, "\n", false );
         while ( st.hasMoreTokens () )
         {

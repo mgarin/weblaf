@@ -25,14 +25,15 @@ import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicRadioButtonUI;
 import java.awt.*;
 
 /**
+ * Custom UI for {@link JRadioButton} component.
+ *
  * @author Mikle Garin
  */
 
-public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebRadioButtonUI extends WRadioButtonUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -95,7 +96,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( radioButton, painter );
     }
@@ -154,11 +155,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         }, this.painter, painter, IRadioButtonPainter.class, AdaptiveRadioButtonPainter.class );
     }
 
-    /**
-     * Returns icon bounds.
-     *
-     * @return icon bounds
-     */
+    @Override
     public Rectangle getIconBounds ()
     {
         if ( painter != null )

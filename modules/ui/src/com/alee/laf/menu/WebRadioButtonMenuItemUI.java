@@ -29,12 +29,12 @@ import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 import java.awt.*;
 
 /**
- * Custom UI for JRadioButtonMenuItem component.
+ * Custom UI for {@link JRadioButtonMenuItem} component.
  *
  * @author Mikle Garin
  */
 
-public class WebRadioButtonMenuItemUI extends BasicRadioButtonMenuItemUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebRadioButtonMenuItemUI extends BasicRadioButtonMenuItemUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -91,7 +91,7 @@ public class WebRadioButtonMenuItemUI extends BasicRadioButtonMenuItemUI impleme
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( menuItem, painter );
     }

@@ -27,15 +27,16 @@ import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicTextPaneUI;
 import java.awt.*;
 
 /**
+ * Custom UI for {@link JTextPane} component.
+ *
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
 
-public class WebTextPaneUI extends BasicTextPaneUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebTextPaneUI extends WTextPaneUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -103,7 +104,7 @@ public class WebTextPaneUI extends BasicTextPaneUI implements ShapeProvider, Mar
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( textPane, painter );
     }
@@ -162,21 +163,13 @@ public class WebTextPaneUI extends BasicTextPaneUI implements ShapeProvider, Mar
         }, this.painter, painter, ITextPanePainter.class, AdaptiveTextPanePainter.class );
     }
 
-    /**
-     * Returns input prompt text.
-     *
-     * @return input prompt text
-     */
+    @Override
     public String getInputPrompt ()
     {
         return inputPrompt;
     }
 
-    /**
-     * Sets input prompt text.
-     *
-     * @param text input prompt text
-     */
+    @Override
     public void setInputPrompt ( final String text )
     {
         if ( !CompareUtils.equals ( text, this.inputPrompt ) )

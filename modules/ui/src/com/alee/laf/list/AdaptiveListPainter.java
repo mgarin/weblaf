@@ -6,16 +6,16 @@ import com.alee.painter.Painter;
 import javax.swing.*;
 
 /**
- * Simple ListPainter adapter class.
- * It is used to install simple non-specific painters into WebListUI.
+ * Simple {@link ListPainter} adapter class.
+ * It is used to install simple non-specific painters into {@link WListUI}.
  *
  * @author Alexandr Zernov
  */
 
-public final class AdaptiveListPainter<E extends JList, U extends WebListUI> extends AdaptivePainter<E, U> implements IListPainter<E, U>
+public final class AdaptiveListPainter<E extends JList, U extends WListUI> extends AdaptivePainter<E, U> implements IListPainter<E, U>
 {
     /**
-     * Constructs new AdaptiveListPainter for the specified painter.
+     * Constructs new {@link AdaptiveListPainter} for the specified painter.
      *
      * @param painter painter to adapt
      */

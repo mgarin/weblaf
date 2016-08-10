@@ -29,12 +29,12 @@ import javax.swing.plaf.basic.BasicPanelUI;
 import java.awt.*;
 
 /**
- * Custom UI for JPanel component.
+ * Custom UI for {@link JPanel} component.
  *
  * @author Mikle Garin
  */
 
-public class WebPanelUI extends BasicPanelUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebPanelUI extends BasicPanelUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -99,7 +99,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, MarginSup
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( panel, painter );
     }

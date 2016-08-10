@@ -41,7 +41,7 @@ import java.awt.*;
  * @see StatusBarPainter
  */
 
-public class WebStatusBar extends WebContainer<WebStatusBarUI, WebStatusBar>
+public class WebStatusBar extends WebContainer<WebStatusBar, WStatusBarUI>
 {
     /**
      * Constructs new status bar.
@@ -189,35 +189,29 @@ public class WebStatusBar extends WebContainer<WebStatusBarUI, WebStatusBar>
      *
      * @return the StatusBarUI object that renders this component
      */
-    public StatusBarUI getUI ()
+    public WStatusBarUI getUI ()
     {
-        return ( StatusBarUI ) ui;
+        return ( WStatusBarUI ) ui;
     }
 
     /**
      * Sets the L&amp;F object that renders this component.
      *
-     * @param ui {@link com.alee.extended.statusbar.StatusBarUI}
+     * @param ui {@link WStatusBarUI}
      */
-    public void setUI ( final StatusBarUI ui )
+    public void setUI ( final WStatusBarUI ui )
     {
         super.setUI ( ui );
     }
 
     @Override
-    public WebStatusBarUI getWebUI ()
-    {
-        return ( WebStatusBarUI ) getUI ();
-    }
-
-    @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebStatusBarUI ) )
+        if ( getUI () == null || !( getUI () instanceof WStatusBarUI ) )
         {
             try
             {
-                setUI ( ( WebStatusBarUI ) UIManager.getUI ( this ) );
+                setUI ( ( WStatusBarUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

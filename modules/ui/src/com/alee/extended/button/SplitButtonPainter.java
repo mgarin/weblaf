@@ -19,7 +19,7 @@ import java.awt.event.MouseEvent;
  * @author Mikle Garin
  */
 
-public class SplitButtonPainter<E extends WebSplitButton, U extends WebSplitButtonUI, D extends IDecoration<E, D>>
+public class SplitButtonPainter<E extends WebSplitButton, U extends WSplitButtonUI, D extends IDecoration<E, D>>
         extends AbstractButtonPainter<E, U, D> implements ISplitButtonPainter<E, U>
 {
     /**

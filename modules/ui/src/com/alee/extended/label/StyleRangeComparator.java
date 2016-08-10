@@ -21,10 +21,12 @@ import java.util.Comparator;
 
 /**
  * Custom StyleRange comparator.
- * Compares style ranges by their positions.
+ * Ranges with lower starting index are placed first.
+ * If starting index for ranges is the same the longest one will be placed first.
  *
  * @author Mikle Garin
- * @see com.alee.extended.label.StyleRange
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
+ * @see StyleRange
  */
 
 public class StyleRangeComparator implements Comparator<StyleRange>
@@ -32,6 +34,17 @@ public class StyleRangeComparator implements Comparator<StyleRange>
     @Override
     public int compare ( final StyleRange r1, final StyleRange r2 )
     {
-        return r1.getStartIndex () < r2.getStartIndex () ? -1 : r1.getStartIndex () > r2.getStartIndex () ? 1 : 0;
+        final int s1 = r1.getStartIndex ();
+        final int s2 = r2.getStartIndex ();
+        if ( s1 != s2 )
+        {
+            return s1 < s2 ? -1 : 1;
+        }
+        else
+        {
+            final int l1 = r1.getLength ();
+            final int l2 = r2.getLength ();
+            return l1 > l2 ? -1 : l1 < l2 ? 1 : 0;
+        }
     }
 }

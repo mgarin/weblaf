@@ -27,7 +27,6 @@ public enum FileChooserType
 {
     /**
      * Save file chooser type.
-     * <p>
      * File chooser of this type has a special input field to enter saved file name.
      * It is also limited to single file selection since there is no point in saving single content into multiply files.
      * It also has an extension chooser combobox if allowed extensions are limited.
@@ -36,7 +35,6 @@ public enum FileChooserType
 
     /**
      * Open file chooser type.
-     * <p>
      * File chooser of this type is used to choose single or multiply files.
      */
     open,
@@ -44,5 +42,15 @@ public enum FileChooserType
     /**
      * Custom file chooser type.
      */
-    custom
+    custom;
+
+    /**
+     * Returns approve text language key.
+     *
+     * @return approve text language key
+     */
+    public String getApproveButtonText ()
+    {
+        return "weblaf.filechooser." + this;
+    }
 }

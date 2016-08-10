@@ -44,7 +44,7 @@ import java.util.Map;
  */
 
 public class WebInternalFrame extends JInternalFrame
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, LanguageMethods
+        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, LanguageMethods
 {
     /**
      * Event properties.
@@ -203,6 +203,50 @@ public class WebInternalFrame extends JInternalFrame
     }
 
     @Override
+    public void setIcon ( final boolean b )
+    {
+        try
+        {
+            super.setIcon ( b );
+        }
+        catch ( final PropertyVetoException e )
+        {
+            Log.error ( this, e );
+        }
+    }
+
+    /**
+     * Safely hides internal frame.
+     */
+    public void close ()
+    {
+        try
+        {
+            setClosed ( true );
+        }
+        catch ( final PropertyVetoException e )
+        {
+            Log.error ( this, e );
+        }
+    }
+
+    /**
+     * Safely displays internal frame.
+     */
+    public void open ()
+    {
+        try
+        {
+            setClosed ( false );
+            setVisible ( true );
+        }
+        catch ( final PropertyVetoException e )
+        {
+            Log.error ( this, e );
+        }
+    }
+
+    @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.internalframe;
@@ -299,165 +343,6 @@ public class WebInternalFrame extends JInternalFrame
     }
 
     @Override
-    public Shape provideShape ()
-    {
-        return getWebUI ().provideShape ();
-    }
-
-    @Override
-    public Insets getMargin ()
-    {
-        return getWebUI ().getMargin ();
-    }
-
-    /**
-     * Sets new margin.
-     *
-     * @param margin new margin
-     */
-    public void setMargin ( final int margin )
-    {
-        setMargin ( margin, margin, margin, margin );
-    }
-
-    /**
-     * Sets new margin.
-     *
-     * @param top    new top margin
-     * @param left   new left margin
-     * @param bottom new bottom margin
-     * @param right  new right margin
-     */
-    public void setMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        setMargin ( new Insets ( top, left, bottom, right ) );
-    }
-
-    @Override
-    public void setMargin ( final Insets margin )
-    {
-        getWebUI ().setMargin ( margin );
-    }
-
-    @Override
-    public Insets getPadding ()
-    {
-        return getWebUI ().getPadding ();
-    }
-
-    /**
-     * Sets new padding.
-     *
-     * @param padding new padding
-     */
-    public void setPadding ( final int padding )
-    {
-        setPadding ( padding, padding, padding, padding );
-    }
-
-    /**
-     * Sets new padding.
-     *
-     * @param top    new top padding
-     * @param left   new left padding
-     * @param bottom new bottom padding
-     * @param right  new right padding
-     */
-    public void setPadding ( final int top, final int left, final int bottom, final int right )
-    {
-        setPadding ( new Insets ( top, left, bottom, right ) );
-    }
-
-    @Override
-    public void setPadding ( final Insets padding )
-    {
-        getWebUI ().setPadding ( padding );
-    }
-
-    /**
-     * Returns Web-UI applied to this class.
-     *
-     * @return Web-UI applied to this class
-     */
-    private WebInternalFrameUI getWebUI ()
-    {
-        return ( WebInternalFrameUI ) getUI ();
-    }
-
-    @Override
-    public void setIcon ( final boolean b )
-    {
-        try
-        {
-            super.setIcon ( b );
-        }
-        catch ( final PropertyVetoException e )
-        {
-            Log.error ( this, e );
-        }
-    }
-
-    /**
-     * Safely hides internal frame.
-     */
-    public void close ()
-    {
-        try
-        {
-            setClosed ( true );
-        }
-        catch ( final PropertyVetoException e )
-        {
-            Log.error ( this, e );
-        }
-    }
-
-    /**
-     * Safely displays internal frame.
-     */
-    public void open ()
-    {
-        try
-        {
-            setClosed ( false );
-            setVisible ( true );
-        }
-        catch ( final PropertyVetoException e )
-        {
-            Log.error ( this, e );
-        }
-    }
-
-    /**
-     * Installs a Web-UI into this component.
-     */
-    @Override
-    public void updateUI ()
-    {
-        if ( getUI () == null || !( getUI () instanceof WebInternalFrameUI ) )
-        {
-            try
-            {
-                setUI ( ( WebInternalFrameUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebInternalFrameUI ( this ) );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
-        invalidate ();
-    }
-
-    /**
-     * Language methods
-     */
-
-    @Override
     public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
@@ -497,5 +382,81 @@ public class WebInternalFrame extends JInternalFrame
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( this );
+    }
+
+    @Override
+    public Shape getShape ()
+    {
+        return ShapeMethodsImpl.getShape ( this );
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return MarginMethodsImpl.getMargin ( this );
+    }
+
+    @Override
+    public void setMargin ( final int margin )
+    {
+        MarginMethodsImpl.setMargin ( this, margin );
+    }
+
+    @Override
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        MarginMethodsImpl.setMargin ( this, top, left, bottom, right );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        MarginMethodsImpl.setMargin ( this, margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return PaddingMethodsImpl.getPadding ( this );
+    }
+
+    @Override
+    public void setPadding ( final int padding )
+    {
+        PaddingMethodsImpl.setPadding ( this, padding );
+    }
+
+    @Override
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        PaddingMethodsImpl.setPadding ( this, top, left, bottom, right );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        PaddingMethodsImpl.setPadding ( this, padding );
+    }
+
+    @Override
+    public void updateUI ()
+    {
+        if ( getUI () == null || !( getUI () instanceof WebInternalFrameUI ) )
+        {
+            try
+            {
+                setUI ( ( WebInternalFrameUI ) UIManager.getUI ( this ) );
+            }
+            catch ( final Throwable e )
+            {
+                Log.error ( this, e );
+                setUI ( new WebInternalFrameUI ( this ) );
+            }
+        }
+        else
+        {
+            setUI ( getUI () );
+        }
+        invalidate ();
     }
 }

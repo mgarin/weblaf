@@ -643,16 +643,11 @@ public class TestFrame extends WebFrame
      *
      * @param c background color
      */
-    @Override
-    public void setBackground ( final Color c )
+    public void setContentBackground ( final Color c )
     {
         if ( container != null )
         {
             container.setBackground ( c );
-        }
-        else
-        {
-            super.setBackground ( c );
         }
     }
 

@@ -21,8 +21,8 @@ import com.alee.painter.decoration.AbstractContainerPainter;
 import com.alee.painter.decoration.IDecoration;
 
 /**
- * Basic painter for {@link com.alee.extended.statusbar.WebStatusBar} component.
- * It is used as {@link com.alee.extended.statusbar.WebStatusBarUI} default painter.
+ * Basic painter for {@link WebStatusBar} component.
+ * It is used as {@link WebStatusBarUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -30,10 +30,10 @@ import com.alee.painter.decoration.IDecoration;
  * @author Mikle Garin
  */
 
-public class StatusBarPainter<E extends WebStatusBar, U extends WebStatusBarUI, D extends IDecoration<E, D>>
+public class StatusBarPainter<E extends WebStatusBar, U extends WStatusBarUI, D extends IDecoration<E, D>>
         extends AbstractContainerPainter<E, U, D> implements IStatusBarPainter<E, U>
 {
     /**
-     * Implementation is used completely from {@link com.alee.painter.decoration.AbstractContainerPainter}.
+     * Implementation is used completely from {@link AbstractContainerPainter}.
      */
 }

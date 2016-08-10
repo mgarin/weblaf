@@ -7,17 +7,17 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Simple PasswordFieldPainter adapter class.
- * It is used to install simple non-specific painters into WebPasswordFieldUI.
+ * Simple {@link PasswordFieldPainter} adapter class.
+ * It is used to install simple non-specific painters into {@link WPasswordFieldUI}.
  *
  * @author Alexandr Zernov
  */
 
-public final class AdaptivePasswordFieldPainter<E extends JPasswordField, U extends WebPasswordFieldUI> extends AdaptivePainter<E, U>
+public final class AdaptivePasswordFieldPainter<E extends JPasswordField, U extends WPasswordFieldUI> extends AdaptivePainter<E, U>
         implements IPasswordFieldPainter<E, U>
 {
     /**
-     * Constructs new AdaptivePasswordFieldPainter for the specified painter.
+     * Constructs new {@link AdaptivePasswordFieldPainter} for the specified painter.
      *
      * @param painter painter to adapt
      */

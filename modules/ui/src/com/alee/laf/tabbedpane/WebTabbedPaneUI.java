@@ -33,11 +33,13 @@ import java.util.Map;
 import java.util.Vector;
 
 /**
+ * Custom UI for {@link JTabbedPane} component.
+ *
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
 
-public class WebTabbedPaneUI extends WebBasicTabbedPaneUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -59,7 +61,6 @@ public class WebTabbedPaneUI extends WebBasicTabbedPaneUI implements ShapeProvid
     /**
      * Runtime variables.
      */
-    protected final Map<Integer, Color> selectedForegroundAt = new HashMap<Integer, Color> ();
     protected final Map<Integer, Painter> backgroundPainterAt = new HashMap<Integer, Painter> ();
     protected Insets margin = null;
     protected Insets padding = null;
@@ -106,7 +107,7 @@ public class WebTabbedPaneUI extends WebBasicTabbedPaneUI implements ShapeProvid
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( tabPane, painter );
     }
@@ -139,105 +140,26 @@ public class WebTabbedPaneUI extends WebBasicTabbedPaneUI implements ShapeProvid
         }, this.painter, painter, ITabbedPanePainter.class, AdaptiveTabbedPanePainter.class );
     }
 
-    public boolean isRotateTabInsets ()
-    {
-        return rotateTabInsets;
-    }
-
-    public void setRotateTabInsets ( final boolean rotateTabInsets )
-    {
-        this.rotateTabInsets = rotateTabInsets;
-    }
-
-    public Insets getContentInsets ()
-    {
-        return contentInsets;
-    }
-
-    public void setContentInsets ( final Insets contentInsets )
-    {
-        this.contentInsets = contentInsets;
-    }
-
-    public Insets getTabInsets ()
-    {
-        return tabInsets;
-    }
-
-    public void setTabInsets ( final Insets tabInsets )
-    {
-        this.tabInsets = tabInsets;
-    }
-
-    public void setSelectedForegroundAt ( final int tabIndex, final Color foreground )
-    {
-        selectedForegroundAt.put ( tabIndex, foreground );
-    }
-
-    public Color getSelectedForegroundAt ( final int tabIndex )
-    {
-        return selectedForegroundAt.get ( tabIndex );
-    }
-
-    public void setBackgroundPainterAt ( final int tabIndex, final Painter painter )
-    {
-        backgroundPainterAt.put ( tabIndex, painter );
-    }
-
-    public Painter getBackgroundPainterAt ( final int tabIndex )
-    {
-        return backgroundPainterAt.get ( tabIndex );
-    }
-
+    @Override
     public TabbedPaneStyle getTabbedPaneStyle ()
     {
         return tabbedPaneStyle;
     }
 
+    @Override
     public void setTabbedPaneStyle ( final TabbedPaneStyle tabbedPaneStyle )
     {
         this.tabbedPaneStyle = tabbedPaneStyle;
         PainterSupport.updateBorder ( painter );
     }
 
-    //    private void updateRolloverTab ( MouseEvent e )
-    //    {
-    //        if ( tabPane != null )
-    //        {
-    //            int old = rolloverTab;
-    //            rolloverTab = tabForCoordinate ( tabPane, e.getX (), e.getY () );
-    //            if ( old != rolloverTab )
-    //            {
-    //                tabPane.repaint ();
-    //            }
-    //        }
-    //    }
-
-    public int getTabRunIndent ()
-    {
-        return tabRunIndent;
-    }
-
-    public void setTabRunIndent ( final int tabRunIndent )
-    {
-        this.tabRunIndent = tabRunIndent;
-    }
-
-    public int getTabOverlay ()
-    {
-        return tabOverlay;
-    }
-
-    public void setTabOverlay ( final int tabOverlay )
-    {
-        this.tabOverlay = tabOverlay;
-    }
-
+    @Override
     public TabStretchType getTabStretchType ()
     {
         return tabStretchType;
     }
 
+    @Override
     public void setTabStretchType ( final TabStretchType tabStretchType )
     {
         this.tabStretchType = tabStretchType;
@@ -271,6 +193,11 @@ public class WebTabbedPaneUI extends WebBasicTabbedPaneUI implements ShapeProvid
     public int getMaxTabWidth ()
     {
         return maxTabWidth;
+    }
+
+    public Painter getBackgroundPainterAt ( final int tabIndex )
+    {
+        return backgroundPainterAt.get ( tabIndex );
     }
 
     @Override

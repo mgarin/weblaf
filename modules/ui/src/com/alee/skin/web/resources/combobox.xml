@@ -79,7 +79,12 @@
         <style type="button" id="arrow" padding="2">
             <painter>
                 <decorations>
-                    <decoration visible="false" />
+                    <decoration visible="false">
+                        <SetIcon icon="down-small" />
+                    </decoration>
+                    <decoration states="expanded">
+                        <SetIcon icon="up-small" />
+                    </decoration>
                 </decorations>
             </painter>
         </style>

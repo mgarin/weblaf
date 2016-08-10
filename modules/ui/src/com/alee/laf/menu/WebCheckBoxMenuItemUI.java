@@ -29,12 +29,12 @@ import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
 import java.awt.*;
 
 /**
- * Custom UI for JCheckBoxMenuItem component.
+ * Custom UI for {@link JCheckBoxMenuItem} component.
  *
  * @author Mikle Garin
  */
 
-public class WebCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -91,7 +91,7 @@ public class WebCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI implements Sh
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( menuItem, painter );
     }

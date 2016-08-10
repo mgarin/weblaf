@@ -32,15 +32,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 /**
- * Basic painter for JScrollBar component.
- * It is used as WebScrollBarUI default painter.
+ * Basic painter for {@link JScrollBar} component.
+ * It is used as {@link WebScrollBarUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public class ScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI> extends AbstractPainter<E, U>
+public class ScrollBarPainter<E extends JScrollBar, U extends WScrollBarUI> extends AbstractPainter<E, U>
         implements IScrollBarPainter<E, U>
 {
     /**
@@ -248,13 +248,13 @@ public class ScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI> ex
     @Override
     public Boolean isOpaque ()
     {
-        return this.ui.isPaintTrack ();
+        return this.ui.isDisplayTrack ();
     }
 
     @Override
     public Insets getBorders ()
     {
-        if ( ui.isPaintTrack () )
+        if ( ui.isDisplayTrack () )
         {
             // Additional 1px border at scroll bar side
             // Orientation will be taken into account by the UI itself
@@ -288,7 +288,7 @@ public class ScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI> ex
     @SuppressWarnings ("UnusedParameters")
     protected void paintBackground ( final Graphics2D g2d, final E scrollbar, final Rectangle bounds )
     {
-        if ( ui.isPaintTrack () )
+        if ( ui.isDisplayTrack () )
         {
             g2d.setPaint ( trackBackgroundColor );
             g2d.fillRect ( bounds.x, bounds.y, bounds.width, bounds.height );
@@ -315,6 +315,7 @@ public class ScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI> ex
      * @param scrollbar scroll bar
      * @param bounds    track bounds
      */
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintTrack ( final Graphics2D g2d, final E scrollbar, final Rectangle bounds )
     {
         // You can paint your own track decoration by overriding this method

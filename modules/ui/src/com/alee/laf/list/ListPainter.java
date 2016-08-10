@@ -17,8 +17,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Basic painter for JList component.
- * It is used as WebListUI default painter.
+ * Basic painter for {@link JList} component.
+ * It is used as {@link WebListUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -26,7 +26,7 @@ import java.util.List;
  * @author Alexandr Zernov
  */
 
-public class ListPainter<E extends JList, U extends WebListUI, D extends IDecoration<E, D>> extends AbstractDecorationPainter<E, U, D>
+public class ListPainter<E extends JList, U extends WListUI, D extends IDecoration<E, D>> extends AbstractDecorationPainter<E, U, D>
         implements IListPainter<E, U>
 {
     /**

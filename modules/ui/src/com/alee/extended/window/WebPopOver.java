@@ -17,6 +17,7 @@
 
 package com.alee.extended.window;
 
+import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.laf.window.WebDialog;
 import com.alee.managers.style.StyleId;
 import com.alee.painter.Painter;
@@ -597,7 +598,8 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
      */
     protected IPopOverPainter getPainter ()
     {
-        final Painter painter = getWebUI ().getPainter ();
+        // todo Acquire painter properly
+        final Painter painter = ( ( WebRootPaneUI ) getUI () ).getPainter ();
         return painter instanceof IPopOverPainter ? ( IPopOverPainter ) painter : null;
     }
 

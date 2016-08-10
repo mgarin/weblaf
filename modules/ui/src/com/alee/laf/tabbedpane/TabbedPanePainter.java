@@ -30,7 +30,7 @@ import java.util.Vector;
  * @author Alexandr Zernov
  */
 
-public class TabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPaneUI> extends AbstractPainter<E, U>
+public class TabbedPanePainter<E extends JTabbedPane, U extends WTabbedPaneUI> extends AbstractPainter<E, U>
         implements ITabbedPanePainter<E, U>
 {
     /**
@@ -564,18 +564,10 @@ public class TabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPaneUI>
                 Color fg = component.getForegroundAt ( tabIndex );
                 if ( isSelected && ( fg instanceof UIResource ) )
                 {
-                    final Color selectedForegroundAt = ui.getSelectedForegroundAt ( tabIndex );
-                    if ( selectedForegroundAt != null )
+                    final Color selectedFG = UIManager.getColor ( "TabbedPane.selectedForeground" );
+                    if ( selectedFG != null )
                     {
-                        fg = selectedForegroundAt;
-                    }
-                    else
-                    {
-                        final Color selectedFG = UIManager.getColor ( "TabbedPane.selectedForeground" );
-                        if ( selectedFG != null )
-                        {
-                            fg = selectedFG;
-                        }
+                        fg = selectedFG;
                     }
                 }
                 g.setColor ( fg );

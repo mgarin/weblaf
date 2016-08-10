@@ -29,12 +29,12 @@ import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 
 /**
- * Custom UI for JButton component.
+ * Custom UI for {@link JButton} component.
  *
  * @author Mikle Garin
  */
 
-public class WebButtonUI extends BasicButtonUI implements  ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
+public class WebButtonUI extends BasicButtonUI implements ShapeSupport, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
      * Component painter.
@@ -97,7 +97,7 @@ public class WebButtonUI extends BasicButtonUI implements  ShapeProvider, Margin
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( button, painter );
     }

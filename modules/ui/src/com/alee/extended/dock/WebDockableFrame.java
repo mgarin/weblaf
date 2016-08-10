@@ -48,7 +48,7 @@ import java.util.List;
  * @see DockablePanePainter
  */
 
-public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockableFrame> implements Identifiable, Stateful, LanguageMethods
+public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFrameUI> implements Identifiable, Stateful, LanguageMethods
 {
     /**
      * Component properties.
@@ -169,7 +169,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     /**
      * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
      *
-     * @param id style ID
+     * @param id      style ID
      * @param frameId unique frame ID
      * @param title   frame title
      */
@@ -181,7 +181,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     /**
      * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
      *
-     * @param id style ID
+     * @param id      style ID
      * @param frameId unique frame ID
      * @param icon    frame icon
      */
@@ -843,37 +843,31 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     /**
      * Returns the look and feel (L&amp;F) object that renders this component.
      *
-     * @return the {@link com.alee.extended.dock.DockableFrameUI} object that renders this component
+     * @return the {@link WDockableFrameUI} object that renders this component
      */
-    public DockableFrameUI getUI ()
+    public WDockableFrameUI getUI ()
     {
-        return ( DockableFrameUI ) ui;
+        return ( WDockableFrameUI ) ui;
     }
 
     /**
      * Sets the L&amp;F object that renders this component.
      *
-     * @param ui {@link com.alee.extended.dock.DockableFrameUI}
+     * @param ui {@link WDockableFrameUI}
      */
-    public void setUI ( final DockableFrameUI ui )
+    public void setUI ( final WDockableFrameUI ui )
     {
         super.setUI ( ui );
     }
 
     @Override
-    public WebDockableFrameUI getWebUI ()
-    {
-        return ( WebDockableFrameUI ) getUI ();
-    }
-
-    @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebDockableFrameUI ) )
+        if ( getUI () == null || !( getUI () instanceof WDockableFrameUI ) )
         {
             try
             {
-                setUI ( ( WebDockableFrameUI ) UIManager.getUI ( this ) );
+                setUI ( ( WDockableFrameUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

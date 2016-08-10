@@ -801,21 +801,21 @@ public final class LafUtils
      * @param component component to process
      * @return shape provider for the specified component or null if shape provider is not supported
      */
-    public static ShapeProvider getShapeProvider ( final Component component )
+    public static Shape getShape ( final Component component )
     {
-        if ( component instanceof ShapeProvider )
+        if ( component instanceof ShapeSupport )
         {
-            return ( ShapeProvider ) component;
+            return ( ( ShapeSupport ) component ).getShape ();
         }
         else
         {
             final ComponentUI ui = getUI ( component );
-            if ( ui != null && ui instanceof ShapeProvider )
+            if ( ui != null && ui instanceof ShapeSupport )
             {
-                return ( ShapeProvider ) ui;
+                return ( ( ShapeSupport ) ui ).getShape ();
             }
         }
-        return null;
+        return Bounds.margin.of ( component );
     }
 
     /**

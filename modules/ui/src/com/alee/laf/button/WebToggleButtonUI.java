@@ -29,10 +29,12 @@ import javax.swing.plaf.basic.BasicToggleButtonUI;
 import java.awt.*;
 
 /**
+ * Custom UI for {@link JToggleButton} component.
+ *
  * @author Mikle Garin
  */
 
-public class WebToggleButtonUI extends BasicToggleButtonUI implements ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
+public class WebToggleButtonUI extends BasicToggleButtonUI implements ShapeSupport, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
      * Component painter.
@@ -95,7 +97,7 @@ public class WebToggleButtonUI extends BasicToggleButtonUI implements ShapeProvi
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( button, painter );
     }

@@ -36,6 +36,6 @@ public class PanelPainter<E extends JPanel, U extends WebPanelUI, D extends IDec
         implements IPanelPainter<E, U>
 {
     /**
-     * Implementation is used completely from {@link com.alee.painter.decoration.AbstractContainerPainter}.
+     * Implementation is used completely from {@link AbstractContainerPainter}.
      */
 }

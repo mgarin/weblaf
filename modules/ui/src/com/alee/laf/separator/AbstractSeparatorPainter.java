@@ -13,6 +13,7 @@ import java.util.List;
  *
  * @param <E> component type
  * @param <U> component UI type
+ * @param <D> decoration type
  * @author Alexandr Zernov
  * @author Mikle Garin
  */

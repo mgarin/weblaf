@@ -20,7 +20,7 @@ package com.alee.laf.button;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.ContentPropertyListener;
-import com.alee.painter.decoration.content.SimpleStyledTextContent;
+import com.alee.extended.label.SimpleStyledTextContent;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import javax.swing.*;
@@ -93,8 +93,8 @@ public class StyledButtonTextContent<E extends AbstractButton, D extends IDecora
     }
 
     @Override
-    protected int getComponentMnemonicIndex ( final E c, final D d )
+    protected int getComponentMnemonic ( final E c, final D d )
     {
-        return c.getDisplayedMnemonicIndex ();
+        return c.getMnemonic ();
     }
 }

@@ -17,7 +17,7 @@ import java.util.List;
  * @author Alexandr Zernov
  */
 
-public class RadioButtonPainter<E extends JRadioButton, U extends WebRadioButtonUI, D extends IDecoration<E, D>>
+public class RadioButtonPainter<E extends JRadioButton, U extends WRadioButtonUI, D extends IDecoration<E, D>>
         extends AbstractStateButtonPainter<E, U, D> implements IRadioButtonPainter<E, U>
 {
     @Override

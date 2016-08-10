@@ -21,8 +21,8 @@ import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.IDecoration;
 
 /**
- * Basic painter for {@link com.alee.extended.dock.WebDockablePane} component.
- * It is used as {@link com.alee.extended.dock.WebDockablePaneUI} default painter.
+ * Basic painter for {@link WebDockablePane} component.
+ * It is used as {@link WebDockablePaneUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -30,10 +30,10 @@ import com.alee.painter.decoration.IDecoration;
  * @author Mikle Garin
  */
 
-public class DockablePanePainter<E extends WebDockablePane, U extends WebDockablePaneUI, D extends IDecoration<E, D>>
+public class DockablePanePainter<E extends WebDockablePane, U extends WDockablePaneUI, D extends IDecoration<E, D>>
         extends AbstractDecorationPainter<E, U, D> implements IDockablePanePainter<E, U>
 {
     /**
-     * Implementation is used completely from {@link com.alee.painter.decoration.AbstractContainerPainter}.
+     * Implementation is used completely from {@link AbstractContainerPainter}.
      */
 }

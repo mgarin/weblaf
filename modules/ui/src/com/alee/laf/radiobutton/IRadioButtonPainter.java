@@ -3,13 +3,13 @@ package com.alee.laf.radiobutton;
 import javax.swing.*;
 
 /**
- * Base interface for JRadioButton component painters.
+ * Base interface for {@link JRadioButton} component painters.
  *
  * @param <E> component type
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public interface IRadioButtonPainter<E extends JRadioButton, U extends WebRadioButtonUI> extends IAbstractStateButtonPainter<E, U>
+public interface IRadioButtonPainter<E extends JRadioButton, U extends WRadioButtonUI> extends IAbstractStateButtonPainter<E, U>
 {
 }

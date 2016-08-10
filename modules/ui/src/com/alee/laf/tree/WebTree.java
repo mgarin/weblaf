@@ -18,6 +18,9 @@
 package com.alee.laf.tree;
 
 import com.alee.api.jdk.Predicate;
+import com.alee.laf.tree.behavior.TreeHoverSelectionBehavior;
+import com.alee.laf.tree.behavior.TreeSelectionExpandBehavior;
+import com.alee.laf.tree.behavior.TreeSingleChildExpandBehavior;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.log.Log;
 import com.alee.managers.settings.DefaultValue;
@@ -62,7 +65,7 @@ import java.util.List;
  */
 
 public class WebTree<E extends DefaultMutableTreeNode> extends JTree
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, TreeEventMethods<E>, EventMethods, SettingsMethods,
+        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, TreeEventMethods<E>, EventMethods, SettingsMethods,
         FontMethods<WebTree<E>>, SizeMethods<WebTree<E>>
 {
     /**
@@ -116,6 +119,16 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      * Custom WebLaF tooltip provider.
      */
     protected ToolTipProvider<? extends WebTree> toolTipProvider = null;
+
+    /**
+     *
+     */
+    protected boolean expandSelected;
+
+    /**
+     *
+     */
+    protected boolean selectOnHover;
 
     /**
      * Constructs tree with default sample model.
@@ -543,28 +556,6 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
             }
             return combined;
         }
-    }
-
-    /**
-     * Returns full row bounds including the space before the node and after the node.
-     *
-     * @param node node to retrieve full row bounds for
-     * @return full row bounds including the space before the node and after the node
-     */
-    public Rectangle getFullRowBounds ( final E node )
-    {
-        return getFullRowBounds ( getRowForNode ( node ) );
-    }
-
-    /**
-     * Returns full row bounds including the space before the node and after the node.
-     *
-     * @param row row to retrieve full bounds for
-     * @return full row bounds including the space before the node and after the node
-     */
-    public Rectangle getFullRowBounds ( final int row )
-    {
-        return getWebUI ().getFullRowBounds ( row );
     }
 
     /**
@@ -1198,23 +1189,56 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     }
 
     /**
+     * Returns tree selection style.
+     *
+     * @return tree selection style
+     */
+    public TreeSelectionStyle getSelectionStyle ()
+    {
+        return getUI ().getSelectionStyle ();
+    }
+
+    /**
+     * Sets tree selection style.
+     *
+     * @param style tree selection style
+     */
+    public void setSelectionStyle ( final TreeSelectionStyle style )
+    {
+        getUI ().setSelectionStyle ( style );
+    }
+
+    /**
      * Returns whether tree should auto-expand nodes on selection or not.
      *
      * @return true if tree should auto-expand nodes on selection, false otherwise
      */
-    public boolean isAutoExpandSelectedNode ()
+    public boolean isExpandSelected ()
     {
-        return getWebUI ().isExpandSelected ();
+        return TreeSelectionExpandBehavior.isInstalled ( this );
     }
 
     /**
      * Sets whether tree should auto-expand nodes on selection or not.
      *
-     * @param autoExpand whether tree should auto-expand nodes on selection or not
+     * @param expand whether tree should auto-expand nodes on selection or not
      */
-    public void setAutoExpandSelectedNode ( final boolean autoExpand )
+    public void setExpandSelected ( final boolean expand )
     {
-        getWebUI ().setExpandSelected ( autoExpand );
+        if ( expand )
+        {
+            if ( !isExpandSelected () )
+            {
+                TreeSelectionExpandBehavior.install ( this );
+            }
+        }
+        else
+        {
+            if ( isExpandSelected () )
+            {
+                TreeSelectionExpandBehavior.uninstall ( this );
+            }
+        }
     }
 
     /**
@@ -1225,61 +1249,31 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      */
     public boolean isAutoExpandSingleChildNode ()
     {
-        return AutoExpandSingleChildBehavior.isInstalled ( this );
+        return TreeSingleChildExpandBehavior.isInstalled ( this );
     }
 
     /**
      * Sets whether tree should auto-expand single child nodes or not.
      * If set to true when any node is expanded and there is only one single child node in it - it will be automatically expanded.
      *
-     * @param autoExpand whether tree should auto-expand single child nodes or not
+     * @param expand whether tree should auto-expand single child nodes or not
      */
-    public void setAutoExpandSingleChildNode ( final boolean autoExpand )
+    public void setAutoExpandSingleChildNode ( final boolean expand )
     {
-        if ( autoExpand )
+        if ( expand )
         {
             if ( !isAutoExpandSingleChildNode () )
             {
-                AutoExpandSingleChildBehavior.install ( this );
+                TreeSingleChildExpandBehavior.install ( this );
             }
         }
         else
         {
             if ( isAutoExpandSingleChildNode () )
             {
-                AutoExpandSingleChildBehavior.uninstall ( this );
+                TreeSingleChildExpandBehavior.uninstall ( this );
             }
         }
-    }
-
-    /**
-     * Returns current mousover row.
-     *
-     * @return current mousover row
-     */
-    public int getHoverRow ()
-    {
-        return getWebUI ().getHoverRow ();
-    }
-
-    /**
-     * Returns tree selection style.
-     *
-     * @return tree selection style
-     */
-    public TreeSelectionStyle getSelectionStyle ()
-    {
-        return getWebUI ().getSelectionStyle ();
-    }
-
-    /**
-     * Sets tree selection style.
-     *
-     * @param style tree selection style
-     */
-    public void setSelectionStyle ( final TreeSelectionStyle style )
-    {
-        getWebUI ().setSelectionStyle ( style );
     }
 
     /**
@@ -1289,7 +1283,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      */
     public boolean isSelectOnHover ()
     {
-        return getWebUI ().isSelectOnHover ();
+        return TreeHoverSelectionBehavior.isInstalled ( this );
     }
 
     /**
@@ -1299,7 +1293,20 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      */
     public void setSelectOnHover ( final boolean select )
     {
-        getWebUI ().setSelectOnHover ( select );
+        if ( select )
+        {
+            if ( !isSelectOnHover () )
+            {
+                TreeHoverSelectionBehavior.install ( this );
+            }
+        }
+        else
+        {
+            if ( isSelectOnHover () )
+            {
+                TreeHoverSelectionBehavior.uninstall ( this );
+            }
+        }
     }
 
     @Override
@@ -1399,79 +1406,57 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
-        return getWebUI ().provideShape ();
+        return ShapeMethodsImpl.getShape ( this );
     }
 
     @Override
     public Insets getMargin ()
     {
-        return getWebUI ().getMargin ();
+        return MarginMethodsImpl.getMargin ( this );
     }
 
-    /**
-     * Sets new margin.
-     *
-     * @param margin new margin
-     */
+    @Override
     public void setMargin ( final int margin )
     {
-        setMargin ( margin, margin, margin, margin );
+        MarginMethodsImpl.setMargin ( this, margin );
     }
 
-    /**
-     * Sets new margin.
-     *
-     * @param top    new top margin
-     * @param left   new left margin
-     * @param bottom new bottom margin
-     * @param right  new right margin
-     */
+    @Override
     public void setMargin ( final int top, final int left, final int bottom, final int right )
     {
-        setMargin ( new Insets ( top, left, bottom, right ) );
+        MarginMethodsImpl.setMargin ( this, top, left, bottom, right );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        getWebUI ().setMargin ( margin );
+        MarginMethodsImpl.setMargin ( this, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return getWebUI ().getPadding ();
+        return PaddingMethodsImpl.getPadding ( this );
     }
 
-    /**
-     * Sets new padding.
-     *
-     * @param padding new padding
-     */
+    @Override
     public void setPadding ( final int padding )
     {
-        setPadding ( padding, padding, padding, padding );
+        PaddingMethodsImpl.setPadding ( this, padding );
     }
 
-    /**
-     * Sets new padding.
-     *
-     * @param top    new top padding
-     * @param left   new left padding
-     * @param bottom new bottom padding
-     * @param right  new right padding
-     */
+    @Override
     public void setPadding ( final int top, final int left, final int bottom, final int right )
     {
-        setPadding ( new Insets ( top, left, bottom, right ) );
+        PaddingMethodsImpl.setPadding ( this, top, left, bottom, right );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        getWebUI ().setPadding ( padding );
+        PaddingMethodsImpl.setPadding ( this, padding );
     }
 
     /**
@@ -1495,6 +1480,16 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     }
 
     /**
+     * Returns hover listeners.
+     *
+     * @return hover listeners
+     */
+    public HoverListener[] getHoverListeners ()
+    {
+        return listenerList.getListeners ( HoverListener.class );
+    }
+
+    /**
      * Informs about hover node change.
      *
      * @param previous previous hover node
@@ -1502,7 +1497,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      */
     public void fireHoverChanged ( final E previous, final E current )
     {
-        for ( final HoverListener listener : listenerList.getListeners ( HoverListener.class ) )
+        for ( final HoverListener listener : getHoverListeners () )
         {
             listener.hoverChanged ( previous, current );
         }
@@ -1529,13 +1524,24 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     }
 
     /**
-     * Returns Web-UI applied to this class.
+     * Returns the look and feel (L&amp;F) object that renders this component.
      *
-     * @return Web-UI applied to this class
+     * @return the {@link WTreeUI} object that renders this component
      */
-    public WebTreeUI getWebUI ()
+    @Override
+    public WTreeUI getUI ()
     {
-        return ( WebTreeUI ) getUI ();
+        return ( WTreeUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WTreeUI}
+     */
+    public void setUI ( final WTreeUI ui )
+    {
+        super.setUI ( ui );
     }
 
     /**
@@ -1544,11 +1550,11 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebTreeUI ) )
+        if ( getUI () == null || !( getUI () instanceof WTreeUI ) )
         {
             try
             {
-                setUI ( ( WebTreeUI ) UIManager.getUI ( this ) );
+                setUI ( ( WTreeUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {
@@ -1569,7 +1575,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      */
     public void repaint ( final int row )
     {
-        repaint ( getWebUI ().getRowBounds ( row ) );
+        repaint ( getUI ().getRowBounds ( row ) );
     }
 
     /**
@@ -1580,9 +1586,9 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      */
     public void repaint ( final int from, final int to )
     {
-        final WebTreeUI webUI = getWebUI ();
-        final Rectangle fromBounds = webUI.getRowBounds ( from );
-        final Rectangle toBounds = webUI.getRowBounds ( to );
+        final WTreeUI ui = getUI ();
+        final Rectangle fromBounds = ui.getRowBounds ( from );
+        final Rectangle toBounds = ui.getRowBounds ( to );
         final Rectangle rect = GeometryUtils.getContainingRect ( fromBounds, toBounds );
         if ( rect != null )
         {
@@ -1626,16 +1632,6 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
                 repaint ( summ );
             }
         }
-    }
-
-    /**
-     * Returns tree cell renderer pane.
-     *
-     * @return tree cell renderer pane
-     */
-    public CellRendererPane getCellRendererPane ()
-    {
-        return getWebUI ().getCellRendererPane ();
     }
 
     @Override

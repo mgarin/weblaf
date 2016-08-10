@@ -45,7 +45,7 @@ import java.util.Date;
  * @see DateFieldPainter
  */
 
-public class WebDateField extends WebComponent<WebDateFieldUI, WebDateField> implements SettingsMethods
+public class WebDateField extends WebComponent<WebDateField,WDateFieldUI> implements SettingsMethods
 {
     /**
      * Component properties.
@@ -345,35 +345,29 @@ public class WebDateField extends WebComponent<WebDateFieldUI, WebDateField> imp
      *
      * @return LabelUI object
      */
-    public DateFieldUI getUI ()
+    public WDateFieldUI getUI ()
     {
-        return ( DateFieldUI ) ui;
+        return ( WDateFieldUI ) ui;
     }
 
     /**
      * Sets the L&amp;F object that renders this component.
      *
-     * @param ui {@link com.alee.extended.date.DateFieldUI}
+     * @param ui {@link WDateFieldUI}
      */
-    public void setUI ( final DateFieldUI ui )
+    public void setUI ( final WDateFieldUI ui )
     {
         super.setUI ( ui );
     }
 
     @Override
-    public WebDateFieldUI getWebUI ()
-    {
-        return ( WebDateFieldUI ) getUI ();
-    }
-
-    @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebDateFieldUI ) )
+        if ( getUI () == null || !( getUI () instanceof WDateFieldUI ) )
         {
             try
             {
-                setUI ( ( WebDateFieldUI ) UIManager.getUI ( this ) );
+                setUI ( ( WDateFieldUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

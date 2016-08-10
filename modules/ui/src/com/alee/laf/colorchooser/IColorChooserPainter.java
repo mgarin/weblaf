@@ -12,6 +12,6 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public interface IColorChooserPainter<E extends JColorChooser, U extends WebColorChooserUI> extends SpecificPainter<E, U>
+public interface IColorChooserPainter<E extends JColorChooser, U extends WColorChooserUI> extends SpecificPainter<E, U>
 {
 }

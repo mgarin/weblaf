@@ -48,12 +48,12 @@ import java.text.DateFormat;
 import java.util.Date;
 
 /**
- * Custom UI for WebDateField component.
+ * Custom UI for {@link WebDateField} component.
  *
  * @author Mikle Garin
  */
 
-public class WebDateFieldUI extends DateFieldUI implements ShapeProvider, MarginSupport, PaddingSupport, PropertyChangeListener
+public class WebDateFieldUI extends WDateFieldUI implements ShapeSupport, MarginSupport, PaddingSupport, PropertyChangeListener
 {
     /**
      * todo 1. Change popover to popup-based window. Probably another variation of popover would be handy?
@@ -398,7 +398,7 @@ public class WebDateFieldUI extends DateFieldUI implements ShapeProvider, Margin
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( dateField, painter );
     }

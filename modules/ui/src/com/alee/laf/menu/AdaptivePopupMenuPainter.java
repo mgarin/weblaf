@@ -24,17 +24,17 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Simple PopupMenuPainter adapter class.
- * It is used to install simple non-specific painters into WebPopupMenuUI.
+ * Simple {@link PopupMenuPainter} adapter class.
+ * It is used to install simple non-specific painters into {@link WPopupMenuUI}.
  *
  * @author Mikle Garin
  */
 
-public final class AdaptivePopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI> extends AdaptivePainter<E, U>
+public final class AdaptivePopupMenuPainter<E extends JPopupMenu, U extends WPopupMenuUI> extends AdaptivePainter<E, U>
         implements IPopupMenuPainter<E, U>
 {
     /**
-     * Constructs new AdaptiveLabelPainter for the specified painter.
+     * Constructs new {@link AdaptivePopupMenuPainter} for the specified painter.
      *
      * @param painter painter to adapt
      */

@@ -29,12 +29,12 @@ import javax.swing.plaf.SeparatorUI;
 import java.awt.*;
 
 /**
- * Custom UI for JSeparator component.
+ * Custom UI for {@link JSeparator} component.
  *
  * @author Mikle Garin
  */
 
-public class WebSeparatorUI extends SeparatorUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebSeparatorUI extends SeparatorUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -93,7 +93,7 @@ public class WebSeparatorUI extends SeparatorUI implements ShapeProvider, Margin
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( separator, painter );
     }

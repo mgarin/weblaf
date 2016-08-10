@@ -30,8 +30,9 @@ import com.alee.demo.ui.widgets.SkinChooser;
 import com.alee.extended.behavior.ComponentResizeBehavior;
 import com.alee.extended.canvas.WebCanvas;
 import com.alee.extended.dock.WebDockablePane;
-import com.alee.extended.label.WebLinkLabel;
 import com.alee.extended.label.WebStyledLabel;
+import com.alee.extended.link.UrlLinkAction;
+import com.alee.extended.link.WebLink;
 import com.alee.extended.magnifier.MagnifierGlass;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.WebOverlay;
@@ -188,20 +189,14 @@ public final class DemoApplication extends WebFrame
     {
         final WebStatusBar statusBar = new WebStatusBar ();
 
-        final WebLinkLabel weblaf = new WebLinkLabel ( DemoStyles.resourceLink );
-        weblaf.setLink ( "demo.statusbar.resources.weblaf", WEBLAF_SITE );
-        weblaf.setIcon ( WebLookAndFeel.getIcon ( 16 ) );
-        statusBar.add ( weblaf );
+        statusBar.add ( new WebLink ( DemoStyles.resourceLink, DemoIcons.icon16, "demo.statusbar.resources.weblaf",
+                new UrlLinkAction ( WEBLAF_SITE ) ) );
 
-        final WebLinkLabel github = new WebLinkLabel ( DemoStyles.resourceLink );
-        github.setLink ( "demo.statusbar.resources.github", WEBLAF_GITHUB );
-        github.setIcon ( DemoIcons.github16 );
-        statusBar.add ( github );
+        statusBar.add ( new WebLink ( DemoStyles.resourceLink, DemoIcons.github16, "demo.statusbar.resources.github",
+                new UrlLinkAction ( WEBLAF_GITHUB ) ) );
 
-        final WebLinkLabel gitter = new WebLinkLabel ( DemoStyles.resourceLink );
-        gitter.setLink ( "demo.statusbar.resources.gitter", WEBLAF_GITTER );
-        gitter.setIcon ( DemoIcons.gitter16 );
-        statusBar.add ( gitter );
+        statusBar.add ( new WebLink ( DemoStyles.resourceLink, DemoIcons.gitter16, "demo.statusbar.resources.gitter",
+                new UrlLinkAction ( WEBLAF_GITTER ) ) );
 
         statusBar.addToEnd ( new SkinChooser () );
 

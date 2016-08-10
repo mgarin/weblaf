@@ -18,7 +18,7 @@
 package com.alee.laf.viewport;
 
 import com.alee.managers.style.Bounds;
-import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.ShapeSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
@@ -38,7 +38,7 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public class WebViewportUI extends BasicViewportUI implements ShapeProvider
+public class WebViewportUI extends BasicViewportUI implements ShapeSupport
 {
     /**
      * Component painter.
@@ -100,7 +100,7 @@ public class WebViewportUI extends BasicViewportUI implements ShapeProvider
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( viewport, painter );
     }

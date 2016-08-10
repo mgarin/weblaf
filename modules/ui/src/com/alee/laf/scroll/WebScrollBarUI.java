@@ -32,29 +32,28 @@ import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
 /**
- * Custom UI for JScrollBar component.
+ * Custom UI for {@link JScrollBar} component.
  *
  * @author Mikle Garin
  */
 
-public class WebScrollBarUI extends BasicScrollBarUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Whether or not scroll bar buttons should be displayed.
      */
-    protected boolean paintButtons;
+    protected boolean displayButtons;
 
     /**
      * Whether or not scroll bar track should be displayed.
      */
-    protected boolean paintTrack;
+    protected boolean displayTrack;
 
     /**
      * Miinimum thumb size.
@@ -128,7 +127,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements ShapeProvider, M
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( scrollbar, painter );
     }
@@ -159,46 +158,30 @@ public class WebScrollBarUI extends BasicScrollBarUI implements ShapeProvider, M
         PainterSupport.updateBorder ( getPainter () );
     }
 
-    /**
-     * Returns whether scroll bar arrow buttons should be displayed or not.
-     *
-     * @return true if scroll bar arrow buttons should be displayed, false otherwise
-     */
-    public boolean isPaintButtons ()
+    @Override
+    public boolean isDisplayButtons ()
     {
-        return paintButtons;
+        return displayButtons;
     }
 
-    /**
-     * Sets whether scroll bar arrow buttons should be displayed or not.
-     *
-     * @param paintButtons whether scroll bar arrow buttons should be displayed or not
-     */
-    public void setPaintButtons ( final boolean paintButtons )
+    @Override
+    public void setDisplayButtons ( final boolean displayButtons )
     {
-        this.paintButtons = paintButtons;
+        this.displayButtons = displayButtons;
         scrollbar.revalidate ();
         scrollbar.repaint ();
     }
 
-    /**
-     * Returns whether scroll bar track should be displayed or not.
-     *
-     * @return true if scroll bar track should be displayed, false otherwise
-     */
-    public boolean isPaintTrack ()
+    @Override
+    public boolean isDisplayTrack ()
     {
-        return paintTrack;
+        return displayTrack;
     }
 
-    /**
-     * Sets whether scroll bar track should be displayed or not.
-     *
-     * @param paintTrack whether scroll bar track should be displayed or not
-     */
-    public void setPaintTrack ( final boolean paintTrack )
+    @Override
+    public void setDisplayTrack ( final boolean displayTrack )
     {
-        this.paintTrack = paintTrack;
+        this.displayTrack = displayTrack;
         scrollbar.revalidate ();
         scrollbar.repaint ();
     }
@@ -292,7 +275,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements ShapeProvider, M
         final Dimension ps = painter != null ? painter.getPreferredSize () : new Dimension ( ver ? 0 : 48, ver ? 48 : 0 );
 
         // Arrow button preferred sizes
-        if ( painter != null && paintButtons && decrButton != null && incrButton != null )
+        if ( painter != null && displayButtons && decrButton != null && incrButton != null )
         {
             final Dimension dps = decrButton.getPreferredSize ();
             final Dimension ips = incrButton.getPreferredSize ();
@@ -352,7 +335,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements ShapeProvider, M
         public Dimension getPreferredSize ()
         {
             // The best way (so far) to hide buttons without causing a serious mess in the code
-            return painter != null && paintButtons ? super.getPreferredSize () : new Dimension ( 0, 0 );
+            return painter != null && displayButtons ? super.getPreferredSize () : new Dimension ( 0, 0 );
         }
     }
 }

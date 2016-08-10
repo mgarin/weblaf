@@ -20,7 +20,7 @@ package com.alee.laf.tooltip;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.ContentPropertyListener;
-import com.alee.painter.decoration.content.SimpleStyledTextContent;
+import com.alee.extended.label.SimpleStyledTextContent;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import javax.swing.*;
@@ -93,7 +93,7 @@ public class StyledToolTipTextContent<E extends JToolTip, D extends IDecoration<
     }
 
     @Override
-    protected int getComponentMnemonicIndex ( final E c, final D d )
+    protected int getComponentMnemonic ( final E c, final D d )
     {
         return -1;
     }

@@ -27,6 +27,6 @@ import com.alee.painter.SpecificPainter;
  * @author Mikle Garin
  */
 
-public interface IImagePainter<E extends WebImage, U extends WebImageUI> extends SpecificPainter<E, U>
+public interface IImagePainter<E extends WebImage, U extends WImageUI> extends SpecificPainter<E, U>
 {
 }

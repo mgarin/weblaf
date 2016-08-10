@@ -19,7 +19,7 @@ package com.alee.managers.popup;
 
 import com.alee.extended.layout.MultiLayout;
 import com.alee.laf.panel.WebPanel;
-import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.ShapeMethods;
 
 import java.awt.*;
 
@@ -152,9 +152,9 @@ public class PopupLayer extends WebPanel
         for ( final Component child : getComponents () )
         {
             final Point l = child.getLocation ();
-            if ( child instanceof ShapeProvider )
+            if ( child instanceof ShapeMethods )
             {
-                final Shape shape = ( ( ShapeProvider ) child ).provideShape ();
+                final Shape shape = ( ( ShapeMethods ) child ).getShape ();
                 if ( shape != null && shape.contains ( x - l.x, y - l.y ) )
                 {
                     return true;

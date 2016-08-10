@@ -88,6 +88,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         super.install ( c, ui );
 
         // Determining initial decoration state
+        this.focused = SwingUtils.hasFocusOwner ( c );
         this.states = collectDecorationStates ();
 
         // Installing listeners
@@ -111,6 +112,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         // Cleaning up variables
         this.decorationCache = null;
         this.states = null;
+        this.focused = false;
 
         super.uninstall ( c, ui );
     }
@@ -229,7 +231,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      * @param oldFocus previously focused component
      * @param newFocus currently focused component
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void globalFocusChanged ( final Component oldFocus, final Component newFocus )
     {
         final boolean old = inFocusedParent;

@@ -18,7 +18,6 @@
 package com.alee.laf.rootpane;
 
 import com.alee.extended.layout.AbstractLayoutManager;
-import com.alee.laf.grouping.GroupPane;
 import com.alee.utils.MathUtils;
 
 import javax.swing.*;
@@ -55,7 +54,7 @@ public class WebRootPaneLayout extends AbstractLayoutManager
         final int h = s.height - i.top - i.bottom;
         final boolean ltr = root.getComponentOrientation ().isLeftToRight ();
 
-        final GroupPane windowButtons = rootUI.getButtonsPanel ();
+        final JComponent windowButtons = rootUI.getButtonsPanel ();
         final JComponent titleComponent = rootUI.getTitleComponent ();
         final JMenuBar menuBar = root.getJMenuBar ();
         final boolean showWindowButtons = windowButtons != null && rootUI.isDisplayWindowButtons () &&
@@ -144,7 +143,7 @@ public class WebRootPaneLayout extends AbstractLayoutManager
         final JRootPane root = ( JRootPane ) parent;
         final WebRootPaneUI rootUI = ( WebRootPaneUI ) root.getUI ();
 
-        final GroupPane windowButtons = rootUI.getButtonsPanel ();
+        final JComponent windowButtons = rootUI.getButtonsPanel ();
         final JComponent titleComponent = rootUI.getTitleComponent ();
         final JMenuBar menuBar = root.getJMenuBar ();
         final boolean showWindowButtons = windowButtons != null && rootUI.isDisplayWindowButtons () &&

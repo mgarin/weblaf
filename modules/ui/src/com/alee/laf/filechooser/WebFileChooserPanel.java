@@ -736,7 +736,7 @@ public class WebFileChooserPanel extends WebPanel
         treeScroll.setPreferredSize ( new Dimension ( dividerLocation, 1 ) );
 
         fileTree = new WebFileTree ( StyleId.filechooserFileTree.at ( treeScroll ) );
-        fileTree.setAutoExpandSelectedNode ( true );
+        fileTree.setExpandSelected ( true );
         fileTree.setSelectionMode ( TreeSelectionModel.SINGLE_TREE_SELECTION );
         treeScroll.setViewportView ( fileTree );
 
@@ -2073,24 +2073,13 @@ public class WebFileChooserPanel extends WebPanel
     {
         if ( text == null )
         {
-            setAcceptButtonText ( chooserType == FileChooserType.save ? FileAcceptText.save :
-                    chooserType == FileChooserType.open ? FileAcceptText.open : FileAcceptText.choose );
+            setAcceptButtonText ( chooserType.getApproveButtonText () );
         }
         else
         {
             acceptButton.removeLanguage ();
             acceptButton.setText ( text );
         }
-    }
-
-    /**
-     * Sets accept button text type.
-     *
-     * @param acceptText accept button text type
-     */
-    public void setAcceptButtonText ( final FileAcceptText acceptText )
-    {
-        setAcceptButtonLanguage ( acceptText.getLanguageKey () );
     }
 
     /**

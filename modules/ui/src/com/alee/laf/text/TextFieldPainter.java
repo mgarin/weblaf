@@ -16,7 +16,7 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public class TextFieldPainter<E extends JTextField, U extends WebTextFieldUI, D extends IDecoration<E, D>>
+public class TextFieldPainter<E extends JTextField, U extends WTextFieldUI, D extends IDecoration<E, D>>
         extends AbstractTextFieldPainter<E, U, D> implements ITextFieldPainter<E, U>, SwingConstants
 {
     @Override

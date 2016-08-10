@@ -9,16 +9,16 @@ import javax.swing.tree.TreePath;
 import java.util.Hashtable;
 
 /**
- * Simple TreePainter adapter class.
- * It is used to install simple non-specific painters into WebTreeUI.
+ * Simple {@link TreePainter} adapter class.
+ * It is used to install simple non-specific painters into {@link WTreeUI}.
  *
  * @author Alexandr Zernov
  */
 
-public final class AdaptiveTreePainter<E extends JTree, U extends WebTreeUI> extends AdaptivePainter<E, U> implements ITreePainter<E, U>
+public final class AdaptiveTreePainter<E extends JTree, U extends WTreeUI> extends AdaptivePainter<E, U> implements ITreePainter<E, U>
 {
     /**
-     * Constructs new AdaptiveTreePainter for the specified painter.
+     * Constructs new {@link AdaptiveTreePainter} for the specified painter.
      *
      * @param painter painter to adapt
      */

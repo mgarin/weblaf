@@ -15,7 +15,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class EditorPanePainter<E extends JEditorPane, U extends WebEditorPaneUI, D extends IDecoration<E, D>>
+public class EditorPanePainter<E extends JEditorPane, U extends WEditorPaneUI, D extends IDecoration<E, D>>
         extends AbstractTextAreaPainter<E, U, D> implements IEditorPanePainter<E, U>
 {
     @Override

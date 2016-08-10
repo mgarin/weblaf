@@ -38,7 +38,7 @@ import java.beans.PropertyChangeListener;
  * @author Mikle Garin
  */
 
-public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebToolTipUI extends BasicToolTipUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -136,7 +136,7 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider, Margi
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( tooltip, painter );
     }

@@ -38,6 +38,6 @@ public class LabelsGroup extends AbstractExampleGroup
     protected List<Class> getExampleClasses ()
     {
         return CollectionUtils
-                .<Class>asList ( JLabelExample.class, WebStyledLabelExample.class, WebLinkLabelExample.class, WebHotkeyLabelExample.class );
+                .<Class>asList ( JLabelExample.class, WebStyledLabelExample.class, WebLinkExample.class, WebHotkeyLabelExample.class );
     }
 }

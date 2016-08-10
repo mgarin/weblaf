@@ -36,7 +36,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "Background" )
+@XStreamAlias ("Background")
 public class BackgroundContent<E extends JComponent, D extends IDecoration<E, D>, I extends BackgroundContent<E, D, I>>
         extends AbstractContent<E, D, I>
 {
@@ -65,7 +65,7 @@ public class BackgroundContent<E extends JComponent, D extends IDecoration<E, D>
      * @param d painted decoration state
      * @return background color
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected Color getColor ( final E c, final D d )
     {
         if ( color != null )
@@ -85,17 +85,10 @@ public class BackgroundContent<E extends JComponent, D extends IDecoration<E, D>
      * @param d painted decoration state
      * @return background rounding
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected int getRound ( final E c, final D d )
     {
-        if ( round != null )
-        {
-            return round;
-        }
-        else
-        {
-            throw new DecorationException ( "Background rounding must be specified" );
-        }
+        return round != null ? round : 0;
     }
 
     @Override

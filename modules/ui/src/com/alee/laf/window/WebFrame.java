@@ -17,7 +17,7 @@
 
 package com.alee.laf.window;
 
-import com.alee.laf.grouping.GroupPane;
+import com.alee.laf.rootpane.WRootPaneUI;
 import com.alee.laf.rootpane.WebRootPane;
 import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.managers.focus.DefaultFocusTracker;
@@ -59,7 +59,7 @@ import java.util.Map;
  */
 
 public class WebFrame<T extends WebFrame<T>> extends JFrame
-        implements Styleable, Paintable, PaddingSupport, WindowEventMethods, LanguageMethods, SettingsMethods, WindowMethods<T>
+        implements Styleable, Paintable, PaddingMethods, WindowEventMethods, LanguageMethods, SettingsMethods, WindowMethods<T>
 {
     /**
      * Whether should close frame on focus loss or not.
@@ -279,43 +279,13 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
     }
 
     /**
-     * Returns window title component.
-     *
-     * @return window title component
-     */
-    public JComponent getTitleComponent ()
-    {
-        return getRootPaneWebUI ().getTitleComponent ();
-    }
-
-    /**
-     * Sets window title component.
-     *
-     * @param title new window title component
-     */
-    public void setTitleComponent ( final JComponent title )
-    {
-        getRootPaneWebUI ().setTitleComponent ( title );
-    }
-
-    /**
-     * Returns window buttons panel.
-     *
-     * @return window buttons panel
-     */
-    public GroupPane getButtonsPanel ()
-    {
-        return getRootPaneWebUI ().getButtonsPanel ();
-    }
-
-    /**
      * Returns whether or not window title component should be displayed.
      *
      * @return true if window title component should be displayed, false otherwise
      */
     public boolean isDisplayTitleComponent ()
     {
-        return getRootPaneWebUI ().isDisplayTitleComponent ();
+        return getUI ().isDisplayTitleComponent ();
     }
 
     /**
@@ -325,7 +295,27 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
      */
     public void setDisplayTitleComponent ( final boolean display )
     {
-        getRootPaneWebUI ().setDisplayTitleComponent ( display );
+        getUI ().setDisplayTitleComponent ( display );
+    }
+
+    /**
+     * Returns window title component.
+     *
+     * @return window title component
+     */
+    public JComponent getTitleComponent ()
+    {
+        return getUI ().getTitleComponent ();
+    }
+
+    /**
+     * Sets window title component.
+     *
+     * @param title new window title component
+     */
+    public void setTitleComponent ( final JComponent title )
+    {
+        getUI ().setTitleComponent ( title );
     }
 
     /**
@@ -335,7 +325,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
      */
     public boolean isDisplayWindowButtons ()
     {
-        return getRootPaneWebUI ().isDisplayWindowButtons ();
+        return getUI ().isDisplayWindowButtons ();
     }
 
     /**
@@ -345,7 +335,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
      */
     public void setDisplayWindowButtons ( final boolean display )
     {
-        getRootPaneWebUI ().setDisplayWindowButtons ( display );
+        getUI ().setDisplayWindowButtons ( display );
     }
 
     /**
@@ -355,7 +345,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
      */
     public boolean isDisplayMinimizeButton ()
     {
-        return getRootPaneWebUI ().isDisplayMinimizeButton ();
+        return getUI ().isDisplayMinimizeButton ();
     }
 
     /**
@@ -365,7 +355,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
      */
     public void setDisplayMinimizeButton ( final boolean display )
     {
-        getRootPaneWebUI ().setDisplayMinimizeButton ( display );
+        getUI ().setDisplayMinimizeButton ( display );
     }
 
     /**
@@ -375,7 +365,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
      */
     public boolean isDisplayMaximizeButton ()
     {
-        return getRootPaneWebUI ().isDisplayMaximizeButton ();
+        return getUI ().isDisplayMaximizeButton ();
     }
 
     /**
@@ -385,7 +375,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
      */
     public void setDisplayMaximizeButton ( final boolean display )
     {
-        getRootPaneWebUI ().setDisplayMaximizeButton ( display );
+        getUI ().setDisplayMaximizeButton ( display );
     }
 
     /**
@@ -395,7 +385,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
      */
     public boolean isDisplayCloseButton ()
     {
-        return getRootPaneWebUI ().isDisplayCloseButton ();
+        return getUI ().isDisplayCloseButton ();
     }
 
     /**
@@ -405,7 +395,17 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
      */
     public void setDisplayCloseButton ( final boolean display )
     {
-        getRootPaneWebUI ().setDisplayCloseButton ( display );
+        getUI ().setDisplayCloseButton ( display );
+    }
+
+    /**
+     * Returns window buttons panel.
+     *
+     * @return window buttons panel
+     */
+    public JComponent getButtonsPanel ()
+    {
+        return getUI ().getButtonsPanel ();
     }
 
     /**
@@ -415,7 +415,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
      */
     public boolean isDisplayMenuBar ()
     {
-        return getRootPaneWebUI ().isDisplayMenuBar ();
+        return getUI ().isDisplayMenuBar ();
     }
 
     /**
@@ -425,7 +425,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
      */
     public void setDisplayMenuBar ( final boolean display )
     {
-        getRootPaneWebUI ().setDisplayMenuBar ( display );
+        getUI ().setDisplayMenuBar ( display );
     }
 
     @Override
@@ -527,56 +527,45 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
     @Override
     public Insets getPadding ()
     {
-        return getRootPaneWebUI ().getPadding ();
+        return PaddingMethodsImpl.getPadding ( getRootPane () );
     }
 
-    /**
-     * Sets new padding.
-     *
-     * @param padding new padding
-     */
+    @Override
     public void setPadding ( final int padding )
     {
-        setPadding ( padding, padding, padding, padding );
+        PaddingMethodsImpl.setPadding ( getRootPane (), padding );
     }
 
-    /**
-     * Sets new padding.
-     *
-     * @param top    new top padding
-     * @param left   new left padding
-     * @param bottom new bottom padding
-     * @param right  new right padding
-     */
+    @Override
     public void setPadding ( final int top, final int left, final int bottom, final int right )
     {
-        setPadding ( new Insets ( top, left, bottom, right ) );
+        PaddingMethodsImpl.setPadding (  getRootPane (), top, left, bottom, right );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        ( ( WebRootPaneUI ) getRootPane ().getUI () ).setPadding ( padding );
+        PaddingMethodsImpl.setPadding (  getRootPane (), padding );
     }
 
     /**
-     * Returns Web-UI applied to this class.
+     * Returns the look and feel (L&amp;F) object that renders this component.
      *
-     * @return Web-UI applied to this class
+     * @return the {@link WRootPaneUI} object that renders this component
      */
-    protected WebRootPaneUI getWebUI ()
+    public WRootPaneUI getUI ()
     {
-        return ( WebRootPaneUI ) getRootPane ().getUI ();
+        return ( WRootPaneUI ) getRootPane ().getUI ();
     }
 
     /**
-     * Returns Web-UI applied to root pane used by this frame.
+     * Sets the L&amp;F object that renders this component.
      *
-     * @return Web-UI applied to root pane used by this frame
+     * @param ui {@link WRootPaneUI}
      */
-    protected WebRootPaneUI getRootPaneWebUI ()
+    public void setUI ( final WRootPaneUI ui )
     {
-        return ( WebRootPaneUI ) getRootPane ().getUI ();
+        getRootPane ().setUI ( ui );
     }
 
     @Override

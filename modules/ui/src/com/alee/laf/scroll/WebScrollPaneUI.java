@@ -39,12 +39,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Custom UI for JScrollPane component.
+ * Custom UI for {@link JScrollPane} component.
  *
  * @author Mikle Garin
  */
 
-public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -201,7 +201,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( scrollpane, painter );
     }

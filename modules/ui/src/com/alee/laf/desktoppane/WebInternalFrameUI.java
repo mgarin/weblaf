@@ -31,12 +31,12 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * Custom UI for JInternalFrame component.
+ * Custom UI for {@link JInternalFrame} component.
  *
  * @author Mikle Garin
  */
 
-public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -141,7 +141,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapePro
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( frame, painter );
     }

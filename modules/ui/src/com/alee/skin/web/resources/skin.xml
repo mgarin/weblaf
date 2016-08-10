@@ -18,6 +18,7 @@
     <include>resources/label.xml</include>
     <include>resources/styledlabel.xml</include>
     <include>resources/tooltip.xml</include>
+    <include>resources/link.xml</include>
     <include>resources/button.xml</include>
     <include>resources/splitbutton.xml</include>
     <include>resources/togglebutton.xml</include>

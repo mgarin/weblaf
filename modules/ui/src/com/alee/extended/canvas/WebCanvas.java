@@ -46,7 +46,7 @@ import java.util.List;
  * @see CanvasPainter
  */
 
-public class WebCanvas extends WebComponent<WebCanvasUI, WebCanvas> implements Stateful
+public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Stateful
 {
     /**
      * Custom canvas states.
@@ -89,26 +89,6 @@ public class WebCanvas extends WebComponent<WebCanvasUI, WebCanvas> implements S
     public StyleId getDefaultStyleId ()
     {
         return StyleId.canvas;
-    }
-
-    /**
-     * Returns the look and feel (L&amp;F) object that renders this component.
-     *
-     * @return the {@link com.alee.extended.canvas.CanvasUI} object that renders this component
-     */
-    public CanvasUI getUI ()
-    {
-        return ( CanvasUI ) ui;
-    }
-
-    /**
-     * Sets the L&amp;F object that renders this component.
-     *
-     * @param ui {@link com.alee.extended.canvas.CanvasUI}
-     */
-    public void setUI ( final CanvasUI ui )
-    {
-        super.setUI ( ui );
     }
 
     /**
@@ -185,20 +165,34 @@ public class WebCanvas extends WebComponent<WebCanvasUI, WebCanvas> implements S
         firePropertyChange ( AbstractDecorationPainter.DECORATION_STATES_PROPERTY, oldStates, newStates );
     }
 
-    @Override
-    public WebCanvasUI getWebUI ()
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WCanvasUI} object that renders this component
+     */
+    public WCanvasUI getUI ()
     {
-        return ( WebCanvasUI ) getUI ();
+        return ( WCanvasUI ) ui;
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WCanvasUI}
+     */
+    public void setUI ( final WCanvasUI ui )
+    {
+        super.setUI ( ui );
     }
 
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebCanvasUI ) )
+        if ( getUI () == null || !( getUI () instanceof WCanvasUI ) )
         {
             try
             {
-                setUI ( ( WebCanvasUI ) UIManager.getUI ( this ) );
+                setUI ( ( WCanvasUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

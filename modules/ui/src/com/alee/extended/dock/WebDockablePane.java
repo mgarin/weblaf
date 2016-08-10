@@ -51,7 +51,7 @@ import java.util.List;
  * @see DockablePanePainter
  */
 
-public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockablePane> implements SettingsMethods
+public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePaneUI> implements SettingsMethods
 {
     /**
      * Component properties.
@@ -679,37 +679,31 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
     /**
      * Returns the look and feel (L&amp;F) object that renders this component.
      *
-     * @return the {@link com.alee.extended.dock.DockablePaneUI} object that renders this component
+     * @return the {@link WDockablePaneUI} object that renders this component
      */
-    public DockablePaneUI getUI ()
+    public WDockablePaneUI getUI ()
     {
-        return ( DockablePaneUI ) ui;
+        return ( WDockablePaneUI ) ui;
     }
 
     /**
      * Sets the L&amp;F object that renders this component.
      *
-     * @param ui {@link com.alee.extended.dock.DockablePaneUI}
+     * @param ui {@link WDockablePaneUI}
      */
-    public void setUI ( final DockablePaneUI ui )
+    public void setUI ( final WDockablePaneUI ui )
     {
         super.setUI ( ui );
     }
 
     @Override
-    public WebDockablePaneUI getWebUI ()
-    {
-        return ( WebDockablePaneUI ) getUI ();
-    }
-
-    @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebDockablePaneUI ) )
+        if ( getUI () == null || !( getUI () instanceof WDockablePaneUI ) )
         {
             try
             {
-                setUI ( ( WebDockablePaneUI ) UIManager.getUI ( this ) );
+                setUI ( ( WDockablePaneUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

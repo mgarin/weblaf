@@ -30,8 +30,6 @@ import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.painter.decoration.content.StyledText;
-import com.alee.painter.decoration.content.TextWrap;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
@@ -50,17 +48,21 @@ import java.util.Map;
  * {@link JLabel} component extension that can render styled text.
  * Its rendering speed is far superior to HTML rendering within common {@link JLabel}.
  * <p/>
+ * In addition to customizable style ranges text in this label also supports custom styling syntax.
+ * You can find styling syntax description in {@link StyleRanges} class JavaDoc.
+ * <p/>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  * @see JLabel
  * @see WebStyledLabelUI
  * @see StyledLabelPainter
  */
 
 public class WebStyledLabel extends JLabel
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods, LanguageMethods,
+        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods, ToolTipMethods, LanguageMethods,
         FontMethods<WebStyledLabel>
 {
     /**
@@ -304,30 +306,25 @@ public class WebStyledLabel extends JLabel
     public void setText ( final String text )
     {
         // Parsing styles
-        final StyledText styledText = getStyledText ( text );
+        final IStyleRanges styleRanges = getStyleRanges ( text );
 
         // Update text
-        super.setText ( styledText.getPlainText () );
+        super.setText ( styleRanges.getPlainText () );
 
         // Update styles
-        setStyleRanges ( styledText.getStyleRanges () );
-    }
-
-    @Override
-    public StyleId getDefaultStyleId ()
-    {
-        return StyleId.styledlabel;
+        setStyleRanges ( styleRanges.getStyleRanges () );
     }
 
     /**
-     * Returns styled text used to parse style syntax.
+     * Returns style ranges implementation used to parse style syntax.
+     * You can override this method to provide a customized {@link IStyleRanges} implementation.
      *
      * @param text text containing style syntax
-     * @return styled text used to parse style syntax
+     * @return style ranges implementation used to parse style syntax
      */
-    protected StyledText getStyledText ( final String text )
+    protected IStyleRanges getStyleRanges ( final String text )
     {
-        return new StyledText ( text );
+        return new StyleRanges ( text );
     }
 
     /**
@@ -347,8 +344,8 @@ public class WebStyledLabel extends JLabel
      */
     public void addStyleRange ( final StyleRange styleRange )
     {
-        final StyleRange removed = addStyleRangeImpl ( styleRange );
-        firePropertyChange ( STYLE_RANGES_PROPERTY, removed, styleRange );
+        addStyleRangeImpl ( styleRange );
+        firePropertyChange ( STYLE_RANGES_PROPERTY, null, styleRange );
     }
 
     /**
@@ -423,13 +420,10 @@ public class WebStyledLabel extends JLabel
      * Adds style range into this label.
      *
      * @param styleRange new style range
-     * @return removed style range
      */
-    protected StyleRange addStyleRangeImpl ( final StyleRange styleRange )
+    protected void addStyleRangeImpl ( final StyleRange styleRange )
     {
-        final StyleRange removed = clearSimilarRangeImpl ( styleRange.getStartIndex (), styleRange.getLength () );
         getStyleRangesImpl ().add ( styleRange );
-        return removed;
     }
 
     /**
@@ -464,7 +458,6 @@ public class WebStyledLabel extends JLabel
                 if ( range.getStartIndex () == styleRange.getStartIndex () && range.getLength () == styleRange.getLength () )
                 {
                     iterator.remove ();
-                    return;
                 }
             }
         }
@@ -492,28 +485,6 @@ public class WebStyledLabel extends JLabel
     protected void clearStyleRangesImpl ()
     {
         getStyleRangesImpl ().clear ();
-    }
-
-    /**
-     * Removes any style range found in the same range as the specified one.
-     *
-     * @param start  range start
-     * @param length range length
-     * @return removed style range
-     */
-    protected StyleRange clearSimilarRangeImpl ( final int start, final int length )
-    {
-        final Iterator<StyleRange> iterator = getStyleRangesImpl ().iterator ();
-        while ( iterator.hasNext () )
-        {
-            final StyleRange range = iterator.next ();
-            if ( range.getStartIndex () == start && range.getLength () == length )
-            {
-                iterator.remove ();
-                return range;
-            }
-        }
-        return null;
     }
 
     /**
@@ -655,6 +626,12 @@ public class WebStyledLabel extends JLabel
     }
 
     @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.styledlabel;
+    }
+
+    @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( this );
@@ -745,99 +722,88 @@ public class WebStyledLabel extends JLabel
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
-        return getWebUI ().provideShape ();
+        return ShapeMethodsImpl.getShape ( this );
     }
 
     @Override
     public Insets getMargin ()
     {
-        return getWebUI ().getMargin ();
+        return MarginMethodsImpl.getMargin ( this );
     }
 
-    /**
-     * Sets new margin.
-     *
-     * @param margin new margin
-     */
+    @Override
     public void setMargin ( final int margin )
     {
-        setMargin ( margin, margin, margin, margin );
+        MarginMethodsImpl.setMargin ( this, margin );
     }
 
-    /**
-     * Sets new margin.
-     *
-     * @param top    new top margin
-     * @param left   new left margin
-     * @param bottom new bottom margin
-     * @param right  new right margin
-     */
+    @Override
     public void setMargin ( final int top, final int left, final int bottom, final int right )
     {
-        setMargin ( new Insets ( top, left, bottom, right ) );
+        MarginMethodsImpl.setMargin ( this, top, left, bottom, right );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        getWebUI ().setMargin ( margin );
+        MarginMethodsImpl.setMargin ( this, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return getWebUI ().getPadding ();
+        return PaddingMethodsImpl.getPadding ( this );
     }
 
-    /**
-     * Sets new padding.
-     *
-     * @param padding new padding
-     */
+    @Override
     public void setPadding ( final int padding )
     {
-        setPadding ( padding, padding, padding, padding );
+        PaddingMethodsImpl.setPadding ( this, padding );
     }
 
-    /**
-     * Sets new padding.
-     *
-     * @param top    new top padding
-     * @param left   new left padding
-     * @param bottom new bottom padding
-     * @param right  new right padding
-     */
+    @Override
     public void setPadding ( final int top, final int left, final int bottom, final int right )
     {
-        setPadding ( new Insets ( top, left, bottom, right ) );
+        PaddingMethodsImpl.setPadding ( this, top, left, bottom, right );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        getWebUI ().setPadding ( padding );
+        PaddingMethodsImpl.setPadding ( this, padding );
     }
 
     /**
-     * Returns Web-UI applied to this class.
+     * Returns the look and feel (L&amp;F) object that renders this component.
      *
-     * @return Web-UI applied to this class
+     * @return the {@link WStyledLabelUI} object that renders this component
      */
-    private WebStyledLabelUI getWebUI ()
+    @Override
+    public WStyledLabelUI getUI ()
     {
-        return ( WebStyledLabelUI ) getUI ();
+        return ( WStyledLabelUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WStyledLabelUI}
+     */
+    public void setUI ( final WStyledLabelUI ui )
+    {
+        super.setUI ( ui );
     }
 
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebStyledLabelUI ) )
+        if ( getUI () == null || !( getUI () instanceof WStyledLabelUI ) )
         {
             try
             {
-                setUI ( ( WebStyledLabelUI ) UIManager.getUI ( this ) );
+                setUI ( ( WStyledLabelUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

@@ -90,10 +90,11 @@ public final class SplitData<T extends DocumentData> implements StructureData<T>
      */
     protected WebSplitPane createSplit ( final int orientation, final StructureData first, final StructureData last )
     {
+        // todo Appropriate split style
         final WebSplitPane splitPane = new WebSplitPane ( orientation, first.getComponent (), last.getComponent () );
         splitPane.putClientProperty ( WebDocumentPane.DATA_KEY, this );
         splitPane.setContinuousLayout ( true );
-        splitPane.setDrawDividerBorder ( true );
+        // splitPane.setDrawDividerBorder ( true );
         splitPane.setDividerSize ( 8 );
         splitPane.setResizeWeight ( 0.5 );
         splitPane.addPropertyChangeListener ( JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()

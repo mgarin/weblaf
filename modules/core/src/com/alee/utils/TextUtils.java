@@ -264,6 +264,91 @@ public final class TextUtils
     }
 
     /**
+     * Returns begin index of last word in the specified text.
+     *
+     * @param string text to process
+     * @return begin index of last word in the specified text
+     */
+    public static int findLastRowWordStartIndex ( final String string )
+    {
+        boolean spaceFound = false;
+        boolean skipSpace = true;
+        for ( int i = string.length () - 1; i >= 0; i-- )
+        {
+            final char c = string.charAt ( i );
+            if ( !spaceFound && !skipSpace )
+            {
+                if ( c == ' ' || c == '\t' || c == '\r' || c == '\n' )
+                {
+                    spaceFound = true;
+                }
+            }
+            else
+            {
+                if ( c != ' ' && c != '\t' && c != '\r' && c != '\n' )
+                {
+                    if ( spaceFound )
+                    {
+                        return i;
+                    }
+                    skipSpace = false;
+                }
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Returns begin index of first word after specified index.
+     *
+     * @param string text to process
+     * @param from   index to start search from
+     * @return begin index of first word after specified index
+     */
+    public static int findFirstWordFromIndex ( final String string, final int from )
+    {
+        for ( int i = from; i < string.length (); i++ )
+        {
+            final char c = string.charAt ( i );
+            if ( c != ' ' && c != '\t' && c != '\r' && c != '\n' )
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Returns last index of the first word end.
+     *
+     * @param string text to process
+     * @return last index of the first word end
+     */
+    public static int findFirstRowWordEndIndex ( final String string )
+    {
+        boolean spaceFound = false;
+        for ( int i = 0; i < string.length (); i++ )
+        {
+            final char c = string.charAt ( i );
+            if ( !spaceFound )
+            {
+                if ( c == ' ' || c == '\t' || c == '\r' || c == '\n' )
+                {
+                    spaceFound = true;
+                }
+            }
+            else
+            {
+                if ( c != ' ' && c != '\t' && c != '\r' && c != '\n' )
+                {
+                    return i;
+                }
+            }
+        }
+        return string.length ();
+    }
+
+    /**
      * Returns text with first lines removed.
      *
      * @param text  text to crop

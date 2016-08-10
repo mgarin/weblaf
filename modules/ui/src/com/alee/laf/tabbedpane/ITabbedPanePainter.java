@@ -12,6 +12,6 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public interface ITabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPaneUI> extends SpecificPainter<E, U>
+public interface ITabbedPanePainter<E extends JTabbedPane, U extends WTabbedPaneUI> extends SpecificPainter<E, U>
 {
 }

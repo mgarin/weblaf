@@ -35,10 +35,12 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 
 /**
+ * Custom UI for {@link JOptionPane} component.
+ *
  * @author Mikle Garin
  */
 
-public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Icons.
@@ -102,7 +104,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeProvider,
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( optionPane, painter );
     }

@@ -18,7 +18,6 @@
 package com.alee.laf.text;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.Bounds;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -28,15 +27,16 @@ import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicTextAreaUI;
 import java.awt.*;
 
 /**
+ * Custom UI for {@link JTextArea} component.
+ *
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
 
-public class WebTextAreaUI extends BasicTextAreaUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebTextAreaUI extends WTextAreaUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -104,7 +104,7 @@ public class WebTextAreaUI extends BasicTextAreaUI implements ShapeProvider, Mar
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( textArea, painter );
     }
@@ -163,21 +163,13 @@ public class WebTextAreaUI extends BasicTextAreaUI implements ShapeProvider, Mar
         }, this.painter, painter, ITextAreaPainter.class, AdaptiveTextAreaPainter.class );
     }
 
-    /**
-     * Returns input prompt text.
-     *
-     * @return input prompt text
-     */
+    @Override
     public String getInputPrompt ()
     {
         return inputPrompt;
     }
 
-    /**
-     * Sets input prompt text.
-     *
-     * @param text input prompt text
-     */
+    @Override
     public void setInputPrompt ( final String text )
     {
         if ( !CompareUtils.equals ( text, this.inputPrompt ) )

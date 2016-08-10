@@ -43,7 +43,7 @@ import java.util.Map;
  */
 
 public class WebColorChooser extends JColorChooser
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, DialogOptions
+        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, DialogOptions
 {
     /**
      * Constructs new color chooser.
@@ -106,59 +106,112 @@ public class WebColorChooser extends JColorChooser
         setStyleId ( id );
     }
 
+    /**
+     * Returns whether or not buttons panel should be displayed.
+     *
+     * @return {@code true} if buttons panel should be displayed, {@code false} otherwise
+     */
     public boolean isShowButtonsPanel ()
     {
-        return getWebUI ().isShowButtonsPanel ();
+        return getUI ().isShowButtonsPanel ();
     }
 
-    public void setShowButtonsPanel ( final boolean showButtonsPanel )
+    /**
+     * Sets whether or not buttons panel should be displayed.
+     *
+     * @param display whether or not buttons panel should be displayed
+     */
+    public void setShowButtonsPanel ( final boolean display )
     {
-        getWebUI ().setShowButtonsPanel ( showButtonsPanel );
+        getUI ().setShowButtonsPanel ( display );
     }
 
+    /**
+     * Returns whether or not web-only colors should be displayed.
+     *
+     * @return {@code true} if web-only colors should be displayed, {@code false} otherwise
+     */
     public boolean isWebOnlyColors ()
     {
-        return getWebUI ().isWebOnlyColors ();
+        return getUI ().isWebOnlyColors ();
     }
 
-    public void setWebOnlyColors ( final boolean webOnlyColors )
+    /**
+     * Sets whether or not web-only colors should be displayed.
+     *
+     * @param webOnly whether or not web-only colors should be displayed
+     */
+    public void setWebOnlyColors ( final boolean webOnly )
     {
-        getWebUI ().setWebOnlyColors ( webOnlyColors );
+        getUI ().setWebOnlyColors ( webOnly );
     }
 
-    public Color getOldColor ()
+    /**
+     * Returns previously selected color.
+     *
+     * @return previously selected color
+     */
+    public Color getPreviousColor ()
     {
-        return getWebUI ().getOldColor ();
+        return getUI ().getPreviousColor ();
     }
 
-    public void setOldColor ( final Color oldColor )
+    /**
+     * Sets previously selected color.
+     *
+     * @param previous previously selected color
+     */
+    public void setPreviousColor ( final Color previous )
     {
-        getWebUI ().setOldColor ( oldColor );
+        getUI ().setPreviousColor ( previous );
     }
 
+    /**
+     * Resets color chooser result.
+     */
     public void resetResult ()
     {
-        getWebUI ().resetResult ();
+        getUI ().resetResult ();
     }
 
+    /**
+     * Sets color chooser result.
+     *
+     * @param result color chooser result
+     */
     public void setResult ( final int result )
     {
-        getWebUI ().setResult ( result );
+        getUI ().setResult ( result );
     }
 
+    /**
+     * Returns color chooser result.
+     *
+     * @return color chooser result
+     */
     public int getResult ()
     {
-        return getWebUI ().getResult ();
+        return getUI ().getResult ();
     }
 
-    public void addColorChooserListener ( final ColorChooserListener colorChooserListener )
+    /**
+     * Adds color chooser listener.
+     *
+     * @param listener color chooser listener to add
+     */
+    public void addColorChooserListener ( final ColorChooserListener listener )
     {
-        getWebUI ().addColorChooserListener ( colorChooserListener );
+        getUI ().addColorChooserListener ( listener );
     }
 
-    public void removeColorChooserListener ( final ColorChooserListener colorChooserListener )
+    /**
+     * Removes color chooser listener.
+     *
+     * @param listener color chooser listener to remove
+     */
+    public void removeColorChooserListener ( final ColorChooserListener listener )
     {
-        getWebUI ().removeColorChooserListener ( colorChooserListener );
+        getUI ().removeColorChooserListener ( listener );
     }
 
     @Override
@@ -258,102 +311,88 @@ public class WebColorChooser extends JColorChooser
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
-        return getWebUI ().provideShape ();
+        return ShapeMethodsImpl.getShape ( this );
     }
 
     @Override
     public Insets getMargin ()
     {
-        return getWebUI ().getMargin ();
+        return MarginMethodsImpl.getMargin ( this );
     }
 
-    /**
-     * Sets new margin.
-     *
-     * @param margin new margin
-     */
+    @Override
     public void setMargin ( final int margin )
     {
-        setMargin ( margin, margin, margin, margin );
+        MarginMethodsImpl.setMargin ( this, margin );
     }
 
-    /**
-     * Sets new margin.
-     *
-     * @param top    new top margin
-     * @param left   new left margin
-     * @param bottom new bottom margin
-     * @param right  new right margin
-     */
+    @Override
     public void setMargin ( final int top, final int left, final int bottom, final int right )
     {
-        setMargin ( new Insets ( top, left, bottom, right ) );
+        MarginMethodsImpl.setMargin ( this, top, left, bottom, right );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        getWebUI ().setMargin ( margin );
+        MarginMethodsImpl.setMargin ( this, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return getWebUI ().getPadding ();
+        return PaddingMethodsImpl.getPadding ( this );
     }
 
-    /**
-     * Sets new padding.
-     *
-     * @param padding new padding
-     */
+    @Override
     public void setPadding ( final int padding )
     {
-        setPadding ( padding, padding, padding, padding );
+        PaddingMethodsImpl.setPadding ( this, padding );
     }
 
-    /**
-     * Sets new padding.
-     *
-     * @param top    new top padding
-     * @param left   new left padding
-     * @param bottom new bottom padding
-     * @param right  new right padding
-     */
+    @Override
     public void setPadding ( final int top, final int left, final int bottom, final int right )
     {
-        setPadding ( new Insets ( top, left, bottom, right ) );
+        PaddingMethodsImpl.setPadding ( this, top, left, bottom, right );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        getWebUI ().setPadding ( padding );
+        PaddingMethodsImpl.setPadding ( this, padding );
     }
 
     /**
-     * Returns Web-UI applied to this class.
+     * Returns the look and feel (L&amp;F) object that renders this component.
      *
-     * @return Web-UI applied to this class
+     * @return the {@link WColorChooserUI} object that renders this component
      */
-    private WebColorChooserUI getWebUI ()
+    @Override
+    public WColorChooserUI getUI ()
     {
-        return ( WebColorChooserUI ) getUI ();
+        return ( WColorChooserUI ) super.getUI ();
     }
 
     /**
-     * Installs a Web-UI into this component.
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WColorChooserUI}
      */
+    public void setUI ( final WColorChooserUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebColorChooserUI ) )
+        if ( getUI () == null || !( getUI () instanceof WColorChooserUI ) )
         {
             try
             {
-                setUI ( ( WebColorChooserUI ) UIManager.getUI ( this ) );
+                setUI ( ( WColorChooserUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {
@@ -367,21 +406,49 @@ public class WebColorChooser extends JColorChooser
         }
     }
 
+    /**
+     * Displays modal color chooser dialog and returns selected color.
+     *
+     * @param parent parent component
+     * @return selected color
+     */
     public static Color showDialog ( final Component parent )
     {
         return showDialog ( parent, null, null );
     }
 
+    /**
+     * Displays modal color chooser dialog and returns selected color.
+     *
+     * @param parent parent component
+     * @param title  dialog title
+     * @return selected color
+     */
     public static Color showDialog ( final Component parent, final String title )
     {
         return showDialog ( parent, title, null );
     }
 
+    /**
+     * Displays modal color chooser dialog and returns selected color.
+     *
+     * @param parent parent component
+     * @param color  initially selected color
+     * @return selected color
+     */
     public static Color showDialog ( final Component parent, final Color color )
     {
         return showDialog ( parent, null, color );
     }
 
+    /**
+     * Displays modal color chooser dialog and returns selected color.
+     *
+     * @param parent parent component
+     * @param title  dialog title
+     * @param color  initially selected color
+     * @return selected color
+     */
     public static Color showDialog ( final Component parent, final String title, final Color color )
     {
         // Creating new dialog

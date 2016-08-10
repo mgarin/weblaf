@@ -9,8 +9,6 @@
         </component>
         <ui>
             <selectionStyle>group</selectionStyle>
-            <selectOnHover>false</selectOnHover>
-            <scrollToSelection>true</scrollToSelection>
         </ui>
         <painter>
             <decorations>

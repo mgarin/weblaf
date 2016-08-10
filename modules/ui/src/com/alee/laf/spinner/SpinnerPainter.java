@@ -6,8 +6,8 @@ import com.alee.painter.decoration.IDecoration;
 import javax.swing.*;
 
 /**
- * Basic painter for JSpinner component.
- * It is used as WebSpinnerUI default painter.
+ * Basic painter for {@link JSpinner} component.
+ * It is used as {@link WebSpinnerUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type

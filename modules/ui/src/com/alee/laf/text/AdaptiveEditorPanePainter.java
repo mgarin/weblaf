@@ -6,17 +6,17 @@ import com.alee.painter.Painter;
 import javax.swing.*;
 
 /**
- * Simple EditorPanePainter adapter class.
- * It is used to install simple non-specific painters into WebEditorPaneUI.
+ * Simple {@link EditorPanePainter} adapter class.
+ * It is used to install simple non-specific painters into {@link WEditorPaneUI}.
  *
  * @author Alexandr Zernov
  */
 
-public final class AdaptiveEditorPanePainter<E extends JEditorPane, U extends WebEditorPaneUI> extends AdaptivePainter<E, U>
+public final class AdaptiveEditorPanePainter<E extends JEditorPane, U extends WEditorPaneUI> extends AdaptivePainter<E, U>
         implements IEditorPanePainter<E, U>
 {
     /**
-     * Constructs new AdaptiveEditorPanePainter for the specified painter.
+     * Constructs new {@link AdaptiveEditorPanePainter} for the specified painter.
      *
      * @param painter painter to adapt
      */

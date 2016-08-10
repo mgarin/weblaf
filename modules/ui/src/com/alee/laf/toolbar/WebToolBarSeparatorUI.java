@@ -32,7 +32,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebToolBarSeparatorUI extends BasicSeparatorUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebToolBarSeparatorUI extends BasicSeparatorUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -96,7 +96,7 @@ public class WebToolBarSeparatorUI extends BasicSeparatorUI implements ShapeProv
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( separator, painter );
     }

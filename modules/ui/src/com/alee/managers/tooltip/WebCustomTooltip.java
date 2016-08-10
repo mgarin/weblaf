@@ -22,7 +22,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.language.data.TooltipWay;
-import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.ShapeMethods;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.GraphicsUtils;
@@ -50,7 +50,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebCustomTooltip extends JComponent implements ShapeProvider
+public class WebCustomTooltip extends JComponent implements ShapeMethods
 {
     /**
      * todo 1. Make this a custom styleable component
@@ -1121,7 +1121,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
      */
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return getTooltipShape ( getActualDisplayWay (), true );
     }

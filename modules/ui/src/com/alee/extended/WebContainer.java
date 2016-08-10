@@ -17,9 +17,6 @@
 
 package com.alee.extended;
 
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeProvider;
 import com.alee.utils.swing.extensions.ContainerMethods;
 import com.alee.utils.swing.extensions.ContainerMethodsImpl;
 
@@ -35,8 +32,8 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public abstract class WebContainer<U extends ComponentUI & ShapeProvider & MarginSupport & PaddingSupport, C extends WebContainer<U, C>>
-        extends WebComponent<U, C> implements ContainerMethods<C>
+public abstract class WebContainer<C extends WebContainer<C, U>, U extends ComponentUI> extends WebComponent<C, U>
+        implements ContainerMethods<C>
 {
     @Override
     public boolean contains ( final Component component )

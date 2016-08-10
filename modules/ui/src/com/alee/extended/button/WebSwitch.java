@@ -22,20 +22,17 @@ import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.style.StyleId;
-import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.extensions.KeyEventRunnable;
 import com.alee.utils.swing.MouseButton;
-import com.alee.utils.swing.extensions.MouseEventRunnable;
 import com.alee.utils.swing.WebTimer;
+import com.alee.utils.swing.extensions.KeyEventRunnable;
+import com.alee.utils.swing.extensions.MouseEventRunnable;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This component that allows switching between two states.
@@ -48,11 +45,6 @@ public class WebSwitch extends WebPanel
     /**
      * todo 1. Refactor component structure, probably perform all elements painting inside a single painter
      */
-
-    /**
-     * Switch action listeners.
-     */
-    protected final List<ActionListener> actionListeners = new ArrayList<ActionListener> ( 1 );
 
     /**
      * Style settings.
@@ -419,7 +411,7 @@ public class WebSwitch extends WebPanel
      */
     public void addActionListener ( final ActionListener actionListener )
     {
-        actionListeners.add ( actionListener );
+        listenerList.add ( ActionListener.class, actionListener );
     }
 
     /**
@@ -429,7 +421,7 @@ public class WebSwitch extends WebPanel
      */
     public void removeActionListener ( final ActionListener actionListener )
     {
-        actionListeners.remove ( actionListener );
+        listenerList.remove ( ActionListener.class, actionListener );
     }
 
     /**
@@ -438,7 +430,7 @@ public class WebSwitch extends WebPanel
     public void fireActionPerformed ()
     {
         final ActionEvent actionEvent = new ActionEvent ( WebSwitch.this, 0, "Selection changed" );
-        for ( final ActionListener actionListener : CollectionUtils.copy ( actionListeners ) )
+        for ( final ActionListener actionListener : listenerList.getListeners ( ActionListener.class ) )
         {
             actionListener.actionPerformed ( actionEvent );
         }

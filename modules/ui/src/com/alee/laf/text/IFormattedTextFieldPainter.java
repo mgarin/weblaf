@@ -10,7 +10,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public interface IFormattedTextFieldPainter<E extends JFormattedTextField, U extends WebFormattedTextFieldUI>
+public interface IFormattedTextFieldPainter<E extends JFormattedTextField, U extends WFormattedTextFieldUI>
         extends IAbstractTextFieldPainter<E, U>
 {
 }

@@ -42,7 +42,7 @@ import java.util.Map;
  */
 
 public class WebScrollBar extends JScrollBar
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, SizeMethods<WebScrollBar>
+        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, SizeMethods<WebScrollBar>
 {
     /**
      * Constructs new scroll bar.
@@ -118,9 +118,9 @@ public class WebScrollBar extends JScrollBar
      *
      * @return true if scroll bar arrow buttons should be displayed, false otherwise
      */
-    public boolean isPaintButtons ()
+    public boolean isDisplayButtons ()
     {
-        return getWebUI ().isPaintButtons ();
+        return getUI ().isDisplayButtons ();
     }
 
     /**
@@ -129,9 +129,9 @@ public class WebScrollBar extends JScrollBar
      * @param paintButtons whether scroll bar arrow buttons should be displayed or not
      * @return scroll bar
      */
-    public WebScrollBar setPaintButtons ( final boolean paintButtons )
+    public WebScrollBar setDisplayButtons ( final boolean paintButtons )
     {
-        getWebUI ().setPaintButtons ( paintButtons );
+        getUI ().setDisplayButtons ( paintButtons );
         return this;
     }
 
@@ -140,9 +140,9 @@ public class WebScrollBar extends JScrollBar
      *
      * @return true if scroll bar track should be displayed, false otherwise
      */
-    public boolean isPaintTrack ()
+    public boolean isDisplayTrack ()
     {
-        return getWebUI ().isPaintTrack ();
+        return getUI ().isDisplayTrack ();
     }
 
     /**
@@ -151,9 +151,9 @@ public class WebScrollBar extends JScrollBar
      * @param paintTrack whether scroll bar track should be displayed or not
      * @return scroll bar
      */
-    public WebScrollBar setPaintTrack ( final boolean paintTrack )
+    public WebScrollBar setDisplayTrack ( final boolean paintTrack )
     {
-        getWebUI ().setPaintTrack ( paintTrack );
+        getUI ().setDisplayTrack ( paintTrack );
         return this;
     }
 
@@ -254,102 +254,88 @@ public class WebScrollBar extends JScrollBar
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
-        return getWebUI ().provideShape ();
+        return ShapeMethodsImpl.getShape ( this );
     }
 
     @Override
     public Insets getMargin ()
     {
-        return getWebUI ().getMargin ();
+        return MarginMethodsImpl.getMargin ( this );
     }
 
-    /**
-     * Sets new margin.
-     *
-     * @param margin new margin
-     */
+    @Override
     public void setMargin ( final int margin )
     {
-        setMargin ( margin, margin, margin, margin );
+        MarginMethodsImpl.setMargin ( this, margin );
     }
 
-    /**
-     * Sets new margin.
-     *
-     * @param top    new top margin
-     * @param left   new left margin
-     * @param bottom new bottom margin
-     * @param right  new right margin
-     */
+    @Override
     public void setMargin ( final int top, final int left, final int bottom, final int right )
     {
-        setMargin ( new Insets ( top, left, bottom, right ) );
+        MarginMethodsImpl.setMargin ( this, top, left, bottom, right );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        getWebUI ().setMargin ( margin );
+        MarginMethodsImpl.setMargin ( this, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return getWebUI ().getPadding ();
+        return PaddingMethodsImpl.getPadding ( this );
     }
 
-    /**
-     * Sets new padding.
-     *
-     * @param padding new padding
-     */
+    @Override
     public void setPadding ( final int padding )
     {
-        setPadding ( padding, padding, padding, padding );
+        PaddingMethodsImpl.setPadding ( this, padding );
     }
 
-    /**
-     * Sets new padding.
-     *
-     * @param top    new top padding
-     * @param left   new left padding
-     * @param bottom new bottom padding
-     * @param right  new right padding
-     */
+    @Override
     public void setPadding ( final int top, final int left, final int bottom, final int right )
     {
-        setPadding ( new Insets ( top, left, bottom, right ) );
+        PaddingMethodsImpl.setPadding ( this, top, left, bottom, right );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        getWebUI ().setPadding ( padding );
+        PaddingMethodsImpl.setPadding ( this, padding );
     }
 
     /**
-     * Returns Web-UI applied to this class.
+     * Returns the look and feel (L&amp;F) object that renders this component.
      *
-     * @return Web-UI applied to this class
+     * @return the {@link WScrollBarUI} object that renders this component
      */
-    private WebScrollBarUI getWebUI ()
+    @Override
+    public WScrollBarUI getUI ()
     {
-        return ( WebScrollBarUI ) getUI ();
+        return ( WScrollBarUI ) super.getUI ();
     }
 
     /**
-     * Installs a Web-UI into this component.
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WScrollBarUI}
      */
+    public void setUI ( final WScrollBarUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebScrollBarUI ) )
+        if ( getUI () == null || !( getUI () instanceof WScrollBarUI ) )
         {
             try
             {
-                setUI ( ( WebScrollBarUI ) UIManager.getUI ( this ) );
+                setUI ( ( WScrollBarUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

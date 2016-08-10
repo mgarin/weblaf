@@ -27,6 +27,6 @@ import com.alee.painter.SpecificPainter;
  * @author Mikle Garin
  */
 
-public interface IDateFieldPainter<E extends WebDateField, U extends WebDateFieldUI> extends SpecificPainter<E, U>
+public interface IDateFieldPainter<E extends WebDateField, U extends WDateFieldUI> extends SpecificPainter<E, U>
 {
 }

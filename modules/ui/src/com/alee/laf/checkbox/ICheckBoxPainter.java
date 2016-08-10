@@ -12,6 +12,6 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public interface ICheckBoxPainter<E extends JCheckBox, U extends WebCheckBoxUI> extends IAbstractStateButtonPainter<E, U>
+public interface ICheckBoxPainter<E extends JCheckBox, U extends WCheckBoxUI> extends IAbstractStateButtonPainter<E, U>
 {
 }

@@ -24,6 +24,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * Basic painter for {@link JTable} component.
+ * It is used as {@link WebTableUI} default painter.
+ *
  * @param <E> component type
  * @param <U> component UI type
  * @param <D> decoration type

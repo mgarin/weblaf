@@ -17,6 +17,7 @@
 
 package com.alee.laf.combobox;
 
+import com.alee.laf.combobox.behavior.ComboBoxMouseWheelScrollBehavior;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.log.Log;
@@ -59,7 +60,7 @@ import java.util.Vector;
  */
 
 public class WebComboBox extends JComboBox
-        implements Styleable, Paintable, MarginSupport, PaddingSupport, ShapeProvider, EventMethods, ToolTipMethods, SettingsMethods,
+        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods, ToolTipMethods, SettingsMethods,
         FontMethods<WebComboBox>, SizeMethods<WebComboBox>
 {
     /**
@@ -379,39 +380,57 @@ public class WebComboBox extends JComboBox
         return -1;
     }
 
-    public void setEditorColumns ( final int columns )
+    /**
+     * Returns whether or not wide popup is allowed.
+     *
+     * @return {@code true} if wide popup is allowed, {@code false} otherwise
+     */
+    public boolean isWidePopup ()
     {
-        getWebUI ().setEditorColumns ( columns );
+        return getUI ().isWidePopup ();
     }
 
-    public Icon getExpandIcon ()
+    /**
+     * Sets whether or not wide popup is allowed.
+     *
+     * @param wide whether or not wide popup is allowed
+     */
+    public void setWidePopup ( final boolean wide )
     {
-        return getWebUI ().getExpandIcon ();
+        getUI ().setWidePopup ( wide );
     }
 
-    public void setExpandIcon ( final Icon expandIcon )
-    {
-        getWebUI ().setExpandIcon ( expandIcon );
-    }
-
-    public Icon getCollapseIcon ()
-    {
-        return getWebUI ().getCollapseIcon ();
-    }
-
-    public void setCollapseIcon ( final Icon collapseIcon )
-    {
-        getWebUI ().setCollapseIcon ( collapseIcon );
-    }
-
+    /**
+     * Returns whether or not combobox selection change using mouse wheel is enabled.
+     *
+     * @return {@code true} if combobox selection change using mouse wheel is enabled, {@code false} otherwise
+     */
     public boolean isMouseWheelScrollingEnabled ()
     {
-        return getWebUI ().isMouseWheelScrollingEnabled ();
+        return ComboBoxMouseWheelScrollBehavior.isInstalled ( this );
     }
 
+    /**
+     * Sets whether or not combobox selection change using mouse wheel is enabled.
+     *
+     * @param enabled whether or not combobox selection change using mouse wheel is enabled
+     */
     public void setMouseWheelScrollingEnabled ( final boolean enabled )
     {
-        getWebUI ().setMouseWheelScrollingEnabled ( enabled );
+        if ( enabled )
+        {
+            if ( !isMouseWheelScrollingEnabled () )
+            {
+                ComboBoxMouseWheelScrollBehavior.install ( this );
+            }
+        }
+        else
+        {
+            if ( isMouseWheelScrollingEnabled () )
+            {
+                ComboBoxMouseWheelScrollBehavior.uninstall ( this );
+            }
+        }
     }
 
     @Override
@@ -511,102 +530,88 @@ public class WebComboBox extends JComboBox
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
-        return getWebUI ().provideShape ();
+        return ShapeMethodsImpl.getShape ( this );
     }
 
     @Override
     public Insets getMargin ()
     {
-        return getWebUI ().getMargin ();
+        return MarginMethodsImpl.getMargin ( this );
     }
 
-    /**
-     * Sets new margin.
-     *
-     * @param margin new margin
-     */
+    @Override
     public void setMargin ( final int margin )
     {
-        setMargin ( margin, margin, margin, margin );
+        MarginMethodsImpl.setMargin ( this, margin );
     }
 
-    /**
-     * Sets new margin.
-     *
-     * @param top    new top margin
-     * @param left   new left margin
-     * @param bottom new bottom margin
-     * @param right  new right margin
-     */
+    @Override
     public void setMargin ( final int top, final int left, final int bottom, final int right )
     {
-        setMargin ( new Insets ( top, left, bottom, right ) );
+        MarginMethodsImpl.setMargin ( this, top, left, bottom, right );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        getWebUI ().setMargin ( margin );
+        MarginMethodsImpl.setMargin ( this, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return getWebUI ().getPadding ();
+        return PaddingMethodsImpl.getPadding ( this );
     }
 
-    /**
-     * Sets new padding.
-     *
-     * @param padding new padding
-     */
+    @Override
     public void setPadding ( final int padding )
     {
-        setPadding ( padding, padding, padding, padding );
+        PaddingMethodsImpl.setPadding ( this, padding );
     }
 
-    /**
-     * Sets new padding.
-     *
-     * @param top    new top padding
-     * @param left   new left padding
-     * @param bottom new bottom padding
-     * @param right  new right padding
-     */
+    @Override
     public void setPadding ( final int top, final int left, final int bottom, final int right )
     {
-        setPadding ( new Insets ( top, left, bottom, right ) );
+        PaddingMethodsImpl.setPadding ( this, top, left, bottom, right );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        getWebUI ().setPadding ( padding );
+        PaddingMethodsImpl.setPadding ( this, padding );
     }
 
     /**
-     * Returns Web-UI applied to this class.
+     * Returns the look and feel (L&amp;F) object that renders this component.
      *
-     * @return Web-UI applied to this class
+     * @return the {@link WComboBoxUI} object that renders this component
      */
-    public WebComboBoxUI getWebUI ()
+    @Override
+    public WComboBoxUI getUI ()
     {
-        return ( WebComboBoxUI ) getUI ();
+        return ( WComboBoxUI ) super.getUI ();
     }
 
     /**
-     * Installs a Web-UI into this component.
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WComboBoxUI}
      */
+    public void setUI ( final WComboBoxUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebComboBoxUI ) )
+        if ( getUI () == null || !( getUI () instanceof WComboBoxUI ) )
         {
             try
             {
-                setUI ( ( WebComboBoxUI ) UIManager.getUI ( this ) );
+                setUI ( ( WComboBoxUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

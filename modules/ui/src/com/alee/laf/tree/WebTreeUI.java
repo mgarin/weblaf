@@ -19,6 +19,7 @@ package com.alee.laf.tree;
 
 import com.alee.extended.tree.WebCheckBoxTree;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.tree.behavior.TreePathHoverBehavior;
 import com.alee.managers.icon.Icons;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipProvider;
@@ -29,19 +30,18 @@ import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.Enumeration;
 
 /**
- * Custom UI for JTree component.
+ * Custom UI for {@link JTree} component.
  *
  * @author Mikle Garin
  */
 
-public class WebTreeUI extends BasicTreeUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Default node icons.
@@ -55,8 +55,6 @@ public class WebTreeUI extends BasicTreeUI implements ShapeProvider, MarginSuppo
      * Style settings.
      */
     protected TreeSelectionStyle selectionStyle;
-    protected boolean expandSelected;
-    protected boolean selectOnHover;
 
     /**
      * Component painter.
@@ -132,19 +130,6 @@ public class WebTreeUI extends BasicTreeUI implements ShapeProvider, MarginSuppo
                 final int previousRow = hoverRow;
                 hoverRow = current != null ? tree.getRowForPath ( current ) : -1;
 
-                // Updating selection
-                if ( selectOnHover )
-                {
-                    if ( current != null )
-                    {
-                        tree.setSelectionPath ( current );
-                    }
-                    else
-                    {
-                        tree.clearSelection ();
-                    }
-                }
-
                 // Repainting nodes according to hover changes
                 // This occurs only if hover highlight is enabled
                 if ( painter != null && painter.isHoverDecorationSupported () )
@@ -179,7 +164,7 @@ public class WebTreeUI extends BasicTreeUI implements ShapeProvider, MarginSuppo
             {
                 if ( row != -1 )
                 {
-                    final Rectangle rowBounds = getFullRowBounds ( row );
+                    final Rectangle rowBounds = getRowBounds ( row, true );
                     if ( rowBounds != null )
                     {
                         tree.repaint ( rowBounds );
@@ -213,7 +198,7 @@ public class WebTreeUI extends BasicTreeUI implements ShapeProvider, MarginSuppo
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( tree, painter );
     }
@@ -272,36 +257,20 @@ public class WebTreeUI extends BasicTreeUI implements ShapeProvider, MarginSuppo
         }, this.painter, painter, ITreePainter.class, AdaptiveTreePainter.class );
     }
 
-    /**
-     * Returns current hover row.
-     *
-     * @return current hover row
-     */
+    @Override
     public int getHoverRow ()
     {
         return hoverRow;
     }
 
-    /**
-     * Returns row index for specified point on the tree.
-     * This method takes selection style into account.
-     *
-     * @param point point on the tree
-     * @return row index for specified point on the tree
-     */
-    public int getRowForPoint ( final Point point )
+    @Override
+    public int getExactRowForLocation ( final Point location )
     {
-        return getRowForPoint ( point, isFullLineSelection () );
+        return getExactRowForLocation ( location, isFullLineSelection () );
     }
 
-    /**
-     * Returns row index for specified point on the tree.
-     *
-     * @param point        point on the tree
-     * @param countFullRow whether take the whole row into account or just node renderer rect
-     * @return row index for specified point on the tree
-     */
-    public int getRowForPoint ( final Point point, final boolean countFullRow )
+    @Override
+    public int getExactRowForLocation ( final Point location, final boolean fullRow )
     {
         if ( tree != null )
         {
@@ -311,8 +280,8 @@ public class WebTreeUI extends BasicTreeUI implements ShapeProvider, MarginSuppo
                 while ( visiblePaths.hasMoreElements () )
                 {
                     final TreePath treePath = visiblePaths.nextElement ();
-                    final Rectangle bounds = getFullPathBounds ( treePath, countFullRow );
-                    if ( bounds != null && bounds.contains ( point ) )
+                    final Rectangle bounds = getPathBounds ( treePath, fullRow );
+                    if ( bounds != null && bounds.contains ( location ) )
                     {
                         return getRowForPath ( tree, treePath );
                     }
@@ -322,51 +291,28 @@ public class WebTreeUI extends BasicTreeUI implements ShapeProvider, MarginSuppo
         return -1;
     }
 
-    /**
-     * Returns row bounds by its index.
-     * This method takes selection style into account.
-     *
-     * @param row row index
-     * @return row bounds by its index
-     */
+    @Override
     public Rectangle getRowBounds ( final int row )
     {
         return getRowBounds ( row, isFullLineSelection () );
     }
 
-    /**
-     * Returns row bounds by its index.
-     *
-     * @param row          row index
-     * @param countFullRow whether take the whole row into account or just node renderer rect
-     * @return row bounds by its index
-     */
-    public Rectangle getRowBounds ( final int row, final boolean countFullRow )
+    @Override
+    public Rectangle getRowBounds ( final int row, final boolean fullRow )
     {
-        return countFullRow ? getFullRowBounds ( row ) : getPathBounds ( tree, getPathForRow ( tree, row ) );
-    }
-
-    /**
-     * Returns full row bounds by its index.
-     *
-     * @param row row index
-     * @return full row bounds by its index
-     */
-    public Rectangle getFullRowBounds ( final int row )
-    {
-        return getFullPathBounds ( getPathForRow ( tree, row ) );
+        return fullRow ? getFullPathBounds ( getPathForRow ( tree, row ) ) : getPathBounds ( tree, getPathForRow ( tree, row ) );
     }
 
     /**
      * Returns full path bounds.
      *
-     * @param path         tree path
-     * @param countFullRow whether take the whole row into account or just node renderer rect
+     * @param path    tree path
+     * @param fullRow whether take the whole row into account or just node renderer rect
      * @return full path bounds
      */
-    public Rectangle getFullPathBounds ( final TreePath path, final boolean countFullRow )
+    public Rectangle getPathBounds ( final TreePath path, final boolean fullRow )
     {
-        return countFullRow ? getFullPathBounds ( path ) : getPathBounds ( tree, path );
+        return fullRow ? getFullPathBounds ( path ) : getPathBounds ( tree, path );
     }
 
     /**
@@ -407,34 +353,18 @@ public class WebTreeUI extends BasicTreeUI implements ShapeProvider, MarginSuppo
         return null;
     }
 
-    /**
-     * Returns default tree cell editor.
-     *
-     * @return default tree cell editor
-     */
     @Override
     protected TreeCellEditor createDefaultCellEditor ()
     {
         return new WebTreeCellEditor ();
     }
 
-    /**
-     * Returns default tree cell renderer.
-     *
-     * @return default tree cell renderer
-     */
     @Override
     protected TreeCellRenderer createDefaultCellRenderer ()
     {
         return new WebTreeCellRenderer ();
     }
 
-    /**
-     * Selects tree path for the specified event.
-     *
-     * @param path tree path to select
-     * @param e    event to process
-     */
     @Override
     protected void selectPathForEvent ( final TreePath path, final MouseEvent e )
     {
@@ -444,16 +374,7 @@ public class WebTreeUI extends BasicTreeUI implements ShapeProvider, MarginSuppo
         }
     }
 
-    /**
-     * Returns whether location is in the checkbox tree checkbox control or not.
-     * This method is only used when this UI is applied to {@link com.alee.extended.tree.WebCheckBoxTree}.
-     * todo Separate UI for WebCheckBoxTree
-     *
-     * @param path tree path
-     * @param x    location X coordinate
-     * @param y    location Y coordinate
-     * @return true if location is in the checkbox tree checkbox control, false otherwise
-     */
+    @Override
     public boolean isLocationInCheckBoxControl ( final TreePath path, final int x, final int y )
     {
         if ( tree instanceof WebCheckBoxTree )
@@ -493,106 +414,40 @@ public class WebTreeUI extends BasicTreeUI implements ShapeProvider, MarginSuppo
         return tree instanceof WebTree ? ( ( WebTree ) tree ).getToolTipProvider () : null;
     }
 
-    /**
-     * Returns tree structure expanded node icon.
-     *
-     * @return tree structure expanded node icon
-     */
     @Override
     public Icon getExpandedIcon ()
     {
         return tree.isEnabled () ? Icons.squareMinus : Icons.squareMinusDisabled;
     }
 
-    /**
-     * Returns tree structure collapsed node icon.
-     *
-     * @return tree structure collapsed node icon
-     */
     @Override
     public Icon getCollapsedIcon ()
     {
         return tree.isEnabled () ? Icons.squarePlus : Icons.squarePlusDisabled;
     }
 
-    /**
-     * Returns tree cell renderer pane.
-     *
-     * @return tree cell renderer pane
-     */
+    @Override
     public CellRendererPane getCellRendererPane ()
     {
         return rendererPane;
     }
 
-    /**
-     * Returns state of tree.
-     *
-     * @return state of tree
-     */
-    public AbstractLayoutCache getTreeState ()
+    @Override
+    public AbstractLayoutCache getTreeLayoutCache ()
     {
         return treeState;
     }
 
-    /**
-     * Returns tree selection style.
-     *
-     * @return tree selection style
-     */
+    @Override
     public TreeSelectionStyle getSelectionStyle ()
     {
         return selectionStyle;
     }
 
-    /**
-     * Sets tree selection style.
-     *
-     * @param style tree selection style
-     */
+    @Override
     public void setSelectionStyle ( final TreeSelectionStyle style )
     {
         this.selectionStyle = style;
-    }
-
-    /**
-     * Returns whether tree should expand nodes on selection or not.
-     *
-     * @return true if tree should expand nodes on selection, false otherwise
-     */
-    public boolean isExpandSelected ()
-    {
-        return expandSelected;
-    }
-
-    /**
-     * Sets whether tree should expand nodes on selection or not.
-     *
-     * @param expandSelected whether tree should expand nodes on selection or not
-     */
-    public void setExpandSelected ( final boolean expandSelected )
-    {
-        this.expandSelected = expandSelected;
-    }
-
-    /**
-     * Returns whether or not nodes should be selected on hover.
-     *
-     * @return true if nodes should be selected on hover, false otherwise
-     */
-    public boolean isSelectOnHover ()
-    {
-        return selectOnHover;
-    }
-
-    /**
-     * Sets whether or not nodes should be selected on hover.
-     *
-     * @param select whether or not nodes should be selected on hover
-     */
-    public void setSelectOnHover ( final boolean select )
-    {
-        this.selectOnHover = select;
     }
 
     /**

@@ -6,17 +6,17 @@ import com.alee.painter.Painter;
 import javax.swing.*;
 
 /**
- * Simple TextPanePainter adapter class.
- * It is used to install simple non-specific painters into WebTextPaneUI.
+ * Simple {@link TextPanePainter} adapter class.
+ * It is used to install simple non-specific painters into {@link WTextPaneUI}.
  *
  * @author Alexandr Zernov
  */
 
-public final class AdaptiveTextPanePainter<E extends JTextPane, U extends WebTextPaneUI> extends AdaptivePainter<E, U>
+public final class AdaptiveTextPanePainter<E extends JTextPane, U extends WTextPaneUI> extends AdaptivePainter<E, U>
         implements ITextPanePainter<E, U>
 {
     /**
-     * Constructs new AdaptiveTextPanePainter for the specified painter.
+     * Constructs new {@link AdaptiveTextPanePainter} for the specified painter.
      *
      * @param painter painter to adapt
      */

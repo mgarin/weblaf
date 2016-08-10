@@ -31,6 +31,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
+@Deprecated
 public class NeoTabbedPaneUI extends BasicTabbedPaneUI
 {
     private final Color borderColor = new Color ( 165, 165, 165 );

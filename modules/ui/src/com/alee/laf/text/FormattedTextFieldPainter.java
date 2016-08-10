@@ -16,7 +16,7 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public class FormattedTextFieldPainter<E extends JFormattedTextField, U extends WebFormattedTextFieldUI, D extends IDecoration<E, D>>
+public class FormattedTextFieldPainter<E extends JFormattedTextField, U extends WFormattedTextFieldUI, D extends IDecoration<E, D>>
         extends AbstractTextFieldPainter<E, U, D> implements IFormattedTextFieldPainter<E, U>, SwingConstants
 {
     @Override

@@ -43,14 +43,14 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * Custom UI for {@link com.alee.extended.dock.WebDockablePane} component.
+ * Custom UI for {@link WebDockablePane} component.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
- * @see com.alee.extended.dock.WebDockablePane
+ * @see WebDockablePane
  */
 
-public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, MarginSupport, PaddingSupport, PropertyChangeListener
+public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, MarginSupport, PaddingSupport, PropertyChangeListener
 {
     /**
      * UI properties.
@@ -594,7 +594,7 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
         final WebDialog dialog = new WebDialog ( dialogStyle, dockablePane, frame.getTitle () );
         dialog.setIconImage ( ImageUtils.getBufferedImage ( frame.getIcon () ) );
         dialog.add ( frame, BorderLayout.CENTER );
-        dialog.setMinimumSize ( SwingUtils.stretch ( frame.getWebUI ().getMinimumDialogSize (), dialog.getRootPane ().getInsets () ) );
+        dialog.setMinimumSize ( SwingUtils.stretch ( frame.getUI ().getMinimumDialogSize (), dialog.getRootPane ().getInsets () ) );
         dialog.setBounds ( dockablePane.getModel ().getFloatingBounds ( dockablePane, frame, dialog ) );
         dialog.setDefaultCloseOperation ( WindowConstants.DO_NOTHING_ON_CLOSE );
         dialog.addComponentListener ( new ComponentAdapter ()
@@ -652,7 +652,7 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( dockablePane, painter );
     }

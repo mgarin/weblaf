@@ -37,7 +37,6 @@ import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicRootPaneUI;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
@@ -45,13 +44,13 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 
 /**
- * Custom UI for JRootPane component.
- * This UI also includes custom frame and dialog decorations.
+ * Custom UI for {@link JRootPane} component.
+ * This UI also includes custom frame and dialog decoration elements.
  *
  * @author Mikle Garin
  */
 
-public class WebRootPaneUI extends BasicRootPaneUI implements ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
+public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
      * todo 1. Probably track content pane change and update its style in future
@@ -162,7 +161,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements ShapeProvider, Mar
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( root, painter );
     }
@@ -231,170 +230,8 @@ public class WebRootPaneUI extends BasicRootPaneUI implements ShapeProvider, Mar
         return painter != null && painter.isDecorated ();
     }
 
-    /**
-     * Returns window title component.
-     *
-     * @return window title component
-     */
-    public JComponent getTitleComponent ()
-    {
-        return titleComponent;
-    }
-
-    /**
-     * Sets window title component.
-     *
-     * @param title new window title component
-     */
-    public void setTitleComponent ( final JComponent title )
-    {
-        this.titleComponent = title;
-        root.revalidate ();
-    }
-
-    /**
-     * Returns window buttons panel.
-     *
-     * @return window buttons panel
-     */
-    public GroupPane getButtonsPanel ()
-    {
-        return buttonsPanel;
-    }
-
-    /**
-     * Returns whether or not window title component should be displayed.
-     *
-     * @return true if window title component should be displayed, false otherwise
-     */
-    public boolean isDisplayTitleComponent ()
-    {
-        return displayTitleComponent;
-    }
-
-    /**
-     * Sets whether or not window title component should be displayed.
-     *
-     * @param display whether or not window title component should be displayed
-     */
-    public void setDisplayTitleComponent ( final boolean display )
-    {
-        this.displayTitleComponent = display;
-        root.revalidate ();
-    }
-
-    /**
-     * Returns whether or not window buttons should be displayed.
-     *
-     * @return true if window buttons should be displayed, false otherwise
-     */
-    public boolean isDisplayWindowButtons ()
-    {
-        return displayWindowButtons;
-    }
-
-    /**
-     * Sets whether or not window buttons should be displayed.
-     *
-     * @param display whether or not window buttons should be displayed
-     */
-    public void setDisplayWindowButtons ( final boolean display )
-    {
-        this.displayWindowButtons = display;
-        root.revalidate ();
-    }
-
-    /**
-     * Returns whether or not window minimize button should be displayed.
-     *
-     * @return true if window minimize button should be displayed, false otherwise
-     */
-    public boolean isDisplayMinimizeButton ()
-    {
-        return displayMinimizeButton;
-    }
-
-    /**
-     * Sets whether or not window minimize button should be displayed.
-     *
-     * @param display whether or not window minimize button should be displayed
-     */
-    public void setDisplayMinimizeButton ( final boolean display )
-    {
-        this.displayMinimizeButton = display;
-        updateButtons ();
-        root.revalidate ();
-    }
-
-    /**
-     * Returns whether or not window maximize button should be displayed.
-     *
-     * @return true if window maximize button should be displayed, false otherwise
-     */
-    public boolean isDisplayMaximizeButton ()
-    {
-        return displayMaximizeButton;
-    }
-
-    /**
-     * Sets whether or not window maximize button should be displayed.
-     *
-     * @param display whether or not window maximize button should be displayed
-     */
-    public void setDisplayMaximizeButton ( final boolean display )
-    {
-        this.displayMaximizeButton = display;
-        updateButtons ();
-        root.revalidate ();
-    }
-
-    /**
-     * Returns whether or not window close button should be displayed.
-     *
-     * @return true if window close button should be displayed, false otherwise
-     */
-    public boolean isDisplayCloseButton ()
-    {
-        return displayCloseButton;
-    }
-
-    /**
-     * Sets whether or not window close button should be displayed.
-     *
-     * @param display whether or not window close button should be displayed
-     */
-    public void setDisplayCloseButton ( final boolean display )
-    {
-        this.displayCloseButton = display;
-        updateButtons ();
-        root.revalidate ();
-    }
-
-    /**
-     * Returns whether or not menu bar should be displayed.
-     *
-     * @return true if menu bar should be displayed, false otherwise
-     */
-    public boolean isDisplayMenuBar ()
-    {
-        return displayMenuBar;
-    }
-
-    /**
-     * Sets whether or not menu bar should be displayed.
-     *
-     * @param display whether or not menu bar should be displayed
-     */
-    public void setDisplayMenuBar ( final boolean display )
-    {
-        this.displayMenuBar = display;
-        root.revalidate ();
-    }
-
-    /**
-     * Installs window decorations.
-     */
-    protected void installWindowDecorations ()
+    @Override
+    public void installWindowDecorations ()
     {
         if ( root.getWindowDecorationStyle () != JRootPane.NONE && isDecorated () )
         {
@@ -408,10 +245,8 @@ public class WebRootPaneUI extends BasicRootPaneUI implements ShapeProvider, Mar
         }
     }
 
-    /**
-     * Uninstalls window decorations.
-     */
-    protected void uninstallWindowDecorations ()
+    @Override
+    public void uninstallWindowDecorations ()
     {
         if ( window != null )
         {
@@ -423,6 +258,106 @@ public class WebRootPaneUI extends BasicRootPaneUI implements ShapeProvider, Mar
             frame = null;
             window = null;
         }
+    }
+
+    @Override
+    public boolean isDisplayTitleComponent ()
+    {
+        return displayTitleComponent;
+    }
+
+    @Override
+    public void setDisplayTitleComponent ( final boolean display )
+    {
+        this.displayTitleComponent = display;
+        root.revalidate ();
+    }
+
+    @Override
+    public JComponent getTitleComponent ()
+    {
+        return titleComponent;
+    }
+
+    @Override
+    public void setTitleComponent ( final JComponent title )
+    {
+        this.titleComponent = title;
+        root.revalidate ();
+    }
+
+    @Override
+    public boolean isDisplayWindowButtons ()
+    {
+        return displayWindowButtons;
+    }
+
+    @Override
+    public void setDisplayWindowButtons ( final boolean display )
+    {
+        this.displayWindowButtons = display;
+        root.revalidate ();
+    }
+
+    @Override
+    public boolean isDisplayMinimizeButton ()
+    {
+        return displayMinimizeButton;
+    }
+
+    @Override
+    public void setDisplayMinimizeButton ( final boolean display )
+    {
+        this.displayMinimizeButton = display;
+        updateButtons ();
+        root.revalidate ();
+    }
+
+    @Override
+    public boolean isDisplayMaximizeButton ()
+    {
+        return displayMaximizeButton;
+    }
+
+    @Override
+    public void setDisplayMaximizeButton ( final boolean display )
+    {
+        this.displayMaximizeButton = display;
+        updateButtons ();
+        root.revalidate ();
+    }
+
+    @Override
+    public boolean isDisplayCloseButton ()
+    {
+        return displayCloseButton;
+    }
+
+    @Override
+    public void setDisplayCloseButton ( final boolean display )
+    {
+        this.displayCloseButton = display;
+        updateButtons ();
+        root.revalidate ();
+    }
+
+    @Override
+    public JComponent getButtonsPanel ()
+    {
+        return buttonsPanel;
+    }
+
+    @Override
+    public boolean isDisplayMenuBar ()
+    {
+        return displayMenuBar;
+    }
+
+    @Override
+    public void setDisplayMenuBar ( final boolean display )
+    {
+        this.displayMenuBar = display;
+        root.revalidate ();
     }
 
     /**
@@ -940,6 +875,26 @@ public class WebRootPaneUI extends BasicRootPaneUI implements ShapeProvider, Mar
     }
 
     /**
+     * Returns whether or not this root pane is attached to frame.
+     *
+     * @return true if this root pane is attached to frame, false otherwise
+     */
+    public boolean isFrame ()
+    {
+        return frame != null;
+    }
+
+    /**
+     * Returns whether or not this root pane is attached to dialog.
+     *
+     * @return true if this root pane is attached to dialog, false otherwise
+     */
+    public boolean isDialog ()
+    {
+        return dialog != null;
+    }
+
+    /**
      * Closes the Window.
      */
     protected void close ()
@@ -987,54 +942,22 @@ public class WebRootPaneUI extends BasicRootPaneUI implements ShapeProvider, Mar
         }
     }
 
-    /**
-     * Returns whether or not window is resizable.
-     *
-     * @return true if window is resizable, false otherwise
-     */
+    @Override
     protected boolean isResizable ()
     {
         return isDialog () ? dialog.isResizable () : isFrame () && frame.isResizable ();
     }
 
-    /**
-     * Returns whether or not this root pane is attached to frame.
-     *
-     * @return true if this root pane is attached to frame, false otherwise
-     */
-    public boolean isFrame ()
-    {
-        return frame != null;
-    }
-
-    /**
-     * Returns whether or not window this root pane is attached to is maximized.
-     *
-     * @return true if window this root pane is attached to is maximized, false otherwise
-     */
+    @Override
     public boolean isIconified ()
     {
         return isFrame () && ( frame.getExtendedState () & Frame.ICONIFIED ) == Frame.ICONIFIED;
     }
 
-    /**
-     * Returns whether or not window this root pane is attached to is maximized.
-     *
-     * @return true if window this root pane is attached to is maximized, false otherwise
-     */
+    @Override
     public boolean isMaximized ()
     {
         return isFrame () && ( frame.getExtendedState () & Frame.MAXIMIZED_BOTH ) == Frame.MAXIMIZED_BOTH;
-    }
-
-    /**
-     * Returns whether or not this root pane is attached to dialog.
-     *
-     * @return true if this root pane is attached to dialog, false otherwise
-     */
-    public boolean isDialog ()
-    {
-        return dialog != null;
     }
 
     @Override

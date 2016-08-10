@@ -534,7 +534,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
             if ( expand )
             {
                 // Expanding
-                if ( !isAutoExpandSelectedNode () )
+                if ( !isExpandSelected () )
                 {
                     expandPath ( path );
                 }

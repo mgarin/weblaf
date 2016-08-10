@@ -185,7 +185,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
         if ( bounds.width > 0 && bounds.height > 0 && !isEmpty ( c, d ) )
         {
             // Proper content clipping
-            final Shape os = GraphicsUtils.intersectClip ( g2d, bounds );
+//            final Shape os = GraphicsUtils.intersectClip ( g2d, bounds );
 
             // Content opacity
             final float opacity = getOpacity ( c, d );
@@ -236,7 +236,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
             GraphicsUtils.restoreComposite ( g2d, oc );
 
             // Restoring clip area
-            GraphicsUtils.restoreClip ( g2d, os );
+//            GraphicsUtils.restoreClip ( g2d, os );
         }
     }
 

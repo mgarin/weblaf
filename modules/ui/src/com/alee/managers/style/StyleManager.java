@@ -18,6 +18,7 @@
 package com.alee.managers.style;
 
 import com.alee.extended.checkbox.MixedIconContent;
+import com.alee.extended.label.AbstractStyledTextContent;
 import com.alee.extended.label.StyledLabelTextContent;
 import com.alee.extended.label.WebHotkeyLabelBackground;
 import com.alee.extended.statusbar.WebMemoryBarBackground;
@@ -181,6 +182,7 @@ public final class StyleManager
             XmlUtils.processAnnotations ( LineContent.class );
             XmlUtils.processAnnotations ( SeparatorContent.class );
             XmlUtils.processAnnotations ( BackgroundContent.class );
+            XmlUtils.processAnnotations ( DashFocusContent.class );
             XmlUtils.processAnnotations ( AbstractIconContent.class );
             XmlUtils.processAnnotations ( AbstractTextContent.class );
             XmlUtils.processAnnotations ( AbstractStyledTextContent.class );

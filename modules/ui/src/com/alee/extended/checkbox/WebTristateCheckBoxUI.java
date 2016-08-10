@@ -29,13 +29,13 @@ import javax.swing.plaf.basic.BasicCheckBoxUI;
 import java.awt.*;
 
 /**
- * Custom UI for WebTristateCheckBox component.
+ * Custom UI for {@link WebTristateCheckBox} component.
  *
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
 
-public class WebTristateCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebTristateCheckBoxUI extends BasicCheckBoxUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -98,7 +98,7 @@ public class WebTristateCheckBoxUI extends BasicCheckBoxUI implements ShapeProvi
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( checkBox, painter );
     }

@@ -179,8 +179,8 @@ Here are **some** other screenshots of the custom WebLaF components:
 `WebTristateCheckBox`<br>
 ![Tristate checkbox](./screenshots/tristate-checkbox.png)
 
-`WebLinkLabel`<br>
-![Link label](./screenshots/link-label.png)
+`WebLink`<br>
+![Link](./screenshots/link-label.png)
 
 `WebCollapsiblePane`<br>
 ![Collapsible pane](./screenshots/collapsible-pane.png)

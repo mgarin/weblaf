@@ -30,8 +30,8 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 /**
- * Basic painter for {@link com.alee.extended.image.WebImage} component.
- * It is used as {@link com.alee.extended.image.WebImageUI} default painter.
+ * Basic painter for {@link WebImage} component.
+ * It is used as {@link WebImageUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -39,7 +39,7 @@ import java.awt.image.BufferedImage;
  * @author Mikle Garin
  */
 
-public class ImagePainter<E extends WebImage, U extends WebImageUI, D extends IDecoration<E, D>> extends AbstractContainerPainter<E, U, D>
+public class ImagePainter<E extends WebImage, U extends WImageUI, D extends IDecoration<E, D>> extends AbstractContainerPainter<E, U, D>
         implements IImagePainter<E, U>
 {
     /**

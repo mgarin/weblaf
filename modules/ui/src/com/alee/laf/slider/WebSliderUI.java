@@ -29,12 +29,14 @@ import javax.swing.plaf.basic.BasicSliderUI;
 import java.awt.*;
 
 /**
+ * Custom UI for {@link JSlider} component.
+ *
  * @author Mikle Garin
  * @author Michka Popoff
  * @author Alexandr Zernov
  */
 
-public class WebSliderUI extends BasicSliderUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebSliderUI extends BasicSliderUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -101,7 +103,7 @@ public class WebSliderUI extends BasicSliderUI implements ShapeProvider, MarginS
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( slider, painter );
     }

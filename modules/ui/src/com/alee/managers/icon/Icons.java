@@ -45,6 +45,10 @@ public final class Icons
     public static final LazyIcon crossSmallHover = new LazyIcon ( "cross-small-hover", 10, 10 );
     public static final LazyIcon magnifier = new LazyIcon ( "magnifier", 16, 16 );
     public static final LazyIcon magnifierHover = new LazyIcon ( "magnifier-hover", 16, 16 );
+    public static final LazyIcon globe = new LazyIcon ( "globe", 16, 16 );
+    public static final LazyIcon globeHover = new LazyIcon ( "globe-hover", 16, 16 );
+    public static final LazyIcon email = new LazyIcon ( "email", 16, 16 );
+    public static final LazyIcon emailHover = new LazyIcon ( "email-hover", 16, 16 );
 
     /**
      * Medium arrow icons.

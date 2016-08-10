@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public interface IComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> extends SpecificPainter<E, U>
+public interface IComboBoxPainter<E extends JComboBox, U extends WComboBoxUI> extends SpecificPainter<E, U>
 {
     /**
      * Prepares painter to pain combobox.

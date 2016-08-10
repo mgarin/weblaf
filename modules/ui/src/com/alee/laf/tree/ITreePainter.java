@@ -15,7 +15,7 @@ import java.util.Hashtable;
  * @author Alexandr Zernov
  */
 
-public interface ITreePainter<E extends JTree, U extends WebTreeUI> extends SpecificPainter<E, U>
+public interface ITreePainter<E extends JTree, U extends WTreeUI> extends SpecificPainter<E, U>
 {
     /**
      * Returns whether or not hover node decoration is supported by this tree painter.

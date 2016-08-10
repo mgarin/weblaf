@@ -32,10 +32,12 @@ import javax.swing.text.JTextComponent;
 import java.awt.*;
 
 /**
+ * Custom UI for {@link JSpinner} component.
+ *
  * @author Mikle Garin
  */
 
-public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebSpinnerUI extends BasicSpinnerUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -159,7 +161,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider, Margi
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( spinner, painter );
     }

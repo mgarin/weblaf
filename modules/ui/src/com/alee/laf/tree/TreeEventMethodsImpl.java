@@ -31,7 +31,7 @@ import java.awt.event.MouseEvent;
  * @see com.alee.laf.tree.TreeEventMethods
  */
 
-public class TreeEventMethodsImpl
+public final class TreeEventMethodsImpl
 {
     /**
      * Shortcut method for double-click mouse event on specific tree node.
@@ -64,10 +64,10 @@ public class TreeEventMethodsImpl
             {
                 if ( SwingUtils.isLeftMouseButton ( e ) && e.getClickCount () == 2 )
                 {
-                    final int mouseoverRow = tree.getHoverRow ();
-                    if ( mouseoverRow != -1 )
+                    final int row = tree.getUI ().getExactRowForLocation ( e.getPoint () );
+                    if ( row != -1 )
                     {
-                        final E node = tree.getNodeForRow ( mouseoverRow );
+                        final E node = tree.getNodeForRow ( row );
                         if ( condition == null || condition.test ( node ) )
                         {
                             runnable.run ( node );

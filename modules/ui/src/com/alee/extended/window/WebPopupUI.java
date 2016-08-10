@@ -33,7 +33,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebPopupUI extends PopupUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebPopupUI extends WPopupUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -92,7 +92,7 @@ public class WebPopupUI extends PopupUI implements ShapeProvider, MarginSupport,
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( popup, painter );
     }

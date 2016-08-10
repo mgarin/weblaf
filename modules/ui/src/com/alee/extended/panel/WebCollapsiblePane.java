@@ -17,6 +17,7 @@
 
 package com.alee.extended.panel;
 
+import com.alee.api.data.BoxOrientation;
 import com.alee.extended.icon.OrientedIcon;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
@@ -31,14 +32,12 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.style.Bounds;
 import com.alee.managers.style.ChildStyleId;
-import com.alee.managers.style.ShapeProvider;
 import com.alee.managers.style.StyleId;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
-import com.alee.managers.style.Bounds;
-import com.alee.api.data.BoxOrientation;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.swing.DataProvider;
@@ -59,7 +58,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebCollapsiblePane extends WebPanel implements SwingConstants, ShapeProvider, LanguageMethods, SettingsMethods
+public class WebCollapsiblePane extends WebPanel implements SwingConstants, LanguageMethods, SettingsMethods
 {
     /**
      * todo 1. Create CollapsiblePaneUI and its implementation

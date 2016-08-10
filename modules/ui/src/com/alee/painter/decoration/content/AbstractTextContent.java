@@ -491,6 +491,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
         color = content.isOverwrite () || content.color != null ? content.color : color;
         halign = content.isOverwrite () || content.halign != null ? content.halign : halign;
         valign = content.isOverwrite () || content.valign != null ? content.valign : valign;
+        truncate = content.isOverwrite () || content.truncate != null ? content.truncate : truncate;
         shadow = content.isOverwrite () || content.shadow != null ? content.shadow : shadow;
         shadowColor = content.isOverwrite () || content.shadowColor != null ? content.shadowColor : shadowColor;
         shadowSize = content.isOverwrite () || content.shadowSize != null ? content.shadowSize : shadowSize;

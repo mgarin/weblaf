@@ -29,12 +29,12 @@ import javax.swing.plaf.basic.BasicPopupMenuSeparatorUI;
 import java.awt.*;
 
 /**
- * Custom UI for JPopupMenu.Separator component.
+ * Custom UI for {@link JPopupMenu.Separator} component.
  *
  * @author Mikle Garin
  */
 
-public class WebPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -98,7 +98,7 @@ public class WebPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI implement
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( separator, painter );
     }

@@ -17,8 +17,10 @@
 
 package com.alee.extended.label;
 
+import com.alee.api.Mergeable;
+import com.alee.utils.CollectionUtils;
+
 import java.awt.*;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -26,43 +28,44 @@ import java.util.List;
  * It contains various style settings supported by the styled label UI.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  * @see com.alee.extended.label.WebStyledLabel
  */
 
-public class StyleRange
+public class StyleRange implements Cloneable, Mergeable<StyleRange>
 {
     /**
      * Text style start index.
      */
-    protected int startIndex;
+    protected final int startIndex;
 
     /**
      * Text style length.
      */
-    protected int length;
+    protected final int length;
 
     /**
      * Text foreground.
      */
-    protected Color foreground;
+    protected final Color foreground;
 
     /**
      * Text background.
      */
-    protected Color background;
+    protected final Color background;
 
     /**
      * Basic text style.
-     * Either Font.ITALIC or Font.BOLD or their combination.
+     * Either {@link Font#ITALIC} or {@link Font#BOLD} or their combination.
      */
-    protected int style;
+    protected final int style;
 
     /**
      * Custom text styles.
      *
      * @see com.alee.extended.label.CustomStyle
      */
-    protected List<CustomStyle> customStyles;
+    protected final List<CustomStyle> customStyles;
 
     /**
      * Constructs new StyleRange based on another StyleRange settings.
@@ -71,8 +74,20 @@ public class StyleRange
      */
     public StyleRange ( final StyleRange styleRange )
     {
-        this ( styleRange.getStartIndex (), styleRange.getLength (), styleRange.getStyle (), styleRange.getForeground (),
-                styleRange.getBackground (), getCustomStyles ( styleRange ) );
+        this ( styleRange.getStartIndex (), styleRange.getLength (), styleRange );
+    }
+
+    /**
+     * Constructs new StyleRange based on another StyleRange settings but with new start index and length.
+     *
+     * @param startIndex text style start index
+     * @param length     text style length
+     * @param styleRange style range
+     */
+    public StyleRange ( final int startIndex, final int length, final StyleRange styleRange )
+    {
+        this ( startIndex, length, styleRange.getStyle (), styleRange.getForeground (),
+                styleRange.getBackground (), CollectionUtils.copy ( styleRange.getCustomStyle () ) );
     }
 
     /**
@@ -155,13 +170,29 @@ public class StyleRange
     public StyleRange ( final int startIndex, final int length, final int style, final Color foreground, final Color background,
                         final CustomStyle... customStyles )
     {
+        this ( startIndex, length, style, foreground, background, CollectionUtils.asList ( customStyles ) );
+    }
+
+    /**
+     * Constructs new StyleRange with the specified settings
+     *
+     * @param startIndex   text style start index
+     * @param length       text style length
+     * @param style        basic text style
+     * @param foreground   text foreground color
+     * @param background   text background color
+     * @param customStyles custom text styles
+     */
+    public StyleRange ( final int startIndex, final int length, final int style, final Color foreground, final Color background,
+                        final List<CustomStyle> customStyles )
+    {
         if ( startIndex < 0 )
         {
             throw new IllegalArgumentException ( "Style start index cannot be less than zero" );
         }
-        if ( length == 0 )
+        if ( length <= 0 )
         {
-            throw new IllegalArgumentException ( "Style length cannot be zero" );
+            throw new IllegalArgumentException ( "Style length cannot be zero or less than zero" );
         }
 
         this.startIndex = startIndex;
@@ -169,7 +200,7 @@ public class StyleRange
         this.foreground = foreground;
         this.background = background;
         this.style = style;
-        this.customStyles = Arrays.asList ( customStyles );
+        this.customStyles = customStyles;
     }
 
     /**
@@ -183,16 +214,6 @@ public class StyleRange
     }
 
     /**
-     * Sets text style start index.
-     *
-     * @param startIndex new text style start index
-     */
-    public void setStartIndex ( final int startIndex )
-    {
-        this.startIndex = startIndex;
-    }
-
-    /**
      * Returns text style length.
      *
      * @return text style length
@@ -200,16 +221,6 @@ public class StyleRange
     public int getLength ()
     {
         return length;
-    }
-
-    /**
-     * Sets text style length.
-     *
-     * @param length new text style length
-     */
-    public void setLength ( final int length )
-    {
-        this.length = length;
     }
 
     /**
@@ -312,14 +323,21 @@ public class StyleRange
         return customStyles;
     }
 
-    /**
-     * Returns custom styles array.
-     *
-     * @param styleRange style range
-     * @return custom styles array
-     */
-    protected static CustomStyle[] getCustomStyles ( final StyleRange styleRange )
+    @Override
+    public StyleRange merge ( final StyleRange merged )
     {
-        return styleRange.getCustomStyle ().toArray ( new CustomStyle[ styleRange.getCustomStyle ().size () ] );
+        final int startIndex = merged.startIndex;
+        final int length = merged.length;
+        final int style = merged.style != -1 ? merged.style : this.style;
+        final Color foreground = merged.foreground != null ? merged.foreground : this.foreground;
+        final Color background = merged.background != null ? merged.background : this.background;
+        final List<CustomStyle> customStyles = merged.customStyles.size () > 0 ? merged.customStyles : this.customStyles;
+        return new StyleRange ( startIndex, length, style, foreground, background, customStyles );
+    }
+
+    @Override
+    public StyleRange clone ()
+    {
+        return new StyleRange ( startIndex, length, style, foreground, background, CollectionUtils.copy ( customStyles ) );
     }
 }

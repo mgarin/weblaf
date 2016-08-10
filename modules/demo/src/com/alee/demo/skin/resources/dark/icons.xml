@@ -1,8 +1,8 @@
 <IconSet id="weblaf-demo" nearClass="com.alee.demo.skin.DarkIconSet" base="icons/">
 
     <!-- Demo application icon -->
-    <SvgIcon id="icon" path="icon.svg" size="16,16">
-        <SvgFill selector="svg" color="240,240,240" />
+    <SvgIcon id="icon16" path="icon.svg" size="16,16">
+        <SvgFill selector="svg" color="white" />
     </SvgIcon>
 
     <!-- General purpose 36x36 icons -->

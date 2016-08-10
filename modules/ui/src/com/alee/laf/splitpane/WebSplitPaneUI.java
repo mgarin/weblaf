@@ -32,7 +32,6 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -44,20 +43,13 @@ import java.beans.PropertyChangeListener;
  * @author Alexandr Zernov
  */
 
-public class WebSplitPaneUI extends BasicSplitPaneUI implements ShapeProvider, MarginSupport, PaddingSupport
+public class WebSplitPaneUI extends WSplitPaneUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
     @DefaultPainter ( SplitPanePainter.class )
     protected ISplitPanePainter painter;
-
-    /**
-     * Style settings.
-     */
-    protected Color dragDividerColor;
-    protected Color dividerBorderColor;
-    protected boolean drawDividerBorder;
 
     /**
      * Runtime variables.
@@ -97,6 +89,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements ShapeProvider, M
         StyleManager.installSkin ( splitPane );
 
         // Default settings
+        // todo Remove this after proper painters implementation
         LookAndFeel.installProperty ( splitPane, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
         splitPane.setDividerSize ( 6 );
     }
@@ -116,7 +109,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements ShapeProvider, M
     }
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return PainterSupport.getShape ( splitPane, painter );
     }
@@ -175,66 +168,6 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements ShapeProvider, M
         }, this.painter, painter, ISplitPanePainter.class, AdaptiveSplitPanePainter.class );
     }
 
-    /**
-     * Returns dragged divider color.
-     *
-     * @return dragged divider color
-     */
-    public Color getDragDividerColor ()
-    {
-        return dragDividerColor;
-    }
-
-    /**
-     * Sets dragged divider color.
-     *
-     * @param dragDividerColor dragged divider color
-     */
-    public void setDragDividerColor ( final Color dragDividerColor )
-    {
-        this.dragDividerColor = dragDividerColor;
-    }
-
-    /**
-     * Returns whether divider border is painted or not.
-     *
-     * @return true if divider border is painted, false otherwise
-     */
-    public boolean isDrawDividerBorder ()
-    {
-        return drawDividerBorder;
-    }
-
-    /**
-     * Sets whether divider border is painted or not.
-     *
-     * @param draw whether divider border is painted or not
-     */
-    public void setDrawDividerBorder ( final boolean draw )
-    {
-        this.drawDividerBorder = draw;
-    }
-
-    /**
-     * Returns divider border color.
-     *
-     * @return divider border color
-     */
-    public Color getDividerBorderColor ()
-    {
-        return dividerBorderColor;
-    }
-
-    /**
-     * Sets divider border color.
-     *
-     * @param color new divider border color
-     */
-    public void setDividerBorderColor ( final Color color )
-    {
-        this.dividerBorderColor = color;
-    }
-
     @Override
     public BasicSplitPaneDivider createDefaultDivider ()
     {
@@ -280,6 +213,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements ShapeProvider, M
             {
                 final Graphics2D g2d = ( Graphics2D ) g;
                 final Object aa = GraphicsUtils.setupAntialias ( g2d );
+                final boolean drawDividerBorder = false;
 
                 if ( orientation == JSplitPane.HORIZONTAL_SPLIT )
                 {
@@ -293,7 +227,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements ShapeProvider, M
 
                     if ( drawDividerBorder )
                     {
-                        g2d.setPaint ( dividerBorderColor );
+                        g2d.setPaint ( Color.GRAY );
                         g2d.drawLine ( 0, 0, 0, getHeight () - 1 );
                         g2d.drawLine ( getWidth () - 1, 0, getWidth () - 1, getHeight () - 1 );
                     }
@@ -310,7 +244,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements ShapeProvider, M
 
                     if ( drawDividerBorder )
                     {
-                        g2d.setPaint ( dividerBorderColor );
+                        g2d.setPaint ( Color.GRAY );
                         g2d.drawLine ( 0, 0, getWidth () - 1, 0 );
                         g2d.drawLine ( 0, getHeight () - 1, getWidth () - 1, getHeight () - 1 );
                     }
@@ -384,7 +318,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements ShapeProvider, M
                 if ( !isContinuousLayout () && getLastDragLocation () != -1 )
                 {
                     final Dimension size = splitPane.getSize ();
-                    g.setColor ( dragDividerColor );
+                    g.setColor ( Color.LIGHT_GRAY );
                     if ( getOrientation () == JSplitPane.HORIZONTAL_SPLIT )
                     {
                         g.fillRect ( 0, 0, dividerSize - 1, size.height - 1 );
@@ -406,7 +340,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements ShapeProvider, M
         {
             final Dimension size = splitPane.getSize ();
 
-            g.setColor ( dragDividerColor );
+            g.setColor ( Color.LIGHT_GRAY );
             if ( getOrientation () == JSplitPane.HORIZONTAL_SPLIT )
             {
                 g.fillRect ( getLastDragLocation (), 0, dividerSize - 1, size.height - 1 );

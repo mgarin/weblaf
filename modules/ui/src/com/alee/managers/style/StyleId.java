@@ -103,6 +103,15 @@ public final class StyleId
     public static final StyleId tooltipStyled = StyleId.of ( "styled" );
 
     /**
+     * {@link com.alee.extended.link.WebLink} style IDs.
+     */
+    public static final StyleId link = StyleId.of ( "link" );
+    public static final StyleId linkShadow = StyleId.of ( "shadow" );
+    public static final StyleId linkTag = StyleId.of ( "tag" );
+    public static final StyleId linkVerticalCCW = StyleId.of ( "vertical-ccw" );
+    public static final StyleId linkVerticalCW = StyleId.of ( "vertical-cw" );
+
+    /**
      * {@link com.alee.laf.button.WebButton} style IDs.
      */
     public static final StyleId button = StyleId.of ( "button" );

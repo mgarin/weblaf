@@ -17,7 +17,6 @@
 
 package com.alee.extended.magnifier;
 
-import com.alee.global.StyleConstants;
 import com.alee.managers.glasspane.GlassPaneManager;
 import com.alee.managers.glasspane.WebGlassPane;
 import com.alee.utils.*;
@@ -32,6 +31,7 @@ import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.Map;
 
 /**
  * Custom component that allows you to display a magnifier within your application window.
@@ -96,6 +96,11 @@ public class MagnifierGlass extends JComponent
     protected boolean displayDummyCursor = true;
 
     /**
+     * Whether or not captured area painting time metrics should be displayed.
+     */
+    protected boolean displayTimeMetrics = true;
+
+    /**
      * Dummy cursor opacity.
      */
     protected float dummyCursorOpacity = 0.5f;
@@ -112,6 +117,7 @@ public class MagnifierGlass extends JComponent
     protected JComponent zoomProvider;
     protected Cursor defaultCursor;
     protected BufferedImage buffer;
+    protected Long time;
     protected BufferedImage view;
     protected AWTEventListener listener;
     protected WebTimer forceUpdater;
@@ -341,7 +347,7 @@ public class MagnifierGlass extends JComponent
     /**
      * Returns whether or not dummy cursor should be displayed on magnified image.
      *
-     * @return true if dummy cursor should be displayed on magnified image, false otherwise
+     * @return {@code true} if dummy cursor should be displayed on magnified image, {@code false} otherwise
      */
     public boolean isDisplayDummyCursor ()
     {
@@ -358,6 +364,30 @@ public class MagnifierGlass extends JComponent
         if ( this.displayDummyCursor != display )
         {
             this.displayDummyCursor = display;
+            updatePreview ();
+        }
+    }
+
+    /**
+     * Returns whether or not captured area painting time metrics should be displayed.
+     *
+     * @return {@code true} if captured area painting time metrics should be displayed, {@code false} otherwise
+     */
+    public boolean isDisplayTimeMetrics ()
+    {
+        return displayTimeMetrics;
+    }
+
+    /**
+     * Sets whether or not captured area painting time metrics should be displayed.
+     *
+     * @param display whether or not captured area painting time metrics should be displayed
+     */
+    public void setDisplayTimeMetrics ( final boolean display )
+    {
+        if ( this.displayTimeMetrics != display )
+        {
+            this.displayTimeMetrics = display;
             updatePreview ();
         }
     }
@@ -447,28 +477,35 @@ public class MagnifierGlass extends JComponent
             final Dimension bs = getBufferSize ();
             if ( buffer == null || buffer.getWidth () != bs.width || buffer.getHeight () != bs.height )
             {
-                buffer = ImageUtils.createCompatibleImage ( bs.width, bs.height, Transparency.TRANSLUCENT );
+                buffer = ImageUtils.createCompatibleImage ( bs.width, bs.height, Transparency.OPAQUE );
             }
 
             // Filling-in image content
+            // todo Use alpha background instead of Color.WHITE?
             final Point mp = MouseInfo.getPointerInfo ().getLocation ();
             final Rectangle gb = SwingUtils.getBoundsOnScreen ( zoomProvider );
             if ( gb.contains ( mp ) )
             {
                 // Rendering UI snapshot
                 final Graphics2D g2d = buffer.createGraphics ();
-                g2d.setBackground ( StyleConstants.transparent );
+                g2d.setBackground ( Color.WHITE );
                 g2d.clearRect ( 0, 0, bs.width, bs.height );
                 final int x = mp.x - gb.x - bs.width / 2;
                 final int y = mp.y - gb.y - bs.height / 2;
                 g2d.translate ( -x, -y );
+                time = System.currentTimeMillis ();
                 zoomProvider.paintAll ( g2d );
-                if ( displayDummyCursor )
+                time = System.currentTimeMillis () - time;
+
+                // Adding dummy cursor
+                if ( isDisplayDummyCursor () )
                 {
                     g2d.translate ( x, y );
                     GraphicsUtils.setupAlphaComposite ( g2d, dummyCursorOpacity );
                     g2d.drawImage ( cursorIcon.getImage (), bs.width / 2, bs.height / 2, null );
                 }
+
+                // Disposing graphics
                 g2d.dispose ();
 
                 // Marking as rendered
@@ -478,7 +515,7 @@ public class MagnifierGlass extends JComponent
             {
                 // Clearing buffer
                 final Graphics2D g2d = buffer.createGraphics ();
-                g2d.setBackground ( StyleConstants.transparent );
+                g2d.setBackground ( Color.WHITE );
                 g2d.clearRect ( 0, 0, bs.width, bs.height );
                 g2d.dispose ();
 
@@ -578,6 +615,15 @@ public class MagnifierGlass extends JComponent
             final Shape oldClip = GraphicsUtils.setupClip ( g2d, fillShape, round > 0 );
             g2d.drawImage ( buffer, shadeWidth, shadeWidth, size.width, size.height, null );
             GraphicsUtils.restoreClip ( g2d, oldClip, round > 0 );
+
+            // Painting time metrics
+            if ( isDisplayTimeMetrics () )
+            {
+                final Map taa = SwingUtils.setupTextAntialias ( g2d );
+                g2d.setColor ( Color.BLACK );
+                g2d.drawString ( time + " ms", shadeWidth + 5, shadeWidth + size.height - 5 );
+                SwingUtils.restoreTextAntialias ( g2d, taa );
+            }
 
             // Painting shade
             final Icon icon = getShadeIcon ();

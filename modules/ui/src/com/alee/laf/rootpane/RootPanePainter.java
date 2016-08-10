@@ -17,8 +17,8 @@ import java.awt.event.WindowStateListener;
 import java.util.List;
 
 /**
- * Basic painter for {@link javax.swing.JRootPane} component.
- * It is used as {@link com.alee.laf.rootpane.WebRootPaneUI} default painter.
+ * Basic painter for {@link JRootPane} component.
+ * It is used as {@link WebRootPaneUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -27,7 +27,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class RootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D extends IDecoration<E, D>>
+public class RootPanePainter<E extends JRootPane, U extends WRootPaneUI, D extends IDecoration<E, D>>
         extends AbstractContainerPainter<E, U, D> implements IRootPanePainter<E, U>
 {
     /**

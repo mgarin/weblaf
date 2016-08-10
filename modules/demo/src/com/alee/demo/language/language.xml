@@ -209,10 +209,10 @@
                     </record>
                 </Dictionary>
             </Dictionary>
-            <Dictionary prefix="weblinklabel">
+            <Dictionary prefix="weblink">
                 <record key="title">
-                    <value lang="en">WebLinkLabel</value>
-                    <value lang="ru">WebLinkLabel</value>
+                    <value lang="en">WebLink</value>
+                    <value lang="ru">WebLink</value>
                 </record>
                 <Dictionary prefix="url">
                     <record key="title">

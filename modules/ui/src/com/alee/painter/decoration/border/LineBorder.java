@@ -41,13 +41,13 @@ public class LineBorder<E extends JComponent, D extends IDecoration<E, D>, I ext
         implements ColorSupport, StrokeSupport
 {
     /**
-     * Shade width.
+     * Border stroke.
      */
     @XStreamAsAttribute
     protected Stroke stroke;
 
     /**
-     * Shade color.
+     * Border color.
      */
     @XStreamAsAttribute
     protected Color color;

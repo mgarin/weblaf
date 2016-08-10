@@ -15,8 +15,9 @@
     </style>
 
     <!-- GitHub project page link -->
-    <style type="label" id="resource" padding="0,5,0,5">
+    <style type="link" id="resource" extends="shadow" padding="0,5,0,5">
         <component>
+            <focusable>true</focusable>
             <iconTextGap>6</iconTextGap>
         </component>
     </style>
@@ -45,7 +46,7 @@
     </style>
 
     <!-- Text field -->
-    <style type="image" id="leading" padding="0,0,0,4" />
+    <style type="label" id="leading" padding="0,0,0,4" />
 
     <!-- Toolbar text -->
     <style type="toolbar" id="tool" extends="attached" padding="4" />
