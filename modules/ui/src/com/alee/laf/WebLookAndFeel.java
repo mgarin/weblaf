@@ -1073,19 +1073,26 @@ public class WebLookAndFeel extends BasicLookAndFeel
     @Override
     public Icon getDisabledIcon ( final JComponent component, final Icon icon )
     {
-        if ( disabledIcons.containsKey ( icon ) )
+        if ( icon != null && icon.getIconWidth () > 0 && icon.getIconHeight () > 0 )
         {
-            return disabledIcons.get ( icon );
+            if ( disabledIcons.containsKey ( icon ) )
+            {
+                return disabledIcons.get ( icon );
+            }
+            else
+            {
+                // todo Different disabled implementation for different icon types?
+                // todo For example ImageIcon, SvgIcon, GifIcon etc.
+                final BufferedImage image = ImageUtils.getBufferedImage ( icon );
+                final BufferedImage disabled = ImageUtils.createDisabledCopy ( image );
+                final ImageIcon disabledIcon = new ImageIcon ( disabled );
+                disabledIcons.put ( icon, disabledIcon );
+                return disabledIcon;
+            }
         }
         else
         {
-            // todo Different disabled implementation for different icon types?
-            // todo For example ImageIcon, SvgIcon, GifIcon etc.
-            final BufferedImage image = ImageUtils.getBufferedImage ( icon );
-            final BufferedImage disabled = ImageUtils.createDisabledCopy ( image );
-            final ImageIcon disabledIcon = new ImageIcon ( disabled );
-            disabledIcons.put ( icon, disabledIcon );
-            return disabledIcon;
+            return icon;
         }
     }
 
