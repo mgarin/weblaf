@@ -17,7 +17,7 @@
 
 package com.alee.demo.content.chooser;
 
-import com.alee.demo.api.AbstractExampleGroup;
+import com.alee.demo.api.example.AbstractExampleGroup;
 import com.alee.demo.content.chooser.dialog.DialogChoosersGroup;
 import com.alee.demo.content.chooser.field.FieldChoosersGroup;
 import com.alee.utils.CollectionUtils;

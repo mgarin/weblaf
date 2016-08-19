@@ -55,7 +55,7 @@ public interface DocumentListener<T extends DocumentData> extends EventListener
      * @param document document data
      * @param pane     specific document pane
      * @param index    document tab index
-     * @return true if document is allowed to close, false otherwise
+     * @return {@code true} if document is allowed to close, {@code false} otherwise
      */
     public boolean closing ( T document, PaneData<T> pane, int index );
 

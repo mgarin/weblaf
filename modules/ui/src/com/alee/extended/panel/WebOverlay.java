@@ -20,6 +20,7 @@ package com.alee.extended.panel;
 import com.alee.extended.layout.OverlayData;
 import com.alee.extended.layout.OverlayLayout;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.DataProvider;
 
 import javax.swing.*;
@@ -41,36 +42,62 @@ public class WebOverlay extends WebPanel implements SwingConstants
 
     public WebOverlay ()
     {
-        super ( new OverlayLayout () );
-        initialize ();
+        this ( StyleId.auto );
     }
 
     public WebOverlay ( final Component component )
     {
-        super ( new OverlayLayout () );
-        initialize ();
-        setComponent ( component );
+        this ( StyleId.auto, component );
     }
 
     public WebOverlay ( final Component component, final Component overlay )
     {
-        super ( new OverlayLayout () );
+        this ( StyleId.auto, component, overlay );
+    }
+
+    public WebOverlay ( final Component component, final Component overlay, final int halign, final int valign )
+    {
+        this ( StyleId.auto, component, overlay, halign, valign );
+    }
+
+    public WebOverlay ( final Component component, final Component overlay, final DataProvider<Rectangle> rectangleProvider )
+    {
+        this ( StyleId.auto, component, overlay, rectangleProvider );
+    }
+
+    public WebOverlay ( final StyleId id )
+    {
+        super ( id, new OverlayLayout () );
+        initialize ();
+    }
+
+    public WebOverlay ( final StyleId id, final Component component )
+    {
+        super ( id, new OverlayLayout () );
+        initialize ();
+        setComponent ( component );
+    }
+
+    public WebOverlay ( final StyleId id, final Component component, final Component overlay )
+    {
+        super ( id, new OverlayLayout () );
         initialize ();
         setComponent ( component );
         addOverlay ( overlay );
     }
 
-    public WebOverlay ( final Component component, final Component overlay, final int halign, final int valign )
+    public WebOverlay ( final StyleId id, final Component component, final Component overlay, final int halign, final int valign )
     {
-        super ( new OverlayLayout () );
+        super ( id, new OverlayLayout () );
         initialize ();
         setComponent ( component );
         addOverlay ( overlay, halign, valign );
     }
 
-    public WebOverlay ( final Component component, final Component overlay, final DataProvider<Rectangle> rectangleProvider )
+    public WebOverlay ( final StyleId id, final Component component, final Component overlay,
+                        final DataProvider<Rectangle> rectangleProvider )
     {
-        super ( new OverlayLayout () );
+        super ( id, new OverlayLayout () );
         initialize ();
         setComponent ( component );
         addOverlay ( overlay, rectangleProvider );

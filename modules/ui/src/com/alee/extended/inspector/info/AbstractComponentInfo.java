@@ -73,7 +73,7 @@ public abstract class AbstractComponentInfo<T extends Component> implements Comp
     {
         if ( !SwingUtils.isEmpty ( insets ) )
         {
-            return " [ {" + InsetsConverter.insetsToString ( insets ) + ":b;c(" + color + ")} ]";
+            return " {[ " + InsetsConverter.insetsToString ( insets ) + " ]:b;c(" + color + ")}";
         }
         else
         {

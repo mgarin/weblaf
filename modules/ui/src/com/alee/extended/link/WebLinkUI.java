@@ -84,6 +84,9 @@ public class WebLinkUI extends WLinkUI implements ShapeSupport, MarginSupport, P
         // Saving link reference
         link = ( WebLink ) c;
 
+        // Installing default settings
+        installDefaults ();
+
         // Installing actions
         installLinkListeners ();
 
@@ -109,6 +112,16 @@ public class WebLinkUI extends WLinkUI implements ShapeSupport, MarginSupport, P
         link = null;
 
         super.uninstallUI ( c );
+    }
+
+    /**
+     * Installs default component settings.
+     */
+    protected void installDefaults ()
+    {
+        link.setFocusable ( false );
+        link.setVisitable ( true );
+        link.setVisited ( false );
     }
 
     /**

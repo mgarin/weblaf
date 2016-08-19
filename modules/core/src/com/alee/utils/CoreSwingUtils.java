@@ -92,18 +92,6 @@ public class CoreSwingUtils
     }
 
     /**
-     * Returns whether or not component is currently added to a displayable window and visible.
-     *
-     * @param component component to process
-     * @return true if component is currently added to a displayable window and visible, false otherwise
-     */
-    public static boolean isVisibleOnScreen ( final Component component )
-    {
-        final Window window = getWindowAncestor ( component );
-        return window != null && window.isDisplayable () && component.isVisible ();
-    }
-
-    /**
      * Returns component bounds on screen.
      *
      * @param component component to process
@@ -151,6 +139,18 @@ public class CoreSwingUtils
         final Point los = component.getLocationOnScreen ();
         final Point rt = relativeTo.getLocationOnScreen ();
         return new Point ( los.x - rt.x, los.y - rt.y );
+    }
+
+    /**
+     * Returns whether or not specified {@code ancestor} is an ancestor of {@code component}.
+     *
+     * @param ancestor  ancestor component
+     * @param component child component
+     * @return {@code true} if specified {@code ancestor} is an ancestor of {@code component}, {@code false} otherwise
+     */
+    public static boolean isAncestorOf ( final Component ancestor, final Component component )
+    {
+        return ancestor instanceof Container && ( ( Container ) ancestor ).isAncestorOf ( component );
     }
 
     /**

@@ -19,6 +19,7 @@ package com.alee.extended.inspector;
 
 import com.alee.extended.tree.AbstractExTreeDataProvider;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,9 +64,12 @@ public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<Interf
     {
         final Container component = ( Container ) node.getComponent ();
         final List<InterfaceTreeNode> nodes = new ArrayList<InterfaceTreeNode> ( component.getComponentCount () );
-        for ( int i = 0; i < component.getComponentCount (); i++ )
+        if ( !( component instanceof CellRendererPane ) )
         {
-            nodes.add ( new InterfaceTreeNode ( tree, component.getComponent ( i ) ) );
+            for ( int i = 0; i < component.getComponentCount (); i++ )
+            {
+                nodes.add ( new InterfaceTreeNode ( tree, component.getComponent ( i ) ) );
+            }
         }
         return nodes;
     }
@@ -73,6 +77,7 @@ public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<Interf
     @Override
     public boolean isLeaf ( final InterfaceTreeNode node )
     {
-        return !( node.getComponent () instanceof Container ) || ( ( Container ) node.getComponent () ).getComponentCount () == 0;
+        return !( node.getComponent () instanceof Container ) || node.getComponent () instanceof CellRendererPane ||
+                ( ( Container ) node.getComponent () ).getComponentCount () == 0;
     }
 }

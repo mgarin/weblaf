@@ -52,7 +52,8 @@ public class StyleableInfo<T extends JComponent> extends AbstractComponentInfo<T
     {
         final String title = "{" + ReflectUtils.getClassName ( component.getClass () ) + ":c(" + getTitleColor ( component ) + ")}";
 
-        final String style = " [ {" + StyleId.get ( component ).getCompleteId () + ":b;c(" + styleIdColor + ")} ]";
+        final boolean wlui = LafUtils.isWebLafUI ( component );
+        final String style = wlui ? " {[ " + StyleId.get ( component ).getCompleteId () + " ]:b;c(" + styleIdColor + ")}" : "";
 
         final Insets margin = LafUtils.getMargin ( component );
         final String mtext = renderInsets ( margin, marginColor );

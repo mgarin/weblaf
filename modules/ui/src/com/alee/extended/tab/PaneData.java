@@ -769,20 +769,26 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
 
     /**
      * Closes all document in this group.
+     *
+     * @return {@code true} if all documents were successfully closed, {@code false} otherwise
      */
-    public void closeAll ()
+    public boolean closeAll ()
     {
         for ( final T document : CollectionUtils.copy ( data ) )
         {
-            close ( document );
+            if ( !close ( document ) )
+            {
+                return false;
+            }
         }
+        return true;
     }
 
     /**
      * Closes document at the specified index in the active pane.
      *
      * @param index index of the document to close
-     * @return true if document was successfully closed, false otherwise
+     * @return {@code true} if document was successfully closed, {@code false} otherwise
      */
     public boolean close ( final int index )
     {
@@ -793,7 +799,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      * Closes document with the specified ID.
      *
      * @param id ID of the document to close
-     * @return true if document was successfully closed, false otherwise
+     * @return {@code true} if document was successfully closed, {@code false} otherwise
      */
     public boolean close ( final String id )
     {
@@ -804,7 +810,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      * Closes the specified document.
      *
      * @param document document to close
-     * @return true if document was successfully closed, false otherwise
+     * @return {@code true} if document was successfully closed, {@code false} otherwise
      */
     public boolean close ( final T document )
     {
@@ -819,6 +825,9 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                 // Closing document and fixing view
                 final boolean removed = remove ( document );
                 mergeIfEmpty ();
+
+                // todo Fire additional event when all documents are closed?
+                // if ( documentPane.getDocumentsCount () == 0 )
 
                 // Informing listeners about document close event
                 documentPane.fireDocumentClosed ( document, this, index );
@@ -840,28 +849,32 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      * Closes all documents except the specified one.
      *
      * @param document document to keep opened
+     * @return {@code true} if all documents were successfully closed, {@code false} otherwise
      */
-    public void closeOthers ( final T document )
+    public boolean closeOthers ( final T document )
     {
         for ( final T doc : CollectionUtils.copy ( data ) )
         {
             if ( doc != document && doc.isClosable () )
             {
-                close ( doc );
+                if ( !close ( doc ) )
+                {
+                    return false;
+                }
             }
         }
+        return true;
     }
 
     /**
      * Closes selected document.
+     *
+     * @return {@code true} if selected document was successfully closed, {@code false} otherwise
      */
-    public void closeSelected ()
+    public boolean closeSelected ()
     {
         final T selected = getSelected ();
-        if ( selected != null )
-        {
-            close ( selected );
-        }
+        return selected != null && close ( selected );
     }
 
     /**

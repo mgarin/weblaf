@@ -245,7 +245,7 @@ public class WebPasswordFieldUI extends WPasswordFieldUI implements ShapeSupport
             this.leadingComponent.addComponentListener ( componentResizeListener );
 
             // Adding component
-            field.add ( leadingComponent, TextFieldLayout.LEADING );
+            field.add ( leadingComponent );
         }
 
         // Updating layout
@@ -292,7 +292,7 @@ public class WebPasswordFieldUI extends WPasswordFieldUI implements ShapeSupport
             this.trailingComponent.addComponentListener ( componentResizeListener );
 
             // Adding component
-            field.add ( trailingComponent, TextFieldLayout.TRAILING );
+            field.add ( trailingComponent );
         }
 
         // Updating layout

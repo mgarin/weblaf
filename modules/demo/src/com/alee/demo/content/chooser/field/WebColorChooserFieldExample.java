@@ -17,7 +17,7 @@
 
 package com.alee.demo.content.chooser.field;
 
-import com.alee.demo.api.*;
+import com.alee.demo.api.example.*;
 import com.alee.extended.colorchooser.WebColorChooserField;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;

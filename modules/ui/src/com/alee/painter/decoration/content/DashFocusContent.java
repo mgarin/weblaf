@@ -91,10 +91,7 @@ public class DashFocusContent<E extends JComponent, D extends IDecoration<E, D>,
         {
             return color;
         }
-        else
-        {
-            throw new DecorationException ( "Focus color must be specified" );
-        }
+        throw new DecorationException ( "Focus color must be specified" );
     }
 
     /**

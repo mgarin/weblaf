@@ -8,6 +8,15 @@
         <SvgFill selector="svg" color="white" />
         <SvgTransform selector="svg" scale="1.15,1.15" />
     </SvgIcon>
+    <SvgIcon id="target" path="target.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="target-hover" path="target.svg" size="16,16">
+        <SvgFill selector="svg" color="white" />
+    </SvgIcon>
+    <SvgIcon id="target-selected" path="target.svg" size="16,16">
+        <SvgFill selector="svg" color="160,160,255" />
+    </SvgIcon>
     <SvgIcon id="pin" path="pin.svg" size="16,16">
         <SvgFill selector="svg" color="240,240,240" />
     </SvgIcon>
@@ -40,14 +49,14 @@
         <SvgFill selector="svg" color="240,240,240" />
     </SvgIcon>
     <SvgIcon id="cross-hover" path="cross.svg" size="16,16">
-        <SvgFill selector="svg" color="226,0,22" />
+        <SvgFill selector="svg" color="255,160,160" />
         <SvgTransform selector="svg" scale="1.15,1.15" />
     </SvgIcon>
     <SvgIcon id="cross-small" path="cross.svg" size="9,9">
         <SvgFill selector="svg" color="240,240,240" />
     </SvgIcon>
     <SvgIcon id="cross-small-hover" path="cross.svg" size="9,9">
-        <SvgFill selector="svg" color="226,0,22" />
+        <SvgFill selector="svg" color="255,160,160" />
         <SvgTransform selector="svg" scale="1.15,1.15" translate="-0.5,-0.5" />
     </SvgIcon>
     <SvgIcon id="magnifier" path="magnifier.svg" size="16,16">
@@ -125,18 +134,22 @@
     <SvgIcon id="square-plus" path="square-plus.svg" size="11,11">
         <SvgFill selector=".bg" color="106,110,112" />
         <SvgFill selector=".shape" color="240,240,240" />
+        <SvgFill selector=".outer" color="none" />
     </SvgIcon>
     <SvgIcon id="square-plus-disabled" path="square-plus.svg" size="11,11">
         <SvgFill selector=".bg" color="106,110,112" />
         <SvgFill selector=".shape" color="180,180,180" />
+        <SvgFill selector=".outer" color="none" />
     </SvgIcon>
     <SvgIcon id="square-minus" path="square-minus.svg" size="11,11">
         <SvgFill selector=".bg" color="106,110,112" />
         <SvgFill selector=".shape" color="240,240,240" />
+        <SvgFill selector=".outer" color="none" />
     </SvgIcon>
     <SvgIcon id="square-minus-disabled" path="square-minus.svg" size="11,11">
         <SvgFill selector=".bg" color="106,110,112" />
-        <SvgFill selector=".shape" color="240,240,240" />
+        <SvgFill selector=".shape" color="180,180,180" />
+        <SvgFill selector=".outer" color="none" />
     </SvgIcon>
 
 </IconSet>

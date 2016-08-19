@@ -261,10 +261,6 @@ public class WebImage extends WebComponent<WebImage,WImageUI> implements SwingCo
     protected void initialize ( final StyleId id, final BufferedImage image )
     {
         setImage ( image );
-        setOpacity ( 1f );
-        setDisplayType ( DisplayType.preferred );
-        setHorizontalAlignment ( CENTER );
-        setVerticalAlignment ( CENTER );
         updateUI ();
         setStyleId ( id );
     }

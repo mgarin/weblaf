@@ -17,7 +17,10 @@
 
 package com.alee.extended.inspector;
 
+import com.alee.extended.behavior.ComponentVisibilityBehavior;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.glasspane.GlassPaneManager;
+import com.alee.managers.glasspane.WebGlassPane;
 import com.alee.managers.style.MarginSupport;
 import com.alee.managers.style.PaddingSupport;
 import com.alee.utils.GraphicsUtils;
@@ -29,19 +32,20 @@ import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.HierarchyBoundsListener;
+import java.awt.event.HierarchyEvent;
 import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.util.Map;
 
 /**
  * Custom component that visually displays component margin, border, padding and content areas.
- * It is designed to be used only as a part of {@link com.alee.extended.inspector.InterfaceTree}.
+ * It is designed to be used only as a part of {@link InterfaceTree}.
  *
  * @author Mikle Garin
- * @see com.alee.extended.inspector.InterfaceTree
  */
 
-public final class ComponentHighlighter extends JComponent implements ComponentListener
+public final class ComponentHighlighter extends JComponent implements ComponentListener, HierarchyBoundsListener
 {
     /**
      * Internal constants.
@@ -54,12 +58,22 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
     private static final int sizeTipHeight = 20;
 
     /**
-     * Inspected component.
+     * Highlighted component.
      */
     private Component component;
 
     /**
-     * Constructs new component inspector.
+     * Highlighted component visibility listener.
+     */
+    private ComponentVisibilityBehavior visibilityListener;
+
+    /**
+     * Highlighter glasspane.
+     */
+    private WebGlassPane glassPane;
+
+    /**
+     * Constructs new component highlighter.
      */
     public ComponentHighlighter ()
     {
@@ -69,24 +83,84 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
     }
 
     /**
-     * Displays this inspector over the specified component.
+     * Displays this highlighter over the specified component.
      *
-     * @param component component to be inspected
+     * @param component component to be highlighted
      */
     public void install ( final Component component )
     {
-        this.component = component;
-        updateBounds ();
-        component.addComponentListener ( this );
+        if ( this.component == null && this.glassPane == null )
+        {
+            this.component = component;
+            this.glassPane = GlassPaneManager.getGlassPane ( component );
+
+            // Updating highligther position
+            updateBounds ();
+
+            // Adding highligthed component listeners
+            component.addComponentListener ( this );
+            component.addHierarchyBoundsListener ( this );
+            visibilityListener = new ComponentVisibilityBehavior ( component )
+            {
+                @Override
+                public void displayed ()
+                {
+                    // Ignored event
+                }
+
+                @Override
+                public void hidden ()
+                {
+                    ComponentHighlighter.this.uninstall ();
+                }
+            };
+            visibilityListener.install ();
+
+            // Displaying highlighter on glass pane
+            glassPane.showComponent ( this );
+        }
     }
 
     /**
-     * Hides this component inspector.
+     * Hides this component highlighter.
      */
     public void uninstall ()
     {
-        component.removeComponentListener ( this );
-        component = null;
+        if ( component != null && glassPane != null )
+        {
+            // Hiding highlighter from glass pane
+            glassPane.hideComponent ( this );
+            glassPane = null;
+
+            // Removing listeners and references
+            visibilityListener.uninstall ();
+            visibilityListener = null;
+            component.removeHierarchyBoundsListener ( this );
+            component.removeComponentListener ( this );
+            component = null;
+        }
+    }
+
+    /**
+     * Returns highlighted component.
+     *
+     * @return highlighted component
+     */
+    public Component getComponent ()
+    {
+        return component;
+    }
+
+    @Override
+    public void ancestorMoved ( final HierarchyEvent e )
+    {
+        updateBounds ();
+    }
+
+    @Override
+    public void ancestorResized ( final HierarchyEvent e )
+    {
+        updateBounds ();
     }
 
     @Override
@@ -104,17 +178,17 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
     @Override
     public void componentShown ( final ComponentEvent e )
     {
-        updateBounds ();
+        // Ignored event
     }
 
     @Override
     public void componentHidden ( final ComponentEvent e )
     {
-        updateBounds ();
+        uninstall ();
     }
 
     /**
-     * Updates inspector position.
+     * Updates highlighter position.
      */
     protected void updateBounds ()
     {
@@ -125,9 +199,9 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
     }
 
     /**
-     * Returns inspected component size tip text.
+     * Returns highlighted component size tip text.
      *
-     * @return inspected component size tip text
+     * @return highlighted component size tip text
      */
     protected String getSizeTip ()
     {
@@ -159,7 +233,8 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
         final FontMetrics fm = g2d.getFontMetrics ( g2d.getFont () );
         final String sizeTip = getSizeTip ();
         final int shearY = LafUtils.getTextCenterShiftY ( fm );
-        final int tipWidth = fm.stringWidth ( sizeTip ) + 8;
+        final int tipWidth = fm.stringWidth ( sizeTip ) + 8 - 1;
+        final int tipHeight = sizeTipHeight - 1;
         final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
         gp.moveTo ( 0, 4 );
         gp.quadTo ( 0, 0, 4, 0 );
@@ -167,25 +242,27 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
         gp.quadTo ( tipWidth, 0, tipWidth, 4 );
         if ( component.getWidth () < tipWidth )
         {
-            gp.lineTo ( tipWidth, sizeTipHeight - 4 );
-            gp.quadTo ( tipWidth, sizeTipHeight, tipWidth - 4, sizeTipHeight );
+            gp.lineTo ( tipWidth, tipHeight - 4 );
+            gp.quadTo ( tipWidth, tipHeight, tipWidth - 4, tipHeight );
         }
         else
         {
-            gp.lineTo ( tipWidth, sizeTipHeight );
+            gp.lineTo ( tipWidth, tipHeight );
         }
-        gp.lineTo ( 0, sizeTipHeight );
+        gp.lineTo ( 0, tipHeight );
         gp.closePath ();
 
         // Background
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
-        g2d.setPaint ( Color.BLACK );
+        g2d.setPaint ( Color.WHITE );
         g2d.fill ( gp );
+        g2d.setPaint ( Color.BLACK );
+        g2d.draw ( gp );
         GraphicsUtils.restoreAntialias ( g2d, aa );
 
         // Text
         final Map taa = SwingUtils.setupTextAntialias ( g2d );
-        g2d.setPaint ( Color.WHITE );
+        g2d.setPaint ( Color.BLACK );
         g2d.drawString ( sizeTip, 4, sizeTipHeight / 2 + shearY );
         SwingUtils.restoreTextAntialias ( g2d, taa );
     }
@@ -258,5 +335,16 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
             g2d.setPaint ( contentColor );
             g2d.fill ( bounds );
         }
+    }
+
+    /**
+     * Returns whether or not component can be highlighted.
+     *
+     * @param component component to be highlighted
+     * @return {@code true} if component can be highlighted, {@code false} otherwise
+     */
+    public static boolean canHighlight ( final Component component )
+    {
+        return component != null && component.isShowing () && !( component instanceof Window );
     }
 }

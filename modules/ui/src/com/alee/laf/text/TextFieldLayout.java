@@ -18,7 +18,6 @@
 package com.alee.laf.text;
 
 import com.alee.extended.layout.AbstractLayoutManager;
-import com.alee.utils.CompareUtils;
 
 import java.awt.*;
 
@@ -31,60 +30,27 @@ import java.awt.*;
 public class TextFieldLayout extends AbstractLayoutManager
 {
     /**
-     * Positions component at the leading side of the field.
+     * Text field painter implementation.
      */
-    public static final String LEADING = "LEADING";
+    private final IAbstractTextFieldPainter painter;
 
     /**
-     * Positions component at the trailing side of the field
+     * Constructs new text field layout.
+     *
+     * @param painter text field painter implementation
      */
-    public static final String TRAILING = "TRAILING";
-
-    /**
-     * Leading layout component.
-     */
-    private Component leading;
-
-    /**
-     * Trailing layout component.
-     */
-    private Component trailing;
-
-    @Override
-    public void addComponent ( final Component component, final Object constraints )
+    public TextFieldLayout ( final IAbstractTextFieldPainter painter )
     {
-        if ( CompareUtils.equals ( constraints, LEADING ) )
-        {
-            leading = component;
-        }
-        else if ( CompareUtils.equals ( constraints, TRAILING ) )
-        {
-            trailing = component;
-        }
-        else
-        {
-            final String msg = "Component cannot be added to layout: constraint must be either of '%s' or '%s' string value";
-            throw new IllegalArgumentException ( String.format ( msg, LEADING, TRAILING ) );
-        }
-    }
-
-    @Override
-    public void removeComponent ( final Component component )
-    {
-        if ( leading == component )
-        {
-            leading = null;
-        }
-        else if ( trailing == component )
-        {
-            trailing = null;
-        }
+        super ();
+        this.painter = painter;
     }
 
     @Override
     public Dimension preferredLayoutSize ( final Container parent )
     {
         final Insets b = parent.getInsets ();
+        final Component leading = painter.getLeadingComponent ();
+        final Component trailing = painter.getTrailingComponent ();
         final Dimension l = leading != null ? leading.getPreferredSize () : new Dimension ();
         final Dimension t = trailing != null ? trailing.getPreferredSize () : new Dimension ();
         return new Dimension ( b.left + l.width + t.width + b.right, b.top + Math.max ( l.height, t.height ) + b.bottom );
@@ -95,6 +61,8 @@ public class TextFieldLayout extends AbstractLayoutManager
     {
         final Insets b = parent.getInsets ();
         final boolean ltr = parent.getComponentOrientation ().isLeftToRight ();
+        final Component leading = painter.getLeadingComponent ();
+        final Component trailing = painter.getTrailingComponent ();
         if ( leading != null )
         {
             final int w = leading.getPreferredSize ().width;

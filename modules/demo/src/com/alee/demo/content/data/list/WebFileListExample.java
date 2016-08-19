@@ -17,7 +17,7 @@
 
 package com.alee.demo.content.data.list;
 
-import com.alee.demo.api.*;
+import com.alee.demo.api.example.*;
 import com.alee.extended.list.WebFileList;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.managers.style.StyleId;

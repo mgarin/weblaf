@@ -17,10 +17,10 @@
 
 package com.alee.demo.content.data.grid;
 
-import com.alee.demo.api.AbstractStylePreview;
-import com.alee.demo.api.FeatureState;
-import com.alee.demo.api.FeatureType;
-import com.alee.demo.api.Preview;
+import com.alee.demo.api.example.AbstractStylePreview;
+import com.alee.demo.api.example.FeatureState;
+import com.alee.demo.api.example.FeatureType;
+import com.alee.demo.api.example.Preview;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.table.WebTable;
 import com.alee.managers.style.StyleId;

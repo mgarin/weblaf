@@ -292,12 +292,6 @@ public class WebStyledLabel extends JLabel
     public WebStyledLabel ( final StyleId id, final String text, final Icon icon, final int horizontalAlignment, final Object... data )
     {
         super ( LanguageUtils.getInitialText ( text, data ), icon, horizontalAlignment );
-        setWrap ( TextWrap.mixed );
-        setHorizontalTextAlignment ( -1 );
-        setVerticalTextAlignment ( CENTER );
-        setRows ( 0 );
-        setMinimumRows ( 0 );
-        setMaximumRows ( 0 );
         LanguageUtils.registerInitialLanguage ( this, text, data );
         setStyleId ( id );
     }

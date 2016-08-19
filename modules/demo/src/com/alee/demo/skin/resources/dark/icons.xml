@@ -5,6 +5,29 @@
         <SvgFill selector="svg" color="white" />
     </SvgIcon>
 
+    <!-- Example frame icons -->
+    <SvgIcon id="examples16" path="frames/examples.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+
+    <!-- Style frame icons -->
+    <SvgIcon id="style16" path="general/style.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+
+    <!-- Source frame icons -->
+    <SvgIcon id="source16" path="general/source.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+
+    <!-- Inspector frame icons -->
+    <SvgIcon id="inspector16" path="frames/inspector.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+
+    <!-- Type icons -->
+    <ImageIcon id="group16" path="types/group.png" size="16,16" />
+
     <!-- General purpose 36x36 icons -->
     <SvgIcon id="compass36" path="general/compass.svg" size="36,36">
         <SvgFill selector="svg" color="240,240,240" />
@@ -23,6 +46,9 @@
     <SvgIcon id="menu16" path="general/menu.svg" size="16,16">
         <SvgFill selector="svg" color="240,240,240" />
     </SvgIcon>
+    <SvgIcon id="brush16" path="general/brush.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
     <SvgIcon id="github16" path="general/github.svg" size="16,16">
         <SvgFill selector="svg" color="240,240,240" />
     </SvgIcon>
@@ -30,15 +56,6 @@
         <SvgFill selector="svg" color="240,240,240" />
     </SvgIcon>
     <SvgIcon id="settings16" path="general/settings.svg" size="16,16">
-        <SvgFill selector="svg" color="240,240,240" />
-    </SvgIcon>
-    <SvgIcon id="style16" path="general/style.svg" size="16,16">
-        <SvgFill selector="svg" color="240,240,240" />
-    </SvgIcon>
-    <SvgIcon id="source16" path="general/source.svg" size="16,16">
-        <SvgFill selector="svg" color="240,240,240" />
-    </SvgIcon>
-    <SvgIcon id="inspector16" path="general/inspector.svg" size="16,16">
         <SvgFill selector="svg" color="240,240,240" />
     </SvgIcon>
     <SvgIcon id="key16" path="general/key.svg" size="16,16">
@@ -92,13 +109,5 @@
     <SvgIcon id="vimeo16" path="social/vimeo.svg" size="16,16">
         <SvgFill selector="svg" color="0,173,239" />
     </SvgIcon>
-
-    <!-- Example frame icons -->
-    <SvgIcon id="examples16" path="frames/examples.svg" size="16,16">
-        <SvgFill selector="svg" color="white" />
-    </SvgIcon>
-
-    <!-- Type icons -->
-    <ImageIcon id="group16" path="types/group.png" size="16,16" />
 
 </IconSet>

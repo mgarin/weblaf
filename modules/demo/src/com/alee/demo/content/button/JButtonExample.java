@@ -17,7 +17,9 @@
 
 package com.alee.demo.content.button;
 
-import com.alee.demo.api.*;
+import com.alee.demo.api.example.*;
+import com.alee.demo.api.example.wiki.OracleWikiPage;
+import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.grouping.GroupPane;
 import com.alee.managers.style.StyleId;
@@ -48,6 +50,12 @@ public class JButtonExample extends AbstractExample
     public FeatureType getFeatureType ()
     {
         return FeatureType.swing;
+    }
+
+    @Override
+    public WikiPage getWikiPage ()
+    {
+        return new OracleWikiPage ( "How to Use Buttons", "button" );
     }
 
     @Override

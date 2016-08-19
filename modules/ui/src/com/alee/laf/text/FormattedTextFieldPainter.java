@@ -26,14 +26,14 @@ public class FormattedTextFieldPainter<E extends JFormattedTextField, U extends 
     }
 
     @Override
-    public Component getTrailingComponent ()
-    {
-        return ui.getTrailingComponent ();
-    }
-
-    @Override
     public Component getLeadingComponent ()
     {
         return ui.getLeadingComponent ();
+    }
+
+    @Override
+    public Component getTrailingComponent ()
+    {
+        return ui.getTrailingComponent ();
     }
 }

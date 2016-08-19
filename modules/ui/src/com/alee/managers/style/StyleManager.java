@@ -67,6 +67,7 @@ import com.alee.utils.XmlUtils;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
+import javax.swing.event.EventListenerList;
 import java.util.*;
 
 /**
@@ -83,6 +84,11 @@ import java.util.*;
 
 public final class StyleManager
 {
+    /**
+     * List of listeners for various style events.
+     */
+    private static final EventListenerList listenerList = new EventListenerList ();
+
     /**
      * Various component style related data which includes:
      *
@@ -352,7 +358,44 @@ public final class StyleManager
             }
         }
 
+        // Informing about skin change
+        fireSkinChanged ( previousSkin, skin );
+
         return previousSkin;
+    }
+
+    /**
+     * Adds skin change listener.
+     *
+     * @param listener skin change listener to add
+     */
+    public static void addSkinListener ( final SkinListener listener )
+    {
+        listenerList.add ( SkinListener.class, listener );
+    }
+
+    /**
+     * Removes skin change listener.
+     *
+     * @param listener skin change listener to remove
+     */
+    public static void removeSkinListener ( final SkinListener listener )
+    {
+        listenerList.remove ( SkinListener.class, listener );
+    }
+
+    /**
+     * Informs listeners about skin change.
+     *
+     * @param previous previously used skin
+     * @param current  currently used skin
+     */
+    public static void fireSkinChanged ( final Skin previous, final Skin current )
+    {
+        for ( final SkinListener listener : listenerList.getListeners ( SkinListener.class ) )
+        {
+            listener.skinChanged ( previous, current );
+        }
     }
 
     /**

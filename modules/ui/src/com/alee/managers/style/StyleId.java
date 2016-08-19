@@ -209,7 +209,7 @@ public final class StyleId
     public static final StyleId panelTransparent = StyleId.of ( "transparent" );
     public static final StyleId panelWhite = StyleId.of ( "white" );
     public static final StyleId panelDecorated = StyleId.of ( "decorated" );
-    public static final StyleId panelDecoratedFocusable = StyleId.of ( "focusable" );
+    public static final StyleId panelFocusable = StyleId.of ( "focusable" );
 
     /**
      * {@link com.alee.laf.rootpane.WebRootPane} style IDs.
@@ -425,6 +425,7 @@ public final class StyleId
      * {@link com.alee.laf.combobox.WebComboBox} style IDs.
      */
     public static final StyleId combobox = StyleId.of ( "combobox" );
+    public static final StyleId comboboxHover = StyleId.of ( "hover" );
     public static final StyleId comboboxUndecorated = StyleId.of ( "undecorated" );
     public static final ChildStyleId comboboxEditor = ChildStyleId.of ( "editor" );
     public static final ChildStyleId comboboxSeparator = ChildStyleId.of ( "separator" );
@@ -790,6 +791,7 @@ public final class StyleId
     public static final StyleId inspector = StyleId.of ( "inspector" );
     public static final StyleId inspectorPopover = StyleId.of ( "inspector-popover" );
     public static final ChildStyleId inspectorFilter = ChildStyleId.of ( "filter" );
+    public static final ChildStyleId inspectorInspect = ChildStyleId.of ( "inspect" );
     public static final ChildStyleId inspectorSeparator = ChildStyleId.of ( "separator" );
     public static final ChildStyleId inspectorScroll = ChildStyleId.of ( "scroll" );
     public static final ChildStyleId inspectorTree = ChildStyleId.of ( "tree" );

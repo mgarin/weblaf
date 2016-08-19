@@ -944,11 +944,15 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
         {
             panes.add ( ( PaneData<T> ) structureData );
         }
-        else
+        else if ( structureData instanceof SplitData )
         {
             final SplitData<T> splitData = ( SplitData<T> ) structureData;
             collectPanes ( splitData.getFirst (), panes );
             collectPanes ( splitData.getLast (), panes );
+        }
+        else
+        {
+            throw new RuntimeException ( "Unknown structure data type: " + structureData.getClass () );
         }
     }
 
@@ -1141,54 +1145,64 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      * Closes document at the specified index in the active pane.
      *
      * @param index index of the document to close
+     * @return {@code true} if document was successfully closed, {@code false} otherwise
      */
-    public void closeDocument ( final int index )
+    public boolean closeDocument ( final int index )
     {
-        if ( activePane != null )
-        {
-            activePane.close ( index );
-        }
+        return activePane != null && activePane.close ( index );
     }
 
     /**
      * Closes document with the specified ID.
      *
      * @param id ID of the document to close
+     * @return {@code true} if document was successfully closed, {@code false} otherwise
      */
-    public void closeDocument ( final String id )
+    public boolean closeDocument ( final String id )
     {
         for ( final PaneData<T> paneData : getAllPanes () )
         {
-            paneData.close ( id );
+            if ( paneData.close ( id ) )
+            {
+                return true;
+            }
         }
+        return false;
     }
 
     /**
      * Closes the specified document.
      *
      * @param document document to close
+     * @return {@code true} if document was successfully closed, {@code false} otherwise
      */
-    public void closeDocument ( final T document )
+    public boolean closeDocument ( final T document )
     {
         for ( final PaneData<T> paneData : getAllPanes () )
         {
             if ( paneData.close ( document ) )
             {
-                break;
+                return true;
             }
         }
+        return false;
     }
 
     /**
      * Closes all documents.
-     * Be aware that some documents might cancel their close operation and will still be opened after this call.
+     *
+     * @return {@code true} if all documents were successfully closed, {@code false} otherwise
      */
-    public void closeAll ()
+    public boolean closeAll ()
     {
         for ( final PaneData<T> paneData : getAllPanes () )
         {
-            paneData.closeAll ();
+            if ( !paneData.closeAll () )
+            {
+                return false;
+            }
         }
+        return true;
     }
 
     /**
@@ -1199,11 +1213,17 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
     protected void checkSelection ()
     {
         final T selected = getSelectedDocument ();
-        if ( selected != null && previouslySelected.get () != selected )
+        if ( previouslySelected.get () != selected )
         {
+            // Updating reference
             previouslySelected = new WeakReference<T> ( selected );
-            final PaneData<T> pane = getPane ( selected );
-            fireDocumentSelected ( selected, pane, pane.indexOf ( selected ) );
+
+            // Firing event only when something was actually selected
+            if (selected != null )
+            {
+                final PaneData<T> pane = getPane ( selected );
+                fireDocumentSelected ( selected, pane, pane.indexOf ( selected ) );
+            }
         }
     }
 

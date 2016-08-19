@@ -89,6 +89,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
 
         // Determining initial decoration state
         this.focused = SwingUtils.hasFocusOwner ( c );
+        this.inFocusedParent = updateInFocusedParent ();
         this.states = collectDecorationStates ();
 
         // Installing listeners
@@ -231,8 +232,20 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      * @param oldFocus previously focused component
      * @param newFocus currently focused component
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void globalFocusChanged ( final Component oldFocus, final Component newFocus )
+    {
+        // Updating {@link #inFocusedParent} mark
+        updateInFocusedParent ();
+    }
+
+    /**
+     * Updates {@link #inFocusedParent} mark.
+     * For that we check whether or not any related component gained or lost focus.
+     *
+     * @return {@code true} if component is placed within focused parent, {@code false} otherwise
+     */
+    protected boolean updateInFocusedParent ()
     {
         final boolean old = inFocusedParent;
         inFocusedParent = false;
@@ -271,6 +284,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         {
             updateDecorationState ();
         }
+        return inFocusedParent;
     }
 
     /**
@@ -278,7 +292,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      * Returns {@code true} if one of parents owns focus directly or indirectly due to one of its children being focused.
      * Indirect focus ownership is only accepted from parents which use {@link DecorationState#focused} decoration state.
      *
-     * @return true if one of this component parents displays focused state, false otherwise
+     * @return {@code true} if one of this component parents displays focused state, {@code false} otherwise
      */
     protected boolean isInFocusedParent ()
     {
@@ -495,7 +509,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     /**
      * Returns whether or not component is in enabled state.
      *
-     * @return true if component is in enabled state, false otherwise
+     * @return {@code true} if component is in enabled state, {@code false} otherwise
      */
     protected boolean isEnabled ()
     {
@@ -568,7 +582,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      * Returns whether component has decoration associated with specified state.
      *
      * @param state decoration state
-     * @return true if component has decoration associated with specified state, false otherwise
+     * @return {@code true} if component has decoration associated with specified state, {@code false} otherwise
      */
     protected boolean usesState ( final String state )
     {
@@ -603,7 +617,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      *
      * @param decorations decorations
      * @param state       decoration state
-     * @return true if specified decorations are associated with specified state, false otherwise
+     * @return {@code true} if specified decorations are associated with specified state, {@code false} otherwise
      */
     protected final boolean usesState ( final Decorations<E, D> decorations, final String state )
     {
@@ -926,7 +940,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      * When component is opaque we must fill every single pixel in its bounds with something to avoid issues.
      *
      * @param c component to paint background for
-     * @return true if painting plain component background is allowed, false otherwise
+     * @return {@code true} if painting plain component background is allowed, {@code false} otherwise
      */
     protected boolean isPlainBackgroundPaintAllowed ( final E c )
     {
@@ -940,7 +954,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      * By default this condition is limited to decoration existance and visibility.
      *
      * @param decoration decoration to be painted
-     * @return true if painting specified decoration is allowed, false otherwise
+     * @return {@code true} if painting specified decoration is allowed, {@code false} otherwise
      */
     protected boolean isDecorationPaintAllowed ( final D decoration )
     {

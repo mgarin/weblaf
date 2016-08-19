@@ -116,6 +116,31 @@
 
     </style>
 
+    <!-- Hover-decorated-only combobox -->
+    <style type="combobox" id="hover">
+        <painter>
+            <decorations>
+                <decoration opacity="0" />
+                <decoration states="focused">
+                    <LineBorder color="20,20,20" />
+                </decoration>
+                <decoration states="enabled,hover" opacity="1" />
+                <decoration states="enabled,pressed" opacity="1" />
+                <decoration states="enabled,expanded" opacity="1" />
+            </decorations>
+        </painter>
+
+        <!-- Separator -->
+        <style type="separator" id="separator" extends="vertical">
+            <painter>
+                <decorations overwrite="true">
+                    <decoration visible="false" />
+                </decorations>
+            </painter>
+        </style>
+
+    </style>
+
     <!-- Undecorated combobox -->
     <style type="combobox" id="undecorated">
         <painter>

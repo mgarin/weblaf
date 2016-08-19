@@ -21,7 +21,7 @@
     </style>
 
     <!-- Tree -->
-    <style type="tree" id="examples-tree">
+    <style type="tree" id="examples">
         <painter>
 
             <!-- Row background painter -->
@@ -69,20 +69,6 @@
             </painter>
         </style>
 
-    </style>
-
-    <!-- Example information bar -->
-    <style type="panel" id="info-bar" extends="decorated" padding="6,6,6,6">
-        <painter>
-            <decorations>
-                <decoration>
-                    <WebShape round="0" sides="0,0,1,0" />
-                    <WebShadow type="outer" width="0" />
-                    <LineBorder color="170,170,170" />
-                    <ColorBackground color="white" />
-                </decoration>
-            </decorations>
-        </painter>
     </style>
 
     <!-- Panel with all previews -->

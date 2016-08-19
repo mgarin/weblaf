@@ -302,8 +302,8 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
             final Point dropPoint = support.getDropLocation ().getDropPoint ();
 
             // Checking global side drop
-            final Rectangle outerBounds = getOuterBounds ( dockablePane );
-            final FrameDropData globalDrop = createDropData ( id, root, outerBounds, dropPoint, dropSide );
+            final Rectangle innerBounds = getInnerBounds ( dockablePane );
+            final FrameDropData globalDrop = createDropData ( id, root, innerBounds, dropPoint, dropSide );
             if ( globalDrop != null )
             {
                 return globalDrop;

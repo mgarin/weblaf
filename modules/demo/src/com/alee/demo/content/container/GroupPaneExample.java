@@ -17,7 +17,7 @@
 
 package com.alee.demo.content.container;
 
-import com.alee.demo.api.*;
+import com.alee.demo.api.example.*;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.combobox.WebComboBox;

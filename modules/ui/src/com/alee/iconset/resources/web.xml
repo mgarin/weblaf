@@ -8,6 +8,15 @@
         <SvgFill selector="svg" color="black" />
         <SvgTransform selector="svg" scale="1.15,1.15" />
     </SvgIcon>
+    <SvgIcon id="target" path="target.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="target-hover" path="target.svg" size="16,16">
+        <SvgFill selector="svg" color="black" />
+    </SvgIcon>
+    <SvgIcon id="target-selected" path="target.svg" size="16,16">
+        <SvgFill selector="svg" color="0,0,200" />
+    </SvgIcon>
     <SvgIcon id="pin" path="pin.svg" size="16,16">
         <SvgFill selector="svg" color="80,80,80" />
     </SvgIcon>
@@ -123,20 +132,26 @@
 
     <!-- Tree icons -->
     <SvgIcon id="square-plus" path="square-plus.svg" size="11,11">
-        <SvgFill selector=".bg" color="white" />
-        <SvgFill selector=".shape" color="150,150,150" />
+        <SvgFill selector=".bg" color="120,120,120" />
+        <SvgFill selector=".shape" color="240,240,240" />
+        <SvgFill selector=".outer" color="none" />
+        <SvgStroke selector=".outer" color="120,120,120" />
     </SvgIcon>
     <SvgIcon id="square-plus-disabled" path="square-plus.svg" size="11,11">
-        <SvgFill selector=".bg" color="white" />
-        <SvgFill selector=".shape" color="210,210,210" />
+        <SvgFill selector=".bg" color="80,80,80" />
+        <SvgFill selector=".shape" color="180,180,180" />
+        <SvgFill selector=".outer" color="none" />
     </SvgIcon>
     <SvgIcon id="square-minus" path="square-minus.svg" size="11,11">
-        <SvgFill selector=".bg" color="white" />
-        <SvgFill selector=".shape" color="150,150,150" />
+        <SvgFill selector=".bg" color="120,120,120" />
+        <SvgFill selector=".shape" color="240,240,240" />
+        <SvgFill selector=".outer" color="none" />
+        <SvgStroke selector=".outer" color="120,120,120" />
     </SvgIcon>
     <SvgIcon id="square-minus-disabled" path="square-minus.svg" size="11,11">
-        <SvgFill selector=".bg" color="white" />
-        <SvgFill selector=".shape" color="210,210,210" />
+        <SvgFill selector=".bg" color="80,80,80" />
+        <SvgFill selector=".shape" color="180,180,180" />
+        <SvgFill selector=".outer" color="none" />
     </SvgIcon>
 
 </IconSet>

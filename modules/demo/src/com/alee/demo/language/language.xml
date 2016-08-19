@@ -1,4 +1,30 @@
 <Dictionary name="Demo Application language" prefix="demo" author="Alee Software" creationDate="03.09.2015">
+    <Dictionary name="Tools" prefix="tool">
+        <record key="skin">
+            <value lang="en">Application skin</value>
+            <value lang="ru">Скин приложения</value>
+        </record>
+        <record key="orientation">
+            <value lang="en">Component orientation</value>
+            <value lang="ru">Ориентация компонентов</value>
+        </record>
+        <record key="orientation.ltr">
+            <value lang="en">Left to right</value>
+            <value lang="ru">Слева направо</value>
+        </record>
+        <record key="orientation.rtl">
+            <value lang="en">Right to left</value>
+            <value lang="ru">Справа налево</value>
+        </record>
+        <record key="language">
+            <value lang="en">Application language</value>
+            <value lang="ru">Язык приложения</value>
+        </record>
+        <record key="magnifier">
+            <value lang="en">Magnifier</value>
+            <value lang="ru">Лупа</value>
+        </record>
+    </Dictionary>
     <Dictionary name="Status bar" prefix="statusbar">
         <Dictionary name="Resources" prefix="resources">
             <record key="weblaf">
@@ -12,12 +38,6 @@
             <record key="gitter">
                 <value lang="en">Chat on Gitter</value>
                 <value lang="ru">Чат на Gitter</value>
-            </record>
-        </Dictionary>
-        <Dictionary name="Tools" prefix="tool">
-            <record key="magnifier">
-                <value lang="en">Magnifier</value>
-                <value lang="ru">Лупа</value>
             </record>
         </Dictionary>
     </Dictionary>
@@ -69,6 +89,24 @@
             <value lang="ru">Примеры</value>
         </record>
     </Dictionary>
+    <Dictionary name="Style frame" prefix="style">
+        <record key="title">
+            <value lang="en">Styling</value>
+            <value lang="ru">Стилизация</value>
+        </record>
+    </Dictionary>
+    <Dictionary name="Source frame" prefix="source">
+        <record key="title">
+            <value lang="en">Source code</value>
+            <value lang="ru">Исходный код</value>
+        </record>
+    </Dictionary>
+    <Dictionary name="Inspector frame" prefix="inspector">
+        <record key="title">
+            <value lang="en">Inspector</value>
+            <value lang="ru">Инспектор</value>
+        </record>
+    </Dictionary>
     <Dictionary name="Content area" prefix="content">
         <record key="empty">
             <value lang="en">Double-click any example{br}in the left frame to view it</value>
@@ -79,39 +117,21 @@
             <value lang="ru">Данное демо является ранним превью{br}в нём всё ещё присутствуют некоторые проблемы</value>
         </record>
         <Dictionary name="Example" prefix="example">
-            <record key="wiki">
-                <value lang="en">Wiki article:</value>
-                <value lang="ru">Статья в wiki:</value>
-            </record>
-        </Dictionary>
-        <Dictionary name="Preview" prefix="preview">
-            <Dictionary name="Tools" prefix="tool">
-                <record key="state">
-                    <value lang="en">Enabled state</value>
-                    <value lang="ru">Состояние разблокированности</value>
+            <Dictionary name="Wiki" prefix="wiki">
+                <record key="oracle">
+                    <value lang="en">JDK article:</value>
+                    <value lang="ru">JDK статья:</value>
                 </record>
-                <record key="orientation">
-                    <value lang="en">Component orientation</value>
-                    <value lang="ru">Ориентация компонентов</value>
+                <record key="weblaf">
+                    <value lang="en"> article:</value>
+                    <value lang="ru">Wiki статья:</value>
+                </record>
+                <record key="none">
+                    <value lang="en">No wiki for this component yet</value>
+                    <value lang="ru">Пока-что wiki для данного компонента нет</value>
                 </record>
             </Dictionary>
         </Dictionary>
-        <record key="settings">
-            <value lang="en">Settings</value>
-            <value lang="ru">Настройки</value>
-        </record>
-        <record key="inspector">
-            <value lang="en">Inspector</value>
-            <value lang="ru">Инспектор</value>
-        </record>
-        <record key="style">
-            <value lang="en">Styling</value>
-            <value lang="ru">Стилизация</value>
-        </record>
-        <record key="source">
-            <value lang="en">Source code</value>
-            <value lang="ru">Исходный код</value>
-        </record>
     </Dictionary>
     <Dictionary prefix="example">
         <Dictionary prefix="labels">
@@ -370,8 +390,8 @@
                         <value lang="ru">Наведите для просмотра подсказки</value>
                     </record>
                     <record key="tip">
-                        <value lang="en">Custom {tooltip:c(255,155,155)} with{br}{styled label:b} inside</value>
-                        <value lang="ru">Кастомная {подсказка:c(255,155,155)} со{br}{styled label'ом:b} внутри</value>
+                        <value lang="en">Custom tooltip with {styled:c(255,155,155)} text inside{br}Style is provided by {WebStyledLabel:b} component</value>
+                        <value lang="ru">Кастомная подсказка со {стилизованным:c(255,155,155)} текстом внутри{br}Стилизация основана на {WebStyledLabel:b} компоненте</value>
                     </record>
                 </Dictionary>
             </Dictionary>

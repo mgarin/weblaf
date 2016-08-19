@@ -700,9 +700,8 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      */
     protected void performSortingAndFiltering ( final E parentNode, final boolean recursively )
     {
-        // todo Restore tree state only for the updated node
         // Saving tree state to restore it right after children update
-        final TreeState treeState = tree.getTreeState ();
+        final TreeState treeState = tree.getTreeState ( parentNode );
 
         // Updating root node children
         if ( recursively )
@@ -716,7 +715,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
         nodeStructureChanged ( parentNode );
 
         // Restoring tree state including all selections and expansions
-        tree.setTreeState ( treeState );
+        tree.setTreeState ( treeState, parentNode );
     }
 
     /**

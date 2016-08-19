@@ -25,6 +25,7 @@ import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.LafUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -33,6 +34,8 @@ import javax.swing.plaf.basic.BasicScrollPaneUI;
 import java.awt.*;
 import java.awt.event.ContainerAdapter;
 import java.awt.event.ContainerEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
@@ -198,6 +201,288 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
 
         // Uninstalling UI
         super.uninstallUI ( c );
+    }
+
+    @Override
+    protected MouseWheelListener createMouseWheelListener ()
+    {
+        return new MouseWheelListener ()
+        {
+            @Override
+            public void mouseWheelMoved ( final MouseWheelEvent e )
+            {
+                if ( scrollpane.isWheelScrollingEnabled () && e.getWheelRotation () != 0 )
+                {
+                    // Determining scroll orientation
+                    // This is the only part of the original {@link BasicScrollPaneUI} which is modified
+                    // It provides HORIZONTAL instead of VERTICAL in case `SHIFT` modified is available
+                    int orientation = SwingConstants.VERTICAL;
+                    JScrollBar toScroll = scrollpane.getVerticalScrollBar ();
+                    if ( toScroll == null || !toScroll.isVisible () || SwingUtils.isShift ( e ) )
+                    {
+                        toScroll = scrollpane.getHorizontalScrollBar ();
+                        if ( toScroll == null || !toScroll.isVisible () )
+                        {
+                            return;
+                        }
+                        orientation = SwingConstants.HORIZONTAL;
+                    }
+
+                    // Properly consuming event
+                    e.consume ();
+
+                    // Performing scroll
+                    final int direction = e.getWheelRotation () < 0 ? -1 : 1;
+                    if ( e.getScrollType () == MouseWheelEvent.WHEEL_UNIT_SCROLL )
+                    {
+                        final JViewport vp = scrollpane.getViewport ();
+                        if ( vp == null )
+                        {
+                            return;
+                        }
+                        final Component comp = vp.getView ();
+                        final int units = Math.abs ( e.getUnitsToScroll () );
+
+                        // When the scrolling speed is set to maximum, it's possible for a single wheel click to scroll by more units than
+                        // will fit in the visible area. This makes it hard/impossible to get to certain parts of the scrolling
+                        // Component with the wheel. To make for more accurate low-speed scrolling, we limit scrolling to the block
+                        // increment if the wheel was only rotated one click.
+                        final boolean limitScroll = Math.abs ( e.getWheelRotation () ) == 1;
+
+                        // Check if we should use the visibleRect trick
+                        final Object fastWheelScroll = toScroll.getClientProperty ( "JScrollBar.fastWheelScrolling" );
+                        if ( Boolean.TRUE == fastWheelScroll && comp instanceof Scrollable )
+                        {
+                            // 5078454: Under maximum acceleration, we may scroll by many 100s of units in ~1 second.
+                            // BasicScrollBarUI.scrollByUnits() can bog down the EDT with repaints in this situation.
+                            // However, the Scrollable interface allows us to pass in an arbitrary visibleRect.
+                            // This allows us to accurately calculate the total scroll amount, and then update the GUI once.
+                            // This technique provides much faster accelerated wheel scrolling.
+                            final Scrollable scrollComp = ( Scrollable ) comp;
+                            final Rectangle viewRect = vp.getViewRect ();
+                            final int startingX = viewRect.x;
+                            final boolean leftToRight = comp.getComponentOrientation ().isLeftToRight ();
+                            int scrollMin = toScroll.getMinimum ();
+                            int scrollMax = toScroll.getMaximum () - toScroll.getModel ().getExtent ();
+
+                            if ( limitScroll )
+                            {
+                                final int blockIncr = scrollComp.getScrollableBlockIncrement ( viewRect, orientation, direction );
+                                if ( direction < 0 )
+                                {
+                                    scrollMin = Math.max ( scrollMin, toScroll.getValue () - blockIncr );
+                                }
+                                else
+                                {
+                                    scrollMax = Math.min ( scrollMax, toScroll.getValue () + blockIncr );
+                                }
+                            }
+
+                            for ( int i = 0; i < units; i++ )
+                            {
+                                // Modify the visible rect for the next unit, and check to see if we're at the end already
+                                final int unitIncr = scrollComp.getScrollableUnitIncrement ( viewRect, orientation, direction );
+                                if ( orientation == SwingConstants.VERTICAL )
+                                {
+                                    if ( direction < 0 )
+                                    {
+                                        viewRect.y -= unitIncr;
+                                        if ( viewRect.y <= scrollMin )
+                                        {
+                                            viewRect.y = scrollMin;
+                                            break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        viewRect.y += unitIncr;
+                                        if ( viewRect.y >= scrollMax )
+                                        {
+                                            viewRect.y = scrollMax;
+                                            break;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    // Scroll left
+                                    if ( ( leftToRight && direction < 0 ) || ( !leftToRight && direction > 0 ) )
+                                    {
+                                        viewRect.x -= unitIncr;
+                                        if ( leftToRight )
+                                        {
+                                            if ( viewRect.x < scrollMin )
+                                            {
+                                                viewRect.x = scrollMin;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    // Scroll right
+                                    else if ( ( leftToRight && direction > 0 ) || ( !leftToRight && direction < 0 ) )
+                                    {
+                                        viewRect.x += unitIncr;
+                                        if ( leftToRight )
+                                        {
+                                            if ( viewRect.x > scrollMax )
+                                            {
+                                                viewRect.x = scrollMax;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        assert false : "Non-sensical ComponentOrientation / scroll direction";
+                                    }
+                                }
+                            }
+
+                            // Set the final view position on the ScrollBar
+                            if ( orientation == SwingConstants.VERTICAL )
+                            {
+                                toScroll.setValue ( viewRect.y );
+                            }
+                            else
+                            {
+                                if ( leftToRight )
+                                {
+                                    toScroll.setValue ( viewRect.x );
+                                }
+                                else
+                                {
+                                    // rightToLeft scrollbars are oriented with minValue on the right and maxValue on the left
+                                    int newPos = toScroll.getValue () - ( viewRect.x - startingX );
+                                    if ( newPos < scrollMin )
+                                    {
+                                        newPos = scrollMin;
+                                    }
+                                    else if ( newPos > scrollMax )
+                                    {
+                                        newPos = scrollMax;
+                                    }
+                                    toScroll.setValue ( newPos );
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // Viewport's view is not a Scrollable, or fast wheel scrolling is not enabled
+                            scrollByUnits ( toScroll, direction, units, limitScroll );
+                        }
+                    }
+                    else if ( e.getScrollType () == MouseWheelEvent.WHEEL_BLOCK_SCROLL )
+                    {
+                        scrollByBlock ( toScroll, direction );
+                    }
+                }
+            }
+        };
+    }
+
+    /**
+     * Method for scrolling by a unit increment.
+     * Added for mouse wheel scrolling support, RFE 4202656.
+     *
+     * If {@code limitByBlock} is set to {@code true}, the scrollbar will scroll at least 1 unit increment, but will not scroll farther
+     * than the block increment.
+     *
+     * This is a full copy of {@link javax.swing.plaf.basic.BasicScrollBarUI#scrollByUnits(javax.swing.JScrollBar, int, int, boolean)}.
+     *
+     * @param scrollbar    scroll bar
+     * @param direction    scroll direction
+     * @param units        scrolled untins
+     * @param limitToBlock whether or not should limit scroll to block increment
+     */
+    protected void scrollByUnits ( final JScrollBar scrollbar, final int direction,
+                                   final int units, final boolean limitToBlock )
+    {
+        // This method is called from BasicScrollPaneUI to implement wheel
+        // scrolling, as well as from scrollByUnit().
+        int delta;
+        int limit = -1;
+
+        if ( limitToBlock )
+        {
+            if ( direction < 0 )
+            {
+                limit = scrollbar.getValue () - scrollbar.getBlockIncrement ( direction );
+            }
+            else
+            {
+                limit = scrollbar.getValue () + scrollbar.getBlockIncrement ( direction );
+            }
+        }
+
+        for ( int i = 0; i < units; i++ )
+        {
+            if ( direction > 0 )
+            {
+                delta = scrollbar.getUnitIncrement ( direction );
+            }
+            else
+            {
+                delta = -scrollbar.getUnitIncrement ( direction );
+            }
+
+            final int oldValue = scrollbar.getValue ();
+            int newValue = oldValue + delta;
+
+            // Check for overflow.
+            if ( delta > 0 && newValue < oldValue )
+            {
+                newValue = scrollbar.getMaximum ();
+            }
+            else if ( delta < 0 && newValue > oldValue )
+            {
+                newValue = scrollbar.getMinimum ();
+            }
+            if ( oldValue == newValue )
+            {
+                break;
+            }
+
+            if ( limitToBlock && i > 0 )
+            {
+                assert limit != -1;
+                if ( ( direction < 0 && newValue < limit ) || ( direction > 0 && newValue > limit ) )
+                {
+                    break;
+                }
+            }
+            scrollbar.setValue ( newValue );
+        }
+    }
+
+    /**
+     * Method for scrolling by a block increment.
+     * Added for mouse wheel scrolling support, RFE 4202656.
+     *
+     * This is a full copy of {@link javax.swing.plaf.basic.BasicScrollBarUI#scrollByBlock(javax.swing.JScrollBar, int)}.
+     *
+     * @param scrollbar scroll bar
+     * @param direction scroll direction
+     */
+    protected void scrollByBlock ( final JScrollBar scrollbar, final int direction )
+    {
+        // This method is called from BasicScrollPaneUI to implement wheel
+        // scrolling, and also from scrollByBlock().
+        final int oldValue = scrollbar.getValue ();
+        final int blockIncrement = scrollbar.getBlockIncrement ( direction );
+        final int delta = blockIncrement * ( ( direction > 0 ) ? +1 : -1 );
+        int newValue = oldValue + delta;
+
+        // Check for overflow.
+        if ( delta > 0 && newValue < oldValue )
+        {
+            newValue = scrollbar.getMaximum ();
+        }
+        else if ( delta < 0 && newValue > oldValue )
+        {
+            newValue = scrollbar.getMinimum ();
+        }
+
+        scrollbar.setValue ( newValue );
     }
 
     @Override

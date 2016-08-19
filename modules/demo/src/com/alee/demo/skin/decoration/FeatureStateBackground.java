@@ -17,8 +17,8 @@
 
 package com.alee.demo.skin.decoration;
 
-import com.alee.demo.api.FeatureState;
-import com.alee.demo.api.PreviewPanel;
+import com.alee.demo.api.example.FeatureState;
+import com.alee.demo.api.example.PreviewPanel;
 import com.alee.painter.decoration.WebDecoration;
 import com.alee.painter.decoration.background.AbstractBackground;
 import com.alee.painter.decoration.shape.WebShape;

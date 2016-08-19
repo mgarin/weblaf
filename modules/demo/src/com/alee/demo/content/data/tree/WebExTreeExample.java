@@ -17,7 +17,7 @@
 
 package com.alee.demo.content.data.tree;
 
-import com.alee.demo.api.*;
+import com.alee.demo.api.example.*;
 import com.alee.extended.tree.*;
 import com.alee.extended.tree.sample.SampleNode;
 import com.alee.extended.tree.sample.SampleNodeType;

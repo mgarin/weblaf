@@ -99,57 +99,62 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
             }
         };
         component.addComponentListener ( componentAdapter );
-        if ( component instanceof Container )
-        {
-            containerAdapter = new ContainerAdapter ()
-            {
-                @Override
-                public void componentAdded ( final ContainerEvent e )
-                {
-                    tree.addChildNode ( InterfaceTreeNode.this, new InterfaceTreeNode ( tree, e.getChild () ) );
-                }
 
-                @Override
-                public void componentRemoved ( final ContainerEvent e )
+        if ( !( component instanceof CellRendererPane ) )
+        {
+            if ( component instanceof Container )
+            {
+                containerAdapter = new ContainerAdapter ()
                 {
-                    final Component child = e.getChild ();
-                    for ( int i = 0; i < InterfaceTreeNode.this.getChildCount (); i++ )
+                    @Override
+                    public void componentAdded ( final ContainerEvent e )
                     {
-                        final InterfaceTreeNode childAt = ( InterfaceTreeNode ) InterfaceTreeNode.this.getChildAt ( i );
-                        if ( childAt.getComponent () == child )
+                        tree.addChildNode ( InterfaceTreeNode.this, new InterfaceTreeNode ( tree, e.getChild () ) );
+                    }
+
+                    @Override
+                    public void componentRemoved ( final ContainerEvent e )
+                    {
+                        final Component child = e.getChild ();
+                        for ( int i = 0; i < InterfaceTreeNode.this.getChildCount (); i++ )
                         {
-                            tree.removeNode ( childAt );
-                            childAt.destroy ();
-                            break;
+                            final InterfaceTreeNode childAt = ( InterfaceTreeNode ) InterfaceTreeNode.this.getChildAt ( i );
+                            if ( childAt.getComponent () == child )
+                            {
+                                tree.removeNode ( childAt );
+                                childAt.destroy ();
+                                break;
+                            }
                         }
                     }
-                }
-            };
-            ( ( Container ) component ).addContainerListener ( containerAdapter );
-        }
-        if ( component instanceof JComponent && StyleableComponent.isSupported ( component ) )
-        {
-            styleListener = new StyleListener ()
+                };
+                ( ( Container ) component ).addContainerListener ( containerAdapter );
+            }
+
+            if ( component instanceof JComponent && StyleableComponent.isSupported ( component ) )
             {
-                @Override
-                public void skinChanged ( final JComponent component, final Skin oldSkin, final Skin newSkin )
+                styleListener = new StyleListener ()
                 {
-                    // We don't need to react to visual updates
-                }
+                    @Override
+                    public void skinChanged ( final JComponent component, final Skin oldSkin, final Skin newSkin )
+                    {
+                        // We don't need to react to visual updates
+                    }
 
-                @Override
-                public void styleChanged ( final JComponent component, final StyleId oldStyleId, final StyleId newStyleId )
-                {
-                    // We don't need to react to visual updates
-                }
+                    @Override
+                    public void styleChanged ( final JComponent component, final StyleId oldStyleId, final StyleId newStyleId )
+                    {
+                        // We don't need to react to visual updates
+                    }
 
-                @Override
-                public void skinUpdated ( final JComponent component, final StyleId styleId )
-                {
-                    tree.repaint ( InterfaceTreeNode.this );
-                }
-            };
-            StyleManager.addStyleListener ( ( JComponent ) component, styleListener );
+                    @Override
+                    public void skinUpdated ( final JComponent component, final StyleId styleId )
+                    {
+                        tree.repaint ( InterfaceTreeNode.this );
+                    }
+                };
+                StyleManager.addStyleListener ( ( JComponent ) component, styleListener );
+            }
         }
     }
 
@@ -190,6 +195,12 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
     public Component getComponent ()
     {
         return ( Component ) getUserObject ();
+    }
+
+    @Override
+    protected void setId ()
+    {
+        this.id = Integer.toString ( getComponent ().hashCode () );
     }
 
     @Override

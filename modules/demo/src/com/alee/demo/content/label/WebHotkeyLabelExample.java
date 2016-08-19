@@ -17,7 +17,7 @@
 
 package com.alee.demo.content.label;
 
-import com.alee.demo.api.*;
+import com.alee.demo.api.example.*;
 import com.alee.extended.label.WebHotkeyLabel;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.style.StyleId;

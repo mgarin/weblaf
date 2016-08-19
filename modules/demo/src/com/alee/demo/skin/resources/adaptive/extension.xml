@@ -6,6 +6,35 @@
     <extends>weblaf.web.skin</extends>
     <extends>weblaf.dark.skin</extends>
 
+    <!-- Tool elements -->
+    <style type="label" id="tool" padding="2,2,2,4" />
+    <style type="togglebutton" id="tool" padding="2,8,2,8">
+        <component>
+            <focusable>false</focusable>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="0" />
+                    <WebShadow type="outer" opacity="0" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+    <style type="combobox" id="tool" extends="hover">
+        <component>
+            <focusable>false</focusable>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="0" />
+                    <WebShadow type="outer" opacity="0" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
     <!-- Filter fields -->
     <style type="textfield" id="filter" extends="treefilterfield-inline" margin="4">
 
@@ -22,22 +51,8 @@
         </component>
     </style>
 
-    <!-- Skin selection buttons -->
-    <style type="togglebutton" id="skin" padding="2,8,2,8">
-        <component>
-            <focusable>false</focusable>
-        </component>
-        <painter>
-            <decorations>
-                <decoration>
-                    <WebShadow type="outer" opacity="0" />
-                </decoration>
-            </decorations>
-        </painter>
-    </style>
-
     <!-- Document pane with stretched tabs -->
-    <style type="panel" id="stretched" extends="documentpane">
+    <style type="panel" id="examples" extends="documentpane">
         <style type="tabbedpane" id="tabbedpane">
             <ui>
                 <tabStretchType>always</tabStretchType>
@@ -46,12 +61,13 @@
     </style>
 
     <!-- Text field -->
-    <style type="label" id="leading" padding="0,0,0,4" />
+    <style type="image" id="leading" padding="0,0,0,4" />
+    <style type="image" id="trailing" padding="0,4,0,0" />
 
-    <!-- Toolbar text -->
-    <style type="toolbar" id="tool" extends="attached" padding="4" />
-    <style type="label" id="tool" margin="0,6,0,0" />
-    <style type="toolbarseparator" id="tool" margin="0,4,0,4" />
+    <!-- Example toolbar -->
+    <style type="toolbar" id="example" extends="attached" padding="4" />
+    <style type="label" id="wiki" padding="2,0,2,0" />
+    <style type="link" id="wiki" padding="2,0,2,0" />
 
     <!-- Single preview panel -->
     <style type="panel" id="preview-base">

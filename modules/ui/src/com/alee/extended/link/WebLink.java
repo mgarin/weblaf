@@ -172,9 +172,6 @@ public class WebLink extends WebStyledLabel
     {
         super ( id, text, icon );
         addAction ( action );
-        setFocusable ( false );
-        setVisitable ( true );
-        setVisited ( false );
     }
 
     /**

@@ -18,30 +18,35 @@
 package com.alee.demo;
 
 import com.alee.api.data.CompassDirection;
-import com.alee.demo.api.Example;
-import com.alee.demo.api.ExampleData;
-import com.alee.demo.api.ExamplesManager;
-import com.alee.demo.skin.AdaptiveExtension;
-import com.alee.demo.skin.DarkSkinExtension;
-import com.alee.demo.skin.LightSkinExtension;
+import com.alee.demo.api.example.Example;
+import com.alee.demo.api.example.ExampleData;
+import com.alee.demo.content.ExamplesManager;
+import com.alee.demo.frames.examples.ExamplesFrame;
+import com.alee.demo.frames.inspector.InspectorFrame;
+import com.alee.demo.frames.source.SourceFrame;
+import com.alee.demo.frames.style.StyleFrame;
+import com.alee.demo.skin.*;
 import com.alee.demo.skin.decoration.FeatureStateBackground;
-import com.alee.demo.ui.examples.ExamplesFrame;
-import com.alee.demo.ui.widgets.SkinChooser;
+import com.alee.demo.ui.tools.LanguageChooserTool;
+import com.alee.demo.ui.tools.MagnifierToggleTool;
+import com.alee.demo.ui.tools.OrientationChooserTool;
+import com.alee.demo.ui.tools.SkinChooserTool;
 import com.alee.extended.behavior.ComponentResizeBehavior;
 import com.alee.extended.canvas.WebCanvas;
+import com.alee.extended.dock.SidebarVisibility;
 import com.alee.extended.dock.WebDockablePane;
+import com.alee.extended.label.TextWrap;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.link.UrlLinkAction;
 import com.alee.extended.link.WebLink;
-import com.alee.extended.magnifier.MagnifierGlass;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.WebOverlay;
 import com.alee.extended.statusbar.WebMemoryBar;
 import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.tab.*;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.panel.WebPanel;
+import com.alee.laf.toolbar.WebToolBar;
 import com.alee.laf.window.WebFrame;
 import com.alee.managers.language.LM;
 import com.alee.managers.language.LanguageManager;
@@ -58,8 +63,6 @@ import com.alee.utils.XmlUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
@@ -94,7 +97,10 @@ public final class DemoApplication extends WebFrame
      */
     private WebDockablePane dockablePane;
     private ExamplesFrame examplesFrame;
-    private WebDocumentPane<DocumentData> contentPane;
+    private StyleFrame styleFrame;
+    private SourceFrame sourceFrame;
+    private InspectorFrame inspectorFrame;
+    private WebDocumentPane<ExampleData> examplesPane;
 
     /**
      * Returns demo application instance.
@@ -117,7 +123,7 @@ public final class DemoApplication extends WebFrame
     {
         updateTitle ();
         initializeDocks ();
-        initializeContent ();
+        initializeToolBar ();
         initializeStatus ();
         setupFrame ();
     }
@@ -128,10 +134,10 @@ public final class DemoApplication extends WebFrame
     private void initializeDocks ()
     {
         dockablePane = new WebDockablePane ();
+        dockablePane.setSidebarVisibility ( SidebarVisibility.anyMinimized );
+        initializeContent ();
+        initializeFrames ();
         add ( dockablePane, BorderLayout.CENTER );
-
-        examplesFrame = new ExamplesFrame ();
-        dockablePane.addFrame ( examplesFrame );
     }
 
     /**
@@ -139,47 +145,92 @@ public final class DemoApplication extends WebFrame
      */
     private void initializeContent ()
     {
-        contentPane = new WebDocumentPane<DocumentData> ();
-        contentPane.setClosable ( true );
-        contentPane.setDragEnabled ( true );
-        contentPane.setDragBetweenPanesEnabled ( false );
-        contentPane.setSplitEnabled ( true );
-        contentPane.onDocumentSelection ( new DocumentDataRunnable<DocumentData> ()
+        examplesPane = new WebDocumentPane<ExampleData> ();
+        examplesPane.setClosable ( true );
+        examplesPane.setDragEnabled ( true );
+        examplesPane.setDragBetweenPanesEnabled ( false );
+        examplesPane.setSplitEnabled ( true );
+        examplesPane.onDocumentSelection ( new DocumentDataRunnable<ExampleData> ()
         {
             @Override
-            public void run ( final DocumentData document, final PaneData<DocumentData> pane, final int index )
+            public void run ( final ExampleData document, final PaneData<ExampleData> pane, final int index )
             {
                 updateTitle ();
             }
         } );
 
-        final WebOverlay overlay = new WebOverlay ( contentPane );
-        overlay.setStyleId ( StyleId.panelDecorated );
+        final WebOverlay overlay = new WebOverlay ( StyleId.panelFocusable, examplesPane );
 
         final WebPanel overlayContainer = new WebPanel ( DemoStyles.emptycontentPanel );
-
         final StyleId overlayLabelId = DemoStyles.emptycontentLabel.at ( overlayContainer );
-        final WebStyledLabel guide = new WebStyledLabel ( overlayLabelId, "demo.content.empty", DemoIcons.compass36 ).changeFontSize ( 5 );
-        final WebStyledLabel issues = new WebStyledLabel ( overlayLabelId, "demo.content.issues", DemoIcons.bug36 ).changeFontSize ( 5 );
-        overlayContainer.add ( new GroupPanel ( 20, false, guide, issues ) );
+        final WebStyledLabel guide = new WebStyledLabel ( overlayLabelId, "demo.content.empty", DemoIcons.compass36 );
+        guide.changeFontSize ( 5 ).setWrap ( TextWrap.none );
+        final WebStyledLabel issues = new WebStyledLabel ( overlayLabelId, "demo.content.issues", DemoIcons.bug36 );
+        issues.changeFontSize ( 5 ).setWrap ( TextWrap.none );
+        final GroupPanel infoGroup = new GroupPanel ( 20, false, guide, issues );
+        infoGroup.setMargin ( 15 );
+        overlayContainer.add ( infoGroup );
 
-        contentPane.addDocumentListener ( new DocumentAdapter<DocumentData> ()
+        examplesPane.addDocumentListener ( new DocumentAdapter<ExampleData> ()
         {
             @Override
-            public void opened ( final DocumentData document, final PaneData<DocumentData> pane, final int index )
+            public void opened ( final ExampleData document, final PaneData<ExampleData> pane, final int index )
             {
                 overlayContainer.setVisible ( false );
             }
 
             @Override
-            public void closed ( final DocumentData document, final PaneData<DocumentData> pane, final int index )
+            public void closed ( final ExampleData document, final PaneData<ExampleData> pane, final int index )
             {
-                overlayContainer.setVisible ( contentPane.getDocumentsCount () == 0 );
+                overlayContainer.setVisible ( examplesPane.getDocumentsCount () == 0 );
             }
         } );
         overlay.addOverlay ( overlayContainer, SwingConstants.CENTER, SwingConstants.CENTER );
 
         dockablePane.setContent ( overlay );
+    }
+
+    /**
+     * Returns content pane.
+     *
+     * @return content pane
+     */
+    public WebDocumentPane<ExampleData> getExamplesPane ()
+    {
+        return examplesPane;
+    }
+
+    /**
+     * Initializes demo application dockable frames.
+     */
+    private void initializeFrames ()
+    {
+        examplesFrame = new ExamplesFrame ();
+        dockablePane.addFrame ( examplesFrame );
+
+        inspectorFrame = new InspectorFrame ( this );
+        dockablePane.addFrame ( inspectorFrame );
+
+        sourceFrame = new SourceFrame ( this );
+        dockablePane.addFrame ( sourceFrame );
+
+        styleFrame = new StyleFrame ( this );
+        dockablePane.addFrame ( styleFrame );
+    }
+
+    /**
+     * Initializes demo application toolbar and its content.
+     */
+    private void initializeToolBar ()
+    {
+        final WebToolBar toolBar = new WebToolBar ( StyleId.toolbarAttached );
+        toolBar.add ( new SkinChooserTool () );
+        toolBar.addSeparator ();
+        toolBar.add ( new OrientationChooserTool () );
+        toolBar.addSeparator ();
+        toolBar.add ( new LanguageChooserTool () );
+        toolBar.addToEnd ( new MagnifierToggleTool ( DemoApplication.this ) );
+        add ( toolBar, BorderLayout.NORTH );
     }
 
     /**
@@ -197,25 +248,6 @@ public final class DemoApplication extends WebFrame
 
         statusBar.add ( new WebLink ( DemoStyles.resourceLink, DemoIcons.gitter16, "demo.statusbar.resources.gitter",
                 new UrlLinkAction ( WEBLAF_GITTER ) ) );
-
-        statusBar.addToEnd ( new SkinChooser () );
-
-        statusBar.addSpacingToEnd ();
-
-        final WebToggleButton magnifierButton = new WebToggleButton ( "demo.statusbar.tool.magnifier", DemoIcons.magnifier16 );
-        magnifierButton.addActionListener ( new ActionListener ()
-        {
-            private final MagnifierGlass magnifier = new MagnifierGlass ();
-
-            @Override
-            public void actionPerformed ( final ActionEvent e )
-            {
-                magnifier.displayOrDispose ( DemoApplication.this );
-            }
-        } );
-        statusBar.addToEnd ( magnifierButton );
-
-        statusBar.addSpacingToEnd ();
 
         final WebMemoryBar memoryBar = new WebMemoryBar ();
         memoryBar.setPreferredWidth ( 150 );
@@ -247,7 +279,7 @@ public final class DemoApplication extends WebFrame
      */
     public void updateTitle ()
     {
-        final DocumentData doc = contentPane != null ? contentPane.getSelectedDocument () : null;
+        final DocumentData doc = examplesPane != null ? examplesPane.getSelectedDocument () : null;
         setTitle ( VersionManager.getLibraryVersion ().toString () + ( doc != null ? " - " + LM.get ( doc.getTitle () ) : "" ) );
     }
 
@@ -258,7 +290,7 @@ public final class DemoApplication extends WebFrame
      */
     public void open ( final Example example )
     {
-        contentPane.openDocument ( ExampleData.forExample ( example ) );
+        examplesPane.openDocument ( ExampleData.forExample ( example ) );
     }
 
     /**
@@ -273,7 +305,6 @@ public final class DemoApplication extends WebFrame
             {
                 initialize ();
                 setVisible ( true );
-                setExtendedState ( JFrame.MAXIMIZED_BOTH );
             }
         } );
     }

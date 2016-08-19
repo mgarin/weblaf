@@ -245,7 +245,7 @@ public class WebFormattedTextFieldUI extends WFormattedTextFieldUI implements Sh
             this.leadingComponent.addComponentListener ( componentResizeListener );
 
             // Adding component
-            field.add ( leadingComponent, TextFieldLayout.LEADING );
+            field.add ( leadingComponent );
         }
 
         // Updating layout
@@ -292,7 +292,7 @@ public class WebFormattedTextFieldUI extends WFormattedTextFieldUI implements Sh
             this.trailingComponent.addComponentListener ( componentResizeListener );
 
             // Adding component
-            field.add ( trailingComponent, TextFieldLayout.TRAILING );
+            field.add ( trailingComponent );
         }
 
         // Updating layout

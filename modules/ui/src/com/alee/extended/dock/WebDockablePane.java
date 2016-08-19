@@ -145,12 +145,6 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     {
         super ();
         this.frames = new ArrayList<WebDockableFrame> ( 3 );
-        setSidebarVisibility ( SidebarVisibility.minimized );
-        setSidebarButtonAction ( SidebarButtonAction.restore );
-        setContentSpacing ( 0 );
-        setResizeGripper ( 10 );
-        setMinimumElementSize ( new Dimension ( 40, 40 ) );
-        setOccupyMinimumSizeForChildren ( true );
         setModel ( new WebDockablePaneModel () );
         updateUI ();
         setStyleId ( id );
@@ -422,6 +416,25 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     }
 
     /**
+     * Returns list of dockable frames added to this pane and positioned on the specified side relative to the content area.
+     *
+     * @param position frames position relative to content area
+     * @return list of dockable frames added to this pane and positioned on the specified side relative to the content area
+     */
+    public List<WebDockableFrame> getFrames ( final CompassDirection position )
+    {
+        final List<WebDockableFrame> positioned = new ArrayList<WebDockableFrame> ( frames.size () );
+        for ( final WebDockableFrame frame : frames )
+        {
+            if ( frame.getPosition () == position )
+            {
+                positioned.add ( frame );
+            }
+        }
+        return positioned;
+    }
+
+    /**
      * Returns opened frame with the specified ID or {@code null} if no such frame exists.
      *
      * @param id frame ID
@@ -674,6 +687,28 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     public void saveSettings ()
     {
         SettingsManager.saveComponentSettings ( this );
+    }
+
+    @Override
+    public void applyComponentOrientation ( final ComponentOrientation orientation )
+    {
+        if ( orientation == null )
+        {
+            throw new NullPointerException ();
+        }
+        setComponentOrientation ( orientation );
+        synchronized ( getTreeLock () )
+        {
+            for ( final WebDockableFrame frame : frames )
+            {
+                frame.applyComponentOrientation ( orientation );
+            }
+            final JComponent content = getContent ();
+            if ( content != null )
+            {
+                content.applyComponentOrientation ( orientation );
+            }
+        }
     }
 
     /**

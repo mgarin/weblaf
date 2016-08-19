@@ -38,7 +38,7 @@ import java.util.List;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  */
 
-@SuppressWarnings ( "UnusedParameters" )
+@SuppressWarnings ("UnusedParameters")
 public abstract class AbstractStyledTextContent<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractStyledTextContent<E, D, I>>
         extends AbstractTextContent<E, D, I>
 {
@@ -635,22 +635,27 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
     /**
      * Actually paints styled text fragment.
      *
-     * @param c        painted component
-     * @param d        painted decoration state
-     * @param g2d      graphics context
-     * @param s        text fragment
-     * @param x        text X coordinate
-     * @param y        text Y coordinate
-     * @param mneIndex index of mnemonic
-     * @param fm       text fragment font metrics
-     * @param style    style of text fragment
-     * @param strWidth text fragment width
+     * @param c             painted component
+     * @param d             painted decoration state
+     * @param g2d           graphics context
+     * @param s             text fragment
+     * @param x             text X coordinate
+     * @param y             text Y coordinate
+     * @param mnemonicIndex index of mnemonic
+     * @param fm            text fragment font metrics
+     * @param style         style of text fragment
+     * @param strWidth      text fragment width
      */
     protected void paintStyledTextFragment ( final E c, final D d, final Graphics2D g2d, final String s, final int x, final int y,
-                                             final int mneIndex, final FontMetrics fm, final StyleRange style, final int strWidth )
+                                             final int mnemonicIndex, final FontMetrics fm, final StyleRange style, final int strWidth )
     {
-        paintTextFragment ( c, d, g2d, s, x, y, mneIndex );
+        // This is required to properly render sub-pixel text antialias
+        final RenderingHints rh = g2d.getRenderingHints ();
 
+        // Painting text fragment
+        paintTextFragment ( c, d, g2d, s, x, y, mnemonicIndex );
+
+        // Painting accessories
         if ( style != null )
         {
             // todo Separate all these implementations into special TextAccessory interface implementations
@@ -690,6 +695,9 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
                 GraphicsUtils.restorePaint ( g2d, op );
             }
         }
+
+        // This is required to properly render sub-pixel text antialias
+        g2d.setRenderingHints ( rh );
     }
 
     @Override

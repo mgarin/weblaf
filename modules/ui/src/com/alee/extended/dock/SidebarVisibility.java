@@ -26,22 +26,29 @@ package com.alee.extended.dock;
 public enum SidebarVisibility
 {
     /**
-     * Do not ever display sidebar buttons.
-     * This will simply hide all sidebar buttons.
+     * Do not display sidebar buttons.
+     * This will simply hide all sidebar buttons at all times.
      */
-    none,
+    never,
 
     /**
-     * Display sidebar buttons for frames in minimized and preview states.
-     * Docked or floating frames will not have any sidebar button available.
+     * Display sidebar buttons for frames in {@link DockableFrameState#minimized} and {@link DockableFrameState#preview} states.
+     * Frames in {@link DockableFrameState#docked} or {@link DockableFrameState#floating} states will not have sidebar buttons available.
      * This is also default setting used by {@link com.alee.extended.dock.WebDockablePane}.
      */
     minimized,
 
     /**
+     * Display buttons for all frames on the sidebar if at least one of the frames is in {@link DockableFrameState#minimized} or
+     * {@link DockableFrameState#preview} states. Sidebar will be hidden when there are no frames in those two states present.
+     * This is a handy option which uses more versatile sidebar display approach unlike {@link #minimized} visibility.
+     */
+    anyMinimized,
+
+    /**
      * Display sidebar buttons for frames in any state added into dockable pane.
-     * This is the way some applications like IntelliJ IDEA handle sidebar buttons.
+     * This is the way some applications like IntelliJ IDEA handle sidebar buttons - they are always visible for all opened frames.
      * It might be useful to keep the whole layout more static if hiding/docking frames is a common operation.
      */
-    all
+    always
 }

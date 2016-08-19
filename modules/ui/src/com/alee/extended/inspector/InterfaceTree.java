@@ -18,15 +18,21 @@
 package com.alee.extended.inspector;
 
 import com.alee.extended.tree.WebExTree;
-import com.alee.managers.glasspane.GlassPaneManager;
-import com.alee.managers.glasspane.WebGlassPane;
+import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.HoverListener;
+import com.alee.utils.swing.extensions.KeyEventRunnable;
 
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * {@link WebExTree} extension class.
+ * Tree representing Swing components structure.
  * It displays and dynamically updates Swing components tree of the specified root component.
  * <p>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
@@ -38,16 +44,17 @@ import java.awt.*;
  * @see com.alee.laf.tree.TreePainter
  */
 
-public class InterfaceTree extends WebExTree<InterfaceTreeNode> implements HoverListener<InterfaceTreeNode>
+public class InterfaceTree extends WebExTree<InterfaceTreeNode> implements HoverListener<InterfaceTreeNode>, TreeSelectionListener
 {
     /**
-     * todo 1. Allow highlighting multiple components (by selection?)
+     * Highlighter for hovered tree element.
      */
+    protected ComponentHighlighter hoverHighlighter;
 
     /**
-     * Component inspector used to highlight hover elements.
+     * Highlighters for selected tree elements.
      */
-    protected ComponentHighlighter hoverInspector;
+    protected Map<Component, ComponentHighlighter> selectedHighlighters;
 
     /**
      * Constructs new interface tree.
@@ -74,8 +81,22 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode> implements Hover
         setDataProvider ( new InterfaceTreeDataProvider ( this, root ) );
 
         // Nodes hover listener
-        this.hoverInspector = new ComponentHighlighter ();
+        this.hoverHighlighter = new ComponentHighlighter ();
         addHoverListener ( this );
+
+        // Nodes selection listener
+        this.selectedHighlighters = new HashMap<Component, ComponentHighlighter> ( 0 );
+        addTreeSelectionListener ( this );
+
+        // Simple selection clearing
+        onKeyPress ( Hotkey.ESCAPE, new KeyEventRunnable ()
+        {
+            @Override
+            public void run ( final KeyEvent e )
+            {
+                clearSelection ();
+            }
+        } );
     }
 
     @Override
@@ -87,16 +108,50 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode> implements Hover
     @Override
     public void hoverChanged ( final InterfaceTreeNode previous, final InterfaceTreeNode current )
     {
-        final WebGlassPane glassPane = GlassPaneManager.getGlassPane ( getRootComponent () );
-        if ( hoverInspector.isShowing () )
+        if ( hoverHighlighter.isShowing () )
         {
-            glassPane.hideComponent ( hoverInspector );
-            hoverInspector.uninstall ();
+            hoverHighlighter.uninstall ();
         }
-        if ( current != null && current.getComponent () != null && current.getComponent ().isShowing () )
+        if ( current != null && ComponentHighlighter.canHighlight ( current.getComponent () ) )
         {
-            hoverInspector.install ( current.getComponent () );
-            glassPane.showComponent ( hoverInspector );
+            hoverHighlighter.install ( current.getComponent () );
+        }
+    }
+
+    @Override
+    public void valueChanged ( final TreeSelectionEvent e )
+    {
+        // Selected nodes
+        final List<InterfaceTreeNode> selected = getSelectedNodes ();
+
+        // Previous and current highlighters
+        final Map<Component, ComponentHighlighter> prevHighlighters = this.selectedHighlighters;
+        selectedHighlighters = new HashMap<Component, ComponentHighlighter> ( selected.size () );
+
+        // Updating displayed highlighters
+        for ( final InterfaceTreeNode node : selected )
+        {
+            final Component component = node.getComponent ();
+            final ComponentHighlighter prevHighlighter = prevHighlighters.get ( component );
+            if ( prevHighlighter != null )
+            {
+                // Preserving existing highlighter
+                selectedHighlighters.put ( component, prevHighlighter );
+                prevHighlighters.remove ( component );
+            }
+            else if ( ComponentHighlighter.canHighlight ( component ) )
+            {
+                // Adding new highlighter
+                final ComponentHighlighter newHighlighter = new ComponentHighlighter ();
+                selectedHighlighters.put ( component, newHighlighter );
+                newHighlighter.install ( component );
+            }
+        }
+
+        // Removing redundant highlighters
+        for ( final Map.Entry<Component, ComponentHighlighter> entry : prevHighlighters.entrySet () )
+        {
+            entry.getValue ().uninstall ();
         }
     }
 
@@ -118,5 +173,21 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode> implements Hover
     public void setRootComponent ( final Component root )
     {
         setDataProvider ( new InterfaceTreeDataProvider ( this, root ) );
+    }
+
+    /**
+     * Navigates tree to the specified component.
+     *
+     * @param component component to navigate to
+     */
+    public void navigate ( final Component component )
+    {
+        final InterfaceTreeNode node = findNode ( Integer.toString ( component.hashCode () ) );
+        if ( node != null )
+        {
+            expandNode ( node );
+            setSelectedNode ( node );
+            scrollToNode ( node, true );
+        }
     }
 }

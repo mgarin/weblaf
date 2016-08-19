@@ -17,9 +17,7 @@
 
 package com.alee.extended.behavior;
 
-import com.alee.utils.SwingUtils;
-
-import javax.swing.*;
+import java.awt.*;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 
@@ -27,7 +25,7 @@ import java.awt.event.HierarchyListener;
  * @author Mikle Garin
  */
 
-public abstract class ComponentVisibilityBehavior<C extends JComponent> implements HierarchyListener, Behavior
+public abstract class ComponentVisibilityBehavior<C extends Component> implements HierarchyListener, Behavior
 {
     /**
      * Component into which this behavior is installed.
@@ -49,7 +47,7 @@ public abstract class ComponentVisibilityBehavior<C extends JComponent> implemen
     {
         super ();
         this.component = component;
-        this.visible = SwingUtils.isVisibleOnScreen ( component );
+        this.visible = component.isShowing ();
     }
 
     /**
@@ -92,7 +90,7 @@ public abstract class ComponentVisibilityBehavior<C extends JComponent> implemen
      */
     protected void checkVisibility ()
     {
-        final boolean v = SwingUtils.isVisibleOnScreen ( component );
+        final boolean v = component.isShowing ();
         if ( visible != v )
         {
             if ( v )

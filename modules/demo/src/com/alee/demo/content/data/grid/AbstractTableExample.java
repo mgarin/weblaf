@@ -17,7 +17,7 @@
 
 package com.alee.demo.content.data.grid;
 
-import com.alee.demo.api.AbstractExample;
+import com.alee.demo.api.example.AbstractExample;
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;

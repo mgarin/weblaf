@@ -72,6 +72,9 @@ public class WebImageUI extends WImageUI implements ShapeSupport, MarginSupport,
         // Saving image reference
         image = ( WebImage ) c;
 
+        // Installing default settings
+        installDefaults ();
+
         // Applying skin
         StyleManager.installSkin ( image );
     }
@@ -89,6 +92,17 @@ public class WebImageUI extends WImageUI implements ShapeSupport, MarginSupport,
 
         // Removing image reference
         image = null;
+    }
+
+    /**
+     * Installs default component settings.
+     */
+    protected void installDefaults ()
+    {
+        image.setOpacity ( 1f );
+        image.setDisplayType ( DisplayType.preferred );
+        image.setHorizontalAlignment ( SwingConstants.CENTER );
+        image.setVerticalAlignment ( SwingConstants.CENTER );
     }
 
     @Override

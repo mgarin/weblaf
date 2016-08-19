@@ -26,7 +26,7 @@ public abstract class AbstractTextFieldPainter<E extends JTextComponent, U exten
         super.install ( c, ui );
 
         // Installing custom layout for leading/trailing components
-        component.setLayout ( new TextFieldLayout () );
+        component.setLayout ( new TextFieldLayout ( this ) );
     }
 
     @Override

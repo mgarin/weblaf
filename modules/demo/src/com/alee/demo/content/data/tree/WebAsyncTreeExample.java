@@ -21,7 +21,9 @@ package com.alee.demo.content.data.tree;
  * @author Mikle Garin
  */
 
-import com.alee.demo.api.*;
+import com.alee.demo.api.example.*;
+import com.alee.demo.api.example.wiki.WebLafWikiPage;
+import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.extended.tree.*;
 import com.alee.extended.tree.sample.SampleNode;
 import com.alee.extended.tree.sample.SampleNodeType;
@@ -60,9 +62,9 @@ public class WebAsyncTreeExample extends AbstractExample
     }
 
     @Override
-    public String getWikiArticleName ()
+    public WikiPage getWikiPage ()
     {
-        return "How to use WebAsyncTree";
+        return new WebLafWikiPage ( "How to use WebAsyncTree" );
     }
 
     @Override

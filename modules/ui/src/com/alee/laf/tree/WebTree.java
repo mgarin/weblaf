@@ -1046,9 +1046,31 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      */
     public void scrollToNode ( final E node )
     {
+        scrollToNode ( node, false );
+    }
+
+    /**
+     * Scrolls tree view to specified node.
+     *
+     * @param node     node to scroll to
+     * @param centered whether or not should center specified node in the middle of view bounds if possible
+     */
+    public void scrollToNode ( final E node, final boolean centered )
+    {
         final Rectangle bounds = getNodeBounds ( node );
         if ( bounds != null )
         {
+            if ( centered )
+            {
+                final Dimension size = getVisibleRect ().getSize ();
+                if ( size.width > bounds.width )
+                {
+                    bounds.x = bounds.x + bounds.width / 2 - size.width / 2;
+                    bounds.width = size.width;
+                }
+                bounds.y = bounds.y + bounds.height / 2 - size.height / 2;
+                bounds.height = size.height;
+            }
             scrollRectToVisible ( bounds );
         }
     }
@@ -1166,6 +1188,31 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     }
 
     /**
+     * Returns tree expansion and selection states.
+     * Tree nodes must be instances of UniqueNode class.
+     *
+     * @param node node to save state for
+     * @return tree expansion and selection states
+     */
+    public TreeState getTreeState ( final E node )
+    {
+        return TreeUtils.getTreeState ( this, node );
+    }
+
+    /**
+     * Returns tree expansion and selection states.
+     * Tree nodes must be instances of UniqueNode class.
+     *
+     * @param node          node to save state for
+     * @param saveSelection whether to save selection states or not
+     * @return tree expansion and selection states
+     */
+    public TreeState getTreeState ( final E node, final boolean saveSelection )
+    {
+        return TreeUtils.getTreeState ( this, node, saveSelection );
+    }
+
+    /**
      * Restores tree expansion and selection states.
      * Tree nodes must be instances of UniqueNode class.
      *
@@ -1186,6 +1233,31 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     public void setTreeState ( final TreeState treeState, final boolean restoreSelection )
     {
         TreeUtils.setTreeState ( this, treeState, restoreSelection );
+    }
+
+    /**
+     * Restores tree expansion and selection states.
+     * Tree nodes must be instances of UniqueNode class.
+     *
+     * @param treeState tree expansion and selection states
+     * @param node      node to restore state for
+     */
+    public void setTreeState ( final TreeState treeState, final E node )
+    {
+        TreeUtils.setTreeState ( this, treeState, node );
+    }
+
+    /**
+     * Restores tree expansion and selection states.
+     * Tree nodes must be instances of UniqueNode class.
+     *
+     * @param treeState        tree expansion and selection states
+     * @param node             node to restore state for
+     * @param restoreSelection whether to restore selection states or not
+     */
+    public void setTreeState ( final TreeState treeState, final E node, final boolean restoreSelection )
+    {
+        TreeUtils.setTreeState ( this, treeState, node, restoreSelection );
     }
 
     /**

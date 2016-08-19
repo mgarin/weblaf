@@ -13,7 +13,7 @@
                     <WebShape round="0" />
                     <WebShadow type="outer" width="2" />
                     <LineBorder color="170,170,170" />
-                    <ColorBackground color="white" />
+                    <ColorBackground color="237,237,237" />
                 </decoration>
                 <decoration states="floating">
                     <WebShadow type="outer" width="0" />
@@ -47,7 +47,17 @@
             </painter>
 
             <!-- Dockable frame title label -->
-            <style type="styledlabel" id="title" extends="shadow" padding="3,3,3,5" />
+            <style type="styledlabel" id="title" padding="3,3,3,5">
+                <painter>
+                    <decorations>
+                        <decoration>
+                            <LabelLayout>
+                                <StyledLabelText shadow="true" shadowColor="180,180,180" shadowSize="2" />
+                            </LabelLayout>
+                        </decoration>
+                    </decorations>
+                </painter>
+            </style>
 
             <!-- Dockable frame tool buttons panel -->
             <style type="panel" id="buttons">
@@ -108,7 +118,7 @@
                         </GradientBackground>
                         <IconTextLayout gap="3">
                             <ButtonIcon constraints="icon" />
-                            <ButtonText constraints="text" color="black" />
+                            <ButtonText constraints="text" color="black" shadow="true" shadowColor="180,180,180" shadowSize="2" />
                         </IconTextLayout>
                     </decoration>
                     <decoration states="west">

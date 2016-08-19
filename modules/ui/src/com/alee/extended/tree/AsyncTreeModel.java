@@ -1016,10 +1016,9 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
      */
     protected void performSortingAndFiltering ( final E parentNode, final boolean recursively, final boolean performUpdates )
     {
-        // todo Restore tree state only for the updated node
-        // todo This also won't work if some of the children updates are delayed using listener
         // Saving tree state to restore it right after children update
-        final TreeState treeState = tree.getTreeState ();
+        // todo This doesn't work if some of the children updates are delayed using listener
+        final TreeState treeState = tree.getTreeState ( parentNode );
 
         // Updating node children sorting and filtering
         // Process this action only if node children are already loaded and cached
@@ -1055,7 +1054,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
             nodeStructureChanged ( parentNode );
 
             // Restoring tree state including all selections and expansions
-            tree.setTreeState ( treeState );
+            tree.setTreeState ( treeState, parentNode );
         }
     }
 

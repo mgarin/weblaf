@@ -2640,11 +2640,12 @@ public final class SwingUtils extends CoreSwingUtils
      * @param x               text X coordinate
      * @param y               text Y coordinate
      */
+    @Deprecated
     public static void drawStringUnderlineCharAt ( final Graphics g, final String text, final int underlinedIndex, final int x,
                                                    final int y )
     {
         // Painting string
-        drawString ( g, text, x, y );
+        g.drawString ( text, x, y );
 
         // Painting character underline
         if ( underlinedIndex >= 0 && underlinedIndex < text.length () )
@@ -2653,19 +2654,6 @@ public final class SwingUtils extends CoreSwingUtils
             g.fillRect ( x + fm.stringWidth ( text.substring ( 0, underlinedIndex ) ), y + fm.getDescent () - 1,
                     fm.charWidth ( text.charAt ( underlinedIndex ) ), 1 );
         }
-    }
-
-    /**
-     * Paints string.
-     *
-     * @param g    graphics context
-     * @param text painted text
-     * @param x    text X coordinate
-     * @param y    text Y coordinate
-     */
-    public static void drawString ( final Graphics g, final String text, final int x, final int y )
-    {
-        g.drawString ( text, x, y );
     }
 
     /**

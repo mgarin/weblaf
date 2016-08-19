@@ -17,7 +17,9 @@
 
 package com.alee.demo.content.text.field;
 
-import com.alee.demo.api.*;
+import com.alee.demo.api.example.*;
+import com.alee.demo.api.example.wiki.OracleWikiPage;
+import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
@@ -46,6 +48,12 @@ public class JPasswordFieldExample extends AbstractExample
     public FeatureType getFeatureType ()
     {
         return FeatureType.swing;
+    }
+
+    @Override
+    public WikiPage getWikiPage ()
+    {
+        return new OracleWikiPage ( "How to Use Password Fields", "passwordfield" );
     }
 
     @Override

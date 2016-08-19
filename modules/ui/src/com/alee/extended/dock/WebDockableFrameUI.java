@@ -17,6 +17,7 @@
 
 package com.alee.extended.dock;
 
+import com.alee.api.data.CompassDirection;
 import com.alee.extended.behavior.ComponentMoveBehavior;
 import com.alee.extended.dock.drag.DockableFrameTransferHandler;
 import com.alee.extended.label.WebStyledLabel;
@@ -100,7 +101,7 @@ public class WebDockableFrameUI extends WDockableFrameUI implements ShapeSupport
      * @param c component that will use UI instance
      * @return instance of the WebDockableFrameUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebDockableFrameUI ();
@@ -116,6 +117,9 @@ public class WebDockableFrameUI extends WDockableFrameUI implements ShapeSupport
     {
         // Saving dockable frame reference
         frame = ( WebDockableFrame ) c;
+
+        // Installing default settings
+        installDefaults ();
 
         // Applying skin
         StyleManager.installSkin ( frame );
@@ -142,6 +146,22 @@ public class WebDockableFrameUI extends WDockableFrameUI implements ShapeSupport
 
         // Removing dockable frame reference
         frame = null;
+    }
+
+    /**
+     * Installs default component settings.
+     */
+    protected void installDefaults ()
+    {
+        frame.setFocusCycleRoot ( true );
+        frame.setState ( DockableFrameState.docked );
+        frame.setMaximized ( false );
+        frame.setRestoreState ( DockableFrameState.docked );
+        frame.setPosition ( CompassDirection.west );
+        frame.setDraggable ( true );
+        frame.setClosable ( true );
+        frame.setFloatable ( true );
+        frame.setMaximizable ( true );
     }
 
     /**
@@ -606,6 +626,7 @@ public class WebDockableFrameUI extends WDockableFrameUI implements ShapeSupport
         {
             super ( StyleId.dockableframeSidebarButton.at ( frame ), frame.getTitle (), frame.getIcon () );
             setFocusable ( false );
+            setSelected ( getSelectionState () );
             onMousePress ( MouseButton.right, new MouseEventRunnable ()
             {
                 @Override
@@ -683,13 +704,23 @@ public class WebDockableFrameUI extends WDockableFrameUI implements ShapeSupport
          */
         public void updateStates ()
         {
-            final boolean selected = frame.isDocked () || frame.isFloating () || frame.isPreview () && frame.getDockablePane () != null &&
-                    frame.getDockablePane ().getSidebarButtonAction () == SidebarButtonAction.preview;
+            final boolean selected = getSelectionState ();
             if ( selected != isSelected () )
             {
                 setSelected ( selected );
             }
             DecorationUtils.fireStatesChanged ( this );
+        }
+
+        /**
+         * Returns sidebar button selection state.
+         *
+         * @return {@code true} if sidebar button should be selected, {@code false} otherwise
+         */
+        protected boolean getSelectionState ()
+        {
+            return frame.isDocked () || frame.isFloating () || frame.isPreview () && frame.getDockablePane () != null &&
+                    frame.getDockablePane ().getSidebarButtonAction () == SidebarButtonAction.preview;
         }
     }
 }

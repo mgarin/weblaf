@@ -174,6 +174,18 @@ public final class ColorUtils
     }
 
     /**
+     * Returns RGB color string for the specified color.
+     *
+     * @param color color to process
+     * @return RGB color string for the specified color
+     */
+    public static String getRgbColor ( final Color color )
+    {
+        return color.getRed () + "," + color.getGreen () + "," + color.getBlue () +
+                ( color.getAlpha () < 255 ? "," + color.getAlpha () : "" );
+    }
+
+    /**
      * Returns color decoded from a hex color string.
      *
      * @param hex hex color string

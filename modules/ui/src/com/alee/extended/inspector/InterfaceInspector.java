@@ -23,14 +23,18 @@ import com.alee.extended.tree.WebTreeFilterField;
 import com.alee.extended.window.PopOverDirection;
 import com.alee.extended.window.WebPopOver;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.panel.WebPanel;
-import com.alee.laf.window.WebDialog;
-import com.alee.laf.window.WebFrame;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
+import com.alee.laf.window.WebDialog;
+import com.alee.laf.window.WebFrame;
+import com.alee.managers.icon.Icons;
 import com.alee.managers.style.StyleId;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * @author Mikle Garin
@@ -39,10 +43,15 @@ import java.awt.*;
 public class InterfaceInspector extends WebPanel
 {
     /**
-     * Inspected components tree.
+     * UI elements.
      */
     private final InterfaceTree tree;
     private final WebScrollPane scrollPane;
+
+    /**
+     * Component inspect behavior.
+     */
+    private ComponentInspectBehavior inspectBehavior;
 
     /**
      * Constructs new empty inspector.
@@ -82,14 +91,59 @@ public class InterfaceInspector extends WebPanel
     {
         super ( id );
 
-        // Component inspection tree
+        // Tree scroll
         scrollPane = new WebScrollPane ( StyleId.inspectorScroll.at ( InterfaceInspector.this ) );
         scrollPane.setPreferredWidth ( 300 );
+
+        // Interface tree
         tree = new InterfaceTree ( StyleId.inspectorTree.at ( scrollPane ), inspected );
         scrollPane.getViewport ().setView ( tree );
 
         // Filtering field
         final WebTreeFilterField filter = new WebTreeFilterField ( StyleId.inspectorFilter.at ( InterfaceInspector.this ), tree );
+
+        // Component inspect behavior
+        final WebToggleButton inspectToggle = new WebToggleButton ( StyleId.inspectorInspect.at ( filter ), Icons.target );
+        inspectToggle.setRolloverIcon ( Icons.targetHover );
+        inspectToggle.setSelectedIcon ( Icons.targetSelected );
+        inspectToggle.setCursor ( Cursor.getDefaultCursor () );
+        inspectToggle.addActionListener ( new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                if ( inspectToggle.isSelected () )
+                {
+                    if ( inspectBehavior == null )
+                    {
+                        inspectBehavior = new ComponentInspectBehavior ();
+                    }
+                    inspectBehavior.install ( inspected, new InspectionListener ()
+                    {
+                        @Override
+                        public void inspected ( final Component component )
+                        {
+                            tree.navigate ( component );
+                            inspectToggle.setSelected ( false );
+                        }
+
+                        @Override
+                        public void cancelled ()
+                        {
+                            inspectToggle.setSelected ( false );
+                        }
+                    } );
+                }
+                else
+                {
+                    if ( inspectBehavior != null )
+                    {
+                        inspectBehavior.uninstall ();
+                    }
+                }
+            }
+        } );
+        filter.setTrailingComponent ( inspectToggle );
 
         // UI composition
         final WebSeparator separator = new WebSeparator ( StyleId.inspectorSeparator.at ( InterfaceInspector.this ) );
@@ -107,6 +161,14 @@ public class InterfaceInspector extends WebPanel
     public void setInspected ( final Component inspected )
     {
         tree.setRootComponent ( inspected );
+    }
+
+    /**
+     * Clears highlighted components.
+     */
+    public void clearHighlights ()
+    {
+        tree.clearSelection ();
     }
 
     /**

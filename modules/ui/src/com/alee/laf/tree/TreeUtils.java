@@ -19,7 +19,6 @@ package com.alee.laf.tree;
 
 import javax.swing.*;
 import javax.swing.tree.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,6 +30,10 @@ import java.util.List;
 
 public final class TreeUtils
 {
+    /**
+     * todo 1. Create proper state restoration for WebAsyncTree
+     */
+
     /**
      * Returns tree expansion and selection states.
      * Tree nodes must be instances of UniqueNode class.
@@ -53,29 +56,62 @@ public final class TreeUtils
      */
     public static TreeState getTreeState ( final JTree tree, final boolean saveSelection )
     {
-        final Object root = tree.getModel ().getRoot ();
+        return getTreeState ( tree, tree.getModel ().getRoot (), saveSelection );
+    }
+
+    /**
+     * Returns tree expansion and selection states.
+     * Tree nodes must be instances of UniqueNode class.
+     *
+     * @param tree tree to process
+     * @param root node to save state for
+     * @return tree expansion and selection states
+     */
+    public static TreeState getTreeState ( final JTree tree, final Object root )
+    {
+        return getTreeState ( tree, root, true );
+    }
+
+    /**
+     * Returns tree expansion and selection states.
+     * Tree nodes must be instances of UniqueNode class.
+     *
+     * @param tree          tree to process
+     * @param saveSelection whether to save selection states or not
+     * @param root          node to save state for
+     * @return tree expansion and selection states
+     */
+    public static TreeState getTreeState ( final JTree tree, final Object root, final boolean saveSelection )
+    {
         if ( !( root instanceof UniqueNode ) )
         {
-            throw new RuntimeException ( "To get tree state you must use UniqueNode or any class that extends it as tree elements!" );
+            throw new RuntimeException ( "To get tree state you must use UniqueNode or any class that extends it as tree elements" );
         }
+        final TreeState state = new TreeState ();
+        saveTreeStateImpl ( tree, state, ( UniqueNode ) root, saveSelection );
+        return state;
+    }
 
-        final TreeState treeState = new TreeState ();
-        final List<UniqueNode> elements = new ArrayList<UniqueNode> ();
-        elements.add ( ( UniqueNode ) root );
-        while ( elements.size () > 0 )
+    /**
+     * Saves tree expansion and selection states into {@link TreeState}.
+     *
+     * @param tree          tree to process
+     * @param state         {@link TreeState} to save states into
+     * @param parent        node to save states for
+     * @param saveSelection whether to save selection states or not
+     */
+    protected static void saveTreeStateImpl ( final JTree tree, final TreeState state, final UniqueNode parent,
+                                              final boolean saveSelection )
+    {
+        // Saving children states first
+        for ( int i = 0; i < parent.getChildCount (); i++ )
         {
-            final UniqueNode element = elements.get ( 0 );
-            final TreePath path = new TreePath ( element.getPath () );
-            treeState.addState ( element.getId (), tree.isExpanded ( path ), saveSelection && tree.isPathSelected ( path ) );
-
-            for ( int i = 0; i < element.getChildCount (); i++ )
-            {
-                elements.add ( ( UniqueNode ) element.getChildAt ( i ) );
-            }
-
-            elements.remove ( element );
+            saveTreeStateImpl ( tree, state, ( UniqueNode ) parent.getChildAt ( i ), saveSelection );
         }
-        return treeState;
+
+        // Saving parent state
+        final TreePath path = new TreePath ( parent.getPath () );
+        state.addState ( parent.getId (), tree.isExpanded ( path ), saveSelection && tree.isPathSelected ( path ) );
     }
 
     /**
@@ -100,66 +136,90 @@ public final class TreeUtils
      */
     public static void setTreeState ( final JTree tree, final TreeState treeState, final boolean restoreSelection )
     {
-        final Object root = tree.getModel ().getRoot ();
+        setTreeState ( tree, treeState, tree.getModel ().getRoot (), restoreSelection );
+    }
+
+    /**
+     * Restores tree expansion and selection states.
+     * Tree nodes must be instances of UniqueNode class.
+     *
+     * @param tree      tree to process
+     * @param treeState tree expansion and selection states
+     * @param root      node to restore state for
+     */
+    protected static void setTreeState ( final JTree tree, final TreeState treeState, final Object root )
+    {
+        setTreeState ( tree, treeState, root, true );
+    }
+
+    /**
+     * Restores tree expansion and selection states.
+     * Tree nodes must be instances of UniqueNode class.
+     *
+     * @param tree             tree to process
+     * @param treeState        tree expansion and selection states
+     * @param root             node to restore state for
+     * @param restoreSelection whether to restore selection states or not
+     */
+    protected static void setTreeState ( final JTree tree, final TreeState treeState, final Object root, final boolean restoreSelection )
+    {
         if ( !( root instanceof UniqueNode ) )
         {
-            throw new RuntimeException ( "To set tree state you must use UniqueNode or any class that extends it as tree elements!" );
+            throw new RuntimeException ( "To set tree state you must use UniqueNode or any class that extends it as tree elements" );
         }
-
         if ( treeState == null )
         {
             return;
         }
+        restoreTreeStateImpl ( tree, treeState, ( UniqueNode ) root, restoreSelection );
+    }
 
-        tree.clearSelection ();
-
-        final List<UniqueNode> elements = new ArrayList<UniqueNode> ();
-        elements.add ( ( UniqueNode ) root );
-        while ( elements.size () > 0 )
+    /**
+     * Restores tree expansion and selection states from {@link TreeState}.
+     *
+     * @param tree             tree to process
+     * @param treeState        tree expansion and selection states
+     * @param parent           node to restore states for
+     * @param restoreSelection whether to restore selection states or not
+     */
+    private static void restoreTreeStateImpl ( final JTree tree, final TreeState treeState, final UniqueNode parent,
+                                               final boolean restoreSelection )
+    {
+        // Restoring children states first
+        for ( int i = 0; i < parent.getChildCount (); i++ )
         {
-            final UniqueNode element = elements.get ( 0 );
-            final TreePath path = new TreePath ( element.getPath () );
+            restoreTreeStateImpl ( tree, treeState, ( UniqueNode ) parent.getChildAt ( i ), restoreSelection );
+        }
 
-            // todo Create workaround for async trees
-            // Restoring expansion states
-            if ( treeState.isExpanded ( element.getId () ) )
+        // Restoring parent state
+        final TreePath path = new TreePath ( parent.getPath () );
+        if ( treeState.isExpanded ( parent.getId () ) )
+        {
+            tree.expandPath ( path );
+        }
+        else
+        {
+            tree.collapsePath ( path );
+        }
+        if ( restoreSelection )
+        {
+            if ( treeState.isSelected ( parent.getId () ) )
             {
-                tree.expandPath ( path );
-
-                // We are going futher only into expanded nodes, otherwise this will expand even collapsed ones
-                for ( int i = 0; i < element.getChildCount (); i++ )
-                {
-                    elements.add ( ( UniqueNode ) tree.getModel ().getChild ( element, i ) );
-                }
+                tree.addSelectionPath ( path );
             }
             else
             {
-                tree.collapsePath ( path );
+                tree.removeSelectionPath ( path );
             }
-
-            // Restoring selection states
-            if ( restoreSelection )
-            {
-                if ( treeState.isSelected ( element.getId () ) )
-                {
-                    tree.addSelectionPath ( path );
-                }
-                else
-                {
-                    tree.removeSelectionPath ( path );
-                }
-            }
-
-            elements.remove ( element );
         }
     }
 
     /**
-     * Optimizes list of nodes by removing those which already have their parent node in the list.
+     * Trims list of nodes by removing those which already have their parent node in the list.
      *
-     * @param nodes nodes list to optimize
+     * @param nodes nodes list to trim
      */
-    public static <E extends DefaultMutableTreeNode> void optimizeNodes ( final List<E> nodes )
+    public static <E extends DefaultMutableTreeNode> void trimNodes ( final List<E> nodes )
     {
         for ( int i = nodes.size () - 1; i >= 0; i-- )
         {

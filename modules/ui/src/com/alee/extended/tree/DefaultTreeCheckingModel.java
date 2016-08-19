@@ -111,7 +111,7 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
         }
         if ( optimize )
         {
-            TreeUtils.optimizeNodes ( checkedNodes );
+            TreeUtils.trimNodes ( checkedNodes );
         }
         return checkedNodes;
     }

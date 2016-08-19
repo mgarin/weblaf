@@ -18,7 +18,9 @@
 package com.alee.demo.content.label;
 
 import com.alee.demo.DemoApplication;
-import com.alee.demo.api.*;
+import com.alee.demo.api.example.*;
+import com.alee.demo.api.example.wiki.WebLafWikiPage;
+import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.extended.link.*;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.notification.NotificationManager;
@@ -56,12 +58,18 @@ public class WebLinkExample extends AbstractExample
     }
 
     @Override
+    public WikiPage getWikiPage ()
+    {
+        return new WebLafWikiPage ( "How to use WebLink" );
+    }
+
+    @Override
     protected List<Preview> createPreviews ()
     {
-        final UrlLink e1 = new UrlLink ( FeatureState.updated, StyleId.label );
-        final EmailLink e2 = new EmailLink ( FeatureState.updated, StyleId.label );
-        final FileLink e3 = new FileLink ( FeatureState.updated, StyleId.label );
-        final ActionLink e4 = new ActionLink ( FeatureState.updated, StyleId.label );
+        final UrlLink e1 = new UrlLink ( FeatureState.updated, StyleId.link );
+        final EmailLink e2 = new EmailLink ( FeatureState.updated, StyleId.link );
+        final FileLink e3 = new FileLink ( FeatureState.updated, StyleId.link );
+        final ActionLink e4 = new ActionLink ( FeatureState.updated, StyleId.link );
         return CollectionUtils.<Preview>asList ( e1, e2, e3, e4 );
     }
 

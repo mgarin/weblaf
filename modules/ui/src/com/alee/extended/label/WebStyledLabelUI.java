@@ -56,7 +56,7 @@ public class WebStyledLabelUI extends WStyledLabelUI implements ShapeSupport, Ma
      * @param c component that will use UI instance
      * @return instance of the WebStyledLabelUI
      */
-    @SuppressWarnings ({ "UnusedDeclaration" })
+    @SuppressWarnings ( { "UnusedDeclaration" } )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebStyledLabelUI ();
@@ -74,6 +74,9 @@ public class WebStyledLabelUI extends WStyledLabelUI implements ShapeSupport, Ma
 
         // Saving label reference
         label = ( WebStyledLabel ) c;
+
+        // Installing default settings
+        installDefaults ();
 
         // Applying skin
         StyleManager.installSkin ( label );
@@ -94,6 +97,19 @@ public class WebStyledLabelUI extends WStyledLabelUI implements ShapeSupport, Ma
         label = null;
 
         super.uninstallUI ( c );
+    }
+
+    /**
+     * Installs default component settings.
+     */
+    protected void installDefaults ()
+    {
+        label.setWrap ( TextWrap.mixed );
+        label.setHorizontalTextAlignment ( -1 );
+        label.setVerticalTextAlignment ( CENTER );
+        label.setRows ( 0 );
+        label.setMinimumRows ( 0 );
+        label.setMaximumRows ( 0 );
     }
 
     @Override

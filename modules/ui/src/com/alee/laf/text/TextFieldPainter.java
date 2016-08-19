@@ -26,14 +26,14 @@ public class TextFieldPainter<E extends JTextField, U extends WTextFieldUI, D ex
     }
 
     @Override
-    public Component getTrailingComponent ()
-    {
-        return ui.getTrailingComponent ();
-    }
-
-    @Override
     public Component getLeadingComponent ()
     {
         return ui.getLeadingComponent ();
+    }
+
+    @Override
+    public Component getTrailingComponent ()
+    {
+        return ui.getTrailingComponent ();
     }
 }

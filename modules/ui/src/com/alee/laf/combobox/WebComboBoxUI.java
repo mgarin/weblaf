@@ -30,6 +30,7 @@ import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.ReflectUtils;
 import com.alee.utils.swing.DataRunnable;
 import com.alee.utils.swing.EditabilityListener;
 import com.alee.utils.swing.VisibilityListener;
@@ -306,6 +307,8 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     public void setPainter ( final Painter painter )
     {
         comboBox.hidePopup ();
+        isMinimumSizeDirty = true;
+        ReflectUtils.setFieldValueSafely ( this, "isDisplaySizeDirty", true );
         PainterSupport.setPainter ( comboBox, new DataRunnable<IComboBoxPainter> ()
         {
             @Override

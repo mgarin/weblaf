@@ -35,6 +35,7 @@ public class ColorConverter extends AbstractSingleValueConverter
      * Null color constant.
      */
     public static final String NULL_COLOR = "null";
+    public static final String NONE_COLOR = "none";
 
     /**
      * Transparent color constant.
@@ -50,6 +51,7 @@ public class ColorConverter extends AbstractSingleValueConverter
     {
         // Special value for null color
         defaultColors.put ( NULL_COLOR, null );
+        defaultColors.put ( NONE_COLOR, null );
 
         // Standard Swing color set
         defaultColors.put ( "transparent", TRANSPARENT );

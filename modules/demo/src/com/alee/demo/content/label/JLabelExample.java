@@ -17,7 +17,9 @@
 
 package com.alee.demo.content.label;
 
-import com.alee.demo.api.*;
+import com.alee.demo.api.example.*;
+import com.alee.demo.api.example.wiki.OracleWikiPage;
+import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
@@ -47,6 +49,12 @@ public class JLabelExample extends AbstractExample
     public FeatureType getFeatureType ()
     {
         return FeatureType.swing;
+    }
+
+    @Override
+    public WikiPage getWikiPage ()
+    {
+        return new OracleWikiPage ( "How to Use Labels", "label" );
     }
 
     @Override

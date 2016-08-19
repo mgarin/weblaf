@@ -31,6 +31,9 @@ public final class Icons
      */
     public static final LazyIcon underline = new LazyIcon ( "underline", 16, 16 );
     public static final LazyIcon underlineHover = new LazyIcon ( "underline-hover", 16, 16 );
+    public static final LazyIcon target = new LazyIcon ( "target", 16, 16 );
+    public static final LazyIcon targetHover = new LazyIcon ( "target-hover", 16, 16 );
+    public static final LazyIcon targetSelected = new LazyIcon ( "target-selected", 16, 16 );
     public static final LazyIcon pin = new LazyIcon ( "pin", 16, 16 );
     public static final LazyIcon pinHover = new LazyIcon ( "pin-hover", 16, 16 );
     public static final LazyIcon external = new LazyIcon ( "external", 16, 16 );

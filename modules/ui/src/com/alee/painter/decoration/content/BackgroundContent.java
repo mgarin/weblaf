@@ -72,10 +72,7 @@ public class BackgroundContent<E extends JComponent, D extends IDecoration<E, D>
         {
             return color;
         }
-        else
-        {
-            throw new DecorationException ( "Background color must be specified" );
-        }
+        throw new DecorationException ( "Background color must be specified" );
     }
 
     /**

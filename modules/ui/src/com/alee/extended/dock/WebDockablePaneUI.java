@@ -26,10 +26,7 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.CollectionUtils;
-import com.alee.utils.CompareUtils;
-import com.alee.utils.ImageUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.*;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -102,6 +99,9 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
         // Saving dockable pane reference
         dockablePane = ( WebDockablePane ) c;
 
+        // Installing default settings
+        installDefaults ();
+
         // Applying skin
         StyleManager.installSkin ( dockablePane );
 
@@ -127,6 +127,19 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
 
         // Removing dockable pane reference
         dockablePane = null;
+    }
+
+    /**
+     * Installs default component settings.
+     */
+    protected void installDefaults ()
+    {
+        dockablePane.setSidebarVisibility ( SidebarVisibility.minimized );
+        dockablePane.setSidebarButtonAction ( SidebarButtonAction.restore );
+        dockablePane.setContentSpacing ( 0 );
+        dockablePane.setResizeGripper ( 10 );
+        dockablePane.setMinimumElementSize ( new Dimension ( 40, 40 ) );
+        dockablePane.setOccupyMinimumSizeForChildren ( true );
     }
 
     /**
@@ -204,35 +217,15 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
     public void propertyChange ( final PropertyChangeEvent evt )
     {
         final String property = evt.getPropertyName ();
-        if ( CompareUtils.equals ( property, WebDockablePane.SIDEBAR_VISIBILITY_PROPERTY ) )
+        if ( CompareUtils.equals ( property, WebDockablePane.MODEL_PROPERTY, WebDockablePane.MODEL_STATE_PROPERTY ) )
+        {
+            // Handling model and its state changes
+            updateFrameData ();
+        }
+        else if ( CompareUtils.equals ( property, WebDockablePane.SIDEBAR_VISIBILITY_PROPERTY ) )
         {
             // Handling sidebar visibility change
-            if ( !CollectionUtils.isEmpty ( dockablePane.frames ) )
-            {
-                for ( final WebDockableFrame frame : dockablePane.frames )
-                {
-                    switch ( dockablePane.getSidebarVisibility () )
-                    {
-                        case none:
-                            dockablePane.remove ( frame.getSidebarButton () );
-                            break;
-
-                        case minimized:
-                            dockablePane.remove ( frame.getSidebarButton () );
-                            if ( frame.isSidebarButtonVisible () )
-                            {
-                                dockablePane.add ( frame.getSidebarButton () );
-                            }
-                            break;
-
-                        case all:
-                            dockablePane.add ( frame.getSidebarButton () );
-                            break;
-                    }
-                }
-                dockablePane.revalidate ();
-                dockablePane.repaint ();
-            }
+            updateSidebarsVisibility ();
         }
         else if ( CompareUtils.equals ( property, WebDockablePane.CONTENT_SPACING_PROPERTY, WebDockablePane.RESIZE_GRIPPER_PROPERTY ) )
         {
@@ -240,28 +233,12 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
             dockablePane.revalidate ();
             dockablePane.repaint ();
         }
-        else if ( CompareUtils.equals ( property, WebDockablePane.MODEL_PROPERTY, WebDockablePane.MODEL_STATE_PROPERTY ) )
-        {
-            // Ensures data for all added frames exist in the model
-            updateFrameData ();
-
-            // Ensure dockable pane layout is correct
-            dockablePane.revalidate ();
-            dockablePane.repaint ();
-        }
         else if ( CompareUtils.equals ( property, WebDockablePane.GLASS_LAYER_PROPERTY ) )
         {
             // Handling glass layer change
-            if ( evt.getOldValue () != null )
-            {
-                dockablePane.remove ( ( Component ) evt.getOldValue () );
-            }
-            if ( evt.getNewValue () != null )
-            {
-                dockablePane.add ( ( Component ) evt.getNewValue (), 0 );
-            }
-            dockablePane.revalidate ();
-            dockablePane.repaint ();
+            final Component oldGlassLayer = ( Component ) evt.getOldValue ();
+            final Component newGlassLayer = ( Component ) evt.getNewValue ();
+            updateGlassLayerVisibility ( oldGlassLayer, newGlassLayer );
         }
         else if ( CompareUtils.equals ( property, WebDockablePane.FRAME_PROPERTY ) )
         {
@@ -279,30 +256,9 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
         else if ( CompareUtils.equals ( property, WebDockablePane.CONTENT_PROPERTY ) )
         {
             // Handling content change
-            boolean update = false;
-            if ( evt.getOldValue () != null )
-            {
-                // Removing old content
-                dockablePane.remove ( ( JComponent ) evt.getOldValue () );
-                update = true;
-            }
-            if ( evt.getNewValue () != null )
-            {
-                // Adding new content
-                dockablePane.add ( ( JComponent ) evt.getNewValue () );
-                update = true;
-            }
-            else
-            {
-                // Restore empty content
-                dockablePane.setContent ( emptyContent );
-            }
-            if ( update )
-            {
-                // Performing update only if necessary
-                dockablePane.revalidate ();
-                dockablePane.repaint ();
-            }
+            final JComponent oldContent = ( JComponent ) evt.getOldValue ();
+            final JComponent newContent = ( JComponent ) evt.getNewValue ();
+            updateContentVisibility ( oldContent, newContent );
         }
         else if ( CompareUtils.equals ( property, WebDockablePane.MINIMUM_ELEMENT_SIZE_PROPERTY,
                 WebDockablePane.OCCUPY_MINIMUM_SIZE_FOR_CHILDREN_PROPERTY ) )
@@ -320,9 +276,120 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
      */
     protected void updateFrameData ()
     {
+        // Ensures data for all added frames exist in the model
         for ( final WebDockableFrame frame : dockablePane.frames )
         {
             dockablePane.getModel ().updateFrame ( dockablePane, frame );
+        }
+
+        // Ensure dockable pane layout is correct
+        dockablePane.revalidate ();
+        dockablePane.repaint ();
+    }
+
+    /**
+     * Updates visibility of the dockable pane glass layer.
+     *
+     * @param oldGlassLayer previously used glass layer
+     * @param newGlassLayer currently used glass layer
+     */
+    protected void updateGlassLayerVisibility ( final Component oldGlassLayer, final Component newGlassLayer )
+    {
+        if ( oldGlassLayer != null )
+        {
+            dockablePane.remove ( oldGlassLayer );
+        }
+        if ( newGlassLayer != null )
+        {
+            dockablePane.add ( newGlassLayer, 0 );
+        }
+        dockablePane.revalidate ();
+        dockablePane.repaint ();
+    }
+
+    /**
+     * Updates visibility of the buttons on all four sidebars.
+     */
+    protected void updateSidebarsVisibility ()
+    {
+        if ( !CollectionUtils.isEmpty ( dockablePane.frames ) )
+        {
+            for ( final WebDockableFrame frame : dockablePane.frames )
+            {
+                if ( frame.isSidebarButtonVisible () )
+                {
+                    if ( !dockablePane.contains ( frame.getSidebarButton () ) )
+                    {
+                        dockablePane.add ( frame.getSidebarButton () );
+                    }
+                }
+                else
+                {
+                    if ( dockablePane.contains ( frame.getSidebarButton () ) )
+                    {
+                        dockablePane.remove ( frame.getSidebarButton () );
+                    }
+                }
+            }
+            dockablePane.revalidate ();
+            dockablePane.repaint ();
+        }
+    }
+
+    /**
+     * Updates visibility of the specified {@link WebDockableFrame}.
+     *
+     * @param frame {@link WebDockableFrame} to update visibility for
+     */
+    protected void updateFrameVisibility ( final WebDockableFrame frame )
+    {
+        if ( frame.isPreview () || frame.isDocked () )
+        {
+            if ( !dockablePane.contains ( frame ) )
+            {
+                dockablePane.add ( frame );
+            }
+        }
+        else
+        {
+            if ( dockablePane.contains ( frame ) )
+            {
+                dockablePane.remove ( frame );
+            }
+        }
+    }
+
+    /**
+     * Updates visibility of the content.
+     *
+     * @param oldContent previously displayed content
+     * @param newContent currently displayed content
+     */
+    protected void updateContentVisibility ( final JComponent oldContent, final JComponent newContent )
+    {
+        boolean update = false;
+        if ( oldContent != null )
+        {
+            // Removing old content
+            dockablePane.remove ( oldContent );
+            update = true;
+        }
+        if ( newContent != null )
+        {
+            // Adding new content
+            dockablePane.add ( newContent );
+            update = true;
+        }
+        else
+        {
+            // Restore empty content
+            dockablePane.setContent ( emptyContent );
+        }
+        if ( update )
+        {
+            // Performing update only if necessary
+            dockablePane.revalidate ();
+            dockablePane.repaint ();
         }
     }
 
@@ -379,51 +446,21 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
                     }
 
                     // Updating frame and its sidebar button visibility
-                    boolean update = false;
-                    if ( frame.isPreview () || frame.isDocked () )
-                    {
-                        if ( !dockablePane.contains ( frame ) )
-                        {
-                            dockablePane.add ( frame );
-                            update = true;
-                        }
-                    }
-                    else
-                    {
-                        if ( dockablePane.contains ( frame ) )
-                        {
-                            dockablePane.remove ( frame );
-                            update = true;
-                        }
-                    }
-                    final JComponent sideBarButton = frame.getSidebarButton ();
-                    if ( frame.isSidebarButtonVisible () )
-                    {
-                        if ( !dockablePane.contains ( sideBarButton ) )
-                        {
-                            dockablePane.add ( sideBarButton );
-                            update = true;
-                        }
-                    }
-                    else
-                    {
-                        if ( dockablePane.contains ( sideBarButton ) )
-                        {
-                            dockablePane.remove ( sideBarButton );
-                            update = true;
-                        }
-                    }
-                    if ( update )
-                    {
-                        dockablePane.revalidate ();
-                        dockablePane.repaint ();
-                    }
+                    updateFrameVisibility ( frame );
+                    updateSidebarsVisibility ();
+                    dockablePane.revalidate ();
+                    dockablePane.repaint ();
 
                     // Creating floating frame dialog
                     if ( newState == DockableFrameState.floating )
                     {
                         showFrameDialog ( frame );
                     }
+                }
+                else if ( CompareUtils.equals ( property, WebDockableFrame.POSITION_PROPERTY ) )
+                {
+                    // Updating frame and its sidebar button visibility
+                    updateSidebarsVisibility ();
                 }
                 else if ( CompareUtils.equals ( property, WebDockableFrame.MAXIMIZED_PROPERTY ) )
                 {
@@ -445,11 +482,6 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
                     // Updating frame restore state
                     final DockableFrameElement element = dockablePane.getModel ().getElement ( frame.getId () );
                     element.setRestoreState ( frame.getRestoreState () );
-                }
-                else if ( CompareUtils.equals ( property, WebDockableFrame.POSITION_PROPERTY ) )
-                {
-                    // todo Should we really do something about this?
-                    // todo We can probably move frame to the specified side at global position (like side drop)
                 }
                 else if ( CompareUtils.equals ( property, WebDockableFrame.TITLE_PROPERTY ) )
                 {
@@ -478,7 +510,7 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
         frame.addFrameListener ( getProxyListener () );
 
         // Restores frame dialog
-        if ( SwingUtils.isVisibleOnScreen ( dockablePane ) && frame.isFloating () )
+        if ( dockablePane.isShowing () && frame.isFloating () )
         {
             showFrameDialog ( frame );
         }
@@ -526,7 +558,7 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
         dockablePane.getModel ().removeFrame ( dockablePane, frame );
 
         // Disposes frame dialog
-        if ( SwingUtils.isVisibleOnScreen ( dockablePane ) && frame.isFloating () )
+        if ( dockablePane.isShowing () && frame.isFloating () )
         {
             disposeFrameDialog ( frame );
         }

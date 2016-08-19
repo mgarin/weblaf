@@ -31,6 +31,7 @@ import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -201,16 +202,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
     public WebDockableFrame ( final StyleId id, final String frameId, final Icon icon, final String title )
     {
         super ();
-        setFocusCycleRoot ( true );
         setId ( frameId );
-        setState ( DockableFrameState.docked );
-        setMaximized ( false );
-        setRestoreState ( DockableFrameState.docked );
-        setPosition ( CompassDirection.west );
-        setDraggable ( true );
-        setClosable ( true );
-        setFloatable ( true );
-        setMaximizable ( true );
         setIcon ( icon );
         setTitle ( title );
         updateUI ();
@@ -571,13 +563,26 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
         {
             switch ( dockablePane.getSidebarVisibility () )
             {
-                case none:
+                case never:
                     return false;
 
                 case minimized:
                     return isMinimized () || isPreview ();
 
-                case all:
+                case anyMinimized:
+                    if ( !isClosed () )
+                    {
+                        for ( final WebDockableFrame frame : dockablePane.getFrames ( getPosition () ) )
+                        {
+                            if ( frame.isMinimized () || frame.isPreview () )
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+
+                case always:
                     return isOpened ();
             }
         }
@@ -838,6 +843,13 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( this );
+    }
+
+    @Override
+    public void applyComponentOrientation ( final ComponentOrientation orientation )
+    {
+        super.applyComponentOrientation ( orientation );
+        getSidebarButton ().applyComponentOrientation ( orientation );
     }
 
     /**

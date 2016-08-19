@@ -17,9 +17,11 @@
 
 package com.alee.demo.content.container;
 
-import com.alee.demo.api.AbstractExample;
-import com.alee.demo.api.FeatureType;
-import com.alee.demo.api.Preview;
+import com.alee.demo.api.example.AbstractExample;
+import com.alee.demo.api.example.FeatureType;
+import com.alee.demo.api.example.Preview;
+import com.alee.demo.api.example.wiki.OracleWikiPage;
+import com.alee.demo.api.example.wiki.WikiPage;
 
 import java.util.Collections;
 import java.util.List;
@@ -46,6 +48,12 @@ public class JPanelExample extends AbstractExample
     public FeatureType getFeatureType ()
     {
         return FeatureType.swing;
+    }
+
+    @Override
+    public WikiPage getWikiPage ()
+    {
+        return new OracleWikiPage ( "How to Use Panels", "panel" );
     }
 
     @Override

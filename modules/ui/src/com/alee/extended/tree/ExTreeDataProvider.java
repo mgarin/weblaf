@@ -51,16 +51,6 @@ public interface ExTreeDataProvider<E extends UniqueNode>
     public List<E> getChildren ( E node );
 
     /**
-     * Returns child nodes comparator for the specified asynchronous tree node.
-     * No sorting applied to children in case null is returned.
-     *
-     * @param node     parent node
-     * @param children children to be sorted
-     * @return child nodes comparator
-     */
-    public Comparator<E> getChildrenComparator ( E node, List<E> children );
-
-    /**
      * Returns child nodes filter for the specified asynchronous tree node.
      * No filtering applied to children in case null is returned.
      *
@@ -69,6 +59,16 @@ public interface ExTreeDataProvider<E extends UniqueNode>
      * @return child nodes filter
      */
     public Filter<E> getChildrenFilter ( E node, List<E> children );
+
+    /**
+     * Returns child nodes comparator for the specified asynchronous tree node.
+     * No sorting applied to children in case null is returned.
+     *
+     * @param node     parent node
+     * @param children children to be sorted
+     * @return child nodes comparator
+     */
+    public Comparator<E> getChildrenComparator ( E node, List<E> children );
 
     /**
      * Returns whether the specified node is leaf (doesn't have any children) or not.

@@ -17,7 +17,9 @@
 
 package com.alee.demo.content.label;
 
-import com.alee.demo.api.*;
+import com.alee.demo.api.example.*;
+import com.alee.demo.api.example.wiki.WebLafWikiPage;
+import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.StyleId;
@@ -41,13 +43,19 @@ public class WebStyledLabelExample extends AbstractExample
     @Override
     protected String getStyleFileName ()
     {
-        return "label";
+        return "styledlabel";
     }
 
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.extended;
+    }
+
+    @Override
+    public WikiPage getWikiPage ()
+    {
+        return new WebLafWikiPage ( "How to use WebStyledLabel" );
     }
 
     @Override
@@ -80,7 +88,7 @@ public class WebStyledLabelExample extends AbstractExample
         @Override
         protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
         {
-            final String labelText = "{Custom:b} {styled:c(120,80,200)}{2:sup} text" + "\n" + "And {another:b} row";
+            final String labelText = "{Custom:b} {styled:c(blue)} {2:sup} text" + "\n" + "{And:b} {And:c(red)} And {another:b} row";
             final WebStyledLabel label = new WebStyledLabel ( getStyleId (), labelText );
 
             final String iconText = "{Iconed:b} text";

@@ -18,10 +18,13 @@
 package com.alee.demo.content.window;
 
 import com.alee.demo.DemoApplication;
-import com.alee.demo.api.*;
+import com.alee.demo.api.example.*;
+import com.alee.demo.api.example.wiki.OracleWikiPage;
+import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
+import com.alee.managers.language.LanguageManager;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
@@ -54,6 +57,12 @@ public class JDialogExample extends AbstractExample
     public FeatureType getFeatureType ()
     {
         return FeatureType.swing;
+    }
+
+    @Override
+    public WikiPage getWikiPage ()
+    {
+        return new OracleWikiPage ( "How to Make Dialogs", "dialog" );
     }
 
     @Override
@@ -92,7 +101,8 @@ public class JDialogExample extends AbstractExample
                 {
                     final Window parent = SwingUtils.getWindowAncestor ( showFrame );
                     final String title = getExampleLanguagePrefix () + "content";
-                    final JDialog dialog = new JDialog ( parent, title );
+                    final JDialog dialog = new JDialog ( parent );
+                    LanguageManager.registerComponent ( dialog.getRootPane (), title );
                     dialog.getRootPane ().putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
                     dialog.setIconImages ( WebLookAndFeel.getImages () );
                     dialog.add ( new WebLabel ( title, WebLabel.CENTER ) );

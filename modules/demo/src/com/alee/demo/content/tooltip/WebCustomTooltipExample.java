@@ -17,7 +17,7 @@
 
 package com.alee.demo.content.tooltip;
 
-import com.alee.demo.api.*;
+import com.alee.demo.api.example.*;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;

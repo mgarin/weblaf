@@ -545,6 +545,20 @@ public final class CollectionUtils
     }
 
     /**
+     * Returns a vector of objects converted from data.
+     *
+     * @param data data
+     * @param <T>  data type
+     * @return a vector of objects converted from data
+     */
+    public static <T> Vector<T> asVector ( final T... data )
+    {
+        final Vector<T> vector = new Vector<T> ( data.length );
+        Collections.addAll ( vector, data );
+        return vector;
+    }
+
+    /**
      * Returns list of elements filtered from collection.
      *
      * @param collection collection to filter

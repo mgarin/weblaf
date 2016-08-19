@@ -17,9 +17,9 @@
 
 package com.alee.demo.content.text.field;
 
-import com.alee.demo.api.*;
-import com.alee.demo.DemoIcons;
-import com.alee.demo.DemoStyles;
+import com.alee.demo.skin.DemoIcons;
+import com.alee.demo.skin.DemoStyles;
+import com.alee.demo.api.example.*;
 import com.alee.extended.image.WebImage;
 import com.alee.laf.text.WebPasswordField;
 import com.alee.managers.style.StyleId;
@@ -130,7 +130,7 @@ public class WebPasswordFieldExample extends AbstractExample
         {
             final WebPasswordField textField = new WebPasswordField ( getStyleId (), 18 );
             textField.setInputPrompt ( getPreviewLanguagePrefix () + "prompt" );
-            textField.setTrailingComponent ( new WebImage ( DemoStyles.leadingImage, DemoIcons.github16 ) );
+            textField.setTrailingComponent ( new WebImage ( DemoStyles.trailingImage, DemoIcons.github16 ) );
             return CollectionUtils.asList ( textField );
         }
     }

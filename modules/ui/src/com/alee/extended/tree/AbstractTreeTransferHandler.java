@@ -215,7 +215,7 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
             // Optimizing dragged nodes
             if ( optimizeDraggedNodes )
             {
-                TreeUtils.optimizeNodes ( nodes );
+                TreeUtils.trimNodes ( nodes );
             }
 
             // Checking whether or not can drag specified nodes

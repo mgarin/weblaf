@@ -18,10 +18,13 @@
 package com.alee.demo.content.window;
 
 import com.alee.demo.DemoApplication;
-import com.alee.demo.api.*;
+import com.alee.demo.api.example.*;
+import com.alee.demo.api.example.wiki.OracleWikiPage;
+import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
+import com.alee.managers.language.LanguageManager;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
@@ -52,6 +55,12 @@ public class JFrameExample extends AbstractExample
     public FeatureType getFeatureType ()
     {
         return FeatureType.swing;
+    }
+
+    @Override
+    public WikiPage getWikiPage ()
+    {
+        return new OracleWikiPage ( "How to Make Frames", "frame" );
     }
 
     @Override
@@ -89,7 +98,8 @@ public class JFrameExample extends AbstractExample
                 public void actionPerformed ( final ActionEvent e )
                 {
                     final String title = getExampleLanguagePrefix () + "content";
-                    final JFrame frame = new JFrame ( title );
+                    final JFrame frame = new JFrame (  );
+                    LanguageManager.registerComponent ( frame.getRootPane (), title );
                     frame.getRootPane ().putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
                     frame.setIconImages ( WebLookAndFeel.getImages () );
                     frame.add ( new WebLabel ( title, WebLabel.CENTER ) );

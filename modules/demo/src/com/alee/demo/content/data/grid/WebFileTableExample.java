@@ -17,7 +17,7 @@
 
 package com.alee.demo.content.data.grid;
 
-import com.alee.demo.api.*;
+import com.alee.demo.api.example.*;
 import com.alee.extended.filechooser.WebFileTable;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.managers.style.StyleId;

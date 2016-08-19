@@ -17,7 +17,7 @@
 
 package com.alee.demo.content.chooser.field;
 
-import com.alee.demo.api.*;
+import com.alee.demo.api.example.*;
 import com.alee.extended.date.DateListener;
 import com.alee.extended.date.WebDateField;
 import com.alee.laf.label.WebLabel;

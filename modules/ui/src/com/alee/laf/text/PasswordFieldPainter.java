@@ -26,14 +26,14 @@ public class PasswordFieldPainter<E extends JPasswordField, U extends WPasswordF
     }
 
     @Override
-    public Component getTrailingComponent ()
-    {
-        return ui.getTrailingComponent ();
-    }
-
-    @Override
     public Component getLeadingComponent ()
     {
         return ui.getLeadingComponent ();
+    }
+
+    @Override
+    public Component getTrailingComponent ()
+    {
+        return ui.getTrailingComponent ();
     }
 }

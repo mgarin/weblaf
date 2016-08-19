@@ -175,7 +175,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
         {
             return shadowColor;
         }
-        throw new StyleException ( "shadow color must not be empty" );
+        throw new StyleException ( "Shadow color must be specified" );
     }
 
     /**
@@ -191,7 +191,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
         {
             return shadowSize;
         }
-        throw new StyleException ( "shadow size must not be empty" );
+        throw new StyleException ( "Shadow size must be specified" );
     }
 
     /**
@@ -240,7 +240,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
             final Font oldFont = GraphicsUtils.setupFont ( g2d, c.getFont () );
 
             // Installing text antialias settings
-            final Map textHints = isShadow ( c, d ) ? StyleConstants.defaultTextRenderingHints : StyleConstants.textRenderingHints;
+            final Map textHints = /*isShadow ( c, d ) ? StyleConstants.defaultTextRenderingHints :*/ StyleConstants.textRenderingHints;
             final Map oldHints = SwingUtils.setupTextAntialias ( g2d, textHints );
 
             // Painting either HTML or plain text
@@ -353,28 +353,25 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     /**
      * Paints text fragment.
      *
-     * @param c        painted component
-     * @param d        painted decoration state
-     * @param g2d      graphics context
-     * @param text     text fragment
-     * @param textX    text X coordinate
-     * @param textY    text Y coordinate
-     * @param mneIndex index of mnemonic
+     * @param c             painted component
+     * @param d             painted decoration state
+     * @param g2d           graphics context
+     * @param text          text fragment
+     * @param textX         text X coordinate
+     * @param textY         text Y coordinate
+     * @param mnemonicIndex index of mnemonic
      */
     protected void paintTextFragment ( final E c, final D d, final Graphics2D g2d, final String text, final int textX, final int textY,
-                                       final int mneIndex )
+                                       final int mnemonicIndex )
     {
-        if ( isShadow ( c, d ) )
-        {
-            g2d.translate ( textX, textY );
-            final int ss = getShadowSize ( c, d );
-            paintTextEffect ( g2d, text, getShadowColor ( c, d ), ss, -ss, 1 - ss, true );
-            g2d.translate ( -textX, -textY );
-        }
-        else
-        {
-            SwingUtils.drawStringUnderlineCharAt ( g2d, text, mneIndex, textX, textY );
-        }
+        // Painting text shadow
+        paintTextShadow ( c, d, g2d, text, textX, textY );
+
+        // Painting text itself
+        paintTextString ( c, d, g2d, text, textX, textY );
+
+        // Painting mnemonic
+        paintMnemonic ( c, d, g2d, text, mnemonicIndex, textX, textY );
     }
 
     /**
@@ -383,63 +380,109 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * to draw string. This method paints the text on coordinates {@code tx}, {@code ty}. If text should be painted elsewhere, a transform
      * should be applied to the graphics before passing it.
      *
-     * @param g2d      graphics context
-     * @param text     text to paint
-     * @param color    effect color
-     * @param size     effect size
-     * @param tx       shift by X
-     * @param ty       shift by Y
-     * @param isShadow whether should paint shadow effect or not
+     * @param c     painted component
+     * @param d     painted decoration state
+     * @param g2d   graphics context
+     * @param text  text to paint
+     * @param textX text X coordinate
+     * @param textY text Y coordinate
      */
-    protected void paintTextEffect ( final Graphics2D g2d, final String text, final Color color, final int size, final double tx,
-                                     final double ty, final boolean isShadow )
+    protected void paintTextShadow ( final E c, final D d, final Graphics2D g2d, final String text, final int textX, final int textY )
     {
-        // Effect "darkness"
-        final float opacity = 0.8f;
-
-        final Composite oldComposite = g2d.getComposite ();
-        final Color oldColor = g2d.getColor ();
-
-        // Use a alpha blend smaller than 1 to prevent the effect from becoming too dark when multiple paints occur on top of each other.
-        float preAlpha = 0.4f;
-        if ( oldComposite instanceof AlphaComposite && ( ( AlphaComposite ) oldComposite ).getRule () == AlphaComposite.SRC_OVER )
+        if ( isShadow ( c, d ) )
         {
-            preAlpha = Math.min ( ( ( AlphaComposite ) oldComposite ).getAlpha (), preAlpha );
-        }
-        g2d.setPaint ( ColorUtils.removeAlpha ( color ) );
+            // This is required to properly render sub-pixel text antialias
+            final RenderingHints rh = g2d.getRenderingHints ();
 
-        g2d.translate ( tx, ty );
+            // Shadow settings
+            final float opacity = 0.8f;
+            final int size = getShadowSize ( c, d );
+            final Color color = getShadowColor ( c, d );
+            final double tx = -size;
+            final double ty = 1 - size;
+            final boolean isShadow = true;
 
-        // If the effect is a shadow it looks better to stop painting a bit earlier - shadow will look softer
-        final int maxSize = isShadow ? size - 1 : size;
+            // Configuring graphics
+            final Composite oldComposite = g2d.getComposite ();
+            final Color oldColor = g2d.getColor ();
+            g2d.translate ( textX + tx, textY + ty );
 
-        for ( int i = -size; i <= maxSize; i++ )
-        {
-            for ( int j = -size; j <= maxSize; j++ )
+            // Use a alpha blend smaller than 1 to prevent the effect from becoming too dark when multiple paints occur on top of each other
+            float preAlpha = 0.4f;
+            if ( oldComposite instanceof AlphaComposite && ( ( AlphaComposite ) oldComposite ).getRule () == AlphaComposite.SRC_OVER )
             {
-                final double distance = i * i + j * j;
-                float alpha = opacity;
-                if ( distance > 0.0d )
-                {
-                    alpha = ( float ) ( 1.0f / ( distance * size * opacity ) );
-                }
-                alpha *= preAlpha;
-                if ( alpha > 1.0f )
-                {
-                    alpha = 1.0f;
-                }
-                g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, alpha ) );
-                g2d.drawString ( text, i + size, j + size );
+                preAlpha = Math.min ( ( ( AlphaComposite ) oldComposite ).getAlpha (), preAlpha );
             }
+            g2d.setPaint ( ColorUtils.removeAlpha ( color ) );
+
+            // If the effect is a shadow it looks better to stop painting a bit earlier - shadow will look softer
+            final int maxSize = isShadow ? size - 1 : size;
+
+            for ( int i = -size; i <= maxSize; i++ )
+            {
+                for ( int j = -size; j <= maxSize; j++ )
+                {
+                    final double distance = i * i + j * j;
+                    float alpha = opacity;
+                    if ( distance > 0.0d )
+                    {
+                        alpha = ( float ) ( 1.0f / ( distance * size * opacity ) );
+                    }
+                    alpha *= preAlpha;
+                    if ( alpha > 1.0f )
+                    {
+                        alpha = 1.0f;
+                    }
+                    g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, alpha ) );
+                    g2d.drawString ( text, i + size, j + size );
+                }
+            }
+
+            // Restore graphics
+            g2d.translate ( -textX - tx, -textY - ty );
+            g2d.setComposite ( oldComposite );
+            g2d.setPaint ( oldColor );
+
+            // This is required to properly render sub-pixel text antialias
+            g2d.setRenderingHints ( rh );
         }
+    }
 
-        // Restore graphics
-        g2d.translate ( -tx, -ty );
-        g2d.setComposite ( oldComposite );
-        g2d.setPaint ( oldColor );
+    /**
+     * Paints text string.
+     *
+     * @param c     painted component
+     * @param d     painted decoration state
+     * @param g2d   graphics context
+     * @param text  text to paint
+     * @param textX text X coordinate
+     * @param textY text Y coordinate
+     */
+    protected void paintTextString ( final E c, final D d, final Graphics2D g2d, final String text, final int textX, final int textY )
+    {
+        g2d.drawString ( text, textX, textY );
+    }
 
-        // Painting text itself
-        g2d.drawString ( text, 0, 0 );
+    /**
+     * Paints underlined at the specified character index.
+     *
+     * @param c             painted component
+     * @param d             painted decoration state
+     * @param g2d           graphics context
+     * @param text          text to paint
+     * @param mnemonicIndex index of mnemonic
+     * @param textX         text X coordinate
+     * @param textY         text Y coordinate
+     */
+    protected void paintMnemonic ( final E c, final D d, final Graphics2D g2d, final String text, final int mnemonicIndex, final int textX,
+                                   final int textY )
+    {
+        if ( mnemonicIndex >= 0 && mnemonicIndex < text.length () )
+        {
+            final FontMetrics fm = g2d.getFontMetrics ();
+            g2d.fillRect ( textX + fm.stringWidth ( text.substring ( 0, mnemonicIndex ) ), textY + fm.getDescent () - 1,
+                    fm.charWidth ( text.charAt ( mnemonicIndex ) ), 1 );
+        }
     }
 
     @Override

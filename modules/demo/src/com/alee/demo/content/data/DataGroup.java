@@ -17,7 +17,7 @@
 
 package com.alee.demo.content.data;
 
-import com.alee.demo.api.AbstractExampleGroup;
+import com.alee.demo.api.example.AbstractExampleGroup;
 import com.alee.demo.content.data.grid.GridsGroup;
 import com.alee.demo.content.data.list.ListsGroup;
 import com.alee.demo.content.data.tree.TreesGroup;
