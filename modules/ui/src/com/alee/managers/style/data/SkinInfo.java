@@ -45,8 +45,8 @@ import java.util.*;
  * @see com.alee.managers.style.XmlSkinExtension
  */
 
-@XStreamAlias ("skin")
-@XStreamConverter (SkinInfoConverter.class)
+@XStreamAlias ( "skin" )
+@XStreamConverter ( SkinInfoConverter.class )
 public final class SkinInfo implements IconSupport, TitleSupport, Serializable
 {
     /**
@@ -297,6 +297,10 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
      */
     public List<String> getExtendedSkins ()
     {
+        if ( extendedSkins == null )
+        {
+            throw new StyleException ( "Extension must specify which skins it extends" );
+        }
         return extendedSkins;
     }
 
