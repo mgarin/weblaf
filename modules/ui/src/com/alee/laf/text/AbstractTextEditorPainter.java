@@ -69,7 +69,7 @@ public abstract class AbstractTextEditorPainter<E extends JTextComponent, U exte
     /**
      * Input prompt text font.
      */
-    @XStreamConverter ( FontConverter.class )
+    @XStreamConverter (FontConverter.class)
     protected Font inputPromptFont = null;
 
     /**
@@ -117,6 +117,19 @@ public abstract class AbstractTextEditorPainter<E extends JTextComponent, U exte
         component.getDocument ().removeDocumentListener ( documentChangeListeners.getKey () );
 
         super.uninstall ( c, ui );
+    }
+
+    @Override
+    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
+    {
+        // Perform basic actions on property changes
+        super.propertyChanged ( property, oldValue, newValue );
+
+        // Updating decoration states on editable property change
+        if ( CompareUtils.equals ( property, WebLookAndFeel.EDITABLE_PROPERTY ) )
+        {
+            updateDecorationState ();
+        }
     }
 
     @Override

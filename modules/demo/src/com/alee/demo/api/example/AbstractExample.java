@@ -17,7 +17,6 @@
 
 package com.alee.demo.api.example;
 
-import com.alee.demo.DemoApplication;
 import com.alee.demo.api.example.wiki.NoWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.demo.content.ExamplesManager;
@@ -64,11 +63,6 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
      * Preview pane.
      */
     protected WebPanel examplesPane;
-
-    /**
-     * Skin currently selected for example previews.
-     */
-    protected Skin selectedSkin = DemoApplication.skins.get ( 0 );
 
     @Override
     public Icon getIcon ()

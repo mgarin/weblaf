@@ -17,6 +17,7 @@
 
 package com.alee.managers.settings;
 
+import com.alee.api.jdk.Supplier;
 import com.alee.managers.log.Log;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
@@ -1274,11 +1275,31 @@ public final class SettingsManager
      * Returns value read from the settings file.
      *
      * @param fileName     settings file name
-     * @param defaultValue default value class
+     * @param defaultValue default value
      * @param <T>          default value type
      * @return value read from the settings file
      */
     public static <T> T getSettings ( final String fileName, final T defaultValue )
+    {
+        return getSettings ( fileName, new Supplier<T> ()
+        {
+            @Override
+            public T get ()
+            {
+                return defaultValue;
+            }
+        } );
+    }
+
+    /**
+     * Returns value read from the settings file.
+     *
+     * @param fileName     settings file name
+     * @param defaultValue default value supplier
+     * @param <T>          default value type
+     * @return value read from the settings file
+     */
+    public static <T> T getSettings ( final String fileName, final Supplier<T> defaultValue )
     {
         if ( files.containsKey ( fileName ) )
         {
@@ -1286,17 +1307,17 @@ public final class SettingsManager
         }
         else
         {
-            Object value;
+            T value;
             try
             {
                 value = XmlUtils.fromXML ( getSettingsFile ( fileName ) );
             }
             catch ( final Throwable e )
             {
-                value = defaultValue;
+                value = defaultValue.get ();
             }
             files.put ( fileName, value );
-            return ( T ) value;
+            return value;
         }
     }
 
@@ -1325,7 +1346,16 @@ public final class SettingsManager
     {
         if ( allowSave )
         {
-            XmlUtils.toXML ( settings, getSettingsFile ( fileName ) );
+            final File settingsFile = getSettingsFile ( fileName );
+            final File dir = settingsFile.getParentFile ();
+            if ( FileUtils.ensureDirectoryExists ( dir ) )
+            {
+                XmlUtils.toXML ( settings, settingsFile );
+            }
+            else
+            {
+                throw new RuntimeException ( "Cannot create settings directory: " + dir.getAbsolutePath () );
+            }
         }
     }
 

@@ -17,14 +17,13 @@
 
 package com.alee.demo.content.window;
 
-import com.alee.demo.DemoApplication;
 import com.alee.demo.api.example.*;
-import com.alee.demo.api.example.wiki.OracleWikiPage;
+import com.alee.demo.api.example.wiki.WebLafWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
-import com.alee.laf.WebLookAndFeel;
+import com.alee.extended.behavior.ComponentMoveBehavior;
+import com.alee.extended.window.WebPopup;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
-import com.alee.managers.language.LanguageManager;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
@@ -37,44 +36,44 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class JFrameExample extends AbstractExample
+public class WebPopupExample extends AbstractExample
 {
     @Override
     public String getId ()
     {
-        return "jframe";
+        return "webpopup";
     }
 
     @Override
     protected String getStyleFileName ()
     {
-        return "frame";
+        return "popup";
     }
 
     @Override
     public FeatureType getFeatureType ()
     {
-        return FeatureType.swing;
+        return FeatureType.extended;
     }
 
     @Override
     public WikiPage getWikiPage ()
     {
-        return new OracleWikiPage ( "How to Make Frames", "frame" );
+        return new WebLafWikiPage ( "How to use WebPopup" );
     }
 
     @Override
     protected List<Preview> createPreviews ()
     {
-        final FramePreview e1 = new FramePreview ( "basic", FeatureState.updated, StyleId.frame );
-        final FramePreview e2 = new FramePreview ( "decorated", FeatureState.updated, StyleId.frameDecorated );
+        final PopupPreview e1 = new PopupPreview ( "basic", FeatureState.release, StyleId.popup );
+        final PopupPreview e2 = new PopupPreview ( "undecorated", FeatureState.release, StyleId.popupUndecorated );
         return CollectionUtils.<Preview>asList ( e1, e2 );
     }
 
     /**
-     * Simple frame preview.
+     * Simple popup preview.
      */
-    protected class FramePreview extends AbstractStylePreview
+    protected class PopupPreview extends AbstractStylePreview
     {
         /**
          * Constructs new style preview.
@@ -83,9 +82,9 @@ public class JFrameExample extends AbstractExample
          * @param state   preview feature state
          * @param styleId preview style ID
          */
-        public FramePreview ( final String id, final FeatureState state, final StyleId styleId )
+        public PopupPreview ( final String id, final FeatureState state, final StyleId styleId )
         {
-            super ( JFrameExample.this, id, state, styleId );
+            super ( WebPopupExample.this, id, state, styleId );
         }
 
         @Override
@@ -98,15 +97,14 @@ public class JFrameExample extends AbstractExample
                 public void actionPerformed ( final ActionEvent e )
                 {
                     final String title = getExampleLanguagePrefix () + "content";
-                    final JFrame frame = new JFrame ();
-                    LanguageManager.registerComponent ( frame.getRootPane (), title );
-                    frame.getRootPane ().putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
-                    frame.setIconImages ( WebLookAndFeel.getImages () );
-                    frame.add ( new WebLabel ( title, WebLabel.CENTER ) );
-                    frame.setAlwaysOnTop ( true );
-                    frame.setSize ( 500, 400 );
-                    frame.setLocationRelativeTo ( DemoApplication.getInstance () );
-                    frame.setVisible ( true );
+                    final WebPopup popup = new WebPopup ( getStyleId () );
+                    popup.setPadding ( 10 );
+                    final WebLabel content = new WebLabel ( title, WebLabel.CENTER );
+                    ComponentMoveBehavior.install ( content );
+                    popup.add ( content );
+                    popup.setPreferredSize ( 200, 150 );
+                    popup.setResizable ( true );
+                    popup.showPopup ( button, 0, button.getHeight () );
                 }
             } );
             return CollectionUtils.asList ( button );

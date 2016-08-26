@@ -12,8 +12,8 @@
                 <decoration>
                     <WebShape round="2" />
                     <WebShadow type="outer" width="2" />
-                    <LineBorder color="170,170,170" />
-                    <ColorBackground color="237,237,237" />
+                    <LineBorder color="20,20,20" />
+                    <ColorBackground color="68,68,68" />
                 </decoration>
                 <decoration states="unix">
                     <WebShape round="0" />
@@ -32,7 +32,7 @@
             <decorations overwrite="true">
                 <decoration>
                     <WebShape round="0" />
-                    <ColorBackground color="237,237,237" />
+                    <ColorBackground color="68,68,68" />
                 </decoration>
             </decorations>
         </painter>

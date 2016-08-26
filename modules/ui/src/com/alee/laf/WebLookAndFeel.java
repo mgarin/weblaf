@@ -115,6 +115,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String MARGIN_PROPERTY = "margin";
     public static final String ENABLED_PROPERTY = "enabled";
     public static final String FOCUSABLE_PROPERTY = "focusable";
+    public static final String EDITABLE_PROPERTY = "editable";
     public static final String MODEL_PROPERTY = "model";
     public static final String VIEWPORT_PROPERTY = "viewport";
     public static final String VERTICAL_SCROLLBAR_PROPERTY = "verticalScrollBar";

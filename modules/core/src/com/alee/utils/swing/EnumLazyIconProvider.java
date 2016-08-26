@@ -76,6 +76,7 @@ public class EnumLazyIconProvider
      * @param enumeration enumeration constant for which icon should be loaded
      * @param state       enumeration icon state
      * @param folder      enumeration icons folder
+     * @param extension   image format extension with dot
      * @param <E>         enumeration type
      * @return cached or just loaded enum icon
      */

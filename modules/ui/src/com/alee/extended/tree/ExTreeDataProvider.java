@@ -51,6 +51,15 @@ public interface ExTreeDataProvider<E extends UniqueNode>
     public List<E> getChildren ( E node );
 
     /**
+     * Returns whether the specified node is leaf (doesn't have any children) or not.
+     * If you are not sure if the node is leaf or not - simply return false, that will allow the tree to expand this node on request.
+     *
+     * @param node node
+     * @return true if the specified node is leaf, false otherwise
+     */
+    public boolean isLeaf ( E node );
+
+    /**
      * Returns child nodes filter for the specified asynchronous tree node.
      * No filtering applied to children in case null is returned.
      *
@@ -69,13 +78,4 @@ public interface ExTreeDataProvider<E extends UniqueNode>
      * @return child nodes comparator
      */
     public Comparator<E> getChildrenComparator ( E node, List<E> children );
-
-    /**
-     * Returns whether the specified node is leaf (doesn't have any children) or not.
-     * If you are not sure if the node is leaf or not - simply return false, that will allow the tree to expand this node on request.
-     *
-     * @param node node
-     * @return true if the specified node is leaf, false otherwise
-     */
-    public boolean isLeaf ( E node );
 }

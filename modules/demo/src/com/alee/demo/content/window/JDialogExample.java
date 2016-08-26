@@ -50,7 +50,7 @@ public class JDialogExample extends AbstractExample
     @Override
     protected String getStyleFileName ()
     {
-        return "rootpane";
+        return "dialog";
     }
 
     @Override
@@ -68,8 +68,8 @@ public class JDialogExample extends AbstractExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final DialogPreview e1 = new DialogPreview ( "basic", StyleId.dialog );
-        final DialogPreview e2 = new DialogPreview ( "decorated", StyleId.dialogDecorated );
+        final DialogPreview e1 = new DialogPreview ( "basic", FeatureState.updated, StyleId.dialog );
+        final DialogPreview e2 = new DialogPreview ( "decorated", FeatureState.updated, StyleId.dialogDecorated );
         return CollectionUtils.<Preview>asList ( e1, e2 );
     }
 
@@ -82,24 +82,24 @@ public class JDialogExample extends AbstractExample
          * Constructs new style preview.
          *
          * @param id      preview ID
+         * @param state   preview feature state
          * @param styleId preview style ID
          */
-        public DialogPreview ( final String id, final StyleId styleId )
+        public DialogPreview ( final String id, final FeatureState state, final StyleId styleId )
         {
-            super ( JDialogExample.this, id, FeatureState.updated, styleId );
+            super ( JDialogExample.this, id, state, styleId );
         }
 
         @Override
         protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
         {
-            final ImageIcon icon = loadIcon ( JDialogExample.this.getId () + "/" + getId () + ".png" );
-            final WebButton showFrame = new WebButton ( getExampleLanguagePrefix () + "show", icon );
-            showFrame.addActionListener ( new ActionListener ()
+            final WebButton button = new WebButton ( getExampleLanguagePrefix () + "show" );
+            button.addActionListener ( new ActionListener ()
             {
                 @Override
                 public void actionPerformed ( final ActionEvent e )
                 {
-                    final Window parent = SwingUtils.getWindowAncestor ( showFrame );
+                    final Window parent = SwingUtils.getWindowAncestor ( button );
                     final String title = getExampleLanguagePrefix () + "content";
                     final JDialog dialog = new JDialog ( parent );
                     LanguageManager.registerComponent ( dialog.getRootPane (), title );
@@ -111,7 +111,7 @@ public class JDialogExample extends AbstractExample
                     dialog.setVisible ( true );
                 }
             } );
-            return CollectionUtils.asList ( showFrame );
+            return CollectionUtils.asList ( button );
         }
     }
 }

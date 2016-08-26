@@ -297,10 +297,6 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
      */
     public List<String> getExtendedSkins ()
     {
-        if ( extendedSkins == null )
-        {
-            throw new StyleException ( "Extension must specify which skins it extends" );
-        }
         return extendedSkins;
     }
 
@@ -322,7 +318,12 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
      */
     public boolean isSupported ( final String skinId )
     {
-        return getExtendedSkins ().contains ( skinId );
+        final List<String> extendedSkins = getExtendedSkins ();
+        if ( extendedSkins == null )
+        {
+            throw new StyleException ( "Extension must specify which skins it extends" );
+        }
+        return extendedSkins.contains ( skinId );
     }
 
     /**

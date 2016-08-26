@@ -134,22 +134,18 @@
     <SvgIcon id="square-plus" path="square-plus.svg" size="11,11">
         <SvgFill selector=".bg" color="106,110,112" />
         <SvgFill selector=".shape" color="240,240,240" />
-        <SvgFill selector=".outer" color="none" />
     </SvgIcon>
     <SvgIcon id="square-plus-disabled" path="square-plus.svg" size="11,11">
         <SvgFill selector=".bg" color="106,110,112" />
         <SvgFill selector=".shape" color="180,180,180" />
-        <SvgFill selector=".outer" color="none" />
     </SvgIcon>
     <SvgIcon id="square-minus" path="square-minus.svg" size="11,11">
         <SvgFill selector=".bg" color="106,110,112" />
         <SvgFill selector=".shape" color="240,240,240" />
-        <SvgFill selector=".outer" color="none" />
     </SvgIcon>
     <SvgIcon id="square-minus-disabled" path="square-minus.svg" size="11,11">
         <SvgFill selector=".bg" color="106,110,112" />
         <SvgFill selector=".shape" color="180,180,180" />
-        <SvgFill selector=".outer" color="none" />
     </SvgIcon>
 
 </IconSet>

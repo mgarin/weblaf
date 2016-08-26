@@ -185,7 +185,6 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
     {
         super ( id );
         setLanguage ( "weblaf.ex.treefilter.inputprompt" );
-        checkTree ( tree );
         initDefaultFilter ();
         setTree ( tree );
         setTextProvider ( textProvider );
@@ -369,6 +368,9 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
      */
     public void setTree ( final WebTree<E> tree )
     {
+        // Checking tree support
+        checkTree ( tree );
+
         // Cleanup the mess we made in previous tree
         final WebTree<E> previousTree = getTree ();
         if ( previousTree != null )

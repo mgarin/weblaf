@@ -95,7 +95,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     protected boolean animate = ProprietaryUtils.isWindowTransparencyAllowed ();
 
     /**
-     * Single animation step size.
+     * Single animation step size, should be larger than {@code 0f} and lesser than {@code 1f}.
      * Making this value bigger will speedup the animation, reduce required resources but will also make it less soft.
      */
     protected float fadeStepSize = 0.1f;
@@ -777,8 +777,8 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
         window.setAlwaysOnTop ( isAlwaysOnTop () );
 
         // Modifying opacity if needed
-        updateOpaque ();
-        updateOpacity ();
+        updateOpaque ( window );
+        updateOpacity ( window );
 
         return window;
     }
@@ -1090,15 +1090,16 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     @Override
     public WebPopupWindow setWindowOpaque ( final boolean opaque )
     {
-        return updateOpaque ();
+        return updateOpaque ( window );
     }
 
     /**
      * Updates popup window opaque state and returns the window used for this popup.
      *
+     * @param window popup window
      * @return window used for this popup
      */
-    protected WebPopupWindow updateOpaque ()
+    protected WebPopupWindow updateOpaque ( final WebPopupWindow window )
     {
         if ( window != null )
         {
@@ -1117,15 +1118,16 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     public WebPopupWindow setWindowOpacity ( final float opacity )
     {
         this.opacity = opacity;
-        return updateOpacity ();
+        return updateOpacity ( window );
     }
 
     /**
      * Updates popup window opacity and returns the window used for this popup.
      *
+     * @param window popup window
      * @return window used for this popup
      */
-    protected WebPopupWindow updateOpacity ()
+    protected WebPopupWindow updateOpacity ( final WebPopupWindow window )
     {
         if ( window != null )
         {

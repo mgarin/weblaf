@@ -66,10 +66,10 @@ public class WebLinkExample extends AbstractExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final UrlLink e1 = new UrlLink ( FeatureState.updated, StyleId.link );
-        final EmailLink e2 = new EmailLink ( FeatureState.updated, StyleId.link );
-        final FileLink e3 = new FileLink ( FeatureState.updated, StyleId.link );
-        final ActionLink e4 = new ActionLink ( FeatureState.updated, StyleId.link );
+        final UrlLink e1 = new UrlLink ( FeatureState.release, StyleId.link );
+        final EmailLink e2 = new EmailLink ( FeatureState.release, StyleId.link );
+        final FileLink e3 = new FileLink ( FeatureState.release, StyleId.link );
+        final ActionLink e4 = new ActionLink ( FeatureState.release, StyleId.link );
         return CollectionUtils.<Preview>asList ( e1, e2, e3, e4 );
     }
 

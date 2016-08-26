@@ -1245,6 +1245,72 @@
                     </record>
                 </Dictionary>
             </Dictionary>
+            <Dictionary prefix="webpopup">
+                <record key="title">
+                    <value lang="en">WebPopup</value>
+                    <value lang="ru">WebPopup</value>
+                </record>
+                <record key="show">
+                    <value lang="en">Show popup</value>
+                    <value lang="ru">Показать попап</value>
+                </record>
+                <record key="content">
+                    <value lang="en">Sample popup</value>
+                    <value lang="ru">Образец попапа</value>
+                </record>
+                <Dictionary prefix="basic">
+                    <record key="title">
+                        <value lang="en">Basic popup</value>
+                        <value lang="ru">Базовый попап</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="undecorated">
+                    <record key="title">
+                        <value lang="en">Undecorated popup</value>
+                        <value lang="ru">Попап без декорации</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="webnotification">
+                <record key="title">
+                    <value lang="en">WebNotification</value>
+                    <value lang="ru">WebNotification</value>
+                </record>
+                <record key="show">
+                    <value lang="en">Show notification</value>
+                    <value lang="ru">Показать уведомление</value>
+                </record>
+                <Dictionary prefix="basic">
+                    <record key="title">
+                        <value lang="en">Basic notification</value>
+                        <value lang="ru">Базовое уведомление</value>
+                    </record>
+                    <record key="text">
+                        <value lang="en">Sample notification</value>
+                        <value lang="ru">Образец уведомления</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="optional">
+                    <record key="title">
+                        <value lang="en">Notification with options</value>
+                        <value lang="ru">Уведомление с опциями</value>
+                    </record>
+                    <record key="text">
+                        <value lang="en">Have you noticed the options below?</value>
+                        <value lang="ru">Заметили ли вы опции внизу?</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="custom">
+                    <record key="title">
+                        <value lang="en">Custom notification</value>
+                        <value lang="ru">Кастомизированное уведомление</value>
+                    </record>
+                    <record key="text">
+                        <value lang="en">Have you seen a large WebLaF logo?</value>
+                        <value lang="ru">Видели ли вы крупное лого WebLaF?</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
         </Dictionary>
         <Dictionary prefix="choosers">
             <record key="title">

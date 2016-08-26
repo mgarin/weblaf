@@ -2060,7 +2060,7 @@ public class WebFileChooserPanel extends WebPanel
      */
     public void restoreButtonText ()
     {
-        setAcceptButtonText ( ( String ) null );
+        setAcceptButtonText ( null );
     }
 
     /**
@@ -2078,7 +2078,7 @@ public class WebFileChooserPanel extends WebPanel
         else
         {
             acceptButton.removeLanguage ();
-            acceptButton.setText ( text );
+            acceptButton.setLanguage ( text );
         }
     }
 
