@@ -19,7 +19,6 @@ package com.alee.demo.api.example.wiki;
 
 import com.alee.demo.skin.DemoIcons;
 import com.alee.demo.skin.DemoStyles;
-import com.alee.extended.image.WebImage;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.link.UrlLinkAction;
 import com.alee.extended.link.WebLink;
@@ -69,8 +68,7 @@ public class WebLafWikiPage implements WikiPage
     public JComponent createLink ()
     {
         final WebPanel link = new WebPanel ( StyleId.panelTransparent, new HorizontalFlowLayout ( 4, false ) );
-        link.add ( new WebImage ( DemoIcons.github16 ) );
-        link.add ( new WebLabel ( DemoStyles.wikiLabel, "demo.content.example.wiki.weblaf" ) );
+        link.add ( new WebLabel ( DemoStyles.wikiLabel, "demo.content.example.wiki.weblaf", DemoIcons.github16 ) );
         link.add ( new WebLink ( DemoStyles.wikiLink, getTitle (), new UrlLinkAction ( getAddress () ) ) );
         return link;
     }

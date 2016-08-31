@@ -29,59 +29,59 @@ public final class Icons
     /**
      * General purpose icons.
      */
-    public static final LazyIcon underline = new LazyIcon ( "underline", 16, 16 );
-    public static final LazyIcon underlineHover = new LazyIcon ( "underline-hover", 16, 16 );
-    public static final LazyIcon target = new LazyIcon ( "target", 16, 16 );
-    public static final LazyIcon targetHover = new LazyIcon ( "target-hover", 16, 16 );
-    public static final LazyIcon targetSelected = new LazyIcon ( "target-selected", 16, 16 );
-    public static final LazyIcon pin = new LazyIcon ( "pin", 16, 16 );
-    public static final LazyIcon pinHover = new LazyIcon ( "pin-hover", 16, 16 );
-    public static final LazyIcon external = new LazyIcon ( "external", 16, 16 );
-    public static final LazyIcon externalHover = new LazyIcon ( "external-hover", 16, 16 );
-    public static final LazyIcon maximize = new LazyIcon ( "maximize", 16, 16 );
-    public static final LazyIcon maximizeHover = new LazyIcon ( "maximize-hover", 16, 16 );
-    public static final LazyIcon shrink = new LazyIcon ( "shrink", 16, 16 );
-    public static final LazyIcon shrinkHover = new LazyIcon ( "shrink-hover", 16, 16 );
-    public static final LazyIcon cross = new LazyIcon ( "cross", 16, 16 );
-    public static final LazyIcon crossHover = new LazyIcon ( "cross-hover", 16, 16 );
-    public static final LazyIcon crossSmall = new LazyIcon ( "cross-small", 10, 10 );
-    public static final LazyIcon crossSmallHover = new LazyIcon ( "cross-small-hover", 10, 10 );
-    public static final LazyIcon magnifier = new LazyIcon ( "magnifier", 16, 16 );
-    public static final LazyIcon magnifierHover = new LazyIcon ( "magnifier-hover", 16, 16 );
-    public static final LazyIcon globe = new LazyIcon ( "globe", 16, 16 );
-    public static final LazyIcon globeHover = new LazyIcon ( "globe-hover", 16, 16 );
-    public static final LazyIcon email = new LazyIcon ( "email", 16, 16 );
-    public static final LazyIcon emailHover = new LazyIcon ( "email-hover", 16, 16 );
+    public static final LazyIcon underline = new LazyIcon ( "underline" );
+    public static final LazyIcon underlineHover = new LazyIcon ( "underline-hover" );
+    public static final LazyIcon target = new LazyIcon ( "target" );
+    public static final LazyIcon targetHover = new LazyIcon ( "target-hover" );
+    public static final LazyIcon targetSelected = new LazyIcon ( "target-selected" );
+    public static final LazyIcon pin = new LazyIcon ( "pin" );
+    public static final LazyIcon pinHover = new LazyIcon ( "pin-hover" );
+    public static final LazyIcon external = new LazyIcon ( "external" );
+    public static final LazyIcon externalHover = new LazyIcon ( "external-hover" );
+    public static final LazyIcon maximize = new LazyIcon ( "maximize" );
+    public static final LazyIcon maximizeHover = new LazyIcon ( "maximize-hover" );
+    public static final LazyIcon shrink = new LazyIcon ( "shrink" );
+    public static final LazyIcon shrinkHover = new LazyIcon ( "shrink-hover" );
+    public static final LazyIcon cross = new LazyIcon ( "cross" );
+    public static final LazyIcon crossHover = new LazyIcon ( "cross-hover" );
+    public static final LazyIcon crossSmall = new LazyIcon ( "cross-small" );
+    public static final LazyIcon crossSmallHover = new LazyIcon ( "cross-small-hover" );
+    public static final LazyIcon magnifier = new LazyIcon ( "magnifier" );
+    public static final LazyIcon magnifierHover = new LazyIcon ( "magnifier-hover" );
+    public static final LazyIcon globe = new LazyIcon ( "globe" );
+    public static final LazyIcon globeHover = new LazyIcon ( "globe-hover" );
+    public static final LazyIcon email = new LazyIcon ( "email" );
+    public static final LazyIcon emailHover = new LazyIcon ( "email-hover" );
 
     /**
      * Medium arrow icons.
      */
-    public static final LazyIcon up = new LazyIcon ( "up", 16, 16 );
-    public static final LazyIcon down = new LazyIcon ( "down", 16, 16 );
-    public static final LazyIcon left = new LazyIcon ( "left", 16, 16 );
-    public static final LazyIcon right = new LazyIcon ( "right", 16, 16 );
+    public static final LazyIcon up = new LazyIcon ( "up" );
+    public static final LazyIcon down = new LazyIcon ( "down" );
+    public static final LazyIcon left = new LazyIcon ( "left" );
+    public static final LazyIcon right = new LazyIcon ( "right" );
 
     /**
      * Small arrow icons.
      */
-    public static final LazyIcon upSmall = new LazyIcon ( "up-small", 8,7 );
-    public static final LazyIcon downSmall = new LazyIcon ( "down-small", 8,7 );
-    public static final LazyIcon leftSmall = new LazyIcon ( "left-small", 8,7 );
-    public static final LazyIcon rightSmall = new LazyIcon ( "right-small", 8,7 );
+    public static final LazyIcon upSmall = new LazyIcon ( "up-small" );
+    public static final LazyIcon downSmall = new LazyIcon ( "down-small" );
+    public static final LazyIcon leftSmall = new LazyIcon ( "left-small" );
+    public static final LazyIcon rightSmall = new LazyIcon ( "right-small" );
 
     /**
      * Large arrow icons.
      */
-    public static final LazyIcon upBig = new LazyIcon ( "up-big", 16, 16 );
-    public static final LazyIcon downBig = new LazyIcon ( "down-big", 16, 16 );
-    public static final LazyIcon leftBig = new LazyIcon ( "left-big", 16, 16 );
-    public static final LazyIcon rightBig = new LazyIcon ( "right-big", 16, 16 );
+    public static final LazyIcon upBig = new LazyIcon ( "up-big" );
+    public static final LazyIcon downBig = new LazyIcon ( "down-big" );
+    public static final LazyIcon leftBig = new LazyIcon ( "left-big" );
+    public static final LazyIcon rightBig = new LazyIcon ( "right-big" );
 
     /**
      * Tree icons.
      */
-    public static final LazyIcon squarePlus = new LazyIcon ( "square-plus", 11, 11 );
-    public static final LazyIcon squarePlusDisabled = new LazyIcon ( "square-plus-disabled", 11, 11 );
-    public static final LazyIcon squareMinus = new LazyIcon ( "square-minus", 11, 11 );
-    public static final LazyIcon squareMinusDisabled = new LazyIcon ( "square-minus-disabled", 11, 11 );
+    public static final LazyIcon squarePlus = new LazyIcon ( "square-plus" );
+    public static final LazyIcon squarePlusDisabled = new LazyIcon ( "square-plus-disabled" );
+    public static final LazyIcon squareMinus = new LazyIcon ( "square-minus" );
+    public static final LazyIcon squareMinusDisabled = new LazyIcon ( "square-minus-disabled" );
 }

@@ -35,11 +35,6 @@ public final class LazyIcon implements Icon
     protected final String id;
 
     /**
-     * Predefined icon size.
-     */
-    protected final Dimension size;
-
-    /**
      * Constructs new {@link com.alee.managers.icon.LazyIcon}.
      * It will retrieve icon from {@link com.alee.managers.icon.IconManager} using the specified {@code id}.
      *
@@ -48,36 +43,8 @@ public final class LazyIcon implements Icon
      */
     public LazyIcon ( final String id )
     {
-        this ( id, null );
-    }
-
-    /**
-     * Constructs new {@link com.alee.managers.icon.LazyIcon}.
-     * It will retrieve icon from {@link com.alee.managers.icon.IconManager} using the specified {@code id}.
-     * Specified {@code width} and {@code height} will be used to delay icon loading until it is actually needed.
-     *
-     * @param id     icon ID
-     * @param width  predefined icon width
-     * @param height predefined icon height
-     */
-    public LazyIcon ( final String id, final int width, final int height )
-    {
-        this ( id, new Dimension ( width, height ) );
-    }
-
-    /**
-     * Constructs new {@link com.alee.managers.icon.LazyIcon}.
-     * It will retrieve icon from {@link com.alee.managers.icon.IconManager} using the specified {@code id}.
-     * Specified {@code size} will be used to delay icon loading until it is actually needed.
-     *
-     * @param id   icon ID
-     * @param size predefined icon size
-     */
-    public LazyIcon ( final String id, final Dimension size )
-    {
-        super ();
+        super();
         this.id = id;
-        this.size = size;
     }
 
     /**
@@ -110,12 +77,12 @@ public final class LazyIcon implements Icon
     @Override
     public int getIconWidth ()
     {
-        return size != null ? size.width : getIcon ().getIconWidth ();
+        return getIcon ().getIconWidth ();
     }
 
     @Override
     public int getIconHeight ()
     {
-        return size != null ? size.height : getIcon ().getIconHeight ();
+        return getIcon ().getIconHeight ();
     }
 }

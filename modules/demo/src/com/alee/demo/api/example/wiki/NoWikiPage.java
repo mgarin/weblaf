@@ -19,7 +19,6 @@ package com.alee.demo.api.example.wiki;
 
 import com.alee.demo.skin.DemoIcons;
 import com.alee.demo.skin.DemoStyles;
-import com.alee.extended.image.WebImage;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
@@ -49,8 +48,7 @@ public class NoWikiPage implements WikiPage
     public JComponent createLink ()
     {
         final WebPanel link = new WebPanel ( StyleId.panelTransparent, new HorizontalFlowLayout ( 4, false ) );
-        link.add ( new WebImage ( DemoIcons.github16 ) );
-        link.add ( new WebLabel ( DemoStyles.wikiLabel, getTitle () ) );
+        link.add ( new WebLabel ( DemoStyles.wikiLabel, getTitle (), DemoIcons.github16 ) );
         return link;
     }
 }
