@@ -232,7 +232,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      * @param oldFocus previously focused component
      * @param newFocus currently focused component
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void globalFocusChanged ( final Component oldFocus, final Component newFocus )
     {
         // Updating {@link #inFocusedParent} mark
@@ -599,7 +599,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                 {
                     if ( section instanceof AbstractDecorationPainter )
                     {
-                        if ( usesState ( ( ( AbstractDecorationPainter ) section ).decorations, state ) )
+                        if ( ( ( AbstractDecorationPainter ) section ).usesState ( state ) )
                         {
                             usesState = true;
                             break;

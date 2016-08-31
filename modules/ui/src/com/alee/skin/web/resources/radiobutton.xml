@@ -8,7 +8,7 @@
             <decorations>
                 <decoration>
                     <ButtonLayout>
-                        <ButtonIcon constraints="icon" />
+                        <SimpleButtonIcon constraints="icon" />
                         <ButtonText constraints="text" color="black" />
                     </ButtonLayout>
                 </decoration>
@@ -56,7 +56,7 @@
             <decorations>
                 <decoration>
                     <ButtonLayout>
-                        <ButtonIcon constraints="icon" />
+                        <SimpleButtonIcon constraints="icon" />
                         <StyledButtonText constraints="text" color="black" />
                     </ButtonLayout>
                 </decoration>

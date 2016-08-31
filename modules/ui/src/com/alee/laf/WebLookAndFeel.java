@@ -27,8 +27,10 @@ import com.alee.extended.image.WebImageUI;
 import com.alee.extended.label.WebStyledLabelUI;
 import com.alee.extended.link.WebLinkUI;
 import com.alee.extended.statusbar.WebStatusBarUI;
+import com.alee.extended.svg.SvgIcon;
 import com.alee.extended.window.WebPopupUI;
 import com.alee.global.StyleConstants;
+import com.alee.graphics.image.gif.GifIcon;
 import com.alee.laf.button.WebButtonUI;
 import com.alee.laf.button.WebToggleButtonUI;
 import com.alee.laf.checkbox.WebCheckBoxUI;
@@ -64,6 +66,7 @@ import com.alee.laf.tree.WebTreeUI;
 import com.alee.laf.viewport.WebViewportUI;
 import com.alee.managers.UIManagers;
 import com.alee.managers.icon.Icons;
+import com.alee.managers.icon.LazyIcon;
 import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.*;
@@ -1082,11 +1085,19 @@ public class WebLookAndFeel extends BasicLookAndFeel
             }
             else
             {
-                // todo Different disabled implementation for different icon types?
-                // todo For example ImageIcon, SvgIcon, GifIcon etc.
-                final BufferedImage image = ImageUtils.getBufferedImage ( icon );
-                final BufferedImage disabled = ImageUtils.createDisabledCopy ( image );
-                final ImageIcon disabledIcon = new ImageIcon ( disabled );
+                final ImageIcon disabledIcon;
+                if ( icon instanceof ImageIcon || icon instanceof SvgIcon || icon instanceof GifIcon || icon instanceof LazyIcon )
+                {
+                    // todo Different disabled implementation for different icon types?
+                    // todo For example ImageIcon, SvgIcon, GifIcon etc.
+                    final BufferedImage image = ImageUtils.getBufferedImage ( icon );
+                    final BufferedImage disabled = ImageUtils.createDisabledCopy ( image );
+                    disabledIcon = new ImageIcon ( disabled );
+                }
+                else
+                {
+                    disabledIcon = null;
+                }
                 disabledIcons.put ( icon, disabledIcon );
                 return disabledIcon;
             }

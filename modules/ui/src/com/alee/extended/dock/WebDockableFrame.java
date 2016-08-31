@@ -95,6 +95,16 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
     protected CompassDirection position;
 
     /**
+     * Frame icon.
+     */
+    protected Icon icon;
+
+    /**
+     * Frame title.
+     */
+    protected String title;
+
+    /**
      * Whether or not frame can be dragged.
      */
     protected boolean draggable;
@@ -117,16 +127,6 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      * You can still close the frame from the code even if this setting is set to {@code false}.
      */
     protected boolean closable;
-
-    /**
-     * Frame icon.
-     */
-    protected Icon icon;
-
-    /**
-     * Frame title.
-     */
-    protected String title;
 
     /**
      * Dockable pane this frame is added into.
@@ -353,6 +353,60 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
     }
 
     /**
+     * Returns frame icon.
+     *
+     * @return frame icon
+     */
+    public Icon getIcon ()
+    {
+        return icon;
+    }
+
+    /**
+     * Sets frame icon.
+     *
+     * @param icon frame icon
+     * @return this frame
+     */
+    public WebDockableFrame setIcon ( final Icon icon )
+    {
+        if ( this.icon != icon )
+        {
+            final Icon old = this.icon;
+            this.icon = icon;
+            firePropertyChange ( ICON_PROPERTY, old, icon );
+        }
+        return this;
+    }
+
+    /**
+     * Returns frame title.
+     *
+     * @return frame title
+     */
+    public String getTitle ()
+    {
+        return title;
+    }
+
+    /**
+     * Sets frame title.
+     *
+     * @param title frame title
+     * @return this frame
+     */
+    public WebDockableFrame setTitle ( final String title )
+    {
+        if ( !CompareUtils.equals ( this.title, title ) )
+        {
+            final String old = this.title;
+            this.title = title;
+            firePropertyChange ( TITLE_PROPERTY, old, title );
+        }
+        return this;
+    }
+
+    /**
      * Returns whether or not frame can be dragged.
      *
      * @return true if frame can be dragged, false otherwise
@@ -456,60 +510,6 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
             final boolean old = this.closable;
             this.closable = closable;
             firePropertyChange ( CLOSABLE_PROPERTY, old, closable );
-        }
-        return this;
-    }
-
-    /**
-     * Returns frame icon.
-     *
-     * @return frame icon
-     */
-    public Icon getIcon ()
-    {
-        return icon;
-    }
-
-    /**
-     * Sets frame icon.
-     *
-     * @param icon frame icon
-     * @return this frame
-     */
-    public WebDockableFrame setIcon ( final Icon icon )
-    {
-        if ( this.icon != icon )
-        {
-            final Icon old = this.icon;
-            this.icon = icon;
-            firePropertyChange ( ICON_PROPERTY, old, icon );
-        }
-        return this;
-    }
-
-    /**
-     * Returns frame title.
-     *
-     * @return frame title
-     */
-    public String getTitle ()
-    {
-        return title;
-    }
-
-    /**
-     * Sets frame title.
-     *
-     * @param title frame title
-     * @return this frame
-     */
-    public WebDockableFrame setTitle ( final String title )
-    {
-        if ( !CompareUtils.equals ( this.title, title ) )
-        {
-            final String old = this.title;
-            this.title = title;
-            firePropertyChange ( TITLE_PROPERTY, old, title );
         }
         return this;
     }

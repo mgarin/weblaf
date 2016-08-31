@@ -26,6 +26,7 @@ import javax.swing.*;
 
 /**
  * Button icon content implementation.
+ * It provides appropriate {@link AbstractButton} state icon.
  *
  * @param <E> component type
  * @param <D> decoration type
