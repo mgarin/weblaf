@@ -35,6 +35,7 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -365,7 +366,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
         if ( bounds.width > 0 && bounds.height > 0 )
         {
             // Painting only if margin bounds ar enough and intersect visible area
-            final Rectangle cl = g2d.getClip () instanceof Rectangle ? ( Rectangle ) g2d.getClip () : c.getVisibleRect ();
+            final Rectangle2D cl = g2d.getClip () instanceof Rectangle2D ? ( Rectangle2D ) g2d.getClip () : c.getVisibleRect ();
             if ( bounds.intersects ( cl ) )
             {
                 // Painting decoration elements
@@ -377,7 +378,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
                     // Setup settings
                     final Object oaa = GraphicsUtils.setupAntialias ( g2d );
                     final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, getOpacity (), getOpacity () < 1f );
-                    final Shape ocl = GraphicsUtils.setupClip ( g2d, bounds.intersection ( cl ) );
+                    final Shape ocl = GraphicsUtils.setupClip ( g2d, cl.createIntersection ( bounds ) );
 
                     // Outer shadow
                     if ( hasShadow ( ShadowType.outer ) && shape.isVisible ( ShapeType.outerShadow, bounds, c, WebDecoration.this ) )
