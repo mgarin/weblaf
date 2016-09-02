@@ -62,6 +62,7 @@ public class DockableListContainer extends AbstractDockableElement implements Do
     {
         super ( TextUtils.generateId ( "EL" ) );
         setOrientation ( orientation );
+        setSize ( new Dimension ( 0, 0 ) );
         for ( final DockableElement element : elements )
         {
             add ( getElementCount (), element );
