@@ -17,20 +17,27 @@
 package com.alee.graphics.filters;
 
 /**
- * An interface for color maps.
- * These are passed to filters which convert gray values to colors.
- * This is similar to the ColorModel class but works with floating point values.
+ * A filter which performs a simple 3x3 sharpening operation.
  *
  * @author Jerry Huxtable
  */
 
-public interface Colormap
+public class SharpenFilter extends ConvolveFilter
 {
-    /**
-     * Convert a value in the range 0..1 to an RGB color.
-     *
-     * @param v a value in the range 0..1
-     * @return an RGB color
-     */
-    public int getColor ( float v );
+    private static float[] sharpenMatrix = {
+            0.0f, -0.2f, 0.0f,
+            -0.2f, 1.8f, -0.2f,
+            0.0f, -0.2f, 0.0f
+    };
+
+    public SharpenFilter ()
+    {
+        super ( sharpenMatrix );
+    }
+
+    @Override
+    public String toString ()
+    {
+        return "Blur/Sharpen";
+    }
 }

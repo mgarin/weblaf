@@ -20,7 +20,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "GroupPaneLayout" )
+@XStreamAlias ("GroupPaneLayout")
 public class GroupPaneLayout extends AbstractGroupingLayout implements SwingConstants
 {
     /**
@@ -158,10 +158,20 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
         {
             throw new RuntimeException ( "Unsupported layout constraints: " + c );
         }
-        constraints.put ( component, c != null ? ( GroupPaneConstraints ) c : GroupPaneConstraints.PREFERRED );
+        constraints.put ( component, c != null ? ( GroupPaneConstraints ) c : getDefaultConstraint () );
 
         // Performing basic operations
         super.addComponent ( component, c );
+    }
+
+    /**
+     * Returns default component constraints in this layout.
+     *
+     * @return default component constraints in this layout
+     */
+    protected GroupPaneConstraints getDefaultConstraint ()
+    {
+        return orientation == HORIZONTAL ? GroupPaneConstraints.VERTICAL_FILL : GroupPaneConstraints.HORIZONTAL_FILL;
     }
 
     @Override

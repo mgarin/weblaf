@@ -454,10 +454,33 @@ public final class FileUtils
     }
 
     /**
-     * Returns MD5 for specified file.
+     * Returns MD5 for specified {@link String} data.
+     *
+     * @param data file to process
+     * @return MD5 for specified {@link String} data
+     */
+    public static String computeMD5 ( final String data )
+    {
+        return computeMD5 ( data, MD5_BUFFER_LENGTH );
+    }
+
+    /**
+     * Returns MD5 for specified {@link String} data and uses a buffer of the specified length.
+     *
+     * @param data         file to process
+     * @param bufferLength buffer length
+     * @return MD5 for specified {@link String} data
+     */
+    public static String computeMD5 ( final String data, final int bufferLength )
+    {
+        return computeMD5 ( new ByteArrayInputStream ( data.getBytes () ), bufferLength );
+    }
+
+    /**
+     * Returns MD5 for specified {@link File} content.
      *
      * @param file file to process
-     * @return MD5
+     * @return MD5 for specified {@link File} content
      */
     public static String computeMD5 ( final File file )
     {
@@ -465,11 +488,11 @@ public final class FileUtils
     }
 
     /**
-     * Returns MD5 for specified file and using a buffer of specified length.
+     * Returns MD5 for specified {@link File} content and uses a buffer of the specified length.
      *
      * @param file         file to process
      * @param bufferLength buffer length
-     * @return MD5
+     * @return MD5 for specified {@link File} content
      */
     public static String computeMD5 ( final File file, final int bufferLength )
     {
@@ -484,10 +507,10 @@ public final class FileUtils
     }
 
     /**
-     * Returns MD5 using the specified data stream.
+     * Returns MD5 for the data provided by {@link InputStream}.
      *
      * @param is data stream to process
-     * @return MD5
+     * @return MD5 for the data provided by {@link InputStream}
      */
     public static String computeMD5 ( final InputStream is )
     {
@@ -495,11 +518,11 @@ public final class FileUtils
     }
 
     /**
-     * Returns MD5 using the specified data stream and a buffer of specified length.
+     * Returns MD5 for the data provided by {@link InputStream} and uses a buffer of the specified length.
      *
      * @param is           data stream to process
      * @param bufferLength buffer length
-     * @return MD5
+     * @return MD5 for the data provided by {@link InputStream}
      */
     public static String computeMD5 ( final InputStream is, final int bufferLength )
     {

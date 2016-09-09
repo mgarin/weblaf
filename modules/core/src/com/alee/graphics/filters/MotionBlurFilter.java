@@ -1,21 +1,4 @@
 /*
- * This file is part of WebLookAndFeel library.
- *
- * WebLookAndFeel library is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * WebLookAndFeel library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-/*
 Copyright 2006 Jerry Huxtable
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,7 +24,7 @@ import java.awt.image.BufferedImage;
  * A filter which produces motion blur the faster, but lower-quality way.
  */
 
-public class MotionBlurOp extends AbstractBufferedImageOp
+public class MotionBlurFilter extends AbstractBufferedImageOp
 {
     private float alignX;
     private float alignY;
@@ -50,18 +33,18 @@ public class MotionBlurOp extends AbstractBufferedImageOp
     private float rotation;
     private float zoom;
 
-    public MotionBlurOp ()
+    public MotionBlurFilter ()
     {
         this ( 0f, 0f, 0f, 0f );
     }
 
-    public MotionBlurOp ( final float distance, final float angle, final float rotation, final float zoom )
+    public MotionBlurFilter ( final float distance, final float angle, final float rotation, final float zoom )
     {
         this ( distance, angle, rotation, zoom, 0.5f, 0.5f );
     }
 
-    public MotionBlurOp ( final float distance, final float angle, final float rotation, final float zoom, final float alignX,
-                          final float alignY )
+    public MotionBlurFilter ( final float distance, final float angle, final float rotation, final float zoom, final float alignX,
+                              final float alignY )
     {
         this.distance = distance;
         this.angle = angle;

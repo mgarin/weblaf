@@ -28,8 +28,10 @@ import com.mortennobel.imagescaling.ResampleOp;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.color.ColorSpace;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorConvertOp;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -1285,6 +1287,8 @@ public final class ImageUtils
      * Creates grayscale image copy
      */
 
+    private static final ColorConvertOp grayscaleColorConvert = new ColorConvertOp ( ColorSpace.getInstance ( ColorSpace.CS_GRAY ), null );
+
     public static ImageIcon createGrayscaleCopy ( final ImageIcon imageIcon )
     {
         return new ImageIcon ( createGrayscaleCopy ( imageIcon.getImage () ) );
@@ -1297,7 +1301,7 @@ public final class ImageUtils
 
     public static BufferedImage createGrayscaleCopy ( final BufferedImage img )
     {
-        return ImageFilterUtils.applyGrayscaleFilter ( img, null );
+        return grayscaleColorConvert.filter ( img, null );
     }
 
     /**

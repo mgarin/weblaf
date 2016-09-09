@@ -17,9 +17,11 @@
 
 package com.alee.extended.image;
 
+import com.alee.graphics.filters.GaussianFilter;
+import com.alee.graphics.filters.GrayscaleFilter;
+import com.alee.graphics.filters.MotionBlurFilter;
 import com.alee.managers.style.ShapeMethods;
 import com.alee.utils.GraphicsUtils;
-import com.alee.utils.ImageFilterUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
 
@@ -424,28 +426,28 @@ public class WebDecoratedImage extends JComponent implements SwingConstants, Sha
         }
 
         // Source image
-        Image image = ImageUtils.copy ( icon.getImage () );
+        BufferedImage image = ImageUtils.copy ( icon.getImage () );
 
         // Applying filters
         if ( grayscale )
         {
-            ImageFilterUtils.applyGrayscaleFilter ( image, image );
+            new GrayscaleFilter ().filter ( image, image );
         }
         if ( blur )
         {
-            ImageFilterUtils.applyGaussianFilter ( image, image, blurFactor );
+            new GaussianFilter ( blurFactor ).filter ( image, image );
         }
         if ( zoomBlur && rotationBlur )
         {
-            ImageFilterUtils.applyMotionBlurFilter ( image, image, 0f, 0f, rotationBlurFactor, zoomBlurFactor, blurAlignX, blurAlignY );
+            new MotionBlurFilter ( 0f, 0f, rotationBlurFactor, zoomBlurFactor, blurAlignX, blurAlignY ).filter ( image, image );
         }
         else if ( zoomBlur )
         {
-            ImageFilterUtils.applyZoomBlurFilter ( image, image, zoomBlurFactor, blurAlignX, blurAlignY );
+            new MotionBlurFilter ( 0f, 0f, 0f, zoomBlurFactor, blurAlignX, blurAlignY ).filter ( image, image );
         }
         else if ( rotationBlur )
         {
-            ImageFilterUtils.applyRotationBlurFilter ( image, image, rotationBlurFactor, blurAlignX, blurAlignY );
+            new MotionBlurFilter ( 0f, 0f, rotationBlurFactor, 0f, blurAlignX, blurAlignY ).filter ( image, image );
         }
 
         // Applying rounded corners

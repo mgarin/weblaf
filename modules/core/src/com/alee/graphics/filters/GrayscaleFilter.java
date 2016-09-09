@@ -17,45 +17,33 @@
 package com.alee.graphics.filters;
 
 /**
- * Applies a bit mask to each ARGB pixel of an image.
- * You can use this for, say, masking out the red channel.
+ * A filter which converts an image to grayscale using the NTSC brightness calculation.
  *
  * @author Jerry Huxtable
  */
 
-public class MaskFilter extends PointFilter
+public class GrayscaleFilter extends PointFilter
 {
-    private int mask;
-
-    public MaskFilter ()
-    {
-        this ( 0xff00ffff );
-    }
-
-    public MaskFilter ( final int mask )
+    public GrayscaleFilter ()
     {
         canFilterIndexColorModel = true;
-        setMask ( mask );
     }
 
-    public void setMask ( final int mask )
+    @Override
+    public int filterRGB ( final int x, final int y, int rgb )
     {
-        this.mask = mask;
-    }
-
-    public int getMask ()
-    {
-        return mask;
-    }
-
-    public int filterRGB ( final int x, final int y, final int rgb )
-    {
-        return rgb & mask;
+        final int a = rgb & 0xff000000;
+        final int r = ( rgb >> 16 ) & 0xff;
+        final int g = ( rgb >> 8 ) & 0xff;
+        final int b = rgb & 0xff;
+        //		rgb = (r + g + b) / 3;	// simple average
+        rgb = ( r * 77 + g * 151 + b * 28 ) >> 8;    // NTSC luma
+        return a | ( rgb << 16 ) | ( rgb << 8 ) | rgb;
     }
 
     @Override
     public String toString ()
     {
-        return "Mask";
+        return "Colors/Grayscale";
     }
 }
