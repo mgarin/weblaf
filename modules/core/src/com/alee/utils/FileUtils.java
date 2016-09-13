@@ -2248,7 +2248,7 @@ public final class FileUtils
         {
             return isDriveCache.get ( absolutePath );
         }
-        else
+        else if ( file.exists () )
         {
             final boolean isDrive;
             synchronized ( fsv )
@@ -2257,6 +2257,10 @@ public final class FileUtils
             }
             isDriveCache.put ( absolutePath, isDrive );
             return isDrive;
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -2295,7 +2299,7 @@ public final class FileUtils
         {
             return isComputerCache.get ( absolutePath );
         }
-        else
+        else if ( file.exists () )
         {
             final boolean isComputer;
             synchronized ( fsv )
@@ -2304,6 +2308,10 @@ public final class FileUtils
             }
             isComputerCache.put ( absolutePath, isComputer );
             return isComputer;
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -2344,7 +2352,7 @@ public final class FileUtils
         {
             return isCdDriveCache.get ( absolutePath );
         }
-        else
+        else if ( file.exists () )
         {
             final boolean isCdDrive;
             if ( file.getParent () == null )
@@ -2368,6 +2376,10 @@ public final class FileUtils
             }
             isCdDriveCache.put ( absolutePath, isCdDrive );
             return isCdDrive;
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -2412,11 +2424,15 @@ public final class FileUtils
             {
                 return isFileCache.get ( absolutePath );
             }
-            else
+            else if ( file.exists () )
             {
                 final boolean isFile = file.isFile ();
                 isFileCache.put ( absolutePath, isFile );
                 return isFile;
+            }
+            else
+            {
+                return false;
             }
         }
     }
@@ -2462,11 +2478,15 @@ public final class FileUtils
             {
                 return isDirectoryCache.get ( absolutePath );
             }
-            else
+            else if ( file.exists () )
             {
                 final boolean isDirectory = file.isDirectory ();
                 isDirectoryCache.put ( absolutePath, isDirectory );
                 return isDirectory;
+            }
+            else
+            {
+                return false;
             }
         }
     }
@@ -2512,12 +2532,16 @@ public final class FileUtils
             {
                 return isHiddenCache.get ( absolutePath );
             }
-            else
+            else if ( file.exists () )
             {
                 file = file.getAbsoluteFile ();
                 final boolean isHidden = file.getParentFile () != null && file.isHidden ();
                 isHiddenCache.put ( absolutePath, isHidden );
                 return isHidden;
+            }
+            else
+            {
+                return false;
             }
         }
     }
@@ -2558,11 +2582,15 @@ public final class FileUtils
         {
             return fileDescriptionCache.get ( absolutePath );
         }
-        else
+        else if ( file.exists () )
         {
             final FileDescription fileDescription = createFileDescription ( file, fileSize );
             fileDescriptionCache.put ( absolutePath, fileDescription );
             return fileDescription;
+        }
+        else
+        {
+            return new FileDescription ( "Unknown", "0", "", null );
         }
     }
 
@@ -2601,7 +2629,7 @@ public final class FileUtils
         {
             return displayFileNameCache.get ( absolutePath );
         }
-        else
+        else if ( file.exists () )
         {
             String name;
             synchronized ( fsv )
@@ -2618,6 +2646,10 @@ public final class FileUtils
             }
             displayFileNameCache.put ( absolutePath, name );
             return name;
+        }
+        else
+        {
+            return "";
         }
     }
 
@@ -2656,11 +2688,15 @@ public final class FileUtils
         {
             return displayFileCreationDateCache.get ( absolutePath );
         }
-        else
+        else if ( file.exists () )
         {
             final String date = sdf.format ( new Date ( file.lastModified () ) );
             displayFileCreationDateCache.put ( absolutePath, date );
             return date;
+        }
+        else
+        {
+            return "";
         }
     }
 
@@ -2699,11 +2735,15 @@ public final class FileUtils
         {
             return displayFileModificationDateCache.get ( absolutePath );
         }
-        else
+        else if ( file.exists () )
         {
             final String date = sdf.format ( new Date ( file.lastModified () ) );
             displayFileModificationDateCache.put ( absolutePath, date );
             return date;
+        }
+        else
+        {
+            return "";
         }
     }
 
@@ -2748,7 +2788,7 @@ public final class FileUtils
             {
                 return fileTypeDescriptionCache.get ( absolutePath );
             }
-            else
+            else if ( file.exists () )
             {
                 String description;
                 synchronized ( fsv )
@@ -2761,6 +2801,10 @@ public final class FileUtils
                 }
                 fileTypeDescriptionCache.put ( absolutePath, absolutePath );
                 return description;
+            }
+            else
+            {
+                return "";
             }
         }
     }
