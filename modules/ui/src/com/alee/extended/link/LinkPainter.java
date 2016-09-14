@@ -59,10 +59,7 @@ public class LinkPainter<E extends WebLink, U extends WLinkUI, D extends IDecora
     protected List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
-        if ( component.isVisitable () && component.isVisited () )
-        {
-            states.add ( DecorationState.visited );
-        }
+        states.add ( component.isVisitable () && component.isVisited () ? DecorationState.visited : DecorationState.unvisited );
         return states;
     }
 }
