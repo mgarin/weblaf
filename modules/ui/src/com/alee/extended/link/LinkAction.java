@@ -21,7 +21,7 @@ import java.awt.event.ActionEvent;
 import java.util.EventListener;
 
 /**
- * Base interface for link actions.
+ * Base interface for {@link WebLink} actions.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLink">How to use WebLink</a>

@@ -72,6 +72,37 @@ public class WebLink extends WebStyledLabel
     }
 
     /**
+     * Constructs new link with custom icon.
+     *
+     * @param icon link icon
+     */
+    public WebLink ( final Icon icon )
+    {
+        this ( StyleId.auto, icon );
+    }
+
+    /**
+     * Constructs new link with custom text.
+     *
+     * @param text link text
+     */
+    public WebLink ( final String text )
+    {
+        this ( StyleId.auto, text );
+    }
+
+    /**
+     * Constructs new link with custom icon and text.
+     *
+     * @param icon link icon
+     * @param text link text
+     */
+    public WebLink ( final Icon icon, final String text )
+    {
+        this ( StyleId.auto, icon, text );
+    }
+
+    /**
      * Constructs new link with custom action.
      *
      * @param action link action
@@ -82,7 +113,7 @@ public class WebLink extends WebStyledLabel
     }
 
     /**
-     * Constructs new link with custom icon, text and action.
+     * Constructs new link with custom icon and action.
      *
      * @param icon   link icon
      * @param action link action
@@ -93,7 +124,7 @@ public class WebLink extends WebStyledLabel
     }
 
     /**
-     * Constructs new link with custom icon, text and action.
+     * Constructs new link with custom text and action.
      *
      * @param text   link text
      * @param action link action
@@ -126,7 +157,41 @@ public class WebLink extends WebStyledLabel
     }
 
     /**
-     * Constructs new link with custom icon, text and action.
+     * Constructs new link with custom icon.
+     *
+     * @param id   style ID
+     * @param icon link icon
+     */
+    public WebLink ( final StyleId id, final Icon icon )
+    {
+        this ( id, icon, null, null );
+    }
+
+    /**
+     * Constructs new link with custom text.
+     *
+     * @param id   style ID
+     * @param text link text
+     */
+    public WebLink ( final StyleId id, final String text )
+    {
+        this ( id, null, text, null );
+    }
+
+    /**
+     * Constructs new link with custom icon and text.
+     *
+     * @param id   style ID
+     * @param icon link icon
+     * @param text link text
+     */
+    public WebLink ( final StyleId id, final Icon icon, final String text )
+    {
+        this ( id, icon, text, null );
+    }
+
+    /**
+     * Constructs new link with custom action.
      *
      * @param id     style ID
      * @param action link action
@@ -137,7 +202,7 @@ public class WebLink extends WebStyledLabel
     }
 
     /**
-     * Constructs new link with custom icon, text and action.
+     * Constructs new link with custom icon and action.
      *
      * @param id     style ID
      * @param icon   link icon
@@ -149,7 +214,7 @@ public class WebLink extends WebStyledLabel
     }
 
     /**
-     * Constructs new link with custom icon, text and action.
+     * Constructs new link with custom text and action.
      *
      * @param id     style ID
      * @param text   link text
