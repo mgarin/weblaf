@@ -293,7 +293,7 @@
                 <value lang="pl">Login:</value>
                 <value lang="ar">الدخول:</value>
                 <value lang="es">Nombre usuario:</value>
-                <value lang="fr">Login:</value>
+                <value lang="fr">Identifiant</value>
                 <value lang="pt">Nome de utilizador:</value>
                 <value lang="de">Login:</value>
                 <value lang="it">Login:</value>
@@ -807,7 +807,7 @@
                 <value lang="pl">Stworzony</value>
                 <value lang="ar">أنشاء</value>
                 <value lang="es">Creado</value>
-                <value lang="fr">établi</value>
+                <value lang="fr">Créé</value>
                 <value lang="pt">Criado</value>
                 <value lang="de">Erstellt</value>
                 <value lang="it">Creato</value>
@@ -870,7 +870,7 @@
             <value lang="pl">Prąd</value>
             <value lang="ar">حالي</value>
             <value lang="es">Corriente</value>
-            <value lang="fr">Courant</value>
+            <value lang="fr">Actuel</value>
             <value lang="pt">Atual</value>
             <value lang="de">Aktuell</value>
             <value lang="it">Attuale</value>
@@ -944,7 +944,7 @@
             <value lang="pl">Szukaj z początku linii</value>
             <value lang="ar">بحث مع بداية السطر</value>
             <value lang="es">Buscar en el principio de la línea</value>
-            <value lang="fr">La recherche avec le début de la ligne</value>
+            <value lang="fr">Rechercher depuis le début</value>
             <value lang="pt">Pesquisa com o início da linha</value>
             <value lang="de">Suchen mit dem Anfang der Zeile</value>
             <value lang="it">Cerca dall'inizio</value>
@@ -1079,7 +1079,7 @@
                 <value lang="pl">Spróbować ponownie</value>
                 <value lang="ar">إعادة المحاولة</value>
                 <value lang="es">Reintentar</value>
-                <value lang="fr">Réessayez</value>
+                <value lang="fr">Réessayer</value>
                 <value lang="pt">Tentar novamente</value>
                 <value lang="de">Wiederholen</value>
                 <value lang="it">Riprova</value>
@@ -1299,7 +1299,7 @@
                 <value lang="pl">Użyty:</value>
                 <value lang="ar">مستخدم:</value>
                 <value lang="es">Usado:</value>
-                <value lang="fr">Utilisée:</value>
+                <value lang="fr">Utilisé:</value>
                 <value lang="pt">Utilizado:</value>
                 <value lang="de">Benutzt:</value>
                 <value lang="it">Usata:</value>
@@ -1559,7 +1559,7 @@
                 <value lang="pl" state="tooltip">Obrót o 90 stopni w lewo</value>
                 <value lang="ar" state="tooltip">تدوير 90 درجة عكس عقارب الساعة</value>
                 <value lang="es" state="tooltip">Girar 90 grados en sentido antihorario</value>
-                <value lang="fr" state="tooltip">Rotation de 90 degrés dans le sens antihoraire</value>
+                <value lang="fr" state="tooltip">Rotation 90° anti-horaire</value>
                 <value lang="pt" state="tooltip">Girar 90 graus para a esquerda</value>
                 <value lang="de" state="tooltip">Um 90 Grad gegen den Uhrzeigersinn</value>
                 <value lang="it" state="tooltip">Ruotare di 90 gradi antiorario</value>
@@ -1571,7 +1571,7 @@
                 <value lang="pl" state="tooltip">Obrót o 90 stopni w prawo</value>
                 <value lang="ar" state="tooltip">تدوير 90 درجة في اتجاه عقارب الساعة</value>
                 <value lang="es" state="tooltip">Gire 90 grados hacia la derecha</value>
-                <value lang="fr" state="tooltip">Faire pivoter de 90 degrés vers la droite</value>
+                <value lang="fr" state="tooltip">Rotation 90° horaire</value>
                 <value lang="pt" state="tooltip">Girar 90 graus no sentido horário</value>
                 <value lang="de" state="tooltip">Um 90 Grad im Uhrzeigersinn</value>
                 <value lang="it" state="tooltip">Ruotare di 90 gradi orario</value>
@@ -1583,7 +1583,7 @@
                 <value lang="pl" state="tooltip">Obracać o 180 stopni</value>
                 <value lang="ar" state="tooltip">يستدير بمقدار 180 درجة</value>
                 <value lang="es" state="tooltip">Girar 180 grados</value>
-                <value lang="fr" state="tooltip">Une rotation de 180 degrés</value>
+                <value lang="fr" state="tooltip">Rotation 180°</value>
                 <value lang="pt" state="tooltip">Girar 180 graus</value>
                 <value lang="de" state="tooltip">Drehen um 180 Grad</value>
                 <value lang="it" state="tooltip">Ruotare di 180 gradi</value>
@@ -1643,7 +1643,7 @@
                 <value lang="pl" state="tooltip">Pokaż kolorowe tło</value>
                 <value lang="ar" state="tooltip">أظهر الخلفية الملونة</value>
                 <value lang="es" state="tooltip">Mostrar fondo colorido</value>
-                <value lang="fr" state="tooltip">Afficher le fond colorié</value>
+                <value lang="fr" state="tooltip">Afficher le fond coloré</value>
                 <value lang="pt" state="tooltip">Mostrar fundo colorido</value>
                 <value lang="de" state="tooltip">Farbigen Hintergrund anzeigen</value>
                 <value lang="it" state="tooltip">Mostra sfondo colorato</value>
@@ -1779,7 +1779,7 @@
                 <value lang="pl">Blisko</value>
                 <value lang="ar">قريب</value>
                 <value lang="es">Cerca</value>
-                <value lang="fr">Proche</value>
+                <value lang="fr">Fermer</value>
                 <value lang="pt">Perto</value>
                 <value lang="de">Schließen</value>
                 <value lang="it">Chiudi</value>
@@ -1803,7 +1803,7 @@
                 <value lang="pl">Przenieść do lewej grupy</value>
                 <value lang="ar">انتقال إلى مجموعة اليسار</value>
                 <value lang="es">Mover al grupo de la izquierda</value>
-                <value lang="fr">Déplacez à gauche groupe</value>
+                <value lang="fr">Déplacer dans le groupe de gauche</value>
                 <value lang="pt">Mover para grupo deixou</value>
                 <value lang="de">Nach links Gruppe</value>
                 <value lang="it">Sposta nel gruppo di sinistra</value>
@@ -1815,7 +1815,7 @@
                 <value lang="pl">Przenieść się do odpowiedniej grupy</value>
                 <value lang="ar">الانتقال إلى فريق الحق</value>
                 <value lang="es">Mover al grupo correcto</value>
-                <value lang="fr">Déplacez-vous bon groupe</value>
+                <value lang="fr">Déplacer dans le groupe de droite</value>
                 <value lang="pt">Mover para grupo certo</value>
                 <value lang="de">Bewegen nach rechts-Gruppe</value>
                 <value lang="it">Sposta nel gruppo di destra</value>
@@ -1827,7 +1827,7 @@
                 <value lang="pl">Przesuń do góry grupy</value>
                 <value lang="ar">انتقال إلى المجموعة الأولى</value>
                 <value lang="es">Mover al grupo de cabeza</value>
-                <value lang="fr">Monter en haut groupe</value>
+                <value lang="fr">Déplacer dans le groupe du haut</value>
                 <value lang="pt">Mover para o início do grupo</value>
                 <value lang="de">Gehen Sie zu Top-Gruppe</value>
                 <value lang="it">Sposta nel gruppo in alto</value>
@@ -1839,7 +1839,7 @@
                 <value lang="pl">Przenieś do grupy dolnej</value>
                 <value lang="ar">الانتقال إلى فريق القاع</value>
                 <value lang="es">Mover al grupo inferior</value>
-                <value lang="fr">Déplacer vers le groupe inférieur</value>
+                <value lang="fr">Déplacer dans le groupe du bas</value>
                 <value lang="pt">Mover para grupo inferior</value>
                 <value lang="de">Nach ganz unten Gruppe</value>
                 <value lang="it">Sposta nel gruppo in basso</value>
@@ -1851,7 +1851,7 @@
                 <value lang="pl">Zmienić orientację podziału</value>
                 <value lang="ar">تغيير اتجاه الانقسام</value>
                 <value lang="es">Cambiar la orientación de división</value>
-                <value lang="fr">Changer l'orientation scission</value>
+                <value lang="fr">Changer l'orientation de la division</value>
                 <value lang="pt">Altere a orientação de divisão</value>
                 <value lang="de">Ändern Sie Split-Orientierung</value>
                 <value lang="it">Cambia orientamento divisore</value>
@@ -1863,7 +1863,7 @@
                 <value lang="pl">Grupy swapowe</value>
                 <value lang="ar">مجموعات تبادل</value>
                 <value lang="es">Grupos de swap</value>
-                <value lang="fr">Des groupes d'échange</value>
+                <value lang="fr">Intervertir les groupes</value>
                 <value lang="pt">Grupos de swap</value>
                 <value lang="de">Swap-Gruppen</value>
                 <value lang="it">Gruppi swap</value>
@@ -1875,7 +1875,7 @@
                 <value lang="pl">łączyć grupy</value>
                 <value lang="ar">الجمع بين مجموعات</value>
                 <value lang="es">Combine grupos</value>
-                <value lang="fr">Combiner des groupes</value>
+                <value lang="fr">Combiner les groupes</value>
                 <value lang="pt">Combine grupos</value>
                 <value lang="de">Kombinieren Sie Gruppen</value>
                 <value lang="it">Unisci gruppi</value>
@@ -1887,7 +1887,7 @@
                 <value lang="pl">Połączyć wszystkie grupy</value>
                 <value lang="ar">الجمع بين جميع المجموعات</value>
                 <value lang="es">Combine todos los grupos</value>
-                <value lang="fr">Mélanger tous les groupes</value>
+                <value lang="fr">Combiner tous les groupes</value>
                 <value lang="pt">Misture todos os grupos</value>
                 <value lang="de">Kombinieren Sie alle Gruppen</value>
                 <value lang="it">Unisci tutti i gruppi</value>
@@ -1901,7 +1901,7 @@
         <langInfo lang="pl" author="sciepa" info="Polish" title="Polski" />
         <langInfo lang="ar" author="Abu Abdullah" info="Arabic" title="العربية" />
         <langInfo lang="es" author="pablovilas" info="Spanish" title="Español" />
-        <langInfo lang="fr" author="movierenamer" info="French" title="Français" />
+        <langInfo lang="fr" author="nmagre" info="French" title="Français" />
         <langInfo lang="pt" author="esimoes" info="Portuguese" title="Português" />
         <langInfo lang="de" author="trashguru" info="German" title="Deutsch" />
         <langInfo lang="it" author="cR0Ck" info="Italian" title="Italiano" />
