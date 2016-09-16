@@ -1636,16 +1636,13 @@ public abstract class PluginManager<T extends Plugin>
      *
      * @return global class loader for all plugin managers implementations
      */
-    protected static PluginClassLoader getGlobalClassLoader ()
+    protected PluginClassLoader getGlobalClassLoader ()
     {
-        if ( globalClassLoader == null )
+        synchronized ( PluginManager.class )
         {
-            synchronized ( PluginManager.class )
+            if ( globalClassLoader == null )
             {
-                if ( globalClassLoader == null )
-                {
-                    globalClassLoader = createPluginClassLoader ( new URL[ 0 ] );
-                }
+                globalClassLoader = createPluginClassLoader ( new URL[ 0 ] );
             }
         }
         return globalClassLoader;
@@ -1657,7 +1654,7 @@ public abstract class PluginManager<T extends Plugin>
      * @param classpath class loader classpath
      * @return new plugin class loader for this specific plugin manager implementation
      */
-    protected static PluginClassLoader createPluginClassLoader ( final URL[] classpath )
+    protected PluginClassLoader createPluginClassLoader ( final URL[] classpath )
     {
         return new PluginClassLoader ( classpath, PluginManager.class.getClassLoader () );
     }
