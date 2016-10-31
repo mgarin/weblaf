@@ -21,26 +21,17 @@ import com.alee.demo.api.example.wiki.NoWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.demo.content.ExamplesManager;
 import com.alee.demo.skin.DemoStyles;
-import com.alee.demo.util.ExampleUtils;
-import com.alee.extended.layout.VerticalFlowLayout;
-import com.alee.extended.panel.GroupPanel;
-import com.alee.extended.panel.GroupingType;
+import com.alee.extended.behavior.ComponentVisibilityBehavior;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.toolbar.WebToolBar;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleId;
-import com.alee.utils.*;
+import com.alee.utils.FileUtils;
 import com.alee.utils.reflection.JarEntry;
-import com.alee.utils.xml.Resource;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author Mikle Garin
@@ -54,32 +45,10 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
     protected static final String commentStart = "/*";
     protected static final String commentEnd = "*/\n\n";
 
-    /**
-     * Previews cache.
-     */
-    protected List<Preview> previews;
-
-    /**
-     * Preview pane.
-     */
-    protected WebPanel examplesPane;
-
     @Override
     public Icon getIcon ()
     {
         return loadIcon ( getId () + ".png" );
-    }
-
-    @Override
-    public FeatureState getFeatureState ()
-    {
-        final List<Preview> previews = getPreviews ();
-        final List<FeatureState> states = new ArrayList<FeatureState> ( previews.size () );
-        for ( final Preview preview : previews )
-        {
-            states.add ( preview.getFeatureState () );
-        }
-        return ExampleUtils.getResultingState ( states );
     }
 
     @Override
@@ -91,56 +60,7 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
     @Override
     public String getStyleCode ( final Skin skin )
     {
-        final Resource styleFile = getStyleFile ( skin );
-        switch ( styleFile.getLocation () )
-        {
-            case nearClass:
-            {
-                final Class<Object> nearClass = ReflectUtils.getClassSafely ( styleFile.getClassName () );
-                return FileUtils.readToString ( nearClass, styleFile.getPath () );
-            }
-            case filePath:
-            {
-                return FileUtils.readToString ( new File ( styleFile.getPath () ) );
-            }
-            case url:
-            {
-                return FileUtils.readToString ( NetUtils.getURL ( styleFile.getPath () ) );
-            }
-            default:
-            {
-                return "";
-            }
-        }
-    }
-
-    /**
-     * Returns style file representing styles for this example.
-     * Styling system doesn't really force you to create separate files, but default style has them for convenience.
-     * Demo application uses that fact to show separate examples for each specific component.
-     *
-     * @param skin skin to retrieve style file for
-     * @return style file representing styles for this example
-     */
-    protected Resource getStyleFile ( final Skin skin )
-    {
-        final String path = "resources/" + getStyleFileName () + ".xml";
-        final Resource resource = new Resource ( skin.getClass (), path );
-        if ( skin.getClass ().getResource ( path ) == null )
-        {
-            Log.get ().warn ( "Unable to find style resource: " + path + " for skin: " + skin );
-        }
-        return resource;
-    }
-
-    /**
-     * Returns example style file name.
-     *
-     * @return example style file name
-     */
-    protected String getStyleFileName ()
-    {
-        return getId ();
+        return "";
     }
 
     @Override
@@ -166,40 +86,48 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
     @Override
     public JComponent createContent ()
     {
-        final JComponent content = getPreviewContent ();
-        final JComponent toolBar = createPreviewToolBar ();
-        final JComponent contentScroll = new WebScrollPane ( StyleId.scrollpaneUndecorated, content );
-        return new GroupPanel ( GroupingType.fillLast, false, toolBar, contentScroll );
+        // Main example container
+        final WebPanel container = new WebPanel ( new BorderLayout ( 0, 0 ) );
+
+        // Example toolbar
+        container.add ( createPreviewToolBar (), BorderLayout.NORTH );
+
+        // Actual example content
+        container.add ( new WebScrollPane ( StyleId.scrollpaneUndecorated, createContentImpl () ), BorderLayout.CENTER );
+
+        // Example visibility behavior
+        new ComponentVisibilityBehavior ( container )
+        {
+            @Override
+            public void displayed ()
+            {
+                AbstractExample.this.displayed ();
+            }
+
+            @Override
+            public void hidden ()
+            {
+                AbstractExample.this.hidden ();
+            }
+        }.install ();
+
+        return container;
     }
 
     /**
-     * Returns preview content.
-     *
-     * @return preview content
+     * Informs about example becoming visible on the screen.
      */
-    protected JComponent getPreviewContent ()
+    protected void displayed ()
     {
-        if ( examplesPane == null )
-        {
-            // Creating preview components
-            examplesPane = new WebPanel ( DemoStyles.previewsPanel, new VerticalFlowLayout ( 0, -32, true, false ) );
-            final List<Component> components = new ArrayList<Component> ();
-            final List<Preview> previews = getPreviews ();
-            for ( int i = 0; i < previews.size (); i++ )
-            {
-                // Preview
-                final Preview preview = previews.get ( i );
+        // Do nothing by default
+    }
 
-                // Preview component
-                final JComponent previewComponent = preview.getPreview ( previews, i );
-                examplesPane.add ( previewComponent );
-
-                // Equalizing preview elements
-                CollectionUtils.addAllNonNull ( components, preview.getEqualizableWidthComponent () );
-            }
-            SwingUtils.equalizeComponentsWidth ( Arrays.asList ( AbstractButton.TEXT_CHANGED_PROPERTY ), components );
-        }
-        return examplesPane;
+    /**
+     * Informs about example becoming hidden from the screen.
+     */
+    protected void hidden ()
+    {
+        // Do nothing by default
     }
 
     /**
@@ -216,23 +144,9 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
     }
 
     /**
-     * Returns cached previews.
+     * Returns example content component.
      *
-     * @return cached previews
+     * @return example content component
      */
-    protected List<Preview> getPreviews ()
-    {
-        if ( previews == null )
-        {
-            previews = createPreviews ();
-        }
-        return previews;
-    }
-
-    /**
-     * Returns all example previews.
-     *
-     * @return all example previews
-     */
-    protected abstract List<Preview> createPreviews ();
+    protected abstract JComponent createContentImpl ();
 }

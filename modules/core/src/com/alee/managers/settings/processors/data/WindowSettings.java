@@ -42,6 +42,10 @@ import java.util.List;
 public class WindowSettings implements Serializable, Cloneable
 {
     /**
+     * todo 1. Add support for custom west/east maximized states which are not natively supported in extended states
+     */
+
+    /**
      * Window non-maximized state location.
      */
     @XStreamAsAttribute

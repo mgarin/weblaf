@@ -37,7 +37,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebCustomTooltipExample extends AbstractExample
+public class WebCustomTooltipExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

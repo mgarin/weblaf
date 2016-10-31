@@ -23,10 +23,16 @@ package com.alee.managers.animation.easing;
  * @author Mikle Garin
  */
 
-public final class Linear implements Easing
+public final class Linear extends AbstractEasing
 {
     @Override
-    public double calculate ( final double current, final double total, final double start, final double distance )
+    public String getTitle ()
+    {
+        return "Linear";
+    }
+
+    @Override
+    protected double calculateImpl ( final double start, final double distance, final double current, final double total )
     {
         return start + distance * current / total;
     }

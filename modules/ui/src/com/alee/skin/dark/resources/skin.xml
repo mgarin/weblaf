@@ -34,7 +34,7 @@
     <include>resources/scrollbar.xml</include>
     <include>resources/viewport.xml</include>
     <include>resources/scrollpane.xml</include>
-    <!--<include>resources/progressbar.xml</include>-->
+    <include>resources/progressbar.xml</include>
     <!--<include>resources/splitpane.xml</include>-->
     <include>resources/separator.xml</include>
     <!--<include>resources/slider.xml</include>-->

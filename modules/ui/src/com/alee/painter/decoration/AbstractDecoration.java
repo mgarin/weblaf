@@ -51,7 +51,7 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
      * Various components might use multiple states to describe their decoration.
      */
     @XStreamAsAttribute
-    @XStreamConverter ( ListToStringConverter.class )
+    @XStreamConverter (ListToStringConverter.class)
     protected List<String> states;
 
     /**
@@ -172,12 +172,8 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
         }
     }
 
-    /**
-     * Returns whether or not this decoration should overwrite previous one when merged.
-     *
-     * @return true if this decoration should overwrite previous one when merged, false otherwise
-     */
-    protected boolean isOverwrite ()
+    @Override
+    public boolean isOverwrite ()
     {
         return overwrite != null && overwrite;
     }
@@ -235,7 +231,7 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
     @Override
     public I merge ( final I decoration )
     {
-        overwrite = decoration.overwrite;
+        overwrite = overwrite != null && overwrite || decoration.overwrite != null && decoration.overwrite;
         visible = decoration.isOverwrite () || decoration.visible != null ? decoration.visible : visible;
         size = decoration.isOverwrite () || decoration.size != null ? decoration.size : size;
         opacity = decoration.isOverwrite () || decoration.opacity != null ? decoration.opacity : opacity;

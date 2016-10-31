@@ -93,10 +93,10 @@ public class WebHotkeyLabelBackground<E extends WebHotkeyLabel, D extends IDecor
     public I merge ( final I background )
     {
         super.merge ( background );
-        round = background.round != null ? background.round : round;
-        border = background.border != null ? background.border : border;
-        spacing = background.spacing != null ? background.spacing : spacing;
-        color = background.color != null ? background.color : color;
+        round = background.isOverwrite () || background.round != null ? background.round : round;
+        border = background.isOverwrite () || background.border != null ? background.border : border;
+        spacing = background.isOverwrite () || background.spacing != null ? background.spacing : spacing;
+        color = background.isOverwrite () || background.color != null ? background.color : color;
         return ( I ) this;
     }
 }

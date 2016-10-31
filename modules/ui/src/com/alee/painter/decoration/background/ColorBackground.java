@@ -73,7 +73,7 @@ public class ColorBackground<E extends JComponent, D extends IDecoration<E, D>, 
     public I merge ( final I background )
     {
         super.merge ( background );
-        color = background.color != null ? background.color : color;
+        color = background.isOverwrite () || background.color != null ? background.color : color;
         return ( I ) this;
     }
 }

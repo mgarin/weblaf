@@ -42,6 +42,12 @@ public abstract class AbstractBackground<E extends JComponent, D extends IDecora
     protected String id;
 
     /**
+     * Whether or not this background should overwrite previous one when merged.
+     */
+    @XStreamAsAttribute
+    protected Boolean overwrite;
+
+    /**
      * Background opacity.
      */
     @XStreamAsAttribute
@@ -51,6 +57,12 @@ public abstract class AbstractBackground<E extends JComponent, D extends IDecora
     public String getId ()
     {
         return id != null ? id : "background";
+    }
+
+    @Override
+    public boolean isOverwrite ()
+    {
+        return overwrite != null && overwrite;
     }
 
     @Override
@@ -78,7 +90,8 @@ public abstract class AbstractBackground<E extends JComponent, D extends IDecora
     @Override
     public I merge ( final I background )
     {
-        opacity = background.opacity != null ? background.opacity : opacity;
+        overwrite = overwrite != null && overwrite || background.overwrite != null && background.overwrite;
+        opacity = background.isOverwrite () || background.opacity != null ? background.opacity : opacity;
         return ( I ) this;
     }
 

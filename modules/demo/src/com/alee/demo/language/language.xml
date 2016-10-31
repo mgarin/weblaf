@@ -1370,5 +1370,21 @@
                 </Dictionary>
             </Dictionary>
         </Dictionary>
+        <Dictionary prefix="animation">
+            <record key="title">
+                <value lang="en">Animation</value>
+                <value lang="ru">Анимация</value>
+            </record>
+            <Dictionary prefix="easing">
+                <record key="title">
+                    <value lang="en">Easing</value>
+                    <value lang="ru">Easing</value>
+                </record>
+                <record key="duration">
+                    <value lang="en">Duration:</value>
+                    <value lang="ru">Длительность:</value>
+                </record>
+            </Dictionary>
+        </Dictionary>
     </Dictionary>
 </Dictionary>

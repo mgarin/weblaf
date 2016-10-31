@@ -49,7 +49,7 @@ import java.awt.event.MouseEvent;
 public class DockablePaneGlassLayer extends JComponent
 {
     /**
-     * todo 1. Maybe create new WebGlassLayer component with its own UI/painter with customizeable multi subpainters?
+     * todo 1. Maybe create new WebGlassLayer component with its own UI/painter with customizable multi subpainters?
      */
 
     /**

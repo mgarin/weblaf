@@ -42,10 +42,22 @@ public abstract class AbstractShape<E extends JComponent, D extends IDecoration<
     @XStreamAsAttribute
     protected String id;
 
+    /**
+     * Whether or not this shape should overwrite previous one when merged.
+     */
+    @XStreamAsAttribute
+    protected Boolean overwrite;
+
     @Override
     public String getId ()
     {
         return id != null ? id : "shape";
+    }
+
+    @Override
+    public boolean isOverwrite ()
+    {
+        return overwrite != null && overwrite;
     }
 
     @Override
@@ -78,18 +90,6 @@ public abstract class AbstractShape<E extends JComponent, D extends IDecoration<
         return null;
     }
 
-    @Override
-    public I merge ( final I shape )
-    {
-        return ( I ) this;
-    }
-
-    @Override
-    public I clone ()
-    {
-        return ( I ) MergeUtils.cloneByFieldsSafely ( this );
-    }
-
     /**
      * Returns point for the specified coordinates.
      *
@@ -100,5 +100,18 @@ public abstract class AbstractShape<E extends JComponent, D extends IDecoration<
     protected Point p ( final int x, final int y )
     {
         return new Point ( x, y );
+    }
+
+    @Override
+    public I merge ( final I shape )
+    {
+        overwrite = overwrite != null && overwrite || shape.overwrite != null && shape.overwrite;
+        return ( I ) this;
+    }
+
+    @Override
+    public I clone ()
+    {
+        return ( I ) MergeUtils.cloneByFieldsSafely ( this );
     }
 }

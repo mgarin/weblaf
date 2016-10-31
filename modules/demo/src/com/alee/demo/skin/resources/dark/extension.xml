@@ -84,6 +84,18 @@
         </painter>
     </style>
 
+    <!-- Background panel -->
+    <style type="panel" id="plain">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="0" />
+                    <ColorBackground color="106,110,112" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
     <!-- Dark preview panel -->
     <style type="panel" id="preview" extends="preview-base">
         <painter>

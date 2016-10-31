@@ -41,7 +41,7 @@ import java.util.Locale;
  * @author Mikle Garin
  */
 
-public class WebAsyncTreeExample extends AbstractExample
+public class WebAsyncTreeExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

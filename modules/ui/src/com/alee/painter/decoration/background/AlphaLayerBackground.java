@@ -101,9 +101,9 @@ public class AlphaLayerBackground<E extends JComponent, D extends IDecoration<E,
     public I merge ( final I background )
     {
         super.merge ( background );
-        size = background.size != null ? background.size : size;
-        darkColor = background.darkColor != null ? background.darkColor : darkColor;
-        lightColor = background.lightColor != null ? background.lightColor : lightColor;
+        size = background.isOverwrite () || background.size != null ? background.size : size;
+        darkColor = background.isOverwrite () || background.darkColor != null ? background.darkColor : darkColor;
+        lightColor = background.isOverwrite () || background.lightColor != null ? background.lightColor : lightColor;
         return ( I ) this;
     }
 }

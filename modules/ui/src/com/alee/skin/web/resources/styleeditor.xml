@@ -12,7 +12,7 @@
             <style type="panel" id="preview">
 
                 <!-- Preview components toolbar -->
-                <style type="toolbar" id="toolbar" extends="attached" padding="4,4,4,4">
+                <style type="toolbar" id="toolbar" extends="attached-north" padding="4,4,4,4">
                     <component>
                         <floatable>false</floatable>
                     </component>

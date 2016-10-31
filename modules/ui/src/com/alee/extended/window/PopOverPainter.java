@@ -24,6 +24,7 @@ import com.alee.laf.menu.PopupStyle;
 import com.alee.laf.rootpane.WRootPaneUI;
 import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.SystemUtils;
 import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.DataProvider;
 
@@ -485,8 +486,7 @@ public class PopOverPainter<E extends JRootPane, U extends WRootPaneUI> extends 
         final int round = getRound ();
         final int cw = getCornerWidth ();
         final Dimension ps = new Dimension ( size.width - sw * 2, size.height - sw * 2 );
-        final Rectangle sb = SwingUtils.getScreenBounds ( invoker );
-        final Rectangle screenBounds = sb != null ? sb : SwingUtils.getWindowAncestor ( invoker ).getGraphicsConfiguration ().getBounds ();
+        final Rectangle screenBounds = SystemUtils.getDeviceBounds ( invoker, false );
 
         // Determining actual direction
         final PopOverDirection actualDirection = getActualDirection ( invokerBounds, ltr, cw, ps, screenBounds );

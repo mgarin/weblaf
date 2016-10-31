@@ -30,7 +30,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebColorChooserFieldExample extends AbstractExample
+public class WebColorChooserFieldExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

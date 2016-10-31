@@ -31,7 +31,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebHotkeyLabelExample extends AbstractExample
+public class WebHotkeyLabelExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

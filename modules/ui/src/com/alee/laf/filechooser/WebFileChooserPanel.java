@@ -794,7 +794,7 @@ public class WebFileChooserPanel extends WebPanel
             @Override
             public void mouseClicked ( final MouseEvent e )
             {
-                if ( SwingUtilities.isLeftMouseButton ( e ) && e.getClickCount () % 2 == 0 && fileList.getSelectedIndex () != -1 )
+                if ( SwingUtils.isDoubleClick ( e ) && fileList.getSelectedIndex () != -1 )
                 {
                     final File file = fileList.getSelectedFile ();
                     if ( file.isDirectory () )
@@ -882,7 +882,7 @@ public class WebFileChooserPanel extends WebPanel
             @Override
             public void mouseClicked ( final MouseEvent e )
             {
-                if ( SwingUtilities.isLeftMouseButton ( e ) && e.getClickCount () % 2 == 0 && fileTable.getSelectedRow () != -1 )
+                if ( SwingUtils.isDoubleClick ( e ) && fileTable.getSelectedRow () != -1 )
                 {
                     final File file = fileTable.getSelectedFile ();
                     if ( file.isDirectory () )

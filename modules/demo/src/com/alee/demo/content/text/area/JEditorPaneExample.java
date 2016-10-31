@@ -31,7 +31,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class JEditorPaneExample extends AbstractExample
+public class JEditorPaneExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

@@ -23,15 +23,27 @@ package com.alee.managers.animation.easing;
  * @author Mikle Garin
  */
 
-public abstract class Sinusoidal implements Easing
+public abstract class Sinusoidal extends AbstractEasing
 {
+    @Override
+    public String getTitle ()
+    {
+        return "Sinusoidal";
+    }
+
     /**
      * Accelerating from zero velocity.
      */
     public static final class In extends Sinusoidal
     {
         @Override
-        public double calculate ( final double start, final double distance, final double current, final double total )
+        public String getTitle ()
+        {
+            return super.getTitle () + " In";
+        }
+
+        @Override
+        protected double calculateImpl ( final double start, final double distance, final double current, final double total )
         {
             return -distance * Math.cos ( current / total * ( Math.PI / 2 ) ) + distance + start;
         }
@@ -43,7 +55,13 @@ public abstract class Sinusoidal implements Easing
     public static final class Out extends Sinusoidal
     {
         @Override
-        public double calculate ( final double start, final double distance, final double current, final double total )
+        public String getTitle ()
+        {
+            return super.getTitle () + " Out";
+        }
+
+        @Override
+        protected double calculateImpl ( final double start, final double distance, final double current, final double total )
         {
             return distance * Math.sin ( current / total * ( Math.PI / 2 ) ) + start;
         }
@@ -55,7 +73,13 @@ public abstract class Sinusoidal implements Easing
     public static final class InOut extends Sinusoidal
     {
         @Override
-        public double calculate ( final double start, final double distance, final double current, final double total )
+        public String getTitle ()
+        {
+            return super.getTitle () + " InOut";
+        }
+
+        @Override
+        protected double calculateImpl ( final double start, final double distance, final double current, final double total )
         {
             return -distance / 2 * ( Math.cos ( Math.PI * current / total ) - 1 ) + start;
         }

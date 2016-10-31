@@ -30,7 +30,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebTextPaneExample extends AbstractExample
+public class WebTextPaneExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

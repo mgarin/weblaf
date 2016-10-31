@@ -341,7 +341,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
             @Override
             public void mouseClicked ( final MouseEvent e )
             {
-                if ( e.getClickCount () == 2 )
+                if ( SwingUtils.isDoubleClick ( e ) )
                 {
                     ok.doClick ( 0 );
                 }

@@ -98,7 +98,7 @@ public class FeatureStateBackground<D extends WebDecoration<PreviewPanel, D>>
     public FeatureStateBackground<D> merge ( final FeatureStateBackground<D> background )
     {
         super.merge ( background );
-        color = background.color != null ? background.color : color;
+        color = background.isOverwrite () || background.color != null ? background.color : color;
         return this;
     }
 }

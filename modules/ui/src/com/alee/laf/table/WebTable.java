@@ -60,13 +60,13 @@ public class WebTable extends JTable
      *
      * @see javax.swing.table.TableModel#isCellEditable(int, int)
      */
-    protected boolean editable = true;
+    protected boolean editable;
 
     /**
      * Preferred visible row count.
-     * By default or if set to {@code -1} table will try to take all availble vertical space to fit in height of all rows.
+     * If set to {@code -1} table will try to take all availble vertical space to fit in height of all rows.
      */
-    protected int visibleRowCount = -1;
+    protected int visibleRowCount;
 
     /**
      * Custom WebLaF tooltip provider.
@@ -228,6 +228,8 @@ public class WebTable extends JTable
                       final ListSelectionModel selectionModel )
     {
         super ( model, columnModel, selectionModel );
+        this.editable = true;
+        this.visibleRowCount = 10;
         setStyleId ( id );
     }
 
@@ -526,12 +528,13 @@ public class WebTable extends JTable
     @Override
     public Dimension getPreferredScrollableViewportSize ()
     {
+        // Custom preferred viewport size from {@link JTable}
         if ( preferredViewportSize != null )
         {
             return preferredViewportSize;
         }
 
-        final Dimension ps = getPreferredSize ();
+        // Visible rows -based preferred viewport size
         if ( visibleRowCount != -1 )
         {
             final int rowHeight;
@@ -544,9 +547,14 @@ public class WebTable extends JTable
             {
                 rowHeight = getRowHeight ();
             }
+
+            final Dimension ps = getPreferredSize ();
             ps.height = visibleRowCount * rowHeight;
+            return ps;
         }
-        return ps;
+
+        // Default preferred size
+        return getPreferredSize ();
     }
 
     @Override

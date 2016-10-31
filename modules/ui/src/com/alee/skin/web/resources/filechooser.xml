@@ -14,7 +14,7 @@
     <style type="panel" id="filechooser">
 
         <!-- Toolbar -->
-        <style type="toolbar" id="decorated-bar" extends="attached">
+        <style type="toolbar" id="decorated-bar" extends="attached-north">
             <component>
                 <floatable>false</floatable>
             </component>

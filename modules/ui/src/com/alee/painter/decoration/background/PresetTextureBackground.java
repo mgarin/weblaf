@@ -64,7 +64,7 @@ public class PresetTextureBackground<E extends JComponent, D extends IDecoration
     public I merge ( final I background )
     {
         super.merge ( background );
-        preset = background.preset != null ? background.preset : preset;
+        preset = background.isOverwrite () || background.preset != null ? background.preset : preset;
         return ( I ) this;
     }
 }

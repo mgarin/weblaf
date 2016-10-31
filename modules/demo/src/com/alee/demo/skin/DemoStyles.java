@@ -36,6 +36,7 @@ public final class DemoStyles
     public static final StyleId toolCombobox = StyleId.of ( "tool" );
     public static final StyleId filterfield = StyleId.of ( "filter" );
     public static final StyleId resourceLink = StyleId.of ( "resource" );
+    public static final StyleId fieldInner = StyleId.of ( "field-inner" );
 
     /**
      * Examples frame.
@@ -55,6 +56,7 @@ public final class DemoStyles
     public static final StyleId exampleToolbar = StyleId.of ( "example" );
     public static final StyleId wikiLabel = StyleId.of ( "wiki" );
     public static final StyleId wikiLink = StyleId.of ( "wiki" );
+    public static final StyleId plainPanel = StyleId.of ( "plain" );
     public static final StyleId previewsPanel = StyleId.of ( "previews" );
 
     /**
@@ -64,6 +66,12 @@ public final class DemoStyles
     public static final ChildStyleId previewTitleLabel = ChildStyleId.of ( "title" );
     public static final ChildStyleId previewSeparator = ChildStyleId.of ( "separator" );
     public static final ChildStyleId previewContent = ChildStyleId.of ( "content" );
+
+    /**
+     * Custom example styles.
+     */
+    public static final StyleId easingEastBar = StyleId.of ( "easing-east-bar" );
+    public static final StyleId easingSouthBar = StyleId.of ( "easing-south-bar" );
 
     /**
      * Style code preview panel.

@@ -34,7 +34,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebFormattedTextFieldExample extends AbstractExample
+public class WebFormattedTextFieldExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

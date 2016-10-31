@@ -32,7 +32,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebCheckBoxListExample extends AbstractExample
+public class WebCheckBoxListExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

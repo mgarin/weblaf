@@ -156,12 +156,12 @@ public final class SettingsManager
     private static boolean allowSave = true;
 
     /**
-     * Whether SettingsManager is initialized or not.
+     * Whether {@link SettingsManager} is initialized or not.
      */
     private static boolean initialized = false;
 
     /**
-     * Initializes SettingsManager.
+     * Initializes {@link SettingsManager}.
      */
     public static synchronized void initialize ()
     {
@@ -175,6 +175,7 @@ public final class SettingsManager
             // Initializing sub-manager
             ComponentSettingsManager.initialize ();
 
+            // Updating initialization mark
             initialized = true;
         }
     }

@@ -21,11 +21,7 @@ import com.alee.utils.ColorUtils;
 import com.alee.utils.laf.FocusType;
 import com.alee.utils.laf.ShadeType;
 
-import javax.swing.*;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.Map;
 
 /**
  * Global styles class.
@@ -86,50 +82,9 @@ public class StyleConstants
     public static Stroke focusStroke = new BasicStroke ( 1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1, new float[]{ 1, 2 }, 0 );
 
     /**
-     * Components text settings.
-     */
-    public static Color textSelectionColor = new Color ( 210, 210, 210 );
-    public static Color textColor = Color.BLACK;
-    public static Color disabledTextColor = new Color ( 160, 160, 160 );
-
-    /**
-     * Default text rendering hints.
-     */
-    public static Map defaultTextRenderingHints =
-            new RenderingHints ( RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
-
-    /**
-     * Text rendering hints.
-     */
-    public static Map textRenderingHints = defaultTextRenderingHints;
-
-    static
-    {
-        final Toolkit tk = Toolkit.getDefaultToolkit ();
-        textRenderingHints = ( Map ) tk.getDesktopProperty ( "awt.font.desktophints" );
-        tk.addPropertyChangeListener ( "awt.font.desktophints", new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                if ( evt.getNewValue () instanceof RenderingHints )
-                {
-                    textRenderingHints = ( RenderingHints ) evt.getNewValue ();
-                }
-            }
-        } );
-    }
-
-    /**
      * Components background settings
      */
     public static Color topBgColor = Color.WHITE;
     public static Color bottomBgColor = new Color ( 223, 223, 223 );
     public static Color selectedBgColor = new Color ( 223, 220, 213 );
-
-    /**
-     * HTML renderer icons.
-     */
-    public static ImageIcon htmlPendingIcon = new ImageIcon ( StyleConstants.class.getResource ( "icons/html/pendingImage.png" ) );
-    public static ImageIcon htmlMissingIcon = new ImageIcon ( StyleConstants.class.getResource ( "icons/html/missingImage.png" ) );
 }

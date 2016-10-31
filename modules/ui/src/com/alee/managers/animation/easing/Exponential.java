@@ -23,17 +23,40 @@ package com.alee.managers.animation.easing;
  * @author Mikle Garin
  */
 
-public abstract class Exponential implements Easing
+public abstract class Exponential extends AbstractEasing
 {
+    @Override
+    public String getTitle ()
+    {
+        return "Exponential";
+    }
+
     /**
      * Accelerating from zero velocity.
      */
     public static final class In extends Exponential
     {
         @Override
-        public double calculate ( final double start, final double distance, final double current, final double total )
+        public String getTitle ()
         {
-            return distance * Math.pow ( 2, 10 * ( current / total - 1 ) ) + start;
+            return super.getTitle () + " In";
+        }
+
+        @Override
+        protected double calculateImpl ( final double start, final double distance, final double current, final double total )
+        {
+            if ( current == 0 )
+            {
+                return start;
+            }
+            else if ( current == total )
+            {
+                return start + distance;
+            }
+            else
+            {
+                return distance * Math.pow ( 2, 10 * ( current / total - 1 ) ) + start;
+            }
         }
     }
 
@@ -43,7 +66,13 @@ public abstract class Exponential implements Easing
     public static final class Out extends Exponential
     {
         @Override
-        public double calculate ( final double start, final double distance, final double current, final double total )
+        public String getTitle ()
+        {
+            return super.getTitle () + " Out";
+        }
+
+        @Override
+        protected double calculateImpl ( final double start, final double distance, final double current, final double total )
         {
             return distance * ( -Math.pow ( 2, -10 * current / total ) + 1 ) + start;
         }
@@ -55,7 +84,13 @@ public abstract class Exponential implements Easing
     public static final class InOut extends Exponential
     {
         @Override
-        public double calculate ( final double start, final double distance, double current, final double total )
+        public String getTitle ()
+        {
+            return super.getTitle () + " InOut";
+        }
+
+        @Override
+        protected double calculateImpl ( final double start, final double distance, double current, final double total )
         {
             current /= total / 2;
             if ( current < 1 )

@@ -35,15 +35,27 @@ package com.alee.managers.animation.easing;
  * @see <a href="http://gsgd.co.uk/sandbox/jquery/easing/">jQuery Easing Plugin</a>
  */
 
-public abstract class Back implements Easing
+public abstract class Back extends AbstractEasing
 {
+    @Override
+    public String getTitle ()
+    {
+        return "Back";
+    }
+
     /**
      * Accelerating from zero velocity.
      */
     public static final class In extends Back
     {
         @Override
-        public double calculate ( final double start, final double distance, double current, final double total )
+        public String getTitle ()
+        {
+            return super.getTitle () + " In";
+        }
+
+        @Override
+        protected double calculateImpl ( final double start, final double distance, double current, final double total )
         {
             final double mod = 1.70158;
             return distance * ( current /= total ) * current * ( ( mod + 1 ) * current - mod ) + start;
@@ -56,7 +68,13 @@ public abstract class Back implements Easing
     public static final class Out extends Back
     {
         @Override
-        public double calculate ( final double start, final double distance, double current, final double total )
+        public String getTitle ()
+        {
+            return super.getTitle () + " Out";
+        }
+
+        @Override
+        protected double calculateImpl ( final double start, final double distance, double current, final double total )
         {
             final double mod = 1.70158;
             return distance * ( ( current = current / total - 1 ) * current * ( ( mod + 1 ) * current + mod ) + 1 ) + start;
@@ -69,7 +87,13 @@ public abstract class Back implements Easing
     public static final class InOut extends Back
     {
         @Override
-        public double calculate ( final double start, final double distance, double current, final double total )
+        public String getTitle ()
+        {
+            return super.getTitle () + " InOut";
+        }
+
+        @Override
+        protected double calculateImpl ( final double start, final double distance, double current, final double total )
         {
             double mod = 1.70158;
             if ( ( current /= total / 2 ) < 1 )

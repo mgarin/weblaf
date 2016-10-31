@@ -17,7 +17,7 @@
 
 package com.alee.demo.content.container;
 
-import com.alee.demo.api.example.AbstractExample;
+import com.alee.demo.api.example.AbstractStylePreviewExample;
 import com.alee.demo.api.example.FeatureType;
 import com.alee.demo.api.example.Preview;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
@@ -30,7 +30,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class JPanelExample extends AbstractExample
+public class JPanelExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

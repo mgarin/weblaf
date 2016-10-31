@@ -75,37 +75,6 @@ public final class GraphicsUtils
     }
 
     /**
-     * Installing system text settings
-     */
-
-    private static boolean systemTextHintsInitialized = false;
-    private static Map systemTextHints = null;
-
-    public static Map getSystemTextHints ()
-    {
-        if ( !systemTextHintsInitialized )
-        {
-            systemTextHints = ( Map ) Toolkit.getDefaultToolkit ().getDesktopProperty ( "awt.font.desktophints" );
-            systemTextHintsInitialized = true;
-        }
-        return systemTextHints;
-    }
-
-    public static void setupSystemTextHints ( final Graphics g )
-    {
-        setupSystemTextHints ( ( Graphics2D ) g );
-    }
-
-    public static void setupSystemTextHints ( final Graphics2D g2d )
-    {
-        final Map systemTextHints = getSystemTextHints ();
-        if ( systemTextHints != null )
-        {
-            g2d.addRenderingHints ( systemTextHints );
-        }
-    }
-
-    /**
      * Setting AlphaComposite by taking old AlphaComposite settings into account
      */
 
@@ -406,34 +375,6 @@ public final class GraphicsUtils
     }
 
     /**
-     * Strokes caching
-     */
-
-    private static final Map<String, Stroke> cachedStrokes = new HashMap<String, Stroke> ();
-
-    public static Stroke getStroke ( final int width )
-    {
-        return getStroke ( width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND );
-    }
-
-    public static Stroke getStroke ( final int width, final int cap )
-    {
-        return getStroke ( width, cap, BasicStroke.JOIN_ROUND );
-    }
-
-    public static Stroke getStroke ( final int width, final int cap, final int join )
-    {
-        final String key = width + "," + cap + "," + join;
-        Stroke stroke = cachedStrokes.get ( key );
-        if ( stroke == null )
-        {
-            stroke = new BasicStroke ( width, cap, join );
-            cachedStrokes.put ( key, stroke );
-        }
-        return stroke;
-    }
-
-    /**
      * Draws web styled shade using specified shape
      */
 
@@ -535,5 +476,33 @@ public final class GraphicsUtils
         restoreStroke ( g2d, oldStroke );
         restoreComposite ( g2d, oldComposite );
         restoreClip ( g2d, oldClip );
+    }
+
+    /**
+     * Strokes caching
+     */
+
+    private static final Map<String, Stroke> cachedStrokes = new HashMap<String, Stroke> ();
+
+    public static Stroke getStroke ( final int width )
+    {
+        return getStroke ( width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND );
+    }
+
+    public static Stroke getStroke ( final int width, final int cap )
+    {
+        return getStroke ( width, cap, BasicStroke.JOIN_ROUND );
+    }
+
+    public static Stroke getStroke ( final int width, final int cap, final int join )
+    {
+        final String key = width + "," + cap + "," + join;
+        Stroke stroke = cachedStrokes.get ( key );
+        if ( stroke == null )
+        {
+            stroke = new BasicStroke ( width, cap, join );
+            cachedStrokes.put ( key, stroke );
+        }
+        return stroke;
     }
 }

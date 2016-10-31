@@ -42,6 +42,12 @@ public abstract class AbstractBorder<E extends JComponent, D extends IDecoration
     protected String id;
 
     /**
+     * Whether or not this border should overwrite previous one when merged.
+     */
+    @XStreamAsAttribute
+    protected Boolean overwrite;
+
+    /**
      * Shade opacity.
      */
     @XStreamAsAttribute
@@ -51,6 +57,12 @@ public abstract class AbstractBorder<E extends JComponent, D extends IDecoration
     public String getId ()
     {
         return id != null ? id : "border";
+    }
+
+    @Override
+    public boolean isOverwrite ()
+    {
+        return overwrite != null && overwrite;
     }
 
     @Override
@@ -74,10 +86,8 @@ public abstract class AbstractBorder<E extends JComponent, D extends IDecoration
     @Override
     public I merge ( final I border )
     {
-        if ( border.opacity != null )
-        {
-            opacity = border.opacity;
-        }
+        overwrite = overwrite != null && overwrite || border.overwrite != null && border.overwrite;
+        opacity = border.isOverwrite () || border.opacity != null ? border.opacity : opacity;
         return ( I ) this;
     }
 

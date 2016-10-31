@@ -22,11 +22,11 @@ import com.alee.extended.date.WebDateField;
 import com.alee.extended.filechooser.WebFileChooserField;
 import com.alee.extended.filechooser.WebPathField;
 import com.alee.extended.panel.WebCollapsiblePane;
-import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.log.Log;
+import com.alee.painter.decoration.content.TextRasterization;
 import com.alee.utils.swing.WebTimer;
 import com.alee.utils.swing.extensions.SizeMethods;
 
@@ -253,6 +253,29 @@ public final class SwingUtils extends CoreSwingUtils
     public static boolean isRightMouseButton ( final MouseEvent e )
     {
         return ( e.getModifiers () & InputEvent.BUTTON3_MASK ) == InputEvent.BUTTON3_MASK;
+    }
+
+    /**
+     * Returns whether or not event represents most common double click event.
+     *
+     * @param e mouse event
+     * @return true if event represents most common double click event, false otherwise
+     */
+    public static boolean isDoubleClick ( final MouseEvent e )
+    {
+        return isDoubleClick ( e, true );
+    }
+
+    /**
+     * Returns whether or not event represents most common double click event.
+     *
+     * @param e          mouse event
+     * @param repeatable whether or not double click condition can be accepted more than once within a single click sequence
+     * @return true if event represents most common double click event, false otherwise
+     */
+    public static boolean isDoubleClick ( final MouseEvent e, final boolean repeatable )
+    {
+        return isLeftMouseButton ( e ) && ( repeatable ? e.getClickCount () % 2 == 0 : e.getClickCount () == 2 );
     }
 
     /**
@@ -2033,50 +2056,6 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Returns screen bounds within which most part of the specified component is placed.
-     *
-     * @param component component to find screen bounds for
-     * @return screen bounds within which most part of the specified component is placed
-     */
-    public static Rectangle getScreenBounds ( final Component component )
-    {
-        final Rectangle componentBounds = new Rectangle ( component.getLocationOnScreen (), component.getSize () );
-        int maxIntersectionSize = 0;
-        Rectangle screenBounds = null;
-        for ( final GraphicsDevice device : SystemUtils.getGraphicsDevices () )
-        {
-            final Rectangle sb = device.getDefaultConfiguration ().getBounds ();
-            final Rectangle intersection = sb.intersection ( componentBounds );
-            if ( intersection.width > 0 && intersection.height > 0 )
-            {
-                final int size = intersection.width * intersection.height;
-                if ( maxIntersectionSize < size )
-                {
-                    maxIntersectionSize = size;
-                    screenBounds = sb;
-                }
-            }
-        }
-        return screenBounds;
-    }
-
-    /**
-     * Returns maximized bounds for the specified frame.
-     * Note that we don't need to provide x/y offset of the screen here.
-     * It seems that maximized bounds require only bounds inside of the screen bounds, not between the screens overall.
-     *
-     * @param frame frame to provide maximized bounds for
-     * @return maximized bounds for the specified frame
-     */
-    public static Rectangle getMaximizedBounds ( final Frame frame )
-    {
-        final GraphicsConfiguration gc = frame.getGraphicsConfiguration ();
-        final Rectangle max = SystemUtils.getDeviceBounds ( gc, true );
-        final Rectangle b = SystemUtils.getDeviceBounds ( gc, false );
-        return new Rectangle ( max.x - b.x, max.y - b.y, max.width, max.height );
-    }
-
-    /**
      * Returns map of container child components preferred sizes.
      *
      * @param container container to process
@@ -2675,7 +2654,31 @@ public final class SwingUtils extends CoreSwingUtils
      */
     public static Map setupTextAntialias ( final Graphics2D g2d )
     {
-        return setupTextAntialias ( g2d, StyleConstants.textRenderingHints );
+        return setupTextAntialias ( g2d, TextRasterization.subpixel.getRenderingHints () );
+    }
+
+    /**
+     * Installs text antialiasing hints into specified graphics context.
+     *
+     * @param g             graphics context
+     * @param rasterization text rasterization option
+     * @return old text antialiasing hints
+     */
+    public static Map setupTextAntialias ( final Graphics g, final TextRasterization rasterization )
+    {
+        return setupTextAntialias ( ( Graphics2D ) g, rasterization );
+    }
+
+    /**
+     * Installs text antialiasing hints into specified graphics context.
+     *
+     * @param g2d           graphics context
+     * @param rasterization text rasterization option
+     * @return old text antialiasing hints
+     */
+    public static Map setupTextAntialias ( final Graphics2D g2d, final TextRasterization rasterization )
+    {
+        return setupTextAntialias ( g2d, rasterization.getRenderingHints () );
     }
 
     /**

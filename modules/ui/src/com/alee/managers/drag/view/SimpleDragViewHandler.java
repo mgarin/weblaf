@@ -18,6 +18,7 @@
 package com.alee.managers.drag.view;
 
 import com.alee.managers.language.LM;
+import com.alee.painter.decoration.content.TextRasterization;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.LafUtils;
@@ -100,7 +101,7 @@ public abstract class SimpleDragViewHandler<T> implements DragViewHandler<T>
         final Graphics2D g2d = image.createGraphics ();
         GraphicsUtils.setupAlphaComposite ( g2d, 0.8f );
         GraphicsUtils.setupFont ( g2d, fm.getFont () );
-        GraphicsUtils.setupSystemTextHints ( g2d );
+        SwingUtils.setupTextAntialias ( g2d, TextRasterization.subpixel );
         g2d.setPaint ( Color.WHITE );
         g2d.fillRect ( 0, 0, w, h );
         g2d.setPaint ( Color.LIGHT_GRAY );

@@ -36,7 +36,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebPopupExample extends AbstractExample
+public class WebPopupExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

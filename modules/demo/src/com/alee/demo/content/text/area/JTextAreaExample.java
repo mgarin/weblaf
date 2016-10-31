@@ -31,7 +31,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class JTextAreaExample extends AbstractExample
+public class JTextAreaExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

@@ -33,6 +33,11 @@ public abstract class ComponentVisibilityBehavior<C extends Component> implement
     protected final C component;
 
     /**
+     * Whether or not should artificially trigger events on install uninstall.
+     */
+    private final boolean initTriggers;
+
+    /**
      * Whether or not component is currently added to a displayable window and visible.
      * This doesn't certainly mean that component is visible on the screen for user right now.
      */
@@ -45,8 +50,20 @@ public abstract class ComponentVisibilityBehavior<C extends Component> implement
      */
     public ComponentVisibilityBehavior ( final C component )
     {
+        this ( component, false );
+    }
+
+    /**
+     * Constructs behavior for the specified component.
+     *
+     * @param component    component into which this behavior is installed
+     * @param initTriggers whether or not should artificially trigger events on install uninstall
+     */
+    public ComponentVisibilityBehavior ( final C component, final boolean initTriggers )
+    {
         super ();
         this.component = component;
+        this.initTriggers = initTriggers;
         this.visible = component.isShowing ();
     }
 
@@ -56,6 +73,10 @@ public abstract class ComponentVisibilityBehavior<C extends Component> implement
     public void install ()
     {
         component.addHierarchyListener ( this );
+        if ( initTriggers && visible )
+        {
+            displayed ();
+        }
     }
 
     /**
@@ -63,6 +84,10 @@ public abstract class ComponentVisibilityBehavior<C extends Component> implement
      */
     public void uninstall ()
     {
+        if ( initTriggers && visible )
+        {
+            hidden ();
+        }
         component.removeHierarchyListener ( this );
     }
 

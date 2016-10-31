@@ -149,7 +149,7 @@ public class NinePatchEditorPanel extends WebPanel
             @Override
             public void mouseClicked ( final MouseEvent e )
             {
-                if ( e.getClickCount () == 2 && fileTree.getSelectionCount () > 0 )
+                if ( SwingUtils.isDoubleClick ( e ) && fileTree.getSelectionCount () > 0 )
                 {
                     openImage ( fileTree.getSelectedFile () );
                 }
@@ -772,7 +772,7 @@ public class NinePatchEditorPanel extends WebPanel
 
         //
 
-        final WebToolBar toolBar = new WebToolBar ( StyleId.toolbarAttached, WebToolBar.HORIZONTAL );
+        final WebToolBar toolBar = new WebToolBar ( StyleId.toolbarAttachedNorth, WebToolBar.HORIZONTAL );
 
         final WebToggleButton showIcon = new WebToggleButton ( SHOW_ICON_ICON );
         showIcon.setLanguage ( "weblaf.ex.npeditor.preview.showIcon" );

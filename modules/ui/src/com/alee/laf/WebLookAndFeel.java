@@ -149,6 +149,16 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String VERTICAL_ALIGNMENT_PROPERTY = "verticalAlignment";
 
     /**
+     * Whether or not library should force Event Dispatch Thread usage for all UI-related operations.
+     * Enabling this might allow you to find out places where you try to interact with UI elements outside of the EDT.
+     * By default it is disabled to avoid issues this might cause in different applications not following proper Swing design patterns.
+     *
+     * JavaFX has a similar check enabled by default which would cause an exception whenever you try to access UI elements outside of the
+     * JavaFX thread which you can ask to execute any code through Platform class.
+     */
+    private static boolean forceSingleEventsThread = false;
+
+    /**
      * List of WebLookAndFeel icons.
      */
     private static List<ImageIcon> icons = null;
@@ -553,9 +563,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
     {
         super.initSystemColorDefaults ( table );
 
-        final String textColor = ColorUtils.getHexColor ( StyleConstants.textColor );
-        final String textHighlightColor = ColorUtils.getHexColor ( StyleConstants.textSelectionColor );
-        final String inactiveTextColor = ColorUtils.getHexColor ( StyleConstants.disabledTextColor );
+        final String textColor = ColorUtils.getHexColor ( Color.BLACK );
+        final String textHighlightColor = ColorUtils.getHexColor ( new Color ( 210, 210, 210 ) );
+        final String inactiveTextColor = ColorUtils.getHexColor ( new Color ( 160, 160, 160 ) );
 
         final String[] defaultSystemColors =
                 { "menu", "#ffffff", "menuText", textColor, "textHighlight", textHighlightColor, "textHighlightText", textColor,
@@ -570,7 +580,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param table UI defaults table
      */
-    @SuppressWarnings ("UnnecessaryBoxing")
+    @SuppressWarnings ( "UnnecessaryBoxing" )
     @Override
     protected void initComponentDefaults ( final UIDefaults table )
     {
@@ -591,8 +601,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "OptionPane.isYesLast", SystemUtils.isMac () ? Boolean.TRUE : Boolean.FALSE );
 
         // HTML image icons
-        table.put ( "html.pendingImage", StyleConstants.htmlPendingIcon );
-        table.put ( "html.missingImage", StyleConstants.htmlMissingIcon );
+        table.put ( "html.pendingImage", Icons.hourglass );
+        table.put ( "html.missingImage", Icons.broken );
 
         // Tree icons
         table.put ( "Tree.openIcon", WebTreeUI.OPEN_ICON );
@@ -965,6 +975,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     public static boolean install ( final Class<? extends Skin> skin, final boolean updateUI )
     {
+        // Event Dispatch Thread check
+        checkEventDispatchThread ();
+
         // Preparing initial skin
         StyleManager.setDefaultSkin ( skin );
 
@@ -995,6 +1008,38 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static boolean isInstalled ()
     {
         return UIManager.getLookAndFeel ().getClass ().getCanonicalName ().equals ( WebLookAndFeel.class.getCanonicalName () );
+    }
+
+    /**
+     * Whether or not library should force Event Dispatch Thread usage for all UI-related operations.
+     *
+     * @return {@code true} if library should force Event Dispatch Thread usage for all UI-related operations, {@code false} otherwise
+     */
+    public static boolean isForceSingleEventsThread ()
+    {
+        return forceSingleEventsThread;
+    }
+
+    /**
+     * Sets whether or not library should force Event Dispatch Thread usage for all UI-related operations.
+     *
+     * @param enforce whether or not library should force Event Dispatch Thread usage for all UI-related operations
+     */
+    public static void setForceSingleEventsThread ( final boolean enforce )
+    {
+        WebLookAndFeel.forceSingleEventsThread = enforce;
+    }
+
+    /**
+     * Perform Event Dispatch Thread usage check if required.
+     */
+    public static void checkEventDispatchThread ()
+    {
+        if ( isForceSingleEventsThread () && !SwingUtils.isEventDispatchThread () )
+        {
+            throw new LookAndFeelException ( "This operation is only permitted on the Event Dispatch Thread. Current thread is: " +
+                    Thread.currentThread ().getName () );
+        }
     }
 
     /**
@@ -1113,6 +1158,10 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     public static void updateAllComponentUIs ()
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Updating component UIs
         for ( final Window window : Window.getWindows () )
         {
             SwingUtilities.updateComponentTreeUI ( window );

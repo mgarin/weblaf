@@ -36,7 +36,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebSplitButtonExample extends AbstractExample
+public class WebSplitButtonExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

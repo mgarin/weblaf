@@ -223,7 +223,7 @@ public final class DemoApplication extends WebFrame
      */
     private void initializeToolBar ()
     {
-        final WebToolBar toolBar = new WebToolBar ( StyleId.toolbarAttached );
+        final WebToolBar toolBar = new WebToolBar ( StyleId.toolbarAttachedNorth );
         toolBar.add ( new SkinChooserTool () );
         toolBar.addSeparator ();
         toolBar.add ( new OrientationChooserTool () );
@@ -270,7 +270,7 @@ public final class DemoApplication extends WebFrame
     {
         setIconImages ( WebLookAndFeel.getImages () );
         setDefaultCloseOperation ( WindowConstants.EXIT_ON_CLOSE );
-        setSize ( 1200, 800 );
+        setSize ( 1200, 820 );
         setLocationRelativeTo ( null );
     }
 
@@ -334,6 +334,7 @@ public final class DemoApplication extends WebFrame
                 XmlUtils.processAnnotations ( FeatureStateBackground.class );
 
                 // Installing Look and Feel
+                WebLookAndFeel.setForceSingleEventsThread ( true );
                 WebLookAndFeel.install ( /*DarkSkin.class*/ );
                 skins = CollectionUtils.asList ( StyleManager.getSkin (), new DarkSkin () );
 

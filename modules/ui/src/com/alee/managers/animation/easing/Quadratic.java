@@ -23,15 +23,27 @@ package com.alee.managers.animation.easing;
  * @author Mikle Garin
  */
 
-public abstract class Quadratic implements Easing
+public abstract class Quadratic extends AbstractEasing
 {
+    @Override
+    public String getTitle ()
+    {
+        return "Quadratic";
+    }
+
     /**
      * Accelerating from zero velocity.
      */
     public static final class In extends Quadratic
     {
         @Override
-        public double calculate ( final double start, final double distance, double current, final double total )
+        public String getTitle ()
+        {
+            return super.getTitle () + " In";
+        }
+
+        @Override
+        protected double calculateImpl ( final double start, final double distance, double current, final double total )
         {
             current /= total;
             return distance * current * current + start;
@@ -44,7 +56,13 @@ public abstract class Quadratic implements Easing
     public static final class Out extends Quadratic
     {
         @Override
-        public double calculate ( final double start, final double distance, double current, final double total )
+        public String getTitle ()
+        {
+            return super.getTitle () + " Out";
+        }
+
+        @Override
+        protected double calculateImpl ( final double start, final double distance, double current, final double total )
         {
             current /= total;
             return -distance * current * ( current - 2 ) + start;
@@ -57,7 +75,13 @@ public abstract class Quadratic implements Easing
     public static final class InOut extends Quadratic
     {
         @Override
-        public double calculate ( final double start, final double distance, double current, final double total )
+        public String getTitle ()
+        {
+            return super.getTitle () + " InOut";
+        }
+
+        @Override
+        protected double calculateImpl ( final double start, final double distance, double current, final double total )
         {
             current /= total / 2;
             if ( current < 1 )

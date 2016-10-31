@@ -17,14 +17,11 @@
 
 package com.alee.painter.decoration.layout;
 
-import com.alee.api.Identifiable;
-import com.alee.api.Mergeable;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.IContent;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -38,7 +35,7 @@ import java.util.List;
  */
 
 public interface IContentLayout<E extends JComponent, D extends IDecoration<E, D>, I extends IContentLayout<E, D, I>>
-        extends IContent<E, D, I>, Serializable, Cloneable, Mergeable<I>, Identifiable
+        extends IContent<E, D, I>
 {
     /**
      * Returns amount of available content elements.

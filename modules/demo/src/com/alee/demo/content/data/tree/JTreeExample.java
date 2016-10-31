@@ -31,7 +31,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class JTreeExample extends AbstractExample
+public class JTreeExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

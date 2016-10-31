@@ -30,7 +30,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebSwitchExample extends AbstractExample
+public class WebSwitchExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

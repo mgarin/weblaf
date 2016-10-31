@@ -32,7 +32,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebPasswordFieldExample extends AbstractExample
+public class WebPasswordFieldExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

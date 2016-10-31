@@ -40,7 +40,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "GradientBackground" )
+@XStreamAlias ("GradientBackground")
 public class GradientBackground<E extends JComponent, D extends IDecoration<E, D>, I extends GradientBackground<E, D, I>>
         extends AbstractBackground<E, D, I>
 {
@@ -69,7 +69,7 @@ public class GradientBackground<E extends JComponent, D extends IDecoration<E, D
      * Gradient colors.
      * Must always be provided to properly render separator.
      */
-    @XStreamImplicit ( itemFieldName = "color" )
+    @XStreamImplicit (itemFieldName = "color")
     protected List<GradientColor> colors;
 
     /**
@@ -128,10 +128,11 @@ public class GradientBackground<E extends JComponent, D extends IDecoration<E, D
     public I merge ( final I background )
     {
         super.merge ( background );
-        type = background.type != null ? background.type : type;
-        from = background.from != null ? background.from : from;
-        to = background.to != null ? background.to : to;
-        colors = background.colors != null ? CollectionUtils.copy ( background.colors ) : colors;
+        type = background.isOverwrite () || background.type != null ? background.type : type;
+        from = background.isOverwrite () || background.from != null ? background.from : from;
+        to = background.isOverwrite () || background.to != null ? background.to : to;
+        colors = background.isOverwrite () || !CollectionUtils.isEmpty ( background.colors ) ? CollectionUtils.copy ( background.colors ) :
+                colors;
         return ( I ) this;
     }
 }

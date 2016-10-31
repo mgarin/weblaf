@@ -17,7 +17,7 @@
 
 package com.alee.demo.content.data.grid;
 
-import com.alee.demo.api.example.AbstractExample;
+import com.alee.demo.api.example.AbstractStylePreviewExample;
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -26,7 +26,7 @@ import javax.swing.table.TableModel;
  * @author Mikle Garin
  */
 
-public abstract class AbstractTableExample extends AbstractExample
+public abstract class AbstractTableExample extends AbstractStylePreviewExample
 {
     /**
      * Returns sample short table model.

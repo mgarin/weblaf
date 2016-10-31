@@ -17,7 +17,6 @@
 
 package com.alee.painter.decoration.content;
 
-import com.alee.global.StyleConstants;
 import com.alee.managers.style.StyleException;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.ColorUtils;
@@ -42,10 +41,16 @@ import java.util.Map;
  * @author Alexandr Zernov
  */
 
-@SuppressWarnings ( "UnusedParameters" )
+@SuppressWarnings ("UnusedParameters")
 public abstract class AbstractTextContent<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractTextContent<E, D, I>>
         extends AbstractContent<E, D, I> implements SwingConstants
 {
+    /**
+     * Preferred text antialias option.
+     */
+    @XStreamAsAttribute
+    protected TextRasterization rasterization;
+
     /**
      * Text foreground color.
      */
@@ -98,6 +103,16 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     public boolean isEmpty ( final E c, final D d )
     {
         return TextUtils.isEmpty ( getText ( c, d ) );
+    }
+
+    /**
+     * Returns preferred rasterization option.
+     *
+     * @return preferred rasterization option
+     */
+    public TextRasterization getRasterization ()
+    {
+        return rasterization != null ? rasterization : TextRasterization.subpixel;
     }
 
     /**
@@ -240,8 +255,8 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
             final Font oldFont = GraphicsUtils.setupFont ( g2d, c.getFont () );
 
             // Installing text antialias settings
-            final Map textHints = /*isShadow ( c, d ) ? StyleConstants.defaultTextRenderingHints :*/ StyleConstants.textRenderingHints;
-            final Map oldHints = SwingUtils.setupTextAntialias ( g2d, textHints );
+            final TextRasterization rasterization = getRasterization ();
+            final Map oldHints = SwingUtils.setupTextAntialias ( g2d, rasterization );
 
             // Painting either HTML or plain text
             if ( isHtmlText ( c, d ) )
@@ -270,7 +285,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param g2d    graphics context
      * @param bounds painting bounds
      * @param c      painted component
-     * @param d      painted decoration state
+     * @param d      painted decoration state                  e
      */
     protected void paintHtml ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
@@ -531,6 +546,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     public I merge ( final I content )
     {
         super.merge ( content );
+        rasterization = content.isOverwrite () || content.rasterization != null ? content.rasterization : rasterization;
         color = content.isOverwrite () || content.color != null ? content.color : color;
         halign = content.isOverwrite () || content.halign != null ? content.halign : halign;
         valign = content.isOverwrite () || content.valign != null ? content.valign : valign;

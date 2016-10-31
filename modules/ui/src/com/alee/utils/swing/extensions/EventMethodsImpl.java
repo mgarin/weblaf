@@ -201,7 +201,7 @@ public final class EventMethodsImpl
             @Override
             public void mouseClicked ( final MouseEvent e )
             {
-                if ( SwingUtils.isLeftMouseButton ( e ) && e.getClickCount () == 2 )
+                if ( SwingUtils.isDoubleClick ( e ) )
                 {
                     runnable.run ( e );
                 }

@@ -35,8 +35,14 @@ package com.alee.managers.animation.easing;
  * @see <a href="http://gsgd.co.uk/sandbox/jquery/easing/">jQuery Easing Plugin</a>
  */
 
-public abstract class Bounce implements Easing
+public abstract class Bounce extends AbstractEasing
 {
+    @Override
+    public String getTitle ()
+    {
+        return "Bounce";
+    }
+
     /**
      * Bounce at the start.
      *
@@ -48,7 +54,7 @@ public abstract class Bounce implements Easing
      */
     protected final double in ( final double start, final double distance, final double current, final double total )
     {
-        return distance - out ( total - current, 0, distance, total ) + start;
+        return distance - out ( 0, distance, total - current, total ) + start;
     }
 
     /**
@@ -86,7 +92,13 @@ public abstract class Bounce implements Easing
     public static final class In extends Bounce
     {
         @Override
-        public double calculate ( final double start, final double distance, final double current, final double total )
+        public String getTitle ()
+        {
+            return super.getTitle () + " In";
+        }
+
+        @Override
+        protected double calculateImpl ( final double start, final double distance, final double current, final double total )
         {
             return in ( start, distance, current, total );
         }
@@ -98,7 +110,13 @@ public abstract class Bounce implements Easing
     public static final class Out extends Bounce
     {
         @Override
-        public double calculate ( final double start, final double distance, final double current, final double total )
+        public String getTitle ()
+        {
+            return super.getTitle () + " Out";
+        }
+
+        @Override
+        protected double calculateImpl ( final double start, final double distance, final double current, final double total )
         {
             return out ( start, distance, current, total );
         }
@@ -110,15 +128,21 @@ public abstract class Bounce implements Easing
     public static final class InOut extends Bounce
     {
         @Override
-        public double calculate ( final double start, final double distance, final double current, final double total )
+        public String getTitle ()
+        {
+            return super.getTitle () + " InOut";
+        }
+
+        @Override
+        protected double calculateImpl ( final double start, final double distance, final double current, final double total )
         {
             if ( current < total / 2 )
             {
-                return in ( current * 2, 0, distance, total ) * 0.5 + start;
+                return in ( 0, distance, current * 2, total ) * 0.5 + start;
             }
             else
             {
-                return out ( current * 2 - total, 0, distance, total ) * 0.5 + distance * 0.5 + start;
+                return out ( 0, distance, current * 2 - total, total ) * 0.5 + distance * 0.5 + start;
             }
         }
     }

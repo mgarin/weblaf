@@ -32,7 +32,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebStyledLabelExample extends AbstractExample
+public class WebStyledLabelExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

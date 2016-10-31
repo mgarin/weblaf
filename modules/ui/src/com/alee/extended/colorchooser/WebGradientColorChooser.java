@@ -112,7 +112,7 @@ public class WebGradientColorChooser extends JComponent
         }
 
         // Displaying color chooser dialog on double-click
-        if ( SwingUtilities.isLeftMouseButton ( e ) && e.getClickCount () == 2 )
+        if ( SwingUtils.isDoubleClick ( e ) )
         {
             final GradientColorData colorData = getColorDataUnderPoint ( e.getPoint () );
             if ( colorData != null )

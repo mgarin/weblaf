@@ -30,7 +30,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class JTextFieldExample extends AbstractExample
+public class JTextFieldExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

@@ -126,10 +126,11 @@ public class WebMemoryBarBackground<E extends WebMemoryBar, D extends IDecoratio
     public I merge ( final I background )
     {
         super.merge ( background );
-        round = background.round != null ? background.round : round;
-        usedBorderColor = background.usedBorderColor != null ? background.usedBorderColor : usedBorderColor;
-        usedFillColor = background.usedFillColor != null ? background.usedFillColor : usedFillColor;
-        allocatedMarkColor = background.allocatedMarkColor != null ? background.allocatedMarkColor : allocatedMarkColor;
+        round = background.isOverwrite () || background.round != null ? background.round : round;
+        usedBorderColor = background.isOverwrite () || background.usedBorderColor != null ? background.usedBorderColor : usedBorderColor;
+        usedFillColor = background.isOverwrite () || background.usedFillColor != null ? background.usedFillColor : usedFillColor;
+        allocatedMarkColor =
+                background.isOverwrite () || background.allocatedMarkColor != null ? background.allocatedMarkColor : allocatedMarkColor;
         return ( I ) this;
     }
 }

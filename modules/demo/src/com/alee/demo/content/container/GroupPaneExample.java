@@ -38,7 +38,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class GroupPaneExample extends AbstractExample
+public class GroupPaneExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

@@ -5,7 +5,7 @@
     <style type="panel" id="directorychooser">
 
         <!-- Toolbar -->
-        <style type="toolbar" id="toolbar" extends="attached">
+        <style type="toolbar" id="toolbar" extends="attached-north">
             <component>
                 <orientation>0</orientation>
                 <floatable>false</floatable>

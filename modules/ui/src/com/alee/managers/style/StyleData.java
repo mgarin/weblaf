@@ -17,6 +17,7 @@
 
 package com.alee.managers.style;
 
+import com.alee.laf.WebLookAndFeel;
 import com.alee.painter.Painter;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
@@ -85,6 +86,9 @@ public final class StyleData implements PropertyChangeListener
     public StyleData ( final JComponent component )
     {
         super ();
+
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
 
         // Saving component weak reference
         this.component = new WeakReference<JComponent> ( component );
@@ -239,6 +243,9 @@ public final class StyleData implements PropertyChangeListener
      */
     public Skin applySkin ( final Skin skin, final boolean children )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Retrieving component and checking its existance
         final JComponent component = getComponent ();
 
@@ -309,6 +316,9 @@ public final class StyleData implements PropertyChangeListener
      */
     public Skin applyCustomSkin ( final Skin skin, final boolean recursively )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Replacing component skin
         // Style children are also updated through this call
         // Even though we might encounter style children again in components tree later it will not cause extensive updates
@@ -344,6 +354,9 @@ public final class StyleData implements PropertyChangeListener
      */
     public void updateSkin ( final boolean children )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Retrieving component and checking its existance
         final JComponent component = getComponent ();
 
@@ -376,6 +389,9 @@ public final class StyleData implements PropertyChangeListener
      */
     public Skin resetSkin ()
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Resetting skin to globally set one if needed
         final Skin skin = getSkin ();
         final Skin globalSkin = StyleManager.getSkin ();
@@ -398,6 +414,10 @@ public final class StyleData implements PropertyChangeListener
      */
     public Skin removeSkin ()
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Checking previous skin existance
         final Skin oldSkin = this.skin;
         if ( this.skin != null )
         {
@@ -429,6 +449,9 @@ public final class StyleData implements PropertyChangeListener
      */
     public StyleId setStyleId ( final StyleId id )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Retrieving component and checking its existance
         final JComponent component = getComponent ();
 
@@ -497,6 +520,9 @@ public final class StyleData implements PropertyChangeListener
      */
     public StyleId resetStyleId ( final boolean recursively )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Resetting child IDs first
         if ( recursively && !CollectionUtils.isEmpty ( children ) )
         {

@@ -41,7 +41,7 @@ public interface MergeBehavior
      * Performs merge of the two provided objects and returns resulting object.
      * Depending on the case it might be one of the two provided objects or their merge result.
      *
-     * @param merge  merge alhorithm
+     * @param merge  merge algorithm
      * @param object base object
      * @param merged object to merge
      * @param <T>    resulting object type

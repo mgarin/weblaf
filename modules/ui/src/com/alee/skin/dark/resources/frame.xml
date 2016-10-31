@@ -7,6 +7,9 @@
 
     <!-- WebLaF-decorated frame -->
     <style type="rootpane" id="frame-decorated" extends="frame">
+        <ui>
+            <installComponents>true</installComponents>
+        </ui>
         <painter>
             <decorations>
                 <decoration>
@@ -71,6 +74,27 @@
             <style type="button" id="minimize" extends="control" />
             <style type="button" id="maximize" extends="control" />
             <style type="button" id="close" extends="control" />
+
+        </style>
+
+        <!-- Glass dialog -->
+        <style type="rootpane" id="glass-dialog">
+            <ui>
+                <installComponents>false</installComponents>
+            </ui>
+            <painter>
+                <decorations overwrite="true">
+                    <decoration states="win">
+                        <WebShape round="0" />
+                        <WebShadow type="outer" opacity="0.8" width="10" />
+                        <LineBorder color="white" opacity="0.4" />
+                        <ColorBackground color="255,255,255" opacity="0.1" />
+                    </decoration>
+                </decorations>
+            </painter>
+
+            <!-- Content pane -->
+            <style type="panel" id="content" extends="transparent" />
 
         </style>
 

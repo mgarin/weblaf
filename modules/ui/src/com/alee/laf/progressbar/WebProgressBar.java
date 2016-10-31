@@ -340,14 +340,35 @@ public class WebProgressBar extends JProgressBar
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WProgressBarUI} object that renders this component
+     */
+    @Override
+    public WProgressBarUI getUI ()
+    {
+        return ( WProgressBarUI ) ui;
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WProgressBarUI}
+     */
+    public void setUI ( final WProgressBarUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebProgressBarUI ) )
+        if ( getUI () == null || !( getUI () instanceof WProgressBarUI ) )
         {
             try
             {
-                setUI ( ( WebProgressBarUI ) UIManager.getUI ( this ) );
+                setUI ( ( WProgressBarUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

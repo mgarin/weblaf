@@ -161,6 +161,10 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
+                // Event Dispatch Thread check
+                WebLookAndFeel.checkEventDispatchThread ();
+
+                // Inform about property change event
                 AbstractPainter.this.propertyChanged ( evt.getPropertyName (), evt.getOldValue (), evt.getNewValue () );
             }
         };

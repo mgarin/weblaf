@@ -17,6 +17,8 @@
 
 package com.alee.managers.animation.easing;
 
+import com.alee.api.TitleSupport;
+
 /**
  * Base interface for all kinds of transition easing.
  * For calculation convenience all values have `double` type.
@@ -30,7 +32,7 @@ package com.alee.managers.animation.easing;
  * @author Mikle Garin
  */
 
-public interface Easing
+public interface Easing extends TitleSupport
 {
     /**
      * Returns value eased according to implementation algorithm, usually between {@code start} and {@code start + distance}.
@@ -38,8 +40,8 @@ public interface Easing
      *
      * @param start    starting value for the transition
      * @param distance distance that should be covered to reach the end of the transition
-     * @param current  current transition progress; this could be progress percentage, time passed, frames done or any other measurement
-     * @param total    total progress required to finish transition; this could be total percentage, time, frames or any other measurement
+     * @param current  current transition progress, should always be in [0..total] range
+     * @param total    total progress required to finish transition
      * @return value eased according to implementation algorithm, usually between {@code start} and {@code start + distance}.
      */
     public double calculate ( double start, double distance, double current, double total );

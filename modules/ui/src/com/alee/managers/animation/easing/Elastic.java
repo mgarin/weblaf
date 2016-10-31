@@ -35,15 +35,27 @@ package com.alee.managers.animation.easing;
  * @see <a href="http://gsgd.co.uk/sandbox/jquery/easing/">jQuery Easing Plugin</a>
  */
 
-public abstract class Elastic implements Easing
+public abstract class Elastic extends AbstractEasing
 {
+    @Override
+    public String getTitle ()
+    {
+        return "Elastic";
+    }
+
     /**
      * Accelerating from zero velocity.
      */
     public static final class In extends Elastic
     {
         @Override
-        public double calculate ( final double start, final double distance, double current, final double total )
+        public String getTitle ()
+        {
+            return super.getTitle () + " In";
+        }
+
+        @Override
+        protected double calculateImpl ( final double start, final double distance, double current, final double total )
         {
             double a = distance;
             if ( current == 0 )
@@ -75,7 +87,13 @@ public abstract class Elastic implements Easing
     public static final class Out extends Elastic
     {
         @Override
-        public double calculate ( final double start, final double distance, double current, final double total )
+        public String getTitle ()
+        {
+            return super.getTitle () + " Out";
+        }
+
+        @Override
+        protected double calculateImpl ( final double start, final double distance, double current, final double total )
         {
             double a = distance;
             if ( current == 0 )
@@ -107,7 +125,13 @@ public abstract class Elastic implements Easing
     public static final class InOut extends Elastic
     {
         @Override
-        public double calculate ( final double start, final double distance, double current, final double total )
+        public String getTitle ()
+        {
+            return super.getTitle () + " InOut";
+        }
+
+        @Override
+        protected double calculateImpl ( final double start, final double distance, double current, final double total )
         {
             double a = distance;
             if ( current == 0 )

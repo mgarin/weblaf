@@ -75,6 +75,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      * Runtime variables.
      */
     protected transient List<String> states;
+    protected transient Map<String, D> stateDecorationCache;
     protected transient Map<String, D> decorationCache;
     protected transient String current;
     protected transient boolean focused = false;
@@ -112,6 +113,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
 
         // Cleaning up variables
         this.decorationCache = null;
+        this.stateDecorationCache = null;
         this.states = null;
         this.focused = false;
 
@@ -138,6 +140,19 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         {
             updateDecorationState ();
         }
+    }
+
+    /**
+     * Overriden to provide decoration states update instead of simple view updates.
+     */
+    @Override
+    protected void orientationChange ()
+    {
+        // Saving new orientation
+        saveOrientation ();
+
+        // Updating decoration states
+        updateDecorationState ();
     }
 
     /**
@@ -232,7 +247,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      * @param oldFocus previously focused component
      * @param newFocus currently focused component
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void globalFocusChanged ( final Component oldFocus, final Component newFocus )
     {
         // Updating {@link #inFocusedParent} mark
@@ -677,74 +692,97 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
             final String previous = this.current;
             current = TextUtils.listToString ( states, "," );
 
-            // Creating decorations cache
-            if ( decorationCache == null )
+            // Creating decoration caches
+            if ( stateDecorationCache == null )
             {
+                // State decorations cache
+                // Entry: [ component state -> built decoration reference ]
+                // It is used for fastest possible access to component state decorations
+                stateDecorationCache = new HashMap<String, D> ( decorations.size () );
+
+                // Decoration combinations cache
+                // Entry: [ decorations combination key -> built decoration reference ]
+                // It is used to avoid excessive memory usage by duplicate decoration combinations for each specific state
                 decorationCache = new HashMap<String, D> ( decorations.size () );
             }
 
-            // Resolving decoration if it wasn't cached yet
-            if ( !decorationCache.containsKey ( current ) )
+            // Resolving state decoration if it is not yet cached
+            if ( !stateDecorationCache.containsKey ( current ) )
             {
                 // Retrieving all decorations fitting current states
                 final List<D> decorations = getDecorations ( states );
 
-                // Resolving resulting decoration
+                // Retrieving unique key for decorations combination
+                final String decorationsKey = getDecorationsKey ( decorations );
+
+                // Retrieving existing decoration or building a new one
                 final D decoration;
-                if ( CollectionUtils.isEmpty ( decorations ) )
+                if ( decorationCache.containsKey ( decorationsKey ) )
                 {
-                    // No decoration for the states available
-                    decoration = null;
-                }
-                else if ( decorations.size () == 1 )
-                {
-                    // Single existing decoration for the states
-                    decoration = MergeUtils.clone ( decorations.get ( 0 ) );
+                    // Retrieving decoration from existing built decorations cache
+                    decoration = decorationCache.get ( decorationsKey );
                 }
                 else
                 {
-                    // Filter out possible decorations of different type
-                    // We always use type of the last one available since it has higher priority
-                    final Class<? extends IDecoration> type = decorations.get ( decorations.size () - 1 ).getClass ();
-                    final Iterator<D> iterator = decorations.iterator ();
-                    while ( iterator.hasNext () )
+                    // Building single decoration from a set
+                    if ( CollectionUtils.isEmpty ( decorations ) )
                     {
-                        final D d = iterator.next ();
-                        if ( d.getClass () != type )
+                        // No decoration for the states available
+                        decoration = null;
+                    }
+                    else if ( decorations.size () == 1 )
+                    {
+                        // Single existing decoration for the states
+                        decoration = MergeUtils.clone ( decorations.get ( 0 ) );
+                    }
+                    else
+                    {
+                        // Filter out possible decorations of different type
+                        // We always use type of the last one available since it has higher priority
+                        final Class<? extends IDecoration> type = decorations.get ( decorations.size () - 1 ).getClass ();
+                        final Iterator<D> iterator = decorations.iterator ();
+                        while ( iterator.hasNext () )
                         {
-                            iterator.remove ();
+                            final D d = iterator.next ();
+                            if ( d.getClass () != type )
+                            {
+                                iterator.remove ();
+                            }
+                        }
+
+                        // Merging multiple decorations together
+                        decoration = MergeUtils.clone ( decorations.get ( 0 ) );
+                        for ( int i = 1; i < decorations.size (); i++ )
+                        {
+                            decoration.merge ( decorations.get ( i ) );
                         }
                     }
 
-                    // Merging multiple decorations together
-                    decoration = MergeUtils.clone ( decorations.get ( 0 ) );
-                    for ( int i = 1; i < decorations.size (); i++ )
+                    // Updating built decoration settings
+                    if ( decoration != null )
                     {
-                        decoration.merge ( decorations.get ( i ) );
+                        // Updating section mark
+                        // This is done for each cached decoration once as it doesn't change
+                        decoration.setSection ( isSectionPainter () );
+
+                        // Filling decoration states with all current states
+                        // This is required so that decoration correctly stores all states, not just ones it uses
+                        decoration.updateStates ( CollectionUtils.copy ( states ) );
                     }
+
+                    // Caching built decoration
+                    decorationCache.put ( decorationsKey, decoration );
                 }
 
-                // Updating decoration settings
-                if ( decoration != null )
-                {
-                    // Updating section mark
-                    // This is done for each cached decoration once as it doesn't change
-                    decoration.setSection ( isSectionPainter () );
-
-                    // Filling decoration states with all current states
-                    // This is required so that decoration correctly stores all states, not just ones it uses
-                    decoration.updateStates ( CollectionUtils.copy ( states ) );
-                }
-
-                // Caching resulting decoration
-                decorationCache.put ( current, decoration );
+                // Caching resulting decoration under the state key
+                stateDecorationCache.put ( current, decoration );
             }
 
             // Performing decoration activation and deactivation if needed
             if ( previous == null && current == null )
             {
                 // Activating initial decoration
-                final D initialDecoration = decorationCache.get ( current );
+                final D initialDecoration = stateDecorationCache.get ( current );
                 if ( initialDecoration != null )
                 {
                     initialDecoration.activate ( component );
@@ -752,28 +790,52 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
             }
             else if ( !CompareUtils.equals ( previous, current ) )
             {
-                // Deactivating previous decoration
-                final D previousDecoration = decorationCache.get ( previous );
-                if ( previousDecoration != null )
+                // Checking that decoration was actually changed
+                final D previousDecoration = stateDecorationCache.get ( previous );
+                final D currentDecoration = stateDecorationCache.get ( current );
+                if ( previousDecoration != currentDecoration )
                 {
-                    previousDecoration.deactivate ( component );
-                }
-                // Activating current decoration
-                final D currentDecoration = decorationCache.get ( current );
-                if ( currentDecoration != null )
-                {
-                    currentDecoration.activate ( component );
+                    // Deactivating previous decoration
+                    if ( previousDecoration != null )
+                    {
+                        previousDecoration.deactivate ( component );
+                    }
+                    // Activating current decoration
+                    if ( currentDecoration != null )
+                    {
+                        currentDecoration.activate ( component );
+                    }
                 }
             }
 
             // Returning existing decoration
-            return decorationCache.get ( current );
+            return stateDecorationCache.get ( current );
         }
         else
         {
             // No decorations added
             return null;
         }
+    }
+
+    /**
+     * Returns unique decorations combination key.
+     *
+     * @param decorations decorations to retrieve unique combination key for
+     * @return unique decorations combination key
+     */
+    protected String getDecorationsKey ( final List<D> decorations )
+    {
+        final StringBuilder key = new StringBuilder ( 15 * decorations.size () );
+        for ( final D decoration : decorations )
+        {
+            if ( key.length () > 0 )
+            {
+                key.append ( ";" );
+            }
+            key.append ( decoration.getId () );
+        }
+        return key.toString ();
     }
 
     /**
@@ -900,22 +962,9 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         }
 
         // Painting content
-        if ( decoration == null || !decoration.hasContent () )
-        {
-            paintContent ( g2d, b, c, ui );
-        }
-    }
-
-    /**
-     * Returns adjusted painting bounds.
-     * todo This should be replaced with proper bounds provided from outside
-     *
-     * @param bounds painting bounds to adjust
-     * @return adjusted painting bounds
-     */
-    protected Rectangle adjustBounds ( final Rectangle bounds )
-    {
-        return bounds;
+        // todo This is a temporary method and should be removed upon complete styling implementation
+        // todo if ( decoration == null || !decoration.hasContent () )
+        paintContent ( g2d, b, c, ui );
     }
 
     /**
@@ -930,6 +979,18 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         // No content by default
+    }
+
+    /**
+     * Returns adjusted painting bounds.
+     * todo This should be replaced with proper bounds provided from outside
+     *
+     * @param bounds painting bounds to adjust
+     * @return adjusted painting bounds
+     */
+    protected Rectangle adjustBounds ( final Rectangle bounds )
+    {
+        return bounds;
     }
 
     /**

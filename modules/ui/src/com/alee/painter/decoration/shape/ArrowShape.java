@@ -17,8 +17,8 @@
 
 package com.alee.painter.decoration.shape;
 
-import com.alee.painter.decoration.WebDecoration;
 import com.alee.api.data.CompassDirection;
+import com.alee.painter.decoration.WebDecoration;
 import com.alee.utils.ShapeUtils;
 import com.alee.utils.swing.DataProvider;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -37,7 +37,7 @@ import java.awt.geom.GeneralPath;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "ArrowShape" )
+@XStreamAlias ("ArrowShape")
 public class ArrowShape<E extends JComponent, D extends WebDecoration<E, D>, I extends ArrowShape<E, D, I>> extends AbstractShape<E, D, I>
 {
     /**
@@ -134,10 +134,7 @@ public class ArrowShape<E extends JComponent, D extends WebDecoration<E, D>, I e
     public I merge ( final I shape )
     {
         super.merge ( shape );
-        if ( shape.direction != null )
-        {
-            direction = shape.direction;
-        }
+        direction = shape.isOverwrite () || shape.direction != null ? shape.direction : direction;
         return ( I ) this;
     }
 }

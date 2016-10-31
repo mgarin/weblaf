@@ -23,15 +23,27 @@ package com.alee.managers.animation.easing;
  * @author Mikle Garin
  */
 
-public abstract class Cubic implements Easing
+public abstract class Cubic extends AbstractEasing
 {
+    @Override
+    public String getTitle ()
+    {
+        return "Cubic";
+    }
+
     /**
      * Accelerating from zero velocity.
      */
     public static final class In extends Cubic
     {
         @Override
-        public double calculate ( final double start, final double distance, double current, final double total )
+        public String getTitle ()
+        {
+            return super.getTitle () + " In";
+        }
+
+        @Override
+        protected double calculateImpl ( final double start, final double distance, double current, final double total )
         {
             current /= total;
             return distance * current * current * current + start;
@@ -44,7 +56,13 @@ public abstract class Cubic implements Easing
     public static final class Out extends Cubic
     {
         @Override
-        public double calculate ( final double start, final double distance, double current, final double total )
+        public String getTitle ()
+        {
+            return super.getTitle () + " Out";
+        }
+
+        @Override
+        protected double calculateImpl ( final double start, final double distance, double current, final double total )
         {
             current /= total;
             current--;
@@ -58,7 +76,13 @@ public abstract class Cubic implements Easing
     public static final class InOut extends Cubic
     {
         @Override
-        public double calculate ( final double start, final double distance, double current, final double total )
+        public String getTitle ()
+        {
+            return super.getTitle () + " InOut";
+        }
+
+        @Override
+        protected double calculateImpl ( final double start, final double distance, double current, final double total )
         {
             current /= total / 2;
             if ( current < 1 )

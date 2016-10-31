@@ -37,6 +37,7 @@ import com.alee.managers.style.Bounds;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.SystemUtils;
 import com.alee.utils.swing.ChooserListener;
 
 import javax.swing.*;
@@ -578,7 +579,7 @@ public class WebColorChooserField extends WebTextField
                     private void updateWindowLocation ()
                     {
                         final Point p = MouseInfo.getPointerInfo ().getLocation ();
-                        final Rectangle b = window.getGraphicsConfiguration ().getDevice ().getDefaultConfiguration ().getBounds ();
+                        final Rectangle b = SystemUtils.getDeviceBounds ( p, true );
                         final int ww = window.getWidth ();
                         final int wh = window.getHeight ();
                         final int x = p.x + 20 + ww < b.x + b.width ? p.x + 20 : p.x - 20 - ww;
@@ -711,7 +712,7 @@ public class WebColorChooserField extends WebTextField
     protected void updatePopupLocation ()
     {
         final Point los = WebColorChooserField.this.getLocationOnScreen ();
-        final Rectangle gb = popup.getGraphicsConfiguration ().getBounds ();
+        final Rectangle gb = SystemUtils.getDeviceBounds ( popup.getGraphicsConfiguration (), true );
         final int shadeWidth = /*isDrawBorder () ? getShadeWidth () :*/ 0; // todo check shade width
         final boolean ltr = WebColorChooserField.this.getComponentOrientation ().isLeftToRight ();
         final int w = WebColorChooserField.this.getWidth ();

@@ -41,9 +41,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
 
 /**
@@ -132,6 +130,11 @@ public class WebCalendar extends WebPanel
     protected WebPanel monthDays;
     protected ComponentTransition monthDaysTransition;
     protected WebToggleButton lastSelectedDayButton;
+
+    /**
+     * Runtime settings.
+     */
+    protected final Map<Integer, WebToggleButton> mothDaysButtons;
 
     /**
      * Constructs new calendar without selected date.
@@ -247,6 +250,7 @@ public class WebCalendar extends WebPanel
         updateWeekHeaders ();
 
         // Month days panel
+        mothDaysButtons = new HashMap<Integer, WebToggleButton> ( 31 );
         monthDays = createMonthPanel ();
         updateMonth ( monthDays );
 
@@ -553,8 +557,8 @@ public class WebCalendar extends WebPanel
         {
             final Date thisDate = calendar.getTime ();
             final StyleId dayId = StyleId.calendarPreviousMonthDateToggleButton.at ( monthDays );
-            final WebToggleButton day = new WebToggleButton ( dayId, "" + calendar.get ( Calendar.DAY_OF_MONTH ) );
-            day.addItemListener ( new ItemListener ()
+            final WebToggleButton dayButton = new WebToggleButton ( dayId, "" + calendar.get ( Calendar.DAY_OF_MONTH ) );
+            dayButton.addItemListener ( new ItemListener ()
             {
                 @Override
                 public void itemStateChanged ( final ItemEvent e )
@@ -568,10 +572,10 @@ public class WebCalendar extends WebPanel
             } );
             if ( dateCustomizer != null )
             {
-                dateCustomizer.customize ( day, thisDate );
+                dateCustomizer.customize ( dayButton, thisDate );
             }
-            monthDays.add ( day, col + "," + row );
-            dates.add ( day );
+            monthDays.add ( dayButton, col + "," + row );
+            dates.add ( dayButton );
 
             TimeUtils.increaseByDay ( calendar );
 
@@ -585,6 +589,7 @@ public class WebCalendar extends WebPanel
         }
 
         // Current month
+        mothDaysButtons.clear ();
         do
         {
             final boolean weekend = calendar.get ( Calendar.DAY_OF_WEEK ) == 1 || calendar.get ( Calendar.DAY_OF_WEEK ) == 7;
@@ -593,9 +598,10 @@ public class WebCalendar extends WebPanel
             final Date thisDate = calendar.getTime ();
             final StyleId dayId = weekend ? StyleId.calendarWeekendMonthDateToggleButton.at ( monthDays ) :
                     StyleId.calendarCurrentMonthDateToggleButton.at ( monthDays );
-            final WebToggleButton day = new WebToggleButton ( dayId, "" + calendar.get ( Calendar.DAY_OF_MONTH ) );
-            day.setSelected ( selected );
-            day.addActionListener ( new ActionListener ()
+            final int dayNumber = calendar.get ( Calendar.DAY_OF_MONTH );
+            final WebToggleButton dayButton = new WebToggleButton ( dayId, "" + dayNumber );
+            dayButton.setSelected ( selected );
+            dayButton.addActionListener ( new ActionListener ()
             {
                 @Override
                 public void actionPerformed ( final ActionEvent e )
@@ -606,14 +612,15 @@ public class WebCalendar extends WebPanel
             } );
             if ( dateCustomizer != null )
             {
-                dateCustomizer.customize ( day, thisDate );
+                dateCustomizer.customize ( dayButton, thisDate );
             }
-            monthDays.add ( day, col + "," + row );
-            dates.add ( day );
+            mothDaysButtons.put ( dayNumber, dayButton );
+            monthDays.add ( dayButton, col + "," + row );
+            dates.add ( dayButton );
 
             if ( selected )
             {
-                lastSelectedDayButton = day;
+                lastSelectedDayButton = dayButton;
             }
 
             TimeUtils.increaseByDay ( calendar );
@@ -634,8 +641,8 @@ public class WebCalendar extends WebPanel
         {
             final Date thisDate = calendar.getTime ();
             final StyleId dayId = StyleId.calendarNextMonthDateToggleButton.at ( monthDays );
-            final WebToggleButton day = new WebToggleButton ( dayId, "" + calendar.get ( Calendar.DAY_OF_MONTH ) );
-            day.addItemListener ( new ItemListener ()
+            final WebToggleButton dayButton = new WebToggleButton ( dayId, "" + calendar.get ( Calendar.DAY_OF_MONTH ) );
+            dayButton.addItemListener ( new ItemListener ()
             {
                 @Override
                 public void itemStateChanged ( final ItemEvent e )
@@ -649,10 +656,10 @@ public class WebCalendar extends WebPanel
             } );
             if ( dateCustomizer != null )
             {
-                dateCustomizer.customize ( day, thisDate );
+                dateCustomizer.customize ( dayButton, thisDate );
             }
-            monthDays.add ( day, col + "," + row );
-            dates.add ( day );
+            monthDays.add ( dayButton, col + "," + row );
+            dates.add ( dayButton );
 
             TimeUtils.increaseByDay ( calendar );
 
@@ -666,6 +673,16 @@ public class WebCalendar extends WebPanel
 
         monthDays.revalidate ();
         monthDays.repaint ();
+    }
+
+    /**
+     * Updates selected day number.
+     *
+     * @param dayNumber day number
+     */
+    protected void updateSelectedDay ( final int dayNumber )
+    {
+        mothDaysButtons.get ( dayNumber ).setSelected ( true );
     }
 
     /**
@@ -786,10 +803,12 @@ public class WebCalendar extends WebPanel
         final Calendar calendar = Calendar.getInstance ();
 
         calendar.setTime ( oldShownDate );
+        final int oldDay = calendar.get ( Calendar.DAY_OF_MONTH );
         final int oldMonth = calendar.get ( Calendar.MONTH );
         final int oldYear = calendar.get ( Calendar.YEAR );
 
         calendar.setTime ( date );
+        final int newDay = calendar.get ( Calendar.DAY_OF_MONTH );
         final int newMonth = calendar.get ( Calendar.MONTH );
         final int newYear = calendar.get ( Calendar.YEAR );
 
@@ -797,6 +816,10 @@ public class WebCalendar extends WebPanel
         {
             updateTitleLabel ();
             updateMonth ( animate );
+        }
+        else if ( oldDay != newDay )
+        {
+            updateSelectedDay ( newDay );
         }
     }
 

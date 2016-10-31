@@ -33,7 +33,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "Decorations" )
+@XStreamAlias ("Decorations")
 public final class Decorations<E extends JComponent, D extends IDecoration<E, D>>
         implements Iterable<D>, Mergeable<Decorations<E, D>>, Cloneable
 {
@@ -78,7 +78,7 @@ public final class Decorations<E extends JComponent, D extends IDecoration<E, D>
     @Override
     public Decorations<E, D> merge ( final Decorations<E, D> object )
     {
-        overwrite = object.overwrite;
+        overwrite = overwrite != null && overwrite || object.overwrite != null && object.overwrite;
         decorations = object.isOverwrite () ? object.decorations : MergeUtils.merge ( decorations, object.decorations );
         return this;
     }

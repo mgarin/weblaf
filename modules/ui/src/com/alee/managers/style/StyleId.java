@@ -234,6 +234,7 @@ public final class StyleId
      */
     public static final StyleId frame = StyleId.of ( "frame" );
     public static final StyleId frameDecorated = StyleId.of ( "frame-decorated" );
+    public static final ChildStyleId frameGlassDialog = ChildStyleId.of ( "glass-dialog" );
 
     /**
      * {@link com.alee.laf.window.WebDialog} style IDs.
@@ -259,7 +260,10 @@ public final class StyleId
      * {@link com.alee.laf.toolbar.WebToolBar} style IDs.
      */
     public static final StyleId toolbar = StyleId.of ( "toolbar" );
-    public static final StyleId toolbarAttached = StyleId.of ( "attached" );
+    public static final StyleId toolbarAttachedNorth = StyleId.of ( "attached-north" );
+    public static final StyleId toolbarAttachedWest = StyleId.of ( "attached-west" );
+    public static final StyleId toolbarAttachedEast = StyleId.of ( "attached-east" );
+    public static final StyleId toolbarAttachedSouth = StyleId.of ( "attached-south" );
     public static final StyleId toolbarUndecorated = StyleId.of ( "undecorated" );
 
     /**

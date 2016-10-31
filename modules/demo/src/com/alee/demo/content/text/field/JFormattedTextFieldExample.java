@@ -32,7 +32,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class JFormattedTextFieldExample extends AbstractExample
+public class JFormattedTextFieldExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

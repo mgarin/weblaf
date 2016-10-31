@@ -34,7 +34,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class JColorChooserExample extends AbstractExample
+public class JColorChooserExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

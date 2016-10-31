@@ -485,23 +485,33 @@ public final class SystemUtils
     }
 
     /**
-     * Returns default GraphicsConfiguration for main screen.
-     *
-     * @return mail screen GraphicsConfiguration
-     */
-    public static GraphicsConfiguration getGraphicsConfiguration ()
-    {
-        return getGraphicsEnvironment ().getDefaultScreenDevice ().getDefaultConfiguration ();
-    }
-
-    /**
      * Returns default GraphicsEnvironment.
      *
      * @return default GraphicsEnvironment
      */
-    private static GraphicsEnvironment getGraphicsEnvironment ()
+    public static GraphicsEnvironment getGraphicsEnvironment ()
     {
         return GraphicsEnvironment.getLocalGraphicsEnvironment ();
+    }
+
+    /**
+     * Returns default screen device.
+     *
+     * @return default screen device
+     */
+    public static GraphicsDevice getDefaultScreenDevice ()
+    {
+        return getGraphicsEnvironment ().getDefaultScreenDevice ();
+    }
+
+    /**
+     * Returns default screen GraphicsConfiguration.
+     *
+     * @return default screen GraphicsConfiguration
+     */
+    public static GraphicsConfiguration getGraphicsConfiguration ()
+    {
+        return getDefaultScreenDevice ().getDefaultConfiguration ();
     }
 
     /**
@@ -512,9 +522,8 @@ public final class SystemUtils
     public static List<GraphicsDevice> getGraphicsDevices ()
     {
         // Retrieving system devices
-        final GraphicsEnvironment graphicsEnvironment = getGraphicsEnvironment ();
-        final GraphicsDevice[] screenDevices = graphicsEnvironment.getScreenDevices ();
-        final GraphicsDevice defaultScreenDevice = graphicsEnvironment.getDefaultScreenDevice ();
+        final GraphicsDevice[] screenDevices = getGraphicsEnvironment ().getScreenDevices ();
+        final GraphicsDevice defaultScreenDevice = getDefaultScreenDevice ();
 
         // Collecting devices into list
         final List<GraphicsDevice> devices = new ArrayList<GraphicsDevice> ();
@@ -537,10 +546,39 @@ public final class SystemUtils
     }
 
     /**
-     * Returns graphics device where most part of specified bounds is placed.
+     * Returns screen device for the specified window.
      *
-     * @param bounds bounds to find graphics device for
-     * @return graphics device where most part of specified bounds is placed
+     * @param window window to find screen device for
+     * @return screen device for the specified window
+     */
+    public static GraphicsDevice getGraphicsDevice ( final Window window )
+    {
+        return window != null ? window.getGraphicsConfiguration ().getDevice () : getDefaultScreenDevice ();
+    }
+
+    /**
+     * Returns screen device for the specified location.
+     *
+     * @param location location to find screen device for
+     * @return screen device for the specified location
+     */
+    public static GraphicsDevice getGraphicsDevice ( final Point location )
+    {
+        for ( final GraphicsDevice device : getGraphicsDevices () )
+        {
+            if ( device.getDefaultConfiguration ().getBounds ().contains ( location ) )
+            {
+                return device;
+            }
+        }
+        return getDefaultScreenDevice ();
+    }
+
+    /**
+     * Returns screen device where most part of specified bounds is placed.
+     *
+     * @param bounds bounds to find screen device for
+     * @return screen device where most part of specified bounds is placed
      */
     public static GraphicsDevice getGraphicsDevice ( final Rectangle bounds )
     {
@@ -563,15 +601,15 @@ public final class SystemUtils
                 }
             }
         }
-        return device != null ? device : GraphicsEnvironment.getLocalGraphicsEnvironment ().getDefaultScreenDevice ();
+        return device != null ? device : getDefaultScreenDevice ();
     }
 
     /**
-     * Returns graphics device bounds.
+     * Returns screen device bounds.
      *
-     * @param device            graphics device to return bounds for
+     * @param device            screen device to return bounds for
      * @param applyScreenInsets whether or not should extract screen insets from graphics device bounds
-     * @return graphics device bounds
+     * @return screen device bounds
      */
     public static Rectangle getDeviceBounds ( final GraphicsDevice device, final boolean applyScreenInsets )
     {
@@ -579,11 +617,11 @@ public final class SystemUtils
     }
 
     /**
-     * Returns graphics device bounds.
+     * Returns screen device bounds.
      *
-     * @param gc                device graphics configuration
-     * @param applyScreenInsets whether or not should extract screen insets from graphics device bounds
-     * @return graphics device bounds
+     * @param gc                screen device graphics configuration
+     * @param applyScreenInsets whether or not should extract screen insets from screen device bounds
+     * @return screen device bounds
      */
     public static Rectangle getDeviceBounds ( final GraphicsConfiguration gc, final boolean applyScreenInsets )
     {
@@ -607,10 +645,10 @@ public final class SystemUtils
     }
 
     /**
-     * Returns bounds for all graphics devices available.
+     * Returns screen device bounds for all screen devices available.
      *
-     * @param applyScreenInsets whether or not should extract screen insets from graphics device bounds
-     * @return graphics device bounds
+     * @param applyScreenInsets whether or not should extract screen insets from screen device bounds
+     * @return screen device bounds
      */
     public static List<Rectangle> getDevicesBounds ( final boolean applyScreenInsets )
     {
@@ -621,6 +659,100 @@ public final class SystemUtils
             bounds.add ( getDeviceBounds ( device, applyScreenInsets ) );
         }
         return bounds;
+    }
+
+    /**
+     * Returns screen bounds for the specified location.
+     *
+     * @param location          location to find screen bounds for
+     * @param applyScreenInsets whether or not should extract screen insets from graphics device bounds
+     * @return screen bounds for the specified location
+     */
+    public static Rectangle getDeviceBounds ( final Point location, final boolean applyScreenInsets )
+    {
+        final GraphicsDevice device = getGraphicsDevice ( location );
+        return getDeviceBounds ( device, applyScreenInsets );
+    }
+
+    /**
+     * Returns screen bounds within which most part of the specified bounds is placed.
+     *
+     * @param bounds            bounds to find screen bounds for
+     * @param applyScreenInsets whether or not should extract screen insets from graphics device bounds
+     * @return screen bounds within which most part of the specified bounds is placed
+     */
+    public static Rectangle getDeviceBounds ( final Rectangle bounds, final boolean applyScreenInsets )
+    {
+        final GraphicsDevice device = getGraphicsDevice ( bounds );
+        return getDeviceBounds ( device, applyScreenInsets );
+    }
+
+    /**
+     * Returns screen bounds within which most part of the specified component is placed.
+     *
+     * @param component         component to find screen bounds for
+     * @param applyScreenInsets whether or not should extract screen insets from graphics device bounds
+     * @return screen bounds within which most part of the specified component is placed
+     */
+    public static Rectangle getDeviceBounds ( final Component component, final boolean applyScreenInsets )
+    {
+        final Rectangle bounds = new Rectangle ( component.getLocationOnScreen (), component.getSize () );
+        return getDeviceBounds ( bounds, applyScreenInsets );
+    }
+
+    /**
+     * Returns maximized bounds for the screen where specified frame is displayed.
+     * Note that we don't need to provide x/y offset of the screen here.
+     * It seems that maximized bounds require only bounds inside of the screen bounds, not between the screens overall.
+     *
+     * @param frame frame to provide maximized bounds for
+     * @return maximized bounds for the screen where specified frame is displayed
+     */
+    public static Rectangle getMaximizedBounds ( final Frame frame )
+    {
+        final GraphicsConfiguration gc = frame.getGraphicsConfiguration ();
+        final Rectangle max = getDeviceBounds ( gc, true );
+        final Rectangle b = getDeviceBounds ( gc, false );
+        return new Rectangle ( max.x - b.x, max.y - b.y, max.width, max.height );
+    }
+
+    /**
+     * Returns maximized bounds for the west half of the screen where specified frame is displayed.
+     * Note that we don't need to provide x/y offset of the screen here.
+     * It seems that maximized bounds require only bounds inside of the screen bounds, not between the screens overall.
+     *
+     * @param frame frame to provide maximized bounds for
+     * @return maximized bounds for the west half of the screen where specified frame is displayed
+     */
+    public static Rectangle getMaximizedWestBounds ( final Frame frame )
+    {
+        final Rectangle b = getMaximizedBounds ( frame );
+        return new Rectangle ( b.x, b.y, b.width / 2, b.height );
+    }
+
+    /**
+     * Returns maximized bounds for the east half of the screen where specified frame is displayed.
+     * Note that we don't need to provide x/y offset of the screen here.
+     * It seems that maximized bounds require only bounds inside of the screen bounds, not between the screens overall.
+     *
+     * @param frame frame to provide maximized bounds for
+     * @return maximized bounds for the east half of the screen where specified frame is displayed
+     */
+    public static Rectangle getMaximizedEastBounds ( final Frame frame )
+    {
+        final Rectangle b = getMaximizedBounds ( frame );
+        return new Rectangle ( b.x + b.width - b.width / 2, b.y, b.width / 2, b.height );
+    }
+
+    /**
+     * Returns whether or not specified frame state is supported by the OS.
+     *
+     * @param state frame state
+     * @return {@code true} if the specified frame state is supported by the OS, {@code false} otherwise
+     */
+    public static boolean isFrameStateSupported ( final int state )
+    {
+        return Toolkit.getDefaultToolkit ().isFrameStateSupported ( state );
     }
 
     /**

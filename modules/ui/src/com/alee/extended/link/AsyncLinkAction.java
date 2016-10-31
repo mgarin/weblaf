@@ -17,6 +17,8 @@
 
 package com.alee.extended.link;
 
+import com.alee.utils.concurrent.DaemonThreadFactory;
+
 import java.awt.event.ActionEvent;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -34,7 +36,7 @@ public abstract class AsyncLinkAction implements LinkAction
     /**
      * ExecutorService to limit simultaneously running threads.
      */
-    protected static ExecutorService executorService = Executors.newFixedThreadPool ( 4 );
+    protected static ExecutorService executorService = Executors.newFixedThreadPool ( 4, new DaemonThreadFactory () );
 
     @Override
     public void linkExecuted ( final ActionEvent event )

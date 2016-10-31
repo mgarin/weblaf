@@ -62,7 +62,7 @@ public final class TreeEventMethodsImpl
             @Override
             public void mouseClicked ( final MouseEvent e )
             {
-                if ( SwingUtils.isLeftMouseButton ( e ) && e.getClickCount () == 2 )
+                if ( SwingUtils.isDoubleClick ( e ) )
                 {
                     final int row = tree.getUI ().getExactRowForLocation ( e.getPoint () );
                     if ( row != -1 )

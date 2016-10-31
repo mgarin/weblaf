@@ -40,15 +40,6 @@ import java.util.List;
 public final class TextUtils
 {
     /**
-     * Constants for time calculations.
-     */
-    private static final int msInWeek = 604800000;
-    private static final int msInDay = 86400000;
-    private static final int msInHour = 3600000;
-    private static final int msInMinute = 60000;
-    private static final int msInSecond = 1000;
-
-    /**
      * Separators used to determine words in text.
      */
     private static final List<String> textSeparators =
@@ -798,14 +789,23 @@ public final class TextUtils
      * @param length    string length
      * @return new string filled with specified amount of same characters
      */
-    public static String createString ( final String character, int length )
+    public static String createString ( final String character, final int length )
     {
-        final StringBuilder sb = new StringBuilder ( length );
-        while ( length-- > 0 )
-        {
-            sb.append ( character );
-        }
-        return sb.toString ();
+        return createString ( character.charAt ( 0 ), length );
+    }
+
+    /**
+     * Creates new string filled with specified amount of same characters.
+     *
+     * @param character character to fill string with
+     * @param length    string length
+     * @return new string filled with specified amount of same characters
+     */
+    public static String createString ( final char character, final int length )
+    {
+        final char[] characters = new char[ length ];
+        Arrays.fill ( characters, character );
+        return new String ( characters );
     }
 
     /**
@@ -1031,35 +1031,37 @@ public final class TextUtils
                 {
                     for ( int i = 0; i < part.length (); i++ )
                     {
-                        if ( !Character.isDigit ( part.charAt ( i ) ) )
+                        final char ch = part.charAt ( i );
+                        if ( !Character.isDigit ( ch ) && ch != '.' )
                         {
-                            final int time = Integer.parseInt ( part.substring ( 0, i ) );
+                            final double time = Double.parseDouble ( part.substring ( 0, i ) );
                             final PartType type = PartType.valueOf ( part.substring ( i ) );
                             switch ( type )
                             {
                                 case w:
-                                    summ += time * msInWeek;
+                                    summ += time * TimeUtils.msInWeek;
                                     break;
 
                                 case d:
-                                    summ += time * msInDay;
+                                    summ += time * TimeUtils.msInDay;
                                     break;
 
                                 case h:
-                                    summ += time * msInHour;
+                                    summ += time * TimeUtils.msInHour;
                                     break;
 
                                 case m:
-                                    summ += time * msInMinute;
+                                    summ += time * TimeUtils.msInMinute;
                                     break;
 
                                 case s:
-                                    summ += time * msInSecond;
+                                    summ += time * TimeUtils.msInSecond;
                                     break;
 
                                 case ms:
                                     summ += time;
                                     break;
+
                             }
                             break;
                         }
@@ -1090,20 +1092,20 @@ public final class TextUtils
 
         long time = delay;
 
-        final long w = time / msInWeek;
-        time = time - w * msInWeek;
+        final long w = time / TimeUtils.msInWeek;
+        time = time - w * TimeUtils.msInWeek;
 
-        final long d = time / msInDay;
-        time = time - d * msInDay;
+        final long d = time / TimeUtils.msInDay;
+        time = time - d * TimeUtils.msInDay;
 
-        final long h = time / msInHour;
-        time = time - h * msInHour;
+        final long h = time / TimeUtils.msInHour;
+        time = time - h * TimeUtils.msInHour;
 
-        final long m = time / msInMinute;
-        time = time - m * msInMinute;
+        final long m = time / TimeUtils.msInMinute;
+        time = time - m * TimeUtils.msInMinute;
 
-        final long s = time / msInSecond;
-        time = time - s * msInSecond;
+        final long s = time / TimeUtils.msInSecond;
+        time = time - s * TimeUtils.msInSecond;
 
         final long ms = time;
 

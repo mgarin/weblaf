@@ -32,7 +32,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class JButtonExample extends AbstractExample
+public class JButtonExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

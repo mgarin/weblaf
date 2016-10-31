@@ -31,7 +31,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class JLabelExample extends AbstractExample
+public class JLabelExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

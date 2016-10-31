@@ -21,6 +21,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * This class represents a simple line data.
@@ -29,7 +30,7 @@ import java.awt.*;
  */
 
 @XStreamAlias ("Line")
-public class Line
+public class Line implements Serializable
 {
     /**
      * First X coordinate.

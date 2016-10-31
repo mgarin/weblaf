@@ -20,8 +20,12 @@ package com.alee.demo.content.progress;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
+import com.alee.managers.animation.AnimationManager;
+import com.alee.managers.animation.easing.Quadratic;
+import com.alee.managers.animation.transition.*;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.TextUtils;
 
 import javax.swing.*;
 import java.util.List;
@@ -30,8 +34,13 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class JProgressBarExample extends AbstractExample
+public class JProgressBarExample extends AbstractStylePreviewExample
 {
+    /**
+     * Progress animator.
+     */
+    private QueueTransition<Integer> progressAnimator;
+
     @Override
     public String getId ()
     {
@@ -59,10 +68,37 @@ public class JProgressBarExample extends AbstractExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final BasicProgress e1 = new BasicProgress ( StyleId.progressbar );
-        final IndeterminateProgress e2 = new IndeterminateProgress ( StyleId.progressbar );
-        final VerticalProgress e3 = new VerticalProgress ( StyleId.progressbar );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3 );
+        // Transition for progress animation
+        progressAnimator = new QueueTransition<Integer> ( true );
+        progressAnimator.add ( new TimedTransition<Integer> ( 0, 1000, new Quadratic.Out (), 2000L ) );
+        progressAnimator.add ( new IdleTransition<Integer> ( 1000, 1000L ) );
+        progressAnimator.add ( new TimedTransition<Integer> ( 1000, 0, new Quadratic.Out (), 2000L ) );
+        progressAnimator.add ( new IdleTransition<Integer> ( 0, 1000L ) );
+
+        // Progress bar examples
+        final BasicProgress e1 = new BasicProgress ( StyleId.progressbar, null );
+        final BasicProgress e2 = new BasicProgress ( StyleId.progressbar, "" );
+        final BasicProgress e3 = new BasicProgress ( StyleId.progressbar, "Sample text" );
+        final IndeterminateProgress e4 = new IndeterminateProgress ( StyleId.progressbar, null );
+        final IndeterminateProgress e5 = new IndeterminateProgress ( StyleId.progressbar, "Sample text" );
+        final VerticalProgress e6 = new VerticalProgress ( StyleId.progressbar, null );
+        final VerticalProgress e7 = new VerticalProgress ( StyleId.progressbar, "" );
+        final VerticalProgress e8 = new VerticalProgress ( StyleId.progressbar, "Sample text" );
+        return CollectionUtils.<Preview>asList ( e1, e2, e3, e4, e5, e6, e7, e8 );
+    }
+
+    @Override
+    protected void displayed ()
+    {
+        // Ensure animation only occurs when preview is visible
+        AnimationManager.play ( progressAnimator );
+    }
+
+    @Override
+    protected void hidden ()
+    {
+        // Ensure animation stops when preview is hidden
+        AnimationManager.stop ( progressAnimator );
     }
 
     /**
@@ -71,21 +107,28 @@ public class JProgressBarExample extends AbstractExample
     protected class BasicProgress extends AbstractStylePreview
     {
         /**
+         * Progress text.
+         */
+        private final String text;
+
+        /**
          * Constructs new style preview.
          *
          * @param styleId preview style ID
+         * @param text    progress text
          */
-        public BasicProgress ( final StyleId styleId )
+        public BasicProgress ( final StyleId styleId, final String text )
         {
             super ( JProgressBarExample.this, "basic", FeatureState.updated, styleId );
+            this.text = text;
         }
 
         @Override
         protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
         {
-            final JProgressBar progressBar = new JProgressBar ( JProgressBar.HORIZONTAL, 0, 100 );
-            progressBar.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
-            progressBar.setValue ( 75 );
+            final JProgressBar progressBar = new JProgressBar ( JProgressBar.HORIZONTAL, 0, 1000 );
+            setup ( progressBar, getStyleId (), text );
+
             return CollectionUtils.asList ( progressBar );
         }
     }
@@ -96,21 +139,29 @@ public class JProgressBarExample extends AbstractExample
     protected class IndeterminateProgress extends AbstractStylePreview
     {
         /**
+         * Progress text.
+         */
+        private final String text;
+
+        /**
          * Constructs new style preview.
          *
          * @param styleId preview style ID
+         * @param text    progress text
          */
-        public IndeterminateProgress ( final StyleId styleId )
+        public IndeterminateProgress ( final StyleId styleId, final String text )
         {
             super ( JProgressBarExample.this, "indeterminate", FeatureState.updated, styleId );
+            this.text = text;
         }
 
         @Override
         protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
         {
             final JProgressBar progressBar = new JProgressBar ( JProgressBar.HORIZONTAL );
-            progressBar.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
             progressBar.setIndeterminate ( true );
+            setup ( progressBar, getStyleId (), text );
+
             return CollectionUtils.asList ( progressBar );
         }
     }
@@ -121,27 +172,76 @@ public class JProgressBarExample extends AbstractExample
     protected class VerticalProgress extends AbstractStylePreview
     {
         /**
+         * Progress text.
+         */
+        private final String text;
+
+        /**
          * Constructs new style preview.
          *
          * @param styleId preview style ID
+         * @param text    progress text
          */
-        public VerticalProgress ( final StyleId styleId )
+        public VerticalProgress ( final StyleId styleId, final String text )
         {
             super ( JProgressBarExample.this, "vertical", FeatureState.updated, styleId );
+            this.text = text;
         }
 
         @Override
         protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
         {
-            final JProgressBar determinate = new JProgressBar ( JProgressBar.VERTICAL, 0, 100 );
-            determinate.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
-            determinate.setValue ( 75 );
+            final JProgressBar determinate = new JProgressBar ( JProgressBar.VERTICAL, 0, 1000 );
+            determinate.setValue ( 750 );
+            setup ( determinate, getStyleId (), text );
 
             final JProgressBar indeterminate = new JProgressBar ( JProgressBar.VERTICAL );
-            indeterminate.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
             indeterminate.setIndeterminate ( true );
+            setup ( indeterminate, getStyleId (), text );
 
             return CollectionUtils.asList ( determinate, indeterminate );
+        }
+    }
+
+    /**
+     * Configures progress bar.
+     *
+     * @param progressBar progress bar instance
+     * @param styleId     progress bar style ID
+     * @param text        progress bar text
+     */
+    protected void setup ( final JProgressBar progressBar, final StyleId styleId, final String text )
+    {
+        // Setting style ID
+        progressBar.putClientProperty ( StyleId.STYLE_PROPERTY, styleId );
+
+        // Configuring displayed text
+        if ( text != null )
+        {
+            progressBar.setStringPainted ( true );
+            if ( !TextUtils.isEmpty ( text ) )
+            {
+                progressBar.setString ( text );
+            }
+        }
+
+        // Value animation for non-indeterminate prob
+        if ( !progressBar.isIndeterminate () )
+        {
+            progressAnimator.addListener ( new TransitionAdapter<Integer> ()
+            {
+                @Override
+                public void started ( final Transition transition, final Integer value )
+                {
+                    progressBar.setValue ( value );
+                }
+
+                @Override
+                public void adjusted ( final Transition transition, final Integer value )
+                {
+                    progressBar.setValue ( value );
+                }
+            } );
         }
     }
 }

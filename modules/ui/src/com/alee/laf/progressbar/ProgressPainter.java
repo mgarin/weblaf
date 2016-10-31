@@ -23,8 +23,7 @@ import com.alee.painter.decoration.IDecoration;
 import javax.swing.*;
 
 /**
- * Simple {@link javax.swing.JProgressBar} progress line based on {@link com.alee.painter.decoration.AbstractSectionDecorationPainter}.
- * It is used within {@link com.alee.laf.progressbar.ProgressBarPainter} to paint progress line.
+ * Simple {@link javax.swing.JProgressBar} progress line painter.
  *
  * @param <E> component type
  * @param <U> component UI type

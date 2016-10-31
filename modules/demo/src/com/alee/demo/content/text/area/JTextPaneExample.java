@@ -31,7 +31,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class JTextPaneExample extends AbstractExample
+public class JTextPaneExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

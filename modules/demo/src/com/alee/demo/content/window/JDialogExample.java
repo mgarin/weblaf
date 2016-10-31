@@ -39,7 +39,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class JDialogExample extends AbstractExample
+public class JDialogExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

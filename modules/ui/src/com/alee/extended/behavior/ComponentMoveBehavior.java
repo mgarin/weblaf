@@ -128,6 +128,7 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
                         dragging = true;
                         initialPoint = MouseInfo.getPointerInfo ().getLocation ();
                         initialBounds = dragged.getBounds ();
+                        componentMoveStarted ( initialPoint, initialBounds.getLocation () );
                     }
                     else
                     {
@@ -143,8 +144,12 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
     {
         if ( dragging )
         {
-            final Point point = MouseInfo.getPointerInfo ().getLocation ();
-            dragged.setLocation ( initialBounds.x + ( point.x - initialPoint.x ), initialBounds.y + ( point.y - initialPoint.y ) );
+            final Point mouse = MouseInfo.getPointerInfo ().getLocation ();
+            final int x = initialBounds.x + ( mouse.x - initialPoint.x );
+            final int y = initialBounds.y + ( mouse.y - initialPoint.y );
+            final Point location = new Point ( x, y );
+            dragged.setLocation ( location );
+            componentMoved ( mouse, location );
         }
     }
 
@@ -153,11 +158,50 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
     {
         if ( dragging )
         {
+            final Point mouse = MouseInfo.getPointerInfo ().getLocation ();
+            final Point location = dragged.getLocation ();
             dragging = false;
             dragged = null;
             initialPoint = null;
             initialBounds = null;
+            componentMoveEnded ( mouse, location );
         }
+    }
+
+    /**
+     * Informs about component move start.
+     *
+     * @param mouse    mouse location
+     * @param location component location
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected void componentMoveStarted ( final Point mouse, final Point location )
+    {
+        // Do nothing by default
+    }
+
+    /**
+     * Informs about component being moved due to drag.
+     *
+     * @param mouse    new mouse location
+     * @param location new component location
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected void componentMoved ( final Point mouse, final Point location )
+    {
+        // Do nothing by default
+    }
+
+    /**
+     * Informs about component move end.
+     *
+     * @param mouse    mouse location
+     * @param location component location
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected void componentMoveEnded ( final Point mouse, final Point location )
+    {
+        // Do nothing by default
     }
 
     /**

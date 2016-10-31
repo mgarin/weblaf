@@ -23,7 +23,7 @@ package com.alee.managers.animation.easing;
  * @author Mikle Garin
  */
 
-public final class Bezier implements Easing
+public final class Bezier extends AbstractEasing
 {
     /**
      * First curve control X coordinate.
@@ -63,7 +63,13 @@ public final class Bezier implements Easing
     }
 
     @Override
-    public double calculate ( final double start, final double distance, final double current, final double total )
+    public String getTitle ()
+    {
+        return "Bezier";
+    }
+
+    @Override
+    protected double calculateImpl ( final double start, final double distance, final double current, final double total )
     {
         // Scaling time using curve X coordinate
         final double xprogress = 1 - current / total;

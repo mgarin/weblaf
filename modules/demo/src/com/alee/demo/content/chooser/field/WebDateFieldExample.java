@@ -34,7 +34,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebDateFieldExample extends AbstractExample
+public class WebDateFieldExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

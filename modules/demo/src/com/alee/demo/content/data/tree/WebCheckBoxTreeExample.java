@@ -34,7 +34,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebCheckBoxTreeExample extends AbstractExample
+public class WebCheckBoxTreeExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

@@ -17,6 +17,8 @@
 
 package com.alee.managers;
 
+import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.animation.AnimationManager;
 import com.alee.managers.drag.DragManager;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.hotkey.HotkeyManager;
@@ -55,6 +57,10 @@ public class UIManagers
      */
     public static synchronized void initialize ()
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Initializing managers
         Log.initialize ();
         VersionManager.initialize ();
         WebLanguageManager.initialize ();
@@ -64,6 +70,7 @@ public class UIManagers
         TooltipManager.initialize ();
         IconManager.initialize ();
         StyleManager.initialize ();
+        AnimationManager.initialize ();
         WebProxyManager.initialize ();
         DragManager.initialize ();
     }

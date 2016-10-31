@@ -13,7 +13,7 @@
         <painter>
             <decorations>
                 <decoration>
-                    <WebShape round="4" />
+                    <WebShape round="4,4,2,2" />
                     <WebShadow type="outer" opacity="0.3" width="20" />
                     <LineBorder color="170,170,170" />
                     <ColorBackground color="237,237,237" />

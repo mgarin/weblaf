@@ -19,7 +19,6 @@ package com.alee.laf.rootpane;
 
 import com.alee.api.data.CompassDirection;
 import com.alee.api.jdk.Function;
-import com.alee.extended.behavior.ComponentMoveBehavior;
 import com.alee.extended.behavior.ComponentResizeBehavior;
 import com.alee.extended.image.WebImage;
 import com.alee.laf.WebLookAndFeel;
@@ -592,39 +591,8 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
         };
         window.addPropertyChangeListener ( windowTitleListener );
 
-        // Title move and max/restore actions listener
-        final ComponentMoveBehavior cma = new ComponentMoveBehavior ()
-        {
-            @Override
-            public void mouseClicked ( final MouseEvent e )
-            {
-                if ( isFrame () && isDisplayMaximizeButton () && SwingUtils.isLeftMouseButton ( e ) && e.getClickCount () == 2 )
-                {
-                    if ( isMaximized () )
-                    {
-                        restore ();
-                    }
-                    else
-                    {
-                        maximize ();
-                    }
-                }
-            }
-
-            @Override
-            public void mouseDragged ( final MouseEvent e )
-            {
-                if ( dragging && isMaximized () )
-                {
-                    // todo Adjust to mouse location properly
-                    // initialPoint = new Point ( initialPoint.x + shadeWidth, initialPoint.y + shadeWidth );
-                    restore ();
-                }
-                super.mouseDragged ( e );
-            }
-        };
-        titleComponent.addMouseListener ( cma );
-        titleComponent.addMouseMotionListener ( cma );
+        // Installing window decoration behavior
+        WindowDecorationBehavior.install ( this );
 
         root.add ( titleComponent );
     }
@@ -875,6 +843,16 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     }
 
     /**
+     * Returns window for the root pane this UI is applied to.
+     *
+     * @return window for the root pane this UI is applied to
+     */
+    public Window getWindow ()
+    {
+        return SwingUtils.getWindowAncestor ( root );
+    }
+
+    /**
      * Returns whether or not this root pane is attached to frame.
      *
      * @return true if this root pane is attached to frame, false otherwise
@@ -924,10 +902,49 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
         if ( frame != null )
         {
             // Updating maximized bounds for the frame
-            frame.setMaximizedBounds ( SwingUtils.getMaximizedBounds ( frame ) );
+            frame.setMaximizedBounds ( SystemUtils.getMaximizedBounds ( frame ) );
 
             // Forcing window to go into maximized state
             frame.setExtendedState ( Frame.MAXIMIZED_BOTH );
+        }
+    }
+
+    /**
+     * Maximizes the Frame to the west (left) half of the screen.
+     * todo Unfortunately MAXIMIZED_VERT state seems not to be supported anywhere
+     */
+    protected void maximizeWest ()
+    {
+        if ( frame != null )
+        {
+            // Updating maximized bounds for the frame
+            frame.setMaximizedBounds ( SystemUtils.getMaximizedWestBounds ( frame ) );
+
+            // todo Need to provide exact bounds for west side to work properly
+            // todo frame.setBounds ( westBounds );
+
+            // Forcing window to go into maximized state
+            frame.setExtendedState ( Frame.MAXIMIZED_VERT );
+
+        }
+    }
+
+    /**
+     * Maximizes the Frame to the east (right) half of the screen.
+     * todo Unfortunately MAXIMIZED_VERT state seems not to be supported anywhere
+     */
+    protected void maximizeEast ()
+    {
+        if ( frame != null )
+        {
+            // Updating maximized bounds for the frame
+            frame.setMaximizedBounds ( SystemUtils.getMaximizedEastBounds ( frame ) );
+
+            // todo Need to provide exact bounds for east side to work properly
+            // todo frame.setBounds ( eastBounds );
+
+            // Forcing window to go into maximized state
+            frame.setExtendedState ( Frame.MAXIMIZED_VERT );
         }
     }
 
@@ -957,7 +974,9 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     @Override
     public boolean isMaximized ()
     {
-        return isFrame () && ( frame.getExtendedState () & Frame.MAXIMIZED_BOTH ) == Frame.MAXIMIZED_BOTH;
+        return isFrame () && ( ( frame.getExtendedState () & Frame.MAXIMIZED_BOTH ) == Frame.MAXIMIZED_BOTH ||
+                ( frame.getExtendedState () & Frame.MAXIMIZED_HORIZ ) == Frame.MAXIMIZED_HORIZ ||
+                ( frame.getExtendedState () & Frame.MAXIMIZED_VERT ) == Frame.MAXIMIZED_VERT );
     }
 
     @Override

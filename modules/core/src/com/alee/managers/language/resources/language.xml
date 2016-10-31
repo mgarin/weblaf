@@ -379,6 +379,152 @@
             </record>
         </Dictionary>
     </Dictionary>
+    <Dictionary name="Time language" prefix="time">
+        <Dictionary name="Time units" prefix="units">
+            <Dictionary name="Short time unit names" prefix="short">
+                <record key="nanosecond">
+                    <value lang="en">ns</value>
+                    <value lang="ru">нс</value>
+                    <value lang="pl">ns</value>
+                    <value lang="ar">ns</value>
+                    <value lang="es">ns</value>
+                    <value lang="fr">ns</value>
+                    <value lang="pt">ns</value>
+                    <value lang="de">ns</value>
+                    <value lang="it">ns</value>
+                    <value lang="tr">ns</value>
+                    <value lang="vi">ns</value>
+                    <value lang="hu">ns</value>
+                </record>
+                <record key="microsecond">
+                    <value lang="en">μs</value>
+                    <value lang="ru">мкс</value>
+                    <value lang="pl">μs</value>
+                    <value lang="ar">μs</value>
+                    <value lang="es">μs</value>
+                    <value lang="fr">μs</value>
+                    <value lang="pt">μs</value>
+                    <value lang="de">μs</value>
+                    <value lang="it">μs</value>
+                    <value lang="tr">μs</value>
+                    <value lang="vi">μs</value>
+                    <value lang="hu">μs</value>
+                </record>
+                <record key="millisecond">
+                    <value lang="en">ms</value>
+                    <value lang="ru">мс</value>
+                    <value lang="pl">ms</value>
+                    <value lang="ar">ms</value>
+                    <value lang="es">ms</value>
+                    <value lang="fr">ms</value>
+                    <value lang="pt">ms</value>
+                    <value lang="de">ms</value>
+                    <value lang="it">ms</value>
+                    <value lang="tr">ms</value>
+                    <value lang="vi">ms</value>
+                    <value lang="hu">ms</value>
+                </record>
+                <record key="second">
+                    <value lang="en">s</value>
+                    <value lang="ru">с</value>
+                    <value lang="pl">s</value>
+                    <value lang="ar">s</value>
+                    <value lang="es">s</value>
+                    <value lang="fr">s</value>
+                    <value lang="pt">s</value>
+                    <value lang="de">s</value>
+                    <value lang="it">s</value>
+                    <value lang="tr">s</value>
+                    <value lang="vi">s</value>
+                    <value lang="hu">s</value>
+                </record>
+                <record key="minute">
+                    <value lang="en">m</value>
+                    <value lang="ru">м</value>
+                    <value lang="pl">m</value>
+                    <value lang="ar">m</value>
+                    <value lang="es">m</value>
+                    <value lang="fr">m</value>
+                    <value lang="pt">m</value>
+                    <value lang="de">m</value>
+                    <value lang="it">m</value>
+                    <value lang="tr">m</value>
+                    <value lang="vi">m</value>
+                    <value lang="hu">m</value>
+                </record>
+                <record key="hour">
+                    <value lang="en">h</value>
+                    <value lang="ru">ч</value>
+                    <value lang="pl">h</value>
+                    <value lang="ar">h</value>
+                    <value lang="es">h</value>
+                    <value lang="fr">h</value>
+                    <value lang="pt">h</value>
+                    <value lang="de">h</value>
+                    <value lang="it">h</value>
+                    <value lang="tr">h</value>
+                    <value lang="vi">h</value>
+                    <value lang="hu">h</value>
+                </record>
+                <record key="day">
+                    <value lang="en">d</value>
+                    <value lang="ru">д</value>
+                    <value lang="pl">d</value>
+                    <value lang="ar">d</value>
+                    <value lang="es">d</value>
+                    <value lang="fr">d</value>
+                    <value lang="pt">d</value>
+                    <value lang="de">d</value>
+                    <value lang="it">d</value>
+                    <value lang="tr">d</value>
+                    <value lang="vi">d</value>
+                    <value lang="hu">d</value>
+                </record>
+                <record key="week">
+                    <value lang="en">w</value>
+                    <value lang="ru">нед</value>
+                    <value lang="pl">w</value>
+                    <value lang="ar">w</value>
+                    <value lang="es">w</value>
+                    <value lang="fr">w</value>
+                    <value lang="pt">w</value>
+                    <value lang="de">w</value>
+                    <value lang="it">w</value>
+                    <value lang="tr">w</value>
+                    <value lang="vi">w</value>
+                    <value lang="hu">w</value>
+                </record>
+                <record key="month">
+                    <value lang="en">mon</value>
+                    <value lang="ru">мес</value>
+                    <value lang="pl">mon</value>
+                    <value lang="ar">mon</value>
+                    <value lang="es">mon</value>
+                    <value lang="fr">mon</value>
+                    <value lang="pt">mon</value>
+                    <value lang="de">mon</value>
+                    <value lang="it">mon</value>
+                    <value lang="tr">mon</value>
+                    <value lang="vi">mon</value>
+                    <value lang="hu">mon</value>
+                </record>
+                <record key="year">
+                    <value lang="en">y</value>
+                    <value lang="ru">г</value>
+                    <value lang="pl">y</value>
+                    <value lang="ar">y</value>
+                    <value lang="es">y</value>
+                    <value lang="fr">y</value>
+                    <value lang="pt">y</value>
+                    <value lang="de">y</value>
+                    <value lang="it">y</value>
+                    <value lang="tr">y</value>
+                    <value lang="vi">y</value>
+                    <value lang="hu">y</value>
+                </record>
+            </Dictionary>
+        </Dictionary>
+    </Dictionary>
     <Dictionary name="Files language" prefix="file">
         <Dictionary name="File types language" prefix="type">
             <record key="folder">
@@ -2435,6 +2581,6 @@
         <langInfo lang="it" author="cR0Ck" info="Italian" title="Italiano" />
         <langInfo lang="tr" author="Tilelook" info="Turkish" title="Turkish" />
         <langInfo lang="vi" author="espringtran" info="Vietnamese" title="Tiếng Việt" />
-        <langInfo lang="hu" author="kz" info="Hungarian" title="Magyar"/>
+        <langInfo lang="hu" author="kz" info="Hungarian" title="Magyar" />
     </LanguageInfo>
 </Dictionary>

@@ -61,7 +61,7 @@ public abstract class IconData<T extends Icon> implements Serializable, Cloneabl
     private String path;
 
     /**
-     * Customizeable icon adjustments.
+     * Customizable icon adjustments.
      */
     @XStreamImplicit
     protected List<IconAdjustment<T>> adjustments;

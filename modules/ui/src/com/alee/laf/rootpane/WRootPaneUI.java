@@ -38,7 +38,6 @@ public abstract class WRootPaneUI extends BasicRootPaneUI
      */
     public abstract void uninstallWindowDecorations ();
 
-
     /**
      * Returns whether or not window title component should be displayed.
      *

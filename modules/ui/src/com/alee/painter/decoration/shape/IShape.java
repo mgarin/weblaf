@@ -19,6 +19,7 @@ package com.alee.painter.decoration.shape;
 
 import com.alee.api.Identifiable;
 import com.alee.api.Mergeable;
+import com.alee.api.Overwritable;
 import com.alee.painter.decoration.DecoratonElement;
 import com.alee.painter.decoration.IDecoration;
 
@@ -36,7 +37,7 @@ import java.io.Serializable;
  */
 
 public interface IShape<E extends JComponent, D extends IDecoration<E, D>, I extends IShape<E, D, I>>
-        extends DecoratonElement<E, D, I>, Serializable, Cloneable, Mergeable<I>, Identifiable
+        extends DecoratonElement<E, D, I>, Serializable, Cloneable, Mergeable<I>, Overwritable, Identifiable
 {
     /**
      * Returns whether shape is visible within component bounds.

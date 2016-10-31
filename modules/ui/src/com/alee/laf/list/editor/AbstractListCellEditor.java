@@ -20,6 +20,7 @@ package com.alee.laf.list.editor;
 import com.alee.laf.list.WebList;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -117,7 +118,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
             @Override
             public void mouseClicked ( final MouseEvent e )
             {
-                if ( getClicksToEdit () > 0 && e.getClickCount () == getClicksToEdit () && SwingUtilities.isLeftMouseButton ( e ) )
+                if ( getClicksToEdit () > 0 && e.getClickCount () == getClicksToEdit () && SwingUtils.isLeftMouseButton ( e ) )
                 {
                     final Point point = e.getPoint ();
                     final int index = list.getUI ().locationToIndex ( list, point );

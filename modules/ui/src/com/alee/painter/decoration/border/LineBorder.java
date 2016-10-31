@@ -99,14 +99,8 @@ public class LineBorder<E extends JComponent, D extends IDecoration<E, D>, I ext
     public I merge ( final I border )
     {
         super.merge ( border );
-        if ( border.stroke != null )
-        {
-            stroke = border.stroke;
-        }
-        if ( border.color != null )
-        {
-            color = border.color;
-        }
+        stroke = border.isOverwrite () || border.stroke != null ? border.stroke : stroke;
+        color = border.isOverwrite () || border.color != null ? border.color : color;
         return ( I ) this;
     }
 }

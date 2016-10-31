@@ -19,6 +19,7 @@ package com.alee.demo.content;
 
 import com.alee.demo.DemoApplication;
 import com.alee.demo.api.example.ExampleGroup;
+import com.alee.demo.content.animation.AnimationGroup;
 import com.alee.demo.content.button.ButtonsGroup;
 import com.alee.demo.content.chooser.ChoosersGroup;
 import com.alee.demo.content.container.ContainersGroup;
@@ -86,6 +87,7 @@ public final class ExamplesManager
             groups.add ( new DataGroup () );
             groups.add ( new WindowsGroup () );
             groups.add ( new ChoosersGroup () );
+            groups.add ( new AnimationGroup () );
         }
     }
 

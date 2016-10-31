@@ -32,6 +32,17 @@ import java.util.Date;
 public final class TimeUtils
 {
     /**
+     * Constants for time calculations.
+     */
+    public static final long msInWeek = 604800000;
+    public static final long msInDay = 86400000;
+    public static final long msInHour = 3600000;
+    public static final long msInMinute = 60000;
+    public static final long msInSecond = 1000;
+    public static final long nsInSecond = 1000000000;
+    public static final long nsInMillisecond = 1000000;
+
+    /**
      * Pinned time in milliseconds.
      */
     private static Long pinnedTime = null;

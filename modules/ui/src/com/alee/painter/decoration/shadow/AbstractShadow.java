@@ -43,6 +43,12 @@ public abstract class AbstractShadow<E extends JComponent, D extends IDecoration
     protected ShadowType type;
 
     /**
+     * Whether or not this shadow should overwrite previous one when merged.
+     */
+    @XStreamAsAttribute
+    protected Boolean overwrite;
+
+    /**
      * Shadow opacity.
      */
     @XStreamAsAttribute
@@ -64,6 +70,12 @@ public abstract class AbstractShadow<E extends JComponent, D extends IDecoration
     public String getId ()
     {
         return getType ().toString ();
+    }
+
+    @Override
+    public boolean isOverwrite ()
+    {
+        return overwrite != null && overwrite;
     }
 
     @Override
@@ -113,18 +125,10 @@ public abstract class AbstractShadow<E extends JComponent, D extends IDecoration
     @Override
     public I merge ( final I shadow )
     {
-        if ( shadow.opacity != null )
-        {
-            opacity = shadow.opacity;
-        }
-        if ( shadow.width != null )
-        {
-            width = shadow.width;
-        }
-        if ( shadow.color != null )
-        {
-            color = shadow.color;
-        }
+        overwrite = overwrite != null && overwrite || shadow.overwrite != null && shadow.overwrite;
+        opacity = shadow.isOverwrite () || shadow.opacity != null ? shadow.opacity : opacity;
+        width = shadow.isOverwrite () || shadow.width != null ? shadow.width : width;
+        color = shadow.isOverwrite () || shadow.color != null ? shadow.color : color;
         return ( I ) this;
     }
 

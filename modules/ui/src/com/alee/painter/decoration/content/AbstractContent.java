@@ -92,12 +92,8 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
         return id != null ? id : "content";
     }
 
-    /**
-     * Returns whether or not this content should overwrite previous one when merged.
-     *
-     * @return true if this content should overwrite previous one when merged, false otherwise
-     */
-    protected boolean isOverwrite ()
+    @Override
+    public boolean isOverwrite ()
     {
         return overwrite != null && overwrite;
     }
@@ -295,7 +291,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
     @Override
     public I merge ( final I content )
     {
-        overwrite = content.overwrite;
+        overwrite = overwrite != null && overwrite || content.overwrite != null && content.overwrite;
         bounds = content.isOverwrite () || content.bounds != null ? content.bounds : bounds;
         constraints = content.isOverwrite () || content.constraints != null ? content.constraints : constraints;
         padding = content.isOverwrite () || content.padding != null ? content.padding : padding;

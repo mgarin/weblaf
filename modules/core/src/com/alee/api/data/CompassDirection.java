@@ -65,6 +65,45 @@ public enum CompassDirection implements SwingConstants
     }
 
     /**
+     * Returns direction opposite to this one.
+     *
+     * @return direction opposite to this one
+     */
+    public CompassDirection opposite ()
+    {
+        switch ( this )
+        {
+            case northEast:
+                return southWest;
+
+            case north:
+                return south;
+
+            case northWest:
+                return southEast;
+
+            case east:
+                return west;
+
+            case west:
+                return east;
+
+            case southEast:
+                return northWest;
+
+            case south:
+                return north;
+
+            case southWest:
+                return northEast;
+
+            case center:
+            default:
+                return center;
+        }
+    }
+
+    /**
      * Returns direction adjusted according to component orientation.
      *
      * @param orientation component orientation

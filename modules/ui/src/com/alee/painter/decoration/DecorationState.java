@@ -134,7 +134,35 @@ public interface DecorationState
      *
      * @see com.alee.laf.progressbar.ProgressBarPainter#getDecorationStates()
      */
+    public static final String progress = "progress";
+
+    /**
+     * Used to provide progress bar type for progress bar painter.
+     *
+     * @see com.alee.laf.progressbar.ProgressBarPainter#getDecorationStates()
+     */
     public static final String indeterminate = "indeterminate";
+
+    /**
+     * Used to provide indication of component having minimum current value.
+     *
+     * @see com.alee.laf.progressbar.ProgressBarPainter#getDecorationStates()
+     */
+    public static final String minimum = "minimum";
+
+    /**
+     * Used to provide indication of component having non-minimum and non-maximum current value.
+     *
+     * @see com.alee.laf.progressbar.ProgressBarPainter#getDecorationStates()
+     */
+    public static final String intermediate = "intermediate";
+
+    /**
+     * Used to provide indication of component having maximum current value.
+     *
+     * @see com.alee.laf.progressbar.ProgressBarPainter#getDecorationStates()
+     */
+    public static final String maximum = "maximum";
 
     /**
      * Used to provide unvisited state for link-type components.

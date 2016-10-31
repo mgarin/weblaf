@@ -22,7 +22,7 @@ import com.alee.painter.SectionPainter;
 import javax.swing.*;
 
 /**
- * Base interface for JProgressBar component painters.
+ * Base interface for {@link JProgressBar} component progress line painters.
  *
  * @param <E> component type
  * @param <U> component UI type

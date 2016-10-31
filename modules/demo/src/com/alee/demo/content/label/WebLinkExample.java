@@ -37,7 +37,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebLinkExample extends AbstractExample
+public class WebLinkExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

@@ -17,29 +17,39 @@
 
 package com.alee.laf.progressbar;
 
+import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicProgressBarUI;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * Custom UI for {@link JProgressBar} component.
  *
+ * Basic UI usage have been removed due to:
+ * 1. Multiple private things which do not work properly (like progress update on state change)
+ * 2. Pointless animator which is not useful as we use our own ones
+ * 3. Unnecessary settings initialization
+ *
  * @author Mikle Garin
  */
 
-public class WebProgressBarUI extends BasicProgressBarUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebProgressBarUI extends WProgressBarUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter (ProgressBarPainter.class)
+    @DefaultPainter ( ProgressBarPainter.class )
     protected IProgressBarPainter painter;
 
     /**
@@ -47,6 +57,8 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeSupport
      */
     protected Insets margin = null;
     protected Insets padding = null;
+    protected JProgressBar progressBar;
+    protected Handler handler;
 
     /**
      * Returns an instance of the WebProgressBarUI for the specified component.
@@ -55,7 +67,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeSupport
      * @param c component that will use UI instance
      * @return instance of the WebProgressBarUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebProgressBarUI ();
@@ -69,10 +81,12 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeSupport
     @Override
     public void installUI ( final JComponent c )
     {
-        super.installUI ( c );
-
-        // Saving button reference
+        // Saving progress bar reference
         progressBar = ( JProgressBar ) c;
+
+        // Default settings
+        installDefaults ();
+        installListeners ();
 
         // Applying skin
         StyleManager.installSkin ( progressBar );
@@ -89,10 +103,48 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeSupport
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( progressBar );
 
-        // Removing button reference
-        progressBar = null;
+        // Default settings
+        uninstallListeners ();
+        uninstallDefaults ();
 
-        super.uninstallUI ( c );
+        // Removing progress bar reference
+        progressBar = null;
+    }
+
+    /**
+     * Installs default component settings.
+     */
+    protected void installDefaults ()
+    {
+        LookAndFeel.installColorsAndFont ( progressBar, "ProgressBar.background", "ProgressBar.foreground", "ProgressBar.font" );
+    }
+
+    /**
+     * Uninstalls default component settings.
+     */
+    protected void uninstallDefaults ()
+    {
+        LookAndFeel.uninstallBorder ( progressBar );
+    }
+
+    /**
+     * Installs component listeners.
+     */
+    protected void installListeners ()
+    {
+        handler = new Handler ();
+        progressBar.addChangeListener ( handler );
+        progressBar.addPropertyChangeListener ( handler );
+    }
+
+    /**
+     * Uninstalls component listeners.
+     */
+    protected void uninstallListeners ()
+    {
+        progressBar.removeChangeListener ( handler );
+        progressBar.removePropertyChangeListener ( handler );
+        handler = null;
     }
 
     @Override
@@ -156,7 +208,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeSupport
     }
 
     /**
-     * Paints button.
+     * Paints progress bar.
      *
      * @param g graphics
      * @param c component
@@ -174,5 +226,27 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeSupport
     public Dimension getPreferredSize ( final JComponent c )
     {
         return PainterSupport.getPreferredSize ( c, painter );
+    }
+
+    /**
+     * Events handler replacing {@link javax.swing.plaf.basic.BasicProgressBarUI.Handler} one.
+     */
+    protected class Handler implements ChangeListener, PropertyChangeListener
+    {
+        @Override
+        public void stateChanged ( final ChangeEvent e )
+        {
+            progressBar.repaint ();
+        }
+
+        @Override
+        public void propertyChange ( final PropertyChangeEvent e )
+        {
+            final String propertyName = e.getPropertyName ();
+            if ( CompareUtils.equals ( propertyName, WebLookAndFeel.INDETERMINATE_PROPERTY ) )
+            {
+                progressBar.repaint ();
+            }
+        }
     }
 }

@@ -7,6 +7,9 @@
 
     <!-- WebLaF-decorated dialog -->
     <style type="rootpane" id="dialog-decorated" extends="dialog">
+        <ui>
+            <installComponents>true</installComponents>
+        </ui>
         <painter>
             <decorations>
                 <decoration>

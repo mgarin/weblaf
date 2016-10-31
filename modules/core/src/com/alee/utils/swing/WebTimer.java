@@ -17,7 +17,6 @@
 
 package com.alee.utils.swing;
 
-import com.alee.managers.log.Log;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.TextUtils;
@@ -903,7 +902,7 @@ public class WebTimer
                 }
                 catch ( final InterruptedException e )
                 {
-                    Log.error ( this, e );
+                    // No need to log interruption
                 }
             }
         }

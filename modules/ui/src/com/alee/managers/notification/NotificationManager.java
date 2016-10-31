@@ -572,8 +572,7 @@ public final class NotificationManager implements SwingConstants
     private static NotificationsScreenLayout getLayout ( final Component showFor )
     {
         final Window window = showFor != null && showFor.isShowing () ? SwingUtils.getWindowAncestor ( showFor ) : null;
-        final GraphicsDevice gd = window != null ? window.getGraphicsConfiguration ().getDevice () :
-                GraphicsEnvironment.getLocalGraphicsEnvironment ().getDefaultScreenDevice ();
+        final GraphicsDevice gd = SystemUtils.getGraphicsDevice ( window );
         if ( !screenLayouts.containsKey ( gd ) )
         {
             screenLayouts.put ( gd, new NotificationsScreenLayout ( gd ) );

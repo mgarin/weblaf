@@ -22,6 +22,7 @@ import com.alee.extended.label.AbstractStyledTextContent;
 import com.alee.extended.label.StyledLabelTextContent;
 import com.alee.extended.label.WebHotkeyLabelBackground;
 import com.alee.extended.statusbar.WebMemoryBarBackground;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.*;
 import com.alee.laf.checkbox.CheckIconContent;
 import com.alee.laf.label.LabelContentLayout;
@@ -29,6 +30,7 @@ import com.alee.laf.label.LabelIconContent;
 import com.alee.laf.label.LabelTextContent;
 import com.alee.laf.menu.AcceleratorTextContent;
 import com.alee.laf.menu.MenuItemContentLayout;
+import com.alee.laf.progressbar.ProgressBarText;
 import com.alee.laf.radiobutton.RadioIconContent;
 import com.alee.laf.separator.SeparatorContent;
 import com.alee.laf.separator.SeparatorLine;
@@ -68,8 +70,8 @@ import javax.swing.event.EventListenerList;
 import java.util.*;
 
 /**
- * This class manages WebLaF component styles.
- * It also manages available WebLaF skins and can install/change them in runtime.
+ * This manager handles WebLaF component styles.
+ * It also provides API to install and uninstall application skins in runtime.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
@@ -136,19 +138,17 @@ public final class StyleManager
     private static boolean strictStyleChecks = true;
 
     /**
-     * Manager initialization mark.
+     * Whether {@link StyleManager} is initialized or not.
      */
     private static boolean initialized = false;
 
     /**
-     * Initializes StyleManager settings.
+     * Initializes {@link StyleManager} settings.
      */
     public static synchronized void initialize ()
     {
         if ( !initialized )
         {
-            initialized = true;
-
             // Class aliases
             XmlUtils.processAnnotations ( SkinInfo.class );
             XmlUtils.processAnnotations ( ComponentStyle.class );
@@ -170,6 +170,7 @@ public final class StyleManager
             XmlUtils.processAnnotations ( GradientBackground.class );
             XmlUtils.processAnnotations ( PresetTextureBackground.class );
             XmlUtils.processAnnotations ( AlphaLayerBackground.class );
+            XmlUtils.processAnnotations ( MovingHighlightBackground.class );
             XmlUtils.processAnnotations ( TextureType.class );
             XmlUtils.processAnnotations ( GradientType.class );
             XmlUtils.processAnnotations ( GradientColor.class );
@@ -202,8 +203,12 @@ public final class StyleManager
             XmlUtils.processAnnotations ( StyledLabelTextContent.class );
             XmlUtils.processAnnotations ( MenuItemContentLayout.class );
             XmlUtils.processAnnotations ( AcceleratorTextContent.class );
+            XmlUtils.processAnnotations ( ProgressBarText.class );
             XmlUtils.processAnnotations ( WebHotkeyLabelBackground.class );
             XmlUtils.processAnnotations ( WebMemoryBarBackground.class );
+
+            // Updating initialization mark
+            initialized = true;
 
             // Applying default skin as current skin
             setSkin ( getDefaultSkin () );
@@ -318,6 +323,9 @@ public final class StyleManager
      */
     public static synchronized Skin setSkin ( final Skin skin )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Checking manager initialization
         checkInitialization ();
 
@@ -405,6 +413,9 @@ public final class StyleManager
      */
     public static void addExtensions ( final SkinExtension... extensions )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Iterating through added extensions
         for ( final SkinExtension extension : extensions )
         {
@@ -704,6 +715,9 @@ public final class StyleManager
      */
     protected static StyleData getData ( final JComponent component )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Checking manager initialization
         checkInitialization ();
 

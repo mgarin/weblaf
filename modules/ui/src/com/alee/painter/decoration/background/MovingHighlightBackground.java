@@ -17,7 +17,13 @@
 
 package com.alee.painter.decoration.background;
 
+import com.alee.api.data.Orientation;
+import com.alee.extended.behavior.ComponentVisibilityBehavior;
+import com.alee.global.StyleConstants;
+import com.alee.managers.animation.transition.*;
 import com.alee.painter.decoration.IDecoration;
+import com.alee.utils.GraphicsUtils;
+import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -25,7 +31,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Background with a moving highlight.
+ * Transparent background with a moving highlight.
  *
  * @param <E> component type
  * @param <D> decoration type
@@ -33,10 +39,22 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "MovingHighlightBackground" )
+@XStreamAlias ("MovingHighlightBackground")
 public class MovingHighlightBackground<E extends JComponent, D extends IDecoration<E, D>, I extends MovingHighlightBackground<E, D, I>>
         extends AbstractBackground<E, D, I>
 {
+    /**
+     * Movement orientation.
+     */
+    @XStreamAsAttribute
+    protected Orientation orientation;
+
+    /**
+     * Highlight width.
+     */
+    @XStreamAsAttribute
+    protected Integer width;
+
     /**
      * Highlight color.
      */
@@ -44,13 +62,105 @@ public class MovingHighlightBackground<E extends JComponent, D extends IDecorati
     protected Color color;
 
     /**
-     * Returns highlight color.
-     *
-     * @return highlight color
+     * Amount of highlight passes before delay.
      */
-    protected Color getColor ()
+    @XStreamAsAttribute
+    protected Integer passses;
+
+    /**
+     * Single pass duration.
+     */
+    @XStreamAsAttribute
+    protected String duration;
+
+    /**
+     * Delay between animations.
+     */
+    @XStreamAsAttribute
+    protected String delay;
+
+    /**
+     * Visibility behavior that handles animation.
+     */
+    protected transient ComponentVisibilityBehavior visibilityBehavior;
+
+    /**
+     * Highlight position.
+     */
+    protected transient float position;
+
+    @Override
+    public void activate ( final E c, final D d )
     {
-        return color != null ? color : Color.WHITE;
+        visibilityBehavior = new ComponentVisibilityBehavior ( c, true )
+        {
+            /**
+             * Transition used for background animations.
+             */
+            protected transient QueueTransition transitionsQueue;
+
+            @Override
+            public void displayed ()
+            {
+                // Resetting position
+                position = 0f;
+
+                // Custom transition for background animations
+                transitionsQueue = new QueueTransition ( true );
+
+                // Adding delay if required
+                // Delay is added first to avoid repetitive animation
+                final long del = TextUtils.parseDelay ( delay );
+                if ( del > 0 )
+                {
+                    transitionsQueue.add ( new IdleTransition ( passses % 2 == 0 ? 0f : 1f, del ) );
+                }
+
+                // Adding passes
+                final long dur = TextUtils.parseDelay ( duration );
+                for ( int i = 0; i < passses; i++ )
+                {
+                    final float from = i % 2 == 0 ? 0f : 1f;
+                    final float to = i % 2 == 0 ? 1f : 0f;
+                    transitionsQueue.add ( new TimedTransition<Float> ( from, to, dur ) );
+                }
+
+                // Value update listener
+                transitionsQueue.addListener ( new TransitionAdapter<Float> ()
+                {
+                    @Override
+                    public void adjusted ( final Transition transition, final Float value )
+                    {
+                        position = value;
+                        getComponent ().repaint ();
+                    }
+                } );
+
+                // Playing transition
+                transitionsQueue.play ();
+            }
+
+            @Override
+            public void hidden ()
+            {
+                // Stopping transition
+                transitionsQueue.stop ();
+
+                // Cleaning up resources
+                transitionsQueue = null;
+
+                // Resetting position
+                position = 0f;
+            }
+        };
+        visibilityBehavior.install ();
+    }
+
+    @Override
+    public void deactivate ( final E c, final D d )
+    {
+        visibilityBehavior.uninstall ();
+        visibilityBehavior = null;
     }
 
     @Override
@@ -59,11 +169,42 @@ public class MovingHighlightBackground<E extends JComponent, D extends IDecorati
         final float opacity = getOpacity ();
         if ( opacity > 0 )
         {
-            //            final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
-            //            final Paint op = GraphicsUtils.setupPaint ( g2d, getColor () );
-            //            g2d.fill ( shape );
-            //            GraphicsUtils.restorePaint ( g2d, op );
-            //            GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );
+            final Rectangle b = shape.getBounds ();
+            final Paint paint;
+            if ( orientation.isHorizontal () )
+            {
+                if ( c.getComponentOrientation ().isLeftToRight () )
+                {
+                    paint = new RadialGradientPaint ( b.x - width / 2 + ( b.width + width ) * position, b.y + b.height / 2, width / 2,
+                            new float[]{ 0f, 1f }, new Color[]{ color, StyleConstants.transparent } );
+                }
+                else
+                {
+                    paint = new RadialGradientPaint ( b.x + b.width + width / 2 - ( b.width + width ) * position, b.y + b.height / 2,
+                            width / 2, new float[]{ 0f, 1f }, new Color[]{ color, StyleConstants.transparent } );
+                }
+            }
+            else
+            {
+                if ( c.getComponentOrientation ().isLeftToRight () )
+                {
+                    paint = new RadialGradientPaint ( b.x + b.width / 2, b.y + b.height + width / 2 - ( b.height + width ) * position,
+                            width / 2, new float[]{ 0f, 1f }, new Color[]{ color, StyleConstants.transparent } );
+                }
+                else
+                {
+                    paint = new RadialGradientPaint ( b.x + b.width / 2, b.y - width / 2 + ( b.height + width ) * position, width / 2,
+                            new float[]{ 0f, 1f }, new Color[]{ color, StyleConstants.transparent } );
+                }
+            }
+
+            final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
+            final Paint op = GraphicsUtils.setupPaint ( g2d, paint );
+
+            g2d.fillRect ( b.x, b.y, b.width, b.height );
+
+            GraphicsUtils.restorePaint ( g2d, op );
+            GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );
         }
     }
 
@@ -71,7 +212,12 @@ public class MovingHighlightBackground<E extends JComponent, D extends IDecorati
     public I merge ( final I background )
     {
         super.merge ( background );
-        color = background.color != null ? background.color : color;
+        orientation = background.isOverwrite () || background.orientation != null ? background.orientation : orientation;
+        width = background.isOverwrite () || background.width != null ? background.width : width;
+        color = background.isOverwrite () || background.color != null ? background.color : color;
+        passses = background.isOverwrite () || background.passses != null ? background.passses : passses;
+        duration = background.isOverwrite () || background.duration != null ? background.duration : duration;
+        delay = background.isOverwrite () || background.delay != null ? background.delay : delay;
         return ( I ) this;
     }
 }

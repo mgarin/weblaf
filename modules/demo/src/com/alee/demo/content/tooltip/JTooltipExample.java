@@ -32,7 +32,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class JTooltipExample extends AbstractExample
+public class JTooltipExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()

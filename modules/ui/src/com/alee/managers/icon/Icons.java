@@ -52,6 +52,10 @@ public final class Icons
     public static final LazyIcon globeHover = new LazyIcon ( "globe-hover" );
     public static final LazyIcon email = new LazyIcon ( "email" );
     public static final LazyIcon emailHover = new LazyIcon ( "email-hover" );
+    public static final LazyIcon broken = new LazyIcon ( "broken" );
+    public static final LazyIcon brokenHover = new LazyIcon ( "broken-hover" );
+    public static final LazyIcon hourglass = new LazyIcon ( "hourglass" );
+    public static final LazyIcon hourglassHover = new LazyIcon ( "hourglass-hover" );
 
     /**
      * Medium arrow icons.

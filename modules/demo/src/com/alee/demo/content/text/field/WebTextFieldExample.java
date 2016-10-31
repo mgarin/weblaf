@@ -32,7 +32,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebTextFieldExample extends AbstractExample
+public class WebTextFieldExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()
