@@ -24,7 +24,7 @@ package com.alee.api;
  * @author Mikle Garin
  */
 
-public interface Overwritable
+public interface Overwriting
 {
     /**
      * Returns whether or not this object should overwrite previous one when merged.
