@@ -76,17 +76,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeSupport
         StyleManager.installSkin ( header );
 
         // Default renderer
-        header.setDefaultRenderer ( new WebTableHeaderCellRenderer ()
-        {
-            @Override
-            public Component getTableCellRendererComponent ( final JTable table, final Object value, final boolean isSelected,
-                                                             final boolean hasFocus, final int row, final int column )
-            {
-                final JLabel renderer = ( JLabel ) super.getTableCellRendererComponent ( table, value, isSelected, hasFocus, row, column );
-                renderer.setHorizontalAlignment ( JLabel.CENTER );
-                return renderer;
-            }
-        } );
+        header.setDefaultRenderer ( new WebTableHeaderCellRenderer () );
     }
 
     /**

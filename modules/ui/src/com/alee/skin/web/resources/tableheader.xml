@@ -8,7 +8,7 @@
             <opaque>true</opaque>
         </component>
         <painter>
-            <headerHeight>20</headerHeight>
+            <headerHeight>22</headerHeight>
             <topLineColor>232,234,235</topLineColor>
             <bottomLineColor>104,104,104</bottomLineColor>
             <topBgColor>226,226,226</topBgColor>
