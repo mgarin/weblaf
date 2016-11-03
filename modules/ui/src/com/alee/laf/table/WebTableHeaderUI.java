@@ -163,6 +163,9 @@ public class WebTableHeaderUI extends BasicTableHeaderUI
             // Header cell
             paintCell ( g, draggedCellRect, draggedColumnIndex, draggedColumn, draggedColumn, cm );
         }
+
+        // Remove all components in the rendererPane.
+        rendererPane.removeAll();
     }
 
     public static Paint createBackgroundPaint ( final int x1, final int y1, final int x2, final int y2 )
