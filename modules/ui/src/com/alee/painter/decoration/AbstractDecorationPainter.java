@@ -767,6 +767,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
 
                         // Filling decoration states with all current states
                         // This is required so that decoration correctly stores all states, not just ones it uses
+                        // todo Probably this is pointless now as it may store wrong states, not exactly ones it is displayed for
                         decoration.updateStates ( CollectionUtils.copy ( states ) );
                     }
 

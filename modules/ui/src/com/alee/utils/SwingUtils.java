@@ -32,7 +32,6 @@ import com.alee.utils.swing.extensions.SizeMethods;
 
 import javax.swing.*;
 import javax.swing.FocusManager;
-import javax.swing.border.Border;
 import javax.swing.event.AncestorListener;
 import javax.swing.plaf.UIResource;
 import javax.swing.table.DefaultTableColumnModel;
@@ -189,14 +188,14 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Returns whether or not specified border is a UI resource.
+     * Returns whether or not specified value is a UI resource.
      *
-     * @param border border to process
-     * @return true if specified border is a UI resource, false otherwise
+     * @param value value {@link Object} to process
+     * @return {@code true} if specified value is a UI resource, {@code false} otherwise
      */
-    public static boolean isUIResource ( final Border border )
+    public static boolean isUIResource ( final Object value )
     {
-        return border == null || border instanceof UIResource;
+        return value == null || value instanceof UIResource;
     }
 
     /**

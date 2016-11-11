@@ -51,7 +51,7 @@ public class SeparatorContent<E extends JSeparator, D extends IDecoration<E, D>,
     @Override
     protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
-        lines.paint ( g2d, bounds, c.getOrientation (), c.getComponentOrientation ().isLeftToRight () );
+        lines.paint ( g2d, bounds, c.getOrientation (), isLeftToRight ( c, d ) );
     }
 
     @Override

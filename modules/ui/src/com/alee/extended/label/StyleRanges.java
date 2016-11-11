@@ -86,59 +86,66 @@ public class StyleRanges implements IStyleRanges
     protected StyleRanges parseStyledText ()
     {
         // Parse only if it is needed and it wasn't already completed
-        if ( !TextUtils.isEmpty ( styledText ) && plainText == null )
+        if ( styleRanges == null )
         {
             styleRanges = new ArrayList<StyleRange> ();
-            int begin = nextUnescaped ( styledText, "{", 0 );
-            if ( begin != -1 )
+            if ( !TextUtils.isEmpty ( styledText ) )
             {
-                plainText = "";
-                String trimmedText = styledText;
-                while ( begin != -1 )
+                int begin = nextUnescaped ( styledText, "{", 0 );
+                if ( begin != -1 )
                 {
-                    final int end = nextUnescaped ( trimmedText, "}", begin + 1 );
-                    if ( end != -1 )
+                    plainText = "";
+                    String trimmedText = styledText;
+                    while ( begin != -1 )
                     {
-                        // Clipping statement
-                        final String statement = trimmedText.substring ( begin + 1, end );
-                        if ( statement.equals ( "br" ) )
+                        final int end = nextUnescaped ( trimmedText, "}", begin + 1 );
+                        if ( end != -1 )
                         {
-                            // Adding linebreak and proceeding
-                            plainText += trimmedText.substring ( 0, begin ) + "\n";
-                        }
-                        else
-                        {
-                            // Parsing possible style syntax
-                            final TextRange range = parseStatement ( plainText.length () + begin, statement );
-                            if ( range != null && range.getStyleRange () != null )
+                            // Clipping statement
+                            final String statement = trimmedText.substring ( begin + 1, end );
+                            if ( statement.equals ( "br" ) )
                             {
-                                // Adding text and style range
-                                plainText += trimmedText.substring ( 0, begin ) + range.getText ();
-                                styleRanges.add ( range.getStyleRange () );
+                                // Adding linebreak and proceeding
+                                plainText += trimmedText.substring ( 0, begin ) + "\n";
                             }
                             else
                             {
-                                // Adding plain text
-                                plainText += trimmedText.substring ( 0, begin ) + statement;
+                                // Parsing possible style syntax
+                                final TextRange range = parseStatement ( plainText.length () + begin, statement );
+                                if ( range != null && range.getStyleRange () != null )
+                                {
+                                    // Adding text and style range
+                                    plainText += trimmedText.substring ( 0, begin ) + range.getText ();
+                                    styleRanges.add ( range.getStyleRange () );
+                                }
+                                else
+                                {
+                                    // Adding plain text
+                                    plainText += trimmedText.substring ( 0, begin ) + statement;
+                                }
                             }
-                        }
 
-                        // Continue to next
-                        trimmedText = trimmedText.substring ( end + 1 );
-                        begin = nextUnescaped ( trimmedText, "{", 0 );
+                            // Continue to next
+                            trimmedText = trimmedText.substring ( end + 1 );
+                            begin = nextUnescaped ( trimmedText, "{", 0 );
+                        }
+                        else
+                        {
+                            // Something wrong with the syntax
+                            // Abort parsing and add the rest as plain text
+                            break;
+                        }
                     }
-                    else
-                    {
-                        // Something wrong with the syntax
-                        // Abort parsing and add the rest as plain text
-                        break;
-                    }
+                    plainText += trimmedText;
                 }
-                plainText += trimmedText;
+                else
+                {
+                    plainText = styledText;
+                }
             }
             else
             {
-                plainText = styledText;
+                plainText = null;
             }
         }
         return this;

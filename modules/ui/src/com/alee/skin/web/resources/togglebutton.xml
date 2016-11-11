@@ -49,7 +49,6 @@
             <decorations>
                 <decoration>
                     <ButtonLayout>
-                        <ButtonIcon constraints="icon" />
                         <StyledButtonText constraints="text" color="black" />
                     </ButtonLayout>
                 </decoration>

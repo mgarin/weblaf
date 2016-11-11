@@ -17,20 +17,16 @@
 
 package com.alee.laf.tooltip;
 
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicHTML;
-import javax.swing.plaf.basic.BasicToolTipUI;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * Custom UI for {@link JToolTip} component.
@@ -38,18 +34,13 @@ import java.beans.PropertyChangeListener;
  * @author Mikle Garin
  */
 
-public class WebToolTipUI extends BasicToolTipUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebToolTipUI extends WToolTipUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter (ToolTipPainter.class)
+    @DefaultPainter ( ToolTipPainter.class )
     protected IToolTipPainter painter;
-
-    /**
-     * Base listeners.
-     */
-    protected PropertyChangeListener propertyChangeListener;
 
     /**
      * Runtime variables.
@@ -79,36 +70,14 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeSupport, Margin
     @Override
     public void installUI ( final JComponent c )
     {
-        super.installUI ( c );
-
         // Saving tooltip to local variable
         tooltip = c;
 
+        // Installing default component settings
+        installDefaults ( c );
+
         // Applying skin
         StyleManager.installSkin ( tooltip );
-    }
-
-    @Override
-    protected void installListeners ( final JComponent c )
-    {
-        propertyChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent e )
-            {
-                final String name = e.getPropertyName ();
-                if ( name.equals ( WebLookAndFeel.TIP_TEXT_PROPERTY ) || name.equals ( WebLookAndFeel.FONT_PROPERTY ) ||
-                        name.equals ( WebLookAndFeel.FOREGROUND_PROPERTY ) )
-                {
-                    // Remove the old html view client property if one existed
-                    // Install a new one if the text installed into the JLabel is html source
-                    final JToolTip tip = ( JToolTip ) e.getSource ();
-                    final String text = tip.getTipText ();
-                    BasicHTML.updateRenderer ( tip, text );
-                }
-            }
-        };
-        c.addPropertyChangeListener ( propertyChangeListener );
     }
 
     /**
@@ -122,17 +91,34 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeSupport, Margin
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( tooltip );
 
+        // Uninstalling default component settings
+        uninstallDefaults ( c );
+
         // Cleaning up reference
         this.tooltip = null;
-
-        // Uninstalling UI
-        super.uninstallUI ( c );
     }
 
-    @Override
-    protected void uninstallListeners ( final JComponent c )
+    /**
+     * Installs default component settings.
+     *
+     * @param c component for this UI
+     */
+    protected void installDefaults ( final JComponent c )
     {
-        c.removePropertyChangeListener ( propertyChangeListener );
+        if ( SwingUtils.isUIResource ( c.getFont () ) )
+        {
+            c.setFont ( UIManager.getFont ( "ToolTip.font" ) );
+        }
+    }
+
+    /**
+     * Uninstalls default component settings.
+     *
+     * @param c component for this UI
+     */
+    protected void uninstallDefaults ( final JComponent c )
+    {
+        LookAndFeel.uninstallBorder ( c );
     }
 
     @Override

@@ -39,6 +39,7 @@ import java.awt.geom.AffineTransform;
  * @author Alexandr Zernov
  */
 
+@SuppressWarnings ( "UnusedParameters" )
 public abstract class AbstractContent<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractContent<E, D, I>>
         implements IContent<E, D, I>
 {
@@ -134,7 +135,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
     {
         if ( padding != null )
         {
-            final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
+            final boolean ltr = isLeftToRight ( c, d );
             return new Insets ( padding.top, ltr ? padding.left : padding.right, padding.bottom, ltr ? padding.right : padding.left );
         }
         else
@@ -181,7 +182,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
         if ( bounds.width > 0 && bounds.height > 0 && !isEmpty ( c, d ) )
         {
             // Proper content clipping
-//            final Shape os = GraphicsUtils.intersectClip ( g2d, bounds );
+            final Shape os = GraphicsUtils.intersectClip ( g2d, bounds );
 
             // Content opacity
             final float opacity = getOpacity ( c, d );
@@ -232,7 +233,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
             GraphicsUtils.restoreComposite ( g2d, oc );
 
             // Restoring clip area
-//            GraphicsUtils.restoreClip ( g2d, os );
+            GraphicsUtils.restoreClip ( g2d, os );
         }
     }
 
@@ -285,7 +286,19 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
     protected Rotation getActualRotation ( final E c, final D d )
     {
         final Rotation tr = getRotation ( c, d );
-        return c.getComponentOrientation ().isLeftToRight () ? tr : tr.rightToLeft ();
+        return isLeftToRight ( c, d ) ? tr : tr.rightToLeft ();
+    }
+
+    /**
+     * Returns whether or not component has LTR orientation.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return {@code true} if component has LTR orientation, {@code false} if it has RTL orientation
+     */
+    protected boolean isLeftToRight ( final E c, final D d )
+    {
+        return c.getComponentOrientation ().isLeftToRight ();
     }
 
     @Override

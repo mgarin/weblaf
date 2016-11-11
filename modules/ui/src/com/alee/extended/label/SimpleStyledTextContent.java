@@ -18,6 +18,7 @@
 package com.alee.extended.label;
 
 import com.alee.painter.decoration.IDecoration;
+import com.alee.painter.decoration.content.ContentPropertyListener;
 import com.alee.utils.SwingUtils;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -37,7 +38,7 @@ import java.util.List;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  */
 
-@SuppressWarnings ( "UnusedParameters" )
+@SuppressWarnings ("UnusedParameters")
 public abstract class SimpleStyledTextContent<E extends JComponent, D extends IDecoration<E, D>, I extends SimpleStyledTextContent<E, D, I>>
         extends AbstractStyledTextContent<E, D, I>
 {
@@ -63,6 +64,11 @@ public abstract class SimpleStyledTextContent<E extends JComponent, D extends ID
      */
     protected transient Integer mnemonicIndex;
 
+    /**
+     * Component property change listener.
+     */
+    protected transient ContentPropertyListener<E, D> contentListener;
+
     @Override
     public void activate ( final E c, final D d )
     {
@@ -71,11 +77,17 @@ public abstract class SimpleStyledTextContent<E extends JComponent, D extends ID
 
         // Performing default actions
         super.activate ( c, d );
+
+        // Installing content property listener
+        installContentPropertyListener ( c, d );
     }
 
     @Override
     public void deactivate ( final E c, final D d )
     {
+        // Uninstalling content property listener
+        uninstallContentPropertyListener ( c, d );
+
         // Performing default actions
         super.deactivate ( c, d );
 
@@ -113,6 +125,55 @@ public abstract class SimpleStyledTextContent<E extends JComponent, D extends ID
         // Resetting style ranges
         styleRanges = null;
     }
+
+    /**
+     * Installs content property listener.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     */
+    protected void installContentPropertyListener ( final E c, final D d )
+    {
+        // Adding text change listener
+        final String property = getStyledTextProperty ();
+        if ( property != null )
+        {
+            contentListener = new ContentPropertyListener<E, D> ( c, d )
+            {
+                @Override
+                public void propertyChange ( final E c, final D d, final String property, final Object oldValue, final Object newValue )
+                {
+                    updateContentCache ( c, d );
+                }
+            };
+            c.addPropertyChangeListener ( property, contentListener );
+        }
+    }
+
+    /**
+     * Uninstalls content property listener.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     */
+    protected void uninstallContentPropertyListener ( final E c, final D d )
+    {
+        // Removing text change listener
+        final String property = getStyledTextProperty ();
+        if ( property != null )
+        {
+            c.removePropertyChangeListener ( property, contentListener );
+            contentListener = null;
+        }
+    }
+
+    /**
+     * Returns name of the property that contains styled text.
+     * It is used for registering content property listener that updates style caches.
+     *
+     * @return name of the property that contains styled text
+     */
+    protected abstract String getStyledTextProperty ();
 
     /**
      * Performs style caches update.

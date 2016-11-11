@@ -34,6 +34,10 @@ import java.util.List;
  * Then you can use {@link StyleManager#setDefaultSkin(Class)} or {@link StyleManager#setDefaultSkin(String)} methods to provide it.
  * You can also initialize WebLaF directly using your skin through one of {@link com.alee.laf.WebLookAndFeel} static install methods.
  *
+ * Existing full skin implementations are:
+ * {@link com.alee.skin.web.WebSkin}
+ * {@link com.alee.skin.dark.DarkSkin}
+ *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.StyleManager

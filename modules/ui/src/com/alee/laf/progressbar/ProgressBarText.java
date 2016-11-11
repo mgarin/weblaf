@@ -22,7 +22,6 @@ import com.alee.painter.decoration.content.AbstractTextContent;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import javax.swing.*;
-import javax.swing.text.View;
 
 /**
  * Progress bar text content implementation.
@@ -41,18 +40,6 @@ public class ProgressBarText<E extends JProgressBar, D extends IDecoration<E, D>
     public boolean isEmpty ( final E c, final D d )
     {
         return !c.isStringPainted () || super.isEmpty ( c, d );
-    }
-
-    @Override
-    protected boolean isHtmlText ( final E c, final D d )
-    {
-        return false;
-    }
-
-    @Override
-    protected View getHtml ( final E c, final D d )
-    {
-        return null;
     }
 
     @Override

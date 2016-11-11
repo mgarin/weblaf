@@ -9,8 +9,8 @@
                 <decoration>
                     <WebShape round="2" />
                     <LineBorder color="black" />
-                    <ColorBackground color="black" />
-                    <ToolTipText padding="2,4,2,4" color="245,245,245" />
+                    <ColorBackground color="223,223,223" />
+                    <ToolTipText padding="2,4,2,4" color="black" />
                 </decoration>
             </decorations>
         </painter>
@@ -21,7 +21,7 @@
         <painter>
             <decorations>
                 <decoration>
-                    <StyledToolTipText padding="2,4,2,4" color="245,245,245" />
+                    <StyledToolTipText padding="2,4,2,4" color="black" />
                 </decoration>
             </decorations>
         </painter>

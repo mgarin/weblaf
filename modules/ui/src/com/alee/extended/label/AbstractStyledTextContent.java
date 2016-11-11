@@ -17,6 +17,7 @@
 
 package com.alee.extended.label;
 
+import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractTextContent;
 import com.alee.utils.*;
@@ -45,6 +46,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
     /**
      * todo 1. Implement minimum rows count
      * todo 2. Implement custom colors for custom style elements
+     * todo 3. Implement different fonts for text parts
      */
 
     /**
@@ -223,9 +225,12 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
     {
         if ( textRanges != null )
         {
+            // Text rows gap
+            final int rg = Math.max ( 0, getRowGap ( c, d ) );
+
+            // Calculating text bounds coordinates
             final int x = bounds.x;
             int y = bounds.y;
-            final int rg = Math.max ( 0, getRowGap ( c, d ) );
 
             // Layout the text
             final List<StyledTextRow> rows = layout ( c, d, bounds );
@@ -243,17 +248,24 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
                         th += row.height + rg;
                     }
 
+                    // Adjusting vertical position according to alignment
                     if ( th < bounds.height )
                     {
                         switch ( va )
                         {
+                            case TOP:
+                                break;
+
                             case CENTER:
-                                y += ( bounds.height - th ) / 2;
+                                y += Math.ceil ( ( bounds.height - th ) / 2.0 );
                                 break;
 
                             case BOTTOM:
                                 y += bounds.height - th;
                                 break;
+
+                            default:
+                                throw new DecorationException ( "Incorrect vertical alignment provided: " + va );
                         }
                     }
                 }
@@ -498,38 +510,37 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
     protected void paintRow ( final E c, final D d, final Graphics2D g2d, final Rectangle bounds, final int textX, final int textY,
                               final StyledTextRow row, final boolean isLast )
     {
-        int horizontalAlignment = getHorizontalAlignment ( c, d );
-        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
-        if ( ( horizontalAlignment == SwingConstants.TRAILING && !ltr ) || ( horizontalAlignment == SwingConstants.LEADING && ltr ) )
-        {
-            horizontalAlignment = SwingConstants.LEFT;
-        }
-        else if ( ( horizontalAlignment == SwingConstants.LEADING && !ltr ) || ( horizontalAlignment == SwingConstants.TRAILING && ltr ) )
-        {
-            horizontalAlignment = SwingConstants.RIGHT;
-        }
-
-        int x = textX;
-
-        if ( bounds.width > row.width )
-        {
-            switch ( horizontalAlignment )
-            {
-                case CENTER:
-                    x += ( bounds.width - row.width ) / 2;
-                    break;
-                case RIGHT:
-                    x += bounds.width - row.width;
-            }
-        }
-
+        // Painting settings
         final Font font = c.getFont ();
         final int defaultFontSize = font.getSize ();
         final FontMetrics fm = c.getFontMetrics ( font );
         final TextWrap wt = getWrapType ( c, d );
-        final boolean truncated = isTruncated ( c, d );
-        int charDisplayed = 0;
+        final int ha = getAdjustedHorizontalAlignment ( c, d );
 
+        // Calculating text X coordinate
+        int x = textX;
+        if ( bounds.width > row.width )
+        {
+            switch ( ha )
+            {
+                case LEFT:
+                    break;
+
+                case CENTER:
+                    x += Math.floor ( ( bounds.width - row.width ) / 2.0 );
+                    break;
+
+                case RIGHT:
+                    x += bounds.width - row.width;
+                    break;
+
+                default:
+                    throw new DecorationException ( "Incorrect horizontal alignment provided: " + ha );
+            }
+        }
+
+        // Painting styled text fragments
+        int charDisplayed = 0;
         for ( final TextRange textRange : row.fragments )
         {
             final StyleRange style = textRange.getStyleRange ();
@@ -550,20 +561,28 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
             final int strWidth = cfm.stringWidth ( s );
 
             // Checking mnemonic
-            int mneIndex = -1;
+            int mnemonicIndex = -1;
             if ( row.mnemonic >= 0 && row.mnemonic < charDisplayed + s.length () )
             {
-                mneIndex = row.mnemonic - charDisplayed;
+                mnemonicIndex = row.mnemonic - charDisplayed;
             }
 
-            // Checking trim needs
-            final int availableWidth = bounds.width + bounds.x - x;
-            if ( truncated && availableWidth < strWidth &&
-                    ( wt == TextWrap.none || wt == TextWrap.word || isLast ) )
+            // Checking whether or not text should be truncated
+            final boolean truncated;
+            if ( isTruncate ( c, d ) )
             {
-                // Clip string
-                s = SwingUtilities.layoutCompoundLabel ( cfm, s, null, 0, horizontalAlignment, 0, 0,
-                        new Rectangle ( x, y, availableWidth, bounds.height ), new Rectangle (), new Rectangle (), 0 );
+                final int availableWidth = bounds.width + bounds.x - x;
+                truncated = availableWidth < strWidth && ( wt == TextWrap.none || wt == TextWrap.word || isLast );
+                if ( truncated )
+                {
+                    // Clip string
+                    s = SwingUtilities.layoutCompoundLabel ( cfm, s, null, 0, ha, 0, 0,
+                            new Rectangle ( x, y, availableWidth, bounds.height ), new Rectangle (), new Rectangle (), 0 );
+                }
+            }
+            else
+            {
+                truncated = false;
             }
 
             // Starting of actual painting
@@ -590,7 +609,14 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
             final boolean useStyleForeground = style != null && !isIgnoreColorSettings ( c, d ) && style.getForeground () != null;
             final Color textColor = useStyleForeground ? style.getForeground () : getColor ( c, d );
             g2d.setPaint ( textColor );
-            paintStyledTextFragment ( c, d, g2d, s, x, y, mneIndex, cfm, style, strWidth );
+            paintStyledTextFragment ( c, d, g2d, s, x, y, mnemonicIndex, cfm, style, strWidth );
+
+            // Stop on truncated part
+            // Otherwise we might end up having two truncated parts
+            if ( truncated )
+            {
+                break;
+            }
 
             x += strWidth;
             charDisplayed += s.length ();

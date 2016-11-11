@@ -18,15 +18,13 @@
 package com.alee.painter.decoration.content;
 
 import com.alee.managers.style.StyleException;
+import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.ColorUtils;
-import com.alee.utils.GraphicsUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.TextUtils;
+import com.alee.utils.*;
+import com.alee.utils.swing.BasicHTML;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
-import javax.swing.plaf.UIResource;
 import javax.swing.text.View;
 import java.awt.*;
 import java.util.Map;
@@ -41,7 +39,7 @@ import java.util.Map;
  * @author Alexandr Zernov
  */
 
-@SuppressWarnings ("UnusedParameters")
+@SuppressWarnings ( "UnusedParameters" )
 public abstract class AbstractTextContent<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractTextContent<E, D, I>>
         extends AbstractContent<E, D, I> implements SwingConstants
 {
@@ -93,6 +91,26 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     @XStreamAsAttribute
     protected Integer shadowSize;
 
+    /**
+     * Cached HTML {@link View} settings.
+     * This is runtime-only field that should not be serialized.
+     * It is also generated automatically on demand if missing.
+     *
+     * @see #getHtml(javax.swing.JComponent, com.alee.painter.decoration.IDecoration)
+     * @see #cleanupHtml(javax.swing.JComponent, com.alee.painter.decoration.IDecoration)
+     */
+    protected transient String htmlSettings;
+
+    /**
+     * Cached HTML {@link View}.
+     * This is runtime-only field that should not be serialized.
+     * It is also generated automatically on demand if missing.
+     *
+     * @see #getHtml(javax.swing.JComponent, com.alee.painter.decoration.IDecoration)
+     * @see #cleanupHtml(javax.swing.JComponent, com.alee.painter.decoration.IDecoration)
+     */
+    protected transient View htmlView;
+
     @Override
     public String getId ()
     {
@@ -103,6 +121,16 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     public boolean isEmpty ( final E c, final D d )
     {
         return TextUtils.isEmpty ( getText ( c, d ) );
+    }
+
+    @Override
+    public void deactivate ( final E c, final D d )
+    {
+        // Performing default actions
+        super.deactivate ( c, d );
+
+        // Cleaning up HTML caches
+        cleanupHtml ( c, d );
     }
 
     /**
@@ -116,6 +144,30 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     }
 
     /**
+     * Returns text font.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return text font
+     */
+    protected Font getFont ( final E c, final D d )
+    {
+        return c.getFont ();
+    }
+
+    /**
+     * Returns text font metrics.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return text font metrics
+     */
+    protected FontMetrics getFontMetrics ( final E c, final D d )
+    {
+        return c.getFontMetrics ( getFont ( c, d ) );
+    }
+
+    /**
      * Returns text foreground color.
      *
      * @param c painted component
@@ -126,7 +178,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     {
         // This {@link javax.swing.plaf.UIResource} check allows us to ignore such colors in favor of style ones
         // But this will not ignore any normal color set from the code as this component foreground
-        return color != null && c.getForeground () instanceof UIResource ? color : c.getForeground ();
+        return color != null && SwingUtils.isUIResource ( c.getForeground () ) ? color : c.getForeground ();
     }
 
     /**
@@ -138,7 +190,42 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      */
     protected int getHorizontalAlignment ( final E c, final D d )
     {
-        return halign != null ? halign : LEADING;
+        final int alignment = halign != null ? halign : LEADING;
+        if ( alignment == LEADING )
+        {
+            return isLeftToRight ( c, d ) ? LEFT : RIGHT;
+        }
+        else if ( alignment == TRAILING )
+        {
+            return isLeftToRight ( c, d ) ? RIGHT : LEFT;
+        }
+        else
+        {
+            return alignment;
+        }
+    }
+
+    /**
+     * Returns text horizontal alignment adjusted according to the component orientation.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return text horizontal alignment
+     */
+    protected int getAdjustedHorizontalAlignment ( final E c, final D d )
+    {
+        final int alignment = getHorizontalAlignment ( c, d );
+        switch ( alignment )
+        {
+            case LEADING:
+                return isLeftToRight ( c, d ) ? LEFT : RIGHT;
+
+            case TRAILING:
+                return isLeftToRight ( c, d ) ? RIGHT : LEFT;
+
+            default:
+                return alignment;
+        }
     }
 
     /**
@@ -160,7 +247,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param d painted decoration state
      * @return true if text should be truncated when it gets outside of the available bounds, false otherwise
      */
-    protected boolean isTruncated ( final E c, final D d )
+    protected boolean isTruncate ( final E c, final D d )
     {
         return truncate == null || truncate;
     }
@@ -210,13 +297,26 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     }
 
     /**
-     * Returns whether or not text contains HTML text.
+     * Returns whether or not text contains HTML.
      *
      * @param c painted component
      * @param d painted decoration state
-     * @return true if text contains HTML text, false otherwise
+     * @return true if text contains HTML, false otherwise
      */
-    protected abstract boolean isHtmlText ( E c, D d );
+    protected boolean isHtmlText ( final E c, final D d )
+    {
+        // Determining whether or not text contains HTML
+        final String text = getText ( c, d );
+        final boolean html = BasicHTML.isHTMLString ( c, text );
+
+        // Cleaning up HTML caches
+        if ( !html )
+        {
+            cleanupHtml ( c, d );
+        }
+
+        return html;
+    }
 
     /**
      * Returns HTML text view to be painted.
@@ -225,7 +325,38 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param d painted decoration state
      * @return HTML text view to be painted
      */
-    protected abstract View getHtml ( E c, D d );
+    protected View getHtml ( final E c, final D d )
+    {
+        // HTML content settings
+        final String text = getText ( c, d );
+        final Font defaultFont = getFont ( c, d );
+        final Color foreground = getColor ( c, d );
+
+        // HTML view settings
+        final String settings = text + ";" + defaultFont + ";" + foreground;
+
+        // Updating HTML view if needed
+        if ( htmlView == null || !CompareUtils.equals ( htmlSettings, settings ) )
+        {
+            htmlSettings = settings;
+            htmlView = BasicHTML.createHTMLView ( c, text, defaultFont, foreground );
+        }
+
+        // Return cached HTML view
+        return htmlView;
+    }
+
+    /**
+     * Cleans up HTML text view caches.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     */
+    protected void cleanupHtml ( final E c, final D d )
+    {
+        htmlSettings = null;
+        htmlView = null;
+    }
 
     /**
      * Returns text to be painted.
@@ -252,11 +383,14 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
         if ( !isEmpty ( c, d ) )
         {
             // Applying graphics settings
-            final Font oldFont = GraphicsUtils.setupFont ( g2d, c.getFont () );
+            final Font oldFont = GraphicsUtils.setupFont ( g2d, getFont ( c, d ) );
 
             // Installing text antialias settings
             final TextRasterization rasterization = getRasterization ();
             final Map oldHints = SwingUtils.setupTextAntialias ( g2d, rasterization );
+
+            // Paint color
+            final Paint op = GraphicsUtils.setupPaint ( g2d, getColor ( c, d ) );
 
             // Painting either HTML or plain text
             if ( isHtmlText ( c, d ) )
@@ -271,6 +405,9 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
                 paintText ( g2d, bounds, c, d );
             }
 
+            // Restoring paint color
+            GraphicsUtils.restorePaint ( g2d, op );
+
             // Restoring text antialias settings
             SwingUtils.restoreTextAntialias ( g2d, oldHints );
 
@@ -281,11 +418,13 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
 
     /**
      * Paints HTML text view.
+     * Note that HTML text is usually not affected by the graphics paint settings as it defines its own one inside.
+     * This is why custom {@link com.alee.utils.swing.BasicHTML} class exists to provide proper body text color upon view creation.
      *
      * @param g2d    graphics context
      * @param bounds painting bounds
      * @param c      painted component
-     * @param d      painted decoration state                  e
+     * @param d      painted decoration state
      */
     protected void paintHtml ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
@@ -302,24 +441,27 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      */
     protected void paintText ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
-        final Paint op = GraphicsUtils.setupPaint ( g2d, getColor ( c, d ) );
+        // Painting settings
         final String text = getText ( c, d );
-
         final int mnemIndex = getMnemonicIndex ( c, d );
-        final FontMetrics fm = c.getFontMetrics ( c.getFont () );
+        final FontMetrics fm = getFontMetrics ( c, d );
         final int va = getVerticalAlignment ( c, d );
-        int ha = getHorizontalAlignment ( c, d );
-        final boolean truncated = isTruncated ( c, d );
+        final int ha = getAdjustedHorizontalAlignment ( c, d );
         final int tw = fm.stringWidth ( text );
 
+        // Calculating text coordinates
         int textX = bounds.x;
         int textY = bounds.y;
 
         // Adjusting coordinates according to vertical alignment
         switch ( va )
         {
+            case TOP:
+                textY += fm.getAscent ();
+                break;
+
             case CENTER:
-                textY += ( bounds.height + fm.getAscent () - fm.getLeading () - fm.getDescent () ) / 2;
+                textY += Math.ceil ( ( bounds.height + fm.getAscent () - fm.getLeading () - fm.getDescent () ) / 2.0 );
                 break;
 
             case BOTTOM:
@@ -327,42 +469,36 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
                 break;
 
             default:
-                textY += fm.getAscent ();
+                throw new DecorationException ( "Incorrect vertical alignment provided: " + va );
         }
 
         // Adjusting coordinates according to horizontal alignment
         if ( tw < bounds.width )
         {
-            final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
-            if ( ltr ? ha == LEADING : ha == TRAILING )
-            {
-                ha = SwingConstants.LEFT;
-            }
-            else if ( ltr ? ha == TRAILING : ha == LEADING )
-            {
-                ha = SwingConstants.RIGHT;
-            }
-
             switch ( ha )
             {
+                case LEFT:
+                    break;
+
                 case CENTER:
-                    textX += ( bounds.width - tw ) / 2;
+                    textX += Math.floor ( ( bounds.width - tw ) / 2.0 );
                     break;
 
                 case RIGHT:
                     textX += bounds.width - tw;
                     break;
+
+                default:
+                    throw new DecorationException ( "Incorrect horizontal alignment provided: " + ha );
             }
         }
 
         // Clipping text if needed
-        final String paintedText = truncated && bounds.width < tw ?
+        final String paintedText = isTruncate ( c, d ) && bounds.width < tw ?
                 SwingUtilities.layoutCompoundLabel ( fm, text, null, 0, ha, 0, 0, bounds, new Rectangle (), new Rectangle (), 0 ) : text;
 
         // Painting text
         paintTextFragment ( c, d, g2d, paintedText, textX, textY, mnemIndex );
-
-        GraphicsUtils.restorePaint ( g2d, op );
     }
 
     /**
@@ -494,7 +630,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     {
         if ( mnemonicIndex >= 0 && mnemonicIndex < text.length () )
         {
-            final FontMetrics fm = g2d.getFontMetrics ();
+            final FontMetrics fm = getFontMetrics ( c, d );
             g2d.fillRect ( textX + fm.stringWidth ( text.substring ( 0, mnemonicIndex ) ), textY + fm.getDescent () - 1,
                     fm.charWidth ( text.charAt ( mnemonicIndex ) ), 1 );
         }
@@ -538,7 +674,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     protected Dimension getPreferredTextSize ( final E c, final D d, final Dimension available )
     {
         final String text = getText ( c, d );
-        final FontMetrics fm = c.getFontMetrics ( c.getFont () );
+        final FontMetrics fm = getFontMetrics ( c, d );
         return new Dimension ( SwingUtils.stringWidth ( fm, text ), fm.getHeight () );
     }
 

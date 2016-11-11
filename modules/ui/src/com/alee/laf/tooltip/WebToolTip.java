@@ -213,10 +213,31 @@ public class WebToolTip extends JToolTip
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WToolTipUI} object that renders this component
+     */
+    @Override
+    public WToolTipUI getUI ()
+    {
+        return ( WToolTipUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WToolTipUI}
+     */
+    public void setUI ( final WToolTipUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebToolTipUI ) )
+        if ( getUI () == null || !( getUI () instanceof WToolTipUI ) )
         {
             try
             {

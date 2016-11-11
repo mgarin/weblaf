@@ -21,8 +21,6 @@ import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.ContentPropertyListener;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
-import javax.swing.plaf.basic.BasicHTML;
-import javax.swing.text.View;
 import java.util.List;
 
 /**
@@ -90,18 +88,6 @@ public class StyledLabelTextContent<E extends WebStyledLabel, D extends IDecorat
     protected int getMaximumRows ( final E c, final D d )
     {
         return c.getMaximumRows ();
-    }
-
-    @Override
-    protected boolean isHtmlText ( final E c, final D d )
-    {
-        return c.getClientProperty ( BasicHTML.propertyKey ) != null;
-    }
-
-    @Override
-    protected View getHtml ( final E c, final D d )
-    {
-        return ( View ) c.getClientProperty ( BasicHTML.propertyKey );
     }
 
     @Override

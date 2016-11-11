@@ -44,7 +44,6 @@
             <decorations>
                 <decoration>
                     <ButtonLayout>
-                        <ButtonIcon constraints="icon" />
                         <StyledButtonText constraints="text" color="245,245,245" />
                     </ButtonLayout>
                 </decoration>

@@ -17,34 +17,14 @@
 
 package com.alee.laf.tooltip;
 
-import com.alee.painter.decoration.IDecoration;
-import com.alee.painter.decoration.content.AbstractTextContent;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-
-import javax.swing.*;
+import javax.swing.plaf.ToolTipUI;
 
 /**
- * Tooltip text content implementation.
+ * Pluggable look and feel interface for {@link com.alee.laf.tooltip.WebToolTip} component.
  *
- * @param <E> component type
- * @param <D> decoration type
- * @param <I> content type
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "ToolTipText" )
-public class ToolTipTextContent<E extends JToolTip, D extends IDecoration<E, D>, I extends ToolTipTextContent<E, D, I>>
-        extends AbstractTextContent<E, D, I>
+public abstract class WToolTipUI extends ToolTipUI
 {
-    @Override
-    protected String getText ( final E c, final D d )
-    {
-        return c.getTipText ();
-    }
-
-    @Override
-    protected int getMnemonicIndex ( final E c, final D d )
-    {
-        return -1;
-    }
 }

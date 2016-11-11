@@ -23,7 +23,6 @@ import com.alee.utils.SwingUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import javax.swing.*;
-import javax.swing.text.View;
 
 /**
  * Menu item accelerator text content implementation.
@@ -42,18 +41,6 @@ public class AcceleratorTextContent<E extends JMenuItem, D extends IDecoration<E
     public String getId ()
     {
         return id != null ? id : "accelerator";
-    }
-
-    @Override
-    protected boolean isHtmlText ( final E c, final D d )
-    {
-        return false;
-    }
-
-    @Override
-    protected View getHtml ( final E c, final D d )
-    {
-        return null;
     }
 
     @Override
