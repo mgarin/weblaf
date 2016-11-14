@@ -1307,7 +1307,7 @@ public class WebCustomTooltip extends JComponent implements ShapeMethods
     public static WebStyledLabel createDefaultComponent ( final Icon icon, final String tooltip )
     {
         final WebStyledLabel label = new WebStyledLabel ( StyleId.customtooltipLabel, tooltip, icon );
-        label.setFont ( WebLookAndFeel.toolTipFont );
+        label.setFont ( WebLookAndFeel.toolTipFont != null ? WebLookAndFeel.toolTipFont : WebLookAndFeel.globalTooltipFont );
         return label;
     }
 }
