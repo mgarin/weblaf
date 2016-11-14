@@ -159,6 +159,19 @@ public class WebLookAndFeel extends BasicLookAndFeel
     private static boolean forceSingleEventsThread = false;
 
     /**
+     * Special handler for exceptions thrown when any UI operation is executed outside of the Event Dispatch Thread.
+     * Default implementation simply throws a runtime {@link LookAndFeelException} exception.
+     */
+    private static NonEventThreadHandler nonEventThreadHandler = new NonEventThreadHandler ()
+    {
+        @Override
+        public void handle ( final RuntimeException e )
+        {
+            throw e;
+        }
+    };
+
+    /**
      * List of WebLookAndFeel icons.
      */
     private static List<ImageIcon> icons = null;
@@ -324,7 +337,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * Chooser components.
      */
     public static String dateFieldUI = WebDateFieldUI.class.getCanonicalName ();
-
 
     /**
      * Reassignable LookAndFeel fonts.
@@ -1031,14 +1043,38 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
+     * Returns special handler for exceptions thrown when any UI operation is executed outside of the Event Dispatch Thread.
+     *
+     * @return special handler for exceptions thrown when any UI operation is executed outside of the Event Dispatch Thread.
+     */
+    public static NonEventThreadHandler getNonEventThreadHandler ()
+    {
+        return nonEventThreadHandler;
+    }
+
+    /**
+     * Sets special handler for exceptions thrown when any UI operation is executed outside of the Event Dispatch Thread..
+     *
+     * @param handler special handler for exceptions thrown when any UI operation is executed outside of the Event Dispatch Thread.
+     */
+    public static void setNonEventThreadHandler ( final NonEventThreadHandler handler )
+    {
+        WebLookAndFeel.nonEventThreadHandler = handler;
+    }
+
+    /**
      * Perform Event Dispatch Thread usage check if required.
      */
     public static void checkEventDispatchThread ()
     {
         if ( isForceSingleEventsThread () && !SwingUtils.isEventDispatchThread () )
         {
-            throw new LookAndFeelException ( "This operation is only permitted on the Event Dispatch Thread. Current thread is: " +
-                    Thread.currentThread ().getName () );
+            final NonEventThreadHandler handler = getNonEventThreadHandler ();
+            if ( handler != null )
+            {
+                final String msg = "This operation is only permitted on the Event Dispatch Thread. Current thread is: %s";
+                handler.handle ( new LookAndFeelException ( String.format ( msg, Thread.currentThread ().getName () ) ) );
+            }
         }
     }
 
