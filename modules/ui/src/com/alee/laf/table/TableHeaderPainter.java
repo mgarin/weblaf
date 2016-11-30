@@ -1,6 +1,6 @@
 package com.alee.laf.table;
 
-import com.alee.managers.style.Boundz;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.AbstractPainter;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
@@ -49,7 +49,7 @@ public class TableHeaderPainter<E extends JTableHeader, U extends WebTableHeader
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E c, final U ui, final Boundz bounds )
+    public void paint ( final Graphics2D g2d, final E c, final U ui, final Bounds bounds )
     {
         // Creating background paint
         final Paint bgPaint = getBackgroundPaint ( 0, 1, 0, component.getHeight () - 1 );

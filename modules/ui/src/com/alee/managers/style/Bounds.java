@@ -25,19 +25,18 @@ import java.awt.*;
 
 /**
  * Class describing inner component bounds.
- * todo Class name is temporary to avoid IDE commit issues.
  *
  * @author Mikle Garin
  * @see com.alee.managers.style.BoundsType
  */
 
-public final class Boundz
+public final class Bounds
 {
     /**
      * Parent bounds.
      * Usually those cover a larger area of component.
      */
-    private final Boundz parent;
+    private final Bounds parent;
 
     /**
      * Bounds type.
@@ -52,11 +51,11 @@ public final class Boundz
     private final Rectangle bounds;
 
     /**
-     * {@link Boundz} for the whole component of the specified size.
+     * {@link Bounds} for the whole component of the specified size.
      *
      * @param dimension component size
      */
-    public Boundz ( final Dimension dimension )
+    public Bounds ( final Dimension dimension )
     {
         super ();
         this.parent = null;
@@ -65,11 +64,11 @@ public final class Boundz
     }
 
     /**
-     * {@link Boundz} for the whole component.
+     * {@link Bounds} for the whole component.
      *
      * @param component component
      */
-    public Boundz ( final JComponent component )
+    public Bounds ( final JComponent component )
     {
         super ();
         this.parent = null;
@@ -78,14 +77,14 @@ public final class Boundz
     }
 
     /**
-     * {@link Boundz} for the whole component with the specified (X,Y) shift.
+     * {@link Bounds} for the whole component with the specified (X,Y) shift.
      * todo This is a temporary method for supporting {@link com.alee.painter.PainterSupport#paintSection} method workaround.
      *
      * @param component component
      * @param x         X coordinate shift
      * @param y         Y coordinate shift
      */
-    public Boundz ( final JComponent component, final int x, final int y )
+    public Bounds ( final JComponent component, final int x, final int y )
     {
         super ();
         this.parent = null;
@@ -94,12 +93,12 @@ public final class Boundz
     }
 
     /**
-     * {@link Boundz} for the component section.
+     * {@link Bounds} for the component section.
      *
      * @param parent parent bounds
      * @param bounds actual bounds
      */
-    public Boundz ( final Boundz parent, final Rectangle bounds )
+    public Bounds ( final Bounds parent, final Rectangle bounds )
     {
         super ();
         this.parent = parent;
@@ -108,14 +107,14 @@ public final class Boundz
     }
 
     /**
-     * {@link Boundz} for the component decoration and content.
+     * {@link Bounds} for the component decoration and content.
      *
      * @param parent     parent bounds
      * @param type       bounds type
      * @param component  component
      * @param decoration painted decoration
      */
-    public Boundz ( final Boundz parent, final BoundsType type, final JComponent component, final IDecoration decoration )
+    public Bounds ( final Bounds parent, final BoundsType type, final JComponent component, final IDecoration decoration )
     {
         super ();
         this.parent = parent;
@@ -152,7 +151,7 @@ public final class Boundz
      */
     public Rectangle get ( final BoundsType type )
     {
-        Boundz bounds = this;
+        Bounds bounds = this;
         while ( bounds != null )
         {
             if ( bounds.type == type )

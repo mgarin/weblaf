@@ -17,7 +17,7 @@
 
 package com.alee.painter.common;
 
-import com.alee.managers.style.Boundz;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.AbstractPainter;
 
 import javax.swing.*;
@@ -91,7 +91,7 @@ public class ColorPainter<E extends JComponent, U extends ComponentUI> extends A
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E c, final U ui, final Boundz bounds )
+    public void paint ( final Graphics2D g2d, final E c, final U ui, final Bounds bounds )
     {
         // Do not paint anything if color is not set
         final Color color = getCurrentColor ();

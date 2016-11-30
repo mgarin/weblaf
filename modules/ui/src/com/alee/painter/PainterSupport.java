@@ -18,8 +18,8 @@
 package com.alee.painter;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.style.Bounds;
 import com.alee.managers.style.BoundsType;
-import com.alee.managers.style.Boundz;
 import com.alee.managers.style.PainterShapeProvider;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.data.ComponentStyle;
@@ -310,8 +310,8 @@ public final class PainterSupport
             final Shape oc = GraphicsUtils.intersectClip ( g2d, section );
 
             // Creating appropriate bounds for painter
-            final Boundz componentBounds = new Boundz ( component, -bounds.x, -bounds.y );
-            final Boundz sectionBounds = new Boundz ( componentBounds, section );
+            final Bounds componentBounds = new Bounds ( component, -bounds.x, -bounds.y );
+            final Bounds sectionBounds = new Bounds ( componentBounds, section );
 
             // Painting section
             painter.paint ( g2d, component, ui, sectionBounds );
@@ -328,8 +328,8 @@ public final class PainterSupport
             final Shape oc = GraphicsUtils.intersectClip ( g2d, bounds );
 
             // Creating appropriate bounds for painter
-            final Boundz componentBounds = new Boundz ( component );
-            final Boundz sectionBounds = new Boundz ( componentBounds, bounds );
+            final Bounds componentBounds = new Bounds ( component );
+            final Bounds sectionBounds = new Bounds ( componentBounds, bounds );
 
             // Painting section
             painter.paint ( g2d, component, ui, sectionBounds );
@@ -393,7 +393,7 @@ public final class PainterSupport
         if ( painter != null )
         {
             // Creating appropriate bounds for painter
-            final Boundz componentBounds = new Boundz ( new Dimension ( width, height ) );
+            final Bounds componentBounds = new Bounds ( new Dimension ( width, height ) );
 
             // Retrieving baseline provided by painter
             baseline = painter.getBaseline ( component, ui, componentBounds );

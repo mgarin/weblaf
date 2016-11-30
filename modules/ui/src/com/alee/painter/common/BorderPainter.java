@@ -17,7 +17,7 @@
 
 package com.alee.painter.common;
 
-import com.alee.managers.style.Boundz;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.AbstractPainter;
 import com.alee.utils.GraphicsUtils;
 
@@ -158,7 +158,7 @@ public class BorderPainter<E extends JComponent, U extends ComponentUI> extends 
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E c, final U ui, final Boundz bounds )
+    public void paint ( final Graphics2D g2d, final E c, final U ui, final Bounds bounds )
     {
         if ( stroke != null && color != null )
         {

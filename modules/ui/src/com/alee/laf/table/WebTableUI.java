@@ -238,7 +238,7 @@ public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupp
         if ( painter != null )
         {
             painter.prepareToPaint ( rendererPane );
-            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
+            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
         }
     }
 

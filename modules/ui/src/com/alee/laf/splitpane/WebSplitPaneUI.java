@@ -374,7 +374,7 @@ public class WebSplitPaneUI extends WSplitPaneUI implements ShapeSupport, Margin
             super.paint ( g, c );
 
             // Painting split pane
-            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
+            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
         }
     }
 

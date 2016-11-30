@@ -17,7 +17,7 @@
 
 package com.alee.laf.viewport;
 
-import com.alee.managers.style.Boundz;
+import com.alee.managers.style.Bounds;
 import com.alee.managers.style.ShapeSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.DefaultPainter;
@@ -150,7 +150,7 @@ public class WebViewportUI extends BasicViewportUI implements ShapeSupport
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
+            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
         }
     }
 

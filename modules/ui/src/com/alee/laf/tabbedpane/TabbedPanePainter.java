@@ -1,7 +1,7 @@
 package com.alee.laf.tabbedpane;
 
 import com.alee.global.StyleConstants;
-import com.alee.managers.style.Boundz;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.AbstractPainter;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.SectionPainter;
@@ -260,7 +260,7 @@ public class TabbedPanePainter<E extends JTabbedPane, U extends WTabbedPaneUI> e
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E c, final U ui, final Boundz bounds )
+    public void paint ( final Graphics2D g2d, final E c, final U ui, final Bounds bounds )
     {
         final Map hints = SwingUtils.setupTextAntialias ( g2d );
 

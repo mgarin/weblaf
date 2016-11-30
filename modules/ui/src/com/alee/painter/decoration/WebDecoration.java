@@ -19,7 +19,7 @@ package com.alee.painter.decoration;
 
 import com.alee.api.ColorSupport;
 import com.alee.api.StrokeSupport;
-import com.alee.managers.style.Boundz;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.background.IBackground;
 import com.alee.painter.decoration.border.BorderWidth;
 import com.alee.painter.decoration.border.IBorder;
@@ -362,7 +362,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E c, final Boundz b )
+    public void paint ( final Graphics2D g2d, final E c, final Bounds b )
     {
         // Painting only if bounds are enough
         final Rectangle bounds = b.get ();

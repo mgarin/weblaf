@@ -18,7 +18,7 @@
 package com.alee.laf.scroll;
 
 import com.alee.global.StyleConstants;
-import com.alee.managers.style.Boundz;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.AbstractPainter;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.GraphicsUtils;
@@ -269,7 +269,7 @@ public class ScrollBarPainter<E extends JScrollBar, U extends WScrollBarUI> exte
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E scrollbar, final U ui, final Boundz bounds )
+    public void paint ( final Graphics2D g2d, final E scrollbar, final U ui, final Bounds bounds )
     {
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
         paintBackground ( g2d, scrollbar, bounds.get () );

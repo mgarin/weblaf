@@ -182,7 +182,7 @@ public class WebRadioButtonUI extends WRadioButtonUI implements ShapeSupport, Ma
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
+            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
         }
     }
 

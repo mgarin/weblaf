@@ -275,7 +275,7 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
             painter.setDragged ( isDragging );
             painter.setTrackBounds ( trackRect );
             painter.setThumbBounds ( thumbRect );
-            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
+            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
         }
     }
 

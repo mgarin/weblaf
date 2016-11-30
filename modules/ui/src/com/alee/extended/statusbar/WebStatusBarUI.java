@@ -168,7 +168,7 @@ public class WebStatusBarUI extends WStatusBarUI implements ShapeSupport, Margin
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
+            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
         }
     }
 

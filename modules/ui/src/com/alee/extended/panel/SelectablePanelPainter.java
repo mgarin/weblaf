@@ -2,7 +2,7 @@ package com.alee.extended.panel;
 
 import com.alee.global.StyleConstants;
 import com.alee.laf.panel.WebPanelUI;
-import com.alee.managers.style.Boundz;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.AbstractPainter;
 
 import java.awt.*;
@@ -38,7 +38,7 @@ public class SelectablePanelPainter extends AbstractPainter<WebSelectablePanel, 
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final WebSelectablePanel panel, final WebPanelUI ui, final Boundz b )
+    public void paint ( final Graphics2D g2d, final WebSelectablePanel panel, final WebPanelUI ui, final Bounds b )
     {
         final boolean notFirst = panel.getIndex () > 0;
         final boolean notLast = panel.getIndex () < component.getTotal () - 1;

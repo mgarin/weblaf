@@ -168,7 +168,7 @@ public class WebSliderUI extends BasicSliderUI implements ShapeSupport, MarginSu
         if ( painter != null )
         {
             painter.setDragging ( isDragging () );
-            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
+            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
         }
     }
 

@@ -167,7 +167,7 @@ public class WebCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI implements Sh
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
+            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
         }
     }
 

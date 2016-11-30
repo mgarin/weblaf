@@ -17,7 +17,7 @@
 
 package com.alee.painter;
 
-import com.alee.managers.style.Boundz;
+import com.alee.managers.style.Bounds;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -96,7 +96,7 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
      * @param bounds bounds to get the baseline for
      * @return component baseline within the specified bounds, measured from the top of the bounds
      */
-    public int getBaseline ( E c, U ui, Boundz bounds );
+    public int getBaseline ( E c, U ui, Bounds bounds );
 
     /**
      * Returns enum indicating how the baseline of the component changes as the size changes.
@@ -119,7 +119,7 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
      * @param ui     painted component UI
      * @param bounds painting bounds
      */
-    public void paint ( Graphics2D g2d, E c, U ui, Boundz bounds );
+    public void paint ( Graphics2D g2d, E c, U ui, Bounds bounds );
 
     /**
      * Returns preferred size required for proper painting of visual data provided by this painter.

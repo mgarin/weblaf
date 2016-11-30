@@ -263,7 +263,7 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
                     getPreferredHeight (), cellWidth, cellHeight, cellHeights );
 
             // Painting list
-            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
+            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
         }
     }
 

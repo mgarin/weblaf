@@ -30,7 +30,7 @@ import java.awt.*;
  * It is basically made for convenient retrieval of inner bounds for various painting operations.
  *
  * @author Mikle Garin
- * @see com.alee.managers.style.Boundz
+ * @see Bounds
  */
 
 public enum BoundsType

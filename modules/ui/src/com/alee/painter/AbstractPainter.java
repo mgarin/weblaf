@@ -18,7 +18,7 @@
 package com.alee.painter;
 
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.style.Boundz;
+import com.alee.managers.style.Bounds;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.LafUtils;
@@ -332,7 +332,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     }
 
     @Override
-    public int getBaseline ( final E c, final U ui, final Boundz bounds )
+    public int getBaseline ( final E c, final U ui, final Bounds bounds )
     {
         return -1;
     }

@@ -17,8 +17,8 @@
 
 package com.alee.painter.decoration;
 
+import com.alee.managers.style.Bounds;
 import com.alee.managers.style.BoundsType;
-import com.alee.managers.style.Boundz;
 import com.alee.painter.decoration.content.IContent;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.MergeUtils;
@@ -97,11 +97,11 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
     }
 
     @Override
-    public int getBaseline ( final E c, final Boundz bounds )
+    public int getBaseline ( final E c, final Bounds bounds )
     {
         // Creating additional bounds
-        final Boundz borderBounds = new Boundz ( bounds, BoundsType.border, c, this );
-        final Boundz paddingBounds = new Boundz ( borderBounds, BoundsType.padding, c, this );
+        final Bounds borderBounds = new Bounds ( bounds, BoundsType.border, c, this );
+        final Bounds paddingBounds = new Bounds ( borderBounds, BoundsType.padding, c, this );
 
         // Looking for the first available content with baseline
         for ( final IContent content : getContent () )
@@ -142,11 +142,11 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
      * @param bounds painting bounds
      * @param c      painted component
      */
-    protected void paintContent ( final Graphics2D g2d, final Boundz bounds, final E c )
+    protected void paintContent ( final Graphics2D g2d, final Bounds bounds, final E c )
     {
         // Creating additional bounds
-        final Boundz borderBounds = new Boundz ( bounds, BoundsType.border, c, this );
-        final Boundz paddingBounds = new Boundz ( borderBounds, BoundsType.padding, c, this );
+        final Bounds borderBounds = new Bounds ( bounds, BoundsType.border, c, this );
+        final Bounds paddingBounds = new Bounds ( borderBounds, BoundsType.padding, c, this );
 
         // Painting all decoration contents
         for ( final IContent content : getContent () )

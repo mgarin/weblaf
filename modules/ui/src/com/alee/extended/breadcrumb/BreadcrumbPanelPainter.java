@@ -19,7 +19,7 @@ package com.alee.extended.breadcrumb;
 
 import com.alee.laf.panel.WebPanelUI;
 import com.alee.laf.panel.PanelPainter;
-import com.alee.managers.style.Boundz;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.swing.AncestorAdapter;
 
@@ -128,7 +128,7 @@ public class BreadcrumbPanelPainter<E extends WebBreadcrumbPanel, U extends WebP
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E c, final U ui, final Boundz bounds )
+    public void paint ( final Graphics2D g2d, final E c, final U ui, final Bounds bounds )
     {
         // Painting background
         BreadcrumbUtils.paintElementBackground ( g2d, c );

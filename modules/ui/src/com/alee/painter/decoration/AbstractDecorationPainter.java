@@ -25,7 +25,7 @@ import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
 import com.alee.managers.focus.GlobalFocusListener;
 import com.alee.managers.style.BoundsType;
-import com.alee.managers.style.Boundz;
+import com.alee.managers.style.Bounds;
 import com.alee.managers.style.PainterShapeProvider;
 import com.alee.painter.AbstractPainter;
 import com.alee.painter.SectionPainter;
@@ -944,7 +944,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     @Override
-    public int getBaseline ( final E c, final U ui, final Boundz bounds )
+    public int getBaseline ( final E c, final U ui, final Bounds bounds )
     {
         final D decoration = getDecoration ();
         return decoration != null ? decoration.getBaseline ( c, bounds ) : super.getBaseline ( c, ui, bounds );
@@ -958,7 +958,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E c, final U ui, final Boundz bounds )
+    public void paint ( final Graphics2D g2d, final E c, final U ui, final Bounds bounds )
     {
         // Checking whether plain background is required
         if ( isPlainBackgroundRequired ( c ) )
@@ -974,7 +974,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         if ( isDecorationPaintRequired ( decoration ) )
         {
             // Creating additional bounds
-            final Boundz marginBounds = new Boundz ( bounds, BoundsType.margin, c, decoration );
+            final Bounds marginBounds = new Bounds ( bounds, BoundsType.margin, c, decoration );
 
             // Painting current decoration state
             decoration.paint ( g2d, c, marginBounds );

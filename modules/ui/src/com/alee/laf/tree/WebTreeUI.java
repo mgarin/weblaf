@@ -466,7 +466,7 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
         if ( painter != null )
         {
             painter.prepareToPaint ( drawingCache, currentCellRenderer );
-            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
+            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
         }
     }
 

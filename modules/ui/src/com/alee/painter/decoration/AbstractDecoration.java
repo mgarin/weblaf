@@ -17,7 +17,7 @@
 
 package com.alee.painter.decoration;
 
-import com.alee.managers.style.Boundz;
+import com.alee.managers.style.Bounds;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.MergeUtils;
 import com.alee.utils.ReflectUtils;
@@ -218,7 +218,7 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
     }
 
     @Override
-    public int getBaseline ( final E c, final Boundz bounds )
+    public int getBaseline ( final E c, final Bounds bounds )
     {
         return -1;
     }

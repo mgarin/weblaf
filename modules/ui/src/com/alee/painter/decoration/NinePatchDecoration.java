@@ -17,7 +17,7 @@
 
 package com.alee.painter.decoration;
 
-import com.alee.managers.style.Boundz;
+import com.alee.managers.style.Bounds;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -76,7 +76,7 @@ public class NinePatchDecoration<E extends JComponent, I extends NinePatchDecora
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E c, final Boundz bounds )
+    public void paint ( final Graphics2D g2d, final E c, final Bounds bounds )
     {
         // Painting only if decoration is visible
         if ( isVisible () )

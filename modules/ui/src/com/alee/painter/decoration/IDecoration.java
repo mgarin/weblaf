@@ -20,7 +20,7 @@ package com.alee.painter.decoration;
 import com.alee.api.Identifiable;
 import com.alee.api.Mergeable;
 import com.alee.api.Overwriting;
-import com.alee.managers.style.Boundz;
+import com.alee.managers.style.Bounds;
 import com.alee.managers.style.PainterShapeProvider;
 
 import javax.swing.*;
@@ -127,7 +127,7 @@ public interface IDecoration<E extends JComponent, I extends IDecoration<E, I>>
      * @param bounds bounds to get the baseline for
      * @return decoration baseline within the specified bounds, measured from the top of the bounds
      */
-    public int getBaseline ( E c, Boundz bounds );
+    public int getBaseline ( E c, Bounds bounds );
 
     /**
      * Returns enum indicating how the baseline of the decoration changes as the size changes.
@@ -144,7 +144,7 @@ public interface IDecoration<E extends JComponent, I extends IDecoration<E, I>>
      * @param c      painted component
      * @param bounds painting bounds
      */
-    public void paint ( Graphics2D g2d, E c, Boundz bounds );
+    public void paint ( Graphics2D g2d, E c, Bounds bounds );
 
     /**
      * Returns decoration preferred size.

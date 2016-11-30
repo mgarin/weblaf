@@ -18,7 +18,7 @@
 package com.alee.laf.menu;
 
 import com.alee.managers.style.BoundsType;
-import com.alee.managers.style.Boundz;
+import com.alee.managers.style.Bounds;
 import com.alee.managers.style.PainterShapeProvider;
 import com.alee.painter.AbstractPainter;
 import com.alee.painter.decoration.shadow.WebShadow;
@@ -388,7 +388,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E popup, final U ui, final Boundz bounds )
+    public void paint ( final Graphics2D g2d, final E popup, final U ui, final Bounds bounds )
     {
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
         if ( shaped )

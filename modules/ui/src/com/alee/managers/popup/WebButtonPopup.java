@@ -23,7 +23,7 @@ import com.alee.laf.button.WebButton;
 import com.alee.laf.panel.PanelPainter;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.panel.WebPanelUI;
-import com.alee.managers.style.Boundz;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.ShapeUtils;
 import com.alee.utils.SwingUtils;
@@ -621,7 +621,7 @@ public class WebButtonPopup extends WebInnerPopup
     protected class ButtonPopupPainter<D extends IDecoration<WebButtonPopup, D>> extends PanelPainter<WebButtonPopup, WebPanelUI, D>
     {
         @Override
-        public void paint ( final Graphics2D g2d, final WebButtonPopup c, final WebPanelUI ui, final Boundz bounds )
+        public void paint ( final Graphics2D g2d, final WebButtonPopup c, final WebPanelUI ui, final Bounds bounds )
         {
             // todo FIX
             //            LafUtils.drawCustomWebBorder ( g2d, c, getPopupShape ( c ),

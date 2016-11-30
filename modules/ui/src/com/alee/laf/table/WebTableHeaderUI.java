@@ -159,7 +159,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeSupport
         if ( painter != null )
         {
             painter.prepareToPaint ( rendererPane );
-            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
+            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
         }
     }
 
