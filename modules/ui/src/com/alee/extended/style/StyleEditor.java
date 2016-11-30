@@ -474,8 +474,8 @@ public class StyleEditor extends WebFrame
         //
 
         final WebList wl = new WebList ( d );
+        wl.setVisibleRowCount ( 6 );
         final WebScrollPane wlScroll = new WebScrollPane ( wl );
-        wlScroll.setPreferredSize ( new Dimension ( 200, 150 ) );
         addViewComponent ( "List", wlScroll, wl, false );
 
         //

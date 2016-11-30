@@ -10,7 +10,7 @@
         <painter>
             <decorations>
                 <decoration>
-                    <WebShape round="0" />
+                    <BoundsShape />
                     <ColorBackground color="68,68,68" />
                 </decoration>
             </decorations>

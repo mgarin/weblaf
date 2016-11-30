@@ -23,10 +23,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
 
 /**
- * Ellipse shape implementation.
+ * Simple rectangular bounds shape implementation.
  * Since provided shape is quite simple it is not cached.
  *
  * @param <E> component type
@@ -35,15 +34,14 @@ import java.awt.geom.Ellipse2D;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("EllipseShape")
-public class EllipseShape<E extends JComponent, D extends WebDecoration<E, D>, I extends EllipseShape<E, D, I>>
-        extends AbstractShape<E, D, I>
+@XStreamAlias ( "BoundsShape" )
+public class BoundsShape<E extends JComponent, D extends WebDecoration<E, D>, I extends BoundsShape<E, D, I>> extends AbstractShape<E, D, I>
 {
     @Override
     public Shape getShape ( final ShapeType type, final Rectangle bounds, final E c, final D d )
     {
         final int bgShear = type.isBorder () ? -1 : 0;
         final int sw = d.getShadowWidth ( ShadowType.outer );
-        return new Ellipse2D.Double ( bounds.x + sw, bounds.y + sw, bounds.width - sw * 2 + bgShear, bounds.height - sw * 2 + bgShear );
+        return new Rectangle ( bounds.x + sw, bounds.y + sw, bounds.width - sw * 2 + bgShear, bounds.height - sw * 2 + bgShear );
     }
 }

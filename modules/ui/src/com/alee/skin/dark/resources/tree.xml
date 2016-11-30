@@ -16,7 +16,7 @@
             <linesColor>180,180,180</linesColor>
             <decorations>
                 <decoration>
-                    <WebShape round="0" />
+                    <BoundsShape />
                     <ColorBackground color="106,110,112" />
                 </decoration>
             </decorations>

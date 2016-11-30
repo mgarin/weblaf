@@ -62,9 +62,9 @@
     <include>resources/popover.xml</include>
     <include>resources/calendar.xml</include>
     <include>resources/datefield.xml</include>
-    <!--<include>resources/tableheader.xml</include>-->
-    <!--<include>resources/table.xml</include>-->
-    <!--<include>resources/filetable.xml</include>-->
+    <include>resources/tableheader.xml</include>
+    <include>resources/table.xml</include>
+    <include>resources/filetable.xml</include>
     <include>resources/tree.xml</include>
     <include>resources/extree.xml</include>
     <include>resources/asynctree.xml</include>

@@ -28,7 +28,7 @@
             <rowPainter>
                 <decorations>
                     <decoration states="even">
-                        <WebShape round="0" />
+                        <BoundsShape />
                         <ColorBackground color="111,115,112" />
                     </decoration>
                 </decorations>
@@ -76,7 +76,7 @@
         <painter>
             <decorations>
                 <decoration>
-                    <WebShape round="0" />
+                    <BoundsShape />
                     <WebShadow type="inner" width="15" />
                     <ColorBackground color="106,110,112" />
                 </decoration>
@@ -89,7 +89,7 @@
         <painter>
             <decorations>
                 <decoration>
-                    <WebShape round="0" />
+                    <BoundsShape />
                     <ColorBackground color="106,110,112" />
                 </decoration>
             </decorations>

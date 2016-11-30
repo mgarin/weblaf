@@ -29,12 +29,9 @@ public class TableHeaderPainter<E extends JTableHeader, U extends WebTableHeader
      * Style settings.
      */
     protected Integer headerHeight;
-    protected Color topLineColor;
-    protected Color bottomLineColor;
     protected Color topBgColor;
     protected Color bottomBgColor;
     protected Color gridColor;
-    protected Color borderColor;
 
     /**
      * Painting variables.
@@ -52,99 +49,96 @@ public class TableHeaderPainter<E extends JTableHeader, U extends WebTableHeader
     public void paint ( final Graphics2D g2d, final E c, final U ui, final Bounds bounds )
     {
         // Creating background paint
-        final Paint bgPaint = getBackgroundPaint ( 0, 1, 0, component.getHeight () - 1 );
+        final Paint bgPaint = getBackgroundPaint ( 0, 0, 0, component.getHeight () - 1 );
 
         // Table header background
         g2d.setPaint ( bgPaint );
-        g2d.fillRect ( 0, 1, component.getWidth (), component.getHeight () - 1 );
+        g2d.fillRect ( 0, 0, component.getWidth (), component.getHeight () - 1 );
 
-        // Header top and bottom lines
-        g2d.setPaint ( topLineColor );
-        g2d.drawLine ( 0, 0, component.getWidth (), 0 );
-        g2d.setPaint ( bottomLineColor );
-        g2d.drawLine ( 0, component.getHeight () - 1, component.getWidth (), component.getHeight () - 1 );
+        // Bottom border line
+        g2d.setPaint ( gridColor );
+        g2d.drawLine ( 0, component.getHeight () - 1, component.getWidth () - 1, component.getHeight () - 1 );
 
-        if ( component.getColumnModel ().getColumnCount () <= 0 )
+        // Optimization for empty header
+        if ( component.getColumnModel ().getColumnCount () > 0 )
         {
-            return;
-        }
+            // Variables
+            final Rectangle clip = g2d.getClipBounds ();
+            final Point left = clip.getLocation ();
+            final Point right = p ( clip.x + clip.width - 1, clip.y );
+            final TableColumnModel cm = component.getColumnModel ();
+            int cMin = component.columnAtPoint ( ltr ? left : right );
+            int cMax = component.columnAtPoint ( ltr ? right : left );
 
-        // Variables
-        final Rectangle clip = g2d.getClipBounds ();
-        final Point left = clip.getLocation ();
-        final Point right = p ( clip.x + clip.width - 1, clip.y );
-        final TableColumnModel cm = component.getColumnModel ();
-        int cMin = component.columnAtPoint ( ltr ? left : right );
-        int cMax = component.columnAtPoint ( ltr ? right : left );
-
-        // This should never happen.
-        if ( cMin == -1 )
-        {
-            cMin = 0;
-        }
-
-        // If the table does not have enough columns to fill the view we'll get -1.
-        // Replace this with the index of the last column.
-        if ( cMax == -1 )
-        {
-            cMax = cm.getColumnCount () - 1;
-        }
-
-        // Table titles
-        final TableColumn draggedColumn = component.getDraggedColumn ();
-        int columnWidth;
-        final Rectangle cellRect = component.getHeaderRect ( ltr ? cMin : cMax );
-        TableColumn aColumn;
-        if ( ltr )
-        {
-            for ( int column = cMin; column <= cMax; column++ )
+            // This should never happen.
+            if ( cMin == -1 )
             {
-                aColumn = cm.getColumn ( column );
-                columnWidth = aColumn.getWidth ();
-                cellRect.width = columnWidth;
-                if ( aColumn != draggedColumn )
-                {
-                    paintCell ( g2d, c, cellRect, column, aColumn, draggedColumn, cm );
-                }
-                cellRect.x += columnWidth;
+                cMin = 0;
             }
-        }
-        else
-        {
-            for ( int column = cMax; column >= cMin; column-- )
+
+            // If the table does not have enough columns to fill the view we'll get -1.
+            // Replace this with the index of the last column.
+            if ( cMax == -1 )
             {
-                aColumn = cm.getColumn ( column );
-                columnWidth = aColumn.getWidth ();
-                cellRect.width = columnWidth;
-                if ( aColumn != draggedColumn )
-                {
-                    paintCell ( g2d, c, cellRect, column, aColumn, draggedColumn, cm );
-                }
-                cellRect.x += columnWidth;
+                cMax = cm.getColumnCount () - 1;
             }
+
+            // Table titles
+            final TableColumn draggedColumn = component.getDraggedColumn ();
+            int columnWidth;
+            final Rectangle cellRect = component.getHeaderRect ( ltr ? cMin : cMax );
+            TableColumn aColumn;
+            if ( ltr )
+            {
+                for ( int column = cMin; column <= cMax; column++ )
+                {
+                    aColumn = cm.getColumn ( column );
+                    columnWidth = aColumn.getWidth ();
+                    cellRect.width = columnWidth;
+                    if ( aColumn != draggedColumn )
+                    {
+                        paintCell ( g2d, c, cellRect, column, aColumn, draggedColumn, cm );
+                    }
+                    cellRect.x += columnWidth;
+                }
+            }
+            else
+            {
+                for ( int column = cMax; column >= cMin; column-- )
+                {
+                    aColumn = cm.getColumn ( column );
+                    columnWidth = aColumn.getWidth ();
+                    cellRect.width = columnWidth;
+                    if ( aColumn != draggedColumn )
+                    {
+                        paintCell ( g2d, c, cellRect, column, aColumn, draggedColumn, cm );
+                    }
+                    cellRect.x += columnWidth;
+                }
+            }
+
+            // Paint the dragged column if we are dragging.
+            if ( draggedColumn != null )
+            {
+                // Calculating dragged cell rect
+                final int draggedColumnIndex = getViewIndexForColumn ( draggedColumn );
+                final Rectangle draggedCellRect = component.getHeaderRect ( draggedColumnIndex );
+                draggedCellRect.x += component.getDraggedDistance ();
+
+                // Background
+                g2d.setPaint ( bgPaint );
+                g2d.fillRect ( draggedCellRect.x - 1, draggedCellRect.y, draggedCellRect.width, draggedCellRect.height - 1 );
+
+                // Header cell
+                paintCell ( g2d, c, draggedCellRect, draggedColumnIndex, draggedColumn, draggedColumn, cm );
+            }
+
+            // Remove all components in the rendererPane
+            rendererPane.removeAll ();
+
+            // Clearing renderer pane reference
+            rendererPane = null;
         }
-
-        // Paint the dragged column if we are dragging.
-        if ( draggedColumn != null )
-        {
-            // Calculating dragged cell rect
-            final int draggedColumnIndex = getViewIndexForColumn ( draggedColumn );
-            final Rectangle draggedCellRect = component.getHeaderRect ( draggedColumnIndex );
-            draggedCellRect.x += component.getDraggedDistance ();
-
-            // Background
-            g2d.setPaint ( bgPaint );
-            g2d.fillRect ( draggedCellRect.x - 1, draggedCellRect.y, draggedCellRect.width, draggedCellRect.height - 1 );
-
-            // Header cell
-            paintCell ( g2d, c, draggedCellRect, draggedColumnIndex, draggedColumn, draggedColumn, cm );
-        }
-
-        // Remove all components in the rendererPane
-        rendererPane.removeAll ();
-
-        // Clearing renderer pane reference
-        rendererPane = null;
     }
 
     /**
@@ -174,7 +168,7 @@ public class TableHeaderPainter<E extends JTableHeader, U extends WebTableHeader
         // Left side border
         if ( ltr || paintTrailingBorder )
         {
-            g2d.setColor ( borderColor );
+            g2d.setColor ( gridColor );
             g2d.drawLine ( rect.x - 1, rect.y + 2, rect.x - 1, rect.y + rect.height - 4 );
         }
 

@@ -57,6 +57,7 @@ import com.alee.painter.decoration.shadow.AbstractShadow;
 import com.alee.painter.decoration.shadow.ExpandingShadow;
 import com.alee.painter.decoration.shadow.WebShadow;
 import com.alee.painter.decoration.shape.ArrowShape;
+import com.alee.painter.decoration.shape.BoundsShape;
 import com.alee.painter.decoration.shape.EllipseShape;
 import com.alee.painter.decoration.shape.WebShape;
 import com.alee.skin.web.WebSkin;
@@ -159,6 +160,7 @@ public final class StyleManager
             XmlUtils.processAnnotations ( WebDecoration.class );
             XmlUtils.processAnnotations ( NinePatchDecoration.class );
             XmlUtils.processAnnotations ( AbstractShadow.class );
+            XmlUtils.processAnnotations ( BoundsShape.class );
             XmlUtils.processAnnotations ( WebShape.class );
             XmlUtils.processAnnotations ( EllipseShape.class );
             XmlUtils.processAnnotations ( ArrowShape.class );

@@ -25,9 +25,9 @@ import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.background.GradientColor;
 import com.alee.painter.decoration.background.GradientType;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.GraphicsUtils;
-import com.alee.utils.MergeUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
@@ -46,7 +46,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "Line" )
+@XStreamAlias ("Line")
 public class LineContent<E extends JComponent, D extends IDecoration<E, D>, I extends LineContent<E, D, I>> extends AbstractContent<E, D, I>
 {
     /**
@@ -66,7 +66,7 @@ public class LineContent<E extends JComponent, D extends IDecoration<E, D>, I ex
      * Line colors.
      * Single or multiple colors must be provided.
      */
-    @XStreamImplicit ( itemFieldName = "color" )
+    @XStreamImplicit (itemFieldName = "color")
     protected List<GradientColor> colors;
 
     @Override
@@ -82,7 +82,7 @@ public class LineContent<E extends JComponent, D extends IDecoration<E, D>, I ex
      * @param d painted decoration state
      * @return line orientation
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected Orientation getOrientation ( final E c, final D d )
     {
         if ( orientation != null )
@@ -102,7 +102,7 @@ public class LineContent<E extends JComponent, D extends IDecoration<E, D>, I ex
      * @param d painted decoration state
      * @return line colors
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected List<GradientColor> getColors ( final E c, final D d )
     {
         if ( orientation != null )
@@ -122,7 +122,7 @@ public class LineContent<E extends JComponent, D extends IDecoration<E, D>, I ex
      * @param d painted decoration state
      * @return line alignment
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected BoxOrientation getAlignment ( final E c, final D d )
     {
         if ( align != null )
@@ -216,7 +216,7 @@ public class LineContent<E extends JComponent, D extends IDecoration<E, D>, I ex
         super.merge ( content );
         orientation = content.isOverwrite () || content.orientation != null ? content.orientation : orientation;
         align = content.isOverwrite () || content.align != null ? content.align : align;
-        colors = content.isOverwrite () ? content.colors : MergeUtils.merge ( colors, content.colors );
+        colors = content.isOverwrite () || !CollectionUtils.isEmpty ( content.colors ) ? CollectionUtils.copy ( content.colors ) : colors;
         return ( I ) this;
     }
 }

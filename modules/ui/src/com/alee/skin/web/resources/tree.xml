@@ -16,7 +16,7 @@
             <linesColor>gray</linesColor>
             <decorations>
                 <decoration>
-                    <WebShape round="0" />
+                    <BoundsShape />
                     <ColorBackground color="white" />
                 </decoration>
             </decorations>
