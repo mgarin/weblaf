@@ -21,7 +21,6 @@ import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicLabelUI;
 
 /**
  * Abstract painter for label components.
@@ -32,7 +31,7 @@ import javax.swing.plaf.basic.BasicLabelUI;
  * @author Mikle Garin
  */
 
-public abstract class AbstractLabelPainter<E extends JLabel, U extends BasicLabelUI, D extends IDecoration<E, D>>
+public abstract class AbstractLabelPainter<E extends JLabel, U extends WLabelUI, D extends IDecoration<E, D>>
         extends AbstractDecorationPainter<E, U, D> implements IAbstractLabelPainter<E, U>
 {
     /**

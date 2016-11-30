@@ -18,19 +18,19 @@
 package com.alee.painter;
 
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.BoundsType;
+import com.alee.managers.style.Boundz;
 import com.alee.managers.style.PainterShapeProvider;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.AbstractSectionDecorationPainter;
-import com.alee.utils.GraphicsUtils;
-import com.alee.utils.LafUtils;
-import com.alee.utils.ReflectUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.*;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
+import javax.swing.border.AbstractBorder;
+import javax.swing.border.Border;
 import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 import java.lang.ref.WeakReference;
@@ -291,26 +291,52 @@ public final class PainterSupport
      * @param g2d       graphics context
      * @param component section component
      * @param ui        section component ui
-     * @param bounds    section bounds
+     * @param bounds    section bounds relative to component coordinates system
      */
     public static void paintSection ( final SectionPainter painter, final Graphics2D g2d, final JComponent component, final ComponentUI ui,
                                       final Rectangle bounds )
     {
-        // Translating to section coordinates
-        g2d.translate ( bounds.x, bounds.y );
+        if ( SystemUtils.isUnix () )
+        {
+            // todo This part of code is only here until #401 issue fix for Unix systems
+            // todo The problem with this workaround is that it provides bounds which are only relevant within paint run
+            // todo In general we want to have bounds which are relevant related
 
-        // Clipping area
-        final Rectangle section = new Rectangle ( 0, 0, bounds.width, bounds.height );
-        final Shape oc = GraphicsUtils.intersectClip ( g2d, section );
+            // Translating to section coordinates
+            g2d.translate ( bounds.x, bounds.y );
 
-        // Painting section
-        painter.paint ( g2d, section, component, ui );
+            // Clipping area
+            final Rectangle section = new Rectangle ( 0, 0, bounds.width, bounds.height );
+            final Shape oc = GraphicsUtils.intersectClip ( g2d, section );
 
-        // Restoring old clip
-        GraphicsUtils.restoreClip ( g2d, oc );
+            // Creating appropriate bounds for painter
+            final Boundz componentBounds = new Boundz ( component, -bounds.x, -bounds.y );
+            final Boundz sectionBounds = new Boundz ( componentBounds, section );
 
-        // Translating back
-        g2d.translate ( -bounds.x, -bounds.y );
+            // Painting section
+            painter.paint ( g2d, component, ui, sectionBounds );
+
+            // Restoring old clip
+            GraphicsUtils.restoreClip ( g2d, oc );
+
+            // Translating back
+            g2d.translate ( -bounds.x, -bounds.y );
+        }
+        else
+        {
+            // Clipping area
+            final Shape oc = GraphicsUtils.intersectClip ( g2d, bounds );
+
+            // Creating appropriate bounds for painter
+            final Boundz componentBounds = new Boundz ( component );
+            final Boundz sectionBounds = new Boundz ( componentBounds, bounds );
+
+            // Painting section
+            painter.paint ( g2d, component, ui, sectionBounds );
+
+            // Restoring old clip
+            GraphicsUtils.restoreClip ( g2d, oc );
+        }
     }
 
     /**
@@ -337,12 +363,89 @@ public final class PainterSupport
     {
         if ( painter != null && painter instanceof PainterShapeProvider )
         {
-            return ( ( PainterShapeProvider ) painter ).provideShape ( component, Bounds.margin.of ( component ) );
+            return ( ( PainterShapeProvider ) painter ).provideShape ( component, BoundsType.margin.bounds ( component ) );
         }
         else
         {
-            return Bounds.margin.of ( component );
+            return BoundsType.margin.bounds ( component );
         }
+    }
+
+    /**
+     * Returns component baseline for the specified component size, measured from the top of the component bounds.
+     * A return value less than {@code 0} indicates this component does not have a reasonable baseline.
+     * This method is primarily meant for {@code java.awt.LayoutManager}s to align components along their baseline.
+     *
+     * @param component aligned component
+     * @param ui        aligned component UI
+     * @param painter   aligned component painter
+     * @param width     approximate component width
+     * @param height    approximate component height
+     * @return component baseline within the specified bounds, measured from the top of the bounds
+     */
+    public static int getBaseline ( final JComponent component, final ComponentUI ui,
+                                    final Painter painter, final int width, final int height )
+    {
+        // Default baseline
+        int baseline = -1;
+
+        // Painter baseline support
+        if ( painter != null )
+        {
+            // Creating appropriate bounds for painter
+            final Boundz componentBounds = new Boundz ( new Dimension ( width, height ) );
+
+            // Retrieving baseline provided by painter
+            baseline = painter.getBaseline ( component, ui, componentBounds );
+        }
+
+        // Border baseline support
+        // Taken from JPanel baseline implementation
+        if ( baseline == -1 )
+        {
+            final Border border = component.getBorder ();
+            if ( border instanceof AbstractBorder )
+            {
+                baseline = ( ( AbstractBorder ) border ).getBaseline ( component, width, height );
+            }
+        }
+
+        return baseline;
+    }
+
+    /**
+     * Returns enum indicating how the baseline of the component changes as the size changes.
+     *
+     * @param component aligned component
+     * @param ui        aligned component UI
+     * @param painter   aligned component painter
+     * @return enum indicating how the baseline of the component changes as the size changes
+     */
+    public static Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent component, final ComponentUI ui,
+                                                                               final Painter painter )
+    {
+        // Default behavior
+        Component.BaselineResizeBehavior behavior = Component.BaselineResizeBehavior.OTHER;
+
+        // Painter baseline behavior support
+        if ( painter != null )
+        {
+            // Retrieving baseline behavior provided by painter
+            return painter.getBaselineResizeBehavior ( component, ui );
+        }
+
+        // Border baseline behavior support
+        // Taken from JPanel baseline implementation
+        if ( behavior == Component.BaselineResizeBehavior.OTHER )
+        {
+            final Border border = component.getBorder ();
+            if ( border instanceof AbstractBorder )
+            {
+                behavior = ( ( AbstractBorder ) border ).getBaselineResizeBehavior ( component );
+            }
+        }
+
+        return behavior;
     }
 
     /**

@@ -3,8 +3,8 @@ package com.alee.managers.style;
 import java.awt.*;
 
 /**
- * This interface is implemented by components and UIs which support customizable margin.
- * Margin is a spacing between component bounds and its visible decoration.
+ * This interface is implemented by classes which provide customizable margin.
+ * Margin is a spacing between element bounds and its view.
  * <p>
  * Margin is supported through custom borders in WebLaF-decorated components.
  * Be aware that if you specify your own border into those components this option will have no effect.

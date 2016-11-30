@@ -1,8 +1,10 @@
 package com.alee.laf.tabbedpane;
 
 import com.alee.global.StyleConstants;
+import com.alee.managers.style.Boundz;
 import com.alee.painter.AbstractPainter;
-import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
+import com.alee.painter.SectionPainter;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
@@ -258,7 +260,7 @@ public class TabbedPanePainter<E extends JTabbedPane, U extends WTabbedPaneUI> e
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    public void paint ( final Graphics2D g2d, final E c, final U ui, final Boundz bounds )
     {
         final Map hints = SwingUtils.setupTextAntialias ( g2d );
 
@@ -484,11 +486,11 @@ public class TabbedPanePainter<E extends JTabbedPane, U extends WTabbedPaneUI> e
 
         // Tab background
         final GeneralPath bgShape = createTabShape ( TabShapeType.background, tabPlacement, x, y, w, h, isSelected );
-        final Painter backgroundPainterAt = ui.getBackgroundPainterAt ( tabIndex );
+        final SectionPainter backgroundPainterAt = ui.getBackgroundPainterAt ( tabIndex );
         if ( backgroundPainterAt != null && isSelected )
         {
             final Shape old = GraphicsUtils.intersectClip ( g2d, bgShape );
-            backgroundPainterAt.paint ( g2d, new Rectangle ( x, y, w, h ), component, ui );
+            PainterSupport.paintSection ( backgroundPainterAt, g2d, component, ui, new Rectangle ( x, y, w, h ) );
             GraphicsUtils.restoreClip ( g2d, old );
         }
         else
@@ -764,11 +766,11 @@ public class TabbedPanePainter<E extends JTabbedPane, U extends WTabbedPaneUI> e
             //            }
 
             // Area background
-            final Painter backgroundPainterAt = ui.getBackgroundPainterAt ( selectedIndex );
+            final SectionPainter backgroundPainterAt = ui.getBackgroundPainterAt ( selectedIndex );
             if ( backgroundPainterAt != null )
             {
                 final Shape old = GraphicsUtils.intersectClip ( g2d, bs );
-                backgroundPainterAt.paint ( g2d, bs.getBounds (), component, ui );
+                PainterSupport.paintSection ( backgroundPainterAt, g2d, component, ui, bs.getBounds () );
                 GraphicsUtils.restoreClip ( g2d, old );
             }
             else
@@ -788,10 +790,10 @@ public class TabbedPanePainter<E extends JTabbedPane, U extends WTabbedPaneUI> e
         else
         {
             // Area background
-            final Painter backgroundPainterAt = ui.getBackgroundPainterAt ( selectedIndex );
+            final SectionPainter backgroundPainterAt = ui.getBackgroundPainterAt ( selectedIndex );
             if ( backgroundPainterAt != null )
             {
-                backgroundPainterAt.paint ( g2d, bs.getBounds (), component, ui );
+                PainterSupport.paintSection ( backgroundPainterAt, g2d, component, ui, bs.getBounds () );
             }
             else
             {

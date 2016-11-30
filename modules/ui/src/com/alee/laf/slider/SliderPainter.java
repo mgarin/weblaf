@@ -1,6 +1,7 @@
 package com.alee.laf.slider;
 
 import com.alee.global.StyleConstants;
+import com.alee.managers.style.Boundz;
 import com.alee.painter.AbstractPainter;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.GraphicsUtils;
@@ -228,7 +229,7 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    public void paint ( final Graphics2D g2d, final E c, final U ui, final Boundz bounds )
     {
         recalculateIfInsetsChanged ();
         recalculateIfOrientationChanged ();

@@ -10,58 +10,98 @@
         <painter />
     </style>
 
-    <!-- Resize corner -->
+    <!-- Gripper -->
     <style type="canvas" id="gripper" padding="2">
-        <painter class="com.alee.extended.canvas.GripperPainter">
-            <gripSize>2,2</gripSize>
-            <gripSpacing>1</gripSpacing>
-            <gripColor>154,161,166</gripColor>
-            <gripShadowColor>236,238,241</gripShadowColor>
+        <painter>
+            <decorations>
+                <decoration cursor="hand">
+                    <Gripper part="2,2" spacing="1" color="154,161,166" shadow="236,238,241" />
+                </decoration>
+                <decoration states="hover">
+                    <Gripper color="114,121,126" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
     <style type="canvas" id="gripper-nw" extends="gripper">
-        <painter class="com.alee.extended.canvas.GripperPainter">
-            <direction>northWest</direction>
+        <painter>
+            <decorations>
+                <decoration>
+                    <Gripper direction="northWest" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
     <style type="canvas" id="gripper-n" extends="gripper">
-        <painter class="com.alee.extended.canvas.GripperPainter">
-            <direction>north</direction>
+        <painter>
+            <decorations>
+                <decoration>
+                    <Gripper direction="north" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
     <style type="canvas" id="gripper-ne" extends="gripper">
-        <painter class="com.alee.extended.canvas.GripperPainter">
-            <direction>northEast</direction>
+        <painter>
+            <decorations>
+                <decoration>
+                    <Gripper direction="northEast" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
     <style type="canvas" id="gripper-w" extends="gripper">
-        <painter class="com.alee.extended.canvas.GripperPainter">
-            <direction>west</direction>
+        <painter>
+            <decorations>
+                <decoration>
+                    <Gripper direction="west" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
     <style type="canvas" id="gripper-c" extends="gripper">
-        <painter class="com.alee.extended.canvas.GripperPainter">
-            <direction>center</direction>
+        <painter>
+            <decorations>
+                <decoration>
+                    <Gripper direction="center" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
     <style type="canvas" id="gripper-e" extends="gripper">
-        <painter class="com.alee.extended.canvas.GripperPainter">
-            <direction>east</direction>
+        <painter>
+            <decorations>
+                <decoration>
+                    <Gripper direction="east" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
     <style type="canvas" id="gripper-sw" extends="gripper">
-        <painter class="com.alee.extended.canvas.GripperPainter">
-            <direction>southWest</direction>
+        <painter>
+            <decorations>
+                <decoration>
+                    <Gripper direction="southWest" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
     <style type="canvas" id="gripper-s" extends="gripper">
-        <painter class="com.alee.extended.canvas.GripperPainter">
-            <direction>south</direction>
+        <painter>
+            <decorations>
+                <decoration>
+                    <Gripper direction="south" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
     <style type="canvas" id="gripper-se" extends="gripper">
-        <painter class="com.alee.extended.canvas.GripperPainter">
-            <direction>southEast</direction>
+        <painter>
+            <decorations>
+                <decoration>
+                    <Gripper direction="southEast" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
 

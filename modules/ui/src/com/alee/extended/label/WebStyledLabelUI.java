@@ -34,7 +34,7 @@ import java.awt.*;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  */
 
-public class WebStyledLabelUI extends WStyledLabelUI implements ShapeSupport, MarginSupport, PaddingSupport, SwingConstants
+public class WebStyledLabelUI extends WStyledLabelUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -45,7 +45,6 @@ public class WebStyledLabelUI extends WStyledLabelUI implements ShapeSupport, Ma
     /**
      * Runtime variables.
      */
-    protected WebStyledLabel label;
     protected Insets margin = null;
     protected Insets padding = null;
 
@@ -62,54 +61,22 @@ public class WebStyledLabelUI extends WStyledLabelUI implements ShapeSupport, Ma
         return new WebStyledLabelUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
-        // Saving label reference
-        label = ( WebStyledLabel ) c;
-
-        // Installing default settings
-        installDefaults ();
-
         // Applying skin
         StyleManager.installSkin ( label );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( label );
 
-        // Removing label reference
-        label = null;
-
         super.uninstallUI ( c );
-    }
-
-    /**
-     * Installs default component settings.
-     */
-    protected void installDefaults ()
-    {
-        label.setWrap ( TextWrap.mixed );
-        label.setHorizontalTextAlignment ( -1 );
-        label.setVerticalTextAlignment ( CENTER );
-        label.setRows ( 0 );
-        label.setMinimumRows ( 0 );
-        label.setMaximumRows ( 0 );
     }
 
     @Override
@@ -173,11 +140,23 @@ public class WebStyledLabelUI extends WStyledLabelUI implements ShapeSupport, Ma
     }
 
     @Override
+    public int getBaseline ( final JComponent c, final int width, final int height )
+    {
+        return PainterSupport.getBaseline ( c, this, painter, width, height );
+    }
+
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
+    }
+
+    @Override
     public void paint ( final Graphics g, final JComponent c )
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
         }
     }
 

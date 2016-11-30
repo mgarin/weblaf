@@ -75,7 +75,7 @@
     <!-- Example toolbar -->
     <style type="toolbar" id="example" extends="attached-north" padding="4" />
     <style type="label" id="wiki" padding="2,0,2,0" />
-    <style type="link" id="wiki" padding="2,0,2,0" />
+    <style type="link" id="wiki" extends="shadow" padding="2,0,2,0" />
 
     <!-- Single preview panel -->
     <style type="panel" id="preview-base">

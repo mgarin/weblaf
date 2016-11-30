@@ -28,6 +28,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * Class representing a group of decorations.
+ *
  * @param <E> component type
  * @param <D> decoration type
  * @author Mikle Garin

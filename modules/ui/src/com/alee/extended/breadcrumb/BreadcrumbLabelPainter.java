@@ -19,6 +19,7 @@ package com.alee.extended.breadcrumb;
 
 import com.alee.laf.label.LabelPainter;
 import com.alee.laf.label.WebLabelUI;
+import com.alee.managers.style.Boundz;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.swing.AncestorAdapter;
 
@@ -127,12 +128,12 @@ public class BreadcrumbLabelPainter<E extends WebBreadcrumbLabel, U extends WebL
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    public void paint ( final Graphics2D g2d, final E c, final U ui, final Boundz bounds )
     {
         // Painting background
         BreadcrumbUtils.paintElementBackground ( g2d, c );
 
         // Painting label
-        super.paint ( g2d, bounds, c, ui );
+        super.paint ( g2d, c, ui, bounds );
     }
 }

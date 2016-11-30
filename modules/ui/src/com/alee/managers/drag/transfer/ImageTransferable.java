@@ -104,7 +104,7 @@ public class ImageTransferable implements Transferable
         final List<ImageIcon> images = new ArrayList<ImageIcon> ();
 
         // Check imported files
-        final java.util.List<File> files = FilesTransferable.getFilesList ( transferable );
+        final List<File> files = FilesTransferable.getFilesList ( transferable );
         if ( files != null )
         {
             for ( final File file : files )

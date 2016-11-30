@@ -815,7 +815,7 @@ public final class LafUtils
                 return ( ( ShapeSupport ) ui ).getShape ();
             }
         }
-        return Bounds.margin.of ( component );
+        return BoundsType.margin.bounds ( component );
     }
 
     /**

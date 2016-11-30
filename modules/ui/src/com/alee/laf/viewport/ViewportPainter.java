@@ -1,5 +1,6 @@
 package com.alee.laf.viewport;
 
+import com.alee.managers.style.Boundz;
 import com.alee.painter.AbstractPainter;
 
 import javax.swing.*;
@@ -23,7 +24,7 @@ public class ViewportPainter<E extends JViewport, U extends WebViewportUI> exten
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    public void paint ( final Graphics2D g2d, final E c, final U ui, final Boundz bounds )
     {
         // Empty by default
     }

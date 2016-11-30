@@ -17,6 +17,9 @@
 
 package com.alee.extended.canvas;
 
+import com.alee.utils.SwingUtils;
+
+import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 
 /**
@@ -27,4 +30,80 @@ import javax.swing.plaf.ComponentUI;
 
 public abstract class WCanvasUI extends ComponentUI
 {
+    /**
+     * Runtime variables.
+     */
+    protected WebCanvas canvas;
+
+    @Override
+    public void installUI ( final JComponent c )
+    {
+        // Saving canvas reference
+        canvas = ( WebCanvas ) c;
+
+        // Installing default component settings
+        installDefaults ();
+
+        // Installing default component listeners
+        installListeners ();
+    }
+
+    @Override
+    public void uninstallUI ( final JComponent c )
+    {
+        // Uninstalling default component listeners
+        uninstallListeners ();
+
+        // Uninstalling default component settings
+        uninstallDefaults ();
+
+        // Removing canvas reference
+        canvas = null;
+    }
+
+    /**
+     * Returns component default font key.
+     *
+     * @return component default font key
+     */
+    protected String getFontKey ()
+    {
+        return "Canvas.font";
+    }
+
+    /**
+     * Installs default component settings.
+     */
+    protected void installDefaults ()
+    {
+        // Default component settings
+        if ( SwingUtils.isUIResource ( canvas.getFont () ) )
+        {
+            canvas.setFont ( UIManager.getFont ( getFontKey () ) );
+        }
+    }
+
+    /**
+     * Uninstalls default component settings.
+     */
+    protected void uninstallDefaults ()
+    {
+        LookAndFeel.uninstallBorder ( canvas );
+    }
+
+    /**
+     * Installs default component listeners.
+     */
+    protected void installListeners ()
+    {
+        // Do nothing by default
+    }
+
+    /**
+     * Uninstalls default component listeners.
+     */
+    protected void uninstallListeners ()
+    {
+        // Do nothing by default
+    }
 }

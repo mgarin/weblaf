@@ -17,6 +17,7 @@
 
 package com.alee.painter.common;
 
+import com.alee.managers.style.Boundz;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
 
@@ -31,6 +32,7 @@ import java.util.Map;
  * Titled border painter.
  *
  * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  * @see com.alee.painter.common.BorderPainter
  * @see com.alee.painter.AbstractPainter
@@ -263,7 +265,7 @@ public class TitledBorderPainter<E extends JComponent, U extends ComponentUI> ex
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    public void paint ( final Graphics2D g2d, final E c, final U ui, final Boundz bounds )
     {
         // Initializing values
         w = c.getWidth ();

@@ -33,7 +33,7 @@ import javax.swing.*;
  */
 
 @XStreamAlias ( "ProgressBarText" )
-public class ProgressBarText<E extends JProgressBar, D extends IDecoration<E, D>, I extends ProgressBarText<E, D, I>>
+public class ProgressBarTextContent<E extends JProgressBar, D extends IDecoration<E, D>, I extends ProgressBarTextContent<E, D, I>>
         extends AbstractTextContent<E, D, I>
 {
     @Override

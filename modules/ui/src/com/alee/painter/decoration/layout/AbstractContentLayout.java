@@ -26,10 +26,8 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Abstract content layout providing some general method implementations.
@@ -74,12 +72,9 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
         super.activate ( c, d );
 
         // Activating content
-        if ( !isEmpty ( c, d ) )
+        for ( final IContent content : getContents ( c, d ) )
         {
-            for ( final IContent content : contents )
-            {
-                content.activate ( c, d );
-            }
+            content.activate ( c, d );
         }
     }
 
@@ -90,106 +85,185 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
         super.deactivate ( c, d );
 
         // Deactivating content
-        if ( !isEmpty ( c, d ) )
+        for ( final IContent content : getContents ( c, d ) )
         {
-            for ( final IContent content : contents )
-            {
-                content.deactivate ( c, d );
-            }
+            content.deactivate ( c, d );
         }
     }
 
     @Override
     public boolean isEmpty ( final E c, final D d )
     {
-        return CollectionUtils.isEmpty ( contents );
-    }
-
-    @Override
-    public int getBaseline ( final E c, final D d, final int width, final int height )
-    {
-        if ( !isEmpty ( c, d ) )
+        for ( final IContent content : getContents ( c, d ) )
         {
-            for ( final IContent content : contents )
+            if ( !content.isEmpty ( c, d ) )
             {
-                final int baseline = content.getBaseline ( c, d, width, height );
-                if ( baseline >= 0 )
-                {
-                    return baseline;
-                }
+                return false;
             }
         }
-        return super.getBaseline ( c, d, width, height );
+        return true;
     }
 
-    @Override
-    public int getContentCount ( final E c, final D d )
-    {
-        return !isEmpty ( c, d ) ? contents.size () : 0;
-    }
-
-    @Override
-    public List<IContent> getContents ( final E c, final D d, final String constraints )
-    {
-        if ( contentsCache == null )
-        {
-            contentsCache = new HashMap<String, List<IContent>> ( getContentCount ( c, d ) );
-            if ( contents != null )
-            {
-                for ( final IContent content : contents )
-                {
-                    final String cst = content.getConstraints ();
-                    List<IContent> existing = contentsCache.get ( cst );
-                    if ( existing == null )
-                    {
-                        existing = new ArrayList<IContent> ( 1 );
-                        contentsCache.put ( cst, existing );
-                    }
-                    existing.add ( content );
-                }
-            }
-        }
-        return contentsCache.get ( constraints );
-    }
-
-    @Override
+    /**
+     * Returns whether or not specified content is empty.
+     *
+     * @param c           painted component
+     * @param d           painted decoration state
+     * @param constraints content constraints
+     * @return true if specified content is empty, false otherwise
+     */
     public boolean isEmpty ( final E c, final D d, final String constraints )
     {
-        final List<IContent> contents = getContents ( c, d, constraints );
-        if ( !CollectionUtils.isEmpty ( contents ) )
+        for ( final IContent content : getContents ( c, d, constraints ) )
         {
-            for ( final IContent content : contents )
+            if ( !content.isEmpty ( c, d ) )
             {
-                if ( !content.isEmpty ( c, d ) )
-                {
-                    return false;
-                }
+                return false;
             }
         }
         return true;
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d, final String constraints )
+    public List<IContent> getContents ( final E c, final D d )
     {
-        final List<IContent> contents = getContents ( c, d, constraints );
+        return !CollectionUtils.isEmpty ( contents ) ? contents : Collections.<IContent>emptyList ();
+    }
+
+    /**
+     * Returns contents placed under the specified constraints.
+     *
+     * @param c           painted component
+     * @param d           painted decoration state
+     * @param constraints content constraints
+     * @return contents placed under the specified constraints
+     */
+    protected List<IContent> getContents ( final E c, final D d, final String constraints )
+    {
         if ( !CollectionUtils.isEmpty ( contents ) )
         {
+            final Map<String, List<IContent>> contentsCache = getContentsCache ( c, d );
+            final List<IContent> contents = contentsCache.get ( constraints );
+            return !CollectionUtils.isEmpty ( contents ) ? contents : Collections.<IContent>emptyList ();
+        }
+        return Collections.emptyList ();
+    }
+
+    /**
+     * Returns contents cache for existing constraints.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return contents cache for existing constraints
+     */
+    protected Map<String, List<IContent>> getContentsCache ( final E c, final D d )
+    {
+        if ( contentsCache == null )
+        {
+            final List<IContent> contents = getContents ( c, d );
+            contentsCache = new HashMap<String, List<IContent>> ( contents.size () );
             for ( final IContent content : contents )
             {
-                content.paint ( g2d, bounds, c, d );
+                final String cst = content.getConstraints ();
+                List<IContent> existing = contentsCache.get ( cst );
+                if ( existing == null )
+                {
+                    existing = new ArrayList<IContent> ( 1 );
+                    contentsCache.put ( cst, existing );
+                }
+                existing.add ( content );
+            }
+        }
+        return contentsCache;
+    }
+
+    @Override
+    public boolean hasContentBaseline ( final E c, final D d )
+    {
+        // Simply whether or not any of the contents have meaningful baseline
+        // If this behavior is not sufficient it can be overriden in specific layout implementation
+        for ( final IContent content : getContents ( c, d ) )
+        {
+            // We are only interested in non-empty contents which provide reasonable baseline
+            if ( !content.isEmpty ( c, d ) && content.hasBaseline ( c, d ) )
+            {
+                // todo Allow marking specific content to be prioritized baseline provider?
+                // todo Though for that we would need to iterate through all contents every time
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int getContentBaseline ( final E c, final D d, final Rectangle bounds )
+    {
+        // Simply return baseline of the first content that has it
+        // If this behavior is not sufficient it can be overriden in specific layout implementation
+        for ( final IContent content : getContents ( c, d ) )
+        {
+            // We are only interested in non-empty contents which provide reasonable baseline
+            if ( !content.isEmpty ( c, d ) && content.hasBaseline ( c, d ) )
+            {
+                // Performing full layout and calculating content baseline based on its bounds
+                // This might not seem reasonable, but we need to perform full layout to determine content bounds properly
+                final ContentLayoutData layoutData = layoutContent ( c, d, bounds );
+                final Rectangle b = layoutData.get ( content.getConstraints () );
+                return content.getBaseline ( c, d, b );
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public Component.BaselineResizeBehavior getContentBaselineResizeBehavior ( final E c, final D d )
+    {
+        // Simply return OTHER behavior type as it is simply impossible to "guess" how specific layout acts
+        // It is up to layout to override this method and provide an appropriate baseline resize behavior
+        return Component.BaselineResizeBehavior.OTHER;
+    }
+
+    @Override
+    protected void paintContent ( final Graphics2D g2d, final E c, final D d, final Rectangle bounds )
+    {
+        // Painting only if there is something to paint
+        // This global check is added to avoid running full layout
+        if ( !isEmpty ( c, d ) )
+        {
+            // Performing full layout and iterating through the available constraints
+            final ContentLayoutData layoutData = layoutContent ( c, d, bounds );
+            for ( final String constraints : layoutData.keySet () )
+            {
+                // Painting all contents within the constraint
+                final Rectangle b = layoutData.get ( constraints );
+                for ( final IContent content : getContents ( c, d, constraints ) )
+                {
+                    // Ensure that we only paint non-empty content
+                    if ( !content.isEmpty ( c, d ) )
+                    {
+                        // Painting content in the bounds provided for content constraints
+                        content.paint ( g2d, c, d, b );
+                    }
+                }
             }
         }
     }
 
-    @Override
-    public Dimension getPreferredSize ( final E c, final D d, final Dimension available, final String constraints )
+    /**
+     * Returns preferred size of contents placed under the specified constraints.
+     *
+     * @param c           painted component
+     * @param d           painted decoration state
+     * @param constraints content constraints
+     * @param available   theoretically available space for this content
+     * @return preferred size of contents placed under the specified constraints
+     */
+    protected Dimension getPreferredSize ( final E c, final D d, final String constraints, final Dimension available )
     {
         final Dimension ps = new Dimension ( 0, 0 );
-        final List<IContent> contents = getContents ( c, d, constraints );
-        if ( !CollectionUtils.isEmpty ( contents ) )
+        for ( final IContent content : getContents ( c, d, constraints ) )
         {
-            for ( final IContent content : contents )
+            if ( !content.isEmpty ( c, d ) )
             {
                 final Dimension size = content.getPreferredSize ( c, d, new Dimension ( available ) );
                 ps.width = Math.max ( ps.width, size.width );

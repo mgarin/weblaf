@@ -76,7 +76,7 @@ public class CheckIconContent<E extends AbstractButton, D extends IDecoration<E,
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    protected void paintContent ( final Graphics2D g2d, final E c, final D d, final Rectangle bounds )
     {
         final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke, stroke != null );
         final Paint op = GraphicsUtils.setupPaint ( g2d, color );

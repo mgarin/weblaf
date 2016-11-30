@@ -19,6 +19,8 @@ package com.alee.laf.menu;
 
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.layout.AbstractContentLayout;
+import com.alee.painter.decoration.layout.ContentLayoutData;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -36,7 +38,8 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "MenuItemLayout" )
+@SuppressWarnings ( "UnusedParameters" )
+@XStreamAlias ("MenuItemLayout")
 public class MenuItemContentLayout<E extends JMenuItem, D extends IDecoration<E, D>, I extends MenuItemContentLayout<E, D, I>>
         extends AbstractContentLayout<E, D, I>
 {
@@ -79,7 +82,6 @@ public class MenuItemContentLayout<E extends JMenuItem, D extends IDecoration<E,
      * @param d painted decoration state
      * @return true if menu items text should be aligned by maximum icon size, false otherwise
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected boolean isAlignTextByIcons ( final E c, final D d )
     {
         return alignTextByIcons == null || alignTextByIcons;
@@ -92,7 +94,6 @@ public class MenuItemContentLayout<E extends JMenuItem, D extends IDecoration<E,
      * @param d painted decoration state
      * @return gap between icon and text contents
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected int getIconTextGap ( final E c, final D d )
     {
         return iconTextGap != null ? iconTextGap : c.getIconTextGap ();
@@ -105,7 +106,6 @@ public class MenuItemContentLayout<E extends JMenuItem, D extends IDecoration<E,
      * @param d painted decoration state
      * @return between text and accelerator contents
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected int getTextAcceleratorGap ( final E c, final D d )
     {
         return textAcceleratorGap != null ? textAcceleratorGap : 0;
@@ -118,7 +118,6 @@ public class MenuItemContentLayout<E extends JMenuItem, D extends IDecoration<E,
      * @param d painted decoration state
      * @return between text and arrow contents
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected int getTextArrowGap ( final E c, final D d )
     {
         return textArrowGap != null ? textArrowGap : 0;
@@ -132,7 +131,6 @@ public class MenuItemContentLayout<E extends JMenuItem, D extends IDecoration<E,
      * @param d painted decoration state
      * @return maximum icon width for the specified menu item
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected int getMaxIconWidth ( final E c, final D d )
     {
         if ( isAlignTextByIcons ( c, d ) && c.getParent () instanceof JPopupMenu )
@@ -167,28 +165,22 @@ public class MenuItemContentLayout<E extends JMenuItem, D extends IDecoration<E,
      * @param d painted decoration state
      * @return true if the specified menu item is placed within popup menu, false otherwise
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected boolean isInPopupMenu ( final E c, final D d )
     {
         return c.getParent () != null && c.getParent () instanceof JPopupMenu;
     }
 
-    /**
-     * Returns whether or not the specified menu item has accelerator.
-     *
-     * @param c painted component
-     * @param d painted decoration state
-     * @return true if the specified menu item has accelerator, false otherwise
-     */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected boolean hasAccelerator ( final E c, final D d )
+    @Override
+    public boolean isEmpty ( final E c, final D d, final String constraints )
     {
-        return c.getAccelerator () != null;
+        // Additionally checks whether or not the specified menu item has accelerator
+        return CompareUtils.equals ( constraints, ACCELERATOR ) && c.getAccelerator () == null || super.isEmpty ( c, d, constraints );
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    public ContentLayoutData layoutContent ( final E c, final D d, final Rectangle bounds )
     {
+        final ContentLayoutData layoutData = new ContentLayoutData ( 4 );
         final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
         final Dimension available = new Dimension ( bounds.width, bounds.height );
         int x = ltr ? bounds.x : bounds.x + bounds.width;
@@ -196,7 +188,7 @@ public class MenuItemContentLayout<E extends JMenuItem, D extends IDecoration<E,
         final boolean alignTextByIcons = isAlignTextByIcons ( c, d );
         if ( hasIcon || alignTextByIcons )
         {
-            Dimension ips = getPreferredSize ( c, d, available, ICON );
+            Dimension ips = getPreferredSize ( c, d, ICON, available );
             if ( alignTextByIcons )
             {
                 ips = SwingUtils.max ( ips, new Dimension ( getMaxIconWidth ( c, d ), 0 ) );
@@ -204,7 +196,7 @@ public class MenuItemContentLayout<E extends JMenuItem, D extends IDecoration<E,
             x += ltr ? 0 : -ips.width;
             if ( hasIcon )
             {
-                paint ( g2d, new Rectangle ( x, bounds.y, ips.width, bounds.height ), c, d, ICON );
+                layoutData.put ( ICON, new Rectangle ( x, bounds.y, ips.width, bounds.height ) );
             }
             final int iconTextGap = getIconTextGap ( c, d );
             x += ltr ? ips.width + iconTextGap : -iconTextGap;
@@ -214,24 +206,25 @@ public class MenuItemContentLayout<E extends JMenuItem, D extends IDecoration<E,
         {
             if ( !isEmpty ( c, d, ARROW ) )
             {
-                final Dimension aps = getPreferredSize ( c, d, available, ARROW );
+                final Dimension aps = getPreferredSize ( c, d, ARROW, available );
                 final int ax = ltr ? x + available.width - aps.width : x - available.width;
-                paint ( g2d, new Rectangle ( ax, bounds.y, aps.width, bounds.height ), c, d, ARROW );
+                layoutData.put ( ARROW, new Rectangle ( ax, bounds.y, aps.width, bounds.height ) );
                 available.width -= aps.width + getTextArrowGap ( c, d );
             }
-            if ( hasAccelerator ( c, d ) && !isEmpty ( c, d, ACCELERATOR ) )
+            if ( !isEmpty ( c, d, ACCELERATOR ) )
             {
-                final Dimension aps = getPreferredSize ( c, d, available, ACCELERATOR );
+                final Dimension aps = getPreferredSize ( c, d, ACCELERATOR, available );
                 final int ax = ltr ? x + available.width - aps.width : x - available.width;
-                paint ( g2d, new Rectangle ( ax, bounds.y, aps.width, bounds.height ), c, d, ACCELERATOR );
+                layoutData.put ( ACCELERATOR, new Rectangle ( ax, bounds.y, aps.width, bounds.height ) );
                 available.width -= aps.width + getTextAcceleratorGap ( c, d );
             }
         }
         if ( !isEmpty ( c, d, TEXT ) )
         {
             x += ltr ? 0 : -available.width;
-            paint ( g2d, new Rectangle ( x, bounds.y, available.width, bounds.height ), c, d, TEXT );
+            layoutData.put ( TEXT, new Rectangle ( x, bounds.y, available.width, bounds.height ) );
         }
+        return layoutData;
     }
 
     @Override
@@ -240,7 +233,7 @@ public class MenuItemContentLayout<E extends JMenuItem, D extends IDecoration<E,
         final Dimension ps = new Dimension ();
         if ( !isEmpty ( c, d, ICON ) || isAlignTextByIcons ( c, d ) )
         {
-            Dimension ips = getPreferredSize ( c, d, available, ICON );
+            Dimension ips = getPreferredSize ( c, d, ICON, available );
             if ( isAlignTextByIcons ( c, d ) )
             {
                 ips = SwingUtils.max ( ips, new Dimension ( getMaxIconWidth ( c, d ), 0 ) );
@@ -250,21 +243,21 @@ public class MenuItemContentLayout<E extends JMenuItem, D extends IDecoration<E,
         }
         if ( !isEmpty ( c, d, TEXT ) )
         {
-            final Dimension tps = getPreferredSize ( c, d, available, TEXT );
+            final Dimension tps = getPreferredSize ( c, d, TEXT, available );
             ps.width += tps.width;
             ps.height = Math.max ( ps.height, tps.height );
         }
         if ( isInPopupMenu ( c, d ) )
         {
-            if ( hasAccelerator ( c, d ) && !isEmpty ( c, d, ACCELERATOR ) )
+            if ( !isEmpty ( c, d, ACCELERATOR ) )
             {
-                final Dimension aps = getPreferredSize ( c, d, available, ACCELERATOR );
+                final Dimension aps = getPreferredSize ( c, d, ACCELERATOR, available );
                 ps.width += aps.width + getTextAcceleratorGap ( c, d );
                 ps.height = Math.max ( ps.height, aps.height );
             }
             if ( !isEmpty ( c, d, ARROW ) )
             {
-                final Dimension aps = getPreferredSize ( c, d, available, ARROW );
+                final Dimension aps = getPreferredSize ( c, d, ARROW, available );
                 ps.width += aps.width + getTextArrowGap ( c, d );
                 ps.height = Math.max ( ps.height, aps.height );
             }
@@ -276,8 +269,8 @@ public class MenuItemContentLayout<E extends JMenuItem, D extends IDecoration<E,
     public I merge ( final I layout )
     {
         super.merge ( layout );
-        alignTextByIcons =
-                isOverwrite () ? layout.alignTextByIcons : layout.alignTextByIcons != null ? layout.alignTextByIcons : alignTextByIcons;
+        alignTextByIcons = isOverwrite () ? layout.alignTextByIcons :
+                layout.alignTextByIcons != null ? layout.alignTextByIcons : alignTextByIcons;
         iconTextGap = isOverwrite () ? layout.iconTextGap : layout.iconTextGap != null ? layout.iconTextGap : iconTextGap;
         textAcceleratorGap = isOverwrite () ? layout.textAcceleratorGap :
                 layout.textAcceleratorGap != null ? layout.textAcceleratorGap : textAcceleratorGap;

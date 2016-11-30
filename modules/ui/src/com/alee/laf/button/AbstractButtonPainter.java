@@ -106,18 +106,9 @@ public abstract class AbstractButtonPainter<E extends AbstractButton, U extends 
     }
 
     @Override
-    protected boolean usesState ( final String state )
+    protected boolean usesHover ()
     {
         // Additional case of hover state usage for buttons exclusively
-        if ( CompareUtils.equals ( state, DecorationState.hover ) )
-        {
-            if ( component.isRolloverEnabled () )
-            {
-                return true;
-            }
-        }
-
-        // Check basic use cases
-        return super.usesState ( state );
+        return component.isRolloverEnabled () || super.usesHover ();
     }
 }

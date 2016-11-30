@@ -17,7 +17,8 @@
 
 package com.alee.laf.menu;
 
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.BoundsType;
+import com.alee.managers.style.Boundz;
 import com.alee.managers.style.PainterShapeProvider;
 import com.alee.painter.AbstractPainter;
 import com.alee.painter.decoration.shadow.WebShadow;
@@ -48,6 +49,10 @@ import java.awt.geom.GeneralPath;
 public abstract class AbstractPopupPainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>
         implements PainterShapeProvider<E>, SwingConstants
 {
+    /**
+     * todo Replace with a decoration paainter and custom shape implementation for popups
+     */
+
     /**
      * Shape cache keys.
      */
@@ -82,7 +87,6 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
     {
         super.install ( c, ui );
 
-        // todo Rename into "shaped" or something similar since this is not exactly transparency mark anymore
         // Initializing transparency availability mark
         shaped = ProprietaryUtils.isWindowTransparencyAllowed () || ProprietaryUtils.isWindowShapeAllowed ();
     }
@@ -384,7 +388,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E popup, final U ui )
+    public void paint ( final Graphics2D g2d, final E popup, final U ui, final Boundz bounds )
     {
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
         if ( shaped )
@@ -449,7 +453,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
         if ( shadeWidth > 0 )
         {
             final float opacity = getCurrentShadeOpacity ();
-            final Rectangle b = Bounds.component.of ( popup );
+            final Rectangle b = BoundsType.component.bounds ( popup );
             final Pair<Integer, Integer> hor = new Pair<Integer, Integer> ( b.x + shadeWidth * 2, b.x + b.width - shadeWidth * 2 );
             final Pair<Integer, Integer> ver = new Pair<Integer, Integer> ( b.y + shadeWidth * 2, b.y + b.height - shadeWidth * 2 );
             final StretchInfo info = new StretchInfo ( hor, ver );

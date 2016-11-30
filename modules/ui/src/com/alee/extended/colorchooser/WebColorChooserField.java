@@ -33,7 +33,7 @@ import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.BoundsType;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
@@ -484,7 +484,7 @@ public class WebColorChooserField extends WebTextField
                                 if ( window.isShowing () && robot != null )
                                 {
                                     final Graphics2D g2d = ( Graphics2D ) g;
-                                    final Rectangle bounds = Bounds.margin.of ( this );
+                                    final Rectangle bounds = BoundsType.margin.bounds ( this );
 
                                     // Screen
                                     g2d.drawImage ( screenshot, bounds.x + 2, bounds.y + 2, bounds.width - 4, bounds.height - 4, null );

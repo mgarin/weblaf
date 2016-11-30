@@ -161,4 +161,31 @@ public final class DebugUtils
         g.drawRect ( margin.left, margin.top, c.getWidth () - margin.left - margin.right - 1,
                 c.getHeight () - margin.top - margin.bottom - 1 );
     }
+
+    /**
+     * Paints baseline debug information.
+     * This will display the component baseline within its bounds.
+     *
+     * @param g graphics
+     * @param c component
+     */
+    public static void paintBaselineDebugInfo ( final Graphics g, final JComponent c )
+    {
+        paintBaselineDebugInfo ( g, c, Color.RED );
+    }
+
+    /**
+     * Paints baseline debug information.
+     * This will display the component baseline within its bounds.
+     *
+     * @param g     graphics
+     * @param c     component
+     * @param color debug shape color
+     */
+    public static void paintBaselineDebugInfo ( final Graphics g, final JComponent c, final Color color )
+    {
+        final int baseline = c.getBaseline ( c.getWidth (), c.getHeight () );
+        g.setColor ( color );
+        g.drawLine ( 0, baseline, c.getWidth () - 1, baseline );
+    }
 }

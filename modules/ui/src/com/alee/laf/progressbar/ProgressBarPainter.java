@@ -1,7 +1,7 @@
 package com.alee.laf.progressbar;
 
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.BoundsType;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.SectionPainter;
@@ -155,10 +155,10 @@ public class ProgressBarPainter<E extends JProgressBar, U extends WebProgressBar
     protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         // Painting progress line
-        paintProgress ( g2d, Bounds.border.of ( c ) );
+        paintProgress ( g2d, BoundsType.border.bounds ( c ) );
 
         // Painting text
-        paintText ( g2d, Bounds.padding.of ( c ) );
+        paintText ( g2d, BoundsType.padding.bounds ( c ) );
     }
 
     /**

@@ -21,7 +21,6 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -45,7 +44,6 @@ public class WebToolTipUI extends WToolTipUI implements ShapeSupport, MarginSupp
     /**
      * Runtime variables.
      */
-    protected JComponent tooltip = null;
     protected Insets margin = null;
     protected Insets padding = null;
 
@@ -62,63 +60,22 @@ public class WebToolTipUI extends WToolTipUI implements ShapeSupport, MarginSupp
         return new WebToolTipUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
-        // Saving tooltip to local variable
-        tooltip = c;
-
-        // Installing default component settings
-        installDefaults ( c );
+        super.installUI ( c );
 
         // Applying skin
         StyleManager.installSkin ( tooltip );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( tooltip );
 
-        // Uninstalling default component settings
-        uninstallDefaults ( c );
-
-        // Cleaning up reference
-        this.tooltip = null;
-    }
-
-    /**
-     * Installs default component settings.
-     *
-     * @param c component for this UI
-     */
-    protected void installDefaults ( final JComponent c )
-    {
-        if ( SwingUtils.isUIResource ( c.getFont () ) )
-        {
-            c.setFont ( UIManager.getFont ( "ToolTip.font" ) );
-        }
-    }
-
-    /**
-     * Uninstalls default component settings.
-     *
-     * @param c component for this UI
-     */
-    protected void uninstallDefaults ( final JComponent c )
-    {
-        LookAndFeel.uninstallBorder ( c );
+        super.uninstallUI ( c );
     }
 
     @Override
@@ -182,11 +139,23 @@ public class WebToolTipUI extends WToolTipUI implements ShapeSupport, MarginSupp
     }
 
     @Override
+    public int getBaseline ( final JComponent c, final int width, final int height )
+    {
+        return PainterSupport.getBaseline ( c, this, painter, width, height );
+    }
+
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
+    }
+
+    @Override
     public void paint ( final Graphics g, final JComponent c )
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
         }
     }
 

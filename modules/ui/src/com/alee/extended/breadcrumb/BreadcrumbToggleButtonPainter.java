@@ -18,6 +18,7 @@
 package com.alee.extended.breadcrumb;
 
 import com.alee.laf.button.WebToggleButtonUI;
+import com.alee.managers.style.Boundz;
 import com.alee.painter.AbstractPainter;
 import com.alee.utils.swing.AncestorAdapter;
 
@@ -132,7 +133,7 @@ public class BreadcrumbToggleButtonPainter<E extends WebBreadcrumbToggleButton, 
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    public void paint ( final Graphics2D g2d, final E c, final U ui, final Boundz bounds )
     {
         // Painting background
         BreadcrumbUtils.paintElementBackground ( g2d, c );

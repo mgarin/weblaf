@@ -17,6 +17,8 @@
 
 package com.alee.painter;
 
+import com.alee.managers.style.Boundz;
+
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import java.awt.*;
@@ -85,18 +87,25 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
     public Insets getBorders ();
 
     /**
-     * Returns component baseline for the specified width and height, it is measured from the top of the component.
+     * Returns component baseline within the specified bounds, measured from the top of the bounds.
+     * A return value less than {@code 0} indicates this component does not have a reasonable baseline.
      * This method is primarily meant for {@code java.awt.LayoutManager}s to align components along their baseline.
-     * A return value less than 0 indicates this component does not have a reasonable baseline and that {@code java.awt.LayoutManager}s
-     * should not align this component on its baseline.
      *
      * @param c      aligned component
      * @param ui     aligned component UI
-     * @param width  the width to get the baseline for
-     * @param height the height to get the baseline for
-     * @return component baseline for the specified width and height
+     * @param bounds bounds to get the baseline for
+     * @return component baseline within the specified bounds, measured from the top of the bounds
      */
-    public int getBaseline ( E c, U ui, int width, int height );
+    public int getBaseline ( E c, U ui, Boundz bounds );
+
+    /**
+     * Returns enum indicating how the baseline of the component changes as the size changes.
+     *
+     * @param c  aligned component
+     * @param ui aligned component UI
+     * @return enum indicating how the baseline of the component changes as the size changes
+     */
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( E c, U ui );
 
     /**
      * Paints visual data using component graphics context.
@@ -106,11 +115,11 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
      * These bounds might be representing full component size or contain just a small portion of the component.
      *
      * @param g2d    graphics context
-     * @param bounds painting bounds
      * @param c      painted component
      * @param ui     painted component UI
+     * @param bounds painting bounds
      */
-    public void paint ( Graphics2D g2d, Rectangle bounds, E c, U ui );
+    public void paint ( Graphics2D g2d, E c, U ui, Boundz bounds );
 
     /**
      * Returns preferred size required for proper painting of visual data provided by this painter.

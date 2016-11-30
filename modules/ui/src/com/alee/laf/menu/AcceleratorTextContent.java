@@ -33,7 +33,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "AcceleratorText" )
+@XStreamAlias ("AcceleratorText")
 public class AcceleratorTextContent<E extends JMenuItem, D extends IDecoration<E, D>, I extends AcceleratorTextContent<E, D, I>>
         extends AbstractTextContent<E, D, I>
 {
@@ -41,6 +41,13 @@ public class AcceleratorTextContent<E extends JMenuItem, D extends IDecoration<E
     public String getId ()
     {
         return id != null ? id : "accelerator";
+    }
+
+    @Override
+    public boolean hasContentBaseline ( final E c, final D d )
+    {
+        // Return false not to interfere with menu item text
+        return false;
     }
 
     @Override

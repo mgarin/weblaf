@@ -406,7 +406,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
                 if ( dialog != null && dialog.isResizable () || frame != null && frame.isResizable () )
                 {
                     // Ensure that point is outside of inner bounds
-                    final Rectangle bounds = Bounds.padding.of ( root );
+                    final Rectangle bounds = BoundsType.padding.bounds ( root );
                     final Rectangle inner = GeometryUtils.expand ( bounds, -5, -5, -10, -10 );
                     if ( !inner.contains ( p ) )
                     {
@@ -980,11 +980,23 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     }
 
     @Override
+    public int getBaseline ( final JComponent c, final int width, final int height )
+    {
+        return PainterSupport.getBaseline ( c, this, painter, width, height );
+    }
+
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
+    }
+
+    @Override
     public void paint ( final Graphics g, final JComponent c )
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
         }
     }
 

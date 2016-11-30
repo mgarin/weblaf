@@ -28,6 +28,7 @@ import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -145,9 +146,19 @@ public abstract class AbstractStylePreview extends AbstractPreview
     protected JComponent createPreviewContent ()
     {
         final StyleId styleId = DemoStyles.previewContent.at ( previewPanel );
-        final WebPanel contentPanel = new WebPanel ( styleId, new HorizontalFlowLayout ( 8, false ) );
+        final WebPanel contentPanel = new WebPanel ( styleId, createPreviewLayout () );
         contentPanel.add ( getPreviewElements () );
         return contentPanel;
+    }
+
+    /**
+     * Returns newly created previewed elements container layout.
+     *
+     * @return newly created previewed elements container layout
+     */
+    protected LayoutManager createPreviewLayout ()
+    {
+        return new HorizontalFlowLayout ( 8, false );
     }
 
     /**

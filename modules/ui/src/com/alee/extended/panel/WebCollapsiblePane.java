@@ -32,7 +32,7 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.BoundsType;
 import com.alee.managers.style.ChildStyleId;
 import com.alee.managers.style.StyleId;
 import com.alee.painter.decoration.DecorationState;
@@ -335,7 +335,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Lang
             @Override
             public void mouseReleased ( final MouseEvent e )
             {
-                if ( SwingUtilities.isLeftMouseButton ( e ) && Bounds.margin.of ( WebCollapsiblePane.this ).contains ( e.getPoint () ) )
+                if ( SwingUtilities.isLeftMouseButton ( e ) && BoundsType.margin.bounds ( WebCollapsiblePane.this ).contains ( e.getPoint () ) )
                 {
                     invertExpandState ();
                     takeFocus ();

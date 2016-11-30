@@ -21,14 +21,11 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 /**
  * Custom UI for {@link WebLink} component.
@@ -47,14 +44,8 @@ public class WebLinkUI extends WLinkUI implements ShapeSupport, MarginSupport, P
     protected ILinkPainter painter;
 
     /**
-     * Listeners.
-     */
-    protected MouseAdapter linkExecutionListener;
-
-    /**
      * Runtime variables.
      */
-    protected WebLink link;
     protected Insets margin = null;
     protected Insets padding = null;
 
@@ -71,104 +62,22 @@ public class WebLinkUI extends WLinkUI implements ShapeSupport, MarginSupport, P
         return new WebLinkUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
-        // Saving link reference
-        link = ( WebLink ) c;
-
-        // Installing default settings
-        installDefaults ();
-
-        // Installing actions
-        installLinkListeners ();
-
         // Applying skin
         StyleManager.installSkin ( link );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( link );
 
-        // Installing actions
-        uninstallLinkListeners ();
-
-        // Removing link reference
-        link = null;
-
         super.uninstallUI ( c );
-    }
-
-    /**
-     * Installs default component settings.
-     */
-    protected void installDefaults ()
-    {
-        link.setFocusable ( false );
-        link.setVisitable ( true );
-        link.setVisited ( false );
-    }
-
-    /**
-     * Installs basic link listeners.
-     */
-    protected void installLinkListeners ()
-    {
-        linkExecutionListener = new MouseAdapter ()
-        {
-            private boolean pressed;
-
-            @Override
-            public void mousePressed ( final MouseEvent e )
-            {
-                if ( link.isEnabled () && SwingUtils.isLeftMouseButton ( e ) && Bounds.margin.of ( link ).contains ( e.getPoint () ) )
-                {
-                    pressed = true;
-                    if ( link.isFocusable () )
-                    {
-                        link.requestFocusInWindow ();
-                    }
-                }
-            }
-
-            @Override
-            public void mouseReleased ( final MouseEvent e )
-            {
-                if ( SwingUtils.isLeftMouseButton ( e ) )
-                {
-                    if ( link.isEnabled () && pressed && Bounds.margin.of ( link ).contains ( e.getPoint () ) )
-                    {
-                        link.fireLinkExecuted ();
-                    }
-                    pressed = false;
-                }
-            }
-        };
-        link.addMouseListener ( linkExecutionListener );
-    }
-
-    /**
-     * Uninstalls basic link listeners.
-     */
-    protected void uninstallLinkListeners ()
-    {
-        link.removeMouseListener ( linkExecutionListener );
-        linkExecutionListener = null;
     }
 
     @Override
@@ -232,11 +141,23 @@ public class WebLinkUI extends WLinkUI implements ShapeSupport, MarginSupport, P
     }
 
     @Override
+    public int getBaseline ( final JComponent c, final int width, final int height )
+    {
+        return PainterSupport.getBaseline ( c, this, painter, width, height );
+    }
+
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
+    }
+
+    @Override
     public void paint ( final Graphics g, final JComponent c )
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
         }
     }
 

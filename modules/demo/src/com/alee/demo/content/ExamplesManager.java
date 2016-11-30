@@ -78,15 +78,15 @@ public final class ExamplesManager
             jarStructure = createJarStructure ();
 
             // Initializing top-level example groups
+            groups.add ( new ContainersGroup () );
             groups.add ( new LabelsGroup () );
             groups.add ( new TooltipsGroup () );
             groups.add ( new ButtonsGroup () );
-            groups.add ( new TextComponentsGroup () );
-            groups.add ( new ContainersGroup () );
             groups.add ( new ProgressGroup () );
+            groups.add ( new TextComponentsGroup () );
             groups.add ( new DataGroup () );
-            groups.add ( new WindowsGroup () );
             groups.add ( new ChoosersGroup () );
+            groups.add ( new WindowsGroup () );
             groups.add ( new AnimationGroup () );
         }
     }

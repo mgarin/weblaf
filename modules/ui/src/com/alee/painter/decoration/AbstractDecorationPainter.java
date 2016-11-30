@@ -24,7 +24,8 @@ import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
 import com.alee.managers.focus.GlobalFocusListener;
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.BoundsType;
+import com.alee.managers.style.Boundz;
 import com.alee.managers.style.PainterShapeProvider;
 import com.alee.painter.AbstractPainter;
 import com.alee.painter.SectionPainter;
@@ -59,6 +60,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
 
     /**
      * Available decorations.
+     * Each decoration provides a visual representation of specific component state.
      */
     protected Decorations<E, D> decorations;
 
@@ -331,7 +333,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      */
     protected void installHoverListener ()
     {
-        if ( hoverStateTracker == null && usesState ( DecorationState.hover ) )
+        if ( hoverStateTracker == null && usesHover () )
         {
             hoverStateTracker = new AbstractHoverBehavior<E> ( component, false )
             {
@@ -343,6 +345,17 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
             };
             hoverStateTracker.install ();
         }
+    }
+
+    /**
+     * Returns whether or not component has distinct hover view.
+     * Note that this is exactly distinct view and not state, distinct hover state might actually be missing.
+     *
+     * @return {@code true} if component has distinct hover view, {@code false} otherwise
+     */
+    protected boolean usesHover ()
+    {
+        return usesState ( DecorationState.hover );
     }
 
     /**
@@ -383,7 +396,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      */
     protected void updateHoverListener ()
     {
-        if ( usesState ( DecorationState.hover ) )
+        if ( usesHover () )
         {
             installHoverListener ();
         }
@@ -764,11 +777,6 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                         // Updating section mark
                         // This is done for each cached decoration once as it doesn't change
                         decoration.setSection ( isSectionPainter () );
-
-                        // Filling decoration states with all current states
-                        // This is required so that decoration correctly stores all states, not just ones it uses
-                        // todo Probably this is pointless now as it may store wrong states, not exactly ones it is displayed for
-                        decoration.updateStates ( CollectionUtils.copy ( states ) );
                     }
 
                     // Caching built decoration
@@ -936,41 +944,49 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     @Override
-    public int getBaseline ( final E c, final U ui, final int width, final int height )
+    public int getBaseline ( final E c, final U ui, final Boundz bounds )
     {
         final D decoration = getDecoration ();
-        return decoration != null ? decoration.getBaseline ( c, width, height ) : super.getBaseline ( c, ui, width, height );
+        return decoration != null ? decoration.getBaseline ( c, bounds ) : super.getBaseline ( c, ui, bounds );
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final E c, final U ui )
     {
-        final Rectangle b = adjustBounds ( bounds );
+        final D decoration = getDecoration ();
+        return decoration != null ? decoration.getBaselineResizeBehavior ( c ) : super.getBaselineResizeBehavior ( c, ui );
+    }
 
-        // Paint simple background if opaque
-        // Otherwise component might cause various visual glitches
-        if ( isPlainBackgroundPaintAllowed ( c ) )
+    @Override
+    public void paint ( final Graphics2D g2d, final E c, final U ui, final Boundz bounds )
+    {
+        // Checking whether plain background is required
+        if ( isPlainBackgroundRequired ( c ) )
         {
+            // Painting simple background
+            // This block added to avoid various visual glitches
             g2d.setPaint ( c.getBackground () );
-            g2d.fill ( isSectionPainter () ? b : Bounds.component.of ( c, b ) );
+            g2d.fill ( bounds.get () );
         }
 
         // Painting current decoration state
         final D decoration = getDecoration ();
-        if ( isDecorationPaintAllowed ( decoration ) )
+        if ( isDecorationPaintRequired ( decoration ) )
         {
-            decoration.paint ( g2d, isSectionPainter () ? Bounds.margin.of ( c, decoration, b ) : Bounds.margin.of ( c, b ), c );
+            // Creating additional bounds
+            final Boundz marginBounds = new Boundz ( bounds, BoundsType.margin, c, decoration );
+
+            // Painting current decoration state
+            decoration.paint ( g2d, c, marginBounds );
         }
 
         // Painting content
-        // todo This is a temporary method and should be removed upon complete styling implementation
-        // todo if ( decoration == null || !decoration.hasContent () )
-        paintContent ( g2d, b, c, ui );
+        paintContent ( g2d, bounds.get (), c, ui );
     }
 
     /**
      * Paints content decorated by this painter.
-     * todo This method should eventually be removed since all content will be painted by IContent implementations
+     * todo This might eventually be removed if all contents will be painted within IContent implementations
      *
      * @param g2d    graphics context
      * @param bounds painting bounds
@@ -983,42 +999,30 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     /**
-     * Returns adjusted painting bounds.
-     * todo This should be replaced with proper bounds provided from outside
-     *
-     * @param bounds painting bounds to adjust
-     * @return adjusted painting bounds
-     */
-    protected Rectangle adjustBounds ( final Rectangle bounds )
-    {
-        return bounds;
-    }
-
-    /**
-     * Returns whether or not painting plain component background is allowed.
+     * Returns whether or not painting plain component background is required.
      * Moved into separated method for convenient background painting blocking using additional conditions.
      * <p>
      * By default this condition is limited to component being opaque.
      * When component is opaque we must fill every single pixel in its bounds with something to avoid issues.
      *
      * @param c component to paint background for
-     * @return {@code true} if painting plain component background is allowed, {@code false} otherwise
+     * @return {@code true} if painting plain component background is required, {@code false} otherwise
      */
-    protected boolean isPlainBackgroundPaintAllowed ( final E c )
+    protected boolean isPlainBackgroundRequired ( final E c )
     {
         return c.isOpaque ();
     }
 
     /**
-     * Returns whether or not painting specified decoration is allowed.
+     * Returns whether or not painting specified decoration is required.
      * Moved into separated method for convenient decorationg painting blocking using additional conditions.
      * <p>
      * By default this condition is limited to decoration existance and visibility.
      *
      * @param decoration decoration to be painted
-     * @return {@code true} if painting specified decoration is allowed, {@code false} otherwise
+     * @return {@code true} if painting specified decoration is required, {@code false} otherwise
      */
-    protected boolean isDecorationPaintAllowed ( final D decoration )
+    protected boolean isDecorationPaintRequired ( final D decoration )
     {
         return decoration != null;
     }

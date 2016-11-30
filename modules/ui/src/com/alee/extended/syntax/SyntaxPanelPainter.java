@@ -19,6 +19,7 @@ package com.alee.extended.syntax;
 
 import com.alee.laf.panel.IPanelPainter;
 import com.alee.laf.panel.WebPanelUI;
+import com.alee.managers.style.Boundz;
 import com.alee.painter.AbstractPainter;
 import com.alee.utils.GraphicsUtils;
 
@@ -26,7 +27,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Custom painter for WebSyntaxPanel component.
+ * Custom painter for {@link com.alee.extended.syntax.WebSyntaxPanel} component.
  *
  * @author Mikle Garin
  * @see com.alee.laf.panel.PanelPainter
@@ -70,10 +71,11 @@ public class SyntaxPanelPainter<E extends JPanel, U extends WebPanelUI> extends 
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E panel, final U ui )
+    public void paint ( final Graphics2D g2d, final E panel, final U ui, final Boundz b )
     {
         // Paint syntax panel styling
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
+        final Rectangle bounds = b.get ();
         if ( style == SyntaxPanelStyle.bold )
         {
             // White spacer

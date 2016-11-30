@@ -17,6 +17,7 @@
 
 package com.alee.painter.common;
 
+import com.alee.managers.style.Boundz;
 import com.alee.painter.AbstractPainter;
 
 import javax.swing.*;
@@ -28,6 +29,7 @@ import java.awt.*;
  * This painter simply fills component background with a single color.
  *
  * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  * @see com.alee.painter.AbstractPainter
  * @see com.alee.painter.Painter
@@ -89,14 +91,14 @@ public class ColorPainter<E extends JComponent, U extends ComponentUI> extends A
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    public void paint ( final Graphics2D g2d, final E c, final U ui, final Boundz bounds )
     {
         // Do not paint anything if color is not set
         final Color color = getCurrentColor ();
         if ( color != null )
         {
             // Determining actual rect to be filled (we don't need to fill invisible area)
-            final Rectangle r = c.getVisibleRect ().intersection ( bounds );
+            final Rectangle r = c.getVisibleRect ().intersection ( bounds.get () );
 
             // If there is anything to fill we do it
             if ( r.width > 0 && r.height > 0 )

@@ -44,7 +44,6 @@ public class WebCanvasUI extends WCanvasUI implements ShapeSupport, MarginSuppor
     /**
      * Runtime variables.
      */
-    protected WebCanvas canvas;
     protected Insets margin = null;
     protected Insets padding = null;
 
@@ -61,34 +60,22 @@ public class WebCanvasUI extends WCanvasUI implements ShapeSupport, MarginSuppor
         return new WebCanvasUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
-        // Saving canvas reference
-        canvas = ( WebCanvas ) c;
+        super.installUI ( c );
 
         // Applying skin
         StyleManager.installSkin ( canvas );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( canvas );
 
-        // Removing canvas reference
-        canvas = null;
+        super.uninstallUI ( c );
     }
 
     @Override
@@ -152,11 +139,23 @@ public class WebCanvasUI extends WCanvasUI implements ShapeSupport, MarginSuppor
     }
 
     @Override
+    public int getBaseline ( final JComponent c, final int width, final int height )
+    {
+        return PainterSupport.getBaseline ( c, this, painter, width, height );
+    }
+
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
+    }
+
+    @Override
     public void paint ( final Graphics g, final JComponent c )
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
         }
     }
 

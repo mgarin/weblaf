@@ -17,6 +17,7 @@
 
 package com.alee.painter.common;
 
+import com.alee.managers.style.Boundz;
 import com.alee.painter.AbstractPainter;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageUtils;
@@ -31,6 +32,7 @@ import java.awt.image.BufferedImage;
  * This painter fills component background with a texture based on the specified image.
  *
  * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  * @see com.alee.painter.common.TextureType
  * @see com.alee.painter.AbstractPainter
@@ -146,23 +148,14 @@ public class TexturePainter<E extends JComponent, U extends ComponentUI> extends
         repaint ();
     }
 
-    /**
-     * Paints visual data onto the component graphics.
-     * Provided graphics and component are taken directly from component UI paint method.
-     * Provided bounds are usually fake (zero location, component size) but in some cases it might be specified by componentUI.
-     *
-     * @param g2d    component graphics
-     * @param bounds bounds for painter visual data
-     * @param c      component to process
-     */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    public void paint ( final Graphics2D g2d, final E c, final U ui, final Boundz bounds )
     {
         // Do not paint anything if texture paint is not set
         if ( paint != null )
         {
             // Determining actual rect to be filled (we don't need to fill invisible area)
-            final Rectangle r = c.getVisibleRect ().intersection ( bounds );
+            final Rectangle r = c.getVisibleRect ().intersection ( bounds.get () );
 
             // If there is anything to fill we do it
             if ( r.width > 0 && r.height > 0 )

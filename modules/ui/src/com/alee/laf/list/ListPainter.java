@@ -671,7 +671,6 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
      * @param dataModel    list model
      * @param selModel     list selection model
      * @param leadIndex    lead cell index
-     * @see #paint
      */
     protected void paintCell ( final Graphics2D g2d, final int index, final Rectangle rowBounds, final ListCellRenderer cellRenderer,
                                final ListModel dataModel, final ListSelectionModel selModel, final int leadIndex )

@@ -227,8 +227,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     public static String labelUI = WebLabelUI.class.getCanonicalName ();
     public static String styledLabelUI = WebStyledLabelUI.class.getCanonicalName ();
-    public static String toolTipUI = WebToolTipUI.class.getCanonicalName ();
     public static String linkUI = WebLinkUI.class.getCanonicalName ();
+    public static String toolTipUI = WebToolTipUI.class.getCanonicalName ();
 
     /**
      * Button-related components.
@@ -344,14 +344,19 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
     // Text components fonts
     public static Font globalControlFont = WebFonts.getSystemControlFont ();
+    public static Font canvasFont;
+    public static Font imageFont;
     public static Font buttonFont;
     public static Font toggleButtonFont;
     public static Font radioButtonFont;
     public static Font checkBoxFont;
     public static Font colorChooserFont;
     public static Font labelFont;
+    public static Font styledLabelFont;
+    public static Font linkFont;
     public static Font listFont;
     public static Font panelFont;
+    public static Font popupFont;
     public static Font progressBarFont;
     public static Font scrollPaneFont;
     public static Font viewportFont;
@@ -363,6 +368,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static Font toolBarFont;
     public static Font treeFont;
 
+    // Tooltip font
     public static Font globalTooltipFont = WebFonts.getSystemTooltipFont ();
     public static Font toolTipFont;
 
@@ -792,6 +798,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     private static void initializeFonts ( final UIDefaults table )
     {
+        initializeFont ( table, "Canvas.font", canvasFont, globalControlFont );
+        initializeFont ( table, "Image.font", imageFont, globalControlFont );
         initializeFont ( table, "Button.font", buttonFont, globalControlFont );
         initializeFont ( table, "ToggleButton.font", toggleButtonFont, globalControlFont );
         initializeFont ( table, "RadioButton.font", radioButtonFont, globalControlFont );
@@ -800,6 +808,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
         initializeFont ( table, "ComboBox.font", comboBoxFont, globalTextFont );
         initializeFont ( table, "InternalFrame.titleFont", internalFrameFont, globalTitleFont );
         initializeFont ( table, "Label.font", labelFont, globalControlFont );
+        initializeFont ( table, "StyledLabel.font", styledLabelFont, globalControlFont );
+        initializeFont ( table, "Link.font", linkFont, globalControlFont );
         initializeFont ( table, "List.font", listFont, globalControlFont );
         initializeFont ( table, "MenuBar.font", menuBarFont, globalMenuFont );
         initializeFont ( table, "MenuItem.font", menuItemFont, globalMenuFont );
@@ -813,6 +823,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         initializeFont ( table, "PopupMenu.font", popupMenuFont, globalMenuFont );
         initializeFont ( table, "OptionPane.font", optionPaneFont, globalAlertFont );
         initializeFont ( table, "Panel.font", panelFont, globalControlFont );
+        initializeFont ( table, "Popup.font", popupFont, globalControlFont );
         initializeFont ( table, "ProgressBar.font", progressBarFont, globalControlFont );
         initializeFont ( table, "ScrollPane.font", scrollPaneFont, globalControlFont );
         initializeFont ( table, "Viewport.font", viewportFont, globalControlFont );

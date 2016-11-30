@@ -17,7 +17,8 @@
 
 package com.alee.painter.decoration;
 
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.BoundsType;
+import com.alee.managers.style.Boundz;
 import com.alee.painter.decoration.content.IContent;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.MergeUtils;
@@ -27,6 +28,7 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -59,12 +61,9 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
         super.activate ( c );
 
         // Activating content
-        if ( hasContent () )
+        for ( final IContent content : getContent () )
         {
-            for ( final IContent content : getContent () )
-            {
-                content.activate ( c, this );
-            }
+            content.activate ( c, this );
         }
     }
 
@@ -75,12 +74,9 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
         super.deactivate ( c );
 
         // Deactivating content
-        if ( hasContent () )
+        for ( final IContent content : getContent () )
         {
-            for ( final IContent content : getContent () )
-            {
-                content.deactivate ( c, this );
-            }
+            content.deactivate ( c, this );
         }
     }
 
@@ -97,31 +93,46 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
      */
     public List<IContent> getContent ()
     {
-        if ( hasContent () )
-        {
-            return contents;
-        }
-        else
-        {
-            throw new DecorationException ( "Empty contents requested" );
-        }
+        return hasContent () ? contents : Collections.<IContent>emptyList ();
     }
 
     @Override
-    public int getBaseline ( final E c, final int width, final int height )
+    public int getBaseline ( final E c, final Boundz bounds )
     {
-        if ( hasContent () )
+        // Creating additional bounds
+        final Boundz borderBounds = new Boundz ( bounds, BoundsType.border, c, this );
+        final Boundz paddingBounds = new Boundz ( borderBounds, BoundsType.padding, c, this );
+
+        // Looking for the first available content with baseline
+        for ( final IContent content : getContent () )
         {
-            for ( final IContent content : getContent () )
+            if ( content.hasBaseline ( c, ContentDecoration.this ) )
             {
-                final int baseline = content.getBaseline ( c, ContentDecoration.this, width, height );
-                if ( baseline >= 0 )
-                {
-                    return baseline;
-                }
+                // Return baseline provided by content
+                final Rectangle b = paddingBounds.get ( content.getBoundsType () );
+                return content.getBaseline ( c, ContentDecoration.this, b );
             }
         }
-        return -1;
+
+        // Return default baseline
+        return super.getBaseline ( c, bounds );
+    }
+
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final E c )
+    {
+        // Looking for the first available content with baseline
+        for ( final IContent content : getContent () )
+        {
+            if ( content.hasBaseline ( c, ContentDecoration.this ) )
+            {
+                // Return baseline behavior provided by content
+                return content.getBaselineResizeBehavior ( c, ContentDecoration.this );
+            }
+        }
+
+        // Return default baseline behavior
+        return super.getBaselineResizeBehavior ( c );
     }
 
     /**
@@ -131,22 +142,21 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
      * @param bounds painting bounds
      * @param c      painted component
      */
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c )
+    protected void paintContent ( final Graphics2D g2d, final Boundz bounds, final E c )
     {
-        if ( hasContent () )
+        // Creating additional bounds
+        final Boundz borderBounds = new Boundz ( bounds, BoundsType.border, c, this );
+        final Boundz paddingBounds = new Boundz ( borderBounds, BoundsType.padding, c, this );
+
+        // Painting all decoration contents
+        for ( final IContent content : getContent () )
         {
-            // Painting contents center within content bounds
-            // This layout strategy is used by default when layout is not available
-            for ( final IContent content : getContent () )
+            // Painting content within bounds it requests
+            // We cannot check visible rect here since it is zero on {@link javax.swing.CellRendererPane}
+            final Rectangle b = paddingBounds.get ( content.getBoundsType () );
+            if ( b.width > 0 && b.height > 0 )
             {
-                // Painting content within bounds it requests
-                // We cannot check visible rect here since it is zero on {@link javax.swing.CellRendererPane}
-                final Bounds bt = content.getBoundsType ();
-                final Rectangle b = isSection () ? bt.of ( c, this, bounds ) : bt.of ( c );
-                if ( b.width > 0 && b.height > 0 )
-                {
-                    content.paint ( g2d, b, c, ContentDecoration.this );
-                }
+                content.paint ( g2d, c, ContentDecoration.this, b );
             }
         }
     }
@@ -158,24 +168,20 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
         {
             return size;
         }
-        else if ( hasContent () )
+        else
         {
             Dimension ps = null;
             for ( final IContent content : getContent () )
             {
-                final Bounds bt = content.getBoundsType ();
-                final Insets bi = isSection () ? bt.insets ( c, this ) : bt.insets ( c );
-                final Dimension available = isSection () ? new Dimension ( Short.MAX_VALUE, Short.MAX_VALUE ) : bt.of ( c ).getSize ();
+                final BoundsType bt = content.getBoundsType ();
+                final Insets bi = isSection () ? bt.border ( c, this ) : bt.border ( c );
+                final Dimension available = isSection () ? new Dimension ( Short.MAX_VALUE, Short.MAX_VALUE ) : bt.bounds ( c ).getSize ();
                 final Dimension cps = content.getPreferredSize ( c, this, available );
                 cps.width += bi.left + bi.right;
                 cps.height += bi.top + bi.bottom;
                 ps = SwingUtils.max ( cps, ps );
             }
             return ps;
-        }
-        else
-        {
-            return null;
         }
     }
 

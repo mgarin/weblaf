@@ -47,7 +47,7 @@ public abstract class AbstractIconContent<E extends JComponent, D extends IDecor
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    protected void paintContent ( final Graphics2D g2d, final E c, final D d, final Rectangle bounds )
     {
         final Icon icon = getIcon ( c, d );
         if ( icon != null )

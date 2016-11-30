@@ -17,7 +17,7 @@
 
 package com.alee.laf.tabbedpane;
 
-import com.alee.painter.Painter;
+import com.alee.painter.SectionPainter;
 
 import javax.swing.text.View;
 import java.awt.*;
@@ -53,5 +53,5 @@ public abstract class WTabbedPaneUI extends WebBasicTabbedPaneUI
 
     public abstract int getMaxTabWidth ();
 
-    public abstract Painter getBackgroundPainterAt ( int tabIndex );
+    public abstract SectionPainter getBackgroundPainterAt ( int tabIndex );
 }

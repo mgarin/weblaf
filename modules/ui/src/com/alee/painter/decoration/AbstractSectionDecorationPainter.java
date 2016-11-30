@@ -88,7 +88,7 @@ public abstract class AbstractSectionDecorationPainter<E extends JComponent, U e
      * @return always {@code false}
      */
     @Override
-    protected boolean isPlainBackgroundPaintAllowed ( final E c )
+    protected boolean isPlainBackgroundRequired ( final E c )
     {
         return false;
     }

@@ -18,7 +18,7 @@
 package com.alee.painter.decoration.content;
 
 import com.alee.api.data.Rotation;
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.BoundsType;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.MergeUtils;
@@ -58,10 +58,10 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
     /**
      * Bounds this content should be restricted with.
      *
-     * @see com.alee.managers.style.Bounds
+     * @see com.alee.managers.style.BoundsType
      */
     @XStreamAsAttribute
-    protected Bounds bounds;
+    protected BoundsType bounds;
 
     /**
      * Content constraints within {@link com.alee.painter.decoration.layout.IContentLayout}.
@@ -77,6 +77,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
 
     /**
      * Content rotation.
+     * It is applied to content {@link #bounds} and {@link #padding}.
      */
     @XStreamAsAttribute
     protected Rotation rotation;
@@ -112,9 +113,9 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
     }
 
     @Override
-    public Bounds getBoundsType ()
+    public BoundsType getBoundsType ()
     {
-        return bounds != null ? bounds : Bounds.padding;
+        return bounds != null ? bounds : BoundsType.padding;
     }
 
     @Override
@@ -130,7 +131,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      * @param d painted decoration state
      * @return actual padding
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected Insets getPadding ( final E c, final D d )
     {
         if ( padding != null )
@@ -151,7 +152,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      * @param d painted decoration state
      * @return content rotation
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected Rotation getRotation ( final E c, final D d )
     {
         return rotation != null ? rotation : Rotation.none;
@@ -164,26 +165,94 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      * @param d painted decoration state
      * @return content opacity
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public float getOpacity ( final E c, final D d )
     {
         return opacity != null ? opacity : 1f;
     }
 
     @Override
-    public int getBaseline ( final E c, final D d, final int width, final int height )
+    public boolean hasBaseline ( final E c, final D d )
+    {
+        final Rotation rotation = getActualRotation ( c, d );
+        return ( rotation == Rotation.none || rotation == Rotation.upsideDown ) && hasContentBaseline ( c, d );
+    }
+
+    /**
+     * Returns whether or not this content has a reasonable baseline.
+     *
+     * @param c aligned component
+     * @param d aligned component decoration state
+     * @return {@code true} if this content has a reasonable baseline, {@code false} otherwise
+     */
+    protected boolean hasContentBaseline ( final E c, final D d )
+    {
+        return false;
+    }
+
+    @Override
+    public int getBaseline ( final E c, final D d, final Rectangle bounds )
+    {
+        final Rotation rotation = getActualRotation ( c, d );
+        if ( rotation == Rotation.none || rotation == Rotation.upsideDown )
+        {
+            // Adjusting bounds
+            final Rectangle rotated = rotation.transpose ( bounds );
+            final Rectangle shrunk = SwingUtils.shrink ( rotated, getPadding ( c, d ) );
+
+            // Retrieving baseline
+            final int baseline = getContentBaseline ( c, d, shrunk );
+
+            // todo ADJUST USING PADDING
+            // Adjusting baseline according to initial bounds
+            return rotation == Rotation.none ? baseline : bounds.height - baseline;
+        }
+        return -1;
+    }
+
+    /**
+     * Returns content baseline within the specified bounds, measured from the top of the bounds.
+     * A return value less than {@code 0} indicates this content does not have a reasonable baseline.
+     *
+     * @param c      aligned component
+     * @param d      aligned component decoration state
+     * @param bounds bounds to get the baseline for
+     * @return content baseline within the specified bounds, measured from the top of the bounds
+     */
+    protected int getContentBaseline ( final E c, final D d, final Rectangle bounds )
     {
         return -1;
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final E c, final D d )
+    {
+        final Rotation rotation = getActualRotation ( c, d );
+        if ( rotation == Rotation.none || rotation == Rotation.upsideDown )
+        {
+            final Component.BaselineResizeBehavior behavior = getContentBaselineResizeBehavior ( c, d );
+            return rotation == Rotation.none ? behavior : rotation.adjust ( behavior );
+        }
+        return Component.BaselineResizeBehavior.OTHER;
+    }
+
+    /**
+     * Returns enum indicating how the baseline of the content changes as the size changes.
+     *
+     * @param c aligned component
+     * @param d aligned component decoration state
+     * @return enum indicating how the baseline of the content changes as the size changes
+     */
+    public Component.BaselineResizeBehavior getContentBaselineResizeBehavior ( final E c, final D d )
+    {
+        return Component.BaselineResizeBehavior.OTHER;
+    }
+
+    @Override
+    public void paint ( final Graphics2D g2d, final E c, final D d, final Rectangle bounds )
     {
         if ( bounds.width > 0 && bounds.height > 0 && !isEmpty ( c, d ) )
         {
-            // Proper content clipping
-            final Shape os = GraphicsUtils.intersectClip ( g2d, bounds );
-
             // Content opacity
             final float opacity = getOpacity ( c, d );
             final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
@@ -223,17 +292,20 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
             final Rectangle rotated = rotation.transpose ( bounds );
             final Rectangle shrunk = SwingUtils.shrink ( rotated, getPadding ( c, d ) );
 
+            // Proper content clipping
+            final Shape os = GraphicsUtils.intersectClip ( g2d, shrunk );
+
             // Painting content
-            paintContent ( g2d, shrunk, c, d );
+            paintContent ( g2d, c, d, shrunk );
+
+            // Restoring clip area
+            GraphicsUtils.restoreClip ( g2d, os );
 
             // Restoring graphics settings
             g2d.setTransform ( transform );
 
             // Restoring composite
             GraphicsUtils.restoreComposite ( g2d, oc );
-
-            // Restoring clip area
-            GraphicsUtils.restoreClip ( g2d, os );
         }
     }
 
@@ -241,11 +313,11 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      * Paints content.
      *
      * @param g2d    graphics context
-     * @param bounds painting bounds
      * @param c      painted component
      * @param d      painted decoration state
+     * @param bounds painting bounds
      */
-    protected abstract void paintContent ( Graphics2D g2d, Rectangle bounds, E c, D d );
+    protected abstract void paintContent ( Graphics2D g2d, E c, D d, Rectangle bounds );
 
     @Override
     public Dimension getPreferredSize ( final E c, final D d, final Dimension available )

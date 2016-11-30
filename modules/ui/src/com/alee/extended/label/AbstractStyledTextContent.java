@@ -221,6 +221,14 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
     }
 
     @Override
+    public int getContentBaseline ( final E c, final D d, final Rectangle bounds )
+    {
+        // todo Return baseline appropriate for styled label
+        // todo This should refer to either first or last line of text
+        return super.getContentBaseline ( c, d, bounds );
+    }
+
+    @Override
     protected void paintText ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
         if ( textRanges != null )

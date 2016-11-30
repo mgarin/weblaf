@@ -101,8 +101,7 @@ public class WebFonts
     {
         if ( SystemUtils.isWindows () )
         {
-            // Win8
-            // Win7
+            // Windows
             fonts.put ( CONTROL, new FontUIResource ( TAHOMA, Font.PLAIN, 12 ) );
             fonts.put ( ALERT, new FontUIResource ( SEGOE_UI, Font.PLAIN, 13 ) );
             fonts.put ( MENU, new FontUIResource ( SEGOE_UI, Font.PLAIN, 12 ) );

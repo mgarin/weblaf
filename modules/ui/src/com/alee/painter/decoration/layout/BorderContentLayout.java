@@ -36,7 +36,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "BorderLayout" )
+@XStreamAlias ("BorderLayout")
 public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, D>, I extends BorderContentLayout<E, D, I>>
         extends AbstractContentLayout<E, D, I>
 {
@@ -100,8 +100,9 @@ public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, 
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    public ContentLayoutData layoutContent ( final E c, final D d, final Rectangle bounds )
     {
+        final ContentLayoutData layoutData = new ContentLayoutData ( 5 );
         final int hgap = getHorizontalGap ();
         final int vgap = getVerticalGap ();
         int y = bounds.y;
@@ -110,34 +111,35 @@ public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, 
         int width = bounds.width;
         if ( !isEmpty ( c, d, NORTH ) )
         {
-            final Dimension ps = getPreferredSize ( c, d, new Dimension ( width, height ), NORTH );
-            paint ( g2d, new Rectangle ( x, y, width, ps.height ), c, d, NORTH );
+            final Dimension ps = getPreferredSize ( c, d, NORTH, new Dimension ( width, height ) );
+            layoutData.put ( NORTH, new Rectangle ( x, y, width, ps.height ) );
             y += ps.height + vgap;
             height -= ps.height + vgap;
         }
         if ( !isEmpty ( c, d, SOUTH ) )
         {
-            final Dimension ps = getPreferredSize ( c, d, new Dimension ( width, height ), SOUTH );
-            paint ( g2d, new Rectangle ( x, y + height - ps.height, width, ps.height ), c, d, SOUTH );
+            final Dimension ps = getPreferredSize ( c, d, SOUTH, new Dimension ( width, height ) );
+            layoutData.put ( SOUTH, new Rectangle ( x, y + height - ps.height, width, ps.height ) );
             height -= ps.height + vgap;
         }
         if ( !isEmpty ( c, d, EAST ) )
         {
-            final Dimension ps = getPreferredSize ( c, d, new Dimension ( width, height ), EAST );
-            paint ( g2d, new Rectangle ( x + width - ps.width, y, ps.width, height ), c, d, EAST );
+            final Dimension ps = getPreferredSize ( c, d, EAST, new Dimension ( width, height ) );
+            layoutData.put ( EAST, new Rectangle ( x + width - ps.width, y, ps.width, height ) );
             width -= ps.width + hgap;
         }
         if ( !isEmpty ( c, d, WEST ) )
         {
-            final Dimension ps = getPreferredSize ( c, d, new Dimension ( width, height ), WEST );
-            paint ( g2d, new Rectangle ( x, y, ps.width, height ), c, d, WEST );
+            final Dimension ps = getPreferredSize ( c, d, WEST, new Dimension ( width, height ) );
+            layoutData.put ( WEST, new Rectangle ( x, y, ps.width, height ) );
             x += ps.width + hgap;
             width -= ps.width + hgap;
         }
         if ( !isEmpty ( c, d, CENTER ) )
         {
-            paint ( g2d, new Rectangle ( x, y, width, height ), c, d, CENTER );
+            layoutData.put ( CENTER, new Rectangle ( x, y, width, height ) );
         }
+        return layoutData;
     }
 
     @Override
@@ -148,14 +150,14 @@ public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, 
         final Dimension ps = new Dimension ( 0, 0 );
         if ( !isEmpty ( c, d, NORTH ) )
         {
-            final Dimension cps = getPreferredSize ( c, d, available, NORTH );
+            final Dimension cps = getPreferredSize ( c, d, NORTH, available );
             ps.width = Math.max ( ps.width, cps.width );
             ps.height += cps.height + vgap;
             available.height -= ps.height + vgap;
         }
         if ( !isEmpty ( c, d, SOUTH ) )
         {
-            final Dimension cps = getPreferredSize ( c, d, available, SOUTH );
+            final Dimension cps = getPreferredSize ( c, d, SOUTH, available );
             ps.width = Math.max ( ps.width, cps.width );
             ps.height += cps.height + vgap;
             available.height -= ps.height + vgap;
@@ -164,21 +166,21 @@ public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, 
         int centerWidth = 0;
         if ( !isEmpty ( c, d, EAST ) )
         {
-            final Dimension cps = getPreferredSize ( c, d, available, EAST );
+            final Dimension cps = getPreferredSize ( c, d, EAST, available );
             centerWidth += cps.width + hgap;
             centerHeight = Math.max ( centerHeight, cps.height );
             available.width -= ps.width + hgap;
         }
         if ( !isEmpty ( c, d, WEST ) )
         {
-            final Dimension cps = getPreferredSize ( c, d, available, WEST );
+            final Dimension cps = getPreferredSize ( c, d, WEST, available );
             centerWidth += cps.width + hgap;
             centerHeight = Math.max ( centerHeight, cps.height );
             available.width -= ps.width + hgap;
         }
         if ( !isEmpty ( c, d, CENTER ) )
         {
-            final Dimension cps = getPreferredSize ( c, d, available, CENTER );
+            final Dimension cps = getPreferredSize ( c, d, CENTER, available );
             centerWidth += cps.width;
             centerHeight = Math.max ( centerHeight, cps.height );
         }

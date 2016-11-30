@@ -41,7 +41,7 @@ public final class ShapeMethodsImpl
     public static Shape getShape ( final JComponent component )
     {
         final ShapeSupport ui = getShapeSupportUI ( component );
-        return ui != null ? ui.getShape () : Bounds.margin.of ( component );
+        return ui != null ? ui.getShape () : BoundsType.margin.bounds ( component );
     }
 
     /**

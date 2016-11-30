@@ -74,4 +74,23 @@
         </painter>
     </style>
 
+    <!-- Link-like tristate checkbox -->
+    <style type="tristatecheckbox" id="link" extends="styled">
+        <painter>
+            <decorations>
+                <decoration cursor="hand" />
+                <decoration states="hover">
+                    <ButtonLayout>
+                        <StyledButtonText globalStyle="u" />
+                    </ButtonLayout>
+                </decoration>
+                <decoration states="disabled">
+                    <ButtonLayout>
+                        <StyledButtonText globalStyle="" />
+                    </ButtonLayout>
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
 </skin>

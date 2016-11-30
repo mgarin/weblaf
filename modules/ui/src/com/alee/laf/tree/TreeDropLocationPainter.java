@@ -65,17 +65,10 @@ public class TreeDropLocationPainter<E extends JTree, U extends WebTreeUI, D ext
     }
 
     @Override
-    protected Rectangle adjustBounds ( final Rectangle bounds )
-    {
-        // Actual drop view bounds
-        return getDropViewBounds ( location );
-    }
-
-    @Override
-    protected boolean isDecorationPaintAllowed ( final D decoration )
+    protected boolean isDecorationPaintRequired ( final D decoration )
     {
         // We don't need to paint anything when drop location is not available
-        return location != null && super.isDecorationPaintAllowed ( decoration );
+        return location != null && super.isDecorationPaintRequired ( decoration );
     }
 
     @Override

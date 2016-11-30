@@ -17,6 +17,7 @@
 
 package com.alee.painter.common;
 
+import com.alee.managers.style.Boundz;
 import com.alee.painter.AbstractPainter;
 import com.alee.utils.GraphicsUtils;
 
@@ -32,6 +33,7 @@ import java.awt.geom.RoundRectangle2D;
  * This painter might be used instead of LineBorder in any component that supports painters.
  *
  * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  * @see com.alee.painter.AbstractPainter
  * @see com.alee.painter.Painter
@@ -148,12 +150,6 @@ public class BorderPainter<E extends JComponent, U extends ComponentUI> extends 
         return stroke != null && stroke instanceof BasicStroke ? Math.round ( ( ( BasicStroke ) stroke ).getLineWidth () ) : 0;
     }
 
-    /**
-     * Returns margin required for visual data provided by this painter.
-     * This margin is usually added to component's margin when the final component border is calculated.
-     *
-     * @return margin required for visual data provided by this painter
-     */
     @Override
     public Insets getBorders ()
     {
@@ -161,18 +157,8 @@ public class BorderPainter<E extends JComponent, U extends ComponentUI> extends 
         return i ( width, width, width, width );
     }
 
-    /**
-     * Paints visual data onto the component graphics.
-     * Provided graphics and component are taken directly from component UI paint method.
-     * Provided bounds are usually fake (zero location, component size) but in some cases it might be specified by componentUI.
-     *
-     * @param g2d    component graphics
-     * @param bounds bounds for painter visual data
-     * @param c      component to process
-     * @param ui     component UI
-     */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    public void paint ( final Graphics2D g2d, final E c, final U ui, final Boundz bounds )
     {
         if ( stroke != null && color != null )
         {
@@ -180,7 +166,7 @@ public class BorderPainter<E extends JComponent, U extends ComponentUI> extends 
             final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke, stroke != null );
 
             g2d.setPaint ( color );
-            g2d.draw ( getBorderShape ( bounds ) );
+            g2d.draw ( getBorderShape ( bounds.get () ) );
 
             GraphicsUtils.restoreStroke ( g2d, os, stroke != null );
             GraphicsUtils.restoreAntialias ( g2d, aa );
@@ -209,12 +195,6 @@ public class BorderPainter<E extends JComponent, U extends ComponentUI> extends 
         }
     }
 
-    /**
-     * Returns preferred size required for proper painting of visual data provided by this painter.
-     * This should not take into account any sizes not related to this painter settings (for example text size on button).
-     *
-     * @return preferred size required for proper painting of visual data provided by this painter
-     */
     @Override
     public Dimension getPreferredSize ()
     {

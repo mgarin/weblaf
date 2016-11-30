@@ -324,7 +324,7 @@ public class WebPasswordFieldUI extends WPasswordFieldUI implements ShapeSupport
 
             // Painting text component
             final JComponent c = getComponent ();
-            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
         }
     }
 

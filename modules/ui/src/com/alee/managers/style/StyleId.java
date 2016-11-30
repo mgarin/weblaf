@@ -146,18 +146,21 @@ public final class StyleId
      */
     public static final StyleId checkbox = StyleId.of ( "checkbox" );
     public static final StyleId checkboxStyled = StyleId.of ( "styled" );
+    public static final StyleId checkboxLink = StyleId.of ( "link" );
 
     /**
      * {@link com.alee.extended.checkbox.WebTristateCheckBox} style IDs.
      */
     public static final StyleId tristatecheckbox = StyleId.of ( "tristatecheckbox" );
     public static final StyleId tristatecheckboxStyled = StyleId.of ( "styled" );
+    public static final StyleId tristatecheckboxLink = StyleId.of ( "link" );
 
     /**
      * {@link com.alee.laf.radiobutton.WebRadioButton} style IDs.
      */
     public static final StyleId radiobutton = StyleId.of ( "radiobutton" );
     public static final StyleId radiobuttonStyled = StyleId.of ( "styled" );
+    public static final StyleId radiobuttonLink = StyleId.of ( "link" );
 
     /**
      * {@link com.alee.laf.separator.WebSeparator} style IDs.

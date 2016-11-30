@@ -622,7 +622,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
         }
     }
 

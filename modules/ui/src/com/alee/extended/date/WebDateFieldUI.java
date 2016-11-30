@@ -457,6 +457,20 @@ public class WebDateFieldUI extends WDateFieldUI implements ShapeSupport, Margin
         }, this.painter, painter, IDateFieldPainter.class, AdaptiveDateFieldPainter.class );
     }
 
+    @Override
+    public int getBaseline ( final JComponent c, final int width, final int height )
+    {
+        // todo Requires proper support
+        return PainterSupport.getBaseline ( c, this, painter, width, height );
+    }
+
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    {
+        // todo Requires proper support
+        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
+    }
+
     /**
      * Paints date field.
      *
@@ -468,7 +482,7 @@ public class WebDateFieldUI extends WDateFieldUI implements ShapeSupport, Margin
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
         }
     }
 

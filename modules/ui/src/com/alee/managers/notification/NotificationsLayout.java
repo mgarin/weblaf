@@ -18,7 +18,7 @@
 package com.alee.managers.notification;
 
 import com.alee.extended.layout.AbstractLayoutManager;
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.BoundsType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -83,7 +83,7 @@ public class NotificationsLayout extends AbstractLayoutManager implements SwingC
             if ( notifications.size () > 0 )
             {
                 // Container bounds
-                final Rectangle bounds = Bounds.margin.of ( parent );
+                final Rectangle bounds = BoundsType.margin.bounds ( parent );
 
                 // Layout notifications
                 NotificationsLayoutUtils.layout ( notifications, bounds );

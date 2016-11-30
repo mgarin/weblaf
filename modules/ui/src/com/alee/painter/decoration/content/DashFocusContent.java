@@ -114,7 +114,7 @@ public class DashFocusContent<E extends JComponent, D extends IDecoration<E, D>,
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    protected void paintContent ( final Graphics2D g2d, final E c, final D d, final Rectangle bounds )
     {
         final Stroke stroke = getStroke ( c, d );
         final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke, stroke != null );

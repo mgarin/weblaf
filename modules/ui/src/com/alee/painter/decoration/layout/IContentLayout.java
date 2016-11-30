@@ -38,53 +38,22 @@ public interface IContentLayout<E extends JComponent, D extends IDecoration<E, D
         extends IContent<E, D, I>
 {
     /**
-     * Returns amount of available content elements.
+     * Returns all contents of this layout.
      *
      * @param c painted component
      * @param d painted decoration state
-     * @return amount of available content elements
+     * @return all contents of this layout
      */
-    public int getContentCount ( E c, D d );
+    public List<IContent> getContents ( E c, D d );
 
     /**
-     * Returns whether or not specified content is empty.
+     * Returns {@link ContentLayoutData} containing bounds for each of the layout constraints.
+     * It should return bounds only for constraints that contain at least one visible content element.
      *
-     * @param c           painted component
-     * @param d           painted decoration state
-     * @param constraints content constraints
-     * @return true if specified content is empty, false otherwise
+     * @param c      painted component
+     * @param d      painted decoration state
+     * @param bounds painting bounds
+     * @return {@link ContentLayoutData} containing bounds for each of the layout constraints
      */
-    public boolean isEmpty ( E c, D d, String constraints );
-
-    /**
-     * Returns contents placed under the specified constraints.
-     *
-     * @param c           painted component
-     * @param d           painted decoration state
-     * @param constraints content constraints
-     * @return contents placed under the specified constraints
-     */
-    public List<IContent> getContents ( E c, D d, String constraints );
-
-    /**
-     * Paints layout contents at the specified constraints.
-     *
-     * @param g2d         graphics context
-     * @param bounds      painting bounds
-     * @param c           painted component
-     * @param d           painted decoration state
-     * @param constraints content constraints
-     */
-    public void paint ( Graphics2D g2d, Rectangle bounds, E c, D d, String constraints );
-
-    /**
-     * Returns preferred size of contents placed under the specified constraints.
-     *
-     * @param c           painted component
-     * @param d           painted decoration state
-     * @param available   theoretically available space for this content
-     * @param constraints content constraints
-     * @return preferred size of contents placed under the specified constraints
-     */
-    public Dimension getPreferredSize ( E c, D d, Dimension available, String constraints );
+    public ContentLayoutData layoutContent ( E c, D d, Rectangle bounds );
 }

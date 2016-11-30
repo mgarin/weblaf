@@ -41,7 +41,7 @@ import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.log.Log;
 import com.alee.managers.settings.SettingsManager;
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.BoundsType;
 import com.alee.managers.style.StyleId;
 import com.alee.painter.common.ColorPainter;
 import com.alee.utils.*;
@@ -746,7 +746,7 @@ public class NinePatchEditorPanel extends WebPanel
             {
                 if ( resultingIcon != null )
                 {
-                    resultingIcon.paintIcon ( ( Graphics2D ) g, Bounds.component.of ( this ) );
+                    resultingIcon.paintIcon ( ( Graphics2D ) g, BoundsType.component.bounds ( this ) );
                 }
             }
         };

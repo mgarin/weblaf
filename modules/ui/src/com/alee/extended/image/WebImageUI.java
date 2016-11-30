@@ -44,7 +44,6 @@ public class WebImageUI extends WImageUI implements ShapeSupport, MarginSupport,
     /**
      * Runtime variables.
      */
-    protected WebImage image;
     protected Insets margin = null;
     protected Insets padding = null;
 
@@ -61,48 +60,22 @@ public class WebImageUI extends WImageUI implements ShapeSupport, MarginSupport,
         return new WebImageUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
-        // Saving image reference
-        image = ( WebImage ) c;
-
-        // Installing default settings
-        installDefaults ();
+        super.installUI ( c );
 
         // Applying skin
         StyleManager.installSkin ( image );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( image );
 
-        // Removing image reference
-        image = null;
-    }
-
-    /**
-     * Installs default component settings.
-     */
-    protected void installDefaults ()
-    {
-        image.setOpacity ( 1f );
-        image.setDisplayType ( DisplayType.preferred );
-        image.setHorizontalAlignment ( SwingConstants.CENTER );
-        image.setVerticalAlignment ( SwingConstants.CENTER );
+        super.uninstallUI ( c );
     }
 
     @Override
@@ -166,11 +139,23 @@ public class WebImageUI extends WImageUI implements ShapeSupport, MarginSupport,
     }
 
     @Override
+    public int getBaseline ( final JComponent c, final int width, final int height )
+    {
+        return PainterSupport.getBaseline ( c, this, painter, width, height );
+    }
+
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
+    }
+
+    @Override
     public void paint ( final Graphics g, final JComponent c )
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
         }
     }
 

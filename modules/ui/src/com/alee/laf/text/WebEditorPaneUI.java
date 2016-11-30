@@ -190,7 +190,7 @@ public class WebEditorPaneUI extends WEditorPaneUI implements ShapeSupport, Marg
 
             // Painting text component
             final JComponent c = getComponent ();
-            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
         }
     }
 

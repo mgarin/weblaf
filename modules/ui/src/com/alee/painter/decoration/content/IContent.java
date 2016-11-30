@@ -20,7 +20,7 @@ package com.alee.painter.decoration.content;
 import com.alee.api.Identifiable;
 import com.alee.api.Mergeable;
 import com.alee.api.Overwriting;
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.BoundsType;
 import com.alee.painter.decoration.DecoratonElement;
 import com.alee.painter.decoration.IDecoration;
 
@@ -38,7 +38,7 @@ import java.io.Serializable;
  */
 
 public interface IContent<E extends JComponent, D extends IDecoration<E, D>, I extends IContent<E, D, I>>
-        extends DecoratonElement<E, D, I>, Serializable, Cloneable, Mergeable<I>, Overwriting, Identifiable
+        extends Identifiable, DecoratonElement<E, D, I>, Mergeable<I>, Overwriting, Cloneable, Serializable
 {
     /**
      * Returns content bounds type.
@@ -46,7 +46,7 @@ public interface IContent<E extends JComponent, D extends IDecoration<E, D>, I e
      *
      * @return content bounds type
      */
-    public Bounds getBoundsType ();
+    public BoundsType getBoundsType ();
 
     /**
      * Returns content constraints within {@link com.alee.painter.decoration.layout.IContentLayout}.
@@ -66,28 +66,43 @@ public interface IContent<E extends JComponent, D extends IDecoration<E, D>, I e
     public boolean isEmpty ( E c, D d );
 
     /**
-     * Returns content baseline for the specified width and height, it is measured from the top of the component.
-     * This method is primarily meant for {@code java.awt.LayoutManager}s to align components along their baseline.
-     * A return value less than 0 indicates this component does not have a reasonable baseline and that {@code java.awt.LayoutManager}s
-     * should not align this component on its baseline.
+     * Returns whether or not this content has a reasonable baseline.
+     *
+     * @param c aligned component
+     * @param d aligned component decoration state
+     * @return {@code true} if this content has a reasonable baseline, {@code false} otherwise
+     */
+    public boolean hasBaseline ( E c, D d );
+
+    /**
+     * Returns content baseline within the specified bounds, measured from the top of the bounds.
+     * A return value less than {@code 0} indicates this content does not have a reasonable baseline.
      *
      * @param c      aligned component
      * @param d      aligned component decoration state
-     * @param width  the width to get the baseline for
-     * @param height the height to get the baseline for
-     * @return content baseline for the specified width and height
+     * @param bounds bounds to get the baseline for
+     * @return content baseline within the specified bounds, measured from the top of the bounds
      */
-    public int getBaseline ( E c, D d, int width, int height );
+    public int getBaseline ( E c, D d, Rectangle bounds );
+
+    /**
+     * Returns enum indicating how the baseline of the content changes as the size changes.
+     *
+     * @param c aligned component
+     * @param d aligned component decoration state
+     * @return enum indicating how the baseline of the content changes as the size changes
+     */
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( E c, D d );
 
     /**
      * Paints component's content.
      *
      * @param g2d    graphics context
-     * @param bounds painting bounds
      * @param c      painted component
      * @param d      painted decoration state
+     * @param bounds painting bounds
      */
-    public void paint ( Graphics2D g2d, Rectangle bounds, E c, D d );
+    public void paint ( Graphics2D g2d, E c, D d, Rectangle bounds );
 
     /**
      * Returns content preferred size.

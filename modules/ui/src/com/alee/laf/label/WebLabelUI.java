@@ -25,7 +25,6 @@ import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicLabelUI;
 import java.awt.*;
 
 /**
@@ -34,7 +33,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebLabelUI extends BasicLabelUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebLabelUI extends WLabelUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -45,7 +44,6 @@ public class WebLabelUI extends BasicLabelUI implements ShapeSupport, MarginSupp
     /**
      * Runtime variables.
      */
-    protected JLabel label;
     protected Insets margin = null;
     protected Insets padding = null;
 
@@ -62,38 +60,21 @@ public class WebLabelUI extends BasicLabelUI implements ShapeSupport, MarginSupp
         return new WebLabelUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
-        // Saving label reference
-        label = ( JLabel ) c;
-
         // Applying skin
         StyleManager.installSkin ( label );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( label );
 
-        // Removing label reference
-        label = null;
-
-        // Uninstalling UI
         super.uninstallUI ( c );
     }
 
@@ -160,8 +141,13 @@ public class WebLabelUI extends BasicLabelUI implements ShapeSupport, MarginSupp
     @Override
     public int getBaseline ( final JComponent c, final int width, final int height )
     {
-        // todo return painter != null ? painter.getBaseline ( c, this, width, height ) : -1;
-        return super.getBaseline ( c, width, height );
+        return PainterSupport.getBaseline ( c, this, painter, width, height );
+    }
+
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
     }
 
     @Override
@@ -169,7 +155,7 @@ public class WebLabelUI extends BasicLabelUI implements ShapeSupport, MarginSupp
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
         }
     }
 

@@ -72,19 +72,21 @@ public class RadioIconContent<E extends AbstractButton, D extends IDecoration<E,
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    protected void paintContent ( final Graphics2D g2d, final E c, final D d, final Rectangle bounds )
     {
-        final int x = bounds.x + 2;
-        final int y = bounds.y + 2;
-        final int w = bounds.width - 4;
-        final int h = bounds.height - 4;
-        final Ellipse2D.Double shape = new Ellipse2D.Double ( x, y, w, h );
+        final int x = bounds.x;
+        final int y = bounds.y;
+        final int w = bounds.width;
+        final int h = bounds.height;
 
+        // Configuring graphics
         final GradientPaint paint = new GradientPaint ( x, 0, leftColor, x + w, 0, rightColor );
         final Paint op = GraphicsUtils.setupPaint ( g2d, paint );
 
-        g2d.fill ( shape );
+        // Filling content shape
+        g2d.fill ( new Ellipse2D.Double ( x, y, w, h ) );
 
+        // Restoring graphics settings
         GraphicsUtils.restorePaint ( g2d, op );
     }
 

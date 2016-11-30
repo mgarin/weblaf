@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration;
 
+import com.alee.managers.style.Boundz;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.MergeUtils;
 import com.alee.utils.ReflectUtils;
@@ -51,7 +52,7 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
      * Various components might use multiple states to describe their decoration.
      */
     @XStreamAsAttribute
-    @XStreamConverter (ListToStringConverter.class)
+    @XStreamConverter ( ListToStringConverter.class )
     protected List<String> states;
 
     /**
@@ -136,15 +137,9 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
     }
 
     @Override
-    public void updateStates ( final List<String> states )
-    {
-        this.states = states;
-    }
-
-    @Override
     public boolean usesState ( final String state )
     {
-        // todo Add negation syntax usage [ #387 ]
+        // Possible enhancement: Add negation syntax usage [ #387 ]
         return states != null && states.contains ( state );
     }
 
@@ -217,9 +212,21 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
     }
 
     @Override
-    public int getBaseline ( final E c, final int width, final int height )
+    public Insets getBorderInsets ( final E c )
+    {
+        return new Insets ( 0, 0, 0, 0 );
+    }
+
+    @Override
+    public int getBaseline ( final E c, final Boundz bounds )
     {
         return -1;
+    }
+
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final E c )
+    {
+        return Component.BaselineResizeBehavior.OTHER;
     }
 
     @Override
@@ -232,6 +239,7 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
     public I merge ( final I decoration )
     {
         overwrite = overwrite != null && overwrite || decoration.overwrite != null && decoration.overwrite;
+        states = decoration.isOverwrite () || decoration.states != null ? decoration.states : states;
         visible = decoration.isOverwrite () || decoration.visible != null ? decoration.visible : visible;
         size = decoration.isOverwrite () || decoration.size != null ? decoration.size : size;
         opacity = decoration.isOverwrite () || decoration.opacity != null ? decoration.opacity : opacity;

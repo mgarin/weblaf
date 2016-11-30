@@ -58,7 +58,7 @@ public class WebProgressBarUI extends WProgressBarUI implements ShapeSupport, Ma
     protected Insets margin = null;
     protected Insets padding = null;
     protected JProgressBar progressBar;
-    protected Handler handler;
+    protected EventsHandler eventsHandler;
 
     /**
      * Returns an instance of the WebProgressBarUI for the specified component.
@@ -132,9 +132,9 @@ public class WebProgressBarUI extends WProgressBarUI implements ShapeSupport, Ma
      */
     protected void installListeners ()
     {
-        handler = new Handler ();
-        progressBar.addChangeListener ( handler );
-        progressBar.addPropertyChangeListener ( handler );
+        eventsHandler = new EventsHandler ();
+        progressBar.addChangeListener ( eventsHandler );
+        progressBar.addPropertyChangeListener ( eventsHandler );
     }
 
     /**
@@ -142,9 +142,9 @@ public class WebProgressBarUI extends WProgressBarUI implements ShapeSupport, Ma
      */
     protected void uninstallListeners ()
     {
-        progressBar.removeChangeListener ( handler );
-        progressBar.removePropertyChangeListener ( handler );
-        handler = null;
+        progressBar.removeChangeListener ( eventsHandler );
+        progressBar.removePropertyChangeListener ( eventsHandler );
+        eventsHandler = null;
     }
 
     @Override
@@ -207,18 +207,24 @@ public class WebProgressBarUI extends WProgressBarUI implements ShapeSupport, Ma
         }, this.painter, painter, IProgressBarPainter.class, AdaptiveProgressBarPainter.class );
     }
 
-    /**
-     * Paints progress bar.
-     *
-     * @param g graphics
-     * @param c component
-     */
+    @Override
+    public int getBaseline ( final JComponent c, final int width, final int height )
+    {
+        return PainterSupport.getBaseline ( c, this, painter, width, height );
+    }
+
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
+    }
+
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
         }
     }
 
@@ -231,7 +237,7 @@ public class WebProgressBarUI extends WProgressBarUI implements ShapeSupport, Ma
     /**
      * Events handler replacing {@link javax.swing.plaf.basic.BasicProgressBarUI.Handler} one.
      */
-    protected class Handler implements ChangeListener, PropertyChangeListener
+    protected class EventsHandler implements ChangeListener, PropertyChangeListener
     {
         @Override
         public void stateChanged ( final ChangeEvent e )

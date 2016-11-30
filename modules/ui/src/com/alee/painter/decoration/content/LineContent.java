@@ -163,7 +163,7 @@ public class LineContent<E extends JComponent, D extends IDecoration<E, D>, I ex
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    protected void paintContent ( final Graphics2D g2d, final E c, final D d, final Rectangle bounds )
     {
         final Line line;
         final BoxOrientation align = getAlignment ( c, d );

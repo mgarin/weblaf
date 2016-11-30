@@ -168,8 +168,13 @@ public class WebRadioButtonUI extends WRadioButtonUI implements ShapeSupport, Ma
     @Override
     public int getBaseline ( final JComponent c, final int width, final int height )
     {
-        // todo return painter != null ? painter.getBaseline ( c, this, width, height ) : -1;
-        return super.getBaseline ( c, width, height );
+        return PainterSupport.getBaseline ( c, this, painter, width, height );
+    }
+
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
     }
 
     @Override
@@ -177,7 +182,7 @@ public class WebRadioButtonUI extends WRadioButtonUI implements ShapeSupport, Ma
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
         }
     }
 

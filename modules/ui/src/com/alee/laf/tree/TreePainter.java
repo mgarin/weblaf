@@ -1,7 +1,7 @@
 package com.alee.laf.tree;
 
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.BoundsType;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.SectionPainter;
@@ -469,7 +469,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
         paintTree ( g2d );
 
         // Painting drop location
-        paintDropLocation ( g2d, bounds );
+        paintDropLocation ( g2d );
 
         // Multiselector
         paintMultiselector ( g2d );
@@ -838,7 +838,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
      * @return true if {@code mouseX} and {@code mouseY} fall in the area of row that is used to expand/collapse the node and the node at
      * {@code row} does not represent a leaf, false otherwise
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected boolean isLocationInExpandControl ( final TreePath path, final int mouseX, final int mouseY )
     {
         if ( path != null && !component.getModel ().isLeaf ( path.getLastPathComponent () ) )
@@ -927,7 +927,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
      * @param hasBeenExpanded whether row has been expanded once before or not
      * @param isLeaf          whether node is leaf or not
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintRow ( final Graphics2D g2d, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
                               final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
                               final boolean isLeaf )
@@ -959,7 +959,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
      * @param isLeaf          whether node is leaf or not
      * @return true if the expand (toggle) control should be painted for the specified row, false otherwise
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected boolean shouldPaintExpandControl ( final TreePath path, final int row, final boolean isExpanded,
                                                  final boolean hasBeenExpanded, final boolean isLeaf )
     {
@@ -1005,7 +1005,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
      * @param hasBeenExpanded whether row has been expanded once before or not
      * @param isLeaf          whether node is leaf or not
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintHorizontalPartOfLeg ( final Graphics2D g2d, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
                                               final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
                                               final boolean isLeaf )
@@ -1264,7 +1264,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
      * @param depth Depth of the row
      * @return amount to indent the given row.
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected int getRowX ( final int row, final int depth )
     {
         return totalChildIndent * ( depth + depthOffset );
@@ -1310,28 +1310,24 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
     /**
      * Paints drop location if it is available.
      *
-     * @param g2d    graphics context
-     * @param bounds painting bounds
+     * @param g2d graphics context
      */
-    protected void paintDropLocation ( final Graphics2D g2d, final Rectangle bounds )
+    protected void paintDropLocation ( final Graphics2D g2d )
     {
         // Checking drop location availability
-        if ( isDropLocationAvailable () )
+        if ( dropLocationPainter != null )
         {
-            // Painting drop location
-            dropLocationPainter.prepareToPaint ( component.getDropLocation () );
-            dropLocationPainter.paint ( g2d, bounds, component, ui );
-        }
-    }
+            final JTree.DropLocation dropLocation = component.getDropLocation ();
+            if ( dropLocation != null && dropLocation.getPath () != null )
+            {
+                // Calculating drop location bounds
+                final Rectangle dropViewBounds = dropLocationPainter.getDropViewBounds ( dropLocation );
 
-    /**
-     * Returns whether or not drop location is available.
-     *
-     * @return true if drop location is available, false otherwise
-     */
-    protected boolean isDropLocationAvailable ()
-    {
-        return dropLocationPainter != null && component.getDropLocation () != null && component.getDropLocation ().getPath () != null;
+                // Painting drop location view
+                dropLocationPainter.prepareToPaint ( dropLocation );
+                PainterSupport.paintSection ( dropLocationPainter, g2d, component, ui, dropViewBounds );
+            }
+        }
     }
 
     /**
@@ -1345,7 +1341,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
         {
             // Calculating selector bounds
             final Rectangle rawBounds = GeometryUtils.getContainingRect ( selectionStart, selectionEnd );
-            final Rectangle bounds = rawBounds.intersection ( Bounds.component.of ( component ) );
+            final Rectangle bounds = rawBounds.intersection ( BoundsType.component.bounds ( component ) );
             bounds.width -= 1;
             bounds.height -= 1;
 

@@ -21,7 +21,7 @@ import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.BoundsType;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.FileUtils;
 import com.alee.utils.TextUtils;
@@ -207,7 +207,7 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
         if ( iconLabel.isEnabled () )
         {
             // Thumbnail loading
-            ThumbnailGenerator.queueThumbnailLoad ( fileList, element, Bounds.padding.of ( iconLabel ).getSize (), false );
+            ThumbnailGenerator.queueThumbnailLoad ( fileList, element, BoundsType.padding.bounds ( iconLabel ).getSize (), false );
 
             // Image thumbnail
             final ImageIcon thumbnail = element.getEnabledThumbnail ();
@@ -222,7 +222,7 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
         else
         {
             // Disabled thumbnail loading
-            ThumbnailGenerator.queueThumbnailLoad ( fileList, element, Bounds.padding.of ( iconLabel ).getSize (), true );
+            ThumbnailGenerator.queueThumbnailLoad ( fileList, element, BoundsType.padding.bounds ( iconLabel ).getSize (), true );
 
             // Image disabled thumbnail
             iconLabel.setDisabledIcon ( element.getDisabledThumbnail () );

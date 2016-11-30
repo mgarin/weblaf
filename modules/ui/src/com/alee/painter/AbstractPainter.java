@@ -18,6 +18,7 @@
 package com.alee.painter;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.style.Boundz;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.LafUtils;
@@ -147,6 +148,8 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      */
     protected boolean isSectionPainter ()
     {
+        // todo Optimize this in future to return true/false
+        // todo Also this can be completely moved to higher level implementations of section painters
         return this instanceof SectionPainter;
     }
 
@@ -272,9 +275,9 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     }
 
     /**
-     * Updates component border according to component's margin and padding and painter's borders.
+     * Returns component painter border according to component's margin, padding and painter's borders.
      *
-     * @return complete painter border
+     * @return component painter border according to component's margin, padding and painter's borders
      */
     public Insets getCompleteBorder ()
     {
@@ -329,9 +332,15 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     }
 
     @Override
-    public int getBaseline ( final E c, final U ui, final int width, final int height )
+    public int getBaseline ( final E c, final U ui, final Boundz bounds )
     {
         return -1;
+    }
+
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final E c, final U ui )
+    {
+        return Component.BaselineResizeBehavior.OTHER;
     }
 
     /**

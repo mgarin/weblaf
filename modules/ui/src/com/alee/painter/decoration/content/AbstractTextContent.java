@@ -130,15 +130,19 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
         super.deactivate ( c, d );
 
         // Cleaning up HTML caches
+        // todo This might lower HTML performance for components with multiple states like buttons
+        // todo Perfectly HTML should be cleaned up only when decoration is removed from possible decorations and not just deactivated
         cleanupHtml ( c, d );
     }
 
     /**
      * Returns preferred rasterization option.
      *
+     * @param c painted component
+     * @param d painted decoration state
      * @return preferred rasterization option
      */
-    public TextRasterization getRasterization ()
+    public TextRasterization getRasterization ( final E c, final D d )
     {
         return rasterization != null ? rasterization : TextRasterization.subpixel;
     }
@@ -329,17 +333,17 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     {
         // HTML content settings
         final String text = getText ( c, d );
-        final Font defaultFont = getFont ( c, d );
+        final Font font = getFont ( c, d );
         final Color foreground = getColor ( c, d );
 
         // HTML view settings
-        final String settings = text + ";" + defaultFont + ";" + foreground;
+        final String settings = text + ";" + font + ";" + foreground;
 
         // Updating HTML view if needed
         if ( htmlView == null || !CompareUtils.equals ( htmlSettings, settings ) )
         {
             htmlSettings = settings;
-            htmlView = BasicHTML.createHTMLView ( c, text, defaultFont, foreground );
+            htmlView = BasicHTML.createHTMLView ( c, text, font, foreground );
         }
 
         // Return cached HTML view
@@ -377,7 +381,44 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     protected abstract int getMnemonicIndex ( E c, D d );
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    public boolean hasContentBaseline ( final E c, final D d )
+    {
+        return !isHtmlText ( c, d );
+    }
+
+    @Override
+    public int getContentBaseline ( final E c, final D d, final Rectangle bounds )
+    {
+        if ( !isHtmlText ( c, d ) )
+        {
+            final FontMetrics fm = getFontMetrics ( c, d );
+            return getTextY ( c, d, bounds, fm );
+        }
+        return -1;
+    }
+
+    @Override
+    public Component.BaselineResizeBehavior getContentBaselineResizeBehavior ( final E c, final D d )
+    {
+        if ( !isHtmlText ( c, d ) )
+        {
+            switch ( getVerticalAlignment ( c, d ) )
+            {
+                case TOP:
+                    return Component.BaselineResizeBehavior.CONSTANT_ASCENT;
+
+                case BOTTOM:
+                    return Component.BaselineResizeBehavior.CONSTANT_DESCENT;
+
+                case CENTER:
+                    return Component.BaselineResizeBehavior.CENTER_OFFSET;
+            }
+        }
+        return Component.BaselineResizeBehavior.OTHER;
+    }
+
+    @Override
+    protected void paintContent ( final Graphics2D g2d, final E c, final D d, final Rectangle bounds )
     {
         // Ensure that text painting is allowed
         if ( !isEmpty ( c, d ) )
@@ -386,7 +427,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
             final Font oldFont = GraphicsUtils.setupFont ( g2d, getFont ( c, d ) );
 
             // Installing text antialias settings
-            final TextRasterization rasterization = getRasterization ();
+            final TextRasterization rasterization = getRasterization ( c, d );
             final Map oldHints = SwingUtils.setupTextAntialias ( g2d, rasterization );
 
             // Paint color
@@ -443,17 +484,72 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     {
         // Painting settings
         final String text = getText ( c, d );
-        final int mnemIndex = getMnemonicIndex ( c, d );
-        final FontMetrics fm = getFontMetrics ( c, d );
-        final int va = getVerticalAlignment ( c, d );
-        final int ha = getAdjustedHorizontalAlignment ( c, d );
-        final int tw = fm.stringWidth ( text );
+        final FontMetrics fontMetrics = getFontMetrics ( c, d );
+        final int textWidth = fontMetrics.stringWidth ( text );
+        final int horizontalAlignment = getAdjustedHorizontalAlignment ( c, d );
+        final int mnemonicIndex = getMnemonicIndex ( c, d );
 
         // Calculating text coordinates
+        final int textX = getTextX ( c, d, bounds, textWidth, horizontalAlignment );
+        final int textY = getTextY ( c, d, bounds, fontMetrics );
+
+        // Truncating text if needed
+        final String paintedText = getPaintedText ( c, d, bounds, text, fontMetrics, textWidth, horizontalAlignment );
+
+        // Painting text
+        paintTextFragment ( c, d, g2d, paintedText, textX, textY, mnemonicIndex );
+    }
+
+    /**
+     * Returns text X coordinate within component bounds.
+     *
+     * @param c         painted component
+     * @param d         painted decoration state
+     * @param bounds    painting bounds
+     * @param width     text width
+     * @param alignment horizontal text alignment
+     * @return text X coordinate within component bounds
+     */
+    protected int getTextX ( final E c, final D d, final Rectangle bounds, final int width, final int alignment )
+    {
         int textX = bounds.x;
+        if ( width < bounds.width )
+        {
+            switch ( alignment )
+            {
+                case LEFT:
+                    break;
+
+                case CENTER:
+                    textX += Math.floor ( ( bounds.width - width ) / 2.0 );
+                    break;
+
+                case RIGHT:
+                    textX += bounds.width - width;
+                    break;
+
+                default:
+                    throw new DecorationException ( "Incorrect horizontal alignment provided: " + alignment );
+            }
+        }
+        return textX;
+    }
+
+    /**
+     * Returns text Y coordinate within component bounds.
+     *
+     * @param c      painted component
+     * @param d      painted decoration state
+     * @param bounds painting bounds
+     * @param fm     font metrics
+     * @return text Y coordinate within component bounds
+     */
+    protected int getTextY ( final E c, final D d, final Rectangle bounds, final FontMetrics fm )
+    {
         int textY = bounds.y;
 
         // Adjusting coordinates according to vertical alignment
+        final int va = getVerticalAlignment ( c, d );
         switch ( va )
         {
             case TOP:
@@ -472,33 +568,32 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
                 throw new DecorationException ( "Incorrect vertical alignment provided: " + va );
         }
 
-        // Adjusting coordinates according to horizontal alignment
-        if ( tw < bounds.width )
+        return textY;
+    }
+
+    /**
+     * Returns text that will actually be painted.
+     *
+     * @param c         painted component
+     * @param d         painted decoration state
+     * @param bounds    painting bounds
+     * @param text      text to paint
+     * @param fm        font metrics
+     * @param width     text width
+     * @param alignment horizontal text alignment
+     * @return text that will actually be painted
+     */
+    protected String getPaintedText ( final E c, final D d, final Rectangle bounds, final String text, final FontMetrics fm,
+                                      final int width, final int alignment )
+    {
+        if ( isTruncate ( c, d ) && bounds.width < width )
         {
-            switch ( ha )
-            {
-                case LEFT:
-                    break;
-
-                case CENTER:
-                    textX += Math.floor ( ( bounds.width - tw ) / 2.0 );
-                    break;
-
-                case RIGHT:
-                    textX += bounds.width - tw;
-                    break;
-
-                default:
-                    throw new DecorationException ( "Incorrect horizontal alignment provided: " + ha );
-            }
+            return SwingUtilities.layoutCompoundLabel ( fm, text, null, 0, alignment, 0, 0, bounds, new Rectangle (), new Rectangle (), 0 );
         }
-
-        // Clipping text if needed
-        final String paintedText = isTruncate ( c, d ) && bounds.width < tw ?
-                SwingUtilities.layoutCompoundLabel ( fm, text, null, 0, ha, 0, 0, bounds, new Rectangle (), new Rectangle (), 0 ) : text;
-
-        // Painting text
-        paintTextFragment ( c, d, g2d, paintedText, textX, textY, mnemIndex );
+        else
+        {
+            return text;
+        }
     }
 
     /**

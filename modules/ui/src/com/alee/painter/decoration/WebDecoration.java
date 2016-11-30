@@ -19,6 +19,7 @@ package com.alee.painter.decoration;
 
 import com.alee.api.ColorSupport;
 import com.alee.api.StrokeSupport;
+import com.alee.managers.style.Boundz;
 import com.alee.painter.decoration.background.IBackground;
 import com.alee.painter.decoration.border.BorderWidth;
 import com.alee.painter.decoration.border.IBorder;
@@ -30,6 +31,7 @@ import com.alee.painter.decoration.shape.ShapeType;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.MergeUtils;
+import com.alee.utils.SwingUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
@@ -329,7 +331,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     @Override
     public Insets getBorderInsets ( final E c )
     {
-        Insets insets = null;
+        final Insets insets = super.getBorderInsets ( c );
         if ( isVisible () )
         {
             final IShape shape = getShape ();
@@ -342,11 +344,11 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
                 final int left = ps.isPaintLeft ( c, this ) ? bw.left + sw : ps.isPaintLeftLine ( c, this ) ? bw.left : 0;
                 final int bottom = ps.isPaintBottom ( c, this ) ? bw.bottom + sw : ps.isPaintBottomLine ( c, this ) ? bw.bottom : 0;
                 final int right = ps.isPaintRight ( c, this ) ? bw.right + sw : ps.isPaintRightLine ( c, this ) ? bw.right : 0;
-                insets = new Insets ( top, left, bottom, right );
+                SwingUtils.increase ( insets, new Insets ( top, left, bottom, right ) );
             }
             else
             {
-                insets = new Insets ( bw.top + sw, bw.left + sw, bw.bottom + sw, bw.right + sw );
+                SwingUtils.increase ( insets, new Insets ( bw.top + sw, bw.left + sw, bw.bottom + sw, bw.right + sw ) );
             }
         }
         return insets;
@@ -360,9 +362,10 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
+    public void paint ( final Graphics2D g2d, final E c, final Boundz b )
     {
         // Painting only if bounds are enough
+        final Rectangle bounds = b.get ();
         if ( bounds.width > 0 && bounds.height > 0 )
         {
             // Painting only if margin bounds ar enough and intersect visible area
@@ -473,7 +476,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
                 }
 
                 // Painting contents
-                paintContent ( g2d, bounds, c );
+                paintContent ( g2d, b, c );
             }
         }
     }

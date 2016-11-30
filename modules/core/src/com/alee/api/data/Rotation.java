@@ -85,4 +85,43 @@ public enum Rotation
     {
         return isVertical () ? new Dimension ( dimension.height, dimension.width ) : new Dimension ( dimension );
     }
+
+    /**
+     * Returns baseline resize behavior adjusted according to rotation.
+     *
+     * @param behavior baseline resize behavior
+     * @return baseline resize behavior adjusted according to rotation
+     */
+    public Component.BaselineResizeBehavior adjust ( final Component.BaselineResizeBehavior behavior )
+    {
+        switch ( this )
+        {
+            case clockwise:
+            case counterClockwise:
+            {
+                // Behavior is not valid anymore with these rotation options
+                return Component.BaselineResizeBehavior.OTHER;
+            }
+            case upsideDown:
+            {
+                // Behavior is changed to opposite
+                switch ( behavior )
+                {
+                    case CONSTANT_ASCENT:
+                        return Component.BaselineResizeBehavior.CONSTANT_DESCENT;
+
+                    case CONSTANT_DESCENT:
+                        return Component.BaselineResizeBehavior.CONSTANT_ASCENT;
+
+                    default:
+                        return behavior;
+                }
+            }
+            default:
+            {
+                // Simply return behavior "as is"
+                return behavior;
+            }
+        }
+    }
 }

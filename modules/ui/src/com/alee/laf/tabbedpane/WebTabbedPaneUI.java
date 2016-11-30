@@ -21,6 +21,7 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
+import com.alee.painter.SectionPainter;
 import com.alee.utils.MergeUtils;
 import com.alee.utils.swing.DataRunnable;
 
@@ -61,7 +62,7 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
     /**
      * Runtime variables.
      */
-    protected final Map<Integer, Painter> backgroundPainterAt = new HashMap<Integer, Painter> ();
+    protected final Map<Integer, SectionPainter> backgroundPainterAt = new HashMap<Integer, SectionPainter> ();
     protected Insets margin = null;
     protected Insets padding = null;
 
@@ -195,7 +196,7 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
         return maxTabWidth;
     }
 
-    public Painter getBackgroundPainterAt ( final int tabIndex )
+    public SectionPainter getBackgroundPainterAt ( final int tabIndex )
     {
         return backgroundPainterAt.get ( tabIndex );
     }
@@ -205,7 +206,7 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
         }
     }
 

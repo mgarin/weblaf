@@ -36,7 +36,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "IconTextLayout" )
+@XStreamAlias ("IconTextLayout")
 public class IconTextContentLayout<E extends JComponent, D extends IDecoration<E, D>, I extends IconTextContentLayout<E, D, I>>
         extends AbstractContentLayout<E, D, I> implements SwingConstants
 {
@@ -137,96 +137,96 @@ public class IconTextContentLayout<E extends JComponent, D extends IDecoration<E
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    public ContentLayoutData layoutContent ( final E c, final D d, final Rectangle bounds )
     {
+        final ContentLayoutData layoutData = new ContentLayoutData ( 2 );
+
         // Calculating available size
         final Dimension size = getContentPreferredSize ( c, d, bounds.getSize () );
         size.width = Math.min ( size.width, bounds.width );
         size.height = Math.min ( size.height, bounds.height );
 
-        // Painting contents if at least some space is available
-        if ( size.width > 0 && size.height > 0 )
+        // Calculating smallest content bounds
+        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
+        final int halign = getHorizontalAlignment ( c, d );
+        final int valign = getVerticalAlignment ( c, d );
+        final Rectangle b = new Rectangle ( 0, 0, size.width, size.height );
+        if ( halign == LEFT || halign == LEADING && ltr )
         {
-            // Calculating smallest content bounds
-            final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
-            final int halign = getHorizontalAlignment ( c, d );
-            final int valign = getVerticalAlignment ( c, d );
-            final Rectangle b = new Rectangle ( 0, 0, size.width, size.height );
-            if ( halign == LEFT || halign == LEADING && ltr )
-            {
-                b.x = bounds.x;
-            }
-            else if ( halign == CENTER )
-            {
-                b.x = bounds.x + bounds.width / 2 - size.width / 2;
-            }
-            else
-            {
-                b.x = bounds.x + bounds.width - size.width;
-            }
-            if ( valign == TOP )
-            {
-                b.y = bounds.y;
-            }
-            else if ( valign == CENTER )
-            {
-                b.y = bounds.y + bounds.height / 2 - size.height / 2;
-            }
-            else
-            {
-                b.y = bounds.y + bounds.height - size.height;
-            }
+            b.x = bounds.x;
+        }
+        else if ( halign == CENTER )
+        {
+            b.x = bounds.x + bounds.width / 2 - size.width / 2;
+        }
+        else
+        {
+            b.x = bounds.x + bounds.width - size.width;
+        }
+        if ( valign == TOP )
+        {
+            b.y = bounds.y;
+        }
+        else if ( valign == CENTER )
+        {
+            b.y = bounds.y + bounds.height / 2 - size.height / 2;
+        }
+        else
+        {
+            b.y = bounds.y + bounds.height - size.height;
+        }
 
-            // Painting contents
-            final boolean hasIcon = !isEmpty ( c, d, ICON );
-            final boolean hasText = !isEmpty ( c, d, TEXT );
-            if ( hasIcon && hasText )
+        // Painting contents
+        final boolean hasIcon = !isEmpty ( c, d, ICON );
+        final boolean hasText = !isEmpty ( c, d, TEXT );
+        if ( hasIcon && hasText )
+        {
+            final int hpos = getHorizontalTextPosition ( c, d );
+            final int vpos = getVerticalTextPosition ( c, d );
+            if ( hpos != CENTER || vpos != CENTER )
             {
-                final int hpos = getHorizontalTextPosition ( c, d );
-                final int vpos = getVerticalTextPosition ( c, d );
-                if ( hpos != CENTER || vpos != CENTER )
+                final Dimension ips = getPreferredSize ( c, d, ICON, bounds.getSize () );
+                final int gap = getIconTextGap ( c, d );
+                if ( hpos == RIGHT || hpos == TRAILING && ltr )
                 {
-                    final Dimension ips = getPreferredSize ( c, d, bounds.getSize (), ICON );
-                    final int gap = getIconTextGap ( c, d );
-                    if ( hpos == RIGHT || hpos == TRAILING && ltr )
+                    layoutData.put ( ICON, new Rectangle ( b.x, b.y, ips.width, b.height ) );
+                    layoutData.put ( TEXT, new Rectangle ( b.x + gap + ips.width, b.y, b.width - ips.width - gap, b.height ) );
+                }
+                else if ( hpos == CENTER )
+                {
+                    if ( vpos == TOP )
                     {
-                        paint ( g2d, new Rectangle ( b.x, b.y, ips.width, b.height ), c, d, ICON );
-                        paint ( g2d, new Rectangle ( b.x + gap + ips.width, b.y, b.width - ips.width - gap, b.height ), c, d, TEXT );
-                    }
-                    else if ( hpos == CENTER )
-                    {
-                        if ( vpos == TOP )
-                        {
-                            paint ( g2d, new Rectangle ( b.x, b.y, b.width, b.height - gap - ips.height ), c, d, TEXT );
-                            paint ( g2d, new Rectangle ( b.x, b.y + b.height - ips.height, b.width, ips.height ), c, d, ICON );
-                        }
-                        else
-                        {
-                            paint ( g2d, new Rectangle ( b.x, b.y, b.width, ips.height ), c, d, ICON );
-                            paint ( g2d, new Rectangle ( b.x, b.y + ips.height + gap, b.width, b.height - ips.height - gap ), c, d, TEXT );
-                        }
+                        layoutData.put ( ICON, new Rectangle ( b.x, b.y + b.height - ips.height, b.width, ips.height ) );
+                        layoutData.put ( TEXT, new Rectangle ( b.x, b.y, b.width, b.height - gap - ips.height ) );
                     }
                     else
                     {
-                        paint ( g2d, new Rectangle ( b.x + b.width - ips.width, b.y, ips.width, b.height ), c, d, ICON );
-                        paint ( g2d, new Rectangle ( b.x, b.y, b.width - ips.width - gap, b.height ), c, d, TEXT );
+                        layoutData.put ( ICON, new Rectangle ( b.x, b.y, b.width, ips.height ) );
+                        layoutData.put ( TEXT, new Rectangle ( b.x, b.y + ips.height + gap, b.width, b.height - ips.height - gap ) );
                     }
                 }
                 else
                 {
-                    paint ( g2d, b, c, d, ICON );
-                    paint ( g2d, b, c, d, TEXT );
+                    layoutData.put ( ICON, new Rectangle ( b.x + b.width - ips.width, b.y, ips.width, b.height ) );
+                    layoutData.put ( TEXT, new Rectangle ( b.x, b.y, b.width - ips.width - gap, b.height ) );
                 }
             }
-            else if ( hasIcon )
+            else
             {
-                paint ( g2d, b, c, d, ICON );
-            }
-            else if ( hasText )
-            {
-                paint ( g2d, b, c, d, TEXT );
+                layoutData.put ( ICON, b );
+                layoutData.put ( TEXT, b );
             }
         }
+        else if ( hasIcon )
+        {
+            layoutData.put ( ICON, b );
+        }
+        else if ( hasText )
+        {
+            layoutData.put ( TEXT, b );
+        }
+
+        return layoutData;
     }
 
     @Override
@@ -238,35 +238,35 @@ public class IconTextContentLayout<E extends JComponent, D extends IDecoration<E
         {
             final int hpos = getHorizontalTextPosition ( c, d );
             final int vpos = getVerticalTextPosition ( c, d );
-            final Dimension ips = getPreferredSize ( c, d, available, ICON );
+            final Dimension ips = getPreferredSize ( c, d, ICON, available );
             if ( hpos != CENTER || vpos != CENTER )
             {
                 final int gap = getIconTextGap ( c, d );
                 if ( hpos == LEFT || hpos == LEADING || hpos == RIGHT || hpos == TRAILING )
                 {
                     final Dimension havailable = new Dimension ( available.width - gap - ips.width, available.height );
-                    final Dimension cps = getPreferredSize ( c, d, havailable, TEXT );
+                    final Dimension cps = getPreferredSize ( c, d, TEXT, havailable );
                     return new Dimension ( ips.width + gap + cps.width, Math.max ( ips.height, cps.height ) );
                 }
                 else
                 {
                     final Dimension vavailable = new Dimension ( available.width, available.height - gap - ips.height );
-                    final Dimension cps = getPreferredSize ( c, d, vavailable, TEXT );
+                    final Dimension cps = getPreferredSize ( c, d, TEXT, vavailable );
                     return new Dimension ( Math.max ( ips.width, cps.width ), ips.height + gap + cps.height );
                 }
             }
             else
             {
-                return SwingUtils.max ( ips, getPreferredSize ( c, d, available, TEXT ) );
+                return SwingUtils.max ( ips, getPreferredSize ( c, d, TEXT, available ) );
             }
         }
         else if ( hasIcon )
         {
-            return getPreferredSize ( c, d, available, ICON );
+            return getPreferredSize ( c, d, ICON, available );
         }
         else if ( hasText )
         {
-            return getPreferredSize ( c, d, available, TEXT );
+            return getPreferredSize ( c, d, TEXT, available );
         }
         else
         {

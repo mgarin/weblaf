@@ -18,6 +18,12 @@
 package com.alee.extended.link;
 
 import com.alee.extended.label.WStyledLabelUI;
+import com.alee.managers.style.BoundsType;
+import com.alee.utils.SwingUtils;
+
+import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * Pluggable look and feel interface for {@link WebLink} component.
@@ -29,4 +35,94 @@ import com.alee.extended.label.WStyledLabelUI;
 
 public abstract class WLinkUI extends WStyledLabelUI
 {
+    /**
+     * Listeners.
+     */
+    protected MouseAdapter linkExecutionListener;
+
+    /**
+     * Runtime variables.
+     */
+    protected WebLink link;
+
+    @Override
+    public void installUI ( final JComponent c )
+    {
+        // Saving link reference
+        link = ( WebLink ) c;
+
+        super.installUI ( c );
+    }
+
+    @Override
+    public void uninstallUI ( final JComponent c )
+    {
+        super.uninstallUI ( c );
+
+        // Removing link reference
+        link = null;
+    }
+
+    @Override
+    protected String getFontKey ()
+    {
+        return "Link.font";
+    }
+
+    @Override
+    protected void installDefaults ()
+    {
+        super.installDefaults ();
+
+        link.setFocusable ( false );
+        link.setVisitable ( true );
+        link.setVisited ( false );
+    }
+
+    @Override
+    protected void installListeners ()
+    {
+        super.installListeners ();
+
+        linkExecutionListener = new MouseAdapter ()
+        {
+            private boolean pressed;
+
+            @Override
+            public void mousePressed ( final MouseEvent e )
+            {
+                if ( link.isEnabled () && SwingUtils.isLeftMouseButton ( e ) && BoundsType.margin.bounds ( link ).contains ( e.getPoint () ) )
+                {
+                    pressed = true;
+                    if ( link.isFocusable () )
+                    {
+                        link.requestFocusInWindow ();
+                    }
+                }
+            }
+
+            @Override
+            public void mouseReleased ( final MouseEvent e )
+            {
+                if ( SwingUtils.isLeftMouseButton ( e ) )
+                {
+                    if ( link.isEnabled () && pressed && BoundsType.margin.bounds ( link ).contains ( e.getPoint () ) )
+                    {
+                        link.fireLinkExecuted ();
+                    }
+                    pressed = false;
+                }
+            }
+        };
+        link.addMouseListener ( linkExecutionListener );
+    }
+
+    @Override
+    protected void uninstallListeners ()
+    {
+        link.removeMouseListener ( linkExecutionListener );
+        linkExecutionListener = null;
+
+        super.uninstallListeners ();
+    }
 }

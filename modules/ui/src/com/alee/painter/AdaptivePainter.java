@@ -17,6 +17,8 @@
 
 package com.alee.painter;
 
+import com.alee.managers.style.Boundz;
+
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import java.awt.*;
@@ -97,9 +99,9 @@ public abstract class AdaptivePainter<E extends JComponent, U extends ComponentU
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    public void paint ( final Graphics2D g2d, final E c, final U ui, final Boundz bounds )
     {
-        painter.paint ( g2d, bounds, c, ui );
+        painter.paint ( g2d, c, ui, bounds );
     }
 
     @Override

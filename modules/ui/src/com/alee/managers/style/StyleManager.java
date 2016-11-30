@@ -17,6 +17,7 @@
 
 package com.alee.managers.style;
 
+import com.alee.extended.canvas.GripperContent;
 import com.alee.extended.checkbox.MixedIconContent;
 import com.alee.extended.label.AbstractStyledTextContent;
 import com.alee.extended.label.StyledLabelTextContent;
@@ -30,7 +31,7 @@ import com.alee.laf.label.LabelIconContent;
 import com.alee.laf.label.LabelTextContent;
 import com.alee.laf.menu.AcceleratorTextContent;
 import com.alee.laf.menu.MenuItemContentLayout;
-import com.alee.laf.progressbar.ProgressBarText;
+import com.alee.laf.progressbar.ProgressBarTextContent;
 import com.alee.laf.radiobutton.RadioIconContent;
 import com.alee.laf.separator.SeparatorContent;
 import com.alee.laf.separator.SeparatorLine;
@@ -176,6 +177,7 @@ public final class StyleManager
             XmlUtils.processAnnotations ( GradientColor.class );
             XmlUtils.processAnnotations ( SeparatorLines.class );
             XmlUtils.processAnnotations ( SeparatorLine.class );
+            XmlUtils.processAnnotations ( GripperContent.class );
             XmlUtils.processAnnotations ( BorderContentLayout.class );
             XmlUtils.processAnnotations ( AbstractContentLayout.class );
             XmlUtils.processAnnotations ( IconTextContentLayout.class );
@@ -203,7 +205,7 @@ public final class StyleManager
             XmlUtils.processAnnotations ( StyledLabelTextContent.class );
             XmlUtils.processAnnotations ( MenuItemContentLayout.class );
             XmlUtils.processAnnotations ( AcceleratorTextContent.class );
-            XmlUtils.processAnnotations ( ProgressBarText.class );
+            XmlUtils.processAnnotations ( ProgressBarTextContent.class );
             XmlUtils.processAnnotations ( WebHotkeyLabelBackground.class );
             XmlUtils.processAnnotations ( WebMemoryBarBackground.class );
 

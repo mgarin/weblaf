@@ -20,7 +20,6 @@ package com.alee.laf.label;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicLabelUI;
 
 /**
  * Base interface for various label painters.
@@ -30,6 +29,6 @@ import javax.swing.plaf.basic.BasicLabelUI;
  * @author Mikle Garin
  */
 
-public interface IAbstractLabelPainter<E extends JLabel, U extends BasicLabelUI> extends SpecificPainter<E, U>
+public interface IAbstractLabelPainter<E extends JLabel, U extends WLabelUI> extends SpecificPainter<E, U>
 {
 }

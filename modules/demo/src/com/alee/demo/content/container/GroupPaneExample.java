@@ -115,7 +115,7 @@ public class GroupPaneExample extends AbstractStylePreviewExample
             final WebTextField e3 = new WebTextField ( "Third" );
 
             // Second row
-            final WebPanel e4 = new WebPanel ( StyleId.panelWhite, new WebLabel ( "First", WebLabel.CENTER ) );
+            final WebPanel e4 = new WebPanel ( StyleId.panelDecorated, new WebLabel ( "First", WebLabel.CENTER ) );
             final WebTextField e5 = new WebTextField ( "Second" );
             final WebButton e6 = new WebButton ( "Third" );
 

@@ -437,6 +437,78 @@
                     </record>
                 </Dictionary>
             </Dictionary>
+            <Dictionary prefix="jcheckbox">
+                <record key="title">
+                    <value lang="en">JCheckBox</value>
+                    <value lang="ru">JCheckBox</value>
+                </record>
+                <Dictionary prefix="basic">
+                    <record key="title">
+                        <value lang="en">Basic check box</value>
+                        <value lang="ru">Простой чекбокс</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="styled">
+                    <record key="title">
+                        <value lang="en">With styled text support</value>
+                        <value lang="ru">Со стилизованным текстом</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="link">
+                    <record key="title">
+                        <value lang="en">Link-like</value>
+                        <value lang="ru">В стиле ссылки</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="webtristatecheckbox">
+                <record key="title">
+                    <value lang="en">WebTristateCheckBox</value>
+                    <value lang="ru">WebTristateCheckBox</value>
+                </record>
+                <Dictionary prefix="basic">
+                    <record key="title">
+                        <value lang="en">Tristate check box</value>
+                        <value lang="ru">Чекбокс с тремя состояниями</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="styled">
+                    <record key="title">
+                        <value lang="en">With styled text support</value>
+                        <value lang="ru">Со стилизованным текстом</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="link">
+                    <record key="title">
+                        <value lang="en">Link-like</value>
+                        <value lang="ru">В стиле ссылки</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="jradiobutton">
+                <record key="title">
+                    <value lang="en">JRadioButton</value>
+                    <value lang="ru">JRadioButton</value>
+                </record>
+                <Dictionary prefix="basic">
+                    <record key="title">
+                        <value lang="en">Basic radio button</value>
+                        <value lang="ru">Простой радиобаттон</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="styled">
+                    <record key="title">
+                        <value lang="en">With styled text support</value>
+                        <value lang="ru">Со стилизованным текстом</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="link">
+                    <record key="title">
+                        <value lang="en">Link-like</value>
+                        <value lang="ru">В стиле ссылки</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
             <Dictionary prefix="websplitbutton">
                 <record key="title">
                     <value lang="en">WebSplitButton</value>

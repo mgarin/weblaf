@@ -3,8 +3,8 @@ package com.alee.managers.style;
 import java.awt.*;
 
 /**
- * This interface is implemented by components and UIs which support customizable padding.
- * Padding is a spacing between component visible decoration and its content.
+ * This interface is implemented by classes which provide customizable padding.
+ * Margin is a spacing between element view border and its content.
  * <p>
  * It might have different implementation depending on the component.
  * For example for {@link javax.swing.JButton} it is a spacing between its decoration border and its content.

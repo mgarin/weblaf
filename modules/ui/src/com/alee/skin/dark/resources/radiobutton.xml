@@ -32,7 +32,7 @@
                         </GradientBackground>
                     </decoration>
                     <decoration states="checked">
-                        <RadioIcon leftColor="255,255,255,225" rightColor="255,255,255,235" />
+                        <RadioIcon padding="2" leftColor="255,255,255,225" rightColor="255,255,255,235" />
                     </decoration>
                     <decoration states="focused">
                         <LineBorder color="black" />
@@ -46,7 +46,7 @@
                         </GradientBackground>
                     </decoration>
                     <decoration states="disabled,checked">
-                        <RadioIcon leftColor="120,120,120" rightColor="130,130,130" />
+                        <RadioIcon padding="2" leftColor="120,120,120" rightColor="130,130,130" />
                     </decoration>
                 </decorations>
             </checkStatePainter>
@@ -66,6 +66,25 @@
                 <decoration states="disabled">
                     <ButtonLayout>
                         <StyledButtonText color="180,180,180" ignoreStyleColors="true" />
+                    </ButtonLayout>
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Link-like radiobutton -->
+    <style type="radiobutton" id="link" extends="styled">
+        <painter>
+            <decorations>
+                <decoration cursor="hand" />
+                <decoration states="hover">
+                    <ButtonLayout>
+                        <StyledButtonText globalStyle="u" />
+                    </ButtonLayout>
+                </decoration>
+                <decoration states="disabled">
+                    <ButtonLayout>
+                        <StyledButtonText globalStyle="" />
                     </ButtonLayout>
                 </decoration>
             </decorations>

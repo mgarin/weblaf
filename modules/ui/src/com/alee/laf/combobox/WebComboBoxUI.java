@@ -519,7 +519,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
         if ( painter != null )
         {
             painter.prepareToPaint ( currentValuePane );
-            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, c, this, new Boundz ( c ) );
         }
     }
 

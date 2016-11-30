@@ -17,6 +17,9 @@
 
 package com.alee.extended.window;
 
+import com.alee.utils.SwingUtils;
+
+import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 
 /**
@@ -27,4 +30,79 @@ import javax.swing.plaf.ComponentUI;
 
 public abstract class WPopupUI extends ComponentUI
 {
+    /**
+     * Runtime variables.
+     */
+    protected WebPopup popup;
+
+    @Override
+    public void installUI ( final JComponent c )
+    {
+        // Saving popup reference
+        popup = ( WebPopup ) c;
+
+        // Installing default component settings
+        installDefaults ();
+
+        // Installing default component listeners
+        installListeners ();
+    }
+
+    @Override
+    public void uninstallUI ( final JComponent c )
+    {
+        // Uninstalling default component listeners
+        uninstallListeners ();
+
+        // Uninstalling default component settings
+        uninstallDefaults ();
+
+        // Removing popup reference
+        popup = null;
+    }
+
+    /**
+     * Returns component default font key.
+     *
+     * @return component default font key
+     */
+    protected String getFontKey ()
+    {
+        return "Popup.font";
+    }
+
+    /**
+     * Installs default component settings.
+     */
+    protected void installDefaults ()
+    {
+        if ( SwingUtils.isUIResource ( popup.getFont () ) )
+        {
+            popup.setFont ( UIManager.getFont ( getFontKey () ) );
+        }
+    }
+
+    /**
+     * Uninstalls default component settings.
+     */
+    protected void uninstallDefaults ()
+    {
+        LookAndFeel.uninstallBorder ( popup );
+    }
+
+    /**
+     * Installs default component listeners.
+     */
+    protected void installListeners ()
+    {
+        // Do nothing by default
+    }
+
+    /**
+     * Uninstalls default component listeners.
+     */
+    protected void uninstallListeners ()
+    {
+        // Do nothing by default
+    }
 }

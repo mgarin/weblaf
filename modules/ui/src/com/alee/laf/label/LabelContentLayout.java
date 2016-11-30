@@ -24,7 +24,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import javax.swing.*;
 
 /**
- * Label layout implementation.
+ * Label icon and text layout implementation.
  *
  * @param <E> component type
  * @param <D> decoration type

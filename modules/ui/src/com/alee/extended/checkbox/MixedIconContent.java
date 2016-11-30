@@ -78,7 +78,7 @@ public class MixedIconContent<E extends AbstractButton, D extends IDecoration<E,
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    protected void paintContent ( final Graphics2D g2d, final E c, final D d, final Rectangle bounds )
     {
         final int x = bounds.x + 2;
         final int y = bounds.y + 2;

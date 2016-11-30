@@ -17,6 +17,8 @@
 
 package com.alee.painter.decoration;
 
+import com.alee.managers.style.Boundz;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -53,13 +55,13 @@ public class NinePatchDecoration<E extends JComponent, I extends NinePatchDecora
     @Override
     public Insets getBorderInsets ( final E c )
     {
-        Insets insets = null;
+        final Insets insets = super.getBorderInsets ( c );
         if ( isVisible () )
         {
             final NinePatchIcon icon = getIcon ();
             if ( icon != null )
             {
-                insets = icon.getMargin ();
+                SwingUtils.increase ( insets, icon.getMargin () );
             }
         }
         return insets;
@@ -74,7 +76,7 @@ public class NinePatchDecoration<E extends JComponent, I extends NinePatchDecora
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
+    public void paint ( final Graphics2D g2d, final E c, final Boundz bounds )
     {
         // Painting only if decoration is visible
         if ( isVisible () )
@@ -83,7 +85,7 @@ public class NinePatchDecoration<E extends JComponent, I extends NinePatchDecora
             final NinePatchIcon icon = getIcon ();
             if ( icon != null )
             {
-                icon.paintIcon ( g2d, bounds );
+                icon.paintIcon ( g2d, bounds.get () );
             }
         }
 

@@ -20,6 +20,7 @@ package com.alee.painter.decoration;
 import com.alee.api.Identifiable;
 import com.alee.api.Mergeable;
 import com.alee.api.Overwriting;
+import com.alee.managers.style.Boundz;
 import com.alee.managers.style.PainterShapeProvider;
 
 import javax.swing.*;
@@ -36,7 +37,7 @@ import java.util.List;
  */
 
 public interface IDecoration<E extends JComponent, I extends IDecoration<E, I>>
-        extends Serializable, Cloneable, Mergeable<I>, Overwriting, Identifiable, PainterShapeProvider<E>
+        extends Identifiable, PainterShapeProvider<E>, Mergeable<I>, Overwriting, Cloneable, Serializable
 {
     /**
      * States separator.
@@ -63,13 +64,6 @@ public interface IDecoration<E extends JComponent, I extends IDecoration<E, I>>
      * @return component states this decoration is describing
      */
     public List<String> getStates ();
-
-    /**
-     * Updates states this decoration is describing.
-     *
-     * @param states states this decoration is describing
-     */
-    public void updateStates ( List<String> states );
 
     /**
      * Returns whether this decoration is associated with specified state.
@@ -126,26 +120,31 @@ public interface IDecoration<E extends JComponent, I extends IDecoration<E, I>>
     public boolean hasContent ();
 
     /**
-     * Returns decoration baseline for the specified width and height, it is measured from the top of the component.
-     * This method is primarily meant for {@code java.awt.LayoutManager}s to align components along their baseline.
-     * A return value less than 0 indicates this component does not have a reasonable baseline and that {@code java.awt.LayoutManager}s
-     * should not align this component on its baseline.
+     * Returns decoration baseline within the specified bounds, measured from the top of the bounds.
+     * A return value less than {@code 0} indicates this decoration does not have a reasonable baseline.
      *
      * @param c      aligned component
-     * @param width  the width to get the baseline for
-     * @param height the height to get the baseline for
-     * @return decoration baseline for the specified width and height
+     * @param bounds bounds to get the baseline for
+     * @return decoration baseline within the specified bounds, measured from the top of the bounds
      */
-    public int getBaseline ( E c, int width, int height );
+    public int getBaseline ( E c, Boundz bounds );
+
+    /**
+     * Returns enum indicating how the baseline of the decoration changes as the size changes.
+     *
+     * @param c aligned component
+     * @return enum indicating how the baseline of the decoration changes as the size changes
+     */
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( E c );
 
     /**
      * Paints component decoration.
      *
      * @param g2d    graphics context
-     * @param bounds painting bounds
      * @param c      painted component
+     * @param bounds painting bounds
      */
-    public void paint ( Graphics2D g2d, Rectangle bounds, E c );
+    public void paint ( Graphics2D g2d, E c, Boundz bounds );
 
     /**
      * Returns decoration preferred size.

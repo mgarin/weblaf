@@ -17,7 +17,9 @@
 
 package com.alee.extended.label;
 
-import javax.swing.plaf.basic.BasicLabelUI;
+import com.alee.laf.label.WLabelUI;
+
+import javax.swing.*;
 
 /**
  * Pluggable look and feel interface for {@link WebStyledLabel} component.
@@ -27,6 +29,47 @@ import javax.swing.plaf.basic.BasicLabelUI;
  * @see WebStyledLabel
  */
 
-public class WStyledLabelUI extends BasicLabelUI
+public abstract class WStyledLabelUI extends WLabelUI implements SwingConstants
 {
+    /**
+     * Runtime variables.
+     */
+    protected WebStyledLabel label;
+
+    @Override
+    public void installUI ( final JComponent c )
+    {
+        // Saving label reference
+        label = ( WebStyledLabel ) c;
+
+        super.installUI ( c );
+    }
+
+    @Override
+    public void uninstallUI ( final JComponent c )
+    {
+        super.uninstallUI ( c );
+
+        // Removing label reference
+        label = null;
+    }
+
+    @Override
+    protected String getFontKey ()
+    {
+        return "StyledLabel.font";
+    }
+
+    @Override
+    protected void installDefaults ()
+    {
+        super.installDefaults ();
+
+        label.setWrap ( TextWrap.mixed );
+        label.setHorizontalTextAlignment ( -1 );
+        label.setVerticalTextAlignment ( CENTER );
+        label.setRows ( 0 );
+        label.setMinimumRows ( 0 );
+        label.setMaximumRows ( 0 );
+    }
 }

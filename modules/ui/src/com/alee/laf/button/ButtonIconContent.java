@@ -17,7 +17,6 @@
 
 package com.alee.laf.button;
 
-import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractIconContent;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -34,7 +33,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "ButtonIcon" )
+@XStreamAlias ("ButtonIcon")
 public class ButtonIconContent<E extends AbstractButton, D extends IDecoration<E, D>, I extends ButtonIconContent<E, D, I>>
         extends AbstractIconContent<E, D, I>
 {
@@ -42,58 +41,58 @@ public class ButtonIconContent<E extends AbstractButton, D extends IDecoration<E
     protected Icon getIcon ( final E c, final D d )
     {
         Icon icon = c.getIcon ();
-        if ( icon == null )
+        if ( icon != null )
         {
-            return null;
-        }
-        Icon tmpIcon = null;
-        Icon selectedIcon = null;
-        if ( d.usesState ( DecorationState.selected ) )
-        {
-            selectedIcon = c.getSelectedIcon ();
-            if ( selectedIcon != null )
+            final ButtonModel model = c.getModel ();
+            Icon tmpIcon = null;
+            Icon selectedIcon = null;
+            if ( model.isSelected () )
             {
-                icon = selectedIcon;
-            }
-        }
-        if ( d.usesState ( DecorationState.disabled ) )
-        {
-            if ( d.usesState ( DecorationState.selected ) )
-            {
-                tmpIcon = c.getDisabledSelectedIcon ();
-                if ( tmpIcon == null )
+                selectedIcon = c.getSelectedIcon ();
+                if ( selectedIcon != null )
                 {
-                    tmpIcon = selectedIcon;
+                    icon = selectedIcon;
                 }
             }
+            if ( !model.isEnabled () )
+            {
+                if ( model.isSelected () )
+                {
+                    tmpIcon = c.getDisabledSelectedIcon ();
+                    if ( tmpIcon == null )
+                    {
+                        tmpIcon = selectedIcon;
+                    }
+                }
 
-            if ( tmpIcon == null )
-            {
-                tmpIcon = c.getDisabledIcon ();
-            }
-        }
-        else if ( d.usesState ( DecorationState.pressed ) )
-        {
-            tmpIcon = c.getPressedIcon ();
-        }
-        else if ( c.isRolloverEnabled () && d.usesState ( DecorationState.hover ) )
-        {
-            if ( d.usesState ( DecorationState.selected ) )
-            {
-                tmpIcon = c.getRolloverSelectedIcon ();
                 if ( tmpIcon == null )
                 {
-                    tmpIcon = selectedIcon;
+                    tmpIcon = c.getDisabledIcon ();
                 }
             }
-            if ( tmpIcon == null )
+            else if ( model.isPressed () && model.isArmed () )
             {
-                tmpIcon = c.getRolloverIcon ();
+                tmpIcon = c.getPressedIcon ();
             }
-        }
-        if ( tmpIcon != null )
-        {
-            icon = tmpIcon;
+            else if ( c.isRolloverEnabled () && model.isRollover () )
+            {
+                if ( model.isSelected () )
+                {
+                    tmpIcon = c.getRolloverSelectedIcon ();
+                    if ( tmpIcon == null )
+                    {
+                        tmpIcon = selectedIcon;
+                    }
+                }
+                if ( tmpIcon == null )
+                {
+                    tmpIcon = c.getRolloverIcon ();
+                }
+            }
+            if ( tmpIcon != null )
+            {
+                icon = tmpIcon;
+            }
         }
         return icon;
     }

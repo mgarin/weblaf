@@ -17,6 +17,9 @@
 
 package com.alee.extended.image;
 
+import com.alee.utils.SwingUtils;
+
+import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 
 /**
@@ -27,4 +30,84 @@ import javax.swing.plaf.ComponentUI;
 
 public abstract class WImageUI extends ComponentUI
 {
+    /**
+     * Runtime variables.
+     */
+    protected WebImage image;
+
+    @Override
+    public void installUI ( final JComponent c )
+    {
+        // Saving image reference
+        image = ( WebImage ) c;
+
+        // Installing default component settings
+        installDefaults ();
+
+        // Installing default component listeners
+        installListeners ();
+    }
+
+    @Override
+    public void uninstallUI ( final JComponent c )
+    {
+        // Uninstalling default component listeners
+        uninstallListeners ();
+
+        // Uninstalling default component settings
+        uninstallDefaults ();
+
+        // Removing image reference
+        image = null;
+    }
+
+    /**
+     * Returns component default font key.
+     *
+     * @return component default font key
+     */
+    protected String getFontKey ()
+    {
+        return "Image.font";
+    }
+
+    /**
+     * Installs default component settings.
+     */
+    protected void installDefaults ()
+    {
+        if ( SwingUtils.isUIResource ( image.getFont () ) )
+        {
+            image.setFont ( UIManager.getFont ( getFontKey () ) );
+        }
+
+        image.setOpacity ( 1f );
+        image.setDisplayType ( DisplayType.preferred );
+        image.setHorizontalAlignment ( SwingConstants.CENTER );
+        image.setVerticalAlignment ( SwingConstants.CENTER );
+    }
+
+    /**
+     * Uninstalls default component settings.
+     */
+    protected void uninstallDefaults ()
+    {
+        LookAndFeel.uninstallBorder ( image );
+    }
+
+    /**
+     * Installs default component listeners.
+     */
+    protected void installListeners ()
+    {
+        // Do nothing by default
+    }
+
+    /**
+     * Uninstalls default component listeners.
+     */
+    protected void uninstallListeners ()
+    {
+        // Do nothing by default
+    }
 }

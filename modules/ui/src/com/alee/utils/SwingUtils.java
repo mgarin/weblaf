@@ -884,6 +884,10 @@ public final class SwingUtils extends CoreSwingUtils
      */
     public static Insets increase ( final Insets insets, final Insets amount )
     {
+        if ( insets == null )
+        {
+            throw new NullPointerException ( "Insets cannot be null" );
+        }
         if ( amount != null )
         {
             insets.top += amount.top;
@@ -903,6 +907,10 @@ public final class SwingUtils extends CoreSwingUtils
      */
     public static Insets decrease ( final Insets insets, final Insets amount )
     {
+        if ( insets == null )
+        {
+            throw new NullPointerException ( "Insets cannot be null" );
+        }
         if ( amount != null )
         {
             insets.top -= amount.top;
