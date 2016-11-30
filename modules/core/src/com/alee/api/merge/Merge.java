@@ -36,10 +36,10 @@ import java.util.List;
 public final class Merge
 {
     /**
-     * Common merge algorithm which only merges objects of the same type.
+     * Most common merge algorithm which only merges objects of the same type.
      */
     public static Merge EXACT = new Merge ( false, new ExactTypeMergePolicy (), new MergeableMergeBehavior (), new ArrayMergeBehavior (),
-            new MapMergeBehavior (), new ListMergeBehavior () );
+            new MapMergeBehavior (), new ListMergeBehavior (), new ReflectionMergeBehavior () );
 
     /**
      * Whether or not should merge {@code null} values on top of non-{@code null} ones.
