@@ -18,12 +18,13 @@
 package com.alee.utils.swing.menu;
 
 import com.alee.laf.menu.WebMenu;
+import com.alee.managers.style.StyleId;
 
 /**
- * Special generator that simplifies and shortens menu creation code.
+ * Special generator that simplifies and shortens {@link WebMenu} creation code.
  *
  * @author Mikle Garin
- * @see com.alee.utils.swing.menu.AbstractMenuGenerator
+ * @see AbstractMenuGenerator
  */
 
 public class MenuGenerator extends AbstractMenuGenerator<WebMenu>
@@ -34,6 +35,16 @@ public class MenuGenerator extends AbstractMenuGenerator<WebMenu>
     public MenuGenerator ()
     {
         super ( new WebMenu () );
+    }
+
+    /**
+     * Constructs new menu generator using default menu.
+     *
+     * @param id menu style ID
+     */
+    public MenuGenerator ( final StyleId id )
+    {
+        super ( new WebMenu ( id ) );
     }
 
     /**
