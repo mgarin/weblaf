@@ -24,8 +24,8 @@ import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
 import com.alee.managers.focus.GlobalFocusListener;
-import com.alee.managers.style.BoundsType;
 import com.alee.managers.style.Bounds;
+import com.alee.managers.style.BoundsType;
 import com.alee.managers.style.PainterShapeProvider;
 import com.alee.painter.AbstractPainter;
 import com.alee.painter.SectionPainter;
@@ -895,25 +895,49 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     @Override
     public Insets getBorders ()
     {
-        final IDecoration decoration = getDecoration ();
-        return decoration != null ? decoration.getBorderInsets ( component ) : null;
+        final D decoration = getDecoration ();
+        if ( isDecorationAvailable ( decoration ) )
+        {
+            // Return decoration border insets
+            return decoration.getBorderInsets ( component );
+        }
+        else
+        {
+            // Return {@code null} insets
+            return null;
+        }
     }
 
     @Override
     public Shape provideShape ( final E component, final Rectangle bounds )
     {
-        final IDecoration decoration = getDecoration ();
-        return decoration != null ? decoration.provideShape ( component, bounds ) : bounds;
+        final D decoration = getDecoration ();
+        if ( isDecorationAvailable ( decoration ) )
+        {
+            // Return shape provided by the decoration
+            return decoration.provideShape ( component, bounds );
+        }
+        else
+        {
+            // Simply return bounds
+            return bounds;
+        }
     }
 
     @Override
     public Boolean isOpaque ()
     {
-        // Calculates opacity state based on provided decorations
-        // In case there is an active visible decoration component should not be opaque
-        // This might be changed in future and moved into decoration to provide specific setting
-        final IDecoration decoration = getDecoration ();
-        return decoration != null ? isOpaqueDecorated () : isOpaqueUndecorated ();
+        final D decoration = getDecoration ();
+        if ( isDecorationAvailable ( decoration ) )
+        {
+            // Decorated components opacity check
+            return isOpaqueDecorated ();
+        }
+        else
+        {
+            // Undecorated components opacity check
+            return isOpaqueUndecorated ();
+        }
     }
 
     /**
@@ -947,14 +971,35 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     public int getBaseline ( final E c, final U ui, final Bounds bounds )
     {
         final D decoration = getDecoration ();
-        return decoration != null ? decoration.getBaseline ( c, bounds ) : super.getBaseline ( c, ui, bounds );
+        if ( isDecorationAvailable ( decoration ) )
+        {
+            // Creating additional bounds
+            final Bounds marginBounds = new Bounds ( bounds, BoundsType.margin, c, decoration );
+
+            // Calculating decoration baseline
+            return decoration.getBaseline ( c, marginBounds );
+        }
+        else
+        {
+            // Calculating default baseline
+            return super.getBaseline ( c, ui, bounds );
+        }
     }
 
     @Override
     public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final E c, final U ui )
     {
         final D decoration = getDecoration ();
-        return decoration != null ? decoration.getBaselineResizeBehavior ( c ) : super.getBaselineResizeBehavior ( c, ui );
+        if ( isDecorationAvailable ( decoration ) )
+        {
+            // Returning decoration baseline behavior
+            return decoration.getBaselineResizeBehavior ( c );
+        }
+        else
+        {
+            // Returning default baseline behavior
+            return super.getBaselineResizeBehavior ( c, ui );
+        }
     }
 
     @Override
@@ -971,7 +1016,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
 
         // Painting current decoration state
         final D decoration = getDecoration ();
-        if ( isDecorationPaintRequired ( decoration ) )
+        if ( isDecorationAvailable ( decoration ) )
         {
             // Creating additional bounds
             final Bounds marginBounds = new Bounds ( bounds, BoundsType.margin, c, decoration );
@@ -985,7 +1030,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     /**
-     * Paints content decorated by this painter.
+     * Paints additional custom content provided by this painter.
      * todo This might eventually be removed if all contents will be painted within IContent implementations
      *
      * @param g2d    graphics context
@@ -1000,10 +1045,8 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
 
     /**
      * Returns whether or not painting plain component background is required.
-     * Moved into separated method for convenient background painting blocking using additional conditions.
-     * <p>
-     * By default this condition is limited to component being opaque.
      * When component is opaque we must fill every single pixel in its bounds with something to avoid issues.
+     * By default this condition is limited to component being opaque.
      *
      * @param c component to paint background for
      * @return {@code true} if painting plain component background is required, {@code false} otherwise
@@ -1014,15 +1057,12 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     /**
-     * Returns whether or not painting specified decoration is required.
-     * Moved into separated method for convenient decorationg painting blocking using additional conditions.
-     * <p>
-     * By default this condition is limited to decoration existance and visibility.
+     * Returns whether or not painting specified decoration is available.
      *
      * @param decoration decoration to be painted
-     * @return {@code true} if painting specified decoration is required, {@code false} otherwise
+     * @return {@code true} if painting specified decoration is available, {@code false} otherwise
      */
-    protected boolean isDecorationPaintRequired ( final D decoration )
+    protected boolean isDecorationAvailable ( final D decoration )
     {
         return decoration != null;
     }

@@ -65,10 +65,10 @@ public class TreeDropLocationPainter<E extends JTree, U extends WebTreeUI, D ext
     }
 
     @Override
-    protected boolean isDecorationPaintRequired ( final D decoration )
+    protected boolean isDecorationAvailable ( final D decoration )
     {
         // We don't need to paint anything when drop location is not available
-        return location != null && super.isDecorationPaintRequired ( decoration );
+        return location != null && super.isDecorationAvailable ( decoration );
     }
 
     @Override

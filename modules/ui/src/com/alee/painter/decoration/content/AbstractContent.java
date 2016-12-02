@@ -203,9 +203,17 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
             // Retrieving baseline
             final int baseline = getContentBaseline ( c, d, shrunk );
 
-            // todo ADJUST USING PADDING
             // Adjusting baseline according to initial bounds
-            return rotation == Rotation.none ? baseline : bounds.height - baseline;
+            if ( rotation == Rotation.none )
+            {
+                // Return baseline "as is" since there is no rotation
+                return baseline;
+            }
+            else
+            {
+                // Change baseline relative to the opposite side of the content bounds
+                return bounds.y + bounds.height - ( baseline - rotated.y );
+            }
         }
         return -1;
     }
