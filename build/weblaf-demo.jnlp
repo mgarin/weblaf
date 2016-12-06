@@ -19,8 +19,8 @@
         <all-permissions />
     </security>
     <resources>
-        <j2se version="1.6.0+" java-vm-args="-Xms32m -Xmx128m" />
-        <jar href="weblaf-demo-1.29.jar" />
+        <j2se version="1.6.0+" java-vm-args="-Xms32m -Xmx256m" />
+        <jar href="DemoApplication-1.29.jar" />
     </resources>
     <application-desc main-class="com.alee.demo.DemoApplication" />
 </jnlp> 
