@@ -337,7 +337,7 @@ public final class SystemUtils
      *
      * @return true if current OS is mac, false otherwise
      */
-    @SuppressWarnings ( "StringEquality" )
+    @SuppressWarnings ("StringEquality")
     public static boolean isMac ()
     {
         return shortOsName == MAC;
@@ -348,7 +348,7 @@ public final class SystemUtils
      *
      * @return true if current OS is unix, false otherwise
      */
-    @SuppressWarnings ( "StringEquality" )
+    @SuppressWarnings ("StringEquality")
     public static boolean isUnix ()
     {
         return shortOsName == UNIX;
@@ -359,7 +359,7 @@ public final class SystemUtils
      *
      * @return true if current OS is solaris, false otherwise
      */
-    @SuppressWarnings ( "StringEquality" )
+    @SuppressWarnings ("StringEquality")
     public static boolean isSolaris ()
     {
         return shortOsName == SOLARIS;
@@ -492,6 +492,16 @@ public final class SystemUtils
     public static GraphicsEnvironment getGraphicsEnvironment ()
     {
         return GraphicsEnvironment.getLocalGraphicsEnvironment ();
+    }
+
+    /**
+     * Returns whether or not a display, keyboard, and mouse can be supported in this environment.
+     *
+     * @return {@code true} if display, keyboard, and mouse can be supported in this environment, {@code false} otherwise
+     */
+    public static boolean isHeadlessEnvironment ()
+    {
+        return GraphicsEnvironment.isHeadless ();
     }
 
     /**

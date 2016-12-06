@@ -1,26 +1,21 @@
 <?xml version="1.0"?>
 <project name="Web Look and Feel" basedir="../" default="build.basic.artifacts">
 
+    <!-- =========================== Includes ============================ -->
+
     <!-- Property files -->
     <property file="build/version.properties" />
     <property file="build/build.properties" />
 
-    <!-- =========================== Base settings ============================ -->
+    <!-- =========================== Classpath settings ============================ -->
 
-    <!-- Base classpaths -->
-    <property name="core.classpath" value="${slf4j.api.jar} ${slf4j.binding.jar} ${imagescaling.jar} ${jericho.jar} ${xstream.jar}" />
-    <property name="ui.classpath" value="${core.classpath} ${svgsalamander.jar} ${rsyntaxtextarea.jar}" />
-    <property name="demo.classpath" value="${ui.classpath}" />
-    <!-- Separate JAR classpaths -->
-    <property name="core.jar.classpath" value="${core.classpath}" />
-    <property name="ui.jar.classpath" value="${ui.classpath} ${library.core.jar.name}" />
-    <property name="demo.jar.classpath" value="${demo.classpath} ${library.core.jar.name} ${library.ui.jar.name}" />
-    <!-- Complete JAR classpaths -->
-    <property name="weblaf.jar.classpath" value="${ui.classpath}" />
-
-    <!-- Classpath -->
+    <!-- Compile classpaths -->
     <path id="core.classpath">
         <fileset dir="${lib.dir}" includes="*.jar" />
+    </path>
+    <path id="plugin.classpath">
+        <fileset dir="${lib.dir}" includes="*.jar" />
+        <pathelement path="${library.core.dist.dir}" />
     </path>
     <path id="ui.classpath">
         <fileset dir="${lib.dir}" includes="*.jar" />
@@ -31,6 +26,13 @@
         <pathelement path="${library.core.dist.dir}" />
         <pathelement path="${library.ui.dist.dir}" />
     </path>
+
+    <!-- JAR classpaths -->
+    <property name="core.jar.classpath" value="${library.core.lib}" />
+    <property name="plugin.jar.classpath" value="${library.core.lib} ${library.core.jar.name}" />
+    <property name="ui.jar.classpath" value="${library.ui.lib} ${library.core.jar.name}" />
+    <property name="demo.jar.classpath" value="${library.ui.lib} ${library.core.jar.name} ${library.ui.jar.name}" />
+    <property name="weblaf.jar.classpath" value="${library.ui.lib}" />
 
     <!-- =========================== Base targets ============================ -->
 
@@ -58,6 +60,13 @@
             <classpath refid="core.classpath" />
         </javac>
     </target>
+    <target name="compile.plugin" depends="compile.core">
+        <mkdir dir="${library.plugin.dist.dir}" />
+        <javac debug="true" includeantruntime="false" destdir="${library.plugin.dist.dir}" encoding="utf-8" source="1.6" target="1.6">
+            <src path="${library.plugin.src.dir}" />
+            <classpath refid="plugin.classpath" />
+        </javac>
+    </target>
     <target name="compile.ui" depends="compile.core">
         <mkdir dir="${library.ui.dist.dir}" />
         <javac debug="true" includeantruntime="false" destdir="${library.ui.dist.dir}" encoding="utf-8" source="1.6" target="1.6">
@@ -77,6 +86,11 @@
     <target name="copy.core.res">
         <copy todir="${library.core.dist.dir}">
             <fileset dir="${library.core.src.dir}" excludes="**/*.java" />
+        </copy>
+    </target>
+    <target name="copy.plugin.res" depends="copy.core.res">
+        <copy todir="${library.plugin.dist.dir}">
+            <fileset dir="${library.plugin.src.dir}" excludes="**/*.java" />
         </copy>
     </target>
     <target name="copy.ui.res" depends="copy.core.res">
@@ -137,6 +151,21 @@
         </jar>
     </target>
 
+    <!-- Assemble library plugin jar -->
+    <target name="build.plugin.jar" description="Build ${library.plugin.jar}" depends="clean.dist.dir,compile.plugin,copy.plugin.res,copy.lic,create.artifacts.dir">
+        <jar destfile="${library.plugin.jar}">
+            <fileset dir="${dist.dir}" includes="licenses/**" />
+            <fileset dir="${library.plugin.dist.dir}" />
+            <manifest>
+                <attribute name="Package-Title" value="${package}" />
+                <attribute name="Package-Vendor" value="${dev}" />
+                <attribute name="Package-Version" value="${version.info}" />
+                <attribute name="Product-Name" value="${library.plugin.title}" />
+                <attribute name="Class-Path" value="${plugin.jar.classpath}" />
+            </manifest>
+        </jar>
+    </target>
+
     <!-- Assemble library ui jar -->
     <target name="build.ui.jar" description="Build ${library.ui.jar}" depends="clean.dist.dir,compile.ui,copy.ui.res,copy.lic,create.artifacts.dir">
         <jar destfile="${library.ui.jar}">
@@ -153,7 +182,7 @@
         </jar>
     </target>
 
-    <!-- Assemble library demo jar
+    <!-- Assemble library demo jar -->
     <target name="build.demo.jar" description="Build ${library.demo.jar}" depends="compile.demo,copy.demo.res,copy.lic,create.artifacts.dir">
         <jar destfile="${library.demo.jar}">
             <fileset dir="${dist.dir}" includes="licenses/**" />
@@ -168,7 +197,6 @@
             </manifest>
         </jar>
     </target>
-    -->
 
     <!-- =========================== Complete binaries ============================ -->
 
@@ -177,6 +205,7 @@
         <jar destfile="${library.jar}">
             <fileset dir="${dist.dir}" includes="licenses/**" />
             <fileset dir="${library.core.dist.dir}" />
+            <fileset dir="${library.plugin.dist.dir}" />
             <fileset dir="${library.ui.dist.dir}" />
             <manifest>
                 <attribute name="Package-Title" value="${package}" />
@@ -201,6 +230,7 @@
             <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" excludes="META-INF/**" />
             <fileset dir="${dist.dir}" includes="licenses/**" />
             <fileset dir="${library.core.dist.dir}" />
+            <fileset dir="${library.plugin.dist.dir}" />
             <fileset dir="${library.ui.dist.dir}" />
             <manifest>
                 <attribute name="Package-Title" value="${package}" />
@@ -227,6 +257,8 @@
             <fileset dir="${dist.dir}" includes="licenses/**" />
             <fileset dir="${library.core.dist.dir}" />
             <fileset dir="${library.core.src.dir}" includes="**/*.java" />
+            <fileset dir="${library.plugin.dist.dir}" />
+            <fileset dir="${library.plugin.src.dir}" includes="**/*.java" />
             <fileset dir="${library.ui.dist.dir}" />
             <fileset dir="${library.ui.src.dir}" includes="**/*.java" />
             <fileset dir="${library.demo.dist.dir}" />
@@ -253,6 +285,7 @@
             <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" excludes="META-INF/**" />
             <fileset dir="${dist.dir}" includes="licenses/**" />
             <fileset dir="${library.core.dist.dir}" />
+            <fileset dir="${library.plugin.dist.dir}" />
             <fileset dir="${library.ui.dist.dir}" />
             <manifest>
                 <attribute name="Package-Title" value="${package}" />
@@ -294,6 +327,7 @@
         </copy>
         <copy todir="${dist.dir}">
             <fileset dir="${library.core.src.dir}" />
+            <fileset dir="${library.plugin.src.dir}" />
             <fileset dir="${library.ui.src.dir}" />
             <fileset dir="${library.demo.src.dir}" />
         </copy>
@@ -418,6 +452,7 @@
     <!-- Assembled build implementations -->
     <target name="build.base.impl">
         <antcall target="build.core.jar" />
+        <antcall target="build.plugin.jar" />
         <antcall target="build.ui.jar" />
     </target>
     <target name="build.complete.impl">

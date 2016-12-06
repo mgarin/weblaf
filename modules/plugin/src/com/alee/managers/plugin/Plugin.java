@@ -19,6 +19,7 @@ package com.alee.managers.plugin;
 
 import com.alee.managers.log.Log;
 import com.alee.managers.plugin.data.*;
+import com.alee.utils.SystemUtils;
 
 import javax.swing.*;
 import java.util.List;
@@ -111,7 +112,7 @@ public abstract class Plugin<T extends Plugin<T>>
      */
     public ImageIcon getPluginLogo ()
     {
-        return detectedPlugin != null ? detectedPlugin.getLogo () : null;
+        return !SystemUtils.isHeadlessEnvironment () && detectedPlugin != null ? detectedPlugin.getLogo () : null;
     }
 
     /**

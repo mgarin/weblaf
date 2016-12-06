@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
 
     <name>WebLaF-core</name>
-    <description>WebLaf core components</description>
+    <description>WebLaF core components</description>
 
     <dependencies>
         <dependency>

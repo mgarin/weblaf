@@ -15,7 +15,7 @@
 
     <name>WebLaF</name>
     <description>
-        WebLaf is a Java Swing Look and Feel and extended components library for cross-platform applications
+        WebLaF is a Java Swing Look and Feel and extended components library for cross-platform applications
     </description>
     <url>http://weblookandfeel.com</url>
 
@@ -42,6 +42,7 @@
 
     <modules>
         <module>modules/core</module>
+        <module>modules/plugin</module>
         <module>modules/ui</module>
         <module>modules/demo</module>
     </modules>

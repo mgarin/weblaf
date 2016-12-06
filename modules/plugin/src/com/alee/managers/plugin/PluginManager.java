@@ -24,9 +24,7 @@ import com.alee.utils.*;
 import com.alee.utils.compare.Filter;
 import com.alee.utils.sort.GraphDataProvider;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -35,7 +33,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.*;
-import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -278,7 +275,7 @@ public abstract class PluginManager<T extends Plugin>
      */
     public void registerPlugin ( final T plugin )
     {
-        registerPlugin ( plugin, plugin.getPluginInformation (), GraphicsEnvironment.isHeadless () ? null : plugin.getPluginLogo () );
+        registerPlugin ( plugin, plugin.getPluginInformation (), !SystemUtils.isHeadlessEnvironment () ? plugin.getPluginLogo () : null );
     }
 
     /**
@@ -662,13 +659,20 @@ public abstract class PluginManager<T extends Plugin>
                     inputStream.close ();
 
                     // Reading plugin icon
-                    final ZipEntry logoEntry = new ZipEntry ( ZipUtils.getZipEntryFileLocation ( entry ) + pluginLogo );
-                    final InputStream logoInputStream = zipFile.getInputStream ( logoEntry );
                     final ImageIcon logo;
-                    if ( logoInputStream != null )
+                    if ( !SystemUtils.isHeadlessEnvironment () )
                     {
-                        logo = new ImageIcon ( ImageIO.read ( logoInputStream ) );
-                        logoInputStream.close ();
+                        final ZipEntry logoEntry = new ZipEntry ( ZipUtils.getZipEntryFileLocation ( entry ) + pluginLogo );
+                        final InputStream logoInputStream = zipFile.getInputStream ( logoEntry );
+                        if ( logoInputStream != null )
+                        {
+                            logo = ImageUtils.loadImage ( logoInputStream );
+                            logoInputStream.close ();
+                        }
+                        else
+                        {
+                            logo = null;
+                        }
                     }
                     else
                     {

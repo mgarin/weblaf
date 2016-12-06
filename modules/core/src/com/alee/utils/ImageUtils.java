@@ -659,9 +659,6 @@ public final class ImageUtils
      * Creates color chooser icon
      */
 
-    public static final ImageIcon coloredChooserIcon = new ImageIcon ( ImageUtils.class.getResource ( "icons/color/color.png" ) );
-    public static final ImageIcon transparentChooserIcon = new ImageIcon ( ImageUtils.class.getResource ( "icons/color/transparent.png" ) );
-
     public static ImageIcon createColorChooserIcon ( final Color color )
     {
         return new ImageIcon ( createColorChooserImage ( color ) );
@@ -671,16 +668,21 @@ public final class ImageUtils
     {
         final BufferedImage image = createCompatibleImage ( 16, 16, Transparency.TRANSLUCENT );
         final Graphics2D g2d = image.createGraphics ();
+
         if ( color == null || color.getAlpha () < 255 )
         {
-            g2d.drawImage ( transparentChooserIcon.getImage (), 0, 0, null );
+            final ImageIcon transparentIcon = getImageIcon ( ImageUtils.class.getResource ( "icons/color/transparent.png" ) );
+            g2d.drawImage ( transparentIcon.getImage (), 0, 0, null );
         }
         if ( color != null )
         {
             g2d.setPaint ( color );
             g2d.fillRect ( 2, 2, 13, 12 );
         }
-        g2d.drawImage ( coloredChooserIcon.getImage (), 0, 0, null );
+
+        final ImageIcon colorIcon = getImageIcon ( ImageUtils.class.getResource ( "icons/color/color.png" ) );
+        g2d.drawImage ( colorIcon.getImage (), 0, 0, null );
+
         g2d.dispose ();
         return image;
     }

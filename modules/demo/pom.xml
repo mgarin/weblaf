@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
 
     <name>WebLaF-demo</name>
-    <description>Executable WebLaf demo</description>
+    <description>Executable WebLaF demo</description>
 
     <dependencies>
         <dependency>

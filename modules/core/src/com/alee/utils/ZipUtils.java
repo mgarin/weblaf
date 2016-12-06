@@ -166,7 +166,7 @@ public final class ZipUtils
      *
      * @param in  data input stream
      * @param out data output stream
-     * @throws IOException
+     * @throws IOException when any IO exceptions occurs
      */
     private static void copyInputStream ( final InputStream in, final OutputStream out ) throws IOException
     {

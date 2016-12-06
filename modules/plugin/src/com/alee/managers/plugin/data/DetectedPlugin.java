@@ -18,6 +18,7 @@
 package com.alee.managers.plugin.data;
 
 import com.alee.managers.plugin.Plugin;
+import com.alee.utils.SystemUtils;
 
 import javax.swing.*;
 import java.io.File;
@@ -143,7 +144,7 @@ public class DetectedPlugin<T extends Plugin>
      */
     public ImageIcon getLogo ()
     {
-        return logo;
+        return !SystemUtils.isHeadlessEnvironment () ? logo : null;
     }
 
     /**

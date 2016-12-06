@@ -22,60 +22,63 @@ import com.alee.utils.swing.EnumLazyIconProvider;
 import javax.swing.*;
 
 /**
- * Plugin initialization strategy type.
+ * Available plugin statuses.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
  * @see com.alee.managers.plugin.PluginManager
  */
 
-public enum StrategyType
+public enum PluginStatus
 {
     /**
-     * Plugin doesn't define any specific strategy.
+     * Plugin was detected and waiting for further actions.
      */
-    any,
+    detected,
 
     /**
-     * Plugin must be initialized strictly before some other plugin.
+     * Plugin is being loaded.
      */
-    before,
+    loading,
 
     /**
-     * Plugin must be initialized strictly after some other plugin.
+     * Plugin successfully loaded.
      */
-    after;
+    loaded,
 
     /**
-     * Plugin strategy type icons folder.
+     * Plugin failed to load due to plugin class initialization exception.
      */
-    private static final String iconsFolder = "icons/strategy/";
+    failed;
 
     /**
-     * Returns plugin strategy type icon.
+     * Returns plugin status icon.
      *
-     * @return plugin strategy type icon
+     * @return plugin status icon
      */
     public ImageIcon getIcon ()
     {
-        return EnumLazyIconProvider.getIcon ( this, iconsFolder );
+        return EnumLazyIconProvider.getIcon ( this, "icons/status/" );
     }
 
     /**
-     * Returns plugin strategy type description.
+     * Returns plugin status text.
      *
-     * @return plugin strategy type description
+     * @return plugin status text
      */
-    public String getDescription ()
+    public String getText ()
     {
         switch ( this )
         {
-            case any:
-                return "Plugin doesn't define any specific strategy";
-            case before:
-                return "Plugin must be initialized strictly before some other plugin";
-            case after:
-                return "Plugin must be initialized strictly after some other plugin";
+            case loading:
+                return "Loading...";
+
+            case loaded:
+                return "Loaded successfully";
+
+            case failed:
+                return "Failed to load";
+
             default:
                 return null;
         }

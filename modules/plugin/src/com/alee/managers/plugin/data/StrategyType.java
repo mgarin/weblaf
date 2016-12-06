@@ -22,65 +22,58 @@ import com.alee.utils.swing.EnumLazyIconProvider;
 import javax.swing.*;
 
 /**
- * Available plugin statuses.
+ * Plugin initialization strategy type.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
  * @see com.alee.managers.plugin.PluginManager
  */
 
-public enum PluginStatus
+public enum StrategyType
 {
     /**
-     * Plugin was detected and waiting for further actions.
+     * Plugin doesn't define any specific strategy.
      */
-    detected,
+    any,
 
     /**
-     * Plugin is being loaded.
+     * Plugin must be initialized strictly before some other plugin.
      */
-    loading,
+    before,
 
     /**
-     * Plugin successfully loaded.
+     * Plugin must be initialized strictly after some other plugin.
      */
-    loaded,
+    after;
 
     /**
-     * Plugin failed to load due to plugin class initialization exception.
-     */
-    failed;
-
-    /**
-     * Plugin status icons folder.
-     */
-    private static final String iconsFolder = "icons/status/";
-
-    /**
-     * Returns plugin status icon.
+     * Returns plugin strategy type icon.
      *
-     * @return plugin status icon
+     * @return plugin strategy type icon
      */
     public ImageIcon getIcon ()
     {
-        return EnumLazyIconProvider.getIcon ( this, iconsFolder );
+        return EnumLazyIconProvider.getIcon ( this, "icons/strategy/" );
     }
 
     /**
-     * Returns plugin status text.
+     * Returns plugin strategy type description.
      *
-     * @return plugin status text
+     * @return plugin strategy type description
      */
-    public String getText ()
+    public String getDescription ()
     {
         switch ( this )
         {
-            case loading:
-                return "Loading...";
-            case loaded:
-                return "Loaded successfully";
-            case failed:
-                return "Failed to load";
+            case any:
+                return "Plugin doesn't define any specific strategy";
+
+            case before:
+                return "Plugin must be initialized strictly before some other plugin";
+
+            case after:
+                return "Plugin must be initialized strictly after some other plugin";
+
             default:
                 return null;
         }
