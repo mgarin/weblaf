@@ -18,10 +18,6 @@
 package com.alee.utils;
 
 import com.alee.managers.log.Log;
-import com.alee.managers.plugin.data.PluginDependency;
-import com.alee.managers.plugin.data.PluginInformation;
-import com.alee.managers.plugin.data.PluginLibrary;
-import com.alee.managers.plugin.data.PluginVersion;
 import com.alee.utils.collection.ValuesTable;
 import com.alee.utils.general.Pair;
 import com.alee.utils.xml.*;
@@ -170,12 +166,6 @@ public final class XmlUtils
             // Additional WebLaF data classes aliases
             xStream.processAnnotations ( ValuesTable.class );
             xStream.processAnnotations ( Pair.class );
-
-            // Plugin manager classes aliases
-            xStream.processAnnotations ( PluginInformation.class );
-            xStream.processAnnotations ( PluginVersion.class );
-            xStream.processAnnotations ( PluginDependency.class );
-            xStream.processAnnotations ( PluginLibrary.class );
         }
         catch ( final Throwable e )
         {

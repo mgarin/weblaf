@@ -202,6 +202,12 @@ public abstract class PluginManager<T extends Plugin>
         // Runtime variables
         detectedPlugins = new ArrayList<DetectedPlugin<T>> ();
         availablePlugins = new ArrayList<T> ( detectedPlugins.size () );
+
+        // Plugin manager classes aliases
+        XmlUtils.processAnnotations ( PluginInformation.class );
+        XmlUtils.processAnnotations ( PluginVersion.class );
+        XmlUtils.processAnnotations ( PluginDependency.class );
+        XmlUtils.processAnnotations ( PluginLibrary.class );
     }
 
     /**
