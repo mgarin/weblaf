@@ -426,26 +426,31 @@
     <!-- Single assembled builds -->
     <target name="build.base.artifacts" description="Build base WebLaF binaries">
         <antcall target="clean.artifacts.dir" />
+        <antcall target="copy.lib" />
         <antcall target="build.base.impl" />
         <antcall target="clean.dist.dir" />
     </target>
     <target name="build.complete.artifacts" description="Build unified WebLaF binaries">
         <antcall target="clean.artifacts.dir" />
+        <antcall target="copy.lib" />
         <antcall target="build.complete.impl" />
         <antcall target="clean.dist.dir" />
     </target>
     <target name="build.featured.artifacts" description="Build featured WebLaF binaries">
         <antcall target="clean.artifacts.dir" />
+        <antcall target="copy.lib" />
         <antcall target="build.featured.impl" />
         <antcall target="clean.dist.dir" />
     </target>
-    <target name="build.misc.artifacts" description="Build miscellaneous WebLAF binaries" >
+    <target name="build.misc.artifacts" description="Build miscellaneous WebLaF binaries" >
         <antcall target="clean.artifacts.dir" />
+        <antcall target="copy.lib" />
         <antcall target="build.src.impl" />
         <antcall target="clean.dist.dir" />
     </target>
-    <target name="build.javadoc.artifacts" description="Build miscellaneous WebLAF binaries" >
+    <target name="build.javadoc.artifacts" description="Build WebLaF JavaDoc" >
         <antcall target="clean.artifacts.dir" />
+        <antcall target="copy.lib" />
         <antcall target="build.javadoc.impl" />
         <antcall target="clean.dist.dir" />
     </target>
