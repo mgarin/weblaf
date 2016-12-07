@@ -12,7 +12,7 @@
     <artifactId>weblaf-plugin</artifactId>
     <packaging>jar</packaging>
 
-    <name>WebLaF-plugin</name>
+    <name>WebLaF plugin library</name>
     <description>WebLaF plugin manager</description>
 
     <dependencies>

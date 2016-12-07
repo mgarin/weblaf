@@ -12,7 +12,7 @@
     <artifactId>weblaf-demo</artifactId>
     <packaging>jar</packaging>
 
-    <name>WebLaF-demo</name>
+    <name>WebLaF demo library</name>
     <description>Executable WebLaF demo</description>
 
     <dependencies>
@@ -34,5 +34,18 @@
                 </excludes>
             </resource>
         </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.alee.demo.DemoApplication</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

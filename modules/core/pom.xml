@@ -12,7 +12,7 @@
     <artifactId>weblaf-core</artifactId>
     <packaging>jar</packaging>
 
-    <name>WebLaF-core</name>
+    <name>WebLaF core library</name>
     <description>WebLaF core components</description>
 
     <dependencies>

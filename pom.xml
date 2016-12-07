@@ -57,6 +57,31 @@
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.0.1</version>
+                    <executions>
+                        <execution>
+                            <id>copy-licenses</id>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>copy-resources</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                                <resources>
+                                    <resource>
+                                        <targetPath>licenses</targetPath>
+                                        <directory>${project.parent.relativePath}/licenses</directory>
+                                        <filtering>true</filtering>
+                                    </resource>
+                                </resources>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.5.1</version>
                     <configuration>
@@ -93,6 +118,26 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.0.2</version>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <addClasspath>true</addClasspath>
+                                <useUniqueVersions>false</useUniqueVersions>
+                            </manifest>
+                            <manifestEntries>
+                                <Package-Title>${project.groupId}</Package-Title>
+                                <Package-Vendor>Mikle Garin</Package-Vendor>
+                                <Package-Version>${project.version}</Package-Version>
+                                <Product-Name>${project.name}</Product-Name>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

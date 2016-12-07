@@ -12,7 +12,7 @@
     <artifactId>weblaf-ui</artifactId>
     <packaging>jar</packaging>
 
-    <name>WebLaF-UI</name>
+    <name>WebLaF ui library</name>
     <description>WebLaF UI components</description>
 
     <dependencies>
@@ -44,5 +44,18 @@
                 </excludes>
             </resource>
         </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.alee.laf.LibraryInfoDialog</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>
