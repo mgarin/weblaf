@@ -1,6 +1,6 @@
 <skin>
 
-    <!-- com.alee.extended.filechooser.WebPathField -->
+    <!-- com.alee.extended.pathfield.WebPathField -->
 
     <!-- Path field -->
     <style type="panel" id="pathfield" extends="focusable">
