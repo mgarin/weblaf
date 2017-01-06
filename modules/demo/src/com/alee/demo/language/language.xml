@@ -1440,6 +1440,18 @@
                         </record>
                     </Dictionary>
                 </Dictionary>
+                <Dictionary prefix="webpathfield">
+                    <record key="title">
+                        <value lang="en">WebPathField</value>
+                        <value lang="ru">WebPathField</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Path field</value>
+                            <value lang="ru">Path field</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
             </Dictionary>
         </Dictionary>
         <Dictionary prefix="animation">
