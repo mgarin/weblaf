@@ -19,6 +19,7 @@ package com.alee.managers.icon.set;
 
 import com.alee.managers.icon.IconException;
 import com.alee.managers.icon.data.IconData;
+import com.alee.utils.TextUtils;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public abstract class AbstractIconSet implements IconSet
     private final String id;
 
     /**
-     * Icons information kept for lazy loading.
+     * Icons information cache for lazy loading.
      * It contains: icon key -> icon information
      */
     private final Map<String, IconData> iconsData;
@@ -59,8 +60,18 @@ public abstract class AbstractIconSet implements IconSet
     public AbstractIconSet ( final String id )
     {
         super ();
+
+        // Checking that ID is appropriate
+        if ( TextUtils.isEmpty ( id ) )
+        {
+            throw new IconException ( "IconSet cannot have empty identifier" );
+        }
         this.id = id;
+
+        // Initializing icon information cache
         iconsData = new HashMap<String, IconData> ( 100 );
+
+        // Initializing loaded icons cache
         cache = new HashMap<String, Icon> ( 30 );
     }
 

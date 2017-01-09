@@ -18,6 +18,7 @@
 package com.alee.managers.icon.set;
 
 import com.alee.managers.icon.data.IconData;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.NetUtils;
 import com.alee.utils.TextUtils;
 import com.alee.utils.XmlUtils;
@@ -66,34 +67,40 @@ public class XmlIconSet extends AbstractIconSet
     /**
      * Constructs new xml-based icon set.
      *
-     * @param iconsData icon set data
+     * @param iconSetData icon set data
      */
-    public XmlIconSet ( final IconSetData iconsData )
+    public XmlIconSet ( final IconSetData iconSetData )
     {
-        super ( iconsData.getId () );
-        for ( final IconData iconData : iconsData.getIcons () )
+        super ( iconSetData.getId () );
+
+        // Updating and caching icons information
+        if ( !CollectionUtils.isEmpty ( iconSetData.getIcons () ) )
         {
-            // Adding relative class
-            if ( iconData.getNearClass () == null && iconsData.getNearClass () != null )
+            for ( final IconData iconData : iconSetData.getIcons () )
             {
-                iconData.setNearClass ( iconsData.getNearClass () );
-            }
-
-            // Combining base path with icon path
-            if ( !TextUtils.isEmpty ( iconsData.getBase () ) )
-            {
-                if ( iconData.getNearClass () != null )
+                // Changing relative class to IconSet relative class if one exists
+                // This will only be performed if IconData relative class is not specified and global one is specified
+                if ( iconData.getNearClass () == null && iconSetData.getNearClass () != null )
                 {
-                    iconData.setPath ( NetUtils.joinUrlPaths ( iconsData.getBase (), iconData.getPath () ) );
+                    iconData.setNearClass ( iconSetData.getNearClass () );
                 }
-                else
-                {
-                    iconData.setPath ( new File ( iconsData.getBase (), iconData.getPath () ).getAbsolutePath () );
-                }
-            }
 
-            // Adding icon
-            addIcon ( iconData );
+                // Combining base path with icon path
+                if ( !TextUtils.isEmpty ( iconSetData.getBase () ) )
+                {
+                    if ( iconData.getNearClass () != null )
+                    {
+                        iconData.setPath ( NetUtils.joinUrlPaths ( iconSetData.getBase (), iconData.getPath () ) );
+                    }
+                    else
+                    {
+                        iconData.setPath ( new File ( iconSetData.getBase (), iconData.getPath () ).getAbsolutePath () );
+                    }
+                }
+
+                // Adding icon
+                addIcon ( iconData );
+            }
         }
     }
 }
