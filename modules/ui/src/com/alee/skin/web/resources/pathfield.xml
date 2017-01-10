@@ -8,6 +8,24 @@
         <!-- Path content panel -->
         <style type="panel" id="content" extends="transparent">
 
+            <painter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" />
+                        <WebShadow type="outer" width="0" />
+                        <LineBorder opacity="0" />
+                        <ColorBackground color="white" />
+                    </decoration>
+                    <decoration states="focused">
+                        <LineBorder color="85,130,190" />
+                    </decoration>
+                    <decoration states="disabled">
+                        <WebShadow type="outer" opacity="0" />
+                        <LineBorder color="lightGray" />
+                    </decoration>
+                </decorations>
+            </painter>
+
             <!-- Path field -->
             <style type="textfield" id="path-field" extends="undecorated">
 
