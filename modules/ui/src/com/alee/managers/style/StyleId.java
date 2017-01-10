@@ -1,5 +1,6 @@
 package com.alee.managers.style;
 
+import com.alee.extended.pathfield.WebPathField;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 
@@ -337,7 +338,7 @@ public final class StyleId
     public static final StyleId formattedtextfieldNoFocus = StyleId.of ( "nofocus" );
 
     /**
-     * {@link com.alee.extended.filechooser.WebPathField} style IDs.
+     * {@link com.alee.extended.pathfield.WebPathField} style IDs.
      */
     public static final StyleId pathfield = StyleId.of ( "pathfield" );
     public static final StyleId pathfieldUndecorated = StyleId.of ( "pathfield-undecorated" );

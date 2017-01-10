@@ -13,15 +13,15 @@
                     <decoration>
                         <WebShape round="0" />
                         <WebShadow type="outer" width="0" />
-                        <LineBorder opacity="0" />
-                        <ColorBackground color="white" />
+                        <LineBorder color="20,20,20" />
+                        <ColorBackground color="106,110,112" />
                     </decoration>
                     <decoration states="focused">
-                        <LineBorder color="85,130,190" />
+                        <LineBorder color="black" />
                     </decoration>
                     <decoration states="disabled">
                         <WebShadow type="outer" opacity="0" />
-                        <LineBorder color="lightGray" />
+                        <LineBorder color="68,72,74" />
                     </decoration>
                 </decorations>
             </painter>

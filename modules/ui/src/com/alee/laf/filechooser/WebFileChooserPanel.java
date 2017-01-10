@@ -23,6 +23,7 @@ import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.list.FileElement;
 import com.alee.extended.list.WebFileList;
 import com.alee.extended.panel.GroupPanel;
+import com.alee.extended.pathfield.WebPathField;
 import com.alee.extended.tree.WebFileTree;
 import com.alee.global.GlobalConstants;
 import com.alee.laf.button.WebButton;
@@ -472,7 +473,7 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        pathField = new WebPathField ( StyleId.filechooserPathField.at ( toolBar ) );
+        pathField = new WebPathField( StyleId.filechooserPathField.at ( toolBar ) );
         pathFieldListener = new PathFieldListener ()
         {
             @Override

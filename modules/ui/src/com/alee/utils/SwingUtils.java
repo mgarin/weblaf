@@ -20,7 +20,7 @@ package com.alee.utils;
 import com.alee.extended.date.WebCalendar;
 import com.alee.extended.date.WebDateField;
 import com.alee.extended.filechooser.WebFileChooserField;
-import com.alee.extended.filechooser.WebPathField;
+import com.alee.extended.pathfield.WebPathField;
 import com.alee.extended.panel.WebCollapsiblePane;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;

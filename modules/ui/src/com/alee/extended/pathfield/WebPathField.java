@@ -15,8 +15,9 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.filechooser;
+package com.alee.extended.pathfield;
 
+import com.alee.extended.filechooser.PathFieldListener;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.global.GlobalConstants;
 import com.alee.laf.button.WebButton;

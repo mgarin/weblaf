@@ -19,6 +19,7 @@ package com.alee.extended.filechooser;
 
 import com.alee.extended.layout.ToolbarLayout;
 import com.alee.extended.panel.GroupPanel;
+import com.alee.extended.pathfield.WebPathField;
 import com.alee.extended.tree.FileTreeNode;
 import com.alee.extended.tree.FileTreeRootType;
 import com.alee.extended.tree.WebFileTree;

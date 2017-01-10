@@ -37,6 +37,7 @@ public class FieldChoosersGroup extends AbstractExampleGroup
     @Override
     protected List<Class> getExampleClasses ()
     {
-        return CollectionUtils.<Class>asList ( WebDateFieldExample.class, WebColorChooserFieldExample.class );
+        return CollectionUtils.<Class>asList ( WebDateFieldExample.class, WebColorChooserFieldExample.class,
+                WebPathFieldExample.class );
     }
 }
