@@ -102,6 +102,11 @@ public class WebPathField extends WebPanel
     protected WebButton myComputer = null;
 
     /**
+     * Whether hidden files are displayed or not.
+     */
+    protected boolean showHiddenFiles = false;
+
+    /**
      * Autocomplete.
      */
     protected boolean autocompleteEnabled = true;
@@ -427,7 +432,14 @@ public class WebPathField extends WebPanel
                 final List<File> similar = getSimilarFileChildren ( parent, t.substring ( beginIndex ) );
                 if ( similar != null && similar.size () > 0 )
                 {
-                    updateList ( similar );
+                    final List<File> filteredList = new ArrayList<File>();
+                    for (File file : similar) {
+                        if ( showHiddenFiles || !FileUtils.isHidden ( file ) )
+                        {
+                            filteredList.add ( file );
+                        }
+                    }
+                    updateList ( filteredList );
                 }
                 else
                 {
@@ -623,6 +635,26 @@ public class WebPathField extends WebPanel
         this.autocompleteEnabled = autocompleteEnabled;
     }
 
+    /**
+     * Returns whether hidden files are displayed or not.
+     *
+     * @return true if should display hidden files, false otherwise
+     */
+    public boolean isShowHiddenFiles ()
+    {
+        return showHiddenFiles;
+    }
+
+    /**
+     * Sets whether hidden files should be displayed or not.
+     *
+     * @param showHiddenFiles whether should display hidden files or not
+     */
+    public void setShowHiddenFiles ( final boolean showHiddenFiles ) {
+        this.showHiddenFiles = showHiddenFiles;
+    }
+
+
     public AbstractFileFilter getFileFilter ()
     {
         return fileFilter;
@@ -737,7 +769,17 @@ public class WebPathField extends WebPanel
 
                 int childrenCount = 0;
                 final WebPopupMenu menu = new WebPopupMenu ();
-                final File[] files = FileUtils.sortFiles ( getFileChildren ( file ) );
+                final File[] fileChildren = getFileChildren(file);
+                final List<File> filteredFileChildren = new ArrayList<File>();
+                for (File fileChild : fileChildren)
+                {
+                    if ( showHiddenFiles || !FileUtils.isHidden ( fileChild ) )
+                    {
+                        filteredFileChildren.add ( fileChild );
+                    }
+                }
+
+                final File[] files = FileUtils.sortFiles ( filteredFileChildren.toArray ( new File[ filteredFileChildren.size() ] ) );
                 if ( files != null )
                 {
                     for ( final File root : files )

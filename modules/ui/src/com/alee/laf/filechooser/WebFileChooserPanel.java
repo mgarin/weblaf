@@ -166,7 +166,7 @@ public class WebFileChooserPanel extends WebPanel
     protected FileSelectionMode fileSelectionMode = FileSelectionMode.filesAndDirectories;
 
     /**
-     * Whether should display hidden files or not.
+     * Whether hidden files are displayed or not.
      */
     protected boolean showHiddenFiles = false;
 
@@ -474,6 +474,7 @@ public class WebFileChooserPanel extends WebPanel
         } );
 
         pathField = new WebPathField( StyleId.filechooserPathField.at ( toolBar ) );
+        pathField.setShowHiddenFiles( showHiddenFiles );
         pathFieldListener = new PathFieldListener ()
         {
             @Override
@@ -2140,7 +2141,7 @@ public class WebFileChooserPanel extends WebPanel
     }
 
     /**
-     * Sets whether should display hidden files or not.
+     * Returns whether hidden files are displayed or not.
      *
      * @return true if should display hidden files, false otherwise
      */
@@ -2150,7 +2151,7 @@ public class WebFileChooserPanel extends WebPanel
     }
 
     /**
-     * Sets whether should display hidden files or not.
+     * Sets whether hidden files should be displayed or not.
      *
      * @param showHiddenFiles whether should display hidden files or not
      */
@@ -2159,6 +2160,7 @@ public class WebFileChooserPanel extends WebPanel
         this.showHiddenFiles = showHiddenFiles;
         updateDirectoryComponentFilters ();
         updateFileComponentFilters ();
+        pathField.setShowHiddenFiles( showHiddenFiles );
     }
 
     /**
