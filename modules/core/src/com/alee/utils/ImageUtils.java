@@ -30,8 +30,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.geom.Area;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorConvertOp;
+import java.awt.image.*;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -1078,6 +1077,40 @@ public final class ImageUtils
     }
 
     /**
+     * Returns {@link BufferedImage} converted from the specified {@link RenderedImage}.
+     *
+     * @param image {@link RenderedImage} to convert
+     * @return {@link BufferedImage} converted from the specified {@link RenderedImage}
+     */
+    public static BufferedImage getBufferedImage ( final RenderedImage image )
+    {
+        if ( image instanceof BufferedImage )
+        {
+            return ( BufferedImage ) image;
+        }
+
+        final ColorModel cm = image.getColorModel ();
+        final int width = image.getWidth ();
+        final int height = image.getHeight ();
+        final WritableRaster raster = cm.createCompatibleWritableRaster ( width, height );
+        final boolean isAlphaPremultiplied = cm.isAlphaPremultiplied ();
+        final Hashtable properties = new Hashtable ();
+        final String[] keys = image.getPropertyNames ();
+        if ( keys != null )
+        {
+            for ( final String key : keys )
+            {
+                properties.put ( key, image.getProperty ( key ) );
+            }
+        }
+
+        final BufferedImage result = new BufferedImage ( cm, raster, isAlphaPremultiplied, properties );
+        image.copyData ( raster );
+
+        return result;
+    }
+
+    /**
      * Retrieves BufferedImage from Image
      */
 
@@ -1156,7 +1189,6 @@ public final class ImageUtils
         g2d.dispose ();
         return bi;
     }
-
 
     public static ImageIcon getImageIcon ( final Icon icon )
     {

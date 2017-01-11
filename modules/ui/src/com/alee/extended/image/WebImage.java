@@ -27,6 +27,7 @@ import com.alee.utils.ImageUtils;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.net.URL;
 
 /**
@@ -42,10 +43,11 @@ import java.net.URL;
  * @see ImagePainter
  */
 
-public class WebImage extends WebComponent<WebImage,WImageUI> implements SwingConstants
+public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingConstants
 {
     /**
-     * todo 1. Properly handle passed icons so they are not always saved to static raster image (issue with SvgIcon)
+     * todo 1. Properly handle passed icons so they are not always saved to static raster image since that causes issues with SvgIcon
+     * todo    Probably make a custom shell for the passed image that has all APIs necessary for displaying image?
      */
 
     /**
@@ -114,9 +116,9 @@ public class WebImage extends WebComponent<WebImage,WImageUI> implements SwingCo
     }
 
     /**
-     * Constructs component with an image loaded from the specified url.
+     * Constructs component with an image loaded from the specified {@link URL}.
      *
-     * @param url image url
+     * @param url image {@link URL}
      */
     public WebImage ( final URL url )
     {
@@ -124,9 +126,9 @@ public class WebImage extends WebComponent<WebImage,WImageUI> implements SwingCo
     }
 
     /**
-     * Constructs component with an image retrieved from the specified icon.
+     * Constructs component with an image retrieved from the specified {@link Icon}.
      *
-     * @param icon icon to process
+     * @param icon {@link Icon} to display
      */
     public WebImage ( final Icon icon )
     {
@@ -134,9 +136,9 @@ public class WebImage extends WebComponent<WebImage,WImageUI> implements SwingCo
     }
 
     /**
-     * Constructs component with an image retrieved from the specified image icon.
+     * Constructs component with an image retrieved from the specified {@link ImageIcon}.
      *
-     * @param icon image icon to process
+     * @param icon {@link ImageIcon} to display
      */
     public WebImage ( final ImageIcon icon )
     {
@@ -144,9 +146,9 @@ public class WebImage extends WebComponent<WebImage,WImageUI> implements SwingCo
     }
 
     /**
-     * Constructs component with a specified image.
+     * Constructs component with a specified {@link Image}.
      *
-     * @param image image
+     * @param image {@link Image} to display
      */
     public WebImage ( final Image image )
     {
@@ -154,9 +156,19 @@ public class WebImage extends WebComponent<WebImage,WImageUI> implements SwingCo
     }
 
     /**
-     * Constructs component with a specified image.
+     * Constructs component with a specified {@link RenderedImage}.
      *
-     * @param image image
+     * @param image {@link RenderedImage} to display
+     */
+    public WebImage ( final RenderedImage image )
+    {
+        this ( StyleId.auto, image );
+    }
+
+    /**
+     * Constructs component with a specified {@link BufferedImage}.
+     *
+     * @param image {@link BufferedImage} to display
      */
     public WebImage ( final BufferedImage image )
     {
@@ -197,10 +209,10 @@ public class WebImage extends WebComponent<WebImage,WImageUI> implements SwingCo
     }
 
     /**
-     * Constructs component with an image loaded from the specified url.
+     * Constructs component with an image loaded from the specified {@link URL}.
      *
      * @param id  style ID
-     * @param url image url
+     * @param url image {@link URL}
      */
     public WebImage ( final StyleId id, final URL url )
     {
@@ -208,10 +220,10 @@ public class WebImage extends WebComponent<WebImage,WImageUI> implements SwingCo
     }
 
     /**
-     * Constructs component with an image retrieved from the specified icon.
+     * Constructs component with an image retrieved from the specified {@link Icon}.
      *
      * @param id   style ID
-     * @param icon icon to process
+     * @param icon {@link Icon} to display
      */
     public WebImage ( final StyleId id, final Icon icon )
     {
@@ -219,10 +231,10 @@ public class WebImage extends WebComponent<WebImage,WImageUI> implements SwingCo
     }
 
     /**
-     * Constructs component with an image retrieved from the specified image icon.
+     * Constructs component with an image retrieved from the specified {@link ImageIcon}.
      *
      * @param id   style ID
-     * @param icon image icon to process
+     * @param icon {@link ImageIcon} to display
      */
     public WebImage ( final StyleId id, final ImageIcon icon )
     {
@@ -230,10 +242,10 @@ public class WebImage extends WebComponent<WebImage,WImageUI> implements SwingCo
     }
 
     /**
-     * Constructs component with a specified image.
+     * Constructs component with a specified {@link Image}.
      *
      * @param id    style ID
-     * @param image image
+     * @param image {@link Image} to display
      */
     public WebImage ( final StyleId id, final Image image )
     {
@@ -241,10 +253,21 @@ public class WebImage extends WebComponent<WebImage,WImageUI> implements SwingCo
     }
 
     /**
-     * Constructs component with a specified image.
+     * Constructs component with a specified {@link RenderedImage}.
      *
      * @param id    style ID
-     * @param image image
+     * @param image {@link RenderedImage} to display
+     */
+    public WebImage ( final StyleId id, final RenderedImage image )
+    {
+        this ( id, ImageUtils.getBufferedImage ( image ) );
+    }
+
+    /**
+     * Constructs component with a specified {@link BufferedImage}.
+     *
+     * @param id    style ID
+     * @param image {@link BufferedImage} to display
      */
     public WebImage ( final StyleId id, final BufferedImage image )
     {
@@ -272,9 +295,9 @@ public class WebImage extends WebComponent<WebImage,WImageUI> implements SwingCo
     }
 
     /**
-     * Returns current image.
+     * Returns currently displayed {@link BufferedImage}.
      *
-     * @return image
+     * @return currently displayed {@link BufferedImage}
      */
     public BufferedImage getImage ()
     {
@@ -282,9 +305,9 @@ public class WebImage extends WebComponent<WebImage,WImageUI> implements SwingCo
     }
 
     /**
-     * Changes image to new one taken from specified icon.
+     * Changes displayed image to the specified {@link Icon}.
      *
-     * @param icon icon to process
+     * @param icon {@link Icon} to display
      * @return this image component
      */
     public WebImage setImage ( final Icon icon )
@@ -293,9 +316,9 @@ public class WebImage extends WebComponent<WebImage,WImageUI> implements SwingCo
     }
 
     /**
-     * Changes image to new one taken from specified image icon.
+     * Changes displayed image to the specified {@link ImageIcon}.
      *
-     * @param icon image icon to process
+     * @param icon {@link ImageIcon} to display
      * @return this image component
      */
     public WebImage setImage ( final ImageIcon icon )
@@ -304,9 +327,9 @@ public class WebImage extends WebComponent<WebImage,WImageUI> implements SwingCo
     }
 
     /**
-     * Changes image to the specified one.
+     * Changes displayed image to the specified {@link Image}.
      *
-     * @param image new image
+     * @param image {@link Image} to display
      * @return this image component
      */
     public WebImage setImage ( final Image image )
@@ -315,9 +338,20 @@ public class WebImage extends WebComponent<WebImage,WImageUI> implements SwingCo
     }
 
     /**
-     * Changes image to the specified one.
+     * Changes displayed image to the specified {@link RenderedImage}.
      *
-     * @param image new image
+     * @param image {@link RenderedImage} to display
+     * @return this image component
+     */
+    public WebImage setImage ( final RenderedImage image )
+    {
+        return setImage ( ImageUtils.getBufferedImage ( image ) );
+    }
+
+    /**
+     * Changes displayed image to the specified {@link BufferedImage}.
+     *
+     * @param image {@link BufferedImage} to display
      * @return this image component
      */
     public WebImage setImage ( final BufferedImage image )
