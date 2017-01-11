@@ -432,8 +432,9 @@ public class WebPathField extends WebPanel
                 final List<File> similar = getSimilarFileChildren ( parent, t.substring ( beginIndex ) );
                 if ( similar != null && similar.size () > 0 )
                 {
-                    final List<File> filteredList = new ArrayList<File>();
-                    for (File file : similar) {
+                    final List<File> filteredList = new ArrayList<File> ();
+                    for ( final File file : similar )
+                    {
                         if ( showHiddenFiles || !FileUtils.isHidden ( file ) )
                         {
                             filteredList.add ( file );
@@ -650,10 +651,10 @@ public class WebPathField extends WebPanel
      *
      * @param showHiddenFiles whether should display hidden files or not
      */
-    public void setShowHiddenFiles ( final boolean showHiddenFiles ) {
+    public void setShowHiddenFiles ( final boolean showHiddenFiles )
+    {
         this.showHiddenFiles = showHiddenFiles;
     }
-
 
     public AbstractFileFilter getFileFilter ()
     {
@@ -769,9 +770,9 @@ public class WebPathField extends WebPanel
 
                 int childrenCount = 0;
                 final WebPopupMenu menu = new WebPopupMenu ();
-                final File[] fileChildren = getFileChildren(file);
-                final List<File> filteredFileChildren = new ArrayList<File>();
-                for (File fileChild : fileChildren)
+                final File[] fileChildren = getFileChildren ( file );
+                final List<File> filteredFileChildren = new ArrayList<File> ();
+                for ( final File fileChild : fileChildren )
                 {
                     if ( showHiddenFiles || !FileUtils.isHidden ( fileChild ) )
                     {
@@ -779,7 +780,7 @@ public class WebPathField extends WebPanel
                     }
                 }
 
-                final File[] files = FileUtils.sortFiles ( filteredFileChildren.toArray ( new File[ filteredFileChildren.size() ] ) );
+                final File[] files = FileUtils.sortFiles ( filteredFileChildren.toArray ( new File[ filteredFileChildren.size () ] ) );
                 if ( files != null )
                 {
                     for ( final File root : files )

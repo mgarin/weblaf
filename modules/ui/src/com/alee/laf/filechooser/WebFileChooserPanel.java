@@ -473,8 +473,8 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        pathField = new WebPathField( StyleId.filechooserPathField.at ( toolBar ) );
-        pathField.setShowHiddenFiles( showHiddenFiles );
+        pathField = new WebPathField ( StyleId.filechooserPathField.at ( toolBar ) );
+        pathField.setShowHiddenFiles ( showHiddenFiles );
         pathFieldListener = new PathFieldListener ()
         {
             @Override
@@ -2160,7 +2160,7 @@ public class WebFileChooserPanel extends WebPanel
         this.showHiddenFiles = showHiddenFiles;
         updateDirectoryComponentFilters ();
         updateFileComponentFilters ();
-        pathField.setShowHiddenFiles( showHiddenFiles );
+        pathField.setShowHiddenFiles ( showHiddenFiles );
     }
 
     /**
