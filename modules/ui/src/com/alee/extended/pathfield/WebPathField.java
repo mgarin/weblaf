@@ -772,11 +772,14 @@ public class WebPathField extends WebPanel
                 final WebPopupMenu menu = new WebPopupMenu ();
                 final File[] fileChildren = getFileChildren ( file );
                 final List<File> filteredFileChildren = new ArrayList<File> ();
-                for ( final File fileChild : fileChildren )
+                if ( fileChildren != null )
                 {
-                    if ( showHiddenFiles || !FileUtils.isHidden ( fileChild ) )
+                    for ( final File fileChild : fileChildren )
                     {
-                        filteredFileChildren.add ( fileChild );
+                        if ( showHiddenFiles || !FileUtils.isHidden ( fileChild ) )
+                        {
+                            filteredFileChildren.add ( fileChild );
+                        }
                     }
                 }
 
