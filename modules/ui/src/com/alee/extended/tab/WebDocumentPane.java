@@ -993,7 +993,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      */
     public PaneData<T> getPane ( final T document )
     {
-        return getPane ( document.getId () );
+        return document != null ? getPane ( document.getId () ) : null;
     }
 
     /**
@@ -1219,7 +1219,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
             previouslySelected = new WeakReference<T> ( selected );
 
             // Firing event only when something was actually selected
-            if (selected != null )
+            if ( selected != null )
             {
                 final PaneData<T> pane = getPane ( selected );
                 fireDocumentSelected ( selected, pane, pane.indexOf ( selected ) );

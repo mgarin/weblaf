@@ -36,6 +36,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -444,6 +445,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      */
     protected JComponent createTabComponent ( final T document )
     {
+        final WeakReference<T> weakDocument = new WeakReference<T> ( document );
         final MouseAdapter tabSelector = new MouseAdapter ()
         {
             @Override
@@ -502,8 +504,12 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
              */
             protected void redirectMouseEvent ( final MouseEvent e )
             {
-                final WebTabbedPane tabbedPane = getDocumentPane ().getPane ( document ).getTabbedPane ();
-                tabbedPane.dispatchEvent ( SwingUtilities.convertMouseEvent ( e.getComponent (), e, tabbedPane ) );
+                final PaneData paneData = getDocumentPane ().getPane ( weakDocument.get () );
+                if ( paneData != null )
+                {
+                    final WebTabbedPane tabbedPane = paneData.getTabbedPane ();
+                    tabbedPane.dispatchEvent ( SwingUtilities.convertMouseEvent ( e.getComponent (), e, tabbedPane ) );
+                }
             }
         };
         return getDocumentPane ().getTabTitleComponentProvider ().createTabTitleComponent ( this, document, tabSelector );

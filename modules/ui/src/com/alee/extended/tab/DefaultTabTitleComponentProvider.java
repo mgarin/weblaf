@@ -28,6 +28,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
+import java.lang.ref.WeakReference;
 
 /**
  * Default document tab title provider.
@@ -48,7 +49,7 @@ public class DefaultTabTitleComponentProvider<T extends DocumentData> implements
         tabTitleComponent.addMouseMotionListener ( mouseAdapter );
 
         // Document title label
-        tabTitleComponent.add ( createTitleLabel ( paneData, document, mouseAdapter ), BorderLayout.CENTER );
+        tabTitleComponent.add ( createTitleLabel ( document, mouseAdapter ), BorderLayout.CENTER );
 
         // Document close button
         if ( paneData.getDocumentPane ().isClosable () && document.isClosable () )
@@ -62,12 +63,11 @@ public class DefaultTabTitleComponentProvider<T extends DocumentData> implements
     /**
      * Returns newly created tab title label.
      *
-     * @param paneData     PaneData containing document
      * @param document     document to create tab title component for
      * @param mouseAdapter mouse adapter that forwards all mouse events to tabbed pane
      * @return newly created tab title label
      */
-    protected WebLabel createTitleLabel ( final PaneData<T> paneData, final T document, final MouseAdapter mouseAdapter )
+    protected WebLabel createTitleLabel ( final T document, final MouseAdapter mouseAdapter )
     {
         final WebLabel titleLabel = new WebLabel ( document.getTitle (), document.getIcon () );
         titleLabel.setForeground ( document.getForeground () );
@@ -85,6 +85,7 @@ public class DefaultTabTitleComponentProvider<T extends DocumentData> implements
      */
     protected WebButton createCloseButton ( final PaneData<T> paneData, final T document )
     {
+        final WeakReference<T> weakDocument = new WeakReference<T> ( document );
         final StyleId closeButtonId = StyleId.documentpaneCloseButton.at ( paneData.getTabbedPane () );
         final WebButton closeButton = new WebButton ( closeButtonId, Icons.crossSmall, Icons.crossSmallHover );
         closeButton.addActionListener ( new ActionListener ()
@@ -92,7 +93,7 @@ public class DefaultTabTitleComponentProvider<T extends DocumentData> implements
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-                paneData.close ( document );
+                paneData.close ( weakDocument.get () );
             }
         } );
         return closeButton;
