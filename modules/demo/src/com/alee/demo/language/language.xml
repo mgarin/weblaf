@@ -1406,6 +1406,24 @@
                         </record>
                     </Dictionary>
                 </Dictionary>
+                <Dictionary prefix="jfilechooser">
+                    <record key="title">
+                        <value lang="en">JFileChooser</value>
+                        <value lang="ru">JFileChooser</value>
+                    </record>
+                    <Dictionary prefix="open">
+                        <record key="title">
+                            <value lang="en">Open File Dialog</value>
+                            <value lang="ru">Open File Dialog</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="save">
+                        <record key="title">
+                            <value lang="en">Save File Dialog</value>
+                            <value lang="ru">Save File Dialog</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
             </Dictionary>
             <Dictionary prefix="fieldchoosers">
                 <record key="title">
