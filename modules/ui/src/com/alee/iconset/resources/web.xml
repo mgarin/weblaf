@@ -211,5 +211,8 @@
     <SvgIcon id="dir" path="cross.svg" size="16,16">
         <SvgFill selector="svg" color="80,80,80" />
     </SvgIcon>
+    <SvgIcon id="edit" path="cross.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
 
 </IconSet>

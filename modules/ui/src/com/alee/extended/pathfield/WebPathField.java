@@ -187,7 +187,7 @@ public class WebPathField extends WebPanel
         contentPanel = new WebPanel ( contentStyle, new HorizontalFlowLayout ( 0, true ) );
         add ( contentPanel, BorderLayout.CENTER );
 
-        //        WebImage editImage = new WebImage ( WebPathField.class, "icons/edit.png" );
+        //        WebImage editImage = new WebImage ( WebPathField.class, Icons.edit );
         //        editImage.setCursor ( Cursor.getPredefinedCursor ( Cursor.TEXT_CURSOR ) );
         //        editImage.addMouseListener ( new MouseAdapter ()
         //        {
