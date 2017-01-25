@@ -49,10 +49,6 @@ import java.util.Map;
 
 public class WebFileDrop extends WebPanel implements LanguageMethods
 {
-    /**
-     * Remove file icon.
-     */
-    public static final ImageIcon CROSS_ICON = new ImageIcon ( WebFileDrop.class.getResource ( "icons/cross.png" ) );
 
     protected static final BasicStroke dashStroke =
             new BasicStroke ( 3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1f, new float[]{ 8f, 8f }, 0f );
