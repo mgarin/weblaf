@@ -63,7 +63,7 @@ public final class LazyIcon implements Icon
      *
      * @return actual icon
      */
-    protected Icon getIcon ()
+    public Icon getIcon ()
     {
         return IconManager.getIcon ( getId () );
     }

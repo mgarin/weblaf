@@ -73,13 +73,6 @@ public class WebPathField extends WebPanel
      */
 
     /**
-     * Used icons.
-     */
-    protected static final ImageIcon down = new ImageIcon ( WebPathField.class.getResource ( "icons/down.png" ) );
-    protected static final ImageIcon left = new ImageIcon ( WebPathField.class.getResource ( "icons/left.png" ) );
-    protected static final ImageIcon right = new ImageIcon ( WebPathField.class.getResource ( "icons/right.png" ) );
-
-    /**
      * Custom property used to store file icon into button.
      */
     protected static final String FILE_ICON = "fileIcon";
@@ -812,8 +805,8 @@ public class WebPathField extends WebPanel
                 }
 
                 final WebToggleButton children = new WebToggleButton ( StyleId.pathfieldMenuToggleButton.at ( contentPanel ) );
-                children.setIcon ( ltr ? right : left );
-                children.setSelectedIcon ( down );
+                children.setIcon ( ltr ? Icons.rightSmall : Icons.leftSmall );
+                children.setSelectedIcon ( Icons.downSmall );
                 children.setComponentPopupMenu ( menu );
                 children.setEnabled ( childrenCount > 0 );
                 children.addActionListener ( new ActionListener ()
@@ -974,8 +967,8 @@ public class WebPathField extends WebPanel
             }
 
             rootsArrowButton = new WebToggleButton ( StyleId.pathfieldMenuToggleButton.at ( contentPanel ) );
-            rootsArrowButton.setIcon ( ltr ? right : left );
-            rootsArrowButton.setSelectedIcon ( down );
+            rootsArrowButton.setIcon ( ltr ? Icons.rightSmall : Icons.leftSmall );
+            rootsArrowButton.setSelectedIcon ( Icons.downSmall );
             rootsArrowButton.setComponentPopupMenu ( rootsMenu );
             rootsArrowButton.addActionListener ( new ActionListener ()
             {
@@ -1011,7 +1004,7 @@ public class WebPathField extends WebPanel
         }
         else
         {
-            rootsArrowButton.setIcon ( ltr ? right : left );
+            rootsArrowButton.setIcon ( ltr ? Icons.rightSmall : Icons.leftSmall );
         }
         while ( rootsMenu.getComponentCount () > rootsMenuItemsCount )
         {
