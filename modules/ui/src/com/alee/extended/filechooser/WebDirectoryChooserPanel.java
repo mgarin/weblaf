@@ -32,6 +32,7 @@ import com.alee.laf.toolbar.WebToolBar;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyCondition;
 import com.alee.managers.hotkey.HotkeyManager;
+import com.alee.managers.icon.Icons;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.style.StyleId;
@@ -61,20 +62,6 @@ import java.util.List;
 
 public class WebDirectoryChooserPanel extends WebPanel
 {
-    /**
-     * Used icons.
-     */
-    protected static final ImageIcon FOLDER_UP_ICON =
-            new ImageIcon ( WebDirectoryChooserPanel.class.getResource ( "icons/folder_up.png" ) );
-    protected static final ImageIcon FOLDER_HOME_ICON =
-            new ImageIcon ( WebDirectoryChooserPanel.class.getResource ( "icons/folder_home.png" ) );
-    protected static final ImageIcon FOLDER_NEW_ICON =
-            new ImageIcon ( WebDirectoryChooserPanel.class.getResource ( "icons/folder_new.png" ) );
-    protected static final ImageIcon REFRESH_ICON = new ImageIcon ( WebDirectoryChooserPanel.class.getResource ( "icons/refresh.png" ) );
-    protected static final ImageIcon REMOVE_ICON = new ImageIcon ( WebDirectoryChooserPanel.class.getResource ( "icons/remove.png" ) );
-    protected static final ImageIcon OK_ICON = new ImageIcon ( WebDirectoryChooser.class.getResource ( "icons/ok.png" ) );
-    protected static final ImageIcon CANCEL_ICON = new ImageIcon ( WebDirectoryChooser.class.getResource ( "icons/cancel.png" ) );
-
     /**
      * Directory chooser listeners.
      */
@@ -229,7 +216,7 @@ public class WebDirectoryChooserPanel extends WebPanel
         final WebToolBar toolBar = new WebToolBar ( StyleId.directorychooserToolbar.at ( this ) );
 
         final StyleId folderUpId = StyleId.directorychooserFolderUpButton.at ( toolBar );
-        folderUp = new WebButton ( folderUpId, "weblaf.ex.dirchooser.folderup", FOLDER_UP_ICON );
+        folderUp = new WebButton ( folderUpId, "weblaf.ex.dirchooser.folderup", Icons.folderUp );
         folderUp.addHotkey ( WebDirectoryChooserPanel.this, Hotkey.ALT_UP ).setHotkeyDisplayWay ( TooltipWay.down );
         folderUp.addActionListener ( new ActionListener ()
         {
@@ -245,7 +232,7 @@ public class WebDirectoryChooserPanel extends WebPanel
         toolBar.add ( folderUp );
 
         final StyleId folderHomeId = StyleId.directorychooserHomeButton.at ( toolBar );
-        folderHome = new WebButton ( folderHomeId, "weblaf.ex.dirchooser.home", FOLDER_HOME_ICON );
+        folderHome = new WebButton ( folderHomeId, "weblaf.ex.dirchooser.home", Icons.folderHome );
         folderHome.addHotkey ( WebDirectoryChooserPanel.this, Hotkey.ALT_H ).setHotkeyDisplayWay ( TooltipWay.trailing );
         folderHome.addActionListener ( new ActionListener ()
         {
@@ -276,7 +263,7 @@ public class WebDirectoryChooserPanel extends WebPanel
         }
 
         final StyleId refreshId = StyleId.directorychooserRefreshButton.at ( toolBar );
-        refresh = new WebButton ( refreshId, "weblaf.ex.dirchooser.refresh", REFRESH_ICON );
+        refresh = new WebButton ( refreshId, "weblaf.ex.dirchooser.refresh", Icons.refresh );
         refresh.addHotkey ( WebDirectoryChooserPanel.this, Hotkey.F5 ).setHotkeyDisplayWay ( TooltipWay.leading );
         refresh.addActionListener ( new ActionListener ()
         {
@@ -296,7 +283,7 @@ public class WebDirectoryChooserPanel extends WebPanel
         toolBar.add ( refresh, ToolbarLayout.END );
 
         final StyleId folderNewId = StyleId.directorychooserNewFolderButton.at ( toolBar );
-        folderNew = new WebButton ( folderNewId, "weblaf.ex.dirchooser.newfolder", FOLDER_NEW_ICON );
+        folderNew = new WebButton ( folderNewId, "weblaf.ex.dirchooser.newfolder", Icons.folderNew );
         folderNew.addHotkey ( WebDirectoryChooserPanel.this, Hotkey.CTRL_N ).setHotkeyDisplayWay ( TooltipWay.down );
         folderNew.addActionListener ( new ActionListener ()
         {
@@ -328,7 +315,7 @@ public class WebDirectoryChooserPanel extends WebPanel
         toolBar.add ( folderNew, ToolbarLayout.END );
 
         final StyleId removeId = StyleId.directorychooserDeleteButton.at ( toolBar );
-        remove = new WebButton ( removeId, "weblaf.ex.dirchooser.delete", REMOVE_ICON );
+        remove = new WebButton ( removeId, "weblaf.ex.dirchooser.delete", Icons.remove );
         remove.addHotkey ( WebDirectoryChooserPanel.this, Hotkey.DELETE ).setHotkeyDisplayWay ( TooltipWay.down );
         remove.addActionListener ( new ActionListener ()
         {
@@ -381,7 +368,7 @@ public class WebDirectoryChooserPanel extends WebPanel
         final WebPanel controlsPanel = new WebPanel ( controlsPanelId, new BorderLayout ( 0, 0 ) );
 
         final StyleId acceptButtonId = StyleId.directorychooserAcceptButton.at ( controlsPanel );
-        acceptButton = new WebButton ( acceptButtonId, "weblaf.ex.dirchooser.choose", OK_ICON );
+        acceptButton = new WebButton ( acceptButtonId, "weblaf.ex.dirchooser.choose", Icons.accept);
         acceptButton.addHotkey ( Hotkey.CTRL_ENTER );
         acceptButton.setEnabled ( false );
         acceptButton.addActionListener ( new ActionListener ()
@@ -394,7 +381,7 @@ public class WebDirectoryChooserPanel extends WebPanel
         } );
 
         final StyleId cancelButtonId = StyleId.directorychooserCancelButton.at ( controlsPanel );
-        cancelButton = new WebButton ( cancelButtonId, "weblaf.ex.dirchooser.cancel", CANCEL_ICON );
+        cancelButton = new WebButton ( cancelButtonId, "weblaf.ex.dirchooser.cancel", Icons.cancel );
         cancelButton.addHotkey ( Hotkey.ESCAPE );
         cancelButton.addActionListener ( new ActionListener ()
         {

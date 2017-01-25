@@ -162,4 +162,48 @@
         <SvgFill selector=".shape" color="180,180,180" />
     </SvgIcon>
 
+    <!-- File Chooser icons -->
+    <SvgIcon id="backward" path="cross.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="forward" path="cross.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="history" path="cross.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="folder-up" path="cross.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="folder-home" path="cross.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="folder-new" path="cross.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="refresh" path="cross.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="remove" path="cross.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="view" path="cross.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="icons" path="cross.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="tiles" path="cross.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="table" path="cross.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="accept" path="cross.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="cancel" path="cross.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+
 </IconSet>
