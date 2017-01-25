@@ -106,4 +106,5 @@ public final class Icons
     public static final LazyIcon table = new LazyIcon ( "table" );
     public static final LazyIcon accept = new LazyIcon ( "accept" );
     public static final LazyIcon cancel = new LazyIcon ( "cancel" );
+    public static final LazyIcon computer = new LazyIcon ( "computer" );
 }

@@ -426,7 +426,7 @@ public class WebFileChooserPanel extends WebPanel
                         final File file = ( File ) value;
                         if ( file == null )
                         {
-                            setIcon ( FileUtils.getMyComputerIcon () );
+                            setIcon ( Icons.computer );
                             setText ( LanguageManager.get ( "weblaf.filechooser.root" ) );
                         }
                         else

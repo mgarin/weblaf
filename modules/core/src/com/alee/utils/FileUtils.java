@@ -83,11 +83,6 @@ public final class FileUtils
     public static final long PB = 1024 * GB;
 
     /**
-     * Icons.
-     */
-    private static final ImageIcon COMPUTER_ICON = new ImageIcon ( FileUtils.class.getResource ( "icons/computer.png" ) );
-
-    /**
      * Cached file system view.
      */
     private static final FileSystemView fsv = FileSystemView.getFileSystemView ();
@@ -2807,16 +2802,6 @@ public final class FileUtils
                 return "";
             }
         }
-    }
-
-    /**
-     * Returns default icon for "My computer" file.
-     *
-     * @return default icon for "My computer" file
-     */
-    public static ImageIcon getMyComputerIcon ()
-    {
-        return COMPUTER_ICON;
     }
 
     /**

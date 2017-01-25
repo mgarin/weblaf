@@ -35,6 +35,7 @@ import com.alee.managers.focus.FocusManager;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
+import com.alee.managers.icon.Icons;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
@@ -750,8 +751,8 @@ public class WebPathField extends WebPanel
                 final WebButton wb = new WebButton ( StyleId.pathfieldElementButton.at ( contentPanel ) );
                 if ( !SystemUtils.isWindows () && first )
                 {
-                    wb.setIcon ( FileUtils.getMyComputerIcon () );
-                    wb.putClientProperty ( FILE_ICON, FileUtils.getMyComputerIcon () );
+                    wb.setIcon ( Icons.computer );
+                    wb.putClientProperty ( FILE_ICON, Icons.computer );
                 }
                 else
                 {
@@ -920,7 +921,7 @@ public class WebPathField extends WebPanel
     {
         if ( myComputer == null )
         {
-            myComputer = new WebButton ( StyleId.pathfieldRootButton.at ( contentPanel ), FileUtils.getMyComputerIcon () );
+            myComputer = new WebButton ( StyleId.pathfieldRootButton.at ( contentPanel ), Icons.computer );
             myComputer.addActionListener ( new ActionListener ()
             {
                 @Override
