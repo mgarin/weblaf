@@ -111,13 +111,13 @@ public class ScrollBarPainter<E extends JScrollBar, U extends WScrollBarUI> exte
             @Override
             public void mouseEntered ( final MouseEvent e )
             {
-                setRollover ( thumbBounds.contains ( e.getPoint () ) );
+                setRollover ( thumbBounds != null && thumbBounds.contains ( e.getPoint () ) );
             }
 
             @Override
             public void mouseMoved ( final MouseEvent e )
             {
-                setRollover ( thumbBounds.contains ( e.getPoint () ) );
+                setRollover ( thumbBounds != null && thumbBounds.contains ( e.getPoint () ) );
             }
 
             @Override
@@ -286,7 +286,7 @@ public class ScrollBarPainter<E extends JScrollBar, U extends WScrollBarUI> exte
      * @param scrollbar scroll bar
      * @param bounds    scroll bar bounds
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintBackground ( final Graphics2D g2d, final E scrollbar, final Rectangle bounds )
     {
         if ( ui.isDisplayTrack () )
