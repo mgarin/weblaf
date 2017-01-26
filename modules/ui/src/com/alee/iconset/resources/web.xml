@@ -162,4 +162,59 @@
         <SvgFill selector=".shape" color="180,180,180" />
     </SvgIcon>
 
+    <!-- File Chooser icons -->
+    <SvgIcon id="backward" path="arrow.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+        <SvgTransform selector="svg" rotate="-90" />
+    </SvgIcon>
+    <SvgIcon id="forward" path="arrow.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+        <SvgTransform selector="svg" rotate="90" />
+    </SvgIcon>
+    <SvgIcon id="history" path="history.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="folder-up" path="arrow.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="folder-home" path="home.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="folder-new" path="folder-new.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="refresh" path="refresh.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="remove" path="remove.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="view" path="settings.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="icons" path="icons.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="tiles" path="tiles.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="table" path="table.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="accept" path="checkmark.svg" size="16,16">
+        <SvgFill selector="svg" color="0,230,0" />
+    </SvgIcon>
+    <SvgIcon id="cancel" path="cross.svg" size="16,16">
+        <SvgFill selector="svg" color="230,0,0" />
+    </SvgIcon>
+    <SvgIcon id="computer" path="computer.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="dir" path="dir.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="edit" path="edit.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+
 </IconSet>

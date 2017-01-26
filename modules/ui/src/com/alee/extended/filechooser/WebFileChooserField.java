@@ -25,6 +25,7 @@ import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.managers.drag.transfer.FilesTransferHandler;
+import com.alee.managers.icon.Icons;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
@@ -47,8 +48,6 @@ public class WebFileChooserField extends WebPanel
      * todo 1. Create UI for this class and move the implementation there
      * todo 2. Optimize chosen elements by replacing scroll with list
      */
-
-    public static final ImageIcon CROSS_ICON = new ImageIcon ( WebFileChooserField.class.getResource ( "icons/cross.png" ) );
 
     /**
      * Whether multiply files selection allowed or not.
@@ -413,7 +412,7 @@ public class WebFileChooserField extends WebPanel
             if ( showRemoveButton )
             {
                 final StyleId removeId = StyleId.filechooserfieldFileRemoveButton.at ( FilePlate.this );
-                final WebButton remove = new WebButton ( removeId, CROSS_ICON );
+                final WebButton remove = new WebButton ( removeId, Icons.crossSmall );
                 remove.addActionListener ( new ActionListener ()
                 {
                     @Override

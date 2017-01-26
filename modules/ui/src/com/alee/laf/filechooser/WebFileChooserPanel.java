@@ -43,6 +43,7 @@ import com.alee.laf.toolbar.WebToolBar;
 import com.alee.managers.drag.transfer.FilesTransferHandler;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyData;
+import com.alee.managers.icon.Icons;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.style.StyleId;
@@ -81,24 +82,6 @@ public class WebFileChooserPanel extends WebPanel
      * todo 3. Context menu for file selection components
      */
 
-    /**
-     * Used icons.
-     */
-    public static final ImageIcon BACKWARD_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/backward.png" ) );
-    public static final ImageIcon FORWARD_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/forward.png" ) );
-    public static final ImageIcon HISTORY_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/history.png" ) );
-    public static final ImageIcon FOLDER_UP_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/folder_up.png" ) );
-    public static final ImageIcon FOLDER_HOME_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/folder_home.png" ) );
-    public static final ImageIcon FOLDER_NEW_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/folder_new.png" ) );
-    public static final ImageIcon REFRESH_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/refresh.png" ) );
-    public static final ImageIcon REMOVE_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/remove.png" ) );
-    public static final ImageIcon VIEW_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/view.png" ) );
-    public static final ImageIcon VIEW_ICONS_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/icons.png" ) );
-    public static final ImageIcon VIEW_TILES_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/tiles.png" ) );
-    public static final ImageIcon VIEW_TABLE_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/table.png" ) );
-    public static final ImageIcon SETTINGS_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/settings.png" ) );
-    public static final ImageIcon ACCEPT_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/approve.png" ) );
-    public static final ImageIcon CANCEL_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/cancel.png" ) );
 
     /**
      * File name provider.
@@ -384,7 +367,7 @@ public class WebFileChooserPanel extends WebPanel
 
         final StyleId toolbarButtonId = StyleId.filechooserToolbarButton.at ( toolBar );
 
-        backward = new WebButton ( toolbarButtonId, BACKWARD_ICON );
+        backward = new WebButton ( toolbarButtonId, Icons.backward );
         backward.setLanguage ( "weblaf.filechooser.back" );
         backward.addHotkey ( WebFileChooserPanel.this, Hotkey.ALT_LEFT ).setHotkeyDisplayWay ( TooltipWay.down );
         backward.addActionListener ( new ActionListener ()
@@ -399,7 +382,7 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        forward = new WebButton ( toolbarButtonId, FORWARD_ICON );
+        forward = new WebButton ( toolbarButtonId, Icons.forward );
         forward.setLanguage ( "weblaf.filechooser.forward" );
         forward.addHotkey ( WebFileChooserPanel.this, Hotkey.ALT_RIGHT ).setHotkeyDisplayWay ( TooltipWay.trailing );
         forward.addActionListener ( new ActionListener ()
@@ -414,7 +397,7 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        history = new WebButton ( toolbarButtonId, HISTORY_ICON );
+        history = new WebButton ( toolbarButtonId, Icons.history );
         history.setLanguage ( "weblaf.filechooser.history" );
         history.addActionListener ( new ActionListener ()
         {
@@ -443,7 +426,7 @@ public class WebFileChooserPanel extends WebPanel
                         final File file = ( File ) value;
                         if ( file == null )
                         {
-                            setIcon ( FileUtils.getMyComputerIcon () );
+                            setIcon ( Icons.computer );
                             setText ( LanguageManager.get ( "weblaf.filechooser.root" ) );
                         }
                         else
@@ -485,7 +468,7 @@ public class WebFileChooserPanel extends WebPanel
         };
         pathField.addPathFieldListener ( pathFieldListener );
 
-        folderUp = new WebButton ( toolbarButtonId, FOLDER_UP_ICON );
+        folderUp = new WebButton ( toolbarButtonId, Icons.folderUp );
         folderUp.setLanguage ( "weblaf.filechooser.folderup" );
         folderUp.addHotkey ( WebFileChooserPanel.this, Hotkey.ALT_UP ).setHotkeyDisplayWay ( TooltipWay.down );
         folderUp.addActionListener ( new ActionListener ()
@@ -500,7 +483,7 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        folderHome = new WebButton ( toolbarButtonId, FOLDER_HOME_ICON );
+        folderHome = new WebButton ( toolbarButtonId, Icons.folderHome );
         folderHome.setLanguage ( "weblaf.filechooser.home" );
         folderHome.addHotkey ( WebFileChooserPanel.this, Hotkey.ALT_HOME ).setHotkeyDisplayWay ( TooltipWay.down );
         folderHome.addActionListener ( new ActionListener ()
@@ -515,7 +498,7 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        refresh = new WebButton ( toolbarButtonId, REFRESH_ICON );
+        refresh = new WebButton ( toolbarButtonId, Icons.refresh );
         refresh.setLanguage ( "weblaf.filechooser.refresh" );
         refresh.addHotkey ( WebFileChooserPanel.this, Hotkey.F5 ).setHotkeyDisplayWay ( TooltipWay.down );
         refresh.addActionListener ( new ActionListener ()
@@ -530,7 +513,7 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        folderNew = new WebButton ( toolbarButtonId, FOLDER_NEW_ICON );
+        folderNew = new WebButton ( toolbarButtonId, Icons.folderNew );
         folderNew.setLanguage ( "weblaf.filechooser.newfolder" );
         folderNew.addHotkey ( WebFileChooserPanel.this, Hotkey.CTRL_N ).setHotkeyDisplayWay ( TooltipWay.down );
         folderNew.addActionListener ( new ActionListener ()
@@ -563,7 +546,7 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        remove = new WebButton ( toolbarButtonId, REMOVE_ICON );
+        remove = new WebButton ( toolbarButtonId, Icons.remove );
         remove.setLanguage ( "weblaf.filechooser.delete" );
         remove.addHotkey ( WebFileChooserPanel.this, Hotkey.DELETE ).setHotkeyDisplayWay ( TooltipWay.down );
         remove.setEnabled ( false );
@@ -579,7 +562,7 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        view = new WebButton ( toolbarButtonId, VIEW_ICON );
+        view = new WebButton ( toolbarButtonId, Icons.view );
         view.setLanguage ( "weblaf.filechooser.view" );
 
         final Action viewIcons = new AbstractAction ()
@@ -629,21 +612,21 @@ public class WebFileChooserPanel extends WebPanel
             {
                 final WebPopupMenu viewChoose = new WebPopupMenu ();
 
-                final WebRadioButtonMenuItem icons = new WebRadioButtonMenuItem ( VIEW_ICONS_ICON );
+                final WebRadioButtonMenuItem icons = new WebRadioButtonMenuItem ( Icons.icons );
                 icons.setLanguage ( "weblaf.filechooser.view.icons" );
                 icons.setAccelerator ( new HotkeyData ( ksViewIcons ) );
                 icons.setSelected ( getViewType ().equals ( FileChooserViewType.icons ) );
                 icons.addActionListener ( viewIcons );
                 viewChoose.add ( icons );
 
-                final WebRadioButtonMenuItem tiles = new WebRadioButtonMenuItem ( VIEW_TILES_ICON );
+                final WebRadioButtonMenuItem tiles = new WebRadioButtonMenuItem ( Icons.tiles );
                 tiles.setLanguage ( "weblaf.filechooser.view.tiles" );
                 tiles.setAccelerator ( new HotkeyData ( ksViewTiles ) );
                 tiles.setSelected ( getViewType ().equals ( FileChooserViewType.tiles ) );
                 tiles.addActionListener ( viewTiles );
                 viewChoose.add ( tiles );
 
-                final WebRadioButtonMenuItem table = new WebRadioButtonMenuItem ( VIEW_TABLE_ICON );
+                final WebRadioButtonMenuItem table = new WebRadioButtonMenuItem ( Icons.table );
                 table.setLanguage ( "weblaf.filechooser.view.table" );
                 table.setAccelerator ( new HotkeyData ( ksViewTable ) );
                 table.setSelected ( getViewType ().equals ( FileChooserViewType.table ) );
@@ -1075,7 +1058,7 @@ public class WebFileChooserPanel extends WebPanel
         } );
         controlsPanel.add ( fileFilters, ToolbarLayout.END );
 
-        acceptButton = new WebButton ( StyleId.filechooserAcceptButton.at ( controlsPanel ), ACCEPT_ICON );
+        acceptButton = new WebButton ( StyleId.filechooserAcceptButton.at ( controlsPanel ), Icons.accept );
         acceptButton.addHotkey ( WebFileChooserPanel.this, Hotkey.CTRL_ENTER, TooltipWay.up );
         acceptButton.putClientProperty ( GroupPanel.FILL_CELL, true );
         acceptButton.setEnabled ( false );
@@ -1088,7 +1071,7 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        cancelButton = new WebButton ( StyleId.filechooserCancelButton.at ( controlsPanel ), "weblaf.filechooser.cancel", CANCEL_ICON );
+        cancelButton = new WebButton ( StyleId.filechooserCancelButton.at ( controlsPanel ), "weblaf.filechooser.cancel", Icons.cancel );
         cancelButton.addHotkey ( WebFileChooserPanel.this, Hotkey.ESCAPE, TooltipWay.up );
         cancelButton.putClientProperty ( GroupPanel.FILL_CELL, true );
         cancelButton.addActionListener ( new ActionListener ()

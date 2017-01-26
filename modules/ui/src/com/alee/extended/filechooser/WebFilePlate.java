@@ -24,6 +24,7 @@ import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.drag.transfer.FilesTransferHandler;
 import com.alee.managers.drag.transfer.ProxyDropHandler;
+import com.alee.managers.icon.Icons;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
@@ -51,8 +52,6 @@ import java.util.List;
 
 public class WebFilePlate extends WebPanel
 {
-    public static final ImageIcon CROSS_ICON = new ImageIcon ( WebFilePlate.class.getResource ( "icons/cross.png" ) );
-
     protected final List<ActionListener> closeListeners = new ArrayList<ActionListener> ( 1 );
 
     protected boolean showRemoveButton = true;
@@ -243,7 +242,7 @@ public class WebFilePlate extends WebPanel
     {
         if ( remove == null )
         {
-            remove = new WebButton ( StyleId.filedropPlateRemoveButton.at ( WebFilePlate.this ), CROSS_ICON );
+            remove = new WebButton ( StyleId.filedropPlateRemoveButton.at ( WebFilePlate.this ), Icons.crossSmall );
             remove.addActionListener ( new ActionListener ()
             {
                 @Override
