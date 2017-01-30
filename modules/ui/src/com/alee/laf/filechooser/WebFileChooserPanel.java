@@ -1150,6 +1150,16 @@ public class WebFileChooserPanel extends WebPanel
     }
 
     /**
+     * Returns file table.
+     *
+     * @return file table
+     */
+    public WebFileTable getFileTable ()
+    {
+        return fileTable;
+    }
+
+    /**
      * Returns directory files view type.
      *
      * @return directory files view type
