@@ -432,7 +432,14 @@ public class WebColorChooserField extends WebTextField
                                         if ( screen != null )
                                         {
                                             screen.repaint ();
-                                            info.setText ( getColorText ( color ) );
+                                            SwingUtils.invokeLater ( new Runnable ()
+                                            {
+                                                @Override
+                                                public void run ()
+                                                {
+                                                    info.setText ( getColorText ( color ) );
+                                                }
+                                            } );
                                         }
                                         else
                                         {
