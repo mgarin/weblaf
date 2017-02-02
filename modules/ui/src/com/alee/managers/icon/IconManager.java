@@ -27,6 +27,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 /**
@@ -178,9 +179,9 @@ public final class IconManager
             }
 
             // Checking icon sets
-            for ( final IconSet iconSet : iconSets )
-            {
-                icon = iconSet.getIcon ( id );
+            ListIterator<IconSet> iter = iconSets.listIterator ( iconSets.size () );
+            while ( iter.hasPrevious () ) {
+                icon = iter.previous ().getIcon ( id );
                 if ( icon != null )
                 {
                     return icon;
