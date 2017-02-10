@@ -17,17 +17,26 @@
 
 package com.alee.laf.radiobutton;
 
-import javax.swing.plaf.basic.BasicRadioButtonUI;
+import com.alee.laf.button.WButtonUI;
+
+import javax.swing.*;
 import java.awt.*;
 
 /**
- * Pluggable look and feel interface for {@link WebRadioButton} component.
+ * Pluggable look and feel interface for {@link JRadioButton} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public abstract class WRadioButtonUI extends BasicRadioButtonUI
+public abstract class WRadioButtonUI<C extends JRadioButton> extends WButtonUI<C>
 {
+    @Override
+    public String getPropertyPrefix ()
+    {
+        return "RadioButton.";
+    }
+
     /**
      * Returns icon bounds.
      *

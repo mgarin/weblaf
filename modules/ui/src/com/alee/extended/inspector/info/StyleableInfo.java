@@ -17,27 +17,29 @@
 
 package com.alee.extended.inspector.info;
 
-import com.alee.managers.glasspane.WebGlassPane;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleableComponent;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * Default Styleable JComponent information provider.
+ * Default styleable {@link JComponent} information provider.
  *
+ * @param <T> component type
  * @author Mikle Garin
  */
 
 public class StyleableInfo<T extends JComponent> extends AbstractComponentInfo<T>
 {
     @Override
-    public ImageIcon getIcon ( final StyleableComponent type, final T component )
+    public ImageIcon getIconImpl ( final StyleableComponent type, final T component )
     {
-        if ( component instanceof WebGlassPane )
+        final JRootPane rootPane = SwingUtils.getRootPane ( component );
+        if ( rootPane != null && rootPane.getGlassPane () == component )
         {
             return glassPaneType;
         }

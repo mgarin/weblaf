@@ -69,7 +69,7 @@ public abstract class AbstractShadow<E extends JComponent, D extends IDecoration
     @Override
     public String getId ()
     {
-        return getType ().toString ();
+        return getType ().name ();
     }
 
     @Override

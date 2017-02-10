@@ -25,6 +25,7 @@ import java.awt.*;
 /**
  * Component information provider interface.
  *
+ * @param <T> component type
  * @author Mikle Garin
  */
 
@@ -32,7 +33,6 @@ public interface ComponentDescriptor<T extends Component>
 {
     /**
      * Returns icon for the specified component.
-     * Can return {@code null} to use default component icon.
      *
      * @param type      styleable component type
      * @param component component to provide icon for

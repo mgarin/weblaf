@@ -24,7 +24,7 @@ import java.awt.*;
 import java.util.Vector;
 
 /**
- * Pluggable look and feel interface for {@link WebTabbedPane} component.
+ * Pluggable look and feel class for {@link WebTabbedPane} component.
  *
  * @author Mikle Garin
  */

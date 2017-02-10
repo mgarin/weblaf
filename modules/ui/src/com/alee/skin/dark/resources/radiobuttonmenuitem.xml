@@ -1,4 +1,4 @@
-<skin>
+<skin xmlns="http://weblookandfeel.com">
 
     <!-- com.alee.laf.menu.WebRadioButtonMenuItem -->
 
@@ -11,11 +11,11 @@
             <decorations>
                 <decoration>
                     <WebShape round="0" />
-                    <MenuItemLayout padding="4,10,4,10" iconTextGap="6" textAcceleratorGap="20">
+                    <MenuItemLayout padding="4,10,5,8" iconTextGap="6" textAcceleratorGap="20">
                         <SimpleButtonIcon constraints="icon" />
                         <ButtonText constraints="text" color="245,245,245" />
-                        <Background constraints="accelerator" color="80,80,80" round="4" opacity="0" />
-                        <AcceleratorText constraints="accelerator" padding="2,4,2,4" color="225,225,225" />
+                        <RoundRectangle constraints="accelerator" color="80,80,80" round="4" opacity="0" />
+                        <AcceleratorText constraints="accelerator" padding="0,4,0,4" color="225,225,225" />
                     </MenuItemLayout>
                 </decoration>
                 <decoration states="selected">
@@ -24,7 +24,7 @@
                         <color>25,25,25</color>
                     </GradientBackground>
                     <MenuItemLayout>
-                        <Background opacity="1" />
+                        <RoundRectangle opacity="1" />
                     </MenuItemLayout>
                 </decoration>
                 <decoration states="disabled">
@@ -48,7 +48,7 @@
                         </GradientBackground>
                     </decoration>
                     <decoration states="checked">
-                        <RadioIcon leftColor="255,255,255,225" rightColor="255,255,255,235" />
+                        <RadioIcon padding="2" leftColor="255,255,255,225" rightColor="255,255,255,235" />
                     </decoration>
                     <decoration states="disabled">
                         <WebShadow type="outer" opacity="0" />
@@ -59,7 +59,7 @@
                         </GradientBackground>
                     </decoration>
                     <decoration states="disabled,checked">
-                        <RadioIcon leftColor="120,120,120" rightColor="130,130,130" />
+                        <RadioIcon padding="2" leftColor="120,120,120" rightColor="130,130,130" />
                     </decoration>
                 </decorations>
             </checkStatePainter>

@@ -41,7 +41,7 @@ public class WebTextPaneUI extends WTextPaneUI implements ShapeSupport, MarginSu
     /**
      * Component painter.
      */
-    @DefaultPainter (TextPanePainter.class)
+    @DefaultPainter ( TextPanePainter.class )
     protected ITextPanePainter painter;
 
     /**
@@ -63,7 +63,7 @@ public class WebTextPaneUI extends WTextPaneUI implements ShapeSupport, MarginSu
      * @param c component that will use UI instance
      * @return instance of the WebTextPaneUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTextPaneUI ();
@@ -142,7 +142,7 @@ public class WebTextPaneUI extends WTextPaneUI implements ShapeSupport, MarginSu
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

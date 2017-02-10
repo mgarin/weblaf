@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  * Basic painter for {@link WebLink} component.
- * It is used as {@link WebLinkUI} default painter.
+ * It is used as {@link WLinkUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type

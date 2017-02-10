@@ -41,10 +41,11 @@ import java.beans.PropertyChangeListener;
  * 2. Pointless animator which is not useful as we use our own ones
  * 3. Unnecessary settings initialization
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public class WebProgressBarUI extends WProgressBarUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebProgressBarUI<C extends JProgressBar> extends WProgressBarUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -57,15 +58,14 @@ public class WebProgressBarUI extends WProgressBarUI implements ShapeSupport, Ma
      */
     protected Insets margin = null;
     protected Insets padding = null;
-    protected JProgressBar progressBar;
     protected EventsHandler eventsHandler;
 
     /**
-     * Returns an instance of the WebProgressBarUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebProgressBarUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebProgressBarUI
+     * @return instance of the {@link WebProgressBarUI}
      */
     @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
@@ -73,78 +73,48 @@ public class WebProgressBarUI extends WProgressBarUI implements ShapeSupport, Ma
         return new WebProgressBarUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
-        // Saving progress bar reference
-        progressBar = ( JProgressBar ) c;
-
-        // Default settings
-        installDefaults ();
-        installListeners ();
+        // Installing UI
+        super.installUI ( c );
 
         // Applying skin
         StyleManager.installSkin ( progressBar );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( progressBar );
 
-        // Default settings
-        uninstallListeners ();
-        uninstallDefaults ();
-
-        // Removing progress bar reference
-        progressBar = null;
+        // Uninstalling UI
+        super.uninstallUI ( c );
     }
 
-    /**
-     * Installs default component settings.
-     */
-    protected void installDefaults ()
-    {
-        LookAndFeel.installColorsAndFont ( progressBar, "ProgressBar.background", "ProgressBar.foreground", "ProgressBar.font" );
-    }
-
-    /**
-     * Uninstalls default component settings.
-     */
-    protected void uninstallDefaults ()
-    {
-        LookAndFeel.uninstallBorder ( progressBar );
-    }
-
-    /**
-     * Installs component listeners.
-     */
+    @Override
     protected void installListeners ()
     {
+        // Installing default listeners
+        super.installListeners ();
+
+        // Installing custom listeners
         eventsHandler = new EventsHandler ();
         progressBar.addChangeListener ( eventsHandler );
         progressBar.addPropertyChangeListener ( eventsHandler );
     }
 
-    /**
-     * Uninstalls component listeners.
-     */
+    @Override
     protected void uninstallListeners ()
     {
+        // Uninstalling custom listeners
         progressBar.removeChangeListener ( eventsHandler );
         progressBar.removePropertyChangeListener ( eventsHandler );
         eventsHandler = null;
+
+        // Uninstalling default listeners
+        super.uninstallListeners ();
     }
 
     @Override
@@ -186,7 +156,7 @@ public class WebProgressBarUI extends WProgressBarUI implements ShapeSupport, Ma
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

@@ -30,7 +30,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("NinePatchInfo")
+@XStreamAlias ( "NinePatchInfo" )
 public class NinePatchInfo implements Serializable
 {
     @XStreamAsAttribute
@@ -39,10 +39,10 @@ public class NinePatchInfo implements Serializable
     @XStreamAsAttribute
     private Insets margin;
 
-    @XStreamImplicit (itemFieldName = "hor")
+    @XStreamImplicit ( itemFieldName = "hor" )
     private List<NinePatchInterval> horizontalStretch;
 
-    @XStreamImplicit (itemFieldName = "ver")
+    @XStreamImplicit ( itemFieldName = "ver" )
     private List<NinePatchInterval> verticalStretch;
 
     public NinePatchInfo ()

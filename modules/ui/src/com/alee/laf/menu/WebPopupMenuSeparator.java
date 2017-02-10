@@ -211,14 +211,35 @@ public class WebPopupMenuSeparator extends JPopupMenu.Separator
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WPopupMenuSeparatorUI} object that renders this component
+     */
+    @Override
+    public WPopupMenuSeparatorUI getUI ()
+    {
+        return ( WPopupMenuSeparatorUI ) ui;
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WPopupMenuSeparatorUI}
+     */
+    public void setUI ( final WPopupMenuSeparatorUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebPopupMenuSeparatorUI ) )
+        if ( getUI () == null || !( getUI () instanceof WPopupMenuSeparatorUI ) )
         {
             try
             {
-                setUI ( ( WebPopupMenuSeparatorUI ) UIManager.getUI ( this ) );
+                setUI ( ( WPopupMenuSeparatorUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

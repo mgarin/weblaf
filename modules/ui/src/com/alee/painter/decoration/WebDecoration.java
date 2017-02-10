@@ -50,7 +50,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("decoration")
+@XStreamAlias ( "decoration" )
 public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> extends ContentDecoration<E, I>
 {
     /**
@@ -375,99 +375,13 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
                 // Painting decoration elements
                 if ( isVisible () )
                 {
-                    // Base decoration shape
-                    final IShape shape = getShape ();
-
                     // Setup settings
                     final Object oaa = GraphicsUtils.setupAntialias ( g2d );
                     final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, getOpacity (), getOpacity () < 1f );
                     final Shape ocl = GraphicsUtils.setupClip ( g2d, cl.createIntersection ( bounds ) );
 
-                    // Outer shadow
-                    if ( hasShadow ( ShadowType.outer ) && shape.isVisible ( ShapeType.outerShadow, bounds, c, WebDecoration.this ) )
-                    {
-                        final Shape s = shape.getShape ( ShapeType.outerShadow, bounds, c, WebDecoration.this );
-                        getShadow ( ShadowType.outer ).paint ( g2d, bounds, c, WebDecoration.this, s );
-                    }
-
-                    // Painting all available backgrounds
-                    if ( hasBackground () && shape.isVisible ( ShapeType.background, bounds, c, WebDecoration.this ) )
-                    {
-                        final Shape s = shape.getShape ( ShapeType.background, bounds, c, WebDecoration.this );
-                        for ( final IBackground background : getBackgrounds () )
-                        {
-                            background.paint ( g2d, bounds, c, WebDecoration.this, s );
-                        }
-                    }
-
-                    // Painting inner shadow
-                    if ( hasShadow ( ShadowType.inner ) && shape.isVisible ( ShapeType.innerShadow, bounds, c, WebDecoration.this ) )
-                    {
-                        final Shape s = shape.getShape ( ShapeType.innerShadow, bounds, c, WebDecoration.this );
-                        getShadow ( ShadowType.inner ).paint ( g2d, bounds, c, WebDecoration.this, s );
-                    }
-
-                    // Painting border
-                    if ( hasBorder () && shape.isVisible ( ShapeType.border, bounds, c, WebDecoration.this ) )
-                    {
-                        final Shape s = shape.getShape ( ShapeType.border, bounds, c, WebDecoration.this );
-                        final IBorder border = getBorder ();
-                        border.paint ( g2d, bounds, c, WebDecoration.this, s );
-
-                        // Painting side lines
-                        // todo This is a temporary solution
-                        if ( shape instanceof IPartialShape && border instanceof ColorSupport && border instanceof StrokeSupport )
-                        {
-                            final IPartialShape webShape = ( IPartialShape ) shape;
-                            final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
-                            final boolean paintTop = webShape.isPaintTop ( c, this );
-                            final boolean paintBottom = webShape.isPaintBottom ( c, this );
-                            final boolean actualPaintLeft = ltr ? webShape.isPaintLeft ( c, this ) : webShape.isPaintRight ( c, this );
-                            final boolean actualPaintRight = ltr ? webShape.isPaintRight ( c, this ) : webShape.isPaintLeft ( c, this );
-                            final boolean paintTopLine = webShape.isPaintTopLine ( c, this );
-                            final boolean paintBottomLine = webShape.isPaintBottomLine ( c, this );
-                            final boolean actualPaintLeftLine =
-                                    ltr ? webShape.isPaintLeftLine ( c, this ) : webShape.isPaintRightLine ( c, this );
-                            final boolean actualPaintRightLine =
-                                    ltr ? webShape.isPaintRightLine ( c, this ) : webShape.isPaintLeftLine ( c, this );
-                            final int shadowWidth = getShadowWidth ( ShadowType.outer );
-
-                            final Stroke stroke = ( ( StrokeSupport ) border ).getStroke ();
-                            final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke, stroke != null );
-                            final Color bc = ( ( ColorSupport ) border ).getColor ();
-                            final Paint op = GraphicsUtils.setupPaint ( g2d, bc, bc != null );
-
-                            if ( !paintTop && paintTopLine )
-                            {
-                                final int x1 = bounds.x + ( actualPaintLeft ? shadowWidth : 0 );
-                                final int x2 = bounds.x + bounds.width - ( actualPaintRight ? shadowWidth : 0 ) - 1;
-                                g2d.drawLine ( x1, bounds.y, x2, bounds.y );
-                            }
-                            if ( !paintBottom && paintBottomLine )
-                            {
-                                final int y = bounds.y + bounds.height - 1;
-                                final int x1 = bounds.x + ( actualPaintLeft ? shadowWidth : 0 );
-                                final int x2 = bounds.x + bounds.width - ( actualPaintRight ? shadowWidth : 0 ) - 1;
-                                g2d.drawLine ( x1, y, x2, y );
-                            }
-                            if ( !actualPaintLeft && actualPaintLeftLine )
-                            {
-                                final int y1 = bounds.y + ( paintTop ? shadowWidth : 0 );
-                                final int y2 = bounds.y + bounds.height - ( paintBottom ? shadowWidth : 0 ) - 1;
-                                g2d.drawLine ( bounds.x, y1, bounds.x, y2 );
-                            }
-                            if ( !actualPaintRight && actualPaintRightLine )
-                            {
-                                final int x = bounds.x + bounds.width - 1;
-                                final int y1 = bounds.y + ( paintTop ? shadowWidth : 0 );
-                                final int y2 = bounds.y + bounds.height - ( paintBottom ? shadowWidth : 0 ) - 1;
-                                g2d.drawLine ( x, y1, x, y2 );
-                            }
-
-                            GraphicsUtils.restorePaint ( g2d, op, bc != null );
-                            GraphicsUtils.restoreStroke ( g2d, os, stroke != null );
-                        }
-                    }
+                    // Painting decoration
+                    paintDecoration ( g2d, c, b );
 
                     // Restoring settings
                     GraphicsUtils.restoreClip ( g2d, ocl );
@@ -479,6 +393,110 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
                 paintContent ( g2d, b, c );
             }
         }
+    }
+
+    /**
+     * Paints various component decoration parts.
+     * All basic checks and painting preparations are done outside of this method.
+     *
+     * @param g2d graphics context
+     * @param c   painted component
+     * @param b   painting bounds
+     */
+    protected void paintDecoration ( final Graphics2D g2d, final E c, final Bounds b )
+    {
+        final Rectangle bounds = b.get ();
+
+        // Base decoration shape
+        final IShape shape = getShape ();
+
+        // Outer shadow
+        if ( hasShadow ( ShadowType.outer ) && shape.isVisible ( ShapeType.outerShadow, bounds, c, WebDecoration.this ) )
+        {
+            final Shape s = shape.getShape ( ShapeType.outerShadow, bounds, c, WebDecoration.this );
+            getShadow ( ShadowType.outer ).paint ( g2d, bounds, c, WebDecoration.this, s );
+        }
+
+        // Painting all available backgrounds
+        if ( hasBackground () && shape.isVisible ( ShapeType.background, bounds, c, WebDecoration.this ) )
+        {
+            final Shape s = shape.getShape ( ShapeType.background, bounds, c, WebDecoration.this );
+            for ( final IBackground background : getBackgrounds () )
+            {
+                background.paint ( g2d, bounds, c, WebDecoration.this, s );
+            }
+        }
+
+        // Painting inner shadow
+        if ( hasShadow ( ShadowType.inner ) && shape.isVisible ( ShapeType.innerShadow, bounds, c, WebDecoration.this ) )
+        {
+            final Shape s = shape.getShape ( ShapeType.innerShadow, bounds, c, WebDecoration.this );
+            getShadow ( ShadowType.inner ).paint ( g2d, bounds, c, WebDecoration.this, s );
+        }
+
+        // Painting border
+        if ( hasBorder () && shape.isVisible ( ShapeType.border, bounds, c, WebDecoration.this ) )
+        {
+            final Shape s = shape.getShape ( ShapeType.border, bounds, c, WebDecoration.this );
+            final IBorder border = getBorder ();
+            border.paint ( g2d, bounds, c, WebDecoration.this, s );
+
+            // Painting side lines
+            if ( shape instanceof IPartialShape && border instanceof ColorSupport && border instanceof StrokeSupport )
+            {
+                final IPartialShape ps = ( IPartialShape ) shape;
+                final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
+                final boolean paintTop = ps.isPaintTop ( c, this );
+                final boolean paintBottom = ps.isPaintBottom ( c, this );
+                final boolean actualPaintLeft = ltr ? ps.isPaintLeft ( c, this ) : ps.isPaintRight ( c, this );
+                final boolean actualPaintRight = ltr ? ps.isPaintRight ( c, this ) : ps.isPaintLeft ( c, this );
+                final boolean paintTopLine = ps.isPaintTopLine ( c, this );
+                final boolean paintBottomLine = ps.isPaintBottomLine ( c, this );
+                final boolean actualPaintLeftLine = ltr ? ps.isPaintLeftLine ( c, this ) : ps.isPaintRightLine ( c, this );
+                final boolean actualPaintRightLine = ltr ? ps.isPaintRightLine ( c, this ) : ps.isPaintLeftLine ( c, this );
+                final int shadowWidth = getShadowWidth ( ShadowType.outer );
+
+                final Stroke stroke = ( ( StrokeSupport ) border ).getStroke ();
+                final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke, stroke != null );
+                final Color bc = ( ( ColorSupport ) border ).getColor ();
+                final Paint op = GraphicsUtils.setupPaint ( g2d, bc, bc != null );
+
+                // todo Better solution is required for side lines
+                // todo Those should probably be a part of border instead of this
+                if ( !paintTop && paintTopLine )
+                {
+                    final int x1 = bounds.x + ( actualPaintLeft ? shadowWidth : 0 );
+                    final int x2 = bounds.x + bounds.width - ( actualPaintRight ? shadowWidth : 0 ) - 1;
+                    g2d.drawLine ( x1, bounds.y, x2, bounds.y );
+                }
+                if ( !paintBottom && paintBottomLine )
+                {
+                    final int y = bounds.y + bounds.height - 1;
+                    final int x1 = bounds.x + ( actualPaintLeft ? shadowWidth : 0 );
+                    final int x2 = bounds.x + bounds.width - ( actualPaintRight ? shadowWidth : 0 ) - 1;
+                    g2d.drawLine ( x1, y, x2, y );
+                }
+                if ( !actualPaintLeft && actualPaintLeftLine )
+                {
+                    final int y1 = bounds.y + ( paintTop ? shadowWidth : 0 );
+                    final int y2 = bounds.y + bounds.height - ( paintBottom ? shadowWidth : 0 ) - 1;
+                    g2d.drawLine ( bounds.x, y1, bounds.x, y2 );
+                }
+                if ( !actualPaintRight && actualPaintRightLine )
+                {
+                    final int x = bounds.x + bounds.width - 1;
+                    final int y1 = bounds.y + ( paintTop ? shadowWidth : 0 );
+                    final int y2 = bounds.y + bounds.height - ( paintBottom ? shadowWidth : 0 ) - 1;
+                    g2d.drawLine ( x, y1, x, y2 );
+                }
+
+                GraphicsUtils.restorePaint ( g2d, op, bc != null );
+                GraphicsUtils.restoreStroke ( g2d, os, stroke != null );
+            }
+        }
+
+        // Painting neighbours border
+        // todo PainterSupport.
     }
 
     @Override

@@ -1,13 +1,15 @@
-<skin>
+<skin xmlns="http://weblookandfeel.com">
 
-    <!-- Skin information -->
+    <!-- Skin settings -->
     <id>weblaf.web.skin</id>
     <class>com.alee.skin.web.WebSkin</class>
+    <supportedSystems>all</supportedSystems>
+
+    <!-- Skin information -->
     <icon>icons/icon.png</icon>
     <title>Light skin</title>
     <description>Light WebLaF interface skin</description>
     <author>Mikle Garin</author>
-    <supportedSystems>all</supportedSystems>
 
     <!-- Icon sets -->
     <iconSet>com.alee.iconset.WebIconSet</iconSet>

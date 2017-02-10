@@ -17,7 +17,7 @@
 
 package com.alee.extended.link;
 
-import com.alee.painter.SpecificPainter;
+import com.alee.extended.label.IStyledLabelPainter;
 
 /**
  * Base interface for {@link WebLink} component painters.
@@ -26,9 +26,11 @@ import com.alee.painter.SpecificPainter;
  * @param <U> component UI type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLink">How to use WebLink</a>
- * @see WebLink
  */
 
-public interface ILinkPainter<E extends WebLink, U extends WLinkUI> extends SpecificPainter<E, U>
+public interface ILinkPainter<E extends WebLink, U extends WLinkUI> extends IStyledLabelPainter<E, U>
 {
+    /**
+     * This interface doesn't offer any additional methods to implement.
+     */
 }

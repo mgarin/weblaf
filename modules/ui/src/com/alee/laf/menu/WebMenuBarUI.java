@@ -40,7 +40,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeSupport, Margin
     /**
      * Component painter.
      */
-    @DefaultPainter (MenuBarPainter.class)
+    @DefaultPainter ( MenuBarPainter.class )
     protected IMenuBarPainter painter;
 
     /**
@@ -50,13 +50,13 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeSupport, Margin
     protected Insets padding = null;
 
     /**
-     * Returns an instance of the WebMenuBarUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebMenuBarUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebMenuBarUI
+     * @return instance of the {@link WebMenuBarUI}
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebMenuBarUI ();
@@ -131,7 +131,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeSupport, Margin
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

@@ -180,7 +180,8 @@ public final class StyleData implements PropertyChangeListener
         // Ensure that component still exists
         if ( component == null )
         {
-            throw new StyleException ( "Component for style ID \"" + styleId.getCompleteId () + "\" has been destroyed" );
+            final String msg = "Component for style ID '%s' has been destroyed";
+            throw new StyleException ( String.format ( msg, styleId.getCompleteId () ) );
         }
 
         // Ensure that component has correct UI first, fix for #376
@@ -195,7 +196,8 @@ public final class StyleData implements PropertyChangeListener
             if ( !LafUtils.isWebLafUI ( component ) )
             {
                 // Our attempt to apply WebLaF UI has failed, throwing appropriate exception
-                throw new StyleException ( "Unable to apply StyleId to " + component.getClass () + " because it doesn't use WebLaF UI" );
+                final String msg = "Unable to apply StyleId to '%s' because it doesn't use WebLaF UI";
+                throw new StyleException ( String.format ( msg, component ) );
             }
         }
 
@@ -246,7 +248,7 @@ public final class StyleData implements PropertyChangeListener
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
-        // Retrieving component and checking its existance
+        // Retrieving component and checking its existence
         final JComponent component = getComponent ();
 
         // Checking that provided skin is actually different one
@@ -357,7 +359,7 @@ public final class StyleData implements PropertyChangeListener
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
-        // Retrieving component and checking its existance
+        // Retrieving component and checking its existence
         final JComponent component = getComponent ();
 
         // Updating component skin
@@ -417,11 +419,11 @@ public final class StyleData implements PropertyChangeListener
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
-        // Checking previous skin existance
+        // Checking previous skin existence
         final Skin oldSkin = this.skin;
         if ( this.skin != null )
         {
-            // Retrieving component and checking its existance
+            // Retrieving component and checking its existence
             final JComponent component = getComponent ();
 
             // Removing skin
@@ -452,7 +454,7 @@ public final class StyleData implements PropertyChangeListener
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
-        // Retrieving component and checking its existance
+        // Retrieving component and checking its existence
         final JComponent component = getComponent ();
 
         // Resolving actual provided style ID
@@ -547,6 +549,7 @@ public final class StyleData implements PropertyChangeListener
      *
      * @return custom painters
      */
+    @Deprecated
     public Map<String, Painter> getPainters ()
     {
         return painters;
@@ -557,6 +560,7 @@ public final class StyleData implements PropertyChangeListener
      *
      * @param painters custom painters
      */
+    @Deprecated
     public void setPainters ( final Map<String, Painter> painters )
     {
         this.painters = painters;

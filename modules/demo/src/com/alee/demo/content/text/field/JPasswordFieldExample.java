@@ -82,7 +82,7 @@ public class JPasswordFieldExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JPasswordField passwordField = new JPasswordField ( "password", 20 );
             passwordField.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );

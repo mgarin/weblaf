@@ -266,7 +266,7 @@ public class WindowDecorationBehavior extends ComponentMoveBehavior
         // Checking dialog visibility
         if ( !isGlassDialogVisible () )
         {
-            // Checking dialog existance and correctness
+            // Checking dialog existence and correctness
             final Window window = getWindow ();
             if ( glassDialog == null || window != glassDialog.getOwner () )
             {

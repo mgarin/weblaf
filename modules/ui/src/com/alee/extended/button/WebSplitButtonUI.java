@@ -30,68 +30,55 @@ import java.awt.*;
 /**
  * Custom UI for {@link WebSplitButton} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public class WebSplitButtonUI extends WSplitButtonUI implements ShapeSupport, MarginSupport, PaddingSupport, SwingConstants
+public class WebSplitButtonUI<C extends WebSplitButton> extends WSplitButtonUI<C>
+        implements ShapeSupport, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
      * Component painter.
      */
-    @DefaultPainter (SplitButtonPainter.class)
+    @DefaultPainter ( SplitButtonPainter.class )
     protected ISplitButtonPainter painter;
 
     /**
      * Runtime variables.
      */
-    protected WebSplitButton button = null;
     protected Insets margin = null;
     protected Insets padding = null;
 
     /**
-     * Returns an instance of the WebSplitButtonUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebSplitButtonUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebSplitButtonUI
+     * @return instance of the {@link WebSplitButtonUI}
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSplitButtonUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
+        // Installing UI
         super.installUI ( c );
-
-        // Saving button reference
-        button = ( WebSplitButton ) c;
 
         // Applying skin
         StyleManager.installSkin ( button );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( button );
 
-        // Removing button reference
-        button = null;
-
+        // Uninstalling UI
         super.uninstallUI ( c );
     }
 
@@ -140,7 +127,7 @@ public class WebSplitButtonUI extends WSplitButtonUI implements ShapeSupport, Ma
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

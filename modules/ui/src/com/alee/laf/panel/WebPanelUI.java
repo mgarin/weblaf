@@ -25,74 +25,57 @@ import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicPanelUI;
 import java.awt.*;
 
 /**
  * Custom UI for {@link JPanel} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public class WebPanelUI extends BasicPanelUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebPanelUI<C extends JPanel> extends WPanelUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter (PanelPainter.class)
+    @DefaultPainter ( PanelPainter.class )
     protected IPanelPainter painter;
 
     /**
      * Runtime variables.
      */
-    protected JPanel panel;
     protected Insets margin = null;
     protected Insets padding = null;
 
     /**
-     * Returns an instance of the WebPanelUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebPanelUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebPanelUI
+     * @return instance of the {@link WebPanelUI}
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebPanelUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
         // Installing UI
         super.installUI ( c );
 
-        // Saving panel to local variable
-        panel = ( JPanel ) c;
-
         // Applying skin
         StyleManager.installSkin ( panel );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( panel );
-
-        // Cleaning up reference
-        panel = null;
 
         // Uninstalling UI
         super.uninstallUI ( c );
@@ -137,7 +120,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeSupport, MarginSupp
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

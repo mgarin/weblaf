@@ -21,17 +21,26 @@ import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.utils.swing.extensions.MethodExtension;
 
 /**
- * This interface provides a set of methods that should be added into components that has translate-able text and support translation.
+ * This interface provides a set of methods that should be implemented by components supporting automated translations.
+ * Commonly all implementations are leading to similar {@link LanguageManager} methods.
  *
  * @author Mikle Garin
- * @see com.alee.utils.swing.extensions.MethodExtension
+ * @see MethodExtension
  * @see LanguageManager
+ * @see LanguageUpdater
  */
 
 public interface LanguageMethods extends MethodExtension
 {
     /**
-     * Registers component in LanguageManager under specified key and with specified formatting data.
+     * Returns language key which was used to register specified component in {@link LanguageManager}.
+     *
+     * @return language key which was used to register specified component in {@link LanguageManager}
+     */
+    public String getLanguage ();
+
+    /**
+     * Registers component in {@link LanguageManager} under specified key and with specified formatting data.
      *
      * @param key  language record key
      * @param data formatting data
@@ -54,26 +63,27 @@ public interface LanguageMethods extends MethodExtension
     public void updateLanguage ( String key, Object... data );
 
     /**
-     * Unregisters component from LanguageManager.
+     * Unregisters component from {@link LanguageManager}.
+     * This method will not change current component settings that came from latest applied translation.
      */
     public void removeLanguage ();
 
     /**
-     * Returns whether this component registered in LanguageManager or not.
+     * Returns whether this component registered in {@link LanguageManager} or not.
      *
-     * @return true if component is registered in LanguageManager, false otherwise
+     * @return true if component is registered in {@link LanguageManager}, false otherwise
      */
     public boolean isLanguageSet ();
 
     /**
      * Registers custom language updater for this component.
      *
-     * @param updater component language updater
+     * @param updater {@link LanguageUpdater} for the component
      */
     public void setLanguageUpdater ( LanguageUpdater updater );
 
     /**
-     * Unregisters any custom language updater set for this component.
+     * Unregisters custom component {@link LanguageUpdater}.
      */
     public void removeLanguageUpdater ();
 }

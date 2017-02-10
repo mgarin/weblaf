@@ -45,12 +45,9 @@ import com.alee.managers.popup.WebInnerPopup;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.version.VersionInfo;
 import com.alee.managers.version.VersionManager;
-import com.alee.utils.CompareUtils;
-import com.alee.utils.FileUtils;
-import com.alee.utils.ReflectUtils;
-import com.alee.utils.SystemUtils;
-import com.alee.utils.reflection.JarEntry;
-import com.alee.utils.reflection.JarStructure;
+import com.alee.utils.*;
+import com.alee.utils.jar.JarEntry;
+import com.alee.utils.jar.JarStructure;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -264,7 +261,7 @@ public class LibraryInfoDialog extends WebFrame
         try
         {
             // Parsing jar structure
-            final JarStructure structure = ReflectUtils.getJarStructure ( getClass () );
+            final JarStructure structure = JarUtils.getJarStructure ( getClass () );
 
             // Retrieving required files
             final JarEntry licensesFolder = structure.getRoot ().getChildByName ( "licenses" );

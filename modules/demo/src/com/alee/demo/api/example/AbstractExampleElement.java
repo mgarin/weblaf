@@ -17,7 +17,12 @@
 
 package com.alee.demo.api.example;
 
+import com.alee.demo.DemoApplication;
+import com.alee.managers.notification.NotificationManager;
+import com.alee.managers.notification.WebInnerNotification;
+
 import javax.swing.*;
+import java.awt.*;
 import java.net.URL;
 
 /**
@@ -84,5 +89,41 @@ public abstract class AbstractExampleElement implements ExampleElement
             throw new RuntimeException ( "Unable to load image: " + getClass ().getCanonicalName () + " -> " + fullPath );
         }
         return new ImageIcon ( resource );
+    }
+
+    /**
+     * Returns icon retrieved from example-specific icons package.
+     *
+     * @param path icon path
+     * @return icon retrieved from example-specific icons package
+     */
+    protected ImageIcon loadExampleIcon ( final String path )
+    {
+        return loadIcon ( getId () + "/" + path );
+    }
+
+    /**
+     * Displays event notification and returns it.
+     *
+     * @param message event message
+     * @return displayed event notification
+     */
+    protected static WebInnerNotification notifyAboutEvent ( final String message )
+    {
+        return notifyAboutEvent ( DemoApplication.getInstance (), message );
+    }
+
+    /**
+     * Displays event notification and returns it.
+     *
+     * @param parent  parent window
+     * @param message event message
+     * @return displayed event notification
+     */
+    protected static WebInnerNotification notifyAboutEvent ( final Window parent, final String message )
+    {
+        final WebInnerNotification notification = NotificationManager.showInnerNotification ( parent, message );
+        notification.setDisplayTime ( 2000L );
+        return notification;
     }
 }

@@ -77,7 +77,7 @@ public class WebPasswordFieldExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebPasswordField textField = new WebPasswordField ( getStyleId (), 20 );
             textField.setInputPrompt ( getPreviewLanguagePrefix () + "prompt" );
@@ -101,7 +101,7 @@ public class WebPasswordFieldExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebPasswordField textField = new WebPasswordField ( getStyleId (), 18 );
             textField.setInputPrompt ( getPreviewLanguagePrefix () + "prompt" );
@@ -126,7 +126,7 @@ public class WebPasswordFieldExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebPasswordField textField = new WebPasswordField ( getStyleId (), 18 );
             textField.setInputPrompt ( getPreviewLanguagePrefix () + "prompt" );

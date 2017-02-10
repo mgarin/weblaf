@@ -34,7 +34,7 @@ public class PopupMenuGenerator extends AbstractMenuGenerator<WebPopupMenu>
      */
     public PopupMenuGenerator ()
     {
-        super ( new WebPopupMenu () );
+        this ( new WebPopupMenu () );
     }
 
     /**
@@ -44,7 +44,7 @@ public class PopupMenuGenerator extends AbstractMenuGenerator<WebPopupMenu>
      */
     public PopupMenuGenerator ( final StyleId id )
     {
-        super ( new WebPopupMenu ( id ) );
+        this ( new WebPopupMenu ( id ) );
     }
 
     /**

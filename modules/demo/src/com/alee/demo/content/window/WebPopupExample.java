@@ -20,14 +20,18 @@ package com.alee.demo.content.window;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.WebLafWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
-import com.alee.extended.behavior.ComponentMoveBehavior;
+import com.alee.extended.layout.AlignLayout;
 import com.alee.extended.window.WebPopup;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
+import com.alee.laf.panel.WebPanel;
+import com.alee.laf.text.WebTextField;
+import com.alee.managers.language.LanguageManager;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -88,7 +92,7 @@ public class WebPopupExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebButton button = new WebButton ( getExampleLanguagePrefix () + "show" );
             button.addActionListener ( new ActionListener ()
@@ -96,13 +100,23 @@ public class WebPopupExample extends AbstractStylePreviewExample
                 @Override
                 public void actionPerformed ( final ActionEvent e )
                 {
-                    final String title = getExampleLanguagePrefix () + "content";
-                    final WebPopup popup = new WebPopup ( getStyleId () );
+                    final WebPopup popup = new WebPopup ( getStyleId (), new AlignLayout () );
                     popup.setPadding ( 10 );
-                    final WebLabel content = new WebLabel ( title, WebLabel.CENTER );
-                    ComponentMoveBehavior.install ( content );
-                    popup.add ( content );
-                    popup.setPreferredSize ( 200, 150 );
+                    popup.setDraggable ( true );
+
+                    final WebPanel container = new WebPanel ( new BorderLayout ( 5, 5 ) );
+
+                    final WebLabel label = new WebLabel ( getExampleLanguagePrefix () + "label", WebLabel.CENTER );
+                    container.add ( label, BorderLayout.NORTH );
+
+                    final String text = LanguageManager.get ( getExampleLanguagePrefix () + "text" );
+                    final WebTextField field = new WebTextField ( text, 20 );
+                    field.setHorizontalAlignment ( WebTextField.CENTER );
+                    container.add ( field, BorderLayout.CENTER );
+
+                    popup.add ( container );
+
+                    popup.pack ();
                     popup.setResizable ( true );
                     popup.showPopup ( button, 0, button.getHeight () );
                 }

@@ -160,6 +160,6 @@ public final class Bounds
             }
             bounds = bounds.parent;
         }
-        throw new StyleException ( "Unknown bounds requested: " + type );
+        throw new StyleException ( String.format ( "Unknown bounds type '%s' requested", type.name () ) );
     }
 }

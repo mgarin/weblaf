@@ -19,6 +19,6 @@ public class SpinnerPainter<E extends JSpinner, U extends WebSpinnerUI, D extend
         extends AbstractDecorationPainter<E, U, D> implements ISpinnerPainter<E, U>
 {
     /**
-     * Implementation is used completely from {@link com.alee.painter.decoration.AbstractDecorationPainter}.
+     * Implementation is used completely from {@link AbstractDecorationPainter}.
      */
 }

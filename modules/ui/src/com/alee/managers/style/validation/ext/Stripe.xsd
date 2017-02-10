@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema targetNamespace="http://weblookandfeel.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <xs:include schemaLocation="../ext/GradientColor.xsd" />
+    <xs:include schemaLocation="../awt/Stroke.xsd" />
+
+    <!-- com.alee.painter.decoration.content.Stripe -->
+    <xs:complexType name="Stripe">
+
+        <!-- Stripe colors -->
+        <xs:sequence minOccurs="1" maxOccurs="unbounded">
+            <xs:element name="color" type="GradientColor" />
+        </xs:sequence>
+
+        <!-- Stripe stroke -->
+        <xs:attribute name="stroke" type="Stroke" />
+
+    </xs:complexType>
+
+</xs:schema>

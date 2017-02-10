@@ -86,7 +86,7 @@ public class WebStyledLabelExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final String labelText = "{Custom:b} {styled:c(blue)} {2:sup} text" + "\n" + "{And:b} {And:c(red)} And {another:b} row";
             final WebStyledLabel label = new WebStyledLabel ( getStyleId (), labelText );

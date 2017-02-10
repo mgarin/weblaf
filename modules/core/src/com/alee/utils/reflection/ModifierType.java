@@ -165,6 +165,17 @@ public enum ModifierType
             };
 
     /**
+     * Returns modifier title.
+     *
+     * @return modifier title
+     */
+    @Override
+    public String toString ()
+    {
+        return this.name ().toLowerCase ();
+    }
+
+    /**
      * Returns whether or not modifiers contain this specific modifier.
      *
      * @param modifiers modifiers to check
@@ -203,6 +214,84 @@ public enum ModifierType
     public boolean is ( final Method method )
     {
         return is ( method.getModifiers () );
+    }
+
+    /**
+     * Returns checks whether or not class has this specific modifier and throws an exception if it doesn't.
+     *
+     * @param clazz class to check
+     */
+    public void check ( final Class clazz )
+    {
+        if ( !is ( clazz ) )
+        {
+            throw new ReflectionException ( "Class is not " + this + ": " + clazz );
+        }
+    }
+
+    /**
+     * Returns checks whether or not field has this specific modifier and throws an exception if it doesn't.
+     *
+     * @param field field to check
+     */
+    public void check ( final Field field )
+    {
+        if ( !is ( field ) )
+        {
+            throw new ReflectionException ( "Field is not " + this + ": " + field );
+        }
+    }
+
+    /**
+     * Returns checks whether or not method has this specific modifier and throws an exception if it doesn't.
+     *
+     * @param method method to check
+     */
+    public void check ( final Method method )
+    {
+        if ( !is ( method ) )
+        {
+            throw new ReflectionException ( "Method is not " + this + ": " + method );
+        }
+    }
+
+    /**
+     * Returns checks whether or not class has this specific modifier and throws an exception if it doesn't.
+     *
+     * @param clazz class to check
+     */
+    public void checkNot ( final Class clazz )
+    {
+        if ( is ( clazz ) )
+        {
+            throw new ReflectionException ( "Class is " + this + ": " + clazz );
+        }
+    }
+
+    /**
+     * Returns checks whether or not field has this specific modifier and throws an exception if it doesn't.
+     *
+     * @param field field to check
+     */
+    public void checkNot ( final Field field )
+    {
+        if ( is ( field ) )
+        {
+            throw new ReflectionException ( "Field is " + this + ": " + field );
+        }
+    }
+
+    /**
+     * Returns checks whether or not method has this specific modifier and throws an exception if it doesn't.
+     *
+     * @param method method to check
+     */
+    public void checkNot ( final Method method )
+    {
+        if ( is ( method ) )
+        {
+            throw new ReflectionException ( "Method is " + this + ": " + method );
+        }
     }
 
     /**

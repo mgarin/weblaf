@@ -82,7 +82,7 @@ public class WebSplitButtonExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebSplitButton button = new WebSplitButton ( getStyleId (), "Select one..." );
             button.setPopupMenu ( createSamplePopupMenu ( button, false, true ) );
@@ -118,7 +118,7 @@ public class WebSplitButtonExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebSplitButton button = new WebSplitButton ( getStyleId (), WebLookAndFeel.getIcon ( 16 ) );
             button.setSplitIcon ( DemoIcons.menu16 );

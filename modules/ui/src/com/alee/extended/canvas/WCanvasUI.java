@@ -17,29 +17,31 @@
 
 package com.alee.extended.canvas;
 
-import com.alee.utils.SwingUtils;
+import com.alee.laf.WebUI;
+import com.alee.utils.LafUtils;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 
 /**
- * Pluggable look and feel interface for {@link com.alee.extended.canvas.WebCanvas} component.
+ * Pluggable look and feel interface for {@link WebCanvas} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public abstract class WCanvasUI extends ComponentUI
+public abstract class WCanvasUI<C extends WebCanvas> extends ComponentUI implements WebUI<C>
 {
     /**
      * Runtime variables.
      */
-    protected WebCanvas canvas;
+    protected C canvas;
 
     @Override
     public void installUI ( final JComponent c )
     {
         // Saving canvas reference
-        canvas = ( WebCanvas ) c;
+        canvas = ( C ) c;
 
         // Installing default component settings
         installDefaults ();
@@ -61,14 +63,10 @@ public abstract class WCanvasUI extends ComponentUI
         canvas = null;
     }
 
-    /**
-     * Returns component default font key.
-     *
-     * @return component default font key
-     */
-    protected String getFontKey ()
+    @Override
+    public String getPropertyPrefix ()
     {
-        return "Canvas.font";
+        return "Canvas.";
     }
 
     /**
@@ -76,11 +74,7 @@ public abstract class WCanvasUI extends ComponentUI
      */
     protected void installDefaults ()
     {
-        // Default component settings
-        if ( SwingUtils.isUIResource ( canvas.getFont () ) )
-        {
-            canvas.setFont ( UIManager.getFont ( getFontKey () ) );
-        }
+        LafUtils.installDefaults ( canvas, getPropertyPrefix () );
     }
 
     /**
@@ -88,7 +82,7 @@ public abstract class WCanvasUI extends ComponentUI
      */
     protected void uninstallDefaults ()
     {
-        LookAndFeel.uninstallBorder ( canvas );
+        LafUtils.uninstallDefaults ( canvas );
     }
 
     /**

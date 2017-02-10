@@ -156,26 +156,34 @@ public class WebViewport extends JViewport implements Styleable, Paintable
     }
 
     /**
-     * Returns Web-UI applied to this class.
+     * Returns the look and feel (L&amp;F) object that renders this component.
      *
-     * @return Web-UI applied to this class
+     * @return the {@link WViewportUI} object that renders this component
      */
-    private WebViewportUI getWebUI ()
+    @Override
+    public WViewportUI getUI ()
     {
-        return ( WebViewportUI ) getUI ();
+        return ( WViewportUI ) ui;
     }
 
     /**
-     * Installs a Web-UI into this component.
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WViewportUI}
      */
+    public void setUI ( final WViewportUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebViewportUI ) )
+        if ( getUI () == null || !( getUI () instanceof WViewportUI ) )
         {
             try
             {
-                setUI ( ( WebViewportUI ) UIManager.getUI ( this ) );
+                setUI ( ( WViewportUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

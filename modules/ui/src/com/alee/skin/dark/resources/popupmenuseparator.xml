@@ -1,4 +1,4 @@
-<skin>
+<skin xmlns="http://weblookandfeel.com">
 
     <!-- com.alee.laf.menu.WebPopupMenuSeparator -->
 
@@ -7,13 +7,11 @@
         <painter>
             <decorations>
                 <decoration>
-                    <Separator padding="4,5,4,5">
-                        <lines>
-                            <line>
-                                <color>25,25,25</color>
-                            </line>
-                        </lines>
-                    </Separator>
+                    <SeparatorStripes padding="4,5,4,5">
+                        <Stripe>
+                            <color>25,25,25</color>
+                        </Stripe>
+                    </SeparatorStripes>
                 </decoration>
             </decorations>
         </painter>

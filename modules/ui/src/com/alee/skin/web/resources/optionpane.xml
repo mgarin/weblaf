@@ -1,4 +1,4 @@
-<skin>
+<skin xmlns="http://weblookandfeel.com">
 
     <!-- com.alee.laf.optionpane.WebOptionPane -->
 
@@ -9,12 +9,45 @@
         </component>
         <painter />
 
-        <!-- Buttons -->
-        <style type="button" id="button" padding="2,10,2,10" />
-        <style type="button" id="yes" extends="button" />
-        <style type="button" id="no" extends="button" />
-        <style type="button" id="ok" extends="button" />
-        <style type="button" id="cancel" extends="button" />
+        <!-- Message area -->
+        <style type="panel" id="message-area" extends="transparent">
+
+            <!-- Icon label -->
+            <style type="label" id="message-icon" extends="icon" />
+
+            <!-- Separator and message area -->
+            <style type="panel" id="real-body" extends="transparent">
+
+                <!-- Separator between icon and message -->
+                <style type="panel" id="separator" extends="transparent">
+                    <component>
+                        <preferredSize>15,1</preferredSize>
+                    </component>
+                </style>
+
+                <!-- Message area -->
+                <style type="panel" id="body" extends="transparent">
+
+                    <!-- Message labels -->
+                    <style type="label" id="message" />
+
+                </style>
+
+            </style>
+
+        </style>
+
+        <!-- Buttons area -->
+        <style type="panel" id="button-area" extends="transparent" padding="6,0,0,0">
+
+            <!-- Buttons -->
+            <style type="button" id="button" padding="2,10,2,10" />
+            <style type="button" id="yes" extends="button" />
+            <style type="button" id="no" extends="button" />
+            <style type="button" id="ok" extends="button" />
+            <style type="button" id="cancel" extends="button" />
+
+        </style>
 
     </style>
 

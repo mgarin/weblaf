@@ -83,7 +83,7 @@ public class JTextPaneExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JTextPane textPane = new JTextPane ();
             textPane.setText ( "Sample text" );
@@ -109,7 +109,7 @@ public class JTextPaneExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JTextPane textPane = new JTextPane ();
             textPane.setText ( "Sample\nmultiline\ntext" );
@@ -135,7 +135,7 @@ public class JTextPaneExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JTextPane textPane = new JTextPane ();
             textPane.setText ( "Read/copy only" );

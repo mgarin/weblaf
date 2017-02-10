@@ -88,30 +88,16 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     protected JSeparator separator;
 
     /**
-     * Returns an instance of the WebComboBoxUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebComboBoxUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebComboBoxUI
+     * @return instance of the {@link WebComboBoxUI}
      */
     @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebComboBoxUI ();
-    }
-
-    /**
-     * Returns default list cell renderer instance.
-     *
-     * @return default list cell renderer instance
-     */
-    protected static ListCellRenderer getDefaultListCellRenderer ()
-    {
-        if ( DEFAULT_RENDERER == null )
-        {
-            DEFAULT_RENDERER = new WebComboBoxRenderer ();
-        }
-        return DEFAULT_RENDERER;
     }
 
     @Override
@@ -295,7 +281,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**
@@ -376,6 +362,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
             @Override
             protected JList createList ()
             {
+                //noinspection UnnecessaryLocalVariable
                 final JList list = super.createList ();
 
                 // todo Handle inside of the popup painter
@@ -893,5 +880,19 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
             states.add ( isPopupVisible ( comboBox ) ? DecorationState.expanded : DecorationState.collapsed );
             return states;
         }
+    }
+
+    /**
+     * Returns default list cell renderer instance.
+     *
+     * @return default list cell renderer instance
+     */
+    protected static ListCellRenderer getDefaultListCellRenderer ()
+    {
+        if ( DEFAULT_RENDERER == null )
+        {
+            DEFAULT_RENDERER = new WebComboBoxRenderer ();
+        }
+        return DEFAULT_RENDERER;
     }
 }

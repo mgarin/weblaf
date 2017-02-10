@@ -17,6 +17,7 @@
 
 package com.alee.demo.content.chooser.dialog;
 
+import com.alee.demo.DemoApplication;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
@@ -82,17 +83,16 @@ public class JColorChooserExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebButton showChooser = new WebButton ( "Show color chooser", new ActionListener ()
+            return CollectionUtils.asList ( new WebButton ( "Show color chooser", new ActionListener ()
             {
                 @Override
                 public void actionPerformed ( final ActionEvent e )
                 {
-                    JColorChooser.showDialog ( ( Component ) e.getSource (), null, Color.WHITE );
+                    JColorChooser.showDialog ( DemoApplication.getInstance (), null, Color.WHITE );
                 }
-            } );
-            return CollectionUtils.asList ( showChooser );
+            } ) );
         }
     }
 }

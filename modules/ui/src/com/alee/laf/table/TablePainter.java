@@ -103,19 +103,34 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
             @Override
             public void mouseMoved ( final MouseEvent e )
             {
-                updateMouseover ( e );
+                // Ensure component is still available
+                // This might happen if painter is replaced from another MouseMotionListener
+                if ( component != null )
+                {
+                    updateMouseover ( e );
+                }
             }
 
             @Override
             public void mouseDragged ( final MouseEvent e )
             {
-                updateMouseover ( e );
+                // Ensure component is still available
+                // This might happen if painter is replaced from another MouseMotionListener
+                if ( component != null )
+                {
+                    updateMouseover ( e );
+                }
             }
 
             @Override
             public void mouseExited ( final MouseEvent e )
             {
-                clearMouseover ();
+                // Ensure component is still available
+                // This might happen if painter is replaced from another MouseListener
+                if ( component != null )
+                {
+                    clearMouseover ();
+                }
             }
 
             /**

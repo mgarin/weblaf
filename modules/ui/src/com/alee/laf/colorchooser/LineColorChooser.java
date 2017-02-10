@@ -21,7 +21,6 @@ import com.alee.extended.layout.TableLayout;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.icon.Icons;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -39,9 +38,6 @@ import java.util.List;
 
 public class LineColorChooser extends WebPanel
 {
-    public static final ImageIcon LEFT_ICON = ImageUtils.getImageIcon ( Icons.leftSmall.getIcon () );
-    public static final ImageIcon RIGHT_ICON = ImageUtils.getImageIcon ( Icons.rightSmall.getIcon () );
-
     private final List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ( 1 );
 
     // Color line painter and component
@@ -171,10 +167,9 @@ public class LineColorChooser extends WebPanel
         super.paint ( g );
 
         // Side grippers painting
-        g.drawImage ( RIGHT_ICON.getImage (), 1, 1 + Math.round ( ( ( float ) hue / 360 ) * ( colorLine.getHeight () - 5 ) ),
-                RIGHT_ICON.getImageObserver () );
-        g.drawImage ( LEFT_ICON.getImage (), getWidth () - LEFT_ICON.getIconWidth () - 1,
-                1 + Math.round ( ( ( float ) hue / 360 ) * ( colorLine.getHeight () - 5 ) ), LEFT_ICON.getImageObserver () );
+        final int y = Math.round ( ( ( float ) hue / 360 ) * ( colorLine.getHeight () - 5 ) ) + Icons.rightSmall.getIconHeight () / 2;
+        Icons.rightSmall.paintIcon ( this, g, 1, y );
+        Icons.leftSmall.paintIcon ( this, g, getWidth () - Icons.rightSmall.getIconWidth () - 1, y );
     }
 
     public boolean isWebOnlyColors ()

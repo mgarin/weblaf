@@ -357,7 +357,7 @@ public class WebButton extends JButton
     @Override
     public StyleId getDefaultStyleId ()
     {
-        return getText () != null ? StyleId.button : StyleId.buttonIcon;
+        return getIcon () != null && getText () == null ? StyleId.buttonIcon : StyleId.button;
     }
 
     @Override
@@ -504,14 +504,35 @@ public class WebButton extends JButton
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WButtonUI} object that renders this component
+     */
+    @Override
+    public WButtonUI getUI ()
+    {
+        return ( WButtonUI ) ui;
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WButtonUI}
+     */
+    public void setUI ( final WButtonUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebButtonUI ) )
+        if ( getUI () == null || !( getUI () instanceof WButtonUI ) )
         {
             try
             {
-                setUI ( ( WebButtonUI ) UIManager.getUI ( this ) );
+                setUI ( ( WButtonUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {
@@ -787,6 +808,12 @@ public class WebButton extends JButton
     public void removeToolTips ( final List<WebCustomTooltip> tooltips )
     {
         TooltipManager.removeTooltips ( this, tooltips );
+    }
+
+    @Override
+    public String getLanguage ()
+    {
+        return LanguageManager.getComponentKey ( this );
     }
 
     @Override

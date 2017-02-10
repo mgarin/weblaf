@@ -29,7 +29,7 @@ import java.io.Serializable;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("NinePatchInterval")
+@XStreamAlias ( "NinePatchInterval" )
 public final class NinePatchInterval implements Serializable, Cloneable
 {
     public static final String ID_PREFIX = "NPI";

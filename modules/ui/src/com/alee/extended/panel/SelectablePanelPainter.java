@@ -4,6 +4,7 @@ import com.alee.global.StyleConstants;
 import com.alee.laf.panel.WebPanelUI;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.AbstractPainter;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import java.awt.*;
 
@@ -13,6 +14,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
+@XStreamAlias ( "SelectablePanelPainter" )
 public class SelectablePanelPainter extends AbstractPainter<WebSelectablePanel, WebPanelUI>
 {
     public static final int GRIPPER_SIZE = 7;

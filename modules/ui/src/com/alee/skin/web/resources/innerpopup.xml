@@ -1,16 +1,16 @@
-<skin>
+<skin xmlns="http://weblookandfeel.com">
 
     <!-- com.alee.extended.window.WebPopOver -->
 
     <!-- Inner popup -->
-    <style type="panel" id="innerpopup">
+    <style type="panel" id="innerpopup" extends="transparent">
         <painter>
             <decorations>
                 <decoration>
                     <WebShape round="2" />
-                    <WebShadow type="outer" width="10" />
+                    <WebShadow type="outer" width="2" />
                     <LineBorder color="170,170,170" />
-                    <ColorBackground color="white" />
+                    <ColorBackground color="237,237,237" />
                 </decoration>
             </decorations>
         </painter>

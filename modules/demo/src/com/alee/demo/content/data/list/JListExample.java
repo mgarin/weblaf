@@ -82,7 +82,7 @@ public class JListExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JList list = new JList ( createShortData () );
             list.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
@@ -106,7 +106,7 @@ public class JListExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JList list = new JList ( createLongData () );
             list.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );

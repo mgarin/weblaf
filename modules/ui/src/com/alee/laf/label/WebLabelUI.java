@@ -28,7 +28,7 @@ import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
- * Custom UI for {@link javax.swing.JLabel} component.
+ * Custom UI for {@link JLabel} component.
  *
  * @author Mikle Garin
  */
@@ -38,7 +38,7 @@ public class WebLabelUI extends WLabelUI implements ShapeSupport, MarginSupport,
     /**
      * Component painter.
      */
-    @DefaultPainter (LabelPainter.class)
+    @DefaultPainter ( LabelPainter.class )
     protected ILabelPainter painter;
 
     /**
@@ -48,13 +48,13 @@ public class WebLabelUI extends WLabelUI implements ShapeSupport, MarginSupport,
     protected Insets padding = null;
 
     /**
-     * Returns an instance of the WebLabelUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebLabelUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebLabelUI
+     * @return instance of the {@link WebLabelUI}
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebLabelUI ();
@@ -117,7 +117,7 @@ public class WebLabelUI extends WLabelUI implements ShapeSupport, MarginSupport,
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

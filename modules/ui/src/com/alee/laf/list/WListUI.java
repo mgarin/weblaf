@@ -50,6 +50,11 @@ public abstract class WListUI extends BasicListUI
     public abstract void setSelectionStyle ( ListSelectionStyle style );
 
     /**
+     * Forces list to update all elements layout.
+     */
+    public abstract void updateListLayout ();
+
+    /**
      * Returns tree cell renderer pane.
      *
      * @return tree cell renderer pane

@@ -86,7 +86,7 @@ public class JLabelExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JLabel label = new JLabel ( "Simple text" );
             label.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );

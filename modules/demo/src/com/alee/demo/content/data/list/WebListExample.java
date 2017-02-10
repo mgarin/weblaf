@@ -76,7 +76,7 @@ public class WebListExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebList list = new WebList ( getStyleId (), createShortData () );
             return CollectionUtils.asList ( list );
@@ -99,7 +99,7 @@ public class WebListExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebList list = new WebList ( getStyleId (), createLongData () );
             list.setVisibleRowCount ( 4 );
@@ -123,7 +123,7 @@ public class WebListExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebList list = new WebList ( getStyleId (), createLongData () );
             list.setVisibleRowCount ( 4 );

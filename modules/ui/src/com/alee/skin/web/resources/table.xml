@@ -1,4 +1,4 @@
-<skin>
+<skin xmlns="http://weblookandfeel.com">
 
     <!-- com.alee.laf.table.WebTable -->
 
@@ -70,9 +70,11 @@
                             <color>226,226,226</color>
                             <color>201,201,201</color>
                         </GradientBackground>
-                        <Line padding="2,0,2,0" orientation="vertical" align="left">
-                            <color>170,170,170</color>
-                        </Line>
+                        <Stripes padding="2,0,2,0" orientation="vertical" align="left">
+                            <Stripe>
+                                <color>170,170,170</color>
+                            </Stripe>
+                        </Stripes>
                     </decoration>
                 </decorations>
             </painter>

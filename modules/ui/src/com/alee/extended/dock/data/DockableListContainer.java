@@ -37,7 +37,7 @@ import java.util.List;
  * @see com.alee.extended.dock.WebDockablePane
  */
 
-@XStreamAlias ("DockableList")
+@XStreamAlias ( "DockableList" )
 public class DockableListContainer extends AbstractDockableElement implements DockableContainer
 {
     /**

@@ -52,7 +52,7 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
     /**
      * Component painter.
      */
-    @DefaultPainter (FileChooserPainter.class)
+    @DefaultPainter ( FileChooserPainter.class )
     protected IFileChooserPainter painter;
 
     /**
@@ -71,11 +71,11 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
     protected PropertyChangeListener propertyChangeListener;
 
     /**
-     * Returns an instance of the WebFileChooserUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebFileChooserUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebFileChooserUI
+     * @return instance of the {@link WebFileChooserUI}
      */
     @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
@@ -83,22 +83,6 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
         return new WebFileChooserUI ();
     }
 
-    /**
-     * Returns main file chooser panel.
-     *
-     * @param fileChooser file chooser
-     * @return main file chooser panel
-     */
-    protected WebFileChooserPanel createPanel ( final JFileChooser fileChooser )
-    {
-        return new WebFileChooserPanel ( getFileChooserType (), fileChooser.getControlButtonsAreShown () );
-    }
-
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
@@ -174,11 +158,6 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
         fileChooser.addPropertyChangeListener ( propertyChangeListener );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
@@ -195,7 +174,7 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
     }
 
     /**
-     * Fired when some of JFileChooser properties changes.
+     * Fired when some of {@link JFileChooser} properties changes.
      *
      * @param event property change event
      */
@@ -309,6 +288,17 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
         }
     }
 
+    /**
+     * Returns main file chooser panel.
+     *
+     * @param fileChooser {@link JFileChooser}
+     * @return main file chooser panel
+     */
+    protected WebFileChooserPanel createPanel ( final JFileChooser fileChooser )
+    {
+        return new WebFileChooserPanel ( getFileChooserType (), fileChooser.getControlButtonsAreShown () );
+    }
+
     @Override
     public Shape getShape ()
     {
@@ -348,7 +338,7 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

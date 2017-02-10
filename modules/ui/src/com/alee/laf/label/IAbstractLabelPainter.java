@@ -31,4 +31,7 @@ import javax.swing.*;
 
 public interface IAbstractLabelPainter<E extends JLabel, U extends WLabelUI> extends SpecificPainter<E, U>
 {
+    /**
+     * This interface doesn't offer any additional methods to implement.
+     */
 }

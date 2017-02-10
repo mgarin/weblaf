@@ -25,16 +25,16 @@ import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 
 /**
  * Custom UI for {@link JButton} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public class WebButtonUI extends BasicButtonUI implements ShapeSupport, MarginSupport, PaddingSupport, SwingConstants
+public class WebButtonUI<C extends JButton> extends WButtonUI<C> implements ShapeSupport, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
      * Component painter.
@@ -45,53 +45,36 @@ public class WebButtonUI extends BasicButtonUI implements ShapeSupport, MarginSu
     /**
      * Runtime variables.
      */
-    protected AbstractButton button;
     protected Insets margin = null;
     protected Insets padding = null;
 
     /**
-     * Returns an instance of the WebButtonUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebButtonUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebButtonUI
+     * @return instance of the {@link WebButtonUI}
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebButtonUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
-        // Saving button reference
-        button = ( AbstractButton ) c;
-
         // Applying skin
         StyleManager.installSkin ( button );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( button );
-
-        // Removing button reference
-        button = null;
 
         super.uninstallUI ( c );
     }
@@ -135,7 +118,7 @@ public class WebButtonUI extends BasicButtonUI implements ShapeSupport, MarginSu
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

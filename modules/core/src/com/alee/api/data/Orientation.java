@@ -28,7 +28,18 @@ import javax.swing.*;
 
 public enum Orientation implements SwingConstants
 {
+    /**
+     * Horizontal orientation.
+     *
+     * @see #HORIZONTAL
+     */
     horizontal ( HORIZONTAL ),
+
+    /**
+     * Vertical orientation.
+     *
+     * @see #VERTICAL
+     */
     vertical ( VERTICAL );
 
     /**
@@ -90,8 +101,10 @@ public enum Orientation implements SwingConstants
                 return vertical;
 
             case HORIZONTAL:
-            default:
                 return horizontal;
+
+            default:
+                throw new RuntimeException ( "Unknown orientation value: " + value );
         }
     }
 }

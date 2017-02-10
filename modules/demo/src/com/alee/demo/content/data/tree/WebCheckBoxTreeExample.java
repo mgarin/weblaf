@@ -78,7 +78,7 @@ public class WebCheckBoxTreeExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebCheckBoxTree tree = new WebCheckBoxTree ( getStyleId () );
             tree.setVisibleRowCount ( 8 );
@@ -102,7 +102,7 @@ public class WebCheckBoxTreeExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebCheckBoxTree tree = new WebCheckBoxTree ( getStyleId (), createSampleModel () );
             tree.setEditable ( true );

@@ -85,7 +85,7 @@ public class JTableExample extends AbstractTableExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JTable table = new JTable ( createShortTableModel () );
             table.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
@@ -109,7 +109,7 @@ public class JTableExample extends AbstractTableExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JTable table = new JTable ( createLongTableModel () );
             table.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
@@ -134,7 +134,7 @@ public class JTableExample extends AbstractTableExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JTable table = new JTable ( createLongTableModel () );
             table.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );

@@ -17,20 +17,30 @@
 
 package com.alee.extended.inspector.info;
 
+import com.alee.managers.style.StyleableComponent;
+import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.xml.InsetsConverter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Abstract component information provider which provides style guidelines and some basic methods.
  *
+ * @param <T> component type
  * @author Mikle Garin
  */
 
 public abstract class AbstractComponentInfo<T extends Component> implements ComponentDescriptor<T>
 {
+    /**
+     * Opaque icon.
+     */
+    public static final ImageIcon opaque = new ImageIcon ( AbstractComponentInfo.class.getResource ( "icons/opaque.png" ) );
+
     /**
      * Additional type icons.
      */
@@ -42,6 +52,11 @@ public abstract class AbstractComponentInfo<T extends Component> implements Comp
     public static final ImageIcon unknownType = new ImageIcon ( AbstractComponentInfo.class.getResource ( "icons/unknown.png" ) );
 
     /**
+     * Merged icons cache.
+     */
+    protected static final Map<String, ImageIcon> mergedCache = new HashMap<String, ImageIcon> ( 30 );
+
+    /**
      * Basic style guidelines.
      */
     protected static final String visibleColor = "black";
@@ -50,6 +65,40 @@ public abstract class AbstractComponentInfo<T extends Component> implements Comp
     protected static final String styleIdColor = "30,110,30";
     protected static final String marginColor = "190,190,0";
     protected static final String paddingColor = "0,150,70";
+
+    @Override
+    public ImageIcon getIcon ( final StyleableComponent type, final T component )
+    {
+        final ImageIcon icon = getIconImpl ( type, component );
+        final ImageIcon transparency = SwingUtils.isOpaque ( component ) ? opaque : null;
+        if ( transparency != null )
+        {
+            final String key = icon.hashCode () + "," + transparency.hashCode ();
+            if ( mergedCache.containsKey ( key ) )
+            {
+                return mergedCache.get ( key );
+            }
+            else
+            {
+                final ImageIcon mergedIcon = ImageUtils.mergeIcons ( icon, transparency );
+                mergedCache.put ( key, mergedIcon );
+                return mergedIcon;
+            }
+        }
+        else
+        {
+            return icon;
+        }
+    }
+
+    /**
+     * Returns actual icon for the specified component.
+     *
+     * @param type      styleable component type
+     * @param component component to provide icon for
+     * @return actual icon for the specified component
+     */
+    protected abstract ImageIcon getIconImpl ( StyleableComponent type, T component );
 
     /**
      * Returns main title foreground color.

@@ -26,8 +26,8 @@ import com.alee.extended.date.WebDateField;
 import com.alee.extended.dock.WebDockableFrame;
 import com.alee.extended.dock.WebDockablePane;
 import com.alee.extended.image.WebImage;
-import com.alee.extended.link.WebLink;
 import com.alee.extended.label.WebStyledLabel;
+import com.alee.extended.link.WebLink;
 import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.window.WebPopup;
 import com.alee.laf.WebLookAndFeel;
@@ -412,7 +412,8 @@ public enum StyleableComponent implements IconSupport, TitleSupport
         final StyleableComponent type = getImpl ( uiClassID );
         if ( type == null )
         {
-            throw new StyleException ( "Unsupported component UI class ID: " + uiClassID );
+            final String msg = "Component UI class ID '%s' is not supported";
+            throw new StyleException ( String.format ( msg, uiClassID ) );
         }
         return type;
     }
@@ -440,7 +441,8 @@ public enum StyleableComponent implements IconSupport, TitleSupport
         final StyleableComponent type = getImpl ( uiClass );
         if ( type == null )
         {
-            throw new StyleException ( "Unsupported component UI class: " + uiClass );
+            final String msg = "Component UI class '%s' is not supported";
+            throw new StyleException ( String.format ( msg, uiClass ) );
         }
         return type;
     }

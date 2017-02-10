@@ -45,7 +45,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
      * Tree rows background painter.
      * It can be used to provide background customization for specific tree rows.
      */
-    @DefaultPainter (TreeRowPainter.class)
+    @DefaultPainter ( TreeRowPainter.class )
     protected ITreeRowPainter rowPainter;
 
     /**
@@ -53,7 +53,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
      * It can be used to provide background for hover nodes.
      * todo Change to "nodePainter" and simply use "hover" state there if needed
      */
-    @DefaultPainter (TreeNodePainter.class)
+    @DefaultPainter ( TreeNodePainter.class )
     protected ITreeNodePainter hoverPainter;
 
     /**
@@ -61,21 +61,21 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
      * It can be used to provide background for selected nodes.
      * WebLaF uses this painter instead of cell renderer -based selection decoration.
      */
-    @DefaultPainter (TreeSelectionPainter.class)
+    @DefaultPainter ( TreeSelectionPainter.class )
     protected ITreeSelectionPainter selectionPainter;
 
     /**
      * Tree drop location painter.
      * Provides visual representation for drag-and-drop operation on tree nodes.
      */
-    @DefaultPainter (TreeDropLocationPainter.class)
+    @DefaultPainter ( TreeDropLocationPainter.class )
     protected ITreeDropLocationPainter dropLocationPainter;
 
     /**
      * Tree nodes selector painter.
      * It can be provided to enable nodes multiselector.
      */
-    @DefaultPainter (TreeSelectorPainter.class)
+    @DefaultPainter ( TreeSelectorPainter.class )
     protected ITreeSelectorPainter selectorPainter;
 
     /**
@@ -125,8 +125,13 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
             @Override
             public void valueChanged ( final TreeSelectionEvent e )
             {
-                // Optimized selection repaint
-                repaintSelection ();
+                // Ensure component is still available
+                // This might happen if painter is replaced from another TreeSelectionListener
+                if ( component != null )
+                {
+                    // Optimized selection repaint
+                    repaintSelection ();
+                }
             }
         };
         component.addTreeSelectionListener ( treeSelectionListener );
@@ -138,13 +143,23 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
             @Override
             public void treeExpanded ( final TreeExpansionEvent event )
             {
-                repaintSelection ();
+                // Ensure component is still available
+                // This might happen if painter is replaced from another TreeExpansionListener
+                if ( component != null )
+                {
+                    repaintSelection ();
+                }
             }
 
             @Override
             public void treeCollapsed ( final TreeExpansionEvent event )
             {
-                repaintSelection ();
+                // Ensure component is still available
+                // This might happen if painter is replaced from another TreeExpansionListener
+                if ( component != null )
+                {
+                    repaintSelection ();
+                }
             }
         };
         component.addTreeExpansionListener ( treeExpansionListener );
@@ -155,101 +170,111 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
             @Override
             public void mousePressed ( final MouseEvent e )
             {
-                // Only left mouse button events
-                if ( SwingUtilities.isLeftMouseButton ( e ) )
+                // Ensure component is still available
+                // This might happen if painter is replaced from another MouseListener
+                if ( component != null )
                 {
-                    // Check that mouse did not hit actual tree cell
-                    if ( !SwingUtils.isCtrl ( e ) && ( !component.getDragEnabled () || component.getTransferHandler () == null ) ||
-                            ui.getExactRowForLocation ( e.getPoint (), false ) == -1 )
+                    // Only left mouse button events
+                    if ( SwingUtilities.isLeftMouseButton ( e ) )
                     {
-                        if ( isSelectorAvailable () )
+                        // Check that mouse did not hit actual tree cell
+                        if ( !SwingUtils.isCtrl ( e ) && ( !component.getDragEnabled () || component.getTransferHandler () == null ) ||
+                                ui.getExactRowForLocation ( e.getPoint (), false ) == -1 )
                         {
-                            // Avoiding selection start when pressed on tree expand handle
-                            final TreePath path = ui.getClosestPathForLocation ( component, e.getX (), e.getY () );
-                            if ( path == null || !isLocationInExpandControl ( path, e.getX (), e.getY () ) &&
-                                    !ui.isLocationInCheckBoxControl ( path, e.getX (), e.getY () ) )
+                            if ( isSelectorAvailable () )
                             {
-                                // Avoid starting multiselection if row is selected and drag is possible
-                                final int rowForPath = ui.getRowForPath ( component, path );
-                                if ( isDragAvailable () && rowForPath != -1 &&
-                                        ui.getRowBounds ( rowForPath ).contains ( e.getX (), e.getY () ) &&
-                                        component.isRowSelected ( rowForPath ) )
+                                // Avoiding selection start when pressed on tree expand handle
+                                final TreePath path = ui.getClosestPathForLocation ( component, e.getX (), e.getY () );
+                                if ( path == null || !isLocationInExpandControl ( path, e.getX (), e.getY () ) &&
+                                        !ui.isLocationInCheckBoxControl ( path, e.getX (), e.getY () ) )
                                 {
+                                    // Avoid starting multiselection if row is selected and drag is possible
+                                    final int rowForPath = ui.getRowForPath ( component, path );
+                                    if ( isDragAvailable () && rowForPath != -1 &&
+                                            ui.getRowBounds ( rowForPath ).contains ( e.getX (), e.getY () ) &&
+                                            component.isRowSelected ( rowForPath ) )
+                                    {
+                                        // Marking row to be dragged
+                                        draggablePath = path;
+                                    }
+                                    else
+                                    {
+                                        // Selection
+                                        selectionStart = e.getPoint ();
+                                        selectionEnd = selectionStart;
+
+                                        // Initial tree selection
+                                        initialSelection = getSelectedRows ();
+
+                                        // Updating selection
+                                        validateSelection ( e );
+
+                                        // Repainting selection on the tree
+                                        repaintSelector ();
+                                    }
+                                }
+                            }
+                            else if ( isFullLineSelection () )
+                            {
+                                // todo Start DnD on selected line here
+                                // Avoiding selection start when pressed on tree expand handle
+                                final TreePath path = ui.getClosestPathForLocation ( component, e.getX (), e.getY () );
+                                if ( path != null && !isLocationInExpandControl ( path, e.getX (), e.getY () ) &&
+                                        !ui.isLocationInCheckBoxControl ( path, e.getX (), e.getY () ) )
+                                {
+                                    // Single row selection
+                                    if ( component.getSelectionModel ().getSelectionMode () == TreeSelectionModel.SINGLE_TREE_SELECTION )
+                                    {
+                                        component.setSelectionRow ( ui.getExactRowForLocation ( e.getPoint (), true ) );
+                                    }
+
                                     // Marking row to be dragged
-                                    draggablePath = path;
-                                }
-                                else
-                                {
-                                    // Selection
-                                    selectionStart = e.getPoint ();
-                                    selectionEnd = selectionStart;
-
-                                    // Initial tree selection
-                                    initialSelection = getSelectedRows ();
-
-                                    // Updating selection
-                                    validateSelection ( e );
-
-                                    // Repainting selection on the tree
-                                    repaintSelector ();
+                                    final int rowForPath = ui.getRowForPath ( component, path );
+                                    if ( isDragAvailable () && ui.getRowBounds ( rowForPath ).contains ( e.getX (), e.getY () ) &&
+                                            component.isRowSelected ( rowForPath ) )
+                                    {
+                                        draggablePath = path;
+                                    }
                                 }
                             }
                         }
-                        else if ( isFullLineSelection () )
-                        {
-                            // todo Start DnD on selected line here
-                            // Avoiding selection start when pressed on tree expand handle
-                            final TreePath path = ui.getClosestPathForLocation ( component, e.getX (), e.getY () );
-                            if ( path != null && !isLocationInExpandControl ( path, e.getX (), e.getY () ) &&
-                                    !ui.isLocationInCheckBoxControl ( path, e.getX (), e.getY () ) )
-                            {
-                                // Single row selection
-                                if ( component.getSelectionModel ().getSelectionMode () == TreeSelectionModel.SINGLE_TREE_SELECTION )
-                                {
-                                    component.setSelectionRow ( ui.getExactRowForLocation ( e.getPoint (), true ) );
-                                }
-
-                                // Marking row to be dragged
-                                final int rowForPath = ui.getRowForPath ( component, path );
-                                if ( isDragAvailable () && ui.getRowBounds ( rowForPath ).contains ( e.getX (), e.getY () ) &&
-                                        component.isRowSelected ( rowForPath ) )
-                                {
-                                    draggablePath = path;
-                                }
-                            }
-                        }
+                        // else
+                        // {
+                        //     // todo Start DnD on selected row here
+                        //     // todo Also collapse node expansion on double-click if it is expanded and clicked on full line
+                        // }
                     }
-                    // else
-                    // {
-                    //     // todo Start DnD on selected row here
-                    //     // todo Also collapse node expansion on double-click if it is expanded and clicked on full line
-                    // }
                 }
             }
 
             @Override
             public void mouseDragged ( final MouseEvent e )
             {
-                if ( draggablePath != null )
+                // Ensure component is still available
+                // This might happen if painter is replaced from another MouseMotionListener
+                if ( component != null )
                 {
-                    final TransferHandler transferHandler = component.getTransferHandler ();
-                    transferHandler.exportAsDrag ( component, e, transferHandler.getSourceActions ( component ) );
-                    draggablePath = null;
-                }
-                if ( isSelectorAvailable () && selectionStart != null )
-                {
-                    // Selection
-                    selectionEnd = e.getPoint ();
-
-                    // Updating selection
-                    validateSelection ( e );
-
-                    // Repainting selection on the tree
-                    repaintSelector ();
-
-                    if ( !component.getVisibleRect ().contains ( e.getPoint () ) )
+                    if ( draggablePath != null )
                     {
-                        component.scrollRectToVisible ( new Rectangle ( e.getPoint (), new Dimension ( 0, 0 ) ) );
+                        final TransferHandler transferHandler = component.getTransferHandler ();
+                        transferHandler.exportAsDrag ( component, e, transferHandler.getSourceActions ( component ) );
+                        draggablePath = null;
+                    }
+                    if ( isSelectorAvailable () && selectionStart != null )
+                    {
+                        // Selection
+                        selectionEnd = e.getPoint ();
+
+                        // Updating selection
+                        validateSelection ( e );
+
+                        // Repainting selection on the tree
+                        repaintSelector ();
+
+                        if ( !component.getVisibleRect ().contains ( e.getPoint () ) )
+                        {
+                            component.scrollRectToVisible ( new Rectangle ( e.getPoint (), new Dimension ( 0, 0 ) ) );
+                        }
                     }
                 }
             }
@@ -257,21 +282,26 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
             @Override
             public void mouseReleased ( final MouseEvent e )
             {
-                if ( draggablePath != null )
+                // Ensure component is still available
+                // This might happen if painter is replaced from another MouseListener
+                if ( component != null )
                 {
-                    draggablePath = null;
-                }
-                if ( isSelectorAvailable () && selectionStart != null )
-                {
-                    // Saving selection rect to repaint
-                    // Rectangle fr = GeometryUtils.getContainingRect ( selectionStart, selectionEnd );
+                    if ( draggablePath != null )
+                    {
+                        draggablePath = null;
+                    }
+                    if ( isSelectorAvailable () && selectionStart != null )
+                    {
+                        // Saving selection rect to repaint
+                        // Rectangle fr = GeometryUtils.getContainingRect ( selectionStart, selectionEnd );
 
-                    // Selection
-                    selectionStart = null;
-                    selectionEnd = null;
+                        // Selection
+                        selectionStart = null;
+                        selectionEnd = null;
 
-                    // Repainting selection on the tree
-                    repaintSelector ( /*fr*/ );
+                        // Repainting selection on the tree
+                        repaintSelector ( /*fr*/ );
+                    }
                 }
             }
 
@@ -872,7 +902,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
      * @param hasBeenExpanded whether row has been expanded once before or not
      * @param isLeaf          whether node is leaf or not
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintExpandControl ( final Graphics2D g2d, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
                                         final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
                                         final boolean isLeaf )

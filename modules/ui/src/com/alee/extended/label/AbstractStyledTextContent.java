@@ -68,7 +68,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
     protected Boolean preserveLineBreaks;
 
     /**
-     * Size of gaps between label rows.
+     * Size of gaps between label rows in pixels.
      */
     @XStreamAsAttribute
     protected Integer rowGap;
@@ -76,6 +76,14 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
     /**
      * Global text style.
      * It can be specified to add an additional {@link StyleRange} with range [0,text.length].
+     * It uses the style part of the standard styled text syntax.
+     *
+     * Here are a few examples of what can be provided here:
+     * 1. "u;b" - underlined bold text
+     * 2. "b;c(red)" - bold red text
+     * 3. "i;bg(0,255,0)" - italic text with blue background highlight
+     *
+     * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel#styled-text-syntax">Styled text syntax</a>
      */
     @XStreamAsAttribute
     protected String globalStyle;

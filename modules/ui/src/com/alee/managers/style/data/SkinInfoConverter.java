@@ -204,7 +204,8 @@ public final class SkinInfoConverter extends ReflectionConverter
                 {
                     // Reading included icon set
                     final String className = reader.getValue ();
-                    iconSets.add ( readIconSet ( className ) );
+                    final Class realClass = mapper.realClass ( className );
+                    iconSets.add ( readIconSet ( realClass ) );
                 }
                 else if ( nodeName.equals ( STYLE_NODE ) && !metaDataOnly )
                 {
@@ -215,8 +216,9 @@ public final class SkinInfoConverter extends ReflectionConverter
                 {
                     // Reading included skin file styles
                     final String nearClass = reader.getAttribute ( NEAR_CLASS_ATTRIBUTE );
+                    final String realClass = nearClass != null ? mapper.realClass ( nearClass ).getCanonicalName () : null;
                     final String file = reader.getValue ();
-                    final Resource resource = new Resource ( nearClass, file );
+                    final Resource resource = new Resource ( realClass, file );
                     final SkinInfo include = readInclude ( skinInfo, resource );
 
                     // Adding included skin icon set
@@ -260,8 +262,8 @@ public final class SkinInfoConverter extends ReflectionConverter
             final String skinClass = skinInfo.getSkinClass ();
             if ( skinClass == null )
             {
-                throw new StyleException ( "Included skin file \"" + resource.getPath () +
-                        "\" specified but skin \"" + CLASS_NODE + "\" is not set" );
+                final String msg = "Included skin file '%s' specified but its '%s' is not set";
+                throw new StyleException ( String.format ( msg, resource.getPath (), CLASS_NODE ) );
             }
             resource.setClassName ( skinClass );
         }
@@ -271,12 +273,12 @@ public final class SkinInfoConverter extends ReflectionConverter
     }
 
     /**
-     * Returns icon set loaded using specified class name.
+     * Returns icon set created using specified icon set class.
      *
-     * @param className icon set class name
-     * @return icon set loaded using specified class name
+     * @param className icon set class
+     * @return icon set created using specified icon set class
      */
-    protected IconSet readIconSet ( final String className )
+    protected IconSet readIconSet ( final Class<? extends IconSet> className )
     {
         try
         {
@@ -284,7 +286,8 @@ public final class SkinInfoConverter extends ReflectionConverter
         }
         catch ( final Throwable e )
         {
-            throw new StyleException ( "Unable to load icon set: " + className, e );
+            final String msg = "Unable to load icon set '%s'";
+            throw new StyleException ( String.format ( msg, className ), e );
         }
     }
 
@@ -321,7 +324,8 @@ public final class SkinInfoConverter extends ReflectionConverter
         }
         catch ( final Throwable e )
         {
-            throw new StyleException ( "Included skin file cannot be read: " + resource.getPath (), e );
+            final String msg = "Included skin file '%s' cannot be read";
+            throw new StyleException ( String.format ( msg, resource.getPath () ), e );
         }
     }
 }

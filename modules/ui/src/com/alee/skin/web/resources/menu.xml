@@ -1,4 +1,4 @@
-<skin>
+<skin xmlns="http://weblookandfeel.com">
 
     <!-- com.alee.laf.menu.WebMenu -->
 
@@ -16,9 +16,15 @@
                         <ButtonText constraints="text" color="black" />
                     </MenuItemLayout>
                 </decoration>
+                <decoration states="menubar,hover">
+                    <GradientBackground>
+                        <color>208,208,198,96</color>
+                        <color>196,196,186,96</color>
+                    </GradientBackground>
+                </decoration>
                 <decoration states="popupmenu">
                     <WebShape round="0" />
-                    <MenuItemLayout padding="4,10,4,4" iconTextGap="6" textArrowGap="10">
+                    <MenuItemLayout padding="5,10,5,6" iconTextGap="6" textArrowGap="10">
                         <ButtonIcon constraints="icon" />
                         <ButtonText constraints="text" color="black" />
                         <SetIcon id="arrow" constraints="arrow" icon="right" />

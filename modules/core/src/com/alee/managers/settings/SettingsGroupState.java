@@ -23,15 +23,15 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import java.io.Serializable;
 
 /**
- * This class contains information about single SettingsGroup read state.
+ * This class contains information about single {@link SettingsGroup} read state.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
- * @see com.alee.managers.settings.SettingsManager
- * @see com.alee.managers.settings.SettingsGroup
+ * @see SettingsManager
+ * @see SettingsGroup
  */
 
-@XStreamAlias ("SettingsGroupState")
+@XStreamAlias ( "SettingsGroupState" )
 public class SettingsGroupState implements Serializable
 {
     /**

@@ -722,6 +722,12 @@ public class WebTextField extends JTextField
     }
 
     @Override
+    public String getLanguage ()
+    {
+        return LanguageManager.getComponentKey ( this );
+    }
+
+    @Override
     public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );

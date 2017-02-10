@@ -1411,26 +1411,9 @@ public final class FileUtils
      */
     public static boolean copyFile ( final String src, final String dst )
     {
-        try
-        {
-            // Creating destination directory if needed
-            final File dstDir = new File ( new File ( dst ).getParent () );
-            if ( ensureDirectoryExists ( dstDir ) )
-            {
-                final FileChannel srcFC = new FileInputStream ( src ).getChannel ();
-                final FileChannel dstFC = new FileOutputStream ( dst ).getChannel ();
-                return copyFile ( srcFC, dstFC );
-            }
-            else
-            {
-                return false;
-            }
-
-        }
-        catch ( final FileNotFoundException e )
-        {
-            return false;
-        }
+        final File srcFile = src != null ? new File ( src ) : null;
+        final File dstFile = dst != null ? new File ( dst ) : null;
+        return copyFile ( srcFile, dstFile );
     }
 
     /**
@@ -1444,13 +1427,12 @@ public final class FileUtils
      */
     public static boolean copyFile ( final File srcFile, final File dstFile )
     {
-        if ( srcFile.exists () && srcFile.isFile () )
+        if ( srcFile != null && srcFile.exists () && srcFile.isFile () && dstFile != null )
         {
             try
             {
                 // Creating destination directory if needed
-                final File dstDir = new File ( dstFile.getParent () );
-                if ( ensureDirectoryExists ( dstDir ) )
+                if ( ensureDirectoryExists ( dstFile.getParentFile () ) )
                 {
                     final FileChannel srcFC = new FileInputStream ( srcFile ).getChannel ();
                     final FileChannel dstFC = new FileOutputStream ( dstFile ).getChannel ();
@@ -1936,11 +1918,7 @@ public final class FileUtils
             // Checking stop flag
             if ( listener != null && listener.shouldStopDownload () )
             {
-                out.flush ();
-                out.close ();
-                in.close ();
-                deleteFile ( dstFile );
-                return null;
+                return haltDownload ( dstFile, in, out );
             }
 
             // Downloading content part by part
@@ -1957,11 +1935,7 @@ public final class FileUtils
                     // Checking stop flag
                     if ( listener.shouldStopDownload () )
                     {
-                        out.flush ();
-                        out.close ();
-                        in.close ();
-                        deleteFile ( dstFile );
-                        return null;
+                        return haltDownload ( dstFile, in, out );
                     }
                 }
                 out.write ( buf, 0, bytesRead );
@@ -1986,6 +1960,24 @@ public final class FileUtils
             }
             return null;
         }
+    }
+
+    /**
+     * Halts download by properly closing streams and removing destination file.
+     *
+     * @param dstFile destination file
+     * @param in      input stream
+     * @param out     output stream
+     * @return always {@code null}
+     * @throws IOException if some IO operation failed
+     */
+    private static File haltDownload ( final File dstFile, final InputStream in, final FileOutputStream out ) throws IOException
+    {
+        out.flush ();
+        out.close ();
+        in.close ();
+        deleteFile ( dstFile );
+        return null;
     }
 
     /**
@@ -2205,7 +2197,7 @@ public final class FileUtils
      */
     public static boolean ensureDirectoryExists ( final File dir )
     {
-        return dir.exists () || dir.mkdirs ();
+        return dir != null && ( dir.exists () || dir.mkdirs () );
     }
 
     /**

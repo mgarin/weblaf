@@ -50,10 +50,12 @@ import java.util.Date;
 /**
  * Custom UI for {@link WebDateField} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public class WebDateFieldUI extends WDateFieldUI implements ShapeSupport, MarginSupport, PaddingSupport, PropertyChangeListener
+public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C>
+        implements ShapeSupport, MarginSupport, PaddingSupport, PropertyChangeListener
 {
     /**
      * todo 1. Change popover to popup-based window. Probably another variation of popover would be handy?
@@ -62,7 +64,7 @@ public class WebDateFieldUI extends WDateFieldUI implements ShapeSupport, Margin
     /**
      * Component painter.
      */
-    @DefaultPainter (DateFieldPainter.class)
+    @DefaultPainter ( DateFieldPainter.class )
     protected IDateFieldPainter painter;
 
     /**
@@ -76,17 +78,16 @@ public class WebDateFieldUI extends WDateFieldUI implements ShapeSupport, Margin
     /**
      * Runtime variables.
      */
-    protected WebDateField dateField;
     protected Insets margin = null;
     protected Insets padding = null;
     protected boolean updating = false;
 
     /**
-     * Returns an instance of the WebDateFieldUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebDateFieldUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebDateFieldUI
+     * @return instance of the {@link WebDateFieldUI}
      */
     @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
@@ -94,16 +95,11 @@ public class WebDateFieldUI extends WDateFieldUI implements ShapeSupport, Margin
         return new WebDateFieldUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
-        // Saving date field reference
-        dateField = ( WebDateField ) c;
+        // Installing UI
+        super.installUI ( c );
 
         // Applying skin
         StyleManager.installSkin ( dateField );
@@ -113,11 +109,6 @@ public class WebDateFieldUI extends WDateFieldUI implements ShapeSupport, Margin
         installActions ();
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
@@ -128,8 +119,8 @@ public class WebDateFieldUI extends WDateFieldUI implements ShapeSupport, Margin
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( dateField );
 
-        // Removing date field reference
-        dateField = null;
+        // Uninstalling UI
+        super.uninstallUI ( c );
     }
 
     /**
@@ -436,7 +427,7 @@ public class WebDateFieldUI extends WDateFieldUI implements ShapeSupport, Margin
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

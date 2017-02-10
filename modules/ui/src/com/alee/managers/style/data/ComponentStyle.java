@@ -44,8 +44,8 @@ import java.util.Map;
  * @see com.alee.managers.style.StyleManager
  */
 
-@XStreamAlias ("style")
-@XStreamConverter (ComponentStyleConverter.class)
+@XStreamAlias ( "style" )
+@XStreamConverter ( ComponentStyleConverter.class )
 public final class ComponentStyle implements Serializable, Cloneable
 {
     /**
@@ -406,8 +406,8 @@ public final class ComponentStyle implements Serializable, Cloneable
             painter = ReflectUtils.createInstanceSafely ( painterClass );
             if ( painter == null )
             {
-                final String msg = "Unable to create painter \"%s\" for component \"%s\" in style \"%s\"";
                 final String componentType = component != null ? component.toString () : "none";
+                final String msg = "Unable to create painter '%s' for component '%s' in style '%s'";
                 throw new StyleException ( String.format ( msg, painterClass, componentType, getId () ) );
             }
 
@@ -561,7 +561,8 @@ public final class ComponentStyle implements Serializable, Cloneable
         final ComponentUI ui = LafUtils.getUI ( component );
         if ( ui == null )
         {
-            throw new StyleException ( "Unable to retrieve UI from component: " + component );
+            final String msg = "Unable to retrieve UI from component '%s'";
+            throw new StyleException ( String.format ( msg, component ) );
         }
         return ui;
     }
@@ -805,8 +806,8 @@ public final class ComponentStyle implements Serializable, Cloneable
                 if ( painterClass == null || extendedPainterClass == null )
                 {
                     final String pc = painterClass == null ? mergedPainter.getPainterClass () : stylePainter.getPainterClass ();
-                    final String sid = merged.getType () + ":" + merged.getId ();
-                    throw new StyleException ( "Component style \"" + sid + "\" points to missing painter class: \"" + pc + "\"" );
+                    final String msg = "Component style '%s:%s' points to missing painter class '%s'";
+                    throw new StyleException ( String.format ( msg, merged.getType (), merged.getId (), pc ) );
                 }
                 if ( ReflectUtils.isAssignable ( extendedPainterClass, painterClass ) )
                 {
@@ -885,7 +886,8 @@ public final class ComponentStyle implements Serializable, Cloneable
             }
             catch ( final Throwable ex )
             {
-                Log.get ().error ( "Unable to merge property \"" + key + "\" values: " + e + " and " + m, ex );
+                final String msg = "Unable to merge property '%s' values: '%s' and '%s'";
+                Log.get ().error ( String.format ( msg, key, e, m ), ex );
             }
         }
     }
@@ -905,8 +907,8 @@ public final class ComponentStyle implements Serializable, Cloneable
             final String painterId = painter.getId ();
             if ( paintersMap.containsKey ( painterId ) )
             {
-                final String sid = style.getType () + ":" + style.getId ();
-                throw new StyleException ( "Component style \"" + sid + "\" has duplicate painters for id \"" + painterId + "\"" );
+                final String msg = "Component style '%s:%s' has duplicate painters for id '%s'";
+                throw new StyleException ( String.format ( msg, style.getType (), style.getId (), painterId ) );
             }
             paintersMap.put ( painterId, painter );
         }

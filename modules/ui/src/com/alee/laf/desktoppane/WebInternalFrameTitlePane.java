@@ -38,6 +38,8 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 
 /**
+ * {@link JInternalFrame} and {@link JInternalFrame.JDesktopIcon} title pane.
+ *
  * @author Mikle Garin
  */
 
@@ -53,12 +55,12 @@ public class WebInternalFrameTitlePane extends WebPanel implements SwingConstant
 
     /**
      * Title pane parent.
-     * It is either {@link javax.swing.JInternalFrame} or {@link javax.swing.JInternalFrame.JDesktopIcon}.
+     * It is either {@link JInternalFrame} or {@link JInternalFrame.JDesktopIcon}.
      */
     protected final JComponent parent;
 
     /**
-     * {@link javax.swing.JInternalFrame} for this title pane.
+     * {@link JInternalFrame} for this title pane.
      */
     protected final JInternalFrame frame;
 
@@ -80,8 +82,8 @@ public class WebInternalFrameTitlePane extends WebPanel implements SwingConstant
     /**
      * Constructs new internal frame title pane.
      *
-     * @param parent either {@link javax.swing.JInternalFrame} or {@link javax.swing.JInternalFrame.JDesktopIcon}
-     * @param frame  {@link javax.swing.JInternalFrame} for this title pane
+     * @param parent either {@link JInternalFrame} or {@link JInternalFrame.JDesktopIcon}
+     * @param frame  {@link JInternalFrame} for this title pane
      */
     public WebInternalFrameTitlePane ( final JComponent parent, final JInternalFrame frame )
     {
@@ -167,14 +169,17 @@ public class WebInternalFrameTitlePane extends WebPanel implements SwingConstant
 
     /**
      * Updates button icons.
+     * todo Replace icons with appropriate references in style
      */
     protected void updateButtonIcons ()
     {
-        minimizeButton.setIcon ( frame.isIcon () ? WebRootPaneUI.restoreIcon : WebRootPaneUI.minimizeIcon );
-        minimizeButton.setRolloverIcon ( frame.isIcon () ? WebRootPaneUI.restoreActiveIcon : WebRootPaneUI.minimizeActiveIcon );
+        final boolean icon = frame.isIcon ();
+        minimizeButton.setIcon ( icon ? WebRootPaneUI.restoreIcon : WebRootPaneUI.minimizeIcon );
+        minimizeButton.setRolloverIcon ( icon ? WebRootPaneUI.restoreActiveIcon : WebRootPaneUI.minimizeActiveIcon );
 
-        maximizeButton.setIcon ( frame.isMaximum () ? WebRootPaneUI.restoreIcon : WebRootPaneUI.maximizeIcon );
-        maximizeButton.setRolloverIcon ( frame.isMaximum () ? WebRootPaneUI.restoreActiveIcon : WebRootPaneUI.maximizeActiveIcon );
+        final boolean maximum = frame.isMaximum ();
+        maximizeButton.setIcon ( maximum && !icon ? WebRootPaneUI.restoreIcon : WebRootPaneUI.maximizeIcon );
+        maximizeButton.setRolloverIcon ( maximum && !icon ? WebRootPaneUI.restoreActiveIcon : WebRootPaneUI.maximizeActiveIcon );
 
         closeButton.setIcon ( WebRootPaneUI.closeIcon );
         closeButton.setRolloverIcon ( WebRootPaneUI.closeActiveIcon );

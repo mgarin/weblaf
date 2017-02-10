@@ -6,7 +6,7 @@ import javax.swing.*;
 
 /**
  * Basic painter for {@link JToggleButton} component.
- * It is used as {@link WebToggleButtonUI} default painter.
+ * It is used as {@link WToggleButtonUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -14,7 +14,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class ToggleButtonPainter<E extends JToggleButton, U extends WebToggleButtonUI, D extends IDecoration<E, D>>
+public class ToggleButtonPainter<E extends JToggleButton, U extends WToggleButtonUI, D extends IDecoration<E, D>>
         extends AbstractButtonPainter<E, U, D> implements IToggleButtonPainter<E, U>
 {
     /**

@@ -20,6 +20,8 @@ package com.alee.extended.inspector;
 import com.alee.extended.tree.WebExTree;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.style.StyleId;
+import com.alee.utils.SwingUtils;
+import com.alee.utils.compare.Filter;
 import com.alee.utils.swing.HoverListener;
 import com.alee.utils.swing.extensions.KeyEventRunnable;
 
@@ -44,7 +46,8 @@ import java.util.Map;
  * @see com.alee.laf.tree.TreePainter
  */
 
-public class InterfaceTree extends WebExTree<InterfaceTreeNode> implements HoverListener<InterfaceTreeNode>, TreeSelectionListener
+public class InterfaceTree extends WebExTree<InterfaceTreeNode>
+        implements HoverListener<InterfaceTreeNode>, TreeSelectionListener, Filter<Component>
 {
     /**
      * Highlighter for hovered tree element.
@@ -106,53 +109,75 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode> implements Hover
     }
 
     @Override
+    public boolean accept ( final Component component )
+    {
+        return ( ( InterfaceTreeDataProvider ) super.getDataProvider () ).accept ( component );
+    }
+
+    @Override
     public void hoverChanged ( final InterfaceTreeNode previous, final InterfaceTreeNode current )
     {
-        if ( hoverHighlighter.isShowing () )
+        // Separating action from the tree hover makes UI more responsive
+        SwingUtils.invokeLater ( new Runnable ()
         {
-            hoverHighlighter.uninstall ();
-        }
-        if ( current != null && ComponentHighlighter.canHighlight ( current.getComponent () ) )
-        {
-            hoverHighlighter.install ( current.getComponent () );
-        }
+            @Override
+            public void run ()
+            {
+                if ( hoverHighlighter.isShowing () )
+                {
+                    hoverHighlighter.uninstall ();
+                }
+                if ( current != null && ComponentHighlighter.canHighlight ( current.getComponent () ) )
+                {
+                    hoverHighlighter.install ( current.getComponent () );
+                }
+            }
+        } );
     }
 
     @Override
     public void valueChanged ( final TreeSelectionEvent e )
     {
-        // Selected nodes
-        final List<InterfaceTreeNode> selected = getSelectedNodes ();
-
-        // Previous and current highlighters
-        final Map<Component, ComponentHighlighter> prevHighlighters = this.selectedHighlighters;
-        selectedHighlighters = new HashMap<Component, ComponentHighlighter> ( selected.size () );
-
-        // Updating displayed highlighters
-        for ( final InterfaceTreeNode node : selected )
+        // Separating action from the tree selection makes UI more responsive
+        SwingUtils.invokeLater ( new Runnable ()
         {
-            final Component component = node.getComponent ();
-            final ComponentHighlighter prevHighlighter = prevHighlighters.get ( component );
-            if ( prevHighlighter != null )
+            @Override
+            public void run ()
             {
-                // Preserving existing highlighter
-                selectedHighlighters.put ( component, prevHighlighter );
-                prevHighlighters.remove ( component );
-            }
-            else if ( ComponentHighlighter.canHighlight ( component ) )
-            {
-                // Adding new highlighter
-                final ComponentHighlighter newHighlighter = new ComponentHighlighter ();
-                selectedHighlighters.put ( component, newHighlighter );
-                newHighlighter.install ( component );
-            }
-        }
+                // Selected nodes
+                final List<InterfaceTreeNode> selected = getSelectedNodes ();
 
-        // Removing redundant highlighters
-        for ( final Map.Entry<Component, ComponentHighlighter> entry : prevHighlighters.entrySet () )
-        {
-            entry.getValue ().uninstall ();
-        }
+                // Previous and current highlighters
+                final Map<Component, ComponentHighlighter> prevHighlighters = selectedHighlighters;
+                selectedHighlighters = new HashMap<Component, ComponentHighlighter> ( selected.size () );
+
+                // Updating displayed highlighters
+                for ( final InterfaceTreeNode node : selected )
+                {
+                    final Component component = node.getComponent ();
+                    final ComponentHighlighter prevHighlighter = prevHighlighters.get ( component );
+                    if ( prevHighlighter != null )
+                    {
+                        // Preserving existing highlighter
+                        selectedHighlighters.put ( component, prevHighlighter );
+                        prevHighlighters.remove ( component );
+                    }
+                    else if ( ComponentHighlighter.canHighlight ( component ) )
+                    {
+                        // Adding new highlighter
+                        final ComponentHighlighter newHighlighter = new ComponentHighlighter ();
+                        selectedHighlighters.put ( component, newHighlighter );
+                        newHighlighter.install ( component );
+                    }
+                }
+
+                // Removing redundant highlighters
+                for ( final Map.Entry<Component, ComponentHighlighter> entry : prevHighlighters.entrySet () )
+                {
+                    entry.getValue ().uninstall ();
+                }
+            }
+        } );
     }
 
     /**
@@ -188,6 +213,20 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode> implements Hover
             expandNode ( node );
             setSelectedNode ( node );
             scrollToNode ( node, true );
+        }
+    }
+
+    /**
+     * Expands tree to the specified component.
+     *
+     * @param component component to expand to
+     */
+    public void expand ( final Component component )
+    {
+        final InterfaceTreeNode node = findNode ( Integer.toString ( component.hashCode () ) );
+        if ( node != null )
+        {
+            expandNode ( node );
         }
     }
 }

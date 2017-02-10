@@ -77,7 +77,7 @@ public class WebDateFieldExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebDateField dateField = new WebDateField ( getStyleId () );
             dateField.addDateListener ( new DateListener ()

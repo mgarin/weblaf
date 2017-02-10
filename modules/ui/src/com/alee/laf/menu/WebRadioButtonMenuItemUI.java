@@ -129,7 +129,7 @@ public class WebRadioButtonMenuItemUI extends BasicRadioButtonMenuItemUI impleme
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

@@ -1,4 +1,4 @@
-<skin>
+<skin xmlns="http://weblookandfeel.com">
 
     <!-- com.alee.extended.date.WebCalendar -->
 
@@ -58,15 +58,13 @@
                 <painter>
                     <decorations>
                         <decoration>
-                            <Separator padding="0,1,0,1">
-                                <lines>
-                                    <line>
-                                        <color fraction="0.0">176,182,188,5</color>
-                                        <color fraction="0.5">176,182,188</color>
-                                        <color fraction="1.0">176,182,188,5</color>
-                                    </line>
-                                </lines>
-                            </Separator>
+                            <SeparatorStripes padding="0,1,0,1">
+                                <Stripe>
+                                    <color fraction="0.0">176,182,188,5</color>
+                                    <color fraction="0.5">176,182,188</color>
+                                    <color fraction="1.0">176,182,188,5</color>
+                                </Stripe>
+                            </SeparatorStripes>
                         </decoration>
                     </decorations>
                 </painter>
@@ -89,16 +87,14 @@
                 <painter>
                     <decorations>
                         <decoration>
-                            <Separator padding="0,1,0,1">
-                                <lines>
-                                    <line>
-                                        <color fraction="0.0">176,182,188,5</color>
-                                        <color fraction="0.25">176,182,188</color>
-                                        <color fraction="0.95">176,182,188</color>
-                                        <color fraction="1.0">176,182,188,5</color>
-                                    </line>
-                                </lines>
-                            </Separator>
+                            <SeparatorStripes padding="0,1,0,1">
+                                <Stripe>
+                                    <color fraction="0.0">176,182,188,5</color>
+                                    <color fraction="0.25">176,182,188</color>
+                                    <color fraction="0.95">176,182,188</color>
+                                    <color fraction="1.0">176,182,188,5</color>
+                                </Stripe>
+                            </SeparatorStripes>
                         </decoration>
                     </decorations>
                 </painter>

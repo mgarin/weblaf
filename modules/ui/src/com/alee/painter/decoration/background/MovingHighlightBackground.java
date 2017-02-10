@@ -39,7 +39,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("MovingHighlightBackground")
+@XStreamAlias ( "MovingHighlightBackground" )
 public class MovingHighlightBackground<E extends JComponent, D extends IDecoration<E, D>, I extends MovingHighlightBackground<E, D, I>>
         extends AbstractBackground<E, D, I>
 {
@@ -65,7 +65,7 @@ public class MovingHighlightBackground<E extends JComponent, D extends IDecorati
      * Amount of highlight passes before delay.
      */
     @XStreamAsAttribute
-    protected Integer passses;
+    protected Integer passes;
 
     /**
      * Single pass duration.
@@ -113,12 +113,12 @@ public class MovingHighlightBackground<E extends JComponent, D extends IDecorati
                 final long del = TextUtils.parseDelay ( delay );
                 if ( del > 0 )
                 {
-                    transitionsQueue.add ( new IdleTransition ( passses % 2 == 0 ? 0f : 1f, del ) );
+                    transitionsQueue.add ( new IdleTransition ( passes % 2 == 0 ? 0f : 1f, del ) );
                 }
 
                 // Adding passes
                 final long dur = TextUtils.parseDelay ( duration );
-                for ( int i = 0; i < passses; i++ )
+                for ( int i = 0; i < passes; i++ )
                 {
                     final float from = i % 2 == 0 ? 0f : 1f;
                     final float to = i % 2 == 0 ? 1f : 0f;
@@ -209,15 +209,15 @@ public class MovingHighlightBackground<E extends JComponent, D extends IDecorati
     }
 
     @Override
-    public I merge ( final I background )
+    public I merge ( final I bg )
     {
-        super.merge ( background );
-        orientation = background.isOverwrite () || background.orientation != null ? background.orientation : orientation;
-        width = background.isOverwrite () || background.width != null ? background.width : width;
-        color = background.isOverwrite () || background.color != null ? background.color : color;
-        passses = background.isOverwrite () || background.passses != null ? background.passses : passses;
-        duration = background.isOverwrite () || background.duration != null ? background.duration : duration;
-        delay = background.isOverwrite () || background.delay != null ? background.delay : delay;
+        super.merge ( bg );
+        orientation = bg.isOverwrite () || bg.orientation != null ? bg.orientation : orientation;
+        width = bg.isOverwrite () || bg.width != null ? bg.width : width;
+        color = bg.isOverwrite () || bg.color != null ? bg.color : color;
+        passes = bg.isOverwrite () || bg.passes != null ? bg.passes : passes;
+        duration = bg.isOverwrite () || bg.duration != null ? bg.duration : duration;
+        delay = bg.isOverwrite () || bg.delay != null ? bg.delay : delay;
         return ( I ) this;
     }
 }

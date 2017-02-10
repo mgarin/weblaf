@@ -35,7 +35,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("ColorBackground")
+@XStreamAlias ( "ColorBackground" )
 public class ColorBackground<E extends JComponent, D extends IDecoration<E, D>, I extends ColorBackground<E, D, I>>
         extends AbstractBackground<E, D, I>
 {
@@ -70,10 +70,10 @@ public class ColorBackground<E extends JComponent, D extends IDecoration<E, D>, 
     }
 
     @Override
-    public I merge ( final I background )
+    public I merge ( final I bg )
     {
-        super.merge ( background );
-        color = background.isOverwrite () || background.color != null ? background.color : color;
+        super.merge ( bg );
+        color = bg.isOverwrite () || bg.color != null ? bg.color : color;
         return ( I ) this;
     }
 }

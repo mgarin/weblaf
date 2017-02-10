@@ -269,14 +269,35 @@ public class WebPanel extends JPanel
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WPanelUI} object that renders this component
+     */
+    @Override
+    public WPanelUI getUI ()
+    {
+        return ( WPanelUI ) ui;
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WPanelUI}
+     */
+    public void setUI ( final WPanelUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebPanelUI ) )
+        if ( getUI () == null || !( getUI () instanceof WPanelUI ) )
         {
             try
             {
-                setUI ( ( WebPanelUI ) UIManager.getUI ( this ) );
+                setUI ( ( WPanelUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

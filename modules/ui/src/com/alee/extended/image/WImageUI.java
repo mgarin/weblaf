@@ -17,29 +17,31 @@
 
 package com.alee.extended.image;
 
-import com.alee.utils.SwingUtils;
+import com.alee.laf.WebUI;
+import com.alee.utils.LafUtils;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 
 /**
- * Pluggable look and feel interface for {@link com.alee.extended.image.WebImage} component.
+ * Pluggable look and feel interface for {@link WebImage} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public abstract class WImageUI extends ComponentUI
+public abstract class WImageUI<C extends WebImage> extends ComponentUI implements WebUI<C>
 {
     /**
      * Runtime variables.
      */
-    protected WebImage image;
+    protected C image;
 
     @Override
     public void installUI ( final JComponent c )
     {
         // Saving image reference
-        image = ( WebImage ) c;
+        image = ( C ) c;
 
         // Installing default component settings
         installDefaults ();
@@ -61,14 +63,10 @@ public abstract class WImageUI extends ComponentUI
         image = null;
     }
 
-    /**
-     * Returns component default font key.
-     *
-     * @return component default font key
-     */
-    protected String getFontKey ()
+    @Override
+    public String getPropertyPrefix ()
     {
-        return "Image.font";
+        return "Image.";
     }
 
     /**
@@ -76,11 +74,7 @@ public abstract class WImageUI extends ComponentUI
      */
     protected void installDefaults ()
     {
-        if ( SwingUtils.isUIResource ( image.getFont () ) )
-        {
-            image.setFont ( UIManager.getFont ( getFontKey () ) );
-        }
-
+        LafUtils.installDefaults ( image, getPropertyPrefix () );
         image.setOpacity ( 1f );
         image.setDisplayType ( DisplayType.preferred );
         image.setHorizontalAlignment ( SwingConstants.CENTER );
@@ -92,7 +86,7 @@ public abstract class WImageUI extends ComponentUI
      */
     protected void uninstallDefaults ()
     {
-        LookAndFeel.uninstallBorder ( image );
+        LafUtils.uninstallDefaults ( image );
     }
 
     /**

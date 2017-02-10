@@ -49,7 +49,6 @@ import java.util.Map;
 
 public class WebFileDrop extends WebPanel implements LanguageMethods
 {
-
     protected static final BasicStroke dashStroke =
             new BasicStroke ( 3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1f, new float[]{ 8f, 8f }, 0f );
 
@@ -601,6 +600,12 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
     /**
      * Language methods
      */
+
+    @Override
+    public String getLanguage ()
+    {
+        return LanguageManager.getComponentKey ( this );
+    }
 
     @Override
     public void setLanguage ( final String key, final Object... data )

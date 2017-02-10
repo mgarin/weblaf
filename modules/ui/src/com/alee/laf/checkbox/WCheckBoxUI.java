@@ -17,17 +17,26 @@
 
 package com.alee.laf.checkbox;
 
-import javax.swing.plaf.basic.BasicCheckBoxUI;
+import com.alee.laf.button.WButtonUI;
+
+import javax.swing.*;
 import java.awt.*;
 
 /**
- * Pluggable look and feel interface for {@link WebCheckBox} component.
+ * Pluggable look and feel interface for {@link JCheckBox} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public abstract class WCheckBoxUI extends BasicCheckBoxUI
+public abstract class WCheckBoxUI<C extends JCheckBox> extends WButtonUI<C>
 {
+    @Override
+    public String getPropertyPrefix ()
+    {
+        return "CheckBox.";
+    }
+
     /**
      * Returns icon bounds.
      *

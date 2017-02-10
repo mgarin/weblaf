@@ -59,7 +59,7 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
     /**
      * Component painter.
      */
-    @DefaultPainter (TreePainter.class)
+    @DefaultPainter ( TreePainter.class )
     protected ITreePainter painter;
 
     /**
@@ -75,11 +75,11 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
     protected int hoverRow = -1;
 
     /**
-     * Returns an instance of the WebTreeUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebTreeUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebTreeUI
+     * @return instance of the {@link WebTreeUI}
      */
     @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
@@ -87,11 +87,6 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
         return new WebTreeUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
@@ -178,11 +173,6 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
         StyleManager.installSkin ( tree );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
@@ -236,7 +226,7 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

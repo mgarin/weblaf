@@ -92,7 +92,7 @@ public class WebAsyncTreeExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebAsyncTree tree = new WebAsyncTree ( getStyleId (), createDataProvider () );
             tree.setVisibleRowCount ( 8 );
@@ -116,7 +116,7 @@ public class WebAsyncTreeExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebAsyncTree tree = new WebAsyncTree ( getStyleId (), createDataProvider () );
             tree.setVisibleRowCount ( 8 );
@@ -141,7 +141,7 @@ public class WebAsyncTreeExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebAsyncTree left = new WebAsyncTree ( getStyleId (), createDataProvider () );
             left.setVisibleRowCount ( 8 );

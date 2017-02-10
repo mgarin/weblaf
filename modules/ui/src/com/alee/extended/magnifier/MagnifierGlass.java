@@ -19,6 +19,7 @@ package com.alee.extended.magnifier;
 
 import com.alee.managers.glasspane.GlassPaneManager;
 import com.alee.managers.glasspane.WebGlassPane;
+import com.alee.managers.language.LanguageManager;
 import com.alee.utils.*;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.swing.WebTimer;
@@ -621,7 +622,11 @@ public class MagnifierGlass extends JComponent
             {
                 final Map taa = SwingUtils.setupTextAntialias ( g2d );
                 g2d.setColor ( Color.BLACK );
-                g2d.drawString ( time + " ms", shadeWidth + 5, shadeWidth + size.height - 5 );
+                final String text = time + " " + LanguageManager.get ( "weblaf.time.units.short.millisecond" );
+                final int x = getComponentOrientation ().isLeftToRight () ? shadeWidth + 5 :
+                        shadeWidth + size.width - g2d.getFontMetrics ().stringWidth ( text ) - 5;
+                final int y = shadeWidth + size.height - 5;
+                g2d.drawString ( text, x, y );
                 SwingUtils.restoreTextAntialias ( g2d, taa );
             }
 
@@ -727,7 +732,7 @@ public class MagnifierGlass extends JComponent
         }
         if ( SwingUtils.getRootPane ( component ) == null )
         {
-            // Checking rootpane existance
+            // Checking rootpane existence
             throw new IllegalArgumentException ( "Provided component is not placed within any window: " + component );
         }
 

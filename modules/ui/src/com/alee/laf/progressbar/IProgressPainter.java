@@ -29,6 +29,9 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public interface IProgressPainter<E extends JProgressBar, U extends WebProgressBarUI> extends SectionPainter<E, U>
+public interface IProgressPainter<E extends JProgressBar, U extends WProgressBarUI> extends SectionPainter<E, U>
 {
+    /**
+     * This interface doesn't offer any additional methods to implement.
+     */
 }

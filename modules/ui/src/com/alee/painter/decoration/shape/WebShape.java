@@ -27,7 +27,7 @@ import java.awt.geom.GeneralPath;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("WebShape")
+@XStreamAlias ( "WebShape" )
 public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I extends WebShape<E, D, I>> extends AbstractShape<E, D, I>
         implements IPartialShape<E, D, I>
 {
@@ -39,12 +39,14 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
 
     /**
      * Displayed decoration sides.
+     * todo Make use of {@link com.alee.painter.decoration.shape.Sides}
      */
     @XStreamAsAttribute
     protected String sides;
 
     /**
      * Displayed decoration side lines.
+     * todo Make use of {@link com.alee.painter.decoration.shape.Sides}
      */
     @XStreamAsAttribute
     protected String lines;

@@ -28,18 +28,20 @@ import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
- * Custom UI for {@link com.alee.extended.label.WebStyledLabel} component.
+ * Custom UI for {@link WebStyledLabel} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
+ * @see WebStyledLabel
  */
 
-public class WebStyledLabelUI extends WStyledLabelUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebStyledLabelUI<C extends WebStyledLabel> extends WStyledLabelUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter (StyledLabelPainter.class)
+    @DefaultPainter ( StyledLabelPainter.class )
     protected IStyledLabelPainter painter;
 
     /**
@@ -49,11 +51,11 @@ public class WebStyledLabelUI extends WStyledLabelUI implements ShapeSupport, Ma
     protected Insets padding = null;
 
     /**
-     * Returns an instance of the WebStyledLabelUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebStyledLabelUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebStyledLabelUI
+     * @return instance of the {@link WebStyledLabelUI}
      */
     @SuppressWarnings ( { "UnusedDeclaration" } )
     public static ComponentUI createUI ( final JComponent c )
@@ -64,6 +66,7 @@ public class WebStyledLabelUI extends WStyledLabelUI implements ShapeSupport, Ma
     @Override
     public void installUI ( final JComponent c )
     {
+        // Installing UI
         super.installUI ( c );
 
         // Applying skin
@@ -76,6 +79,7 @@ public class WebStyledLabelUI extends WStyledLabelUI implements ShapeSupport, Ma
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( label );
 
+        // Uninstalling UI
         super.uninstallUI ( c );
     }
 
@@ -118,7 +122,7 @@ public class WebStyledLabelUI extends WStyledLabelUI implements ShapeSupport, Ma
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

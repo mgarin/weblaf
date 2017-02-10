@@ -97,7 +97,7 @@ public class WebTristateCheckBoxExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebTristateCheckBox cb1 = createCheckBox ( "1", CheckState.checked );
             final WebTristateCheckBox cb2 = createCheckBox ( "2", CheckState.mixed );

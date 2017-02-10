@@ -40,7 +40,7 @@ public class WebMenuItemUI extends BasicMenuItemUI implements ShapeSupport, Marg
     /**
      * Component painter.
      */
-    @DefaultPainter (MenuItemPainter.class)
+    @DefaultPainter ( MenuItemPainter.class )
     protected IMenuItemPainter painter;
 
     /**
@@ -50,13 +50,13 @@ public class WebMenuItemUI extends BasicMenuItemUI implements ShapeSupport, Marg
     protected Insets padding = null;
 
     /**
-     * Returns an instance of the WebMenuItemUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebMenuItemUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebMenuItemUI
+     * @return instance of the {@link WebMenuItemUI}
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebMenuItemUI ();
@@ -130,7 +130,7 @@ public class WebMenuItemUI extends BasicMenuItemUI implements ShapeSupport, Marg
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

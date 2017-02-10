@@ -40,7 +40,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeSupport
     /**
      * Component painter.
      */
-    @DefaultPainter (TableHeaderPainter.class)
+    @DefaultPainter ( TableHeaderPainter.class )
     protected ITableHeaderPainter painter;
 
     /**
@@ -56,17 +56,12 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeSupport
      * @param c component that will use UI instance
      * @return instance of the WebTableHeaderUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTableHeaderUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
@@ -79,11 +74,6 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeSupport
         header.setDefaultRenderer ( new WebTableHeaderCellRenderer () );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
@@ -132,7 +122,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeSupport
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

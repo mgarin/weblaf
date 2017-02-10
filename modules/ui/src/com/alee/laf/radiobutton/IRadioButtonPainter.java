@@ -12,4 +12,7 @@ import javax.swing.*;
 
 public interface IRadioButtonPainter<E extends JRadioButton, U extends WRadioButtonUI> extends IAbstractStateButtonPainter<E, U>
 {
+    /**
+     * This interface doesn't offer any additional methods to implement.
+     */
 }

@@ -27,7 +27,7 @@ import javax.swing.tree.TreePath;
 import java.util.List;
 
 /**
- * Simple tree node painter based on {@link com.alee.painter.decoration.AbstractSectionDecorationPainter}.
+ * Simple tree node painter based on {@link AbstractSectionDecorationPainter}.
  * It is used within {@link com.alee.laf.tree.TreePainter} to paint nodes background.
  *
  * @param <E> component type

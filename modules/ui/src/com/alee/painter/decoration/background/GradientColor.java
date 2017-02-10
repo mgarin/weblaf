@@ -32,12 +32,12 @@ import java.io.Serializable;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("GradientColor")
-@XStreamConverter (value = ToAttributedValueConverter.class, strings = { "color" })
+@XStreamAlias ( "GradientColor" )
+@XStreamConverter ( value = ToAttributedValueConverter.class, strings = { "color" } )
 public class GradientColor implements Serializable, Cloneable
 {
     /**
-     * Color fraction.
+     * Position of the color between the starting and end points.
      * It is not used when gradient has only one color specified.
      * Also it might not be specified for multi-color separator to use even fractions.
      */
@@ -45,7 +45,7 @@ public class GradientColor implements Serializable, Cloneable
     protected Float fraction;
 
     /**
-     * Fraction color.
+     * Gradient color for the specified position.
      * Must always be provided to properly render separator.
      */
     protected Color color;

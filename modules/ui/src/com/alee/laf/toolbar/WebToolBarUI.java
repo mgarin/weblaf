@@ -42,7 +42,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
     /**
      * Component painter.
      */
-    @DefaultPainter (ToolBarPainter.class)
+    @DefaultPainter ( ToolBarPainter.class )
     protected IToolBarPainter painter;
 
     /**
@@ -58,7 +58,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
      * @param c component that will use UI instance
      * @return instance of the WebButtonUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebToolBarUI ();
@@ -137,7 +137,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

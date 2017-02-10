@@ -33,7 +33,7 @@ public interface PainterShapeProvider<E extends Component>
      * Returns painted component shape.
      *
      * @param component component to process
-     * @param bounds    bounds for painter visual data
+     * @param bounds    bounds for painter view
      * @return painted component shape
      */
     public Shape provideShape ( E component, Rectangle bounds );

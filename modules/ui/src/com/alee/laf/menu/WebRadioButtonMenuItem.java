@@ -20,6 +20,7 @@ package com.alee.laf.menu;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
+import com.alee.managers.language.LanguageUtils;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
 import com.alee.managers.settings.DefaultValue;
@@ -384,6 +385,13 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
         setStyleId ( id );
     }
 
+    @Override
+    protected void init ( final String text, final Icon icon )
+    {
+        super.init ( LanguageUtils.getInitialText ( text ), icon );
+        LanguageUtils.registerInitialLanguage ( this, text );
+    }
+
     /**
      * Sets the key combination which invokes the menu item's action listeners without navigating the menu hierarchy.
      *
@@ -563,6 +571,12 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
         {
             setUI ( getUI () );
         }
+    }
+
+    @Override
+    public String getLanguage ()
+    {
+        return LanguageManager.getComponentKey ( this );
     }
 
     @Override

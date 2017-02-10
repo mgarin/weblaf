@@ -31,7 +31,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("Dictionary")
+@XStreamAlias ( "Dictionary" )
 public final class Dictionary implements Serializable
 {
     private static final String ID_PREFIX = "DIC";
@@ -54,13 +54,13 @@ public final class Dictionary implements Serializable
     @XStreamAsAttribute
     private String notes;
 
-    @XStreamImplicit (itemFieldName = "record")
+    @XStreamImplicit ( itemFieldName = "record" )
     private List<Record> records;
 
-    @XStreamImplicit (itemFieldName = "Dictionary")
+    @XStreamImplicit ( itemFieldName = "Dictionary" )
     private List<Dictionary> subdictionaries;
 
-    @XStreamAlias ("LanguageInfo")
+    @XStreamAlias ( "LanguageInfo" )
     private List<LanguageInfo> languageInfos;
 
     public Dictionary ()

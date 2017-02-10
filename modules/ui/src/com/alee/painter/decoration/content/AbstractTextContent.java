@@ -770,7 +770,9 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     {
         final String text = getText ( c, d );
         final FontMetrics fm = getFontMetrics ( c, d );
-        return new Dimension ( SwingUtils.stringWidth ( fm, text ), fm.getHeight () );
+        final int w = SwingUtils.stringWidth ( fm, text );
+        final int h = fm.getHeight ();
+        return new Dimension ( w, h );
     }
 
     @Override

@@ -77,7 +77,7 @@ public class WebHotkeyLabelExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebHotkeyLabel p1 = new WebHotkeyLabel ( getStyleId (), "Shift" );
             final WebHotkeyLabel p2 = new WebHotkeyLabel ( getStyleId (), "Escape" );
@@ -103,7 +103,7 @@ public class WebHotkeyLabelExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebHotkeyLabel p1 = new WebHotkeyLabel ( getStyleId (), KeyEvent.VK_SPACE );
             final WebHotkeyLabel p3 = new WebHotkeyLabel ( getStyleId (), KeyEvent.VK_SPACE, KeyEvent.CTRL_MASK );
@@ -128,7 +128,7 @@ public class WebHotkeyLabelExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebHotkeyLabel p1 = new WebHotkeyLabel ( getStyleId (), Hotkey.ALT );
             final WebHotkeyLabel p2 = new WebHotkeyLabel ( getStyleId (), Hotkey.F4 );

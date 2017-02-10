@@ -75,7 +75,7 @@ public class WebTextAreaExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebTextArea textArea = new WebTextArea ( getStyleId (), 3, 20 );
             textArea.setInputPrompt ( getPreviewLanguagePrefix () + "prompt" );
@@ -100,7 +100,7 @@ public class WebTextAreaExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebTextArea textArea = new WebTextArea ( getStyleId (), "Sample\nmultiline\ntext", 3, 20 );
             return CollectionUtils.asList ( textArea );

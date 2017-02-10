@@ -17,29 +17,31 @@
 
 package com.alee.laf.label;
 
-import com.alee.utils.SwingUtils;
+import com.alee.laf.WebUI;
+import com.alee.utils.LafUtils;
 
 import javax.swing.*;
 import javax.swing.plaf.LabelUI;
 
 /**
- * Pluggable look and feel interface for {@link javax.swing.JLabel} component.
+ * Pluggable look and feel interface for {@link JLabel} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public abstract class WLabelUI extends LabelUI
+public abstract class WLabelUI<C extends JLabel> extends LabelUI implements WebUI<C>
 {
     /**
      * Runtime variables.
      */
-    protected JLabel label;
+    protected C label;
 
     @Override
     public void installUI ( final JComponent c )
     {
         // Saving label reference
-        label = ( JLabel ) c;
+        label = ( C ) c;
 
         // Installing default component settings
         installDefaults ();
@@ -61,14 +63,10 @@ public abstract class WLabelUI extends LabelUI
         label = null;
     }
 
-    /**
-     * Returns component default font key.
-     *
-     * @return component default font key
-     */
-    protected String getFontKey ()
+    @Override
+    public String getPropertyPrefix ()
     {
-        return "Label.font";
+        return "Label.";
     }
 
     /**
@@ -76,10 +74,7 @@ public abstract class WLabelUI extends LabelUI
      */
     protected void installDefaults ()
     {
-        if ( SwingUtils.isUIResource ( label.getFont () ) )
-        {
-            label.setFont ( UIManager.getFont ( getFontKey () ) );
-        }
+        LafUtils.installDefaults ( label, getPropertyPrefix () );
     }
 
     /**
@@ -87,7 +82,7 @@ public abstract class WLabelUI extends LabelUI
      */
     protected void uninstallDefaults ()
     {
-        LookAndFeel.uninstallBorder ( label );
+        LafUtils.uninstallDefaults ( label );
     }
 
     /**

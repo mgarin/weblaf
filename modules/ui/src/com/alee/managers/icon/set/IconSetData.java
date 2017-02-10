@@ -32,7 +32,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("IconSet")
+@XStreamAlias ( "IconSet" )
 public final class IconSetData implements Identifiable, Serializable
 {
     /**

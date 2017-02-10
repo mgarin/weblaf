@@ -1024,6 +1024,12 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
     }
 
     @Override
+    public String getLanguage ()
+    {
+        return LanguageManager.getComponentKey ( getRootPane () );
+    }
+
+    @Override
     public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( getRootPane (), key, data );

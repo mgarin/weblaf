@@ -36,7 +36,7 @@ import java.awt.geom.GeneralPath;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("FeatureStateBackground")
+@XStreamAlias ( "FeatureStateBackground" )
 public class FeatureStateBackground<D extends WebDecoration<PreviewPanel, D>>
         extends AbstractBackground<PreviewPanel, D, FeatureStateBackground<D>>
 {
@@ -95,10 +95,10 @@ public class FeatureStateBackground<D extends WebDecoration<PreviewPanel, D>>
     }
 
     @Override
-    public FeatureStateBackground<D> merge ( final FeatureStateBackground<D> background )
+    public FeatureStateBackground<D> merge ( final FeatureStateBackground<D> bg )
     {
-        super.merge ( background );
-        color = background.isOverwrite () || background.color != null ? background.color : color;
+        super.merge ( bg );
+        color = bg.isOverwrite () || bg.color != null ? bg.color : color;
         return this;
     }
 }

@@ -20,7 +20,7 @@ package com.alee.extended.date;
 import com.alee.painter.SpecificPainter;
 
 /**
- * Base interface for WebDateField component painters.
+ * Base interface for {@link WebDateField} component painters.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -29,4 +29,7 @@ import com.alee.painter.SpecificPainter;
 
 public interface IDateFieldPainter<E extends WebDateField, U extends WDateFieldUI> extends SpecificPainter<E, U>
 {
+    /**
+     * This interface doesn't offer any additional methods to implement.
+     */
 }

@@ -46,7 +46,7 @@ public class WebFormattedTextFieldUI extends WFormattedTextFieldUI implements Sh
     /**
      * Component painter.
      */
-    @DefaultPainter (FormattedTextFieldPainter.class)
+    @DefaultPainter ( FormattedTextFieldPainter.class )
     protected IFormattedTextFieldPainter painter;
 
     /**
@@ -75,7 +75,7 @@ public class WebFormattedTextFieldUI extends WFormattedTextFieldUI implements Sh
      * @param c component that will use UI instance
      * @return instance of the WebFormattedTextFieldUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebFormattedTextFieldUI ();
@@ -170,7 +170,7 @@ public class WebFormattedTextFieldUI extends WFormattedTextFieldUI implements Sh
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

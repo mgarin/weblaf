@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * Basic painter for {@link JRadioButton} component.
- * It is used as {@link WebRadioButtonUI} default painter.
+ * It is used as {@link WRadioButtonUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type

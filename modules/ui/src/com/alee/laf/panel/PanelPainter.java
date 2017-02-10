@@ -23,8 +23,8 @@ import com.alee.painter.decoration.IDecoration;
 import javax.swing.*;
 
 /**
- * Basic painter for JPanel component.
- * It is used as WebPanelUI default painter.
+ * Basic painter for {@link JPanel} component.
+ * It is used as {@link WPanelUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -32,7 +32,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class PanelPainter<E extends JPanel, U extends WebPanelUI, D extends IDecoration<E, D>> extends AbstractContainerPainter<E, U, D>
+public class PanelPainter<E extends JPanel, U extends WPanelUI, D extends IDecoration<E, D>> extends AbstractContainerPainter<E, U, D>
         implements IPanelPainter<E, U>
 {
     /**

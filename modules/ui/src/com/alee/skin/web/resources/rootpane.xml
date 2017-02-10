@@ -1,9 +1,12 @@
-<skin>
+<skin xmlns="http://weblookandfeel.com">
 
     <!-- com.alee.laf.rootpane.WebRootPane -->
 
     <!-- Root pane -->
     <style type="rootpane">
+        <component>
+            <background>237,237,237</background>
+        </component>
         <ui>
             <installComponents>false</installComponents>
             <iconSize>16</iconSize>

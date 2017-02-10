@@ -23,7 +23,8 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Abstract implementation of simple icon content.
+ * Abstract icon {@link IContent} implementation.
+ * Override {@link #getIcon(JComponent, IDecoration)} method to return displayed icon.
  *
  * @param <E> component type
  * @param <D> decoration type

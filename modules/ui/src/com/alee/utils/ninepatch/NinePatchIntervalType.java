@@ -23,7 +23,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("NinePatchIntervalType")
+@XStreamAlias ( "NinePatchIntervalType" )
 public enum NinePatchIntervalType
 {
     horizontalStretch,

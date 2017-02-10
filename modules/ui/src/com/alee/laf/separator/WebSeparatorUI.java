@@ -25,71 +25,60 @@ import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.SeparatorUI;
 import java.awt.*;
 
 /**
  * Custom UI for {@link JSeparator} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public class WebSeparatorUI extends SeparatorUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebSeparatorUI<C extends JSeparator> extends WSeparatorUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter (SeparatorPainter.class)
+    @DefaultPainter ( SeparatorPainter.class )
     protected ISeparatorPainter painter;
 
     /**
      * Runtime variables.
      */
-    protected JSeparator separator = null;
     protected Insets margin = null;
     protected Insets padding = null;
 
     /**
-     * Returns an instance of the WebSeparatorUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebSeparatorUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebSeparatorUI
+     * @return instance of the {@link WebSeparatorUI}
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSeparatorUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
-        // Saving separator to local variable
-        separator = ( JSeparator ) c;
+        // Installing UI
+        super.installUI ( c );
 
         // Applying skin
         StyleManager.installSkin ( separator );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( separator );
 
-        // Cleaning up reference
-        separator = null;
+        // Uninstalling UI
+        super.uninstallUI ( c );
     }
 
     @Override
@@ -131,7 +120,7 @@ public class WebSeparatorUI extends SeparatorUI implements ShapeSupport, MarginS
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

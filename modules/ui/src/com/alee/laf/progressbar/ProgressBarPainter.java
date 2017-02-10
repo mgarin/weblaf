@@ -19,7 +19,7 @@ import java.util.List;
 
 /**
  * Basic painter for {@link JProgressBar} component.
- * It is used as {@link WebProgressBarUI} default painter.
+ * It is used as {@link WProgressBarUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -28,7 +28,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class ProgressBarPainter<E extends JProgressBar, U extends WebProgressBarUI, D extends IDecoration<E, D>>
+public class ProgressBarPainter<E extends JProgressBar, U extends WProgressBarUI, D extends IDecoration<E, D>>
         extends AbstractDecorationPainter<E, U, D> implements IProgressBarPainter<E, U>, ChangeListener
 {
     /**
@@ -85,24 +85,29 @@ public class ProgressBarPainter<E extends JProgressBar, U extends WebProgressBar
     @Override
     public void stateChanged ( final ChangeEvent e )
     {
-        // Check value change
-        final int newValue = component.getValue ();
-        if ( newValue != value )
+        // Ensure component is still available
+        // This might happen if painter is replaced from another ChangeListener
+        if ( component != null )
         {
-            // Perform states update only for non-indeterminate progress bar
-            if ( !component.isIndeterminate () )
+            // Check value change
+            final int newValue = component.getValue ();
+            if ( newValue != value )
             {
-                // Update decoration on border value changes
-                final int min = component.getMinimum ();
-                final int max = component.getMaximum ();
-                if ( value == min || value == max || newValue == min || newValue == max )
+                // Perform states update only for non-indeterminate progress bar
+                if ( !component.isIndeterminate () )
                 {
-                    updateDecorationState ();
+                    // Update decoration on border value changes
+                    final int min = component.getMinimum ();
+                    final int max = component.getMaximum ();
+                    if ( value == min || value == max || newValue == min || newValue == max )
+                    {
+                        updateDecorationState ();
+                    }
                 }
-            }
 
-            // Save current value
-            value = newValue;
+                // Save current value
+                value = newValue;
+            }
         }
     }
 

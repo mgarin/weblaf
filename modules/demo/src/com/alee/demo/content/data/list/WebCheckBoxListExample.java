@@ -77,7 +77,7 @@ public class WebCheckBoxListExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebCheckBoxList list = new WebCheckBoxList ( getStyleId (), createModel ( createShortData () ) );
             return CollectionUtils.asList ( list );
@@ -100,7 +100,7 @@ public class WebCheckBoxListExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebCheckBoxList list = new WebCheckBoxList ( getStyleId (), createModel ( createLongData () ) );
             list.setVisibleRowCount ( 4 );
@@ -124,7 +124,7 @@ public class WebCheckBoxListExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebCheckBoxList list = new WebCheckBoxList ( getStyleId (), createModel ( createLongData () ) );
             list.setVisibleRowCount ( 4 );

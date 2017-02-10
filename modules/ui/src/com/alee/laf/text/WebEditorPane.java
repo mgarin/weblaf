@@ -500,9 +500,11 @@ public class WebEditorPane extends JEditorPane
         return EventMethodsImpl.onDragStart ( this, shift, mouseButton, runnable );
     }
 
-    /**
-     * Language methods
-     */
+    @Override
+    public String getLanguage ()
+    {
+        return LanguageManager.getComponentKey ( this );
+    }
 
     @Override
     public void setLanguage ( final String key, final Object... data )
@@ -545,10 +547,6 @@ public class WebEditorPane extends JEditorPane
     {
         LanguageManager.unregisterLanguageUpdater ( this );
     }
-
-    /**
-     * Settings methods
-     */
 
     @Override
     public void registerSettings ( final String key )
@@ -643,10 +641,6 @@ public class WebEditorPane extends JEditorPane
     {
         SettingsManager.saveComponentSettings ( this );
     }
-
-    /**
-     * Font methods
-     */
 
     @Override
     public WebEditorPane setPlainFont ()

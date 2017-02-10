@@ -25,28 +25,28 @@ import java.awt.*;
 import java.io.Serializable;
 
 /**
- * Single color data for GradientData.
+ * Single color data for {@link GradientData}.
  *
  * @author Mikle Garin
  */
 
-@XStreamAlias ("GradientColorData")
+@XStreamAlias ( "GradientColorData" )
 public class GradientColorData implements Serializable, Cloneable
 {
     /**
-     * GradientData location.
+     * Color location.
      */
     @XStreamAsAttribute
     private float location;
 
     /**
-     * GradientData color.
+     * Color.
      */
     @XStreamAsAttribute
     private Color color;
 
     /**
-     * Constructs GradientColorData with zero location and white color.
+     * Constructs {@link GradientColorData} with zero location and white color.
      */
     public GradientColorData ()
     {
@@ -56,10 +56,10 @@ public class GradientColorData implements Serializable, Cloneable
     }
 
     /**
-     * Constructs GradientColorData with the specified location and color.
+     * Constructs {@link GradientColorData} with the specified location and color.
      *
-     * @param location GradientColorData location
-     * @param color    GradientColorData color
+     * @param location color location
+     * @param color    color
      */
     public GradientColorData ( final float location, final Color color )
     {
@@ -69,9 +69,9 @@ public class GradientColorData implements Serializable, Cloneable
     }
 
     /**
-     * Returns GradientColorData color.
+     * Returns color.
      *
-     * @return GradientColorData color
+     * @return color
      */
     public Color getColor ()
     {
@@ -79,9 +79,9 @@ public class GradientColorData implements Serializable, Cloneable
     }
 
     /**
-     * Sets GradientColorData color.
+     * Sets color.
      *
-     * @param color new GradientColorData color
+     * @param color new color
      */
     public void setColor ( final Color color )
     {
@@ -89,9 +89,9 @@ public class GradientColorData implements Serializable, Cloneable
     }
 
     /**
-     * Returns GradientColorData location.
+     * Returns color location.
      *
-     * @return GradientColorData location
+     * @return color location
      */
     public float getLocation ()
     {
@@ -99,9 +99,9 @@ public class GradientColorData implements Serializable, Cloneable
     }
 
     /**
-     * Sets GradientColorData location.
+     * Sets color location.
      *
-     * @param location new GradientColorData location
+     * @param location new color location
      */
     public void setLocation ( final float location )
     {
@@ -109,10 +109,10 @@ public class GradientColorData implements Serializable, Cloneable
     }
 
     /**
-     * Returns whether this GradientColorData is equal to the specified object or not.
+     * Returns whether this {@link GradientColorData} is equal to the specified object or not.
      *
      * @param obj object to compare with
-     * @return true if this GradientColorData is equal to the specified object, false otherwise
+     * @return {@code true} if this {@link GradientColorData} is equal to the specified object, {@code false} otherwise
      */
     @Override
     public boolean equals ( final Object obj )
@@ -127,9 +127,9 @@ public class GradientColorData implements Serializable, Cloneable
     }
 
     /**
-     * Returns cloned GradientColorData.
+     * Returns cloned {@link GradientColorData}.
      *
-     * @return cloned GradientColorData
+     * @return cloned {@link GradientColorData}
      */
     @Override
     public GradientColorData clone ()

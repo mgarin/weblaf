@@ -17,14 +17,87 @@
 
 package com.alee.extended.date;
 
+import com.alee.laf.WebUI;
+import com.alee.utils.LafUtils;
+
+import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 
 /**
- * Pluggable look and feel interface for {@link com.alee.extended.date.WebDateField}.
+ * Pluggable look and feel interface for {@link WebDateField}.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public abstract class WDateFieldUI extends ComponentUI
+public abstract class WDateFieldUI<C extends WebDateField> extends ComponentUI implements WebUI<C>
 {
+    /**
+     * Runtime variables.
+     */
+    protected C dateField;
+
+    @Override
+    public void installUI ( final JComponent c )
+    {
+        // Saving datefield reference
+        dateField = ( C ) c;
+
+        // Installing default component settings
+        installDefaults ();
+
+        // Installing default component listeners
+        installListeners ();
+    }
+
+    @Override
+    public void uninstallUI ( final JComponent c )
+    {
+        // Uninstalling default component listeners
+        uninstallListeners ();
+
+        // Uninstalling default component settings
+        uninstallDefaults ();
+
+        // Removing datefield reference
+        dateField = null;
+    }
+
+    @Override
+    public String getPropertyPrefix ()
+    {
+        return "DateField.";
+    }
+
+    /**
+     * Installs default component settings.
+     */
+    protected void installDefaults ()
+    {
+        LafUtils.installDefaults ( dateField, getPropertyPrefix () );
+    }
+
+    /**
+     * Uninstalls default component settings.
+     */
+    protected void uninstallDefaults ()
+    {
+        LafUtils.uninstallDefaults ( dateField );
+    }
+
+    /**
+     * Installs default component listeners.
+     */
+    protected void installListeners ()
+    {
+        // Do nothing by default
+    }
+
+    /**
+     * Uninstalls default component listeners.
+     */
+    protected void uninstallListeners ()
+    {
+        // Do nothing by default
+    }
 }

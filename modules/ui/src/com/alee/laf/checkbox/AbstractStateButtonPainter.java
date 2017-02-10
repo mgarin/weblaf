@@ -28,7 +28,7 @@ public abstract class AbstractStateButtonPainter<E extends AbstractButton, U ext
     /**
      * State icon painter.
      */
-    @DefaultPainter (ButtonStatePainter.class)
+    @DefaultPainter ( ButtonStatePainter.class )
     protected IButtonStatePainter checkStatePainter;
 
     /**

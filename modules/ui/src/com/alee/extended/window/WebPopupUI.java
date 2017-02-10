@@ -28,17 +28,18 @@ import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
- * Custom UI for {@link com.alee.extended.window.WebPopup} component.
+ * Custom UI for {@link WebPopup} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public class WebPopupUI extends WPopupUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebPopupUI<C extends WebPopup> extends WPopupUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter (PopupPainter.class)
+    @DefaultPainter ( PopupPainter.class )
     protected IPopupPainter painter;
 
     /**
@@ -48,13 +49,13 @@ public class WebPopupUI extends WPopupUI implements ShapeSupport, MarginSupport,
     protected Insets padding = null;
 
     /**
-     * Returns an instance of the WebPopupUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebPopupUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebPopupUI
+     * @return instance of the {@link WebPopupUI}
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebPopupUI ();
@@ -63,6 +64,7 @@ public class WebPopupUI extends WPopupUI implements ShapeSupport, MarginSupport,
     @Override
     public void installUI ( final JComponent c )
     {
+        // Installing UI
         super.installUI ( c );
 
         // Applying skin
@@ -75,6 +77,7 @@ public class WebPopupUI extends WPopupUI implements ShapeSupport, MarginSupport,
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( popup );
 
+        // Uninstalling UI
         super.uninstallUI ( c );
     }
 
@@ -117,7 +120,7 @@ public class WebPopupUI extends WPopupUI implements ShapeSupport, MarginSupport,
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

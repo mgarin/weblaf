@@ -18,7 +18,7 @@
 package com.alee.extended.image;
 
 import com.alee.laf.WebLookAndFeel;
-import com.alee.painter.decoration.AbstractContainerPainter;
+import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.GraphicsUtils;
@@ -31,7 +31,7 @@ import java.awt.image.BufferedImage;
 
 /**
  * Basic painter for {@link WebImage} component.
- * It is used as {@link WebImageUI} default painter.
+ * It is used as {@link WImageUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -39,7 +39,7 @@ import java.awt.image.BufferedImage;
  * @author Mikle Garin
  */
 
-public class ImagePainter<E extends WebImage, U extends WImageUI, D extends IDecoration<E, D>> extends AbstractContainerPainter<E, U, D>
+public class ImagePainter<E extends WebImage, U extends WImageUI, D extends IDecoration<E, D>> extends AbstractDecorationPainter<E, U, D>
         implements IImagePainter<E, U>
 {
     /**

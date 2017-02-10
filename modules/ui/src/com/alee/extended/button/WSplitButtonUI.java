@@ -17,20 +17,27 @@
 
 package com.alee.extended.button;
 
-import javax.swing.plaf.basic.BasicButtonUI;
+import com.alee.laf.button.WButtonUI;
 
 /**
- * Pluggable look and feel interface for {@link com.alee.extended.button.WebSplitButton} component.
+ * Pluggable look and feel interface for {@link WebSplitButton} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public abstract class WSplitButtonUI extends BasicButtonUI
+public abstract class WSplitButtonUI<C extends WebSplitButton> extends WButtonUI<C>
 {
+    @Override
+    public String getPropertyPrefix ()
+    {
+        return "SplitButton.";
+    }
+
     /**
      * Returns whether or not mouse is currently over the split menu button.
      *
-     * @return true if mouse is currently over the split menu button, false otherwise
+     * @return {@code true} if mouse is currently over the split menu button, {@code false} otherwise
      */
     public abstract boolean isOnSplit ();
 }

@@ -171,7 +171,7 @@ public abstract class AbstractStylePreview extends AbstractPreview
     {
         if ( previewContent == null )
         {
-            previewContent = createPreviewElements ( StyleId.panelTransparent );
+            previewContent = createPreviewElements ();
         }
         return previewContent;
     }
@@ -180,10 +180,9 @@ public abstract class AbstractStylePreview extends AbstractPreview
      * Returns preview content component.
      * This can be anything provided by the example.
      *
-     * @param containerStyleId container style ID
      * @return preview content component
      */
-    protected abstract List<? extends JComponent> createPreviewElements ( StyleId containerStyleId );
+    protected abstract List<? extends JComponent> createPreviewElements ();
 
     @Override
     public void applySkin ( final Skin skin )

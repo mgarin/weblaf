@@ -30,12 +30,13 @@ import java.awt.*;
 /**
  * Custom UI for {@link WebLink} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLink">How to use WebLink</a>
  * @see WebLink
  */
 
-public class WebLinkUI extends WLinkUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebLinkUI<C extends WebLink> extends WLinkUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -65,25 +66,27 @@ public class WebLinkUI extends WLinkUI implements ShapeSupport, MarginSupport, P
     @Override
     public void installUI ( final JComponent c )
     {
+        // Installing UI
         super.installUI ( c );
 
         // Applying skin
-        StyleManager.installSkin ( link );
+        StyleManager.installSkin ( label );
     }
 
     @Override
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.uninstallSkin ( link );
+        StyleManager.uninstallSkin ( label );
 
+        // Uninstalling UI
         super.uninstallUI ( c );
     }
 
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( link, painter );
+        return PainterSupport.getShape ( label, painter );
     }
 
     @Override
@@ -119,7 +122,7 @@ public class WebLinkUI extends WLinkUI implements ShapeSupport, MarginSupport, P
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**
@@ -130,7 +133,7 @@ public class WebLinkUI extends WLinkUI implements ShapeSupport, MarginSupport, P
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( link, new DataRunnable<ILinkPainter> ()
+        PainterSupport.setPainter ( label, new DataRunnable<ILinkPainter> ()
         {
             @Override
             public void run ( final ILinkPainter newPainter )

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema targetNamespace="http://weblookandfeel.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <xs:include schemaLocation="lang/Class.xsd" />
+    <xs:include schemaLocation="ext/Resource.xsd" />
+    <xs:include schemaLocation="ComponentStyle.xsd" />
+
+    <!-- com.alee.managers.style.data.SkinInfo -->
+    <xs:complexType name="SkinInfo">
+        <xs:sequence maxOccurs="1">
+
+            <!-- Unique skin identifier -->
+            <xs:element name="id" type="xs:string" minOccurs="0" maxOccurs="1" />
+
+            <!-- Skin base class -->
+            <xs:element name="class" type="Class" minOccurs="0" maxOccurs="1" />
+
+            <!-- Skin base class -->
+            <xs:element name="extends" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+
+            <!-- List of supported systems separated by comma -->
+            <xs:element name="supportedSystems" type="xs:string" minOccurs="0" maxOccurs="1" />
+
+            <!-- Skin icon always placed relative to base skin class -->
+            <xs:element name="icon" type="xs:string" minOccurs="0" maxOccurs="1" />
+
+            <!-- Skin title -->
+            <xs:element name="title" type="xs:string" minOccurs="0" maxOccurs="1" />
+
+            <!-- Short skin description -->
+            <xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1" />
+
+            <!-- Skin author -->
+            <xs:element name="author" type="xs:string" minOccurs="0" maxOccurs="1" />
+
+            <!-- Elements which position can be mixed -->
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+
+                <!-- Icon sets-->
+                <xs:element name="iconSet" type="Class" />
+
+                <!-- Includes -->
+                <xs:element name="include" type="Resource" />
+
+                <!-- Styles -->
+                <xs:element name="style" type="ComponentStyle" />
+
+            </xs:choice>
+
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

@@ -24,11 +24,7 @@ import com.alee.utils.XmlUtils;
 
 import javax.swing.*;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class manages customizable component icons.
@@ -72,7 +68,7 @@ public final class IconManager
             cache = new HashMap<String, WeakReference<Icon>> ( 60 );
 
             // Base XStream aliases
-            XmlUtils.processAnnotations ( SetIconContent.class );
+            XmlUtils.processAnnotations ( SetIcon.class );
             XmlUtils.processAnnotations ( IconSetData.class );
             XmlUtils.processAnnotations ( IconData.class );
 
@@ -179,8 +175,9 @@ public final class IconManager
             }
 
             // Checking icon sets
-            ListIterator<IconSet> iter = iconSets.listIterator ( iconSets.size () );
-            while ( iter.hasPrevious () ) {
+            final ListIterator<IconSet> iter = iconSets.listIterator ( iconSets.size () );
+            while ( iter.hasPrevious () )
+            {
                 icon = iter.previous ().getIcon ( id );
                 if ( icon != null )
                 {

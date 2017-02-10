@@ -163,33 +163,31 @@
     </SvgIcon>
 
     <!-- File Chooser icons -->
-    <SvgIcon id="backward" path="arrow.svg" size="16,16">
-        <SvgFill selector="svg" color="80,80,80" />
-        <SvgTransform selector="svg" rotate="-90" />
-    </SvgIcon>
-    <SvgIcon id="forward" path="arrow.svg" size="16,16">
-        <SvgFill selector="svg" color="80,80,80" />
-        <SvgTransform selector="svg" rotate="90" />
-    </SvgIcon>
-    <SvgIcon id="history" path="history.svg" size="16,16">
+    <SvgIcon id="backward" path="arrow-left.svg" size="16,16">
         <SvgFill selector="svg" color="80,80,80" />
     </SvgIcon>
-    <SvgIcon id="folder-up" path="arrow.svg" size="16,16">
+    <SvgIcon id="forward" path="arrow-right.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="history" path="clock.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="folder-up" path="folder-up.svg" size="16,16">
         <SvgFill selector="svg" color="80,80,80" />
     </SvgIcon>
     <SvgIcon id="folder-home" path="home.svg" size="16,16">
         <SvgFill selector="svg" color="80,80,80" />
     </SvgIcon>
-    <SvgIcon id="folder-new" path="folder-new.svg" size="16,16">
+    <SvgIcon id="folder-new" path="folder-plus.svg" size="16,16">
         <SvgFill selector="svg" color="80,80,80" />
     </SvgIcon>
     <SvgIcon id="refresh" path="refresh.svg" size="16,16">
         <SvgFill selector="svg" color="80,80,80" />
     </SvgIcon>
-    <SvgIcon id="remove" path="remove.svg" size="16,16">
+    <SvgIcon id="remove" path="bin.svg" size="16,16">
         <SvgFill selector="svg" color="80,80,80" />
     </SvgIcon>
-    <SvgIcon id="view" path="settings.svg" size="16,16">
+    <SvgIcon id="view" path="cog.svg" size="16,16">
         <SvgFill selector="svg" color="80,80,80" />
     </SvgIcon>
     <SvgIcon id="icons" path="icons.svg" size="16,16">
@@ -202,12 +200,12 @@
         <SvgFill selector="svg" color="80,80,80" />
     </SvgIcon>
     <SvgIcon id="accept" path="checkmark.svg" size="16,16">
-        <SvgFill selector="svg" color="0,230,0" />
+        <SvgFill selector="svg" color="0,168,0" />
     </SvgIcon>
     <SvgIcon id="cancel" path="cross.svg" size="16,16">
-        <SvgFill selector="svg" color="230,0,0" />
+        <SvgFill selector="svg" color="168,0,22" />
     </SvgIcon>
-    <SvgIcon id="computer" path="computer.svg" size="16,16">
+    <SvgIcon id="computer" path="monitor.svg" size="16,16">
         <SvgFill selector="svg" color="80,80,80" />
     </SvgIcon>
     <SvgIcon id="dir" path="dir.svg" size="16,16">

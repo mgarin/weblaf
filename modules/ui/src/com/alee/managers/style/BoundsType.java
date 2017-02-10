@@ -42,13 +42,6 @@ public enum BoundsType
     component,
 
     /**
-     * Component section bounds.
-     * This is a special type that represents custom component section.
-     * Insets, bounds or border cannot be retrieved for this type from this class.
-     */
-    section,
-
-    /**
      * Component bounds excluding its margin.
      * Represents bounds in which component decoration is painted.
      */
@@ -64,7 +57,14 @@ public enum BoundsType
      * Components bounds excluding its margin, decoration border and padding.
      * Represents bounds in which component content is painted.
      */
-    padding;
+    padding,
+
+    /**
+     * Component section bounds.
+     * This is a special type that represents custom component section.
+     * Insets, bounds or border cannot be retrieved for this type from this class.
+     */
+    section;
 
     /**
      * Returns insets for bounds of this type for the specified component.

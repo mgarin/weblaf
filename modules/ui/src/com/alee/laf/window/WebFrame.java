@@ -581,6 +581,12 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
     }
 
     @Override
+    public String getLanguage ()
+    {
+        return LanguageManager.getComponentKey ( getRootPane () );
+    }
+
+    @Override
     public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( getRootPane (), key, data );

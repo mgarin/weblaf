@@ -36,12 +36,12 @@ import java.awt.image.BufferedImage;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("PresetTextureBackground")
+@XStreamAlias ( "PresetTextureBackground" )
 public class PresetTextureBackground<E extends JComponent, D extends IDecoration<E, D>, I extends PresetTextureBackground<E, D, I>>
         extends AbstractTextureBackground<E, D, I>
 {
     /**
-     * Texture type.
+     * Texture preset type.
      * todo Move presets into separate library part?
      */
     @XStreamAsAttribute
@@ -61,10 +61,10 @@ public class PresetTextureBackground<E extends JComponent, D extends IDecoration
     }
 
     @Override
-    public I merge ( final I background )
+    public I merge ( final I bg )
     {
-        super.merge ( background );
-        preset = background.isOverwrite () || background.preset != null ? background.preset : preset;
+        super.merge ( bg );
+        preset = bg.isOverwrite () || bg.preset != null ? bg.preset : preset;
         return ( I ) this;
     }
 }

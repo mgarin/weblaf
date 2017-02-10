@@ -37,7 +37,7 @@ import java.awt.geom.GeneralPath;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("ArrowShape")
+@XStreamAlias ( "ArrowShape" )
 public class ArrowShape<E extends JComponent, D extends WebDecoration<E, D>, I extends ArrowShape<E, D, I>> extends AbstractShape<E, D, I>
 {
     /**

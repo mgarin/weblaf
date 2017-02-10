@@ -146,7 +146,7 @@ public class WebPopupMenuUI extends WPopupMenuUI implements ShapeSupport, Margin
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

@@ -78,7 +78,7 @@ public class WebTableExample extends AbstractTableExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebTable table = new WebTable ( getStyleId (), createShortTableModel () );
             table.optimizeColumnWidths ( true );
@@ -102,7 +102,7 @@ public class WebTableExample extends AbstractTableExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebTable table = new WebTable ( getStyleId (), createLongTableModel () );
             table.setAutoResizeMode ( JTable.AUTO_RESIZE_OFF );
@@ -128,7 +128,7 @@ public class WebTableExample extends AbstractTableExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebTable table = new WebTable ( getStyleId (), createLongTableModel () );
             table.setAutoResizeMode ( JTable.AUTO_RESIZE_OFF );

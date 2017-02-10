@@ -20,7 +20,7 @@ package com.alee.extended.dock;
 import com.alee.painter.SpecificPainter;
 
 /**
- * Base interface for {@link com.alee.extended.dock.WebDockablePane} component painters.
+ * Base interface for {@link WebDockablePane} component painters.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -29,4 +29,7 @@ import com.alee.painter.SpecificPainter;
 
 public interface IDockablePanePainter<E extends WebDockablePane, U extends WDockablePaneUI> extends SpecificPainter<E, U>
 {
+    /**
+     * This interface doesn't offer any additional methods to implement.
+     */
 }

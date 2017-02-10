@@ -25,73 +25,59 @@ import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicCheckBoxUI;
 import java.awt.*;
 
 /**
  * Custom UI for {@link WebTristateCheckBox} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
 
-public class WebTristateCheckBoxUI extends BasicCheckBoxUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebTristateCheckBoxUI<C extends WebTristateCheckBox> extends WTristateCheckBoxUI<C>
+        implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter (TristateCheckBoxPainter.class)
+    @DefaultPainter ( TristateCheckBoxPainter.class )
     protected ITristateCheckBoxPainter painter;
 
     /**
      * Runtime variables.
      */
-    protected JCheckBox checkBox = null;
     protected Insets margin = null;
     protected Insets padding = null;
 
     /**
-     * Returns an instance of the WebTristateCheckBoxUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebTristateCheckBoxUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebTristateCheckBoxUI
+     * @return instance of the {@link WebTristateCheckBoxUI}
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTristateCheckBoxUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
+        // Installing UI
         super.installUI ( c );
 
-        // Saving checkbox to local variable
-        checkBox = ( JCheckBox ) c;
-
         // Applying skin
-        StyleManager.installSkin ( checkBox );
+        StyleManager.installSkin ( button );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.uninstallSkin ( checkBox );
-
-        checkBox = null;
+        StyleManager.uninstallSkin ( button );
 
         // Uninstalling UI
         super.uninstallUI ( c );
@@ -100,7 +86,7 @@ public class WebTristateCheckBoxUI extends BasicCheckBoxUI implements ShapeSuppo
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( checkBox, painter );
+        return PainterSupport.getShape ( button, painter );
     }
 
     @Override
@@ -136,7 +122,7 @@ public class WebTristateCheckBoxUI extends BasicCheckBoxUI implements ShapeSuppo
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**
@@ -147,7 +133,7 @@ public class WebTristateCheckBoxUI extends BasicCheckBoxUI implements ShapeSuppo
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( checkBox, new DataRunnable<ITristateCheckBoxPainter> ()
+        PainterSupport.setPainter ( button, new DataRunnable<ITristateCheckBoxPainter> ()
         {
             @Override
             public void run ( final ITristateCheckBoxPainter newPainter )
@@ -195,6 +181,6 @@ public class WebTristateCheckBoxUI extends BasicCheckBoxUI implements ShapeSuppo
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        return PainterSupport.getPreferredSize ( c, painter );
     }
 }

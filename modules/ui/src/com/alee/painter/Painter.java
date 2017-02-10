@@ -33,9 +33,11 @@ import java.awt.*;
  * @param <E> component type
  * @param <U> component UI type
  * @author Mikle Garin
- * @see com.alee.painter.AbstractPainter
- * @see com.alee.painter.SpecificPainter
- * @see com.alee.painter.SectionPainter
+ * @see SpecificPainter
+ * @see SectionPainter
+ * @see AbstractPainter
+ * @see com.alee.painter.decoration.AbstractDecorationPainter
+ * @see com.alee.painter.decoration.AbstractSectionDecorationPainter
  */
 
 public interface Painter<E extends JComponent, U extends ComponentUI>
@@ -61,28 +63,32 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
     /**
      * Returns whether or not this painter is installed onto some component.
      *
-     * @return true if this painter is installed onto some component, false otherwise
+     * @return {@code true} if this painter is installed onto some component, {@code false} otherwise
      */
     public boolean isInstalled ();
 
     /**
-     * Returns whether visual data provided by this painter is opaque or not.
+     * Returns whether the view  provided by this painter is opaque or not.
      * Returned value might affect component opacity depending on painter support inside that component UI.
      * Simply return null if you don't want to change default component opacity.
      *
-     * @return true if visual data provided by this painter is opaque, false otherwise
+     * todo Add "E c, U ui" parameters to this method
+     *
+     * @return {@code true} if the view provided by this painter is opaque, {@code false} otherwise
      */
     public Boolean isOpaque ();
 
     /**
-     * Returns borders required for visual data provided by this painter.
+     * Returns borders required for the view provided by this painter.
      * These borders should not include possible component margin and padding, only borders provided by painter.
      * These borders are added to component's margin and padding when the final component border is calculated.
      * These borders should not take component orientation into account, painter will take care of it later.
      * <p>
      * You may pass {@code null} in case additional borders aren't needed for this painter.
      *
-     * @return borders required for visual data provided by this painter or {@code null} in case those aren't needed
+     * todo Add "E c, U ui" parameters to this method
+     *
+     * @return borders required for the view provided by this painter or {@code null} in case those aren't needed
      */
     public Insets getBorders ();
 
@@ -108,7 +114,7 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
     public Component.BaselineResizeBehavior getBaselineResizeBehavior ( E c, U ui );
 
     /**
-     * Paints visual data using component graphics context.
+     * Paints the view using component graphics context.
      * Provided graphics context and component are taken directly from component UI paint method.
      * <p>
      * It is highly recommended to honor provided painting bounds to avoid painting issues.
@@ -122,26 +128,28 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
     public void paint ( Graphics2D g2d, E c, U ui, Bounds bounds );
 
     /**
-     * Returns preferred size required for proper painting of visual data provided by this painter.
+     * Returns preferred size required for proper painting of the view provided by this painter.
      * This should not take into account any sizes not related to the painter itself.
      *
-     * @return preferred size required for proper painting of visual data provided by this painter
+     * todo Add "E c, U ui" parameters to this method
+     *
+     * @return preferred size required for proper painting of the view provided by this painter
      */
     public Dimension getPreferredSize ();
 
     /**
-     * Adds new painter listener.
+     * Adds specified listener to this painter.
      *
      * @param listener painter listener to add
-     * @see com.alee.painter.PainterListener
+     * @see PainterListener
      */
     public void addPainterListener ( PainterListener listener );
 
     /**
-     * Removes painter listener.
+     * Removes specified listener from this painter.
      *
      * @param listener painter listener to remove
-     * @see com.alee.painter.PainterListener
+     * @see PainterListener
      */
     public void removePainterListener ( PainterListener listener );
 }

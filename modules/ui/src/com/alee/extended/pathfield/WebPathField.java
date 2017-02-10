@@ -807,7 +807,6 @@ public class WebPathField extends WebPanel
                 final WebToggleButton children = new WebToggleButton ( StyleId.pathfieldMenuToggleButton.at ( contentPanel ) );
                 children.setIcon ( ltr ? Icons.rightSmall : Icons.leftSmall );
                 children.setSelectedIcon ( Icons.downSmall );
-                children.setComponentPopupMenu ( menu );
                 children.setEnabled ( childrenCount > 0 );
                 children.addActionListener ( new ActionListener ()
                 {
@@ -969,7 +968,6 @@ public class WebPathField extends WebPanel
             rootsArrowButton = new WebToggleButton ( StyleId.pathfieldMenuToggleButton.at ( contentPanel ) );
             rootsArrowButton.setIcon ( ltr ? Icons.rightSmall : Icons.leftSmall );
             rootsArrowButton.setSelectedIcon ( Icons.downSmall );
-            rootsArrowButton.setComponentPopupMenu ( rootsMenu );
             rootsArrowButton.addActionListener ( new ActionListener ()
             {
                 @Override

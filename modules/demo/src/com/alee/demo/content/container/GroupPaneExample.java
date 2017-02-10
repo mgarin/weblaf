@@ -78,7 +78,7 @@ public class GroupPaneExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebButton e1 = new WebButton ( "First" );
             final WebComboBox e2 = new WebComboBox ( new String[]{ "First", "Second", "Third" }, 1 );
@@ -107,7 +107,7 @@ public class GroupPaneExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             // First row
             final WebComboBox e1 = new WebComboBox ( new String[]{ "First", "Second", "Third" } );
@@ -147,7 +147,7 @@ public class GroupPaneExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebToggleButton b1 = new WebToggleButton ( "First", true );
             final WebToggleButton b2 = new WebToggleButton ( "Second" );

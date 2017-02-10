@@ -167,8 +167,13 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
                 // Event Dispatch Thread check
                 WebLookAndFeel.checkEventDispatchThread ();
 
-                // Inform about property change event
-                AbstractPainter.this.propertyChanged ( evt.getPropertyName (), evt.getOldValue (), evt.getNewValue () );
+                // Ensure component is still available
+                // This might happen if painter is replaced from another PropertyChangeListener
+                if ( component != null )
+                {
+                    // Inform about property change event
+                    AbstractPainter.this.propertyChanged ( evt.getPropertyName (), evt.getOldValue (), evt.getNewValue () );
+                }
             }
         };
         component.addPropertyChangeListener ( propertyChangeListener );
@@ -442,8 +447,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     @Override
     public Dimension getPreferredSize ()
     {
-        final Insets b = getCompleteBorder ();
-        return b != null ? new Dimension ( b.left + b.right, b.top + b.bottom ) : new Dimension ();
+        return SwingUtils.increase ( new Dimension ( 0, 0 ), getCompleteBorder () );
     }
 
     @Override

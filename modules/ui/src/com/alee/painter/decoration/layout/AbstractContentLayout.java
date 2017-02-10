@@ -30,7 +30,7 @@ import java.util.*;
 import java.util.List;
 
 /**
- * Abstract content layout providing some general method implementations.
+ * Abstract {@link IContentLayout} implementations providing basic content definitions and methods to work with layout content.
  *
  * @param <E> component type
  * @param <D> decoration type

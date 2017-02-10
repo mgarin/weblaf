@@ -1,4 +1,4 @@
-<skin>
+<skin xmlns="http://weblookandfeel.com">
 
     <!-- com.alee.laf.desktoppane.WebInternalFrame -->
 
@@ -6,7 +6,6 @@
     <style type="internalframe">
         <component>
             <opaque>false</opaque>
-            <background>90,90,90,220</background>
         </component>
         <painter>
             <decorations>
@@ -73,11 +72,7 @@
             </component>
 
             <!-- Content pane -->
-            <style type="panel" id="content">
-                <component>
-                    <opaque>false</opaque>
-                </component>
-            </style>
+            <style type="panel" id="content" extends="transparent" />
 
         </style>
 

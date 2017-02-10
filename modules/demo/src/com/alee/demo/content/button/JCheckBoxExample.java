@@ -97,7 +97,7 @@ public class JCheckBoxExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JCheckBox cb1 = createCheckBox ( "1", true );
             final JCheckBox cb2 = createCheckBox ( "2", false );

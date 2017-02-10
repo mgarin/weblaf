@@ -19,6 +19,6 @@ public class SplitPanePainter<E extends JSplitPane, U extends WebSplitPaneUI, D 
         extends AbstractContainerPainter<E, U, D> implements ISplitPanePainter<E, U>
 {
     /**
-     * Implementation is used completely from {@link com.alee.painter.decoration.AbstractContainerPainter}.
+     * Implementation is used completely from {@link AbstractContainerPainter}.
      */
 }

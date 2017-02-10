@@ -79,31 +79,23 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
         return new WebTabbedPaneUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
+        // Installing UI
         super.installUI ( c );
 
         // Applying skin
         StyleManager.installSkin ( tabPane );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( tabPane );
 
+        // Uninstalling UI
         super.uninstallUI ( c );
     }
 
@@ -120,7 +112,7 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

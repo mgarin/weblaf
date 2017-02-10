@@ -1,6 +1,6 @@
-<skin>
+<skin xmlns="http://weblookandfeel.com">
 
-    <!-- Extension information -->
+    <!-- Extension settings -->
     <id>weblaf.demo.dark.extension</id>
     <class>com.alee.demo.skin.DarkSkinExtension</class>
     <extends>weblaf.dark.skin</extends>
@@ -133,13 +133,11 @@
             <painter>
                 <decorations>
                     <decoration>
-                        <Separator>
-                            <lines>
-                                <line>
-                                    <color>160,160,160</color>
-                                </line>
-                            </lines>
-                        </Separator>
+                        <SeparatorStripes>
+                            <Stripe>
+                                <color>160,160,160</color>
+                            </Stripe>
+                        </SeparatorStripes>
                     </decoration>
                 </decorations>
             </painter>

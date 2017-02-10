@@ -91,7 +91,7 @@ public class JDialogExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebButton button = new WebButton ( getExampleLanguagePrefix () + "show" );
             button.addActionListener ( new ActionListener ()

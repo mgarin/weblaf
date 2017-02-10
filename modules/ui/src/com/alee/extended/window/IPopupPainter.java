@@ -29,4 +29,7 @@ import com.alee.painter.SpecificPainter;
 
 public interface IPopupPainter<E extends WebPopup, U extends WPopupUI> extends SpecificPainter<E, U>
 {
+    /**
+     * This interface doesn't offer any additional methods to implement.
+     */
 }

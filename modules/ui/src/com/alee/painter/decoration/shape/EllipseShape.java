@@ -35,7 +35,7 @@ import java.awt.geom.Ellipse2D;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("EllipseShape")
+@XStreamAlias ( "EllipseShape" )
 public class EllipseShape<E extends JComponent, D extends WebDecoration<E, D>, I extends EllipseShape<E, D, I>>
         extends AbstractShape<E, D, I>
 {

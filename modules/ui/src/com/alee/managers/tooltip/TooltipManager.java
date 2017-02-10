@@ -305,7 +305,7 @@ public class TooltipManager
                 @Override
                 public void mouseEntered ( final MouseEvent e )
                 {
-                    // Checking component existance
+                    // Checking component existence
                     final Component c = reference.get ();
                     if ( c != null )
                     {
@@ -340,7 +340,7 @@ public class TooltipManager
 
                 private void cancelTooltips ()
                 {
-                    // Checking component existance
+                    // Checking component existence
                     final Component c = reference.get ();
                     if ( c != null )
                     {

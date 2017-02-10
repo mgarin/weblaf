@@ -28,7 +28,7 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * Simple tree drop location painter based on {@link com.alee.painter.decoration.AbstractSectionDecorationPainter}.
+ * Simple tree drop location painter based on {@link AbstractSectionDecorationPainter}.
  * It is used within {@link com.alee.laf.tree.TreePainter} to paint drop location on the tree.
  *
  * @param <E> component type

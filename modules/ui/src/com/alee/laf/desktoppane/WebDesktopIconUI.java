@@ -29,6 +29,8 @@ import javax.swing.plaf.basic.BasicDesktopIconUI;
 import java.awt.*;
 
 /**
+ * Custom UI for {@link JInternalFrame.JDesktopIcon} component.
+ *
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
@@ -38,7 +40,7 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements ShapeSupport
     /**
      * Component painter.
      */
-    @DefaultPainter (DesktopIconPainter.class)
+    @DefaultPainter ( DesktopIconPainter.class )
     protected IDesktopIconPainter painter;
 
     /**
@@ -48,23 +50,18 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements ShapeSupport
     protected Insets padding = null;
 
     /**
-     * Returns an instance of the WebDesktopIconUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebDesktopIconUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebDesktopIconUI
+     * @return instance of the {@link WebDesktopIconUI}
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebDesktopIconUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
@@ -74,11 +71,6 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements ShapeSupport
         StyleManager.installSkin ( desktopIcon );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
@@ -175,7 +167,7 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements ShapeSupport
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

@@ -1,4 +1,4 @@
-<skin>
+<skin xmlns="http://weblookandfeel.com">
 
     <!-- com.alee.laf.combobox.WebComboBox -->
 
@@ -58,18 +58,14 @@
             <painter>
                 <decorations overwrite="true">
                     <decoration>
-                        <Separator padding="2,2,2,0">
-                            <lines>
-                                <line>
-                                    <color>170,170,170</color>
-                                </line>
-                            </lines>
-                        </Separator>
+                        <SeparatorStripes padding="2,2,2,0">
+                            <Stripe>
+                                <color>170,170,170</color>
+                            </Stripe>
+                        </SeparatorStripes>
                     </decoration>
                     <decoration states="editable">
-                        <Separator padding="0">
-                            <lines />
-                        </Separator>
+                        <SeparatorStripes padding="0" overwrite="true" />
                     </decoration>
                 </decorations>
             </painter>

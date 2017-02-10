@@ -1,4 +1,4 @@
-<skin>
+<skin xmlns="http://weblookandfeel.com">
 
     <!-- com.alee.laf.separator.WebSeparator -->
 
@@ -7,25 +7,23 @@
         <painter>
             <decorations>
                 <decoration>
-                    <Separator>
-                        <lines>
-                            <line>
-                                <color fraction="0.0">255,255,255,5</color>
-                                <color fraction="0.5">white</color>
-                                <color fraction="1.0">255,255,255,5</color>
-                            </line>
-                            <line>
-                                <color fraction="0.0">176,182,188,5</color>
-                                <color fraction="0.5">176,182,188</color>
-                                <color fraction="1.0">176,182,188,5</color>
-                            </line>
-                            <line>
-                                <color fraction="0.0">255,255,255,5</color>
-                                <color fraction="0.5">white</color>
-                                <color fraction="1.0">255,255,255,5</color>
-                            </line>
-                        </lines>
-                    </Separator>
+                    <SeparatorStripes>
+                        <Stripe>
+                            <color fraction="0.0">255,255,255,5</color>
+                            <color fraction="0.5">white</color>
+                            <color fraction="1.0">255,255,255,5</color>
+                        </Stripe>
+                        <Stripe>
+                            <color fraction="0.0">176,182,188,5</color>
+                            <color fraction="0.5">176,182,188</color>
+                            <color fraction="1.0">176,182,188,5</color>
+                        </Stripe>
+                        <Stripe>
+                            <color fraction="0.0">255,255,255,5</color>
+                            <color fraction="0.5">white</color>
+                            <color fraction="1.0">255,255,255,5</color>
+                        </Stripe>
+                    </SeparatorStripes>
                 </decoration>
             </decorations>
         </painter>
@@ -39,13 +37,11 @@
         <painter>
             <decorations>
                 <decoration>
-                    <Separator>
-                        <lines>
-                            <line>
-                                <color>220,220,220</color>
-                            </line>
-                        </lines>
-                    </Separator>
+                    <SeparatorStripes>
+                        <Stripe>
+                            <color>220,220,220</color>
+                        </Stripe>
+                    </SeparatorStripes>
                 </decoration>
             </decorations>
         </painter>
@@ -59,13 +55,11 @@
         <painter>
             <decorations>
                 <decoration>
-                    <Separator>
-                        <lines>
-                            <line>
-                                <color>220,220,220</color>
-                            </line>
-                        </lines>
-                    </Separator>
+                    <SeparatorStripes>
+                        <Stripe>
+                            <color>220,220,220</color>
+                        </Stripe>
+                    </SeparatorStripes>
                 </decoration>
             </decorations>
         </painter>

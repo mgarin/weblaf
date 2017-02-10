@@ -147,7 +147,7 @@ public class WebSplitPaneUI extends WSplitPaneUI implements ShapeSupport, Margin
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

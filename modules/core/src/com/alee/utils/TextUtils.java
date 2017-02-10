@@ -37,6 +37,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
+@SuppressWarnings ( "Duplicates" )
 public final class TextUtils
 {
     /**
@@ -70,6 +71,36 @@ public final class TextUtils
      * Default separator.
      */
     private static final String defaultSeparator = ",";
+
+    /**
+     * Preferred system text lines separator cache.
+     */
+    private static String systemLineSeparator;
+
+    /**
+     * Returns preferred system text lines separator.
+     *
+     * @return preferred system text lines separator
+     */
+    public static String getSystemLineSeparator ()
+    {
+        if ( systemLineSeparator == null )
+        {
+            try
+            {
+                systemLineSeparator = System.getProperty ( "line.separator" );
+            }
+            catch ( final SecurityException e )
+            {
+                // Ignore possible security exception
+            }
+            if ( systemLineSeparator == null )
+            {
+                systemLineSeparator = "\n";
+            }
+        }
+        return systemLineSeparator;
+    }
 
     /**
      * Returns message formatted with common string representations of the provided objects.
@@ -548,35 +579,38 @@ public final class TextUtils
     }
 
     /**
-     * Returns single text combined using list of strings and specified separator.
+     * Returns single text combined from list of elements using default separator.
      *
      * @param list list to combine into single text
-     * @return single text
+     * @param <T>  elements type
+     * @return single text combined from list of elements using default separator
      */
-    public static String listToString ( final List list )
+    public static <T> String listToString ( final List<T> list )
     {
         return listToString ( list, defaultSeparator );
     }
 
     /**
-     * Returns single text combined using list of strings and specified separator.
+     * Returns single text combined from list of elements using specified separator.
      *
      * @param list      list to combine into single text
-     * @param separator text parts separator
-     * @return single text
+     * @param separator elements separator
+     * @param <T>       elements type
+     * @return single text combined from list of elements using specified separator
      */
-    public static String listToString ( final List list, final String separator )
+    public static <T> String listToString ( final List<T> list, final String separator )
     {
-        return listToString ( list, separator, simpleTextProvider );
+        return listToString ( list, separator, ( TextProvider<T> ) simpleTextProvider );
     }
 
     /**
-     * Returns single text combined using list of strings and specified separator.
+     * Returns single text combined from list of elements using specified separator.
      *
      * @param list         list to combine into single text
-     * @param separator    text parts separator
+     * @param separator    elements separator
      * @param textProvider text provider
-     * @return single text
+     * @param <T>          elements type
+     * @return single text combined from list of elements using specified separator
      */
     public static <T> String listToString ( final List<T> list, final String separator, final TextProvider<T> textProvider )
     {
@@ -584,13 +618,14 @@ public final class TextUtils
     }
 
     /**
-     * Returns single text combined using list of strings and specified separator.
+     * Returns single text combined from list of elements using specified separator.
      *
      * @param list         list to combine into single text
-     * @param separator    text parts separator
+     * @param separator    elements separator
      * @param textProvider text provider
-     * @param filter       list elements filter
-     * @return single text
+     * @param filter       elements filter
+     * @param <T>          elements type
+     * @return single text combined from list of elements using specified separator
      */
     public static <T> String listToString ( final List<T> list, final String separator, final TextProvider<T> textProvider,
                                             final Filter<T> filter )
@@ -600,6 +635,82 @@ public final class TextUtils
             final StringBuilder stringBuilder = new StringBuilder ();
             boolean hasPreviouslyAccepted = false;
             for ( final T object : list )
+            {
+                if ( filter == null || filter.accept ( object ) )
+                {
+                    if ( hasPreviouslyAccepted )
+                    {
+                        stringBuilder.append ( separator );
+                    }
+                    stringBuilder.append ( textProvider.getText ( object ) );
+                    hasPreviouslyAccepted = true;
+                }
+            }
+            return stringBuilder.toString ();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /**
+     * Returns single text combined from array of elements using default separator.
+     *
+     * @param array array to combine into single text
+     * @param <T>   elements type
+     * @return single text combined from array of elements using default separator
+     */
+    public static <T> String arrayToString ( final T... array )
+    {
+        return arrayToString ( defaultSeparator, array );
+    }
+
+    /**
+     * Returns single text combined from array of elements using specified separator.
+     *
+     * @param separator elements separator
+     * @param array     array to combine into single text
+     * @param <T>       elements type
+     * @return single text combined from array of elements using specified separator
+     */
+    public static <T> String arrayToString ( final String separator, final T... array )
+    {
+        return arrayToString ( separator, simpleTextProvider, array );
+    }
+
+    /**
+     * Returns single text combined from array of elements using specified separator.
+     *
+     * @param separator    elements separator
+     * @param textProvider text provider
+     * @param array        array to combine into single text
+     * @param <T>          elements type
+     * @return single text combined from array of elements using specified separator
+     */
+    public static <T> String arrayToString ( final String separator, final TextProvider<T> textProvider, final T... array )
+    {
+        return arrayToString ( separator, textProvider, null, array );
+    }
+
+    /**
+     * Returns single text combined from array of elements using specified separator.
+     *
+     * @param separator    elements separator
+     * @param textProvider text provider
+     * @param filter       elements filter
+     * @param array        array to combine into single text
+     * @param <T>          elements type
+     * @return single text combined from array of elements using specified separator
+     */
+    public static <T> String arrayToString ( final String separator, final TextProvider<T> textProvider, final Filter<T> filter,
+                                             final T... array )
+    {
+        if ( array != null && array.length > 0 )
+        {
+            final StringBuilder stringBuilder = new StringBuilder ();
+            boolean hasPreviouslyAccepted = false;
+            for ( final T object : array )
             {
                 if ( filter == null || filter.accept ( object ) )
                 {
@@ -1122,7 +1233,7 @@ public final class TextUtils
     /**
      * Time part type enumeration used to parse string delay.
      */
-    protected static enum PartType
+    private enum PartType
     {
         w, d, h, m, s, ms
     }

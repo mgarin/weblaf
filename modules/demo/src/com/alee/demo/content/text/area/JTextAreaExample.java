@@ -84,7 +84,7 @@ public class JTextAreaExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JTextArea textArea = new JTextArea ( "Sample text" );
             textArea.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
@@ -109,7 +109,7 @@ public class JTextAreaExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JTextArea textArea = new JTextArea ( 3, 20 );
             textArea.setText ( "Sample\nmultiline\ntext" );
@@ -135,7 +135,7 @@ public class JTextAreaExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JTextArea textArea = new JTextArea ( 3, 20 );
             textArea.setText ( "Sample\nmultiline\ntext" );
@@ -161,7 +161,7 @@ public class JTextAreaExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JTextArea textArea = new JTextArea ( "Read/copy only" );
             textArea.setEditable ( false );

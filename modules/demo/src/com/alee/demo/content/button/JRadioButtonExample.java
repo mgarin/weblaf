@@ -98,7 +98,7 @@ public class JRadioButtonExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JRadioButton rb1 = createRadioButton ( "1", true );
             final JRadioButton rb2 = createRadioButton ( "2", false );

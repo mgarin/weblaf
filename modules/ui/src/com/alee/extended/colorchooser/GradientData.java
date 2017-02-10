@@ -30,12 +30,12 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Data object for WebGradientColorChooser component.
+ * Gradient color information object.
  *
  * @author Mikle Garin
  */
 
-@XStreamAlias ("GradientData")
+@XStreamAlias ( "GradientData" )
 public class GradientData implements Serializable, Cloneable, DefaultValue
 {
     /**
@@ -44,13 +44,13 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     private static final transient GradientColorDataComparator locationsComparator = new GradientColorDataComparator ();
 
     /**
-     * All available colors data.
+     * All available colors.
      */
-    @XStreamImplicit (itemFieldName = "Color")
+    @XStreamImplicit ( itemFieldName = "Color" )
     private List<GradientColorData> gradientColorsData;
 
     /**
-     * Constructs GradientData object with empty data list.
+     * Constructs {@link GradientData} object with empty colors list.
      */
     public GradientData ()
     {
@@ -59,10 +59,10 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     }
 
     /**
-     * Returns whether there is a GradientColorData for specified location or not.
+     * Returns whether there is a {@link GradientColorData} for specified location or not.
      *
-     * @param location location to search for GradientColorData
-     * @return true if there is a GradientColorData for specified location, false otherwise
+     * @param location location to search for {@link GradientColorData}
+     * @return {@code true} if there is a {@link GradientColorData} for specified location, {@code false} otherwise
      */
     public boolean containtsLocation ( final float location )
     {
@@ -77,9 +77,9 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     }
 
     /**
-     * Adds GradientColorData into data list and sorts the list.
+     * Adds {@link GradientColorData} into colors list and sorts the list.
      *
-     * @param gradientColorData GradientColorData to add
+     * @param gradientColorData {@link GradientColorData} to add
      */
     public void addGradientColorData ( final GradientColorData gradientColorData )
     {
@@ -88,10 +88,10 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     }
 
     /**
-     * Adds GradientColorData with the specified location and color into data list and sorts the list.
+     * Adds {@link GradientColorData} with the specified location and color into colors list and sorts the list.
      *
-     * @param location GradientColorData location
-     * @param color    GradientColorData color
+     * @param location color location
+     * @param color    color
      */
     public void addGradientColorData ( final float location, final Color color )
     {
@@ -100,9 +100,9 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     }
 
     /**
-     * Removes GradientColorData from data list and sorts the list.
+     * Removes {@link GradientColorData} from colors list and sorts the list.
      *
-     * @param gradientColorData GradientColorData to remove
+     * @param gradientColorData {@link GradientColorData} to remove
      */
     public void removeGradientColorData ( final GradientColorData gradientColorData )
     {
@@ -111,9 +111,9 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     }
 
     /**
-     * Returns sorted data list.
+     * Returns sorted colors list.
      *
-     * @return sorted data list
+     * @return sorted colors list
      */
     public List<GradientColorData> getGradientColorsData ()
     {
@@ -122,9 +122,9 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     }
 
     /**
-     * Sets data list and sorts it.
+     * Sets colors list and sorts it.
      *
-     * @param gradientColorsData new data list
+     * @param gradientColorsData new colors list
      */
     public void setGradientColorsData ( final List<GradientColorData> gradientColorsData )
     {
@@ -133,9 +133,9 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     }
 
     /**
-     * Returns an array of fractions for LinearGradientPaint.
+     * Returns an array of fractions for {@link LinearGradientPaint}.
      *
-     * @return an array of fractions for LinearGradientPaint
+     * @return an array of fractions for {@link LinearGradientPaint}
      */
     public float[] getFractions ()
     {
@@ -149,9 +149,9 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     }
 
     /**
-     * Returns an array of colors for LinearGradientPaint.
+     * Returns an array of colors for {@link LinearGradientPaint}.
      *
-     * @return an array of colors for LinearGradientPaint
+     * @return an array of colors for {@link LinearGradientPaint}
      */
     public Color[] getColors ()
     {
@@ -165,9 +165,9 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     }
 
     /**
-     * Returns data list size.
+     * Returns colors list size.
      *
-     * @return data list size
+     * @return colors list size
      */
     public int size ()
     {
@@ -175,10 +175,10 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     }
 
     /**
-     * Returns GradientColorData at the specified index.
+     * Returns {@link GradientColorData} at the specified index.
      *
-     * @param index GradientColorData index
-     * @return GradientColorData at the specified index
+     * @param index {@link GradientColorData} index
+     * @return {@link GradientColorData} at the specified index
      */
     public GradientColorData get ( final int index )
     {
@@ -186,10 +186,10 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     }
 
     /**
-     * Returns location for GradientColorData at the specified index.
+     * Returns location for {@link GradientColorData} at the specified index.
      *
-     * @param index GradientColorData index
-     * @return location for GradientColorData at the specified index
+     * @param index {@link GradientColorData} index
+     * @return location for {@link GradientColorData} at the specified index
      */
     public float getLocation ( final int index )
     {
@@ -197,10 +197,10 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     }
 
     /**
-     * Returns color for GradientColorData at the specified index.
+     * Returns color for {@link GradientColorData} at the specified index.
      *
-     * @param index GradientColorData index
-     * @return color for GradientColorData at the specified index
+     * @param index {@link GradientColorData} index
+     * @return color for {@link GradientColorData} at the specified index
      */
     public Color getColor ( final int index )
     {
@@ -208,9 +208,9 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     }
 
     /**
-     * Returns first GradientColorData.
+     * Returns first {@link GradientColorData}.
      *
-     * @return first GradientColorData
+     * @return first {@link GradientColorData}
      */
     public GradientColorData getFirst ()
     {
@@ -218,9 +218,9 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     }
 
     /**
-     * Returns last GradientColorData.
+     * Returns last {@link GradientColorData}.
      *
-     * @return last GradientColorData
+     * @return last {@link GradientColorData}
      */
     public GradientColorData getLast ()
     {
@@ -285,10 +285,10 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     }
 
     /**
-     * Returns whether this GradientData is equal to the specified object or not.
+     * Returns whether this {@link GradientData} is equal to the specified object or not.
      *
      * @param obj object to compare with
-     * @return true if this GradientData is equal to the specified object, false otherwise
+     * @return {@code true} if this {@link GradientData} is equal to the specified object, {@code false} otherwise
      */
     @Override
     public boolean equals ( final Object obj )
@@ -315,9 +315,9 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     }
 
     /**
-     * Returns cloned GradientData.
+     * Returns cloned {@link GradientData}.
      *
-     * @return cloned GradientData
+     * @return cloned {@link GradientData}
      */
     @Override
     public GradientData clone ()
@@ -326,9 +326,9 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     }
 
     /**
-     * Returns default GradientData value.
+     * Returns default {@link GradientData} value.
      *
-     * @return default GradientData value
+     * @return default {@link GradientData} value
      */
     public static GradientData getDefaultValue ()
     {

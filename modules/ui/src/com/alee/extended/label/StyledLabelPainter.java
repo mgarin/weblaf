@@ -22,7 +22,7 @@ import com.alee.painter.decoration.IDecoration;
 
 /**
  * Basic painter for {@link WebStyledLabel} component.
- * It is used as {@link WebStyledLabelUI} default painter.
+ * It is used as {@link WStyledLabelUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type

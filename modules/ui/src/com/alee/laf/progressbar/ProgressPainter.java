@@ -23,7 +23,7 @@ import com.alee.painter.decoration.IDecoration;
 import javax.swing.*;
 
 /**
- * Simple {@link javax.swing.JProgressBar} progress line painter.
+ * Simple {@link JProgressBar} progress line painter.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -31,10 +31,10 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class ProgressPainter<E extends JProgressBar, U extends WebProgressBarUI, D extends IDecoration<E, D>>
+public class ProgressPainter<E extends JProgressBar, U extends WProgressBarUI, D extends IDecoration<E, D>>
         extends AbstractSectionDecorationPainter<E, U, D> implements IProgressPainter<E, U>
 {
     /**
-     * Implementation is used completely from {@link com.alee.painter.decoration.AbstractSectionDecorationPainter}.
+     * Implementation is used completely from {@link AbstractSectionDecorationPainter}.
      */
 }

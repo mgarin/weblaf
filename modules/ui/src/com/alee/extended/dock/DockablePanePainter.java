@@ -17,12 +17,12 @@
 
 package com.alee.extended.dock;
 
-import com.alee.painter.decoration.AbstractDecorationPainter;
+import com.alee.painter.decoration.AbstractContainerPainter;
 import com.alee.painter.decoration.IDecoration;
 
 /**
  * Basic painter for {@link WebDockablePane} component.
- * It is used as {@link WebDockablePaneUI} default painter.
+ * It is used as {@link WDockableFrameUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -31,7 +31,7 @@ import com.alee.painter.decoration.IDecoration;
  */
 
 public class DockablePanePainter<E extends WebDockablePane, U extends WDockablePaneUI, D extends IDecoration<E, D>>
-        extends AbstractDecorationPainter<E, U, D> implements IDockablePanePainter<E, U>
+        extends AbstractContainerPainter<E, U, D> implements IDockablePanePainter<E, U>
 {
     /**
      * Implementation is used completely from {@link AbstractContainerPainter}.

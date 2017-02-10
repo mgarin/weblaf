@@ -20,7 +20,7 @@ package com.alee.extended.statusbar;
 import com.alee.painter.SpecificPainter;
 
 /**
- * Base interface for {@link com.alee.extended.statusbar.WebStatusBar} component painters.
+ * Base interface for {@link WebStatusBar} component painters.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -29,4 +29,7 @@ import com.alee.painter.SpecificPainter;
 
 public interface IStatusBarPainter<E extends WebStatusBar, U extends WStatusBarUI> extends SpecificPainter<E, U>
 {
+    /**
+     * This interface doesn't offer any additional methods to implement.
+     */
 }

@@ -38,7 +38,12 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 /**
- * This special class provides basic methods to link painter with components.
+ * This class provides utilities for linking painter with component UIs.
+ * It was added to simplify painters usage within UI classes tied to specific {@link javax.swing.plaf.ComponentUI} implementations.
+ * Without this utility class a lot of code copy-paste would be required between all different UI implementations.
+ *
+ * Painter do not suffer from that issue since they are implemented differently - each specific Painters has its own interface unlike
+ * UIs which are not based on interfaces but abstract classes.
  *
  * @author Mikle Garin
  */
@@ -52,24 +57,6 @@ public final class PainterSupport
             new WeakHashMap<JComponent, Map<Painter, PainterListener>> ();
 
     /**
-     * Returns the specified painter if it can be assigned to proper painter type.
-     * Otherwise returns newly created adapter painter that wraps the specified painter.
-     * Used by component UIs to adapt general-type painters for their specific-type needs.
-     *
-     * @param painter      processed painter
-     * @param properClass  proper painter class
-     * @param adapterClass adapter painter class
-     * @param <T>          proper painter type
-     * @return specified painter if it can be assigned to proper painter type, new painter adapter if it cannot be assigned
-     */
-    public static <T extends SpecificPainter> T getProperPainter ( final Painter painter, final Class<T> properClass,
-                                                                   final Class<? extends T> adapterClass )
-    {
-        return painter == null ? null : ReflectUtils.isAssignable ( properClass, painter.getClass () ) ? ( T ) painter :
-                ( T ) ReflectUtils.createInstanceSafely ( adapterClass, painter );
-    }
-
-    /**
      * Returns either the specified painter if it is not an adapted painter or the adapted painter.
      * Used by component UIs to retrieve painters adapted for their specific needs.
      *
@@ -77,7 +64,7 @@ public final class PainterSupport
      * @param <T>     desired painter type
      * @return either the specified painter if it is not an adapted painter or the adapted painter
      */
-    public static <T extends Painter> T getAdaptedPainter ( final Painter painter )
+    public static <T extends Painter> T getPainter ( final Painter painter )
     {
         return ( T ) ( painter != null && painter instanceof AdaptivePainter ? ( ( AdaptivePainter ) painter ).getPainter () : painter );
     }
@@ -99,7 +86,7 @@ public final class PainterSupport
                                                                 final Class<? extends P> specificAdapterClass )
     {
         // Creating adaptive painter if required
-        final P properPainter = getProperPainter ( painter, specificClass, specificAdapterClass );
+        final P properPainter = getApplicablePainter ( painter, specificClass, specificAdapterClass );
 
         // Properly updating painter
         uninstallPainter ( component, oldPainter );
@@ -111,13 +98,44 @@ public final class PainterSupport
     }
 
     /**
+     * Returns the specified painter if it can be assigned to proper painter type.
+     * Otherwise returns newly created adapter painter that wraps the specified painter.
+     * Used by component UIs to adapt general-type painters for their specific-type needs.
+     *
+     * @param painter      processed painter
+     * @param properClass  proper painter class
+     * @param adapterClass adapter painter class
+     * @param <T>          proper painter type
+     * @return specified painter if it can be assigned to proper painter type, new painter adapter if it cannot be assigned
+     */
+    private static <T extends SpecificPainter> T getApplicablePainter ( final Painter painter, final Class<T> properClass,
+                                                                        final Class<? extends T> adapterClass )
+    {
+        if ( painter == null )
+        {
+            return null;
+        }
+        else
+        {
+            if ( ReflectUtils.isAssignable ( properClass, painter.getClass () ) )
+            {
+                return ( T ) painter;
+            }
+            else
+            {
+                return ( T ) ReflectUtils.createInstanceSafely ( adapterClass, painter );
+            }
+        }
+    }
+
+    /**
      * Installs painter into the specified component.
      * It is highly recommended to call this method only from EDT.
      *
      * @param component component painter is applied to
      * @param painter   painter to install
      */
-    public static void installPainter ( final JComponent component, final Painter painter )
+    private static void installPainter ( final JComponent component, final Painter painter )
     {
         // Simply ignore this call if empty painter is set or component doesn't exist
         if ( component == null || painter == null )
@@ -200,7 +218,7 @@ public final class PainterSupport
      * @param component component painter is uninstalled from
      * @param painter   painter to uninstall
      */
-    public static void uninstallPainter ( final JComponent component, final Painter painter )
+    private static void uninstallPainter ( final JComponent component, final Painter painter )
     {
         // Simply ignore this call if painter or component doesn't exist
         if ( component == null || painter == null )
@@ -519,6 +537,7 @@ public final class PainterSupport
             final ComponentStyle style = StyleManager.getSkin ( jComponent ).getStyle ( jComponent );
             final Painter painter = style != null ? style.getPainter ( jComponent ) : null;
             return painter != null && painter instanceof AbstractDecorationPainter;
+            // todo Add additional decoration conditions? For: && ((AbstractDecorationPainter)painter)...
         }
         else
         {

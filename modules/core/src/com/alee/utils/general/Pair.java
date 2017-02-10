@@ -27,10 +27,12 @@ import java.io.Serializable;
 /**
  * This class represents single name-value pair.
  *
+ * @param <K> key type
+ * @param <V> value type
  * @author Mikle Garin
  */
 
-@XStreamAlias ("Pair")
+@XStreamAlias ( "Pair" )
 public class Pair<K, V> implements Serializable, Cloneable
 {
     /**

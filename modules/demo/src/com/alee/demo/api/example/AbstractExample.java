@@ -28,7 +28,7 @@ import com.alee.laf.toolbar.WebToolBar;
 import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.FileUtils;
-import com.alee.utils.reflection.JarEntry;
+import com.alee.utils.jar.JarEntry;
 
 import javax.swing.*;
 import java.awt.*;

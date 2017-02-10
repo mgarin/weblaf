@@ -27,8 +27,8 @@ import java.io.Serializable;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("tooltip")
-@XStreamConverter (TooltipConverter.class)
+@XStreamAlias ( "tooltip" )
+@XStreamConverter ( TooltipConverter.class )
 public final class Tooltip implements Serializable, Cloneable
 {
     private TooltipType type;

@@ -60,13 +60,15 @@ public final class ComponentStyleConverter extends ReflectionConverter
     public static final String EXTENDS_ID_ATTRIBUTE = "extends";
     public static final String MARGIN_ATTRIBUTE = "margin";
     public static final String PADDING_ATTRIBUTE = "padding";
-    public static final String COMPONENT_NODE = "component";
     public static final String CLASS_ATTRIBUTE = "class";
+    public static final String COMPONENT_NODE = "component";
     public static final String UI_NODE = "ui";
     public static final String PAINTER_NODE = "painter";
+    @Deprecated
     public static final String PAINTER_ID_ATTRIBUTE = "id";
+    @Deprecated
     public static final String PAINTER_IDS_SEPARATOR = ",";
-    public static final String PAINTER_CLASS_ATTRIBUTE = "class";
+    @Deprecated
     public static final String DEFAULT_PAINTER_ID = "painter";
 
     /**
@@ -186,23 +188,25 @@ public final class ComponentStyleConverter extends ReflectionConverter
                 final Class skinClass = ReflectUtils.getClassSafely ( skinClassName );
                 if ( skinClass == null )
                 {
-                    throw new StyleException ( "Specified skin class cannot be found: " + skinClassName );
+                    final String msg = "Specified skin class '%s' cannot be found";
+                    throw new StyleException ( String.format ( msg, skinClassName ) );
                 }
                 final String painterClassName = painterStyle.getPainterClass ();
                 final Class painterClass = ReflectUtils.getClassSafely ( painterClassName );
                 if ( painterClass == null )
                 {
-                    throw new StyleException ( "Specified painter class cannot be found: " + painterClassName );
+                    final String msg = "Specified painter class '%s' cannot be found";
+                    throw new StyleException ( String.format ( msg, painterClassName ) );
                 }
                 final String skinPackage = skinClass.getPackage ().getName ();
                 final String painterPackage = painterClass.getPackage ().getName ();
                 if ( skinPackage.equals ( painterPackage ) )
                 {
-                    writer.addAttribute ( PAINTER_CLASS_ATTRIBUTE, painterClassName.substring ( skinPackage.length () + 1 ) );
+                    writer.addAttribute ( CLASS_ATTRIBUTE, painterClassName.substring ( skinPackage.length () + 1 ) );
                 }
                 else
                 {
-                    writer.addAttribute ( PAINTER_CLASS_ATTRIBUTE, painterClassName );
+                    writer.addAttribute ( CLASS_ATTRIBUTE, painterClassName );
                 }
 
                 // Writing painter properties
@@ -234,7 +238,8 @@ public final class ComponentStyleConverter extends ReflectionConverter
         final StyleableComponent type = StyleableComponent.valueOf ( sct );
         if ( type == null )
         {
-            throw new StyleException ( "Styleable component type was not specified or cannot be resolved: " + sct );
+            final String msg = "Styleable component type '%s' cannot be resolved";
+            throw new StyleException ( String.format ( msg, sct ) );
         }
         style.setType ( type );
         final StyleableComponent oldComponentType = ( StyleableComponent ) context.get ( CONTEXT_COMPONENT_TYPE );
@@ -299,7 +304,8 @@ public final class ComponentStyleConverter extends ReflectionConverter
             }
             else
             {
-                throw new StyleException ( "Unknown \"" + nodeName + "\" style settings block provided for \"" + styleId + "\" style" );
+                final String msg = "Unknown style settings block '%s' provided for '%s' style";
+                throw new StyleException ( String.format ( msg, nodeName, styleId ) );
             }
             reader.moveUp ();
         }
@@ -379,15 +385,16 @@ public final class ComponentStyleConverter extends ReflectionConverter
                 }
                 else
                 {
-                    throw new StyleException ( "Specified custom component class \"" + cc.getCanonicalName () +
-                            "\" for style \"" + styleId + "\" is not assignable from base component class \"" +
-                            componentType.getCanonicalName () + "\"" );
+                    final String custom = cc.getCanonicalName ();
+                    final String basic = componentType.getCanonicalName ();
+                    final String msg = "Specified custom component class '%s' for style '%s' is not assignable from base class '%s'";
+                    throw new StyleException ( String.format ( msg, custom, styleId, basic ) );
                 }
             }
             else
             {
-                throw new StyleException (
-                        "Specified custom component class \"" + componentClassName + "\" for style \"" + styleId + "\" cannot be found" );
+                final String msg = "Specified custom component class %s for style %s cannot be found";
+                throw new StyleException ( String.format ( msg, componentClassName, styleId ) );
             }
         }
 
@@ -426,14 +433,16 @@ public final class ComponentStyleConverter extends ReflectionConverter
                 }
                 else
                 {
-                    throw new StyleException ( "Specified custom UI class \"" + uic.getCanonicalName () + "\" for style \"" + styleId +
-                            "\" is not assignable from base UI class \"" + uiType.getCanonicalName () + "\"" );
+                    final String custom = uic.getCanonicalName ();
+                    final String basic = uiType.getCanonicalName ();
+                    final String msg = "Specified custom UI class '%s' for style '%s' is not assignable from base UI class '%s'";
+                    throw new StyleException ( String.format ( msg, custom, styleId, basic ) );
                 }
             }
             else
             {
-                throw new StyleException (
-                        "Specified custom UI class \"" + uiClassName + "\" for style \"" + styleId + "\" cannot be found" );
+                final String msg = "Specified custom UI class '%s' for style '%s' cannot be found";
+                throw new StyleException ( String.format ( msg, uiClassName, styleId ) );
             }
         }
 
@@ -483,7 +492,7 @@ public final class ComponentStyleConverter extends ReflectionConverter
 
         // Unmarshalling painter class
         final Class<? extends Painter> painterClass =
-                PainterStyleConverter.unmarshalPainterClass ( reader, context, defaultPainter, styleId );
+                PainterStyleConverter.unmarshalPainterClass ( reader, context, mapper, defaultPainter, styleId );
 
         // Providing painter class to subsequent converters
         final Object opc = context.get ( CONTEXT_PAINTER_CLASS );

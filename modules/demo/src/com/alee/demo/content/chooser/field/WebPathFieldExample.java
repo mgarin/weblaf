@@ -23,7 +23,6 @@ import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.File;
 import java.util.List;
 
@@ -74,12 +73,11 @@ public class WebPathFieldExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebPathField pathField = new WebPathField ( getStyleId () );
-            pathField.setSelectedPath(new File(System.getProperty("user.home")));
-            // Preferred width needed to be able to click on the field and edit the path
-            pathField.setPreferredSize(new Dimension(300, 27));
+            pathField.setSelectedPath ( new File ( System.getProperty ( "user.home" ) ) );
+            pathField.setPreferredWidth ( 300 );
             return CollectionUtils.asList ( pathField );
         }
     }

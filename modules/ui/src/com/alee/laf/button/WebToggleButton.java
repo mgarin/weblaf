@@ -484,7 +484,7 @@ public class WebToggleButton extends JToggleButton
     @Override
     public StyleId getDefaultStyleId ()
     {
-        return getText () != null ? StyleId.togglebutton : StyleId.togglebuttonIcon;
+        return getIcon () != null && getText () == null ? StyleId.togglebuttonIcon : StyleId.togglebutton;
     }
 
     @Override
@@ -914,6 +914,12 @@ public class WebToggleButton extends JToggleButton
     public void removeToolTips ( final List<WebCustomTooltip> tooltips )
     {
         TooltipManager.removeTooltips ( this, tooltips );
+    }
+
+    @Override
+    public String getLanguage ()
+    {
+        return LanguageManager.getComponentKey ( this );
     }
 
     @Override

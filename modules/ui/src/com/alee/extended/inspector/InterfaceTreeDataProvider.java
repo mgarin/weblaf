@@ -18,6 +18,7 @@
 package com.alee.extended.inspector;
 
 import com.alee.extended.tree.AbstractExTreeDataProvider;
+import com.alee.utils.compare.Filter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,7 +29,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<InterfaceTreeNode>
+public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<InterfaceTreeNode> implements Filter<Component>
 {
     /**
      * Interface components tree.
@@ -62,13 +63,17 @@ public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<Interf
     @Override
     public List<InterfaceTreeNode> getChildren ( final InterfaceTreeNode node )
     {
-        final Container component = ( Container ) node.getComponent ();
-        final List<InterfaceTreeNode> nodes = new ArrayList<InterfaceTreeNode> ( component.getComponentCount () );
-        if ( !( component instanceof CellRendererPane ) )
+        final Container container = ( Container ) node.getComponent ();
+        final List<InterfaceTreeNode> nodes = new ArrayList<InterfaceTreeNode> ( container.getComponentCount () );
+        if ( !( container instanceof CellRendererPane ) )
         {
-            for ( int i = 0; i < component.getComponentCount (); i++ )
+            for ( int i = 0; i < container.getComponentCount (); i++ )
             {
-                nodes.add ( new InterfaceTreeNode ( tree, component.getComponent ( i ) ) );
+                final Component component = container.getComponent ( i );
+                if ( accept ( component ) )
+                {
+                    nodes.add ( new InterfaceTreeNode ( tree, component ) );
+                }
             }
         }
         return nodes;
@@ -77,7 +82,23 @@ public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<Interf
     @Override
     public boolean isLeaf ( final InterfaceTreeNode node )
     {
-        return !( node.getComponent () instanceof Container ) || node.getComponent () instanceof CellRendererPane ||
-                ( ( Container ) node.getComponent () ).getComponentCount () == 0;
+        if ( node.getComponent () instanceof Container && !( node.getComponent () instanceof CellRendererPane ) )
+        {
+            final Container container = ( Container ) node.getComponent ();
+            for ( int i = 0; i < container.getComponentCount (); i++ )
+            {
+                if ( accept ( container.getComponent ( i ) ) )
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean accept ( final Component component )
+    {
+        return !( component instanceof ComponentHighlighter );
     }
 }

@@ -22,10 +22,11 @@ import com.alee.painter.decoration.IDecoration;
 
 /**
  * Basic painter for {@link WebDateField} component.
- * It is used as {@link WebDateFieldUI} default painter.
+ * It is used as {@link WDateFieldUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type
+ * @param <D> decoration type
  * @author Mikle Garin
  */
 

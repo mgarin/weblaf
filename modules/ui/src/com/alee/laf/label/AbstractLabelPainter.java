@@ -35,6 +35,6 @@ public abstract class AbstractLabelPainter<E extends JLabel, U extends WLabelUI,
         extends AbstractDecorationPainter<E, U, D> implements IAbstractLabelPainter<E, U>
 {
     /**
-     * Implementation is used completely from {@link com.alee.painter.decoration.AbstractDecorationPainter}.
+     * Implementation is used completely from {@link AbstractDecorationPainter}.
      */
 }

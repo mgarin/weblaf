@@ -27,7 +27,7 @@ import javax.swing.tree.TreePath;
 import java.util.List;
 
 /**
- * Simple tree row painter based on {@link com.alee.painter.decoration.AbstractSectionDecorationPainter}.
+ * Simple tree row painter based on {@link AbstractSectionDecorationPainter}.
  * It is used within {@link com.alee.laf.tree.TreePainter} to paint rows background.
  *
  * @param <E> component type

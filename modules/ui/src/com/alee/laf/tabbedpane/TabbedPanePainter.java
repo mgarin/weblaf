@@ -24,8 +24,8 @@ import java.util.Map;
 import java.util.Vector;
 
 /**
- * Basic painter for JTabbedPane component.
- * It is used as WebTabbedPaneUI default painter.
+ * Basic painter for {@link JTabbedPane} component.
+ * It is used as {@link WebTabbedPaneUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type

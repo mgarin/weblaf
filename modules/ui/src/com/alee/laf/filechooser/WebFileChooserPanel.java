@@ -69,7 +69,7 @@ import java.util.List;
 
 /**
  * File chooser panel component.
- * Basically used to provide WebFileChooserUI with all required UI elements.
+ * Basically used to provide {@link WebFileChooserUI} with all required UI elements.
  *
  * @author Mikle Garin
  */
@@ -81,7 +81,6 @@ public class WebFileChooserPanel extends WebPanel
      * todo 2. Proper hotkeys usage within window
      * todo 3. Context menu for file selection components
      */
-
 
     /**
      * File name provider.

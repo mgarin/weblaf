@@ -95,7 +95,7 @@ public class WebFormattedTextFieldExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebFormattedTextField textField = new WebFormattedTextField ( createFormatter ( mask ) );
             textField.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );

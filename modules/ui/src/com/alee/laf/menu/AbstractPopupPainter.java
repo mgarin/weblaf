@@ -17,8 +17,8 @@
 
 package com.alee.laf.menu;
 
-import com.alee.managers.style.BoundsType;
 import com.alee.managers.style.Bounds;
+import com.alee.managers.style.BoundsType;
 import com.alee.managers.style.PainterShapeProvider;
 import com.alee.painter.AbstractPainter;
 import com.alee.painter.decoration.shadow.WebShadow;
@@ -38,14 +38,13 @@ import java.awt.geom.GeneralPath;
 
 /**
  * Base painter for any type of popup components.
- * It is generally used for WebPopupMenuUI default styling but might also be used in other cases.
+ * It is generally used for {@link WebPopupMenuUI} default styling but might also be used in other cases.
  *
  * @param <E> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-@SuppressWarnings ("UnusedParameters")
 public abstract class AbstractPopupPainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>
         implements PainterShapeProvider<E>, SwingConstants
 {
@@ -651,7 +650,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      * @param fill      whether it is a fill shape or not
      * @return dropdown style shape
      */
-    @SuppressWarnings ("ConstantConditions")
+    @SuppressWarnings ( "ConstantConditions" )
     protected GeneralPath createDropdownShape ( final E popup, final Dimension popupSize, final boolean fill )
     {
         final boolean topCorner = cornerSide == TOP;
@@ -769,7 +768,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      * @param fill      whether it is a fill shape or not
      * @return dropdown style corner shape
      */
-    @SuppressWarnings ("ConstantConditions")
+    @SuppressWarnings ( "ConstantConditions" )
     protected GeneralPath createDropdownCornerShape ( final E popupMenu, final Dimension menuSize, final boolean fill )
     {
         final boolean topCorner = cornerSide == TOP;

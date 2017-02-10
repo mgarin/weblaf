@@ -28,67 +28,57 @@ import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
- * Custom UI for {@link com.alee.extended.statusbar.WebStatusBar} component.
+ * Custom UI for {@link WebStatusBar} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public class WebStatusBarUI extends WStatusBarUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebStatusBarUI<C extends WebStatusBar> extends WStatusBarUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter (StatusBarPainter.class)
+    @DefaultPainter ( StatusBarPainter.class )
     protected IStatusBarPainter painter;
 
     /**
      * Runtime variables.
      */
-    protected WebStatusBar statusBar;
     protected Insets margin = null;
     protected Insets padding = null;
 
     /**
-     * Returns an instance of the WebStatusBarUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebStatusBarUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebStatusBarUI
+     * @return instance of the {@link WebStatusBarUI}
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebStatusBarUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
-        // Saving statusbar reference
-        statusBar = ( WebStatusBar ) c;
+        // Installing UI
+        super.installUI ( c );
 
         // Applying skin
         StyleManager.installSkin ( statusBar );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( statusBar );
 
-        // Removing statusbar reference
-        statusBar = null;
+        // Uninstalling UI
+        super.uninstallUI ( c );
     }
 
     @Override
@@ -130,7 +120,7 @@ public class WebStatusBarUI extends WStatusBarUI implements ShapeSupport, Margin
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

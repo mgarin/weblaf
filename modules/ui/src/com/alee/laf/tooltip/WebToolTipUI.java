@@ -30,10 +30,11 @@ import java.awt.*;
 /**
  * Custom UI for {@link JToolTip} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public class WebToolTipUI extends WToolTipUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebToolTipUI<C extends JToolTip> extends WToolTipUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -48,11 +49,11 @@ public class WebToolTipUI extends WToolTipUI implements ShapeSupport, MarginSupp
     protected Insets padding = null;
 
     /**
-     * Returns an instance of the WebToolTipUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebToolTipUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebToolTipUI
+     * @return instance of the {@link WebToolTipUI}
      */
     @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
@@ -63,25 +64,27 @@ public class WebToolTipUI extends WToolTipUI implements ShapeSupport, MarginSupp
     @Override
     public void installUI ( final JComponent c )
     {
+        // Installing UI
         super.installUI ( c );
 
         // Applying skin
-        StyleManager.installSkin ( tooltip );
+        StyleManager.installSkin ( toolTip );
     }
 
     @Override
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.uninstallSkin ( tooltip );
+        StyleManager.uninstallSkin ( toolTip );
 
+        // Uninstalling UI
         super.uninstallUI ( c );
     }
 
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( tooltip, painter );
+        return PainterSupport.getShape ( toolTip, painter );
     }
 
     @Override
@@ -117,7 +120,7 @@ public class WebToolTipUI extends WToolTipUI implements ShapeSupport, MarginSupp
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**
@@ -128,7 +131,7 @@ public class WebToolTipUI extends WToolTipUI implements ShapeSupport, MarginSupp
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( tooltip, new DataRunnable<IToolTipPainter> ()
+        PainterSupport.setPainter ( toolTip, new DataRunnable<IToolTipPainter> ()
         {
             @Override
             public void run ( final IToolTipPainter newPainter )

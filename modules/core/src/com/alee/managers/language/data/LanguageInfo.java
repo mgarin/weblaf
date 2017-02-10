@@ -26,7 +26,7 @@ import java.io.Serializable;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("langInfo")
+@XStreamAlias ( "langInfo" )
 public class LanguageInfo implements Serializable
 {
     @XStreamAsAttribute

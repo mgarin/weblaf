@@ -43,13 +43,6 @@ public abstract class AbstractButtonPainter<E extends AbstractButton, U extends 
     }
 
     @Override
-    public void stateChanged ( final ChangeEvent e )
-    {
-        // Updating state on model changes
-        updateDecorationState ();
-    }
-
-    @Override
     protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
     {
         // Perform basic actions on property changes
@@ -67,6 +60,18 @@ public abstract class AbstractButtonPainter<E extends AbstractButton, U extends 
         if ( CompareUtils.equals ( property, AbstractButton.ROLLOVER_ENABLED_CHANGED_PROPERTY ) )
         {
             updateHoverListener ();
+        }
+    }
+
+    @Override
+    public void stateChanged ( final ChangeEvent e )
+    {
+        // Ensure component is still available
+        // This might happen if painter is replaced from another ChangeListener
+        if ( component != null )
+        {
+            // Updating state on model changes
+            updateDecorationState ();
         }
     }
 

@@ -22,6 +22,7 @@ import com.alee.demo.api.example.wiki.OracleWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.grouping.GroupPane;
+import com.alee.managers.language.LanguageManager;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
@@ -84,21 +85,29 @@ public class JToggleButtonExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
-            final JToggleButton button = new JToggleButton ( "Click me", true );
-            button.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            final JToggleButton basic = new JToggleButton ( "", true );
+            basic.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            LanguageManager.registerComponent ( basic, getPreviewLanguagePrefix () + "basic" );
 
-            final JToggleButton first = new JToggleButton ( "First", true );
-            first.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            final JToggleButton group1 = new JToggleButton ( "", true );
+            group1.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            LanguageManager.registerComponent ( group1, getPreviewLanguagePrefix () + "group1" );
 
-            final JToggleButton second = new JToggleButton ( "Second" );
-            second.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            final JToggleButton group2 = new JToggleButton ();
+            group2.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            LanguageManager.registerComponent ( group2, getPreviewLanguagePrefix () + "group2" );
 
-            final JToggleButton icon = new JToggleButton ( "With icon", WebLookAndFeel.getIcon ( 16 ) );
+            final JToggleButton group3 = new JToggleButton ();
+            group3.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            LanguageManager.registerComponent ( group3, getPreviewLanguagePrefix () + "group3" );
+
+            final JToggleButton icon = new JToggleButton ( WebLookAndFeel.getIcon ( 16 ) );
             icon.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            LanguageManager.registerComponent ( icon, getPreviewLanguagePrefix () + "icon" );
 
-            return CollectionUtils.asList ( button, new GroupPane ( first, second ), icon );
+            return CollectionUtils.asList ( basic, new GroupPane ( group1, group2, group3 ), icon );
         }
     }
 
@@ -118,7 +127,7 @@ public class JToggleButtonExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JToggleButton button = new JToggleButton ( WebLookAndFeel.getIcon ( 16 ) );
             button.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );

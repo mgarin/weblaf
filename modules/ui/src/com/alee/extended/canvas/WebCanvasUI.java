@@ -28,17 +28,18 @@ import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
- * Custom UI for {@link com.alee.extended.canvas.WebCanvas} component.
+ * Custom UI for {@link WebCanvas} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public class WebCanvasUI extends WCanvasUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter (CanvasPainter.class)
+    @DefaultPainter ( CanvasPainter.class )
     protected ICanvasPainter painter;
 
     /**
@@ -54,7 +55,7 @@ public class WebCanvasUI extends WCanvasUI implements ShapeSupport, MarginSuppor
      * @param c component that will use UI instance
      * @return instance of the {@link WebCanvasUI}
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebCanvasUI ();
@@ -63,6 +64,7 @@ public class WebCanvasUI extends WCanvasUI implements ShapeSupport, MarginSuppor
     @Override
     public void installUI ( final JComponent c )
     {
+        // Installing UI
         super.installUI ( c );
 
         // Applying skin
@@ -75,6 +77,7 @@ public class WebCanvasUI extends WCanvasUI implements ShapeSupport, MarginSuppor
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( canvas );
 
+        // Uninstalling UI
         super.uninstallUI ( c );
     }
 
@@ -117,7 +120,7 @@ public class WebCanvasUI extends WCanvasUI implements ShapeSupport, MarginSuppor
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

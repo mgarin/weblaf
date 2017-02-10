@@ -48,13 +48,17 @@ import java.util.Map;
 public final class ComponentHighlighter extends JComponent implements ComponentListener, HierarchyBoundsListener
 {
     /**
+     * Basic color scheme.
+     */
+    public static final Color marginColor = new Color ( 255, 255, 0, 50 );
+    public static final Color borderColor = new Color ( 255, 0, 0, 50 );
+    public static final Color paddingColor = new Color ( 0, 200, 0, 50 );
+    public static final Color contentColor = new Color ( 0, 0, 255, 50 );
+
+    /**
      * Internal constants.
      */
     private static final Insets emptyInsets = new Insets ( 0, 0, 0, 0 );
-    private static final Color marginColor = new Color ( 255, 255, 0, 50 );
-    private static final Color borderColor = new Color ( 255, 0, 0, 50 );
-    private static final Color paddingColor = new Color ( 0, 200, 0, 50 );
-    private static final Color contentColor = new Color ( 0, 0, 255, 50 );
     private static final int sizeTipHeight = 20;
 
     /**

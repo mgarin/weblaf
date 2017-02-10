@@ -20,8 +20,8 @@ package com.alee.utils;
 import com.alee.extended.date.WebCalendar;
 import com.alee.extended.date.WebDateField;
 import com.alee.extended.filechooser.WebFileChooserField;
-import com.alee.extended.pathfield.WebPathField;
 import com.alee.extended.panel.WebCollapsiblePane;
+import com.alee.extended.pathfield.WebPathField;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyRunnable;
@@ -144,6 +144,24 @@ public final class SwingUtils extends CoreSwingUtils
                 }
             }
         } );
+    }
+
+    /**
+     * Returns whether or not specified component is opaque.
+     *
+     * @param component component to check opacity for
+     * @return {@code true} if specified component is opaque, {@code false} otherwise
+     */
+    public static boolean isOpaque ( final Component component )
+    {
+        if ( component instanceof Window )
+        {
+            return ProprietaryUtils.isWindowOpaque ( ( Window ) component );
+        }
+        else
+        {
+            return component.isOpaque ();
+        }
     }
 
     /**
@@ -899,6 +917,27 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
+     * Returns {@code dimension} increased by amount specified in {@code amount}.
+     *
+     * @param dimension dimension to increased
+     * @param amount    increase amount
+     * @return {@code dimension} increased by amount specified in {@code amount}
+     */
+    public static Dimension increase ( final Dimension dimension, final Insets amount )
+    {
+        if ( dimension == null )
+        {
+            throw new NullPointerException ( "Dimension cannot be null" );
+        }
+        if ( amount != null )
+        {
+            dimension.width += amount.left + amount.right;
+            dimension.height += amount.top + amount.bottom;
+        }
+        return dimension;
+    }
+
+    /**
      * Returns {@code insets} decreased by amount specified in {@code amount}.
      *
      * @param insets insets to decreased
@@ -1559,6 +1598,30 @@ public final class SwingUtils extends CoreSwingUtils
     public static KeyStroke getAccelerator ( final HotkeyData hotkey )
     {
         return hotkey != null && hotkey.isHotkeySet () ? hotkey.getKeyStroke () : null;
+    }
+
+    /**
+     * Returns focus accelerator key mask.
+     *
+     * @return focus accelerator key mask
+     */
+    public static int getFocusAcceleratorKeyMask ()
+    {
+        if ( SystemUtils.isJava7orAbove () )
+        {
+            // This toolkit method was added in JDK 7 and later ones
+            // It is recommended to use instead of the hardcoded accelerator mask
+            final Toolkit toolkit = Toolkit.getDefaultToolkit ();
+            if ( CompareUtils.equals ( toolkit.getClass ().getCanonicalName (), "sun.awt.SunToolkit" ) )
+            {
+                final Object mask = ReflectUtils.callMethodSafely ( toolkit, "getFocusAcceleratorKeyMask" );
+                if ( mask != null )
+                {
+                    return ( Integer ) mask;
+                }
+            }
+        }
+        return ActionEvent.ALT_MASK;
     }
 
     /**
@@ -2691,23 +2754,11 @@ public final class SwingUtils extends CoreSwingUtils
     /**
      * Installs text antialiasing hints into specified graphics context.
      *
-     * @param g     graphics context
-     * @param hints text antialiasing hints
-     * @return old text antialiasing hints
-     */
-    public static Map setupTextAntialias ( final Graphics g, final Map hints )
-    {
-        return setupTextAntialias ( ( Graphics2D ) g, hints );
-    }
-
-    /**
-     * Installs text antialiasing hints into specified graphics context.
-     *
      * @param g2d   graphics context
      * @param hints text antialiasing hints
      * @return old text antialiasing hints
      */
-    public static Map setupTextAntialias ( final Graphics2D g2d, final Map hints )
+    private static Map setupTextAntialias ( final Graphics2D g2d, final Map hints )
     {
         if ( hints != null )
         {

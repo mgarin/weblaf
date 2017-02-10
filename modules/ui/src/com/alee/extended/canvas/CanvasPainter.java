@@ -22,7 +22,7 @@ import com.alee.painter.decoration.IDecoration;
 
 /**
  * Basic painter for {@link WebCanvas} component.
- * It is used as {@link WebCanvasUI} default painter.
+ * It is used as {@link WCanvasUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type

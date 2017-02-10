@@ -87,7 +87,7 @@ public class WebCustomTooltipExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebLabel label = new WebLabel ( getPreviewLanguagePrefix () + "text" );
             label.setToolTip ( getPreviewLanguagePrefix () + "tip" );
@@ -112,7 +112,7 @@ public class WebCustomTooltipExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebLabel label = new WebLabel ( getPreviewLanguagePrefix () + "text" );
             label.setToolTip ( getPreviewLanguagePrefix () + "tip", TooltipWay.down, 0 );
@@ -137,7 +137,7 @@ public class WebCustomTooltipExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebLabel label = new WebLabel ( getPreviewLanguagePrefix () + "text" );
             label.addToolTip ( getPreviewLanguagePrefix () + "tip.up", TooltipWay.up );
@@ -165,7 +165,7 @@ public class WebCustomTooltipExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebButton button = new WebButton ();
             button.setLanguage ( getPreviewLanguagePrefix () + "text", 0 );
@@ -203,7 +203,7 @@ public class WebCustomTooltipExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebButton button = new WebButton ( getPreviewLanguagePrefix () + "text" );
             button.addActionListener ( new ActionListener ()
@@ -235,7 +235,7 @@ public class WebCustomTooltipExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebLabel label = new WebLabel ( getPreviewLanguagePrefix () + "text" );
             final WebStyledLabel tooltipContent = new WebStyledLabel ( getPreviewLanguagePrefix () + "tip" );

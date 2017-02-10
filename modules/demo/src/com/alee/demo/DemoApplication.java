@@ -224,6 +224,7 @@ public final class DemoApplication extends WebFrame
     private void initializeToolBar ()
     {
         final WebToolBar toolBar = new WebToolBar ( StyleId.toolbarAttachedNorth );
+        toolBar.setFloatable ( false );
         toolBar.add ( new SkinChooserTool () );
         toolBar.addSeparator ();
         toolBar.add ( new OrientationChooserTool () );

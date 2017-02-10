@@ -75,7 +75,7 @@ public class WebTextPaneExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebTextPane textPane = new WebTextPane ( getStyleId () );
             textPane.setInputPrompt ( getPreviewLanguagePrefix () + "prompt" );
@@ -100,7 +100,7 @@ public class WebTextPaneExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebTextPane textPane = new WebTextPane ( getStyleId () );
             textPane.setText ( "Sample\nmultiline\ntext" );

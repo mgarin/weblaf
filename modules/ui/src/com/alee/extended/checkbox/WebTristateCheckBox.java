@@ -639,16 +639,34 @@ public class WebTristateCheckBox extends JCheckBox
     }
 
     /**
-     * Installs a Web-UI into this component.
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WTristateCheckBoxUI} object that renders this component
      */
+    @Override
+    public WTristateCheckBoxUI getUI ()
+    {
+        return ( WTristateCheckBoxUI ) ui;
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WTristateCheckBoxUI}
+     */
+    public void setUI ( final WTristateCheckBoxUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebTristateCheckBoxUI ) )
+        if ( getUI () == null || !( getUI () instanceof WTristateCheckBoxUI ) )
         {
             try
             {
-                setUI ( ( WebTristateCheckBoxUI ) UIManager.getUI ( this ) );
+                setUI ( ( WTristateCheckBoxUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {
@@ -930,6 +948,12 @@ public class WebTristateCheckBox extends JCheckBox
     public void removeToolTips ( final List<WebCustomTooltip> tooltips )
     {
         TooltipManager.removeTooltips ( this, tooltips );
+    }
+
+    @Override
+    public String getLanguage ()
+    {
+        return LanguageManager.getComponentKey ( this );
     }
 
     @Override

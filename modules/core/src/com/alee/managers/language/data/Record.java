@@ -33,7 +33,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("record")
+@XStreamAlias ( "record" )
 public final class Record implements Serializable, Cloneable
 {
     @XStreamAsAttribute

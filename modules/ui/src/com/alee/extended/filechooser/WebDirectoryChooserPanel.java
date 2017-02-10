@@ -368,7 +368,7 @@ public class WebDirectoryChooserPanel extends WebPanel
         final WebPanel controlsPanel = new WebPanel ( controlsPanelId, new BorderLayout ( 0, 0 ) );
 
         final StyleId acceptButtonId = StyleId.directorychooserAcceptButton.at ( controlsPanel );
-        acceptButton = new WebButton ( acceptButtonId, "weblaf.ex.dirchooser.choose", Icons.accept);
+        acceptButton = new WebButton ( acceptButtonId, "weblaf.ex.dirchooser.choose", Icons.accept );
         acceptButton.addHotkey ( Hotkey.CTRL_ENTER );
         acceptButton.setEnabled ( false );
         acceptButton.addActionListener ( new ActionListener ()

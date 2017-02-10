@@ -81,7 +81,7 @@ public class JTreeExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JTree tree = new JTree ();
             tree.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
@@ -106,7 +106,7 @@ public class JTreeExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JTree tree = new JTree ();
             tree.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );

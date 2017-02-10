@@ -30,7 +30,7 @@ import java.awt.geom.RoundRectangle2D;
 
 /**
  * Simple border painter.
- * This painter might be used instead of LineBorder in any component that supports painters.
+ * This painter might be used instead of {@link javax.swing.border.LineBorder} in any component that supports painters.
  *
  * @param <E> component type
  * @param <U> component UI type

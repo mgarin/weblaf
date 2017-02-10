@@ -35,7 +35,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("Decorations")
+@XStreamAlias ( "Decorations" )
 public final class Decorations<E extends JComponent, D extends IDecoration<E, D>>
         implements Iterable<D>, Mergeable<Decorations<E, D>>, Cloneable
 {

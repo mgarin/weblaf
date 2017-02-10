@@ -25,16 +25,17 @@ import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicToggleButtonUI;
 import java.awt.*;
 
 /**
  * Custom UI for {@link JToggleButton} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public class WebToggleButtonUI extends BasicToggleButtonUI implements ShapeSupport, MarginSupport, PaddingSupport, SwingConstants
+public class WebToggleButtonUI<C extends JToggleButton> extends WToggleButtonUI<C>
+        implements ShapeSupport, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
      * Component painter.
@@ -45,16 +46,15 @@ public class WebToggleButtonUI extends BasicToggleButtonUI implements ShapeSuppo
     /**
      * Runtime variables.
      */
-    protected AbstractButton button;
     protected Insets margin = null;
     protected Insets padding = null;
 
     /**
-     * Returns an instance of the WebToggleButtonUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebToggleButtonUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebToggleButtonUI
+     * @return instance of the {@link WebToggleButtonUI}
      */
     @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
@@ -62,37 +62,23 @@ public class WebToggleButtonUI extends BasicToggleButtonUI implements ShapeSuppo
         return new WebToggleButtonUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
+        // Installing UI
         super.installUI ( c );
-
-        // Saving button reference
-        button = ( AbstractButton ) c;
 
         // Applying skin
         StyleManager.installSkin ( button );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( button );
 
-        // Removing button reference
-        button = null;
-
+        // Uninstalling UI
         super.uninstallUI ( c );
     }
 
@@ -135,7 +121,7 @@ public class WebToggleButtonUI extends BasicToggleButtonUI implements ShapeSuppo
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

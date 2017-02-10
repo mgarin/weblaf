@@ -25,7 +25,7 @@ import javax.swing.*;
 import java.util.List;
 
 /**
- * Simple table column painter based on {@link com.alee.painter.decoration.AbstractSectionDecorationPainter}.
+ * Simple table column painter based on {@link AbstractSectionDecorationPainter}.
  *
  * @param <E> component type
  * @param <U> component UI type

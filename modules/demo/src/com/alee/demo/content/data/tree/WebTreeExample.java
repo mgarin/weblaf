@@ -78,7 +78,7 @@ public class WebTreeExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebTree tree = new WebTree ( getStyleId () );
             tree.setVisibleRowCount ( 8 );
@@ -102,7 +102,7 @@ public class WebTreeExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebTree tree = new WebTree ( getStyleId () );
             tree.setVisibleRowCount ( 8 );
@@ -127,7 +127,7 @@ public class WebTreeExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebTree left = new WebTree ( getStyleId () );
             left.setVisibleRowCount ( 8 );

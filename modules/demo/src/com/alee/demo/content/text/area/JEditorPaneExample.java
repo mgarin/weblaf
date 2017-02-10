@@ -83,7 +83,7 @@ public class JEditorPaneExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JEditorPane editorPane = new JEditorPane ( "text/html", createHtmlText () );
             editorPane.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
@@ -108,7 +108,7 @@ public class JEditorPaneExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JEditorPane editorPane = new JEditorPane ( "text/html", createHtmlText () );
             editorPane.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
@@ -133,7 +133,7 @@ public class JEditorPaneExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JEditorPane editorPane = new JEditorPane ( "text/html", createHtmlText () );
             editorPane.setEditable ( false );

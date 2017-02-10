@@ -22,7 +22,7 @@ import com.alee.managers.style.StyleableComponent;
 import javax.swing.*;
 
 /**
- * Default JComponent information provider.
+ * Default {@link JComponent} information provider.
  *
  * @author Mikle Garin
  */
@@ -30,7 +30,7 @@ import javax.swing.*;
 public class JComponentInfo<T extends JComponent> extends AWTComponentInfo<T>
 {
     @Override
-    public ImageIcon getIcon ( final StyleableComponent type, final T component )
+    public ImageIcon getIconImpl ( final StyleableComponent type, final T component )
     {
         if ( component instanceof JLayeredPane )
         {
@@ -38,7 +38,7 @@ public class JComponentInfo<T extends JComponent> extends AWTComponentInfo<T>
         }
         else
         {
-            return super.getIcon ( type, component );
+            return super.getIconImpl ( type, component );
         }
     }
 }

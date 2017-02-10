@@ -1,4 +1,4 @@
-<skin>
+<skin xmlns="http://weblookandfeel.com">
 
     <!-- com.alee.laf.filechooser.WebFileChooser -->
 
@@ -50,7 +50,7 @@
             <!-- Central split -->
             <style type="splitpane" id="center">
                 <component>
-                    <background>229,233,238</background>
+                    <background>68,68,68</background>
                     <dividerSize>8</dividerSize>
                 </component>
 
@@ -100,9 +100,9 @@
                 <decorations>
                     <decoration>
                         <WebShape round="0" />
-                        <GradientBackground from="0,0.5" to="0,1">
-                            <color>229,233,238</color>
-                            <color>white</color>
+                        <GradientBackground from="0,0" to="0,0.5">
+                            <color>68,68,68</color>
+                            <color>106,110,112</color>
                         </GradientBackground>
                     </decoration>
                 </decorations>

@@ -21,62 +21,41 @@ import com.alee.extended.label.WStyledLabelUI;
 import com.alee.managers.style.BoundsType;
 import com.alee.utils.SwingUtils;
 
-import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 /**
  * Pluggable look and feel interface for {@link WebLink} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLink">How to use WebLink</a>
  * @see WebLink
  */
 
-public abstract class WLinkUI extends WStyledLabelUI
+public abstract class WLinkUI<C extends WebLink> extends WStyledLabelUI<C>
 {
     /**
      * Listeners.
      */
     protected MouseAdapter linkExecutionListener;
 
-    /**
-     * Runtime variables.
-     */
-    protected WebLink link;
-
     @Override
-    public void installUI ( final JComponent c )
+    public String getPropertyPrefix ()
     {
-        // Saving link reference
-        link = ( WebLink ) c;
-
-        super.installUI ( c );
-    }
-
-    @Override
-    public void uninstallUI ( final JComponent c )
-    {
-        super.uninstallUI ( c );
-
-        // Removing link reference
-        link = null;
-    }
-
-    @Override
-    protected String getFontKey ()
-    {
-        return "Link.font";
+        return "Link.";
     }
 
     @Override
     protected void installDefaults ()
     {
+        // Installing styled label defaults
         super.installDefaults ();
 
-        link.setFocusable ( false );
-        link.setVisitable ( true );
-        link.setVisited ( false );
+        // Installing link defaults
+        label.setFocusable ( false );
+        label.setVisitable ( true );
+        label.setVisited ( false );
     }
 
     @Override
@@ -91,12 +70,13 @@ public abstract class WLinkUI extends WStyledLabelUI
             @Override
             public void mousePressed ( final MouseEvent e )
             {
-                if ( link.isEnabled () && SwingUtils.isLeftMouseButton ( e ) && BoundsType.margin.bounds ( link ).contains ( e.getPoint () ) )
+                if ( label.isEnabled () && SwingUtils.isLeftMouseButton ( e ) &&
+                        BoundsType.margin.bounds ( label ).contains ( e.getPoint () ) )
                 {
                     pressed = true;
-                    if ( link.isFocusable () )
+                    if ( label.isFocusable () )
                     {
-                        link.requestFocusInWindow ();
+                        label.requestFocusInWindow ();
                     }
                 }
             }
@@ -106,21 +86,21 @@ public abstract class WLinkUI extends WStyledLabelUI
             {
                 if ( SwingUtils.isLeftMouseButton ( e ) )
                 {
-                    if ( link.isEnabled () && pressed && BoundsType.margin.bounds ( link ).contains ( e.getPoint () ) )
+                    if ( label.isEnabled () && pressed && BoundsType.margin.bounds ( label ).contains ( e.getPoint () ) )
                     {
-                        link.fireLinkExecuted ();
+                        label.fireLinkExecuted ();
                     }
                     pressed = false;
                 }
             }
         };
-        link.addMouseListener ( linkExecutionListener );
+        label.addMouseListener ( linkExecutionListener );
     }
 
     @Override
     protected void uninstallListeners ()
     {
-        link.removeMouseListener ( linkExecutionListener );
+        label.removeMouseListener ( linkExecutionListener );
         linkExecutionListener = null;
 
         super.uninstallListeners ();

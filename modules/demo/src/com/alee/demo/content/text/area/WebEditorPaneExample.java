@@ -75,7 +75,7 @@ public class WebEditorPaneExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebEditorPane textPane = new WebEditorPane ( getStyleId () );
             textPane.setInputPrompt ( getPreviewLanguagePrefix () + "prompt" );
@@ -100,7 +100,7 @@ public class WebEditorPaneExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebEditorPane textPane = new WebEditorPane ( getStyleId (), "text/html", createHtmlText () );
             return CollectionUtils.asList ( textPane );

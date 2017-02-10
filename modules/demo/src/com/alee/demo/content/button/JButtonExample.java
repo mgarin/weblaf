@@ -22,6 +22,7 @@ import com.alee.demo.api.example.wiki.OracleWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.grouping.GroupPane;
+import com.alee.managers.language.LanguageManager;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
@@ -84,21 +85,29 @@ public class JButtonExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
-            final JButton button = new JButton ( "Click me" );
-            button.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            final JButton basic = new JButton ();
+            basic.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            LanguageManager.registerComponent ( basic, getPreviewLanguagePrefix () + "basic" );
 
-            final JButton first = new JButton ( "First" );
-            first.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            final JButton group1 = new JButton ();
+            group1.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            LanguageManager.registerComponent ( group1, getPreviewLanguagePrefix () + "group1" );
 
-            final JButton second = new JButton ( "Second" );
-            second.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            final JButton group2 = new JButton ();
+            group2.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            LanguageManager.registerComponent ( group2, getPreviewLanguagePrefix () + "group2" );
 
-            final JButton icon = new JButton ( "With icon", WebLookAndFeel.getIcon ( 16 ) );
+            final JButton group3 = new JButton ();
+            group3.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            LanguageManager.registerComponent ( group3, getPreviewLanguagePrefix () + "group3" );
+
+            final JButton icon = new JButton ( WebLookAndFeel.getIcon ( 16 ) );
             icon.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            LanguageManager.registerComponent ( icon, getPreviewLanguagePrefix () + "icon" );
 
-            return CollectionUtils.asList ( button, new GroupPane ( first, second ), icon );
+            return CollectionUtils.asList ( basic, new GroupPane ( group1, group2, group3 ), icon );
         }
     }
 
@@ -118,18 +127,21 @@ public class JButtonExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
-            final JButton button = new JButton ( WebLookAndFeel.getIcon ( 16 ) );
-            button.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            final JButton basic = new JButton ( WebLookAndFeel.getIcon ( 16 ) );
+            basic.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
 
-            final JButton first = new JButton ( WebLookAndFeel.getIcon ( 16 ) );
-            first.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            final JButton group1 = new JButton ( WebLookAndFeel.getIcon ( 16 ) );
+            group1.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
 
-            final JButton second = new JButton ( WebLookAndFeel.getIcon ( 16 ) );
-            second.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            final JButton group2 = new JButton ( WebLookAndFeel.getIcon ( 16 ) );
+            group2.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
 
-            return CollectionUtils.asList ( button, new GroupPane ( first, second ) );
+            final JButton group3 = new JButton ( WebLookAndFeel.getIcon ( 16 ) );
+            group3.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+
+            return CollectionUtils.asList ( basic, new GroupPane ( group1, group2, group3 ) );
         }
     }
 }

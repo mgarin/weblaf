@@ -23,7 +23,7 @@ import com.alee.painter.decoration.IDecoration;
 import javax.swing.*;
 
 /**
- * Simple tree selection painter based on {@link com.alee.painter.decoration.AbstractSectionDecorationPainter}.
+ * Simple tree selection painter based on {@link AbstractSectionDecorationPainter}.
  * It is used within {@link com.alee.laf.tree.TreePainter} to paint cells selection.
  *
  * @param <E> component type

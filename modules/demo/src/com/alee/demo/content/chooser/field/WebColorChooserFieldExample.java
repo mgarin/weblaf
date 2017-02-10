@@ -73,7 +73,7 @@ public class WebColorChooserFieldExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebColorChooserField colorChooserField = new WebColorChooserField ( getStyleId (), Color.RED );
             return CollectionUtils.asList ( colorChooserField );

@@ -65,6 +65,16 @@ public abstract class AbstractPreviewExample extends AbstractExample
     }
 
     /**
+     * Returns previous layout.
+     *
+     * @return previous layout
+     */
+    protected LayoutManager createPreviewLayout ()
+    {
+        return new VerticalFlowLayout ( 0, -32, true, false );
+    }
+
+    /**
      * Returns preview content.
      *
      * @return preview content
@@ -96,16 +106,6 @@ public abstract class AbstractPreviewExample extends AbstractExample
             SwingUtils.equalizeComponentsWidth ( Arrays.asList ( AbstractButton.TEXT_CHANGED_PROPERTY ), components );
         }
         return examplesPane;
-    }
-
-    /**
-     * Returns previous layout.
-     *
-     * @return previous layout
-     */
-    protected LayoutManager createPreviewLayout ()
-    {
-        return new VerticalFlowLayout ( 0, -32, true, false );
     }
 
     /**

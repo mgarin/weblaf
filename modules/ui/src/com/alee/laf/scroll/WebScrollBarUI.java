@@ -63,7 +63,7 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
     /**
      * Component painter.
      */
-    @DefaultPainter (ScrollBarPainter.class)
+    @DefaultPainter ( ScrollBarPainter.class )
     protected IScrollBarPainter painter;
 
     /**
@@ -84,7 +84,7 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
      * @param c component that will use UI instance
      * @return instance of the WebScrollBarUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebScrollBarUI ();
@@ -193,7 +193,7 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

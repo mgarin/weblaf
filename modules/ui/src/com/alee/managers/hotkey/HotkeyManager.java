@@ -17,9 +17,7 @@
 
 package com.alee.managers.hotkey;
 
-import com.alee.laf.label.WebLabel;
 import com.alee.managers.language.data.TooltipWay;
-import com.alee.managers.style.StyleId;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
@@ -677,10 +675,9 @@ public class HotkeyManager
                     if ( forComponent != null && !shown.contains ( forComponent ) && forComponent.isVisible () &&
                             forComponent.isShowing () && SwingUtils.getWindowAncestor ( forComponent ) == window )
                     {
-                        final WebLabel tip = new WebLabel ( HotkeyManager.getComponentHotkeysString ( forComponent ) );
-                        tip.setStyleId ( StyleId.customtooltipLabel );
-                        tip.setBoldFont ();
-                        TooltipManager.showOneTimeTooltip ( forComponent, null, tip, hotkeyInfo.getHotkeyDisplayWay () );
+                        final String hotkey = HotkeyManager.getComponentHotkeysString ( forComponent );
+                        final TooltipWay displayWay = hotkeyInfo.getHotkeyDisplayWay ();
+                        TooltipManager.showOneTimeTooltip ( forComponent, null, hotkey, displayWay );
                         shown.add ( forComponent );
                     }
                 }

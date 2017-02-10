@@ -128,6 +128,12 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         // Perform basic actions on property changes
         super.propertyChanged ( property, oldValue, newValue );
 
+        // Updating custom decoration states
+        if ( CompareUtils.equals ( property, DECORATION_STATES_PROPERTY ) )
+        {
+            updateDecorationState ();
+        }
+
         // Updating enabled state
         if ( CompareUtils.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
         {
@@ -135,12 +141,6 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
             {
                 updateDecorationState ();
             }
-        }
-
-        // Updating custom decoration states
-        if ( CompareUtils.equals ( property, DECORATION_STATES_PROPERTY ) )
-        {
-            updateDecorationState ();
         }
     }
 
@@ -169,7 +169,12 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                 @Override
                 public void focusChanged ( final boolean focused )
                 {
-                    AbstractDecorationPainter.this.focusChanged ( focused );
+                    // Ensure component is still available
+                    // This might happen if painter is replaced from another FocusTracker
+                    if ( component != null )
+                    {
+                        AbstractDecorationPainter.this.focusChanged ( focused );
+                    }
                 }
             };
             FocusManager.addFocusTracker ( component, focusStateTracker );
@@ -236,7 +241,12 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                 @Override
                 public void focusChanged ( final Component oldFocus, final Component newFocus )
                 {
-                    globalFocusChanged ( oldFocus, newFocus );
+                    // Ensure component is still available
+                    // This might happen if painter is replaced from another GlobalFocusListener
+                    if ( component != null )
+                    {
+                        AbstractDecorationPainter.this.globalFocusChanged ( oldFocus, newFocus );
+                    }
                 }
             };
             FocusManager.registerGlobalFocusListener ( inFocusedParentTracker );
@@ -340,7 +350,12 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                 @Override
                 public void hoverChanged ( final boolean hover )
                 {
-                    AbstractDecorationPainter.this.hoverChanged ( hover );
+                    // Ensure component is still available
+                    // This might happen if painter is replaced from another AbstractHoverBehavior
+                    if ( component != null )
+                    {
+                        AbstractDecorationPainter.this.hoverChanged ( hover );
+                    }
                 }
             };
             hoverStateTracker.install ();
@@ -418,20 +433,30 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
             @Override
             public void componentAdded ( final ContainerEvent e )
             {
-                // Updating border when a child was added nearby
-                if ( ancestor != null && ancestor.getLayout () instanceof GroupingLayout && e.getChild () != component )
+                // Ensure component is still available
+                // This might happen if painter is replaced from another ContainerListener
+                if ( component != null )
                 {
-                    updateBorder ();
+                    // Updating border when a child was added nearby
+                    if ( ancestor != null && ancestor.getLayout () instanceof GroupingLayout && e.getChild () != component )
+                    {
+                        updateBorder ();
+                    }
                 }
             }
 
             @Override
             public void componentRemoved ( final ContainerEvent e )
             {
-                // Updating border when a child was removed nearby
-                if ( ancestor != null && ancestor.getLayout () instanceof GroupingLayout && e.getChild () != component )
+                // Ensure component is still available
+                // This might happen if painter is replaced from another ContainerListener
+                if ( component != null )
                 {
-                    updateBorder ();
+                    // Updating border when a child was removed nearby
+                    if ( ancestor != null && ancestor.getLayout () instanceof GroupingLayout && e.getChild () != component )
+                    {
+                        updateBorder ();
+                    }
                 }
             }
         };
@@ -440,7 +465,12 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
             @Override
             public void hierarchyChanged ( final HierarchyEvent e )
             {
-                AbstractDecorationPainter.this.hierarchyChanged ( e );
+                // Ensure component is still available
+                // This might happen if painter is replaced from another HierarchyListener
+                if ( component != null )
+                {
+                    AbstractDecorationPainter.this.hierarchyChanged ( e );
+                }
             }
         };
         component.addHierarchyListener ( hierarchyTracker );

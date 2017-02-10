@@ -36,7 +36,7 @@ public abstract class AbstractBorder<E extends JComponent, D extends IDecoration
         implements IBorder<E, D, I>
 {
     /**
-     * Border ID.
+     * Border identifier.
      */
     @XStreamAsAttribute
     protected String id;
@@ -48,7 +48,7 @@ public abstract class AbstractBorder<E extends JComponent, D extends IDecoration
     protected Boolean overwrite;
 
     /**
-     * Shade opacity.
+     * Border opacity.
      */
     @XStreamAsAttribute
     protected Float opacity;

@@ -41,7 +41,7 @@ public class WebEditorPaneUI extends WEditorPaneUI implements ShapeSupport, Marg
     /**
      * Component painter.
      */
-    @DefaultPainter (EditorPanePainter.class)
+    @DefaultPainter ( EditorPanePainter.class )
     protected IEditorPanePainter painter;
 
     /**
@@ -57,23 +57,18 @@ public class WebEditorPaneUI extends WEditorPaneUI implements ShapeSupport, Marg
     protected Insets padding = null;
 
     /**
-     * Returns an instance of the WebEditorPaneUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebEditorPaneUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebEditorPaneUI
+     * @return instance of the {@link WebEditorPaneUI}
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebEditorPaneUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
@@ -86,11 +81,6 @@ public class WebEditorPaneUI extends WEditorPaneUI implements ShapeSupport, Marg
         StyleManager.installSkin ( editorPane );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
@@ -142,7 +132,7 @@ public class WebEditorPaneUI extends WEditorPaneUI implements ShapeSupport, Marg
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

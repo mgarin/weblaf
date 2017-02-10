@@ -17,7 +17,6 @@
 
 package com.alee.extended.dock;
 
-import com.alee.api.data.CompassDirection;
 import com.alee.extended.behavior.ComponentMoveBehavior;
 import com.alee.extended.dock.drag.DockableFrameTransferHandler;
 import com.alee.extended.label.WebStyledLabel;
@@ -55,17 +54,19 @@ import java.util.List;
 /**
  * Custom UI for {@link WebDockableFrame} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  * @see WebDockablePane
  */
 
-public class WebDockableFrameUI extends WDockableFrameUI implements ShapeSupport, MarginSupport, PaddingSupport, PropertyChangeListener
+public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFrameUI<C>
+        implements ShapeSupport, MarginSupport, PaddingSupport, PropertyChangeListener
 {
     /**
      * Component painter.
      */
-    @DefaultPainter (DockableFramePainter.class)
+    @DefaultPainter ( DockableFramePainter.class )
     protected IDockableFramePainter painter;
 
     /**
@@ -90,36 +91,27 @@ public class WebDockableFrameUI extends WDockableFrameUI implements ShapeSupport
     /**
      * Runtime variables.
      */
-    protected WebDockableFrame frame;
     protected Insets margin = null;
     protected Insets padding = null;
 
     /**
-     * Returns an instance of the WebDockableFrameUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebDockableFrameUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebDockableFrameUI
+     * @return instance of the {@link WebDockableFrameUI}
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebDockableFrameUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
-        // Saving dockable frame reference
-        frame = ( WebDockableFrame ) c;
-
-        // Installing default settings
-        installDefaults ();
+        // Installing UI
+        super.installUI ( c );
 
         // Applying skin
         StyleManager.installSkin ( frame );
@@ -129,11 +121,6 @@ public class WebDockableFrameUI extends WDockableFrameUI implements ShapeSupport
         installActions ();
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
@@ -144,24 +131,8 @@ public class WebDockableFrameUI extends WDockableFrameUI implements ShapeSupport
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( frame );
 
-        // Removing dockable frame reference
-        frame = null;
-    }
-
-    /**
-     * Installs default component settings.
-     */
-    protected void installDefaults ()
-    {
-        frame.setFocusCycleRoot ( true );
-        frame.setState ( DockableFrameState.docked );
-        frame.setMaximized ( false );
-        frame.setRestoreState ( DockableFrameState.docked );
-        frame.setPosition ( CompassDirection.west );
-        frame.setDraggable ( true );
-        frame.setClosable ( true );
-        frame.setFloatable ( true );
-        frame.setMaximizable ( true );
+        // Uninstalling UI
+        super.uninstallUI ( c );
     }
 
     /**
@@ -578,7 +549,7 @@ public class WebDockableFrameUI extends WDockableFrameUI implements ShapeSupport
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

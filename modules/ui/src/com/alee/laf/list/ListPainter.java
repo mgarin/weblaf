@@ -33,13 +33,13 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
      * Hover list item decoration painter.
      * todo Change to "itemPainter" and simply use "hover" state there if needed
      */
-    @DefaultPainter (ListItemPainter.class)
+    @DefaultPainter ( ListItemPainter.class )
     protected IListItemPainter hoverPainter;
 
     /**
      * Selected list items decoration painter.
      */
-    @DefaultPainter (ListSelectionPainter.class)
+    @DefaultPainter ( ListSelectionPainter.class )
     protected IListSelectionPainter selectionPainter;
 
     /**
@@ -76,8 +76,13 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
             @Override
             public void valueChanged ( final ListSelectionEvent e )
             {
-                // Optimized selection repaint
-                repaintSelection ();
+                // Ensure component is still available
+                // This might happen if painter is replaced from another ListSelectionListener
+                if ( component != null )
+                {
+                    // Optimized selection repaint
+                    repaintSelection ();
+                }
             }
         };
         component.addListSelectionListener ( listSelectionListener );
@@ -327,7 +332,7 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
      * @param closest whether or not should try finding closest row if exact location doesn't match any
      * @return row at the location specified by X and Y coordinates
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected int convertLocationToRow ( final int x, final int y0, final boolean closest )
     {
         final int size = component.getModel ().getSize ();
@@ -387,7 +392,7 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
      * @param y Y location
      * @return column at the location specified by X and Y coordinates
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected int convertLocationToColumn ( final int x, final int y )
     {
         if ( cellWidth > 0 )
@@ -436,7 +441,7 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
      *
      * @param g2d graphics context
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintDropLocation ( final Graphics2D g2d )
     {
         final JList.DropLocation loc = component.getDropLocation ();

@@ -82,7 +82,7 @@ public class JTooltipExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebLabel label = new WebLabel ( getPreviewLanguagePrefix () + "text" );
             label.setToolTipText ( LM.get ( getPreviewLanguagePrefix () + "tip" ) );

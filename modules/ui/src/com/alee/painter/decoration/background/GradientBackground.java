@@ -31,7 +31,7 @@ import java.awt.geom.Point2D;
 import java.util.List;
 
 /**
- * Gradient background.
+ * Gradient {@link IBackground} implementation.
  * Fills component shape with a gradient using multiple colors.
  *
  * @param <E> component type
@@ -40,13 +40,13 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("GradientBackground")
+@XStreamAlias ( "GradientBackground" )
 public class GradientBackground<E extends JComponent, D extends IDecoration<E, D>, I extends GradientBackground<E, D, I>>
         extends AbstractBackground<E, D, I>
 {
     /**
      * Gradient type.
-     * {@link com.alee.painter.decoration.background.GradientType#linear} is used if it is not specified.
+     * {@link GradientType#linear} is used if it is not specified.
      */
     @XStreamAsAttribute
     protected GradientType type;
@@ -69,7 +69,7 @@ public class GradientBackground<E extends JComponent, D extends IDecoration<E, D
      * Gradient colors.
      * Must always be provided to properly render separator.
      */
-    @XStreamImplicit (itemFieldName = "color")
+    @XStreamImplicit ( itemFieldName = "color" )
     protected List<GradientColor> colors;
 
     /**
@@ -125,14 +125,13 @@ public class GradientBackground<E extends JComponent, D extends IDecoration<E, D
     }
 
     @Override
-    public I merge ( final I background )
+    public I merge ( final I bg )
     {
-        super.merge ( background );
-        type = background.isOverwrite () || background.type != null ? background.type : type;
-        from = background.isOverwrite () || background.from != null ? background.from : from;
-        to = background.isOverwrite () || background.to != null ? background.to : to;
-        colors = background.isOverwrite () || !CollectionUtils.isEmpty ( background.colors ) ? CollectionUtils.copy ( background.colors ) :
-                colors;
+        super.merge ( bg );
+        type = bg.isOverwrite () || bg.type != null ? bg.type : type;
+        from = bg.isOverwrite () || bg.from != null ? bg.from : from;
+        to = bg.isOverwrite () || bg.to != null ? bg.to : to;
+        colors = bg.isOverwrite () || !CollectionUtils.isEmpty ( bg.colors ) ? CollectionUtils.copy ( bg.colors ) : colors;
         return ( I ) this;
     }
 }

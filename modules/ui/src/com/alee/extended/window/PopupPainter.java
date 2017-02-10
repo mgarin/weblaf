@@ -22,7 +22,7 @@ import com.alee.painter.decoration.IDecoration;
 
 /**
  * Basic painter for {@link WebPopup} component.
- * It is used as {@link WebPopupUI} default painter.
+ * It is used as {@link WPopupUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type

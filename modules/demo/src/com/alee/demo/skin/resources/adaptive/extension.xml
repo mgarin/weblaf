@@ -1,6 +1,6 @@
-<skin>
+<skin xmlns="http://weblookandfeel.com">
 
-    <!-- Extension information -->
+    <!-- Extension settings -->
     <id>weblaf.demo.skin.extension</id>
     <class>com.alee.demo.skin.AdaptiveExtension</class>
     <extends>weblaf.web.skin</extends>

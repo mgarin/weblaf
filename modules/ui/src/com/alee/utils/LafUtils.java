@@ -18,6 +18,7 @@
 package com.alee.utils;
 
 import com.alee.global.StyleConstants;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
@@ -847,5 +848,49 @@ public final class LafUtils
             Log.get ().error ( "Unable to initialize L&F for class name: " + className, e );
             return false;
         }
+    }
+
+    /**
+     * Installs default settings into the specified {@code component}.
+     *
+     * @param component component to install default settings into
+     * @param prefix    component type prefix
+     */
+    public static void installDefaults ( final JComponent component, final String prefix )
+    {
+        if ( SwingUtils.isUIResource ( component.getFont () ) )
+        {
+            component.setFont ( UIManager.getFont ( prefix + WebLookAndFeel.FONT_PROPERTY ) );
+        }
+        if ( SwingUtils.isUIResource ( component.getBackground () ) )
+        {
+            component.setBackground ( UIManager.getColor ( prefix + WebLookAndFeel.BACKGROUND_PROPERTY ) );
+        }
+        if ( SwingUtils.isUIResource ( component.getForeground () ) )
+        {
+            component.setForeground ( UIManager.getColor ( prefix + WebLookAndFeel.FOREGROUND_PROPERTY ) );
+        }
+    }
+
+    /**
+     * Uninstalls default settings from the specified {@code component}.
+     *
+     * @param component component to uninstall default settings from
+     */
+    public static void uninstallDefaults ( final JComponent component )
+    {
+        if ( SwingUtils.isUIResource ( component.getForeground () ) )
+        {
+            component.setForeground ( null );
+        }
+        if ( SwingUtils.isUIResource ( component.getBackground () ) )
+        {
+            component.setBackground ( null );
+        }
+        if ( SwingUtils.isUIResource ( component.getFont () ) )
+        {
+            component.setFont ( null );
+        }
+        LookAndFeel.uninstallBorder ( component );
     }
 }

@@ -20,7 +20,7 @@ package com.alee.extended.image;
 import com.alee.painter.SpecificPainter;
 
 /**
- * Base interface for {@link com.alee.extended.image.WebImage} component painters.
+ * Base interface for {@link WebImage} component painters.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -29,4 +29,7 @@ import com.alee.painter.SpecificPainter;
 
 public interface IImagePainter<E extends WebImage, U extends WImageUI> extends SpecificPainter<E, U>
 {
+    /**
+     * This interface doesn't offer any additional methods to implement.
+     */
 }

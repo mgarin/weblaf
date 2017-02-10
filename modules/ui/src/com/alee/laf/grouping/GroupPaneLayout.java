@@ -20,7 +20,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("GroupPaneLayout")
+@XStreamAlias ( "GroupPaneLayout" )
 public class GroupPaneLayout extends AbstractGroupingLayout implements SwingConstants
 {
     /**

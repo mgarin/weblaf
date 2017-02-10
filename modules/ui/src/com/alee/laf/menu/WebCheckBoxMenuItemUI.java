@@ -39,7 +39,7 @@ public class WebCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI implements Sh
     /**
      * Component painter.
      */
-    @DefaultPainter (CheckBoxMenuItemPainter.class)
+    @DefaultPainter ( CheckBoxMenuItemPainter.class )
     protected ICheckBoxMenuItemPainter painter;
 
     /**
@@ -55,7 +55,7 @@ public class WebCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI implements Sh
      * @param c component that will use UI instance
      * @return instance of the WebCheckBoxMenuItemUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebCheckBoxMenuItemUI ();
@@ -129,7 +129,7 @@ public class WebCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI implements Sh
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

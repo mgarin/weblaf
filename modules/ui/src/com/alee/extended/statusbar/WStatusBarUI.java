@@ -17,14 +17,87 @@
 
 package com.alee.extended.statusbar;
 
+import com.alee.laf.WebUI;
+import com.alee.utils.LafUtils;
+
+import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 
 /**
- * Pluggable look and feel interface for {@link com.alee.extended.statusbar.WebStatusBar} component.
+ * Pluggable look and feel interface for {@link WebStatusBar} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public abstract class WStatusBarUI extends ComponentUI
+public abstract class WStatusBarUI<C extends WebStatusBar> extends ComponentUI implements WebUI<C>
 {
+    /**
+     * Runtime variables.
+     */
+    protected C statusBar;
+
+    @Override
+    public void installUI ( final JComponent c )
+    {
+        // Saving statusbar reference
+        statusBar = ( C ) c;
+
+        // Installing default component settings
+        installDefaults ();
+
+        // Installing default component listeners
+        installListeners ();
+    }
+
+    @Override
+    public void uninstallUI ( final JComponent c )
+    {
+        // Uninstalling default component listeners
+        uninstallListeners ();
+
+        // Uninstalling default component settings
+        uninstallDefaults ();
+
+        // Removing statusbar reference
+        statusBar = null;
+    }
+
+    @Override
+    public String getPropertyPrefix ()
+    {
+        return "StatusBar.";
+    }
+
+    /**
+     * Installs default component settings.
+     */
+    protected void installDefaults ()
+    {
+        LafUtils.installDefaults ( statusBar, getPropertyPrefix () );
+    }
+
+    /**
+     * Uninstalls default component settings.
+     */
+    protected void uninstallDefaults ()
+    {
+        LafUtils.uninstallDefaults ( statusBar );
+    }
+
+    /**
+     * Installs default component listeners.
+     */
+    protected void installListeners ()
+    {
+        // Do nothing by default
+    }
+
+    /**
+     * Uninstalls default component listeners.
+     */
+    protected void uninstallListeners ()
+    {
+        // Do nothing by default
+    }
 }

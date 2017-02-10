@@ -19,6 +19,7 @@ package com.alee.laf.menu;
 
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
+import com.alee.managers.language.LanguageUtils;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
@@ -68,32 +69,32 @@ public class WebMenu extends JMenu
     /**
      * Constructs new menu using the specified settings.
      *
-     * @param s menu text
+     * @param text menu text
      */
-    public WebMenu ( final String s )
+    public WebMenu ( final String text )
     {
-        this ( StyleId.auto, s );
+        this ( StyleId.auto, text );
     }
 
     /**
      * Constructs new menu using the specified settings.
      *
-     * @param a menu action
+     * @param action menu action
      */
-    public WebMenu ( final Action a )
+    public WebMenu ( final Action action )
     {
-        this ( StyleId.auto, a );
+        this ( StyleId.auto, action );
     }
 
     /**
      * Constructs new menu using the specified settings.
      *
-     * @param s    menu text
+     * @param text menu text
      * @param icon menu item icon
      */
-    public WebMenu ( final String s, final Icon icon )
+    public WebMenu ( final String text, final Icon icon )
     {
-        this ( StyleId.auto, s, icon );
+        this ( StyleId.auto, text, icon );
     }
 
     /**
@@ -120,38 +121,45 @@ public class WebMenu extends JMenu
     /**
      * Constructs new menu using the specified settings.
      *
-     * @param id style ID
-     * @param s  menu text
+     * @param id   style ID
+     * @param text menu text
      */
-    public WebMenu ( final StyleId id, final String s )
+    public WebMenu ( final StyleId id, final String text )
     {
-        this ( id, s, null );
+        this ( id, text, null );
     }
 
     /**
      * Constructs new menu using the specified settings.
      *
-     * @param id style ID
-     * @param a  menu action
+     * @param id     style ID
+     * @param action menu action
      */
-    public WebMenu ( final StyleId id, final Action a )
+    public WebMenu ( final StyleId id, final Action action )
     {
         this ( id, "", null );
-        setAction ( a );
+        setAction ( action );
     }
 
     /**
      * Constructs new menu using the specified settings.
      *
      * @param id   style ID
-     * @param s    menu text
+     * @param text menu text
      * @param icon menu item icon
      */
-    public WebMenu ( final StyleId id, final String s, final Icon icon )
+    public WebMenu ( final StyleId id, final String text, final Icon icon )
     {
-        super ( s );
+        super ( text );
         setIcon ( icon );
         setStyleId ( id );
+    }
+
+    @Override
+    protected void init ( final String text, final Icon icon )
+    {
+        super.init ( LanguageUtils.getInitialText ( text ), icon );
+        LanguageUtils.registerInitialLanguage ( this, text );
     }
 
     @Override
@@ -327,6 +335,12 @@ public class WebMenu extends JMenu
         {
             getPopupMenu ().updateUI ();
         }
+    }
+
+    @Override
+    public String getLanguage ()
+    {
+        return LanguageManager.getComponentKey ( this );
     }
 
     @Override

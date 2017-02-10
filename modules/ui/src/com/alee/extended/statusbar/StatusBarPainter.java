@@ -22,7 +22,7 @@ import com.alee.painter.decoration.IDecoration;
 
 /**
  * Basic painter for {@link WebStatusBar} component.
- * It is used as {@link WebStatusBarUI} default painter.
+ * It is used as {@link WStatusBarUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type

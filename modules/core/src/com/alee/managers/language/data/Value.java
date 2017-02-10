@@ -32,8 +32,8 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("value")
-@XStreamConverter (ValueConverter.class)
+@XStreamAlias ( "value" )
+@XStreamConverter ( ValueConverter.class )
 public final class Value implements Serializable, Cloneable
 {
     private String lang;

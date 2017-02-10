@@ -411,6 +411,26 @@
                         <value lang="en">Text buttons</value>
                         <value lang="ru">Текстовые кнопки</value>
                     </record>
+                    <record key="basic">
+                        <value lang="en">Simple button</value>
+                        <value lang="ru">Простая кнопка</value>
+                    </record>
+                    <record key="group1">
+                        <value lang="en">Buttons</value>
+                        <value lang="ru">Сгруппированные</value>
+                    </record>
+                    <record key="group2">
+                        <value lang="en">Grouped</value>
+                        <value lang="ru">Вместе</value>
+                    </record>
+                    <record key="group3">
+                        <value lang="en">Together</value>
+                        <value lang="ru">Кнопки</value>
+                    </record>
+                    <record key="icon">
+                        <value lang="en">With icon</value>
+                        <value lang="ru">С иконкой</value>
+                    </record>
                 </Dictionary>
                 <Dictionary prefix="icon">
                     <record key="title">
@@ -428,6 +448,26 @@
                     <record key="title">
                         <value lang="en">Text buttons</value>
                         <value lang="ru">Текстовые кнопки</value>
+                    </record>
+                    <record key="basic">
+                        <value lang="en">Simple button</value>
+                        <value lang="ru">Простая кнопка</value>
+                    </record>
+                    <record key="group1">
+                        <value lang="en">Buttons</value>
+                        <value lang="ru">Сгруппированные</value>
+                    </record>
+                    <record key="group2">
+                        <value lang="en">Grouped</value>
+                        <value lang="ru">Вместе</value>
+                    </record>
+                    <record key="group3">
+                        <value lang="en">Together</value>
+                        <value lang="ru">Кнопки</value>
+                    </record>
+                    <record key="icon">
+                        <value lang="en">With icon</value>
+                        <value lang="ru">С иконкой</value>
                     </record>
                 </Dictionary>
                 <Dictionary prefix="icon">
@@ -550,6 +590,132 @@
                     <record key="title">
                         <value lang="en">Icon switch</value>
                         <value lang="ru">Переключатель с иконками</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+        </Dictionary>
+        <Dictionary prefix="menus">
+            <record key="title">
+                <value lang="en">Menu</value>
+                <value lang="ru">Меню</value>
+            </record>
+            <Dictionary prefix="menu">
+                <record key="file">
+                    <value lang="en" mnemonic="F">File</value>
+                    <value lang="ru" mnemonic="Ф">Файл</value>
+                </record>
+                <record key="new">
+                    <value lang="en">Create</value>
+                    <value lang="ru">Создать</value>
+                </record>
+                <record key="image">
+                    <value lang="en">Image</value>
+                    <value lang="ru">Изображение</value>
+                </record>
+                <record key="video">
+                    <value lang="en">Video file</value>
+                    <value lang="ru">Видео файл</value>
+                </record>
+                <record key="music">
+                    <value lang="en">Audio file</value>
+                    <value lang="ru">Аудио файл</value>
+                </record>
+                <record key="open">
+                    <value lang="en">Open</value>
+                    <value lang="ru">Открыть</value>
+                </record>
+                <record key="save">
+                    <value lang="en">Save</value>
+                    <value lang="ru">Сохранить</value>
+                </record>
+                <record key="print">
+                    <value lang="en">Print</value>
+                    <value lang="ru">Распечатать</value>
+                </record>
+                <record key="exit">
+                    <value lang="en">Exit</value>
+                    <value lang="ru">Выйти</value>
+                </record>
+                <record key="edit">
+                    <value lang="en" mnemonic="E">Edit</value>
+                    <value lang="ru" mnemonic="Р">Редактирование</value>
+                </record>
+                <record key="undo">
+                    <value lang="en">Undo</value>
+                    <value lang="ru">Отменить</value>
+                </record>
+                <record key="redo">
+                    <value lang="en">Redo</value>
+                    <value lang="ru">Повторить</value>
+                </record>
+                <record key="cut">
+                    <value lang="en">Cut</value>
+                    <value lang="ru">Вырезать</value>
+                </record>
+                <record key="copy">
+                    <value lang="en">Copy</value>
+                    <value lang="ru">Копировать</value>
+                </record>
+                <record key="paste">
+                    <value lang="en">Paste</value>
+                    <value lang="ru">Вставить</value>
+                </record>
+                <record key="settings">
+                    <value lang="en" mnemonic="S">Settings</value>
+                    <value lang="ru" mnemonic="Н">Настройки</value>
+                </record>
+                <record key="choice1">
+                    <value lang="en">First choice</value>
+                    <value lang="ru">Первый выбор</value>
+                </record>
+                <record key="choice2">
+                    <value lang="en">Second choice</value>
+                    <value lang="ru">Второй выбор</value>
+                </record>
+                <record key="choice3">
+                    <value lang="en">Third choice</value>
+                    <value lang="ru">Третий выбор</value>
+                </record>
+                <record key="option1">
+                    <value lang="en">First option</value>
+                    <value lang="ru">Первая опция</value>
+                </record>
+                <record key="option2">
+                    <value lang="en">Second option</value>
+                    <value lang="ru">Вторая опция</value>
+                </record>
+                <record key="option3">
+                    <value lang="en">Third option</value>
+                    <value lang="ru">Третья опция</value>
+                </record>
+            </Dictionary>
+            <Dictionary prefix="jmenubar">
+                <record key="title">
+                    <value lang="en">JMenuBar</value>
+                    <value lang="ru">JMenuBar</value>
+                </record>
+                <record key="native">
+                    <value lang="en">In native dialog</value>
+                    <value lang="ru">В нативном диалоге</value>
+                </record>
+                <record key="decorated">
+                    <value lang="en">In decorated dialog</value>
+                    <value lang="ru">В декорированном диалоге</value>
+                </record>
+                <record key="content">
+                    <value lang="en">Sample content</value>
+                    <value lang="ru">Пример содержимого</value>
+                </record>
+                <Dictionary prefix="basic">
+                    <record key="title">
+                        <value lang="en">Basic menu bar</value>
+                        <value lang="ru">Базовый меню бар</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="undecorated">
+                    <record key="title">
+                        <value lang="en">Undecorated menu bar</value>
+                        <value lang="ru">Недекорированный меню бар</value>
                     </record>
                 </Dictionary>
             </Dictionary>
@@ -1260,6 +1426,32 @@
                 </Dictionary>
             </Dictionary>
         </Dictionary>
+        <Dictionary prefix="desktoppane">
+            <record key="title">
+                <value lang="en">JDesktopPane</value>
+                <value lang="ru">JDesktopPane</value>
+            </record>
+            <Dictionary prefix="jinternalframe">
+                <record key="title">
+                    <value lang="en">JInternalFrame</value>
+                    <value lang="ru">JInternalFrame</value>
+                </record>
+                <Dictionary prefix="frame">
+                    <record key="button">
+                        <value lang="en">Frame %s</value>
+                        <value lang="ru">Фрейм %s</value>
+                    </record>
+                    <record key="title">
+                        <value lang="en">Simple frame %s</value>
+                        <value lang="ru">Простой фрейм %s</value>
+                    </record>
+                    <record key="content">
+                        <value lang="en">Frame with no content</value>
+                        <value lang="ru">Фрейм без контента</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+        </Dictionary>
         <Dictionary prefix="windows">
             <record key="title">
                 <value lang="en">Windows</value>
@@ -1317,6 +1509,82 @@
                     </record>
                 </Dictionary>
             </Dictionary>
+            <Dictionary prefix="joptionpane">
+                <record key="title">
+                    <value lang="en">JOptionPane</value>
+                    <value lang="ru">JOptionPane</value>
+                </record>
+                <Dictionary prefix="show">
+                    <record key="system">
+                        <value lang="en">Show native dialog</value>
+                        <value lang="ru">Показать нативный диалог</value>
+                    </record>
+                    <record key="decorated">
+                        <value lang="en">Show decorated dialog</value>
+                        <value lang="ru">Показать декорированный диалог</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="message">
+                    <record key="title">
+                        <value lang="en">Information dialog</value>
+                        <value lang="ru">Информационный диалог</value>
+                    </record>
+                    <record key="message">
+                        <value lang="en">You have opened information dialog</value>
+                        <value lang="ru">Вы открыли информационный диалог</value>
+                    </record>
+                    <record key="notification">
+                        <value lang="en">You have closed the dialog</value>
+                        <value lang="ru">Вы закрыли диалог</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="input">
+                    <record key="title">
+                        <value lang="en">Value input dialog</value>
+                        <value lang="ru">Диалог ввода значения</value>
+                    </record>
+                    <record key="message">
+                        <value lang="en">Enter something in the field:</value>
+                        <value lang="ru">Введите что-либо в поле:</value>
+                    </record>
+                    <record key="notification">
+                        <value lang="en">You have entered: %s</value>
+                        <value lang="ru">Вы ввели: %s</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="choice">
+                    <record key="title">
+                        <value lang="en">Value choice dialog</value>
+                        <value lang="ru">Диалог выбора значения</value>
+                    </record>
+                    <record key="message">
+                        <value lang="en">Choose exception to be displayed:</value>
+                        <value lang="ru">Выберите ошибку для отображения:</value>
+                    </record>
+                    <record key="notification">
+                        <value lang="en">Exception text:\n%s</value>
+                        <value lang="ru">Текст ошибки:\n%s</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="confirm">
+                    <record key="title">
+                        <value lang="en">Option dialog</value>
+                        <value lang="ru">Диалог с опциями</value>
+                    </record>
+                    <record key="message">
+                        <value lang="en">Choose any option you like below</value>
+                        <value lang="ru">Выберите либую из опций снизу</value>
+                    </record>
+                    <record key="notification">
+                        <value lang="en">You have chosen option: %s</value>
+                        <value lang="ru">Вы выбрали опцию: %s</value>
+                    </record>
+                </Dictionary>
+                <record key="closed">
+                    <value lang="en">You have closed the dialog</value>
+                    <value lang="ru">Вы закрыли диалог</value>
+                </record>
+            </Dictionary>
             <Dictionary prefix="webpopup">
                 <record key="title">
                     <value lang="en">WebPopup</value>
@@ -1326,9 +1594,13 @@
                     <value lang="en">Show popup</value>
                     <value lang="ru">Показать попап</value>
                 </record>
-                <record key="content">
-                    <value lang="en">Sample popup</value>
-                    <value lang="ru">Образец попапа</value>
+                <record key="label">
+                    <value lang="en">Sample popup with text field</value>
+                    <value lang="ru">Образец попапа с текстовым полем</value>
+                </record>
+                <record key="text">
+                    <value lang="en">Editable text</value>
+                    <value lang="ru">Редактируемый текст</value>
                 </record>
                 <Dictionary prefix="basic">
                     <record key="title">
@@ -1413,14 +1685,44 @@
                     </record>
                     <Dictionary prefix="open">
                         <record key="title">
-                            <value lang="en">Open File Dialog</value>
-                            <value lang="ru">Open File Dialog</value>
+                            <value lang="en">Open file dialog</value>
+                            <value lang="ru">Диалог открытия файлов</value>
                         </record>
                     </Dictionary>
                     <Dictionary prefix="save">
                         <record key="title">
-                            <value lang="en">Save File Dialog</value>
-                            <value lang="ru">Save File Dialog</value>
+                            <value lang="en">Save file dialog</value>
+                            <value lang="ru">Диалог сохранения файлов</value>
+                        </record>
+                    </Dictionary>
+                    <record key="show">
+                        <value lang="en">Show dialog</value>
+                        <value lang="ru">Показать диалог</value>
+                    </record>
+                    <Dictionary prefix="result">
+                        <record key="selected.single">
+                            <value lang="en">Selected file: %s</value>
+                            <value lang="ru">Выбранный файл: %s</value>
+                        </record>
+                        <record key="selected.multi">
+                            <value lang="en">Selected files: %s</value>
+                            <value lang="ru">Выбранные файлы: %s</value>
+                        </record>
+                        <record key="none.single">
+                            <value lang="en">File wasn't selected</value>
+                            <value lang="ru">Файл не был выбран</value>
+                        </record>
+                        <record key="none.multi">
+                            <value lang="en">Files were not selected</value>
+                            <value lang="ru">Не был выбран ни один файл</value>
+                        </record>
+                        <record key="cancelled">
+                            <value lang="en">Save was cancelled</value>
+                            <value lang="ru">Сохранение было отменено</value>
+                        </record>
+                        <record key="error">
+                            <value lang="en">Something went wrong...</value>
+                            <value lang="ru">Что-то пошло не так...</value>
                         </record>
                     </Dictionary>
                 </Dictionary>
@@ -1466,7 +1768,7 @@
                     <Dictionary prefix="basic">
                         <record key="title">
                             <value lang="en">Path field</value>
-                            <value lang="ru">Path field</value>
+                            <value lang="ru">Путь к файлу</value>
                         </record>
                     </Dictionary>
                 </Dictionary>

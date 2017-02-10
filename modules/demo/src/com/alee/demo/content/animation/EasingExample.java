@@ -75,16 +75,16 @@ public class EasingExample extends AbstractPreviewExample
     }
 
     @Override
+    protected LayoutManager createPreviewLayout ()
+    {
+        return new AlignLayout ();
+    }
+
+    @Override
     protected List<Preview> createPreviews ()
     {
         final EasingGraphPreview preview = new EasingGraphPreview ();
         return CollectionUtils.<Preview>asList ( preview );
-    }
-
-    @Override
-    protected LayoutManager createPreviewLayout ()
-    {
-        return new AlignLayout ();
     }
 
     /**

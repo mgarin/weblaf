@@ -41,7 +41,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSup
     /**
      * Component painter.
      */
-    @DefaultPainter (InternalFramePainter.class)
+    @DefaultPainter ( InternalFramePainter.class )
     protected IInternalFramePainter painter;
 
     /**
@@ -56,11 +56,11 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSup
     protected Insets padding = null;
 
     /**
-     * Returns an instance of the WebInternalFrameUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebInternalFrameUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebInternalFrameUI
+     * @return instance of the {@link WebInternalFrameUI}
      */
     public static ComponentUI createUI ( final JComponent c )
     {
@@ -77,11 +77,6 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSup
         super ( b );
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
@@ -109,11 +104,6 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSup
         frame.addPropertyChangeListener ( JInternalFrame.ROOT_PANE_PROPERTY, rootPaneTracker );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
@@ -179,7 +169,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSup
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**
@@ -200,12 +190,6 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSup
         }, this.painter, painter, IInternalFramePainter.class, AdaptiveInternalFramePainter.class );
     }
 
-    /**
-     * Creates and returns internal pane north panel.
-     *
-     * @param frame internal frame
-     * @return north panel for specified internal frame
-     */
     @Override
     protected JComponent createNorthPane ( final JInternalFrame frame )
     {

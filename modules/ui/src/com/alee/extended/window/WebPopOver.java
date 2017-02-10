@@ -54,6 +54,7 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
 
     /**
      * Whether WebPopOver should be movable or not.
+     * todo Rename to draggable
      */
     protected boolean movable = true;
 
@@ -572,6 +573,8 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
     public WebPopOver show ( final Component invoker, final DataProvider<Rectangle> boundsProvider, final PopOverDirection direction,
                              final PopOverAlignment alignment )
     {
+        // todo Doesn't position properly for window-type invoker
+
         // Performing pre-open operations
         preOpen ();
 

@@ -30,66 +30,52 @@ import java.awt.*;
 /**
  * Custom UI for {@link JCheckBox} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public class WebCheckBoxUI extends WCheckBoxUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebCheckBoxUI<C extends JCheckBox> extends WCheckBoxUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter (CheckBoxPainter.class)
+    @DefaultPainter ( CheckBoxPainter.class )
     protected ICheckBoxPainter painter;
 
     /**
      * Runtime variables.
      */
-    protected JCheckBox checkBox;
     protected Insets margin = null;
     protected Insets padding = null;
 
     /**
-     * Returns an instance of the WebCheckBoxUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebCheckBoxUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebCheckBoxUI
+     * @return instance of the {@link WebCheckBoxUI}
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebCheckBoxUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
+        // Installing UI
         super.installUI ( c );
 
-        // Saving checkbox to local variable
-        checkBox = ( JCheckBox ) c;
-
         // Applying skin
-        StyleManager.installSkin ( checkBox );
+        StyleManager.installSkin ( button );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.uninstallSkin ( checkBox );
-
-        checkBox = null;
+        StyleManager.uninstallSkin ( button );
 
         // Uninstalling UI
         super.uninstallUI ( c );
@@ -98,7 +84,7 @@ public class WebCheckBoxUI extends WCheckBoxUI implements ShapeSupport, MarginSu
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( checkBox, painter );
+        return PainterSupport.getShape ( button, painter );
     }
 
     @Override
@@ -134,7 +120,7 @@ public class WebCheckBoxUI extends WCheckBoxUI implements ShapeSupport, MarginSu
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**
@@ -145,7 +131,7 @@ public class WebCheckBoxUI extends WCheckBoxUI implements ShapeSupport, MarginSu
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( checkBox, new DataRunnable<ICheckBoxPainter> ()
+        PainterSupport.setPainter ( button, new DataRunnable<ICheckBoxPainter> ()
         {
             @Override
             public void run ( final ICheckBoxPainter newPainter )

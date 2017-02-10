@@ -32,7 +32,7 @@ import java.awt.*;
 public class AWTComponentInfo<T extends Component> extends AbstractComponentInfo<T>
 {
     @Override
-    public ImageIcon getIcon ( final StyleableComponent type, final T component )
+    public ImageIcon getIconImpl ( final StyleableComponent type, final T component )
     {
         if ( component instanceof Frame )
         {

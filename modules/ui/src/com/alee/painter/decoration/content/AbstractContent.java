@@ -44,7 +44,9 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
         implements IContent<E, D, I>
 {
     /**
-     * Content ID.
+     * Content identifier.
+     * It should be unique within its parent layout to keep this content separate.
+     * In case identifier is already used by another content in the same layout this content will be merged on top of existing one.
      */
     @XStreamAsAttribute
     protected String id;

@@ -74,7 +74,7 @@ public class WebSwitchExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebSwitch wswitch = new WebSwitch ( getStyleId () );
             wswitch.setSwitchComponents ( getPreviewLanguagePrefix () + "on", getPreviewLanguagePrefix () + "off" );
@@ -98,7 +98,7 @@ public class WebSwitchExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebSwitch wswitch = new WebSwitch ( getStyleId (), true );
             wswitch.setSwitchComponents ( DemoIcons.facebook16, DemoIcons.googleplus16 );

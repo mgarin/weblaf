@@ -1,6 +1,5 @@
 package com.alee.managers.style;
 
-import com.alee.extended.pathfield.WebPathField;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 
@@ -534,6 +533,7 @@ public final class StyleId
      * {@link com.alee.laf.desktoppane.WebDesktopPane} style IDs.
      */
     public static final StyleId desktoppane = StyleId.of ( "desktoppane" );
+    public static final StyleId desktoppaneTransparent = StyleId.of ( "transparent" );
 
     /**
      * {@link javax.swing.JInternalFrame.JDesktopIcon} style IDs.
@@ -580,6 +580,13 @@ public final class StyleId
     public static final StyleId optionpaneErrorDialog = StyleId.of ( "error" );
     public static final StyleId optionpaneQuestionDialog = StyleId.of ( "question" );
     public static final StyleId optionpaneWarningDialog = StyleId.of ( "warning" );
+    public static final ChildStyleId optionpaneMessageArea = ChildStyleId.of ( "message-area" );
+    public static final ChildStyleId optionpaneIconLabel = ChildStyleId.of ( "message-icon" );
+    public static final ChildStyleId optionpaneRealBody = ChildStyleId.of ( "real-body" );
+    public static final ChildStyleId optionpaneSeparator = ChildStyleId.of ( "separator" );
+    public static final ChildStyleId optionpaneBody = ChildStyleId.of ( "body" );
+    public static final ChildStyleId optionpaneMessageLabel = ChildStyleId.of ( "message" );
+    public static final ChildStyleId optionpaneButtonArea = ChildStyleId.of ( "button-area" );
     public static final ChildStyleId optionpaneButton = ChildStyleId.of ( "button" );
     public static final ChildStyleId optionpaneYesButton = ChildStyleId.of ( "yes" );
     public static final ChildStyleId optionpaneNoButton = ChildStyleId.of ( "no" );
@@ -1051,7 +1058,8 @@ public final class StyleId
         final JRootPane rootPane = SwingUtils.getRootPane ( window );
         if ( rootPane == null )
         {
-            throw new StyleException ( "Unable to retrieve Window root pane: " + window );
+            final String msg = "Unable to retrieve root pane for Window '%s'";
+            throw new StyleException ( String.format ( msg, window ) );
         }
         return rootPane;
     }

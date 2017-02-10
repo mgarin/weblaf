@@ -39,6 +39,8 @@ import com.alee.laf.combobox.WebComboBoxUI;
 import com.alee.laf.desktoppane.WebDesktopIconUI;
 import com.alee.laf.desktoppane.WebDesktopPaneUI;
 import com.alee.laf.desktoppane.WebInternalFrameUI;
+import com.alee.laf.edt.ExceptionNonEventThreadHandler;
+import com.alee.laf.edt.NonEventThreadHandler;
 import com.alee.laf.filechooser.WebFileChooserUI;
 import com.alee.laf.label.WebLabelUI;
 import com.alee.laf.list.WebListCellRenderer;
@@ -85,9 +87,13 @@ import java.util.*;
 import java.util.List;
 
 /**
- * This core class contains methods to install, configure and uninstall WebLookAndFeel.
+ * L&F class containing methods to conveniently install, configure and uninstall WebLaF.
  *
  * @author Mikle Garin
+ * @see <a href="http://weblookandfeel.com/">WebLaF site</a>
+ * @see <a href="https://github.com/mgarin/weblaf">WebLaF sources</a>
+ * @see <a href="https://github.com/mgarin/weblaf/issues">WebLaF issues</a>
+ * @see <a href="https://github.com/mgarin/weblaf/wiki">WebLaF wiki</a>
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLaF">How to use WebLaF</a>
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-build-WebLaF-from-sources">How to build WebLaF from sources</a>
  */
@@ -111,7 +117,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String PROPERTY_HONOR_USER_BORDERS = "WebLookAndFeel.honorUserBorders";
 
     /**
-     * Some known UI constants.
+     * Common Swing component properties.
      */
     public static final String LOOK_AND_FEEL_PROPERTY = "lookAndFeel";
     public static final String COMPONENT_ORIENTATION_PROPERTY = "componentOrientation";
@@ -141,6 +147,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String TEXT_PROPERTY = "text";
     public static final String TIP_TEXT_PROPERTY = "tiptext";
     public static final String FONT_PROPERTY = "font";
+    public static final String BACKGROUND_PROPERTY = "background";
     public static final String FOREGROUND_PROPERTY = "foreground";
     public static final String INDETERMINATE_PROPERTY = "indeterminate";
     public static final String DROP_LOCATION = "dropLocation";
@@ -160,16 +167,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
     /**
      * Special handler for exceptions thrown when any UI operation is executed outside of the Event Dispatch Thread.
-     * Default implementation simply throws a runtime {@link LookAndFeelException} exception.
      */
-    private static NonEventThreadHandler nonEventThreadHandler = new NonEventThreadHandler ()
-    {
-        @Override
-        public void handle ( final RuntimeException e )
-        {
-            throw e;
-        }
-    };
+    private static NonEventThreadHandler nonEventThreadHandler = new ExceptionNonEventThreadHandler ();
 
     /**
      * List of WebLookAndFeel icons.
@@ -347,9 +346,11 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static Font canvasFont;
     public static Font imageFont;
     public static Font buttonFont;
+    public static Font splitButtonFont;
     public static Font toggleButtonFont;
-    public static Font radioButtonFont;
     public static Font checkBoxFont;
+    public static Font tristateCheckBoxFont;
+    public static Font radioButtonFont;
     public static Font colorChooserFont;
     public static Font labelFont;
     public static Font styledLabelFont;
@@ -598,7 +599,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param table UI defaults table
      */
-    @SuppressWarnings ( "UnnecessaryBoxing" )
     @Override
     protected void initComponentDefaults ( final UIDefaults table )
     {
@@ -610,10 +610,25 @@ public class WebLookAndFeel extends BasicLookAndFeel
         // Fonts
         initializeFonts ( table );
 
-        // Mnemonics
+        // Button mnemonics display
         table.put ( "Button.showMnemonics", Boolean.TRUE );
-        // Whether focused button should become default in frame or not
+        // Button should become default in frame
         table.put ( "Button.defaultButtonFollowsFocus", Boolean.FALSE );
+
+        // Split button
+        table.put ( "SplitButton.defaultButtonFollowsFocus", Boolean.FALSE );
+        table.put ( "SplitButton.focusInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "SPACE", "pressed",
+                "released SPACE", "released",
+                "ENTER", "pressed",
+                "released ENTER", "released"
+        } ) );
+
+        // Tristate checkbox
+        table.put ( "TristateCheckBox.focusInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "SPACE", "pressed",
+                "released SPACE", "released"
+        } ) );
 
         // Option pane
         table.put ( "OptionPane.isYesLast", SystemUtils.isMac () ? Boolean.TRUE : Boolean.FALSE );
@@ -640,20 +655,20 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "Tree.drawsFocusBorderAroundIcon", Boolean.FALSE );
         table.put ( "Tree.drawDashedFocusIndicator", Boolean.FALSE );
         // Tree lines indent
-        table.put ( "Tree.leftChildIndent", new Integer ( 12 ) );
-        table.put ( "Tree.rightChildIndent", new Integer ( 12 ) );
+        table.put ( "Tree.leftChildIndent", 12 );
+        table.put ( "Tree.rightChildIndent", 12 );
         table.put ( "Tree.lineTypeDashed", Boolean.TRUE );
 
-        // JMenu expand spacing
+        // Menu expand spacing
         // Up-down menu expand
-        table.put ( "Menu.menuPopupOffsetX", new Integer ( 0 ) );
-        table.put ( "Menu.menuPopupOffsetY", new Integer ( 0 ) );
+        table.put ( "Menu.menuPopupOffsetX", 0 );
+        table.put ( "Menu.menuPopupOffsetY", 0 );
         // Left-right menu expand
-        table.put ( "Menu.submenuPopupOffsetX", new Integer ( 0 ) );
-        table.put ( "Menu.submenuPopupOffsetY", new Integer ( 0 ) );
+        table.put ( "Menu.submenuPopupOffsetX", 0 );
+        table.put ( "Menu.submenuPopupOffsetY", 0 );
 
-        // JOptionPane
-        table.put ( "OptionPane.buttonClickThreshold", new Integer ( 500 ) );
+        // OptionPane
+        table.put ( "OptionPane.buttonClickThreshold", 500 );
 
         // Table defaults
         table.put ( "Table.cellNoFocusBorder", new WebBorder ( 1, 1, 1, 1 ) );
@@ -674,121 +689,241 @@ public class WebLookAndFeel extends BasicLookAndFeel
             }
         } );
 
-        // Combobox selection foregrounds
+        // ComboBox selection foregrounds
         table.put ( "ComboBox.selectionForeground", new ColorUIResource ( Color.BLACK ) );
-        // Combobox non-square arrow
+        // ComboBox non-square arrow
         table.put ( "ComboBox.squareButton", false );
-        // Combobox empty padding
+        // ComboBox empty padding
         table.put ( "ComboBox.padding", null );
 
         // Default components borders
         table.put ( "ProgressBar.border", null );
         table.put ( "Button.border", null );
 
-        // WebTextField actions
-        table.put ( "TextField.focusInputMap", new UIDefaults.LazyInputMap (
-                new Object[]{ "control C", DefaultEditorKit.copyAction, "control V", DefaultEditorKit.pasteAction, "control X",
-                        DefaultEditorKit.cutAction, "COPY", DefaultEditorKit.copyAction, "PASTE", DefaultEditorKit.pasteAction, "CUT",
-                        DefaultEditorKit.cutAction, "control INSERT", DefaultEditorKit.copyAction, "shift INSERT",
-                        DefaultEditorKit.pasteAction, "shift DELETE", DefaultEditorKit.cutAction, "control A",
-                        DefaultEditorKit.selectAllAction, "control BACK_SLASH", "unselect"
-                        /*DefaultEditorKit.unselectAction*/, "shift LEFT", DefaultEditorKit.selectionBackwardAction, "shift RIGHT",
-                        DefaultEditorKit.selectionForwardAction, "control LEFT", DefaultEditorKit.previousWordAction, "control RIGHT",
-                        DefaultEditorKit.nextWordAction, "control shift LEFT", DefaultEditorKit.selectionPreviousWordAction,
-                        "control shift RIGHT", DefaultEditorKit.selectionNextWordAction, "HOME", DefaultEditorKit.beginAction, "END",
-                        DefaultEditorKit.endAction, "shift HOME", DefaultEditorKit.selectionBeginLineAction, "shift END",
-                        DefaultEditorKit.selectionEndLineAction, "BACK_SPACE", DefaultEditorKit.deletePrevCharAction, "shift BACK_SPACE",
-                        DefaultEditorKit.deletePrevCharAction, "ctrl H", DefaultEditorKit.deletePrevCharAction, "DELETE",
-                        DefaultEditorKit.deleteNextCharAction, "ctrl DELETE", DefaultEditorKit.deleteNextWordAction, "ctrl BACK_SPACE",
-                        DefaultEditorKit.deletePrevWordAction, "RIGHT", DefaultEditorKit.forwardAction, "LEFT",
-                        DefaultEditorKit.backwardAction, "KP_RIGHT", DefaultEditorKit.forwardAction, "KP_LEFT",
-                        DefaultEditorKit.backwardAction, "ENTER", JTextField.notifyAction, "control shift O", "toggle-componentOrientation"
-                        /*DefaultEditorKit.toggleComponentOrientation*/ } ) );
+        // TextField actions
+        table.put ( "TextField.focusInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "control C", DefaultEditorKit.copyAction,
+                "control V", DefaultEditorKit.pasteAction,
+                "control X", DefaultEditorKit.cutAction,
+                "COPY", DefaultEditorKit.copyAction,
+                "PASTE", DefaultEditorKit.pasteAction,
+                "CUT", DefaultEditorKit.cutAction,
+                "control INSERT", DefaultEditorKit.copyAction,
+                "shift INSERT", DefaultEditorKit.pasteAction,
+                "shift DELETE", DefaultEditorKit.cutAction,
+                "control A", DefaultEditorKit.selectAllAction,
+                "control BACK_SLASH", "unselect" /*DefaultEditorKit.unselectAction*/,
+                "shift LEFT", DefaultEditorKit.selectionBackwardAction,
+                "shift RIGHT", DefaultEditorKit.selectionForwardAction,
+                "control LEFT", DefaultEditorKit.previousWordAction,
+                "control RIGHT", DefaultEditorKit.nextWordAction,
+                "control shift LEFT", DefaultEditorKit.selectionPreviousWordAction,
+                "control shift RIGHT", DefaultEditorKit.selectionNextWordAction,
+                "HOME", DefaultEditorKit.beginAction,
+                "END", DefaultEditorKit.endAction,
+                "shift HOME", DefaultEditorKit.selectionBeginLineAction,
+                "shift END", DefaultEditorKit.selectionEndLineAction,
+                "BACK_SPACE", DefaultEditorKit.deletePrevCharAction,
+                "shift BACK_SPACE", DefaultEditorKit.deletePrevCharAction,
+                "ctrl H", DefaultEditorKit.deletePrevCharAction,
+                "DELETE", DefaultEditorKit.deleteNextCharAction,
+                "ctrl DELETE", DefaultEditorKit.deleteNextWordAction,
+                "ctrl BACK_SPACE", DefaultEditorKit.deletePrevWordAction,
+                "RIGHT", DefaultEditorKit.forwardAction,
+                "LEFT", DefaultEditorKit.backwardAction,
+                "KP_RIGHT", DefaultEditorKit.forwardAction,
+                "KP_LEFT", DefaultEditorKit.backwardAction,
+                "ENTER", JTextField.notifyAction,
+                "control shift O", "toggle-componentOrientation" /*DefaultEditorKit.toggleComponentOrientation*/
+        } ) );
 
-        // WebPasswordField actions
-        table.put ( "PasswordField.focusInputMap", new UIDefaults.LazyInputMap (
-                new Object[]{ "control C", DefaultEditorKit.copyAction, "control V", DefaultEditorKit.pasteAction, "control X",
-                        DefaultEditorKit.cutAction, "COPY", DefaultEditorKit.copyAction, "PASTE", DefaultEditorKit.pasteAction, "CUT",
-                        DefaultEditorKit.cutAction, "control INSERT", DefaultEditorKit.copyAction, "shift INSERT",
-                        DefaultEditorKit.pasteAction, "shift DELETE", DefaultEditorKit.cutAction, "control A",
-                        DefaultEditorKit.selectAllAction, "control BACK_SLASH", "unselect"
-                        /*DefaultEditorKit.unselectAction*/, "shift LEFT", DefaultEditorKit.selectionBackwardAction, "shift RIGHT",
-                        DefaultEditorKit.selectionForwardAction, "control LEFT", DefaultEditorKit.beginLineAction, "control RIGHT",
-                        DefaultEditorKit.endLineAction, "control shift LEFT", DefaultEditorKit.selectionBeginLineAction,
-                        "control shift RIGHT", DefaultEditorKit.selectionEndLineAction, "HOME", DefaultEditorKit.beginAction, "END",
-                        DefaultEditorKit.endAction, "shift HOME", DefaultEditorKit.selectionBeginLineAction, "shift END",
-                        DefaultEditorKit.selectionEndLineAction, "BACK_SPACE", DefaultEditorKit.deletePrevCharAction, "shift BACK_SPACE",
-                        DefaultEditorKit.deletePrevCharAction, "ctrl H", DefaultEditorKit.deletePrevCharAction, "DELETE",
-                        DefaultEditorKit.deleteNextCharAction, "RIGHT", DefaultEditorKit.forwardAction, "LEFT",
-                        DefaultEditorKit.backwardAction, "KP_RIGHT", DefaultEditorKit.forwardAction, "KP_LEFT",
-                        DefaultEditorKit.backwardAction, "ENTER", JTextField.notifyAction, "control shift O", "toggle-componentOrientation"
-                        /*DefaultEditorKit.toggleComponentOrientation*/ } ) );
+        // PasswordField actions
+        table.put ( "PasswordField.focusInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "control C", DefaultEditorKit.copyAction,
+                "control V", DefaultEditorKit.pasteAction,
+                "control X", DefaultEditorKit.cutAction,
+                "COPY", DefaultEditorKit.copyAction,
+                "PASTE", DefaultEditorKit.pasteAction,
+                "CUT", DefaultEditorKit.cutAction,
+                "control INSERT", DefaultEditorKit.copyAction,
+                "shift INSERT", DefaultEditorKit.pasteAction,
+                "shift DELETE", DefaultEditorKit.cutAction,
+                "control A", DefaultEditorKit.selectAllAction,
+                "control BACK_SLASH", "unselect" /*DefaultEditorKit.unselectAction*/,
+                "shift LEFT", DefaultEditorKit.selectionBackwardAction,
+                "shift RIGHT", DefaultEditorKit.selectionForwardAction,
+                "control LEFT", DefaultEditorKit.beginLineAction,
+                "control RIGHT", DefaultEditorKit.endLineAction,
+                "control shift LEFT", DefaultEditorKit.selectionBeginLineAction,
+                "control shift RIGHT", DefaultEditorKit.selectionEndLineAction,
+                "HOME", DefaultEditorKit.beginAction,
+                "END", DefaultEditorKit.endAction,
+                "shift HOME", DefaultEditorKit.selectionBeginLineAction,
+                "shift END", DefaultEditorKit.selectionEndLineAction,
+                "BACK_SPACE", DefaultEditorKit.deletePrevCharAction,
+                "shift BACK_SPACE", DefaultEditorKit.deletePrevCharAction,
+                "ctrl H", DefaultEditorKit.deletePrevCharAction,
+                "DELETE", DefaultEditorKit.deleteNextCharAction,
+                "RIGHT", DefaultEditorKit.forwardAction,
+                "LEFT", DefaultEditorKit.backwardAction,
+                "KP_RIGHT", DefaultEditorKit.forwardAction,
+                "KP_LEFT", DefaultEditorKit.backwardAction,
+                "ENTER", JTextField.notifyAction,
+                "control shift O", "toggle-componentOrientation" /*DefaultEditorKit.toggleComponentOrientation*/
+        } ) );
 
-        // WebFormattedTextField actions
-        table.put ( "FormattedTextField.focusInputMap", new UIDefaults.LazyInputMap (
-                new Object[]{ "ctrl C", DefaultEditorKit.copyAction, "ctrl V", DefaultEditorKit.pasteAction, "ctrl X",
-                        DefaultEditorKit.cutAction, "COPY", DefaultEditorKit.copyAction, "PASTE", DefaultEditorKit.pasteAction, "CUT",
-                        DefaultEditorKit.cutAction, "control INSERT", DefaultEditorKit.copyAction, "shift INSERT",
-                        DefaultEditorKit.pasteAction, "shift DELETE", DefaultEditorKit.cutAction, "shift LEFT",
-                        DefaultEditorKit.selectionBackwardAction, "shift KP_LEFT", DefaultEditorKit.selectionBackwardAction, "shift RIGHT",
-                        DefaultEditorKit.selectionForwardAction, "shift KP_RIGHT", DefaultEditorKit.selectionForwardAction, "ctrl LEFT",
-                        DefaultEditorKit.previousWordAction, "ctrl KP_LEFT", DefaultEditorKit.previousWordAction, "ctrl RIGHT",
-                        DefaultEditorKit.nextWordAction, "ctrl KP_RIGHT", DefaultEditorKit.nextWordAction, "ctrl shift LEFT",
-                        DefaultEditorKit.selectionPreviousWordAction, "ctrl shift KP_LEFT", DefaultEditorKit.selectionPreviousWordAction,
-                        "ctrl shift RIGHT", DefaultEditorKit.selectionNextWordAction, "ctrl shift KP_RIGHT",
-                        DefaultEditorKit.selectionNextWordAction, "ctrl A", DefaultEditorKit.selectAllAction, "HOME",
-                        DefaultEditorKit.beginAction, "END", DefaultEditorKit.endAction, "shift HOME",
-                        DefaultEditorKit.selectionBeginLineAction, "shift END", DefaultEditorKit.selectionEndLineAction, "BACK_SPACE",
-                        DefaultEditorKit.deletePrevCharAction, "shift BACK_SPACE", DefaultEditorKit.deletePrevCharAction, "ctrl H",
-                        DefaultEditorKit.deletePrevCharAction, "DELETE", DefaultEditorKit.deleteNextCharAction, "ctrl DELETE",
-                        DefaultEditorKit.deleteNextWordAction, "ctrl BACK_SPACE", DefaultEditorKit.deletePrevWordAction, "RIGHT",
-                        DefaultEditorKit.forwardAction, "LEFT", DefaultEditorKit.backwardAction, "KP_RIGHT", DefaultEditorKit.forwardAction,
-                        "KP_LEFT", DefaultEditorKit.backwardAction, "ENTER", JTextField.notifyAction, "ctrl BACK_SLASH", "unselect",
-                        "control shift O", "toggle-componentOrientation", "ESCAPE", "reset-field-edit", "UP", "increment", "KP_UP",
-                        "increment", "DOWN", "decrement", "KP_DOWN", "decrement", } ) );
+        // FormattedTextField actions
+        table.put ( "FormattedTextField.focusInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "ctrl C", DefaultEditorKit.copyAction,
+                "ctrl V", DefaultEditorKit.pasteAction,
+                "ctrl X", DefaultEditorKit.cutAction,
+                "COPY", DefaultEditorKit.copyAction,
+                "PASTE", DefaultEditorKit.pasteAction,
+                "CUT", DefaultEditorKit.cutAction,
+                "control INSERT", DefaultEditorKit.copyAction,
+                "shift INSERT", DefaultEditorKit.pasteAction,
+                "shift DELETE", DefaultEditorKit.cutAction,
+                "shift LEFT", DefaultEditorKit.selectionBackwardAction,
+                "shift KP_LEFT", DefaultEditorKit.selectionBackwardAction,
+                "shift RIGHT", DefaultEditorKit.selectionForwardAction,
+                "shift KP_RIGHT", DefaultEditorKit.selectionForwardAction,
+                "ctrl LEFT", DefaultEditorKit.previousWordAction,
+                "ctrl KP_LEFT", DefaultEditorKit.previousWordAction,
+                "ctrl RIGHT", DefaultEditorKit.nextWordAction,
+                "ctrl KP_RIGHT", DefaultEditorKit.nextWordAction,
+                "ctrl shift LEFT", DefaultEditorKit.selectionPreviousWordAction,
+                "ctrl shift KP_LEFT", DefaultEditorKit.selectionPreviousWordAction,
+                "ctrl shift RIGHT", DefaultEditorKit.selectionNextWordAction,
+                "ctrl shift KP_RIGHT", DefaultEditorKit.selectionNextWordAction,
+                "ctrl A", DefaultEditorKit.selectAllAction,
+                "HOME", DefaultEditorKit.beginAction,
+                "END", DefaultEditorKit.endAction,
+                "shift HOME", DefaultEditorKit.selectionBeginLineAction,
+                "shift END", DefaultEditorKit.selectionEndLineAction,
+                "BACK_SPACE", DefaultEditorKit.deletePrevCharAction,
+                "shift BACK_SPACE", DefaultEditorKit.deletePrevCharAction,
+                "ctrl H", DefaultEditorKit.deletePrevCharAction,
+                "DELETE", DefaultEditorKit.deleteNextCharAction,
+                "ctrl DELETE", DefaultEditorKit.deleteNextWordAction,
+                "ctrl BACK_SPACE", DefaultEditorKit.deletePrevWordAction,
+                "RIGHT", DefaultEditorKit.forwardAction,
+                "LEFT", DefaultEditorKit.backwardAction,
+                "KP_RIGHT", DefaultEditorKit.forwardAction,
+                "KP_LEFT", DefaultEditorKit.backwardAction,
+                "ENTER", JTextField.notifyAction,
+                "ctrl BACK_SLASH", "unselect",
+                "control shift O", "toggle-componentOrientation",
+                "ESCAPE", "reset-field-edit",
+                "UP", "increment",
+                "KP_UP", "increment",
+                "DOWN", "decrement",
+                "KP_DOWN", "decrement",
+        } ) );
 
-        // Multiline areas actions
-        final Object multilineInputMap = new UIDefaults.LazyInputMap (
-                new Object[]{ "control C", DefaultEditorKit.copyAction, "control V", DefaultEditorKit.pasteAction, "control X",
-                        DefaultEditorKit.cutAction, "COPY", DefaultEditorKit.copyAction, "PASTE", DefaultEditorKit.pasteAction, "CUT",
-                        DefaultEditorKit.cutAction, "control INSERT", DefaultEditorKit.copyAction, "shift INSERT",
-                        DefaultEditorKit.pasteAction, "shift DELETE", DefaultEditorKit.cutAction, "shift LEFT",
-                        DefaultEditorKit.selectionBackwardAction, "shift RIGHT", DefaultEditorKit.selectionForwardAction, "control LEFT",
-                        DefaultEditorKit.previousWordAction, "control RIGHT", DefaultEditorKit.nextWordAction, "control shift LEFT",
-                        DefaultEditorKit.selectionPreviousWordAction, "control shift RIGHT", DefaultEditorKit.selectionNextWordAction,
-                        "control A", DefaultEditorKit.selectAllAction, "control BACK_SLASH", "unselect"
-                        /*DefaultEditorKit.unselectAction*/, "HOME", DefaultEditorKit.beginLineAction, "END",
-                        DefaultEditorKit.endLineAction, "shift HOME", DefaultEditorKit.selectionBeginLineAction, "shift END",
-                        DefaultEditorKit.selectionEndLineAction, "control HOME", DefaultEditorKit.beginAction, "control END",
-                        DefaultEditorKit.endAction, "control shift HOME", DefaultEditorKit.selectionBeginAction, "control shift END",
-                        DefaultEditorKit.selectionEndAction, "UP", DefaultEditorKit.upAction, "DOWN", DefaultEditorKit.downAction,
-                        "BACK_SPACE", DefaultEditorKit.deletePrevCharAction, "shift BACK_SPACE", DefaultEditorKit.deletePrevCharAction,
-                        "ctrl H", DefaultEditorKit.deletePrevCharAction, "DELETE", DefaultEditorKit.deleteNextCharAction, "ctrl DELETE",
-                        DefaultEditorKit.deleteNextWordAction, "ctrl BACK_SPACE", DefaultEditorKit.deletePrevWordAction, "RIGHT",
-                        DefaultEditorKit.forwardAction, "LEFT", DefaultEditorKit.backwardAction, "KP_RIGHT", DefaultEditorKit.forwardAction,
-                        "KP_LEFT", DefaultEditorKit.backwardAction, "PAGE_UP", DefaultEditorKit.pageUpAction, "PAGE_DOWN",
-                        DefaultEditorKit.pageDownAction, "shift PAGE_UP", "selection-page-up", "shift PAGE_DOWN", "selection-page-down",
-                        "ctrl shift PAGE_UP", "selection-page-left", "ctrl shift PAGE_DOWN", "selection-page-right", "shift UP",
-                        DefaultEditorKit.selectionUpAction, "shift DOWN", DefaultEditorKit.selectionDownAction, "ENTER",
-                        DefaultEditorKit.insertBreakAction, "TAB", DefaultEditorKit.insertTabAction, "control T", "next-link-action",
-                        "control shift T", "previous-link-action", "control SPACE", "activate-link-action", "control shift O",
-                        "toggle-componentOrientation"
-                        /*DefaultEditorKit.toggleComponentOrientation*/ } );
+        // TextAreas actions
+        final Object multilineInputMap = new UIDefaults.LazyInputMap ( new Object[]{
+                "control C", DefaultEditorKit.copyAction,
+                "control V", DefaultEditorKit.pasteAction,
+                "control X", DefaultEditorKit.cutAction,
+                "COPY", DefaultEditorKit.copyAction,
+                "PASTE", DefaultEditorKit.pasteAction,
+                "CUT", DefaultEditorKit.cutAction,
+                "control INSERT", DefaultEditorKit.copyAction,
+                "shift INSERT", DefaultEditorKit.pasteAction,
+                "shift DELETE", DefaultEditorKit.cutAction,
+                "shift LEFT", DefaultEditorKit.selectionBackwardAction,
+                "shift RIGHT", DefaultEditorKit.selectionForwardAction,
+                "control LEFT", DefaultEditorKit.previousWordAction,
+                "control RIGHT", DefaultEditorKit.nextWordAction,
+                "control shift LEFT", DefaultEditorKit.selectionPreviousWordAction,
+                "control shift RIGHT", DefaultEditorKit.selectionNextWordAction,
+                "control A", DefaultEditorKit.selectAllAction,
+                "control BACK_SLASH", "unselect" /*DefaultEditorKit.unselectAction*/,
+                "HOME", DefaultEditorKit.beginLineAction,
+                "END", DefaultEditorKit.endLineAction,
+                "shift HOME", DefaultEditorKit.selectionBeginLineAction,
+                "shift END", DefaultEditorKit.selectionEndLineAction,
+                "control HOME", DefaultEditorKit.beginAction,
+                "control END", DefaultEditorKit.endAction,
+                "control shift HOME", DefaultEditorKit.selectionBeginAction,
+                "control shift END", DefaultEditorKit.selectionEndAction,
+                "UP", DefaultEditorKit.upAction,
+                "DOWN", DefaultEditorKit.downAction,
+                "BACK_SPACE", DefaultEditorKit.deletePrevCharAction,
+                "shift BACK_SPACE", DefaultEditorKit.deletePrevCharAction,
+                "ctrl H", DefaultEditorKit.deletePrevCharAction,
+                "DELETE", DefaultEditorKit.deleteNextCharAction,
+                "ctrl DELETE", DefaultEditorKit.deleteNextWordAction,
+                "ctrl BACK_SPACE", DefaultEditorKit.deletePrevWordAction,
+                "RIGHT", DefaultEditorKit.forwardAction,
+                "LEFT", DefaultEditorKit.backwardAction,
+                "KP_RIGHT", DefaultEditorKit.forwardAction,
+                "KP_LEFT", DefaultEditorKit.backwardAction,
+                "PAGE_UP", DefaultEditorKit.pageUpAction,
+                "PAGE_DOWN", DefaultEditorKit.pageDownAction,
+                "shift PAGE_UP", "selection-page-up",
+                "shift PAGE_DOWN", "selection-page-down",
+                "ctrl shift PAGE_UP", "selection-page-left",
+                "ctrl shift PAGE_DOWN", "selection-page-right",
+                "shift UP", DefaultEditorKit.selectionUpAction,
+                "shift DOWN", DefaultEditorKit.selectionDownAction,
+                "ENTER", DefaultEditorKit.insertBreakAction,
+                "TAB", DefaultEditorKit.insertTabAction,
+                "control T", "next-link-action",
+                "control shift T", "previous-link-action",
+                "control SPACE", "activate-link-action",
+                "control shift O", "toggle-componentOrientation" /*DefaultEditorKit.toggleComponentOrientation*/
+        } );
         table.put ( "TextArea.focusInputMap", multilineInputMap );
         table.put ( "TextPane.focusInputMap", multilineInputMap );
         table.put ( "EditorPane.focusInputMap", multilineInputMap );
 
-        // WebComboBox actions
-        table.put ( "ComboBox.ancestorInputMap", new UIDefaults.LazyInputMap (
-                new Object[]{ "ESCAPE", "hidePopup", "PAGE_UP", "pageUpPassThrough", "PAGE_DOWN", "pageDownPassThrough", "HOME",
-                        "homePassThrough", "END", "endPassThrough", "DOWN", "selectNext", "KP_DOWN", "selectNext", "alt DOWN",
-                        "togglePopup", "alt KP_DOWN", "togglePopup", "alt UP", "togglePopup", "alt KP_UP", "togglePopup", "SPACE",
-                        "spacePopup", "ENTER", "enterPressed", "UP", "selectPrevious", "KP_UP", "selectPrevious" } ) );
+        // Slider on-focus actions
+        table.put ( "Slider.focusInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "RIGHT", "positiveUnitIncrement",
+                "KP_RIGHT", "positiveUnitIncrement",
+                "DOWN", "negativeUnitIncrement",
+                "KP_DOWN", "negativeUnitIncrement",
+                "PAGE_DOWN", "negativeBlockIncrement",
+                "ctrl PAGE_DOWN", "negativeBlockIncrement",
+                "LEFT", "negativeUnitIncrement",
+                "KP_LEFT", "negativeUnitIncrement",
+                "UP", "positiveUnitIncrement",
+                "KP_UP", "positiveUnitIncrement",
+                "PAGE_UP", "positiveBlockIncrement",
+                "ctrl PAGE_UP", "positiveBlockIncrement",
+                "HOME", "minScroll",
+                "END", "maxScroll"
+        } ) );
 
-        // WebFileChooser actions
-        table.put ( "FileChooser.ancestorInputMap", new UIDefaults.LazyInputMap (
-                new Object[]{ "ESCAPE", "cancelSelection", "F2", "editFileName", "F5", "refresh", "BACK_SPACE", "Go Up", "ENTER",
-                        "approveSelection", "ctrl ENTER", "approveSelection" } ) );
+        // ComboBox actions
+        table.put ( "ComboBox.ancestorInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "ESCAPE", "hidePopup",
+                "PAGE_UP", "pageUpPassThrough",
+                "PAGE_DOWN", "pageDownPassThrough",
+                "HOME", "homePassThrough",
+                "END", "endPassThrough",
+                "DOWN", "selectNext",
+                "KP_DOWN", "selectNext",
+                "alt DOWN", "togglePopup",
+                "alt KP_DOWN", "togglePopup",
+                "alt UP", "togglePopup",
+                "alt KP_UP", "togglePopup",
+                "SPACE", "spacePopup",
+                "ENTER", "enterPressed",
+                "UP", "selectPrevious",
+                "KP_UP", "selectPrevious"
+        } ) );
+
+        // FileChooser actions
+        table.put ( "FileChooser.ancestorInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "ESCAPE", "cancelSelection",
+                "F2", "editFileName",
+                "F5", "refresh",
+                "BACK_SPACE", "Go Up",
+                "ENTER", "approveSelection",
+                "ctrl ENTER", "approveSelection"
+        } ) );
     }
 
     /**
@@ -801,9 +936,11 @@ public class WebLookAndFeel extends BasicLookAndFeel
         initializeFont ( table, "Canvas.font", canvasFont, globalControlFont );
         initializeFont ( table, "Image.font", imageFont, globalControlFont );
         initializeFont ( table, "Button.font", buttonFont, globalControlFont );
+        initializeFont ( table, "SplitButton.font", splitButtonFont, globalControlFont );
         initializeFont ( table, "ToggleButton.font", toggleButtonFont, globalControlFont );
-        initializeFont ( table, "RadioButton.font", radioButtonFont, globalControlFont );
         initializeFont ( table, "CheckBox.font", checkBoxFont, globalControlFont );
+        initializeFont ( table, "TristateCheckBox.font", tristateCheckBoxFont, globalControlFont );
+        initializeFont ( table, "RadioButton.font", radioButtonFont, globalControlFont );
         initializeFont ( table, "ColorChooser.font", colorChooserFont, globalControlFont );
         initializeFont ( table, "ComboBox.font", comboBoxFont, globalTextFont );
         initializeFont ( table, "InternalFrame.titleFont", internalFrameFont, globalTitleFont );

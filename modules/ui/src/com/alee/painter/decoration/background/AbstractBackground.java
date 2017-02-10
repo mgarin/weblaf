@@ -24,7 +24,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import javax.swing.*;
 
 /**
- * Convenient base class for any {@link com.alee.painter.decoration.background.IBackground} implementation.
+ * Convenient base class for any {@link IBackground} implementation.
  *
  * @param <E> component type
  * @param <D> decoration type
@@ -88,10 +88,10 @@ public abstract class AbstractBackground<E extends JComponent, D extends IDecora
     }
 
     @Override
-    public I merge ( final I background )
+    public I merge ( final I bg )
     {
-        overwrite = overwrite != null && overwrite || background.overwrite != null && background.overwrite;
-        opacity = background.isOverwrite () || background.opacity != null ? background.opacity : opacity;
+        overwrite = overwrite != null && overwrite || bg.overwrite != null && bg.overwrite;
+        opacity = bg.isOverwrite () || bg.opacity != null ? bg.opacity : opacity;
         return ( I ) this;
     }
 

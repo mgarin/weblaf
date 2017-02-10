@@ -142,7 +142,7 @@ public class WebTextAreaUI extends WTextAreaUI implements ShapeSupport, MarginSu
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

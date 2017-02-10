@@ -17,7 +17,9 @@
 
 package com.alee.utils;
 
+import com.alee.extended.inspector.ComponentHighlighter;
 import com.alee.global.GlobalConstants;
+import com.alee.managers.style.BoundsType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -135,31 +137,40 @@ public final class DebugUtils
 
     /**
      * Paints border debug information.
-     * This will display border bounds within the component.
+     * This will display different bounds within the component.
      *
      * @param g graphics
      * @param c component
      */
     public static void paintBorderDebugInfo ( final Graphics g, final JComponent c )
     {
-        paintBorderDebugInfo ( g, c, Color.RED );
-    }
+        Rectangle bounds = new Rectangle ( 0, 0, c.getWidth () - 1, c.getHeight () - 1 );
+        g.setColor ( ColorUtils.removeAlpha ( ComponentHighlighter.marginColor ) );
+        g.drawRect ( bounds.x, bounds.y, bounds.width, bounds.height );
 
-    /**
-     * Paints border debug information.
-     * This will display border bounds within the component.
-     *
-     * @param g     graphics
-     * @param c     component
-     * @param color debug shape color
-     */
-    public static void paintBorderDebugInfo ( final Graphics g, final JComponent c, final Color color )
-    {
-        final Insets margin = c.getInsets ();
-        g.setColor ( color );
-        g.drawRect ( 0, 0, c.getWidth () - 1, c.getHeight () - 1 );
-        g.drawRect ( margin.left, margin.top, c.getWidth () - margin.left - margin.right - 1,
-                c.getHeight () - margin.top - margin.bottom - 1 );
+        final Insets margin = BoundsType.margin.insets ( c );
+        if ( !SwingUtils.isEmpty ( margin ) )
+        {
+            bounds = SwingUtils.shrink ( bounds, margin );
+            g.setColor ( ColorUtils.removeAlpha ( ComponentHighlighter.borderColor ) );
+            g.drawRect ( bounds.x, bounds.y, bounds.width, bounds.height );
+        }
+
+        final Insets border = BoundsType.border.insets ( c );
+        if ( !SwingUtils.isEmpty ( border ) )
+        {
+            bounds = SwingUtils.shrink ( bounds, border );
+            g.setColor ( ColorUtils.removeAlpha ( ComponentHighlighter.paddingColor ) );
+            g.drawRect ( bounds.x, bounds.y, bounds.width, bounds.height );
+        }
+
+        final Insets padding = BoundsType.padding.insets ( c );
+        if ( !SwingUtils.isEmpty ( padding ) )
+        {
+            bounds = SwingUtils.shrink ( bounds, padding );
+            g.setColor ( ColorUtils.removeAlpha ( ComponentHighlighter.contentColor ) );
+            g.drawRect ( bounds.x, bounds.y, bounds.width, bounds.height );
+        }
     }
 
     /**

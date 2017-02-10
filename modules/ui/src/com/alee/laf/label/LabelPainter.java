@@ -23,7 +23,7 @@ import javax.swing.*;
 
 /**
  * Basic painter for {@link JLabel} component.
- * It is used as {@link WebLabelUI} default painter.
+ * It is used as {@link WLabelUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -31,7 +31,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class LabelPainter<E extends JLabel, U extends WebLabelUI, D extends IDecoration<E, D>> extends AbstractLabelPainter<E, U, D>
+public class LabelPainter<E extends JLabel, U extends WLabelUI, D extends IDecoration<E, D>> extends AbstractLabelPainter<E, U, D>
         implements ILabelPainter<E, U>
 {
     /**

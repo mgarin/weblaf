@@ -79,7 +79,7 @@ public class WebFileListExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final File[] files = FileUtils.getUserHome ().listFiles ();
             final File[] model = files.length > 28 ? Arrays.copyOfRange ( files, 0, 28 ) : files;
@@ -104,7 +104,7 @@ public class WebFileListExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final File[] files = FileUtils.getUserHome ().listFiles ();
             final File[] model = files.length > 15 ? Arrays.copyOfRange ( files, 0, 15 ) : files;
@@ -129,7 +129,7 @@ public class WebFileListExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebFileList list = new WebFileList ( getStyleId (), FileUtils.getUserHome () );
             return CollectionUtils.asList ( new WebScrollPane ( list ) );
@@ -152,7 +152,7 @@ public class WebFileListExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebFileList list = new WebFileList ( getStyleId (), FileUtils.getUserHome () );
             list.setEditable ( true );

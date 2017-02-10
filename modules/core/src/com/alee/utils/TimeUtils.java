@@ -45,22 +45,22 @@ public final class TimeUtils
     /**
      * Pinned time in milliseconds.
      */
-    private static Long pinnedTime = null;
+    private static volatile Long pinnedTime = null;
 
     /**
      * Last measured time in milliseconds.
      */
-    private static Long lastTime = null;
+    private static volatile Long lastTime = null;
 
     /**
      * Pinned nano time in nanoseconds.
      */
-    private static Long pinnedNanoTime = null;
+    private static volatile Long pinnedNanoTime = null;
 
     /**
      * Last measured time in nanoseconds.
      */
-    private static Long lastNanoTime = null;
+    private static volatile Long lastNanoTime = null;
 
     /**
      * Returns last pinned time.

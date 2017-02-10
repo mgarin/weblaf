@@ -34,7 +34,7 @@ public class MenuBarGenerator extends AbstractMenuGenerator<WebMenuBar>
      */
     public MenuBarGenerator ()
     {
-        super ( new WebMenuBar () );
+        this ( new WebMenuBar () );
     }
 
     /**
@@ -44,7 +44,7 @@ public class MenuBarGenerator extends AbstractMenuGenerator<WebMenuBar>
      */
     public MenuBarGenerator ( final StyleId id )
     {
-        super ( new WebMenuBar ( id ) );
+        this ( new WebMenuBar ( id ) );
     }
 
     /**

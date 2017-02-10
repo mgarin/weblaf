@@ -27,73 +27,53 @@ import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicViewportUI;
 import java.awt.*;
 
 /**
- * Custom UI for JViewport component.
- * JViewport is an unique component that doesn't allow any borders to be set thus it doesn't support margin or padding.
+ * Custom UI for {@link JViewport} component.
+ * {@link JViewport} is an unique component that doesn't allow any borders to be set thus it doesn't support margin or padding.
  *
+ * @param <C> component type
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
 
-public class WebViewportUI extends BasicViewportUI implements ShapeSupport
+public class WebViewportUI<C extends JViewport> extends WViewportUI<C> implements ShapeSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter (ViewportPainter.class)
+    @DefaultPainter ( ViewportPainter.class )
     protected IViewportPainter painter;
 
     /**
-     * Runtime variables.
-     */
-    protected JViewport viewport = null;
-
-    /**
-     * Returns an instance of the WebViewportUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebViewportUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebViewportUI
+     * @return instance of the {@link WebViewportUI}
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebViewportUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
+        // Installing UI
         super.installUI ( c );
-
-        // Saving separator to local variable
-        viewport = ( JViewport ) c;
 
         // Applying skin
         StyleManager.installSkin ( viewport );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( viewport );
-
-        // Cleaning up reference
-        viewport = null;
 
         // Uninstalling UI
         super.uninstallUI ( c );
@@ -112,7 +92,7 @@ public class WebViewportUI extends BasicViewportUI implements ShapeSupport
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

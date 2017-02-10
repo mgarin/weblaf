@@ -205,7 +205,7 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**
@@ -242,6 +242,13 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
     public void setSelectionStyle ( final ListSelectionStyle style )
     {
         this.selectionStyle = style;
+    }
+
+    @Override
+    public void updateListLayout ()
+    {
+        updateLayoutStateNeeded = modelChanged;
+        redrawList ();
     }
 
     @Override

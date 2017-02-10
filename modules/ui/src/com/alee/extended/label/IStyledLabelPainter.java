@@ -20,7 +20,7 @@ package com.alee.extended.label;
 import com.alee.laf.label.IAbstractLabelPainter;
 
 /**
- * Base interface for WebStyledLabel component painters.
+ * Base interface for {@link WebStyledLabel} component painters.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -30,4 +30,7 @@ import com.alee.laf.label.IAbstractLabelPainter;
 
 public interface IStyledLabelPainter<E extends WebStyledLabel, U extends WStyledLabelUI> extends IAbstractLabelPainter<E, U>
 {
+    /**
+     * This interface doesn't offer any additional methods to implement.
+     */
 }

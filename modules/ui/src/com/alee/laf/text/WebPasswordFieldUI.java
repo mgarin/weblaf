@@ -170,7 +170,7 @@ public class WebPasswordFieldUI extends WPasswordFieldUI implements ShapeSupport
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

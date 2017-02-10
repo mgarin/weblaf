@@ -35,7 +35,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-@XStreamConverter (NinePatchIconConverter.class)
+@XStreamConverter ( NinePatchIconConverter.class )
 public class NinePatchIcon implements Icon
 {
     /**

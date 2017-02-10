@@ -17,29 +17,31 @@
 
 package com.alee.laf.tooltip;
 
-import com.alee.utils.SwingUtils;
+import com.alee.laf.WebUI;
+import com.alee.utils.LafUtils;
 
 import javax.swing.*;
 import javax.swing.plaf.ToolTipUI;
 
 /**
- * Pluggable look and feel interface for {@link com.alee.laf.tooltip.WebToolTip} component.
+ * Pluggable look and feel interface for {@link JToolTip} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public abstract class WToolTipUI extends ToolTipUI
+public abstract class WToolTipUI<C extends JToolTip> extends ToolTipUI implements WebUI<C>
 {
     /**
      * Runtime variables.
      */
-    protected JComponent tooltip = null;
+    protected C toolTip = null;
 
     @Override
     public void installUI ( final JComponent c )
     {
-        // Saving tooltip to local variable
-        tooltip = c;
+        // Saving tooltip reference
+        toolTip = ( C ) c;
 
         // Installing default component settings
         installDefaults ();
@@ -57,18 +59,14 @@ public abstract class WToolTipUI extends ToolTipUI
         // Uninstalling default component settings
         uninstallDefaults ();
 
-        // Cleaning up reference
-        this.tooltip = null;
+        // Removing tooltip reference
+        toolTip = null;
     }
 
-    /**
-     * Returns component default font key.
-     *
-     * @return component default font key
-     */
-    protected String getFontKey ()
+    @Override
+    public String getPropertyPrefix ()
     {
-        return "ToolTip.font";
+        return "ToolTip.";
     }
 
     /**
@@ -76,10 +74,7 @@ public abstract class WToolTipUI extends ToolTipUI
      */
     protected void installDefaults ()
     {
-        if ( SwingUtils.isUIResource ( tooltip.getFont () ) )
-        {
-            tooltip.setFont ( UIManager.getFont ( getFontKey () ) );
-        }
+        LafUtils.installDefaults ( toolTip, getPropertyPrefix () );
     }
 
     /**
@@ -87,7 +82,7 @@ public abstract class WToolTipUI extends ToolTipUI
      */
     protected void uninstallDefaults ()
     {
-        LookAndFeel.uninstallBorder ( tooltip );
+        LafUtils.uninstallDefaults ( toolTip );
     }
 
     /**

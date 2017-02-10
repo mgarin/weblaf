@@ -27,6 +27,7 @@ import com.alee.utils.SwingUtils;
 import com.alee.utils.SystemUtils;
 import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.DataProvider;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -43,6 +44,7 @@ import java.beans.PropertyChangeListener;
  * @author Mikle Garin
  */
 
+@XStreamAlias ( "PopOverPainter" )
 public class PopOverPainter<E extends JRootPane, U extends WRootPaneUI> extends AbstractPopupPainter<E, U>
         implements IPopOverPainter<E, U>
 {

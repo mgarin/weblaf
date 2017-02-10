@@ -53,7 +53,7 @@ public final class Round implements Serializable, Cloneable, Mergeable<Round>
     public int bottomLeft;
 
     /**
-     * Constructs zero corners round data.
+     * Constructs zero corners round settings.
      */
     public Round ()
     {
@@ -65,7 +65,7 @@ public final class Round implements Serializable, Cloneable, Mergeable<Round>
     }
 
     /**
-     * Constructs corners round data with the specified values.
+     * Constructs corners round settings with the specified values.
      *
      * @param topLeft     top left corner round
      * @param topRight    top right corner round

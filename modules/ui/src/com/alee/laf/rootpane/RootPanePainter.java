@@ -143,6 +143,16 @@ public class RootPanePainter<E extends JRootPane, U extends WRootPaneUI, D exten
     }
 
     @Override
+    protected Boolean isOpaqueUndecorated ()
+    {
+        // Make undecorated root panes opaque by default
+        // This is important to keep any non-opaque components properly painted
+        // Note that if decoration is provided root pane will not be opaque and will have painting issues on natively-decorated windows
+        // todo Maybe native/non-native decoration should be taken in account when opacity is provided instead?
+        return true;
+    }
+
+    @Override
     public boolean isDecorated ()
     {
         final D decoration = getDecoration ();

@@ -113,11 +113,11 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     protected PropertyChangeListener windowTitleListener;
 
     /**
-     * Returns an instance of the WebRootPaneUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebRootPaneUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebRootPaneUI
+     * @return instance of the {@link WebRootPaneUI}
      */
     @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
@@ -198,7 +198,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**
@@ -618,8 +618,8 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
      * Updates displayed buttons.
      *
      * todo 1. Optimize button updates
-     * todo 2. Move button icons into decoration
-     * todo 3. Instead of single button for maximize/restore add a new restore button
+     * todo 2. Reference icons in style instead of using hardcoded ones
+     * todo 3. Instead of single button for maximize/restore add a new restore button?
      */
     protected void updateButtons ()
     {

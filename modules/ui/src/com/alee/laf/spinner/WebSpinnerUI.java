@@ -42,7 +42,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeSupport, Margin
     /**
      * Component painter.
      */
-    @DefaultPainter (SpinnerPainter.class)
+    @DefaultPainter ( SpinnerPainter.class )
     protected ISpinnerPainter painter;
 
     /**
@@ -52,23 +52,18 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeSupport, Margin
     protected Insets padding = null;
 
     /**
-     * Returns an instance of the WebSpinnerUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebSpinnerUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebSpinnerUI
+     * @return instance of the {@link WebSpinnerUI}
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSpinnerUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
@@ -79,11 +74,6 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeSupport, Margin
         StyleManager.installSkin ( spinner );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
@@ -199,7 +189,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeSupport, Margin
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

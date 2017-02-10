@@ -1,4 +1,4 @@
-<skin>
+<skin xmlns="http://weblookandfeel.com">
 
     <!-- com.alee.laf.desktoppane.WebDesktopPane -->
 
@@ -6,9 +6,25 @@
     <style type="desktoppane">
         <component>
             <opaque>true</opaque>
-            <background>237,237,237</background>
         </component>
-        <painter />
+        <painter>
+            <decorations>
+                <decoration>
+                    <BoundsShape />
+                    <ColorBackground color="237,237,237" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Transparent desktop pane -->
+    <style type="desktoppane" id="transparent">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
     </style>
 
 </skin>

@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * Basic painter for {@link WebTristateCheckBox} component.
- * It is used as {@link WebTristateCheckBoxUI} default painter.
+ * It is used as {@link WTristateCheckBoxUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -17,7 +17,7 @@ import java.util.List;
  * @author Alexandr Zernov
  */
 
-public class TristateCheckBoxPainter<E extends WebTristateCheckBox, U extends WebTristateCheckBoxUI, D extends IDecoration<E, D>>
+public class TristateCheckBoxPainter<E extends WebTristateCheckBox, U extends WTristateCheckBoxUI, D extends IDecoration<E, D>>
         extends AbstractStateButtonPainter<E, U, D> implements ITristateCheckBoxPainter<E, U>
 {
     @Override

@@ -33,8 +33,8 @@ import java.util.Map;
  * @see com.alee.managers.settings.SettingsManager
  */
 
-@XStreamAlias ("SettingsGroup")
-@XStreamConverter (SettingsConverter.class)
+@XStreamAlias ( "SettingsGroup" )
+@XStreamConverter ( SettingsConverter.class )
 public class SettingsGroup implements Serializable
 {
     /**

@@ -290,7 +290,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
             // Retrieving draged frame data
             final FrameDragData drag = ( FrameDragData ) support.getTransferable ().getTransferData ( FrameTransferable.dataFlavor );
 
-            // Checking frame existance on this dockable pane
+            // Checking frame existence on this dockable pane
             // This is needed to avoid drag between different panes
             if ( dockablePane.getFrame ( drag.getId () ) == null )
             {

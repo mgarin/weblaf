@@ -24,47 +24,27 @@ import javax.swing.*;
 /**
  * Pluggable look and feel interface for {@link WebStyledLabel} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  * @see WebStyledLabel
  */
 
-public abstract class WStyledLabelUI extends WLabelUI implements SwingConstants
+public abstract class WStyledLabelUI<C extends WebStyledLabel> extends WLabelUI<C> implements SwingConstants
 {
-    /**
-     * Runtime variables.
-     */
-    protected WebStyledLabel label;
-
     @Override
-    public void installUI ( final JComponent c )
+    public String getPropertyPrefix ()
     {
-        // Saving label reference
-        label = ( WebStyledLabel ) c;
-
-        super.installUI ( c );
-    }
-
-    @Override
-    public void uninstallUI ( final JComponent c )
-    {
-        super.uninstallUI ( c );
-
-        // Removing label reference
-        label = null;
-    }
-
-    @Override
-    protected String getFontKey ()
-    {
-        return "StyledLabel.font";
+        return "StyledLabel.";
     }
 
     @Override
     protected void installDefaults ()
     {
+        // Installing label defaults
         super.installDefaults ();
 
+        // Installing styled label defaults
         label.setWrap ( TextWrap.mixed );
         label.setHorizontalTextAlignment ( -1 );
         label.setVerticalTextAlignment ( CENTER );

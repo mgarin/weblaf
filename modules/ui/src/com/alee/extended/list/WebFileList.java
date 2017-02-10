@@ -258,6 +258,7 @@ public class WebFileList extends WebList
     public void setPreferredColumnCount ( final int preferredColumnCount )
     {
         this.preferredColumnCount = preferredColumnCount;
+        getUI ().updateListLayout ();
     }
 
     /**
@@ -278,6 +279,7 @@ public class WebFileList extends WebList
     public void setPreferredRowCount ( final int preferredRowCount )
     {
         this.preferredRowCount = preferredRowCount;
+        getUI ().updateListLayout ();
     }
 
     /**

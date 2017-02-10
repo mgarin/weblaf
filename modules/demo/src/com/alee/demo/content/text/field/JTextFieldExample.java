@@ -82,7 +82,7 @@ public class JTextFieldExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JTextField textField = new JTextField ( "Sample text", 20 );
             textField.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );

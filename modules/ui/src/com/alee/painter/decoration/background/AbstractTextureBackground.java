@@ -25,7 +25,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Abstract texure background.
+ * Convenient base class for any texture-based {@link IBackground} implementation.
  *
  * @param <E> component type
  * @param <D> decoration type

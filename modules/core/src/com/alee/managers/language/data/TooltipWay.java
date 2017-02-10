@@ -23,7 +23,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("TooltipWay")
+@XStreamAlias ( "TooltipWay" )
 public enum TooltipWay
 {
     up,

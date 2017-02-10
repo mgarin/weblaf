@@ -20,6 +20,7 @@ package com.alee.extended.window;
 import com.alee.api.data.CompassDirection;
 import com.alee.api.jdk.Function;
 import com.alee.extended.WebContainer;
+import com.alee.extended.behavior.ComponentMoveBehavior;
 import com.alee.extended.behavior.ComponentResizeBehavior;
 import com.alee.global.StyleConstants;
 import com.alee.laf.window.WindowMethods;
@@ -60,6 +61,11 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
         implements Popup, PopupMethods, WindowMethods<WebPopupWindow>
 {
     /**
+     * todo 1. Move all action implementations into UI
+     * todo 2. Provide property change fire calls on specific settings changes
+     */
+
+    /**
      * Whether or not this popup should be resizable.
      */
     protected boolean resizable = false;
@@ -73,6 +79,11 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
      * Whether should close popup on focus loss or not.
      */
     protected boolean closeOnFocusLoss = false;
+
+    /**
+     * Whether or not popup window should be draggable.
+     */
+    protected boolean draggable = false;
 
     /**
      * Whether or not popup should follow invoker's window.
@@ -457,6 +468,43 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     {
         super.setOpaque ( isOpaque );
         setWindowOpaque ( isOpaque );
+    }
+
+    /**
+     * Returns whether or not popup window should be draggable.
+     *
+     * @return {@code true} if popup window should be draggable, {@code false} otherwise
+     */
+    public boolean isDraggable ()
+    {
+        return draggable;
+    }
+
+    /**
+     * Sets whether or not popup window should be draggable.
+     *
+     * @param draggable whether or not popup window should be draggable
+     */
+    public void setDraggable ( final boolean draggable )
+    {
+        if ( this.draggable != draggable )
+        {
+            this.draggable = draggable;
+            if ( draggable )
+            {
+                if ( !ComponentMoveBehavior.isInstalled ( this ) )
+                {
+                    ComponentMoveBehavior.install ( this );
+                }
+            }
+            else
+            {
+                if ( ComponentMoveBehavior.isInstalled ( this ) )
+                {
+                    ComponentMoveBehavior.uninstall ( this );
+                }
+            }
+        }
     }
 
     /**

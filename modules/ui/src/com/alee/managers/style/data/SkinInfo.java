@@ -56,6 +56,25 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
     private String id;
 
     /**
+     * Skin's class canonical name.
+     * Mainly used to locate included resources.
+     */
+    private String skinClass;
+
+    /**
+     * List of skins where extension can be applied.
+     * This field should only be specified for {@link com.alee.managers.style.SkinExtension} usage cases.
+     */
+    private List<String> extendedSkins;
+
+    /**
+     * List of OS supported by this skin separated by "," character.
+     * List of OS IDs constants can be found in SystemUtils class.
+     * If skin supports all OS you can simply put "all" here.
+     */
+    private String supportedSystems;
+
+    /**
      * Skin icon.
      */
     private Icon icon;
@@ -76,25 +95,6 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
      * Skin author name.
      */
     private String author;
-
-    /**
-     * List of OS supported by this skin separated by "," character.
-     * List of OS IDs constants can be found in SystemUtils class.
-     * If skin supports all OS you can simply put "all" here.
-     */
-    private String supportedSystems;
-
-    /**
-     * Skin's class canonical name.
-     * Mainly used to locate included resources.
-     */
-    private String skinClass;
-
-    /**
-     * List of skins where extension can be applied.
-     * This field should only be specified for {@link com.alee.managers.style.SkinExtension} usage cases.
-     */
-    private List<String> extendedSkins;
 
     /**
      * List of icon sets used by this skin.
@@ -146,6 +146,102 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
     public void setId ( final String id )
     {
         this.id = id;
+    }
+
+    /**
+     * Returns skin class canonical name.
+     *
+     * @return skin class canonical name
+     */
+    public String getSkinClass ()
+    {
+        return skinClass;
+    }
+
+    /**
+     * Sets skin class canonical name.
+     *
+     * @param skinClass new skin class canonical name
+     */
+    public void setSkinClass ( final String skinClass )
+    {
+        this.skinClass = skinClass;
+    }
+
+    /**
+     * Returns list of skins where extension can be applied.
+     *
+     * @return list of skins where extension can be applied
+     */
+    public List<String> getExtendedSkins ()
+    {
+        return extendedSkins;
+    }
+
+    /**
+     * Sets list of skins where extension can be applied.
+     *
+     * @param extendedSkins list of skins where extension can be applied
+     */
+    public void setExtendedSkins ( final List<String> extendedSkins )
+    {
+        this.extendedSkins = extendedSkins;
+    }
+
+    /**
+     * Returns whether or not skin with the specified ID is supported by this extension.
+     *
+     * @param skinId ID of the skin to process
+     * @return true if skin with the specified ID is supported by this extension, false otherwise
+     */
+    public boolean isSupported ( final String skinId )
+    {
+        final List<String> extendedSkins = getExtendedSkins ();
+        if ( extendedSkins == null )
+        {
+            throw new StyleException ( "Extension must specify which skins it extends" );
+        }
+        return extendedSkins.contains ( skinId );
+    }
+
+    /**
+     * Returns supported systems.
+     *
+     * @return supported systems
+     */
+    public String getSupportedSystems ()
+    {
+        return supportedSystems;
+    }
+
+    /**
+     * Sets supported systems.
+     *
+     * @param supportedSystems supported systems
+     */
+    public void setSupportedSystems ( final String supportedSystems )
+    {
+        this.supportedSystems = supportedSystems;
+    }
+
+    /**
+     * Returns supported systems list.
+     *
+     * @return supported systems list
+     */
+    public List<String> getSupportedSystemsList ()
+    {
+        return TextUtils.stringToList ( supportedSystems, "," );
+    }
+
+    /**
+     * Sets supported systems.
+     *
+     * @param supportedSystems supported systems
+     */
+    public void setSupportedSystemsList ( final List<String> supportedSystems )
+    {
+        this.supportedSystems = TextUtils.listToString ( supportedSystems, "," );
     }
 
     /**
@@ -228,102 +324,6 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
     public void setAuthor ( final String author )
     {
         this.author = author;
-    }
-
-    /**
-     * Returns supported systems.
-     *
-     * @return supported systems
-     */
-    public String getSupportedSystems ()
-    {
-        return supportedSystems;
-    }
-
-    /**
-     * Returns supported systems list.
-     *
-     * @return supported systems list
-     */
-    public List<String> getSupportedSystemsList ()
-    {
-        return TextUtils.stringToList ( supportedSystems, "," );
-    }
-
-    /**
-     * Sets supported systems.
-     *
-     * @param supportedSystems supported systems
-     */
-    public void setSupportedSystems ( final String supportedSystems )
-    {
-        this.supportedSystems = supportedSystems;
-    }
-
-    /**
-     * Sets supported systems.
-     *
-     * @param supportedSystems supported systems
-     */
-    public void setSupportedSystems ( final List<String> supportedSystems )
-    {
-        this.supportedSystems = TextUtils.listToString ( supportedSystems, "," );
-    }
-
-    /**
-     * Returns skin class canonical name.
-     *
-     * @return skin class canonical name
-     */
-    public String getSkinClass ()
-    {
-        return skinClass;
-    }
-
-    /**
-     * Sets skin class canonical name.
-     *
-     * @param skinClass new skin class canonical name
-     */
-    public void setSkinClass ( final String skinClass )
-    {
-        this.skinClass = skinClass;
-    }
-
-    /**
-     * Returns list of skins where extension can be applied.
-     *
-     * @return list of skins where extension can be applied
-     */
-    public List<String> getExtendedSkins ()
-    {
-        return extendedSkins;
-    }
-
-    /**
-     * Sets list of skins where extension can be applied.
-     *
-     * @param extendedSkins list of skins where extension can be applied
-     */
-    public void setExtendedSkins ( final List<String> extendedSkins )
-    {
-        this.extendedSkins = extendedSkins;
-    }
-
-    /**
-     * Returns whether or not skin with the specified ID is supported by this extension.
-     *
-     * @param skinId ID of the skin to process
-     * @return true if skin with the specified ID is supported by this extension, false otherwise
-     */
-    public boolean isSupported ( final String skinId )
-    {
-        final List<String> extendedSkins = getExtendedSkins ();
-        if ( extendedSkins == null )
-        {
-            throw new StyleException ( "Extension must specify which skins it extends" );
-        }
-        return extendedSkins.contains ( skinId );
     }
 
     /**
@@ -825,7 +825,8 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
         // Avoiding cyclic references
         if ( building.contains ( uniqueId ) )
         {
-            throw new StyleException ( "Style " + uniqueId + " is used within cyclic references" );
+            final String msg = "Style '%s' is used within cyclic references";
+            throw new StyleException ( String.format ( msg, uniqueId ) );
         }
 
         // Check whether this style was already built

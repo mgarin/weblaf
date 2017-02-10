@@ -20,6 +20,7 @@ package com.alee.managers.popup;
 import com.alee.extended.layout.MultiLayout;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.style.ShapeMethods;
+import com.alee.managers.style.StyleId;
 
 import java.awt.*;
 
@@ -49,7 +50,7 @@ public class PopupLayer extends WebPanel
      */
     public PopupLayer ( final LayoutManager layoutManager )
     {
-        super ( layoutManager );
+        super ( StyleId.panelTransparent, layoutManager );
         setOpaque ( false );
     }
 

@@ -32,7 +32,7 @@ import java.io.Serializable;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("HotkeyData")
+@XStreamAlias ( "HotkeyData" )
 public class HotkeyData implements Serializable, Cloneable
 {
     /**

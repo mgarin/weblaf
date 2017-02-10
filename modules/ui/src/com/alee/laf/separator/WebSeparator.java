@@ -231,14 +231,35 @@ public class WebSeparator extends JSeparator implements Styleable, Paintable, Sh
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WSeparatorUI} object that renders this component
+     */
+    @Override
+    public WSeparatorUI getUI ()
+    {
+        return ( WSeparatorUI ) ui;
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WSeparatorUI}
+     */
+    public void setUI ( final WSeparatorUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebSeparatorUI ) )
+        if ( getUI () == null || !( getUI () instanceof WSeparatorUI ) )
         {
             try
             {
-                setUI ( ( WebSeparatorUI ) UIManager.getUI ( this ) );
+                setUI ( ( WSeparatorUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

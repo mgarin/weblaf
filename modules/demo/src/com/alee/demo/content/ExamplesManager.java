@@ -24,16 +24,18 @@ import com.alee.demo.content.button.ButtonsGroup;
 import com.alee.demo.content.chooser.ChoosersGroup;
 import com.alee.demo.content.container.ContainersGroup;
 import com.alee.demo.content.data.DataGroup;
+import com.alee.demo.content.desktoppane.DesktopPaneGroup;
 import com.alee.demo.content.label.LabelsGroup;
+import com.alee.demo.content.menu.MenusGroup;
 import com.alee.demo.content.progress.ProgressGroup;
 import com.alee.demo.content.text.TextComponentsGroup;
 import com.alee.demo.content.tooltip.TooltipsGroup;
 import com.alee.demo.content.window.WindowsGroup;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.ReflectUtils;
-import com.alee.utils.reflection.JarEntry;
-import com.alee.utils.reflection.JarStructure;
+import com.alee.utils.JarUtils;
+import com.alee.utils.jar.JarEntry;
+import com.alee.utils.jar.JarStructure;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -82,11 +84,13 @@ public final class ExamplesManager
             groups.add ( new LabelsGroup () );
             groups.add ( new TooltipsGroup () );
             groups.add ( new ButtonsGroup () );
+            groups.add ( new MenusGroup () );
             groups.add ( new ProgressGroup () );
             groups.add ( new TextComponentsGroup () );
             groups.add ( new DataGroup () );
             groups.add ( new ChoosersGroup () );
             groups.add ( new WindowsGroup () );
+            groups.add ( new DesktopPaneGroup () );
             groups.add ( new AnimationGroup () );
         }
     }
@@ -154,7 +158,7 @@ public final class ExamplesManager
         // progress.setText ( "Creating source files structure..." );
         final List<String> extensions = Arrays.asList ( ".java", ".png", ".gif", ".jpg", ".txt", ".xml" );
         final List<String> packages = Arrays.asList ( "com/alee", "licenses" );
-        final JarStructure jarStructure = ReflectUtils.getJarStructure ( ExamplesManager.class, extensions, packages );
+        final JarStructure jarStructure = JarUtils.getJarStructure ( ExamplesManager.class, extensions, packages );
 
         // Applying some custom icons
         // todo Apply example icons as well?

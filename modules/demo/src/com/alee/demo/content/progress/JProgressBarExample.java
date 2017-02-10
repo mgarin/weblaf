@@ -124,7 +124,7 @@ public class JProgressBarExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JProgressBar progressBar = new JProgressBar ( JProgressBar.HORIZONTAL, 0, 1000 );
             setup ( progressBar, getStyleId (), text );
@@ -156,7 +156,7 @@ public class JProgressBarExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JProgressBar progressBar = new JProgressBar ( JProgressBar.HORIZONTAL );
             progressBar.setIndeterminate ( true );
@@ -189,7 +189,7 @@ public class JProgressBarExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JProgressBar determinate = new JProgressBar ( JProgressBar.VERTICAL, 0, 1000 );
             determinate.setValue ( 750 );

@@ -34,7 +34,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("ninepatch")
+@XStreamAlias ( "ninepatch" )
 public class NinePatchDecoration<E extends JComponent, I extends NinePatchDecoration<E, I>> extends ContentDecoration<E, I>
 {
     /**

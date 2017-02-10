@@ -60,23 +60,18 @@ public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, 
     protected boolean modifying = false;
 
     /**
-     * Returns an instance of the WebColorChooserUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebColorChooserUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebColorChooserUI
+     * @return instance of the {@link WebColorChooserUI}
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebColorChooserUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
@@ -123,11 +118,6 @@ public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, 
         selectionModel.addChangeListener ( modelChangeListener );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
@@ -185,7 +175,7 @@ public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, 
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**
@@ -296,6 +286,7 @@ public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, 
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        // return PainterSupport.getPreferredSize ( c, painter );
+        return null;
     }
 }

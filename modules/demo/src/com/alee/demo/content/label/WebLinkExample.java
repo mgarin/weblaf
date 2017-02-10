@@ -90,7 +90,7 @@ public class WebLinkExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebLink link = new WebLink ( getStyleId (), new UrlLinkAction ( DemoApplication.WEBLAF_SITE ) );
             return CollectionUtils.asList ( link );
@@ -114,7 +114,7 @@ public class WebLinkExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebLink link = new WebLink ( getStyleId (), new EmailLinkAction ( DemoApplication.WEBLAF_EMAIL ) );
             return CollectionUtils.asList ( link );
@@ -138,7 +138,7 @@ public class WebLinkExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebLink link = new WebLink ( getStyleId (), new FileLinkAction ( FileUtils.getUserHome () ) );
             return CollectionUtils.asList ( link );
@@ -162,7 +162,7 @@ public class WebLinkExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final ImageIcon icon = WebLookAndFeel.getIcon ( 16 );
             final String text = getPreviewLanguagePrefix () + "link";

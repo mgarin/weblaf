@@ -524,7 +524,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

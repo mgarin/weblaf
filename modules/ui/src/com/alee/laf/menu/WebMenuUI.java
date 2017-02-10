@@ -39,7 +39,7 @@ public class WebMenuUI extends BasicMenuUI implements ShapeSupport, MarginSuppor
     /**
      * Component painter.
      */
-    @DefaultPainter (MenuPainter.class)
+    @DefaultPainter ( MenuPainter.class )
     protected IMenuPainter painter;
 
     /**
@@ -55,7 +55,7 @@ public class WebMenuUI extends BasicMenuUI implements ShapeSupport, MarginSuppor
      * @param c component that will use UI instance
      * @return instance of the WebMenuUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebMenuUI ();
@@ -129,7 +129,7 @@ public class WebMenuUI extends BasicMenuUI implements ShapeSupport, MarginSuppor
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

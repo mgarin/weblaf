@@ -1,13 +1,15 @@
-<skin>
+<skin xmlns="http://weblookandfeel.com">
 
-    <!-- Skin information -->
+    <!-- Skin settings -->
     <id>weblaf.modena.skin</id>
     <class>com.alee.skin.modena.ModenaSkin</class>
+    <supportedSystems>all</supportedSystems>
+
+    <!-- Skin information -->
     <icon>icons/icon.png</icon>
     <title>Modena skin</title>
     <description>JavaFX Modena -like skin</description>
     <author>Mikle Garin</author>
-    <supportedSystems>all</supportedSystems>
 
     <!-- Including WebLaF default skin, will use its style as a base -->
     <include nearClass="com.alee.skin.web.WebSkin">resources/skin.xml</include>

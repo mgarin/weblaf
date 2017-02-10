@@ -34,8 +34,8 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("ValuesTable")
-@XStreamConverter (ValuesTableConverter.class)
+@XStreamAlias ( "ValuesTable" )
+@XStreamConverter ( ValuesTableConverter.class )
 public class ValuesTable<K, V> implements Serializable
 {
     /**

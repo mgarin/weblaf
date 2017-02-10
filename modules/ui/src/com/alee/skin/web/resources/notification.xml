@@ -1,4 +1,4 @@
-<skin>
+<skin xmlns="http://weblookandfeel.com">
 
     <!-- com.alee.managers.notification.WebNotification -->
 
@@ -25,6 +25,23 @@
         <!-- Option button -->
         <style type="button" id="option" padding="2,12,2,12" />
 
+    </style>
+
+    <!-- Inner notification -->
+    <style type="panel" id="notification" extends="innerpopup" padding="15,20,15,20">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="4" />
+                    <WebShadow type="outer" opacity="0.6" width="32" />
+                    <LineBorder color="170,170,170" />
+                    <GradientBackground>
+                        <color>245,245,245</color>
+                        <color>223,223,223</color>
+                    </GradientBackground>
+                </decoration>
+            </decorations>
+        </painter>
     </style>
 
 </skin>

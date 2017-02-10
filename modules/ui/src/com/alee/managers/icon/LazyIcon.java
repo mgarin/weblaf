@@ -43,7 +43,7 @@ public final class LazyIcon implements Icon
      */
     public LazyIcon ( final String id )
     {
-        super();
+        super ();
         this.id = id;
     }
 
@@ -63,7 +63,7 @@ public final class LazyIcon implements Icon
      *
      * @return actual icon
      */
-    public Icon getIcon ()
+    protected Icon getIcon ()
     {
         return IconManager.getIcon ( getId () );
     }

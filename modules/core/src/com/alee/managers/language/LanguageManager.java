@@ -88,7 +88,7 @@ public class LanguageManager implements LanguageConstants
      * @see #setDefaultLanguage(String)
      * @see #getDefaultLanguage()
      */
-    protected static String DEFAULT = getDefaultLanguageKey ();
+    protected static String DEFAULT = getDefaultLanguageCode ();
 
     /**
      * Currently used language.
@@ -591,11 +591,10 @@ public class LanguageManager implements LanguageConstants
     }
 
     /**
-     * Returns component language key.
-     * Note that this is the key which was used to register the component.
+     * Returns language key which was used to register specified component.
      *
      * @param component component to retrieve language key for
-     * @return component language key
+     * @return language key which was used to register specified component
      */
     public static String getComponentKey ( final JComponent component )
     {
@@ -1694,9 +1693,9 @@ public class LanguageManager implements LanguageConstants
      *
      * @return default language key
      */
-    public static String getDefaultLanguageKey ()
+    public static String getDefaultLanguageCode ()
     {
-        final String systemLang = getSystemLanguageKey ();
+        final String systemLang = getSystemLanguageCode ();
         return supportedLanguages.contains ( systemLang ) ? systemLang : ENGLISH;
     }
 
@@ -1705,7 +1704,7 @@ public class LanguageManager implements LanguageConstants
      *
      * @return system language key
      */
-    public static String getSystemLanguageKey ()
+    public static String getSystemLanguageCode ()
     {
         return System.getProperty ( "user.language" );
     }

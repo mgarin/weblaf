@@ -36,7 +36,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("LineBorder")
+@XStreamAlias ( "LineBorder" )
 public class LineBorder<E extends JComponent, D extends IDecoration<E, D>, I extends LineBorder<E, D, I>> extends AbstractBorder<E, D, I>
         implements ColorSupport, StrokeSupport
 {

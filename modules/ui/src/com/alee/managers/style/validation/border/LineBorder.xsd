@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema targetNamespace="http://weblookandfeel.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractBorder.xsd" />
+    <xs:include schemaLocation="../awt/Stroke.xsd" />
+    <xs:include schemaLocation="../awt/Color.xsd" />
+
+    <!-- com.alee.painter.decoration.border.LineBorder -->
+    <xs:complexType name="LineBorder">
+        <xs:complexContent>
+            <xs:extension base="AbstractBorder">
+
+                <!-- Border stroke -->
+                <xs:attribute name="stroke" type="Stroke" />
+
+                <!-- Border color -->
+                <xs:attribute name="color" type="Color" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
 
 /**
  * Basic painter for {@link WebSplitButton} component.
- * It is used as {@link WebSplitButtonUI} default painter.
+ * It is used as {@link WSplitButtonUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type

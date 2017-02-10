@@ -94,7 +94,7 @@ public class JFormattedTextFieldExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final JFormattedTextField textField = new JFormattedTextField ( createFormatter ( mask ) );
             textField.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );

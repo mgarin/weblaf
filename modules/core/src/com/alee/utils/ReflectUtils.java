@@ -18,25 +18,13 @@
 package com.alee.utils;
 
 import com.alee.managers.log.Log;
-import com.alee.utils.file.FileDownloadListener;
-import com.alee.utils.reflection.JarEntry;
-import com.alee.utils.reflection.JarEntryType;
-import com.alee.utils.reflection.JarStructure;
+import com.alee.utils.reflection.ModifierType;
 
-import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.security.CodeSource;
 import java.util.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 /**
  * This class provides a set of utilities to simplify work with Reflection API.
- * There are also a few methods to retrieve complete JAR archive structure.
  *
  * @author Mikle Garin
  */
@@ -63,7 +51,7 @@ public final class ReflectUtils
     /**
      * Returns whether should allow safe methods to log errors or not.
      *
-     * @return true if should allow safe methods to log errors, false otherwise
+     * @return {@code true} if should allow safe methods to log errors, {@code false} otherwise
      */
     public static boolean isSafeMethodsLoggingEnabled ()
     {
@@ -78,6 +66,87 @@ public final class ReflectUtils
     public static void setSafeMethodsLoggingEnabled ( final boolean enabled )
     {
         ReflectUtils.safeMethodsLoggingEnabled = enabled;
+    }
+
+    /**
+     * Returns class for the specified canonical name.
+     *
+     * @param canonicalName class canonical name
+     * @return class for the specified canonical name
+     */
+    public static Class getClassSafely ( final String canonicalName )
+    {
+        try
+        {
+            return getClass ( canonicalName );
+        }
+        catch ( final Throwable e )
+        {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: getClassSafely ( " + canonicalName + " )", e );
+            }
+            return null;
+        }
+    }
+
+    /**
+     * Returns class for the specified canonical name.
+     *
+     * @param canonicalName class canonical name
+     * @return class for the specified canonical name
+     * @throws java.lang.ClassNotFoundException if class was not found
+     */
+    public static <T> Class<T> getClass ( final String canonicalName ) throws ClassNotFoundException
+    {
+        return ( Class<T> ) Class.forName ( canonicalName );
+    }
+
+    /**
+     * Returns method caller class.
+     * It is not recommended to use this method anywhere but in debugging.
+     *
+     * @return method caller class
+     */
+    public static Class getCallerClass ()
+    {
+        // We have to add one to depth since this method call is increasing it
+        return getCallerClass ( 1 );
+    }
+
+    /**
+     * Returns method caller class.
+     * It is not recommended to use this method anywhere but in debugging.
+     *
+     * @param additionalDepth additional methods depth
+     * @return method caller class
+     */
+    public static Class getCallerClass ( final int additionalDepth )
+    {
+        // Depth explanation:
+        // 0 - this method class
+        // 1 - this method caller class
+        // 2 - caller's class caller
+        // additionalDepth - in case call goes through additional methods this is required
+        final int depth = 2 + additionalDepth;
+
+        try
+        {
+            // We add additional 3 levels of depth due to reflection calls here
+            return callStaticMethod ( "sun.reflect.Reflection", "getCallerClass", depth + 3 );
+        }
+        catch ( final Throwable e )
+        {
+            try
+            {
+                // Simply use determined depth
+                return getClass ( new Throwable ().getStackTrace ()[ depth ].getClassName () );
+            }
+            catch ( final ClassNotFoundException ex )
+            {
+                return null;
+            }
+        }
     }
 
     /**
@@ -120,53 +189,15 @@ public final class ReflectUtils
             final Class superclass = clazz.getSuperclass ();
             if ( superclass != null )
             {
-                filtered.addAll ( getFields ( superclass ) );
+                filtered.addAll ( getFields ( superclass, found ) );
             }
 
             return filtered;
         }
         else
         {
-            return getFields ( object.getClass () );
+            return getFields ( object.getClass (), found );
         }
-    }
-
-    /**
-     * Returns specified class field's type.
-     * This method will also look for the field in super-classes if any exist.
-     *
-     * @param classType type of the class where field can be located
-     * @param fieldName field name
-     * @return specified class field's type
-     */
-    public static Class<?> getFieldTypeSafely ( final Class classType, final String fieldName )
-    {
-        try
-        {
-            return getFieldType ( classType, fieldName );
-        }
-        catch ( final NoSuchFieldException e )
-        {
-            if ( safeMethodsLoggingEnabled )
-            {
-                Log.warn ( "ReflectionUtils method failed: getFieldTypeSafely", e );
-            }
-            return null;
-        }
-    }
-
-    /**
-     * Returns specified class field's type.
-     * This method will also look for the field in super-classes if any exist.
-     *
-     * @param classType type of the class where field can be located
-     * @param fieldName field name
-     * @return specified class field's type
-     * @throws java.lang.NoSuchFieldException if field was not found
-     */
-    public static Class<?> getFieldType ( final Class classType, final String fieldName ) throws NoSuchFieldException
-    {
-        return getField ( classType, fieldName ).getType ();
     }
 
     /**
@@ -187,7 +218,7 @@ public final class ReflectUtils
         {
             if ( safeMethodsLoggingEnabled )
             {
-                Log.warn ( "ReflectionUtils method failed: getFieldSafely", e );
+                Log.warn ( "ReflectionUtils method failed: getFieldSafely ( " + classType + ", " + fieldName + " )", e );
             }
             return null;
         }
@@ -207,7 +238,7 @@ public final class ReflectUtils
         // Field key
         final String key = classType.getCanonicalName () + "." + fieldName;
 
-        // Checking cache
+        // Checking cache existence
         Field field = null;
         Map<String, Field> classFieldsCache = fieldsLookupCache.get ( classType );
         if ( classFieldsCache != null )
@@ -223,7 +254,16 @@ public final class ReflectUtils
         // Updating cache
         if ( field == null )
         {
+            // Trying to retrieve field from class or one of its superclasses
             field = getFieldImpl ( classType, fieldName );
+
+            // Trying to retrieve static field from interface
+            if ( field == null )
+            {
+                field = getInterfaceFieldImpl ( classType, fieldName );
+            }
+
+            // Checking field existence
             if ( field != null )
             {
                 field.setAccessible ( true );
@@ -232,6 +272,8 @@ public final class ReflectUtils
             {
                 throw new NoSuchFieldException ( "Field \"" + fieldName + "\" not found in class: " + classType.getCanonicalName () );
             }
+
+            // Caching field
             classFieldsCache.put ( key, field );
         }
 
@@ -246,7 +288,7 @@ public final class ReflectUtils
      * @param fieldName field name
      * @return specified class field
      */
-    public static Field getFieldImpl ( final Class classType, final String fieldName )
+    private static Field getFieldImpl ( final Class classType, final String fieldName )
     {
         Field field;
         try
@@ -262,8 +304,89 @@ public final class ReflectUtils
     }
 
     /**
+     * Returns specified class interface static field.
+     * This method will also look for the field in super-class interfaces if any exist.
+     *
+     * @param classType type of the interface where field can be located
+     * @param fieldName field name
+     * @return specified class interface static field
+     */
+    private static Field getInterfaceFieldImpl ( final Class classType, final String fieldName )
+    {
+        Field field = null;
+        if ( classType.isInterface () )
+        {
+            final Field[] fields = classType.getDeclaredFields ();
+            for ( final Field f : fields )
+            {
+                if ( f.getName ().equals ( fieldName ) )
+                {
+                    field = f;
+                    break;
+                }
+            }
+        }
+        if ( field == null )
+        {
+            final Class[] interfaces = classType.getInterfaces ();
+            for ( final Class iface : interfaces )
+            {
+                field = getInterfaceFieldImpl ( iface, fieldName );
+                if ( field != null )
+                {
+                    break;
+                }
+            }
+        }
+        if ( field == null )
+        {
+            final Class superclass = classType.getSuperclass ();
+            field = superclass != null ? getInterfaceFieldImpl ( superclass, fieldName ) : null;
+        }
+        return field;
+    }
+
+    /**
+     * Returns specified class field's type.
+     * This method will also look for the field in super-classes if any exist.
+     *
+     * @param classType type of the class where field can be located
+     * @param fieldName field name
+     * @return specified class field's type
+     */
+    public static Class<?> getFieldTypeSafely ( final Class classType, final String fieldName )
+    {
+        try
+        {
+            return getFieldType ( classType, fieldName );
+        }
+        catch ( final NoSuchFieldException e )
+        {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: getFieldTypeSafely ( " + classType + ", " + fieldName + " )", e );
+            }
+            return null;
+        }
+    }
+
+    /**
+     * Returns specified class field's type.
+     * This method will also look for the field in super-classes if any exist.
+     *
+     * @param classType type of the class where field can be located
+     * @param fieldName field name
+     * @return specified class field's type
+     * @throws java.lang.NoSuchFieldException if field was not found
+     */
+    public static Class<?> getFieldType ( final Class classType, final String fieldName ) throws NoSuchFieldException
+    {
+        return getField ( classType, fieldName ).getType ();
+    }
+
+    /**
      * Applies specified value to object field.
-     * This method allows to access and modify even private object fields.
+     * This method allows to access and modify even private fields.
      *
      * @param object object instance
      * @param field  object field
@@ -289,35 +412,108 @@ public final class ReflectUtils
 
     /**
      * Applies specified value to object field.
-     * This method allows to access and modify even private object fields.
+     * This method allows to access and modify even private fields.
      *
-     * @param object object instance
-     * @param field  object field
-     * @param value  field value
+     * @param object    object instance
+     * @param fieldName object field name
+     * @param value     field value
      * @throws java.lang.NoSuchFieldException   if field was not found
      * @throws java.lang.IllegalAccessException if field is inaccessible
      */
-    public static void setFieldValue ( final Object object, final String field, final Object value )
+    public static void setFieldValue ( final Object object, final String fieldName, final Object value )
             throws NoSuchFieldException, IllegalAccessException
     {
-        final Field actualField = getField ( object.getClass (), field );
+        setFieldValue ( object.getClass (), object, fieldName, value );
+    }
+
+    /**
+     * Applies specified value to static class field.
+     * This method allows to access and modify even private fields.
+     *
+     * @param classType type of the class where static field can be located
+     * @param field  object field
+     * @param value  field value
+     * @return true if value was applied successfully, false otherwise
+     */
+    public static boolean setStaticFieldValueSafely ( final Class classType, final String field, final Object value )
+    {
+        try
+        {
+            setStaticFieldValue ( classType, field, value );
+            return true;
+        }
+        catch ( final Throwable e )
+        {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: setFieldValueSafely", e );
+            }
+            return false;
+        }
+    }
+
+    /**
+     * Applies specified value to static class field.
+     * This method allows to access and modify even private fields.
+     *
+     * @param classType type of the class where static field can be located
+     * @param fieldName object field name
+     * @param value     field value
+     * @throws java.lang.NoSuchFieldException   if field was not found
+     * @throws java.lang.IllegalAccessException if field is inaccessible
+     */
+    public static void setStaticFieldValue ( final Class classType, final String fieldName, final Object value )
+            throws NoSuchFieldException, IllegalAccessException
+    {
+        setFieldValue ( classType, null, fieldName, value );
+    }
+
+    /**
+     * Applies specified value to object field.
+     * This method allows to access and modify even private object fields.
+     *
+     * @param classType type of the class where field can be located
+     * @param object    object instance
+     * @param fieldName object field name
+     * @param value     field value
+     * @throws java.lang.NoSuchFieldException   if field was not found
+     * @throws java.lang.IllegalAccessException if field is inaccessible
+     */
+    private static void setFieldValue ( final Class classType, final Object object, final String fieldName, final Object value )
+            throws NoSuchFieldException, IllegalAccessException
+    {
+        final Field actualField = getField ( classType, fieldName );
+
+        final int oldModifiers = actualField.getModifiers ();
+        if ( ModifierType.FINAL.is ( oldModifiers ) )
+        {
+            final Field modifiers = getField ( Field.class, "modifiers" );
+            modifiers.set ( actualField, oldModifiers & ~Modifier.FINAL );
+        }
+
         actualField.set ( object, value );
+
+        if ( ModifierType.FINAL.is ( oldModifiers ) )
+        {
+            final Field modifiers = getField ( Field.class, "modifiers" );
+            modifiers.set ( actualField, oldModifiers );
+        }
     }
 
     /**
      * Returns object field value.
      * This method allows to access even private object fields.
      *
-     * @param object object instance
-     * @param field  object field
-     * @param <T>    field value type
+     * @param object    object instance
+     * @param fieldName object field name
+     * @param <T>       field value type
      * @return object field value
      */
-    public static <T> T getFieldValueSafely ( final Object object, final String field )
+    public static <T> T getFieldValueSafely ( final Object object, final String fieldName )
     {
         try
         {
-            return getFieldValue ( object, field );
+            return getFieldValue ( object, fieldName );
         }
         catch ( final Throwable e )
         {
@@ -333,16 +529,17 @@ public final class ReflectUtils
      * Returns object field value.
      * This method allows to access even private object fields.
      *
-     * @param object object instance
-     * @param field  object field
-     * @param <T>    field value type
+     * @param object    object instance
+     * @param fieldName object field name
+     * @param <T>       field value type
      * @return object field value
      * @throws java.lang.NoSuchFieldException   if field was not found
      * @throws java.lang.IllegalAccessException if field is inaccessible
      */
-    public static <T> T getFieldValue ( final Object object, final String field ) throws NoSuchFieldException, IllegalAccessException
+    public static <T> T getFieldValue ( final Object object, final String fieldName ) throws NoSuchFieldException, IllegalAccessException
     {
-        final Field actualField = getField ( object.getClass (), field );
+        final Field actualField = getField ( object.getClass (), fieldName );
+        ModifierType.STATIC.checkNot ( actualField );
         return ( T ) actualField.get ( object );
     }
 
@@ -381,337 +578,9 @@ public final class ReflectUtils
     public static <T> T getStaticFieldValue ( final Class classType, final String fieldName )
             throws NoSuchFieldException, IllegalAccessException
     {
-        return ( T ) classType.getField ( fieldName ).get ( null );
-    }
-
-    /**
-     * Returns class for the specified canonical name.
-     *
-     * @param canonicalName class canonical name
-     * @return class for the specified canonical name
-     */
-    public static Class getClassSafely ( final String canonicalName )
-    {
-        try
-        {
-            return canonicalName != null ? Class.forName ( canonicalName ) : null;
-        }
-        catch ( final ClassNotFoundException e )
-        {
-            if ( safeMethodsLoggingEnabled )
-            {
-                Log.warn ( "ReflectionUtils method failed: getClassSafely", e );
-            }
-            return null;
-        }
-    }
-
-    /**
-     * Returns class for the specified canonical name.
-     *
-     * @param canonicalName class canonical name
-     * @return class for the specified canonical name
-     * @throws java.lang.ClassNotFoundException if class was not found
-     */
-    public static <T> Class<T> getClass ( final String canonicalName ) throws ClassNotFoundException
-    {
-        return ( Class<T> ) Class.forName ( canonicalName );
-    }
-
-    /**
-     * Returns JAR archive structure.
-     *
-     * @param jarClass any class within the JAR
-     * @return JAR archive structure
-     */
-    public static JarStructure getJarStructure ( final Class jarClass )
-    {
-        return getJarStructure ( jarClass, null, null );
-    }
-
-    /**
-     * Returns JAR archive structure.
-     *
-     * @param jarClass          any class within the JAR
-     * @param allowedExtensions list of extension filters
-     * @param allowedPackages   list of allowed packages
-     * @return JAR archive structure
-     */
-    public static JarStructure getJarStructure ( final Class jarClass, final List<String> allowedExtensions,
-                                                 final List<String> allowedPackages )
-    {
-        return getJarStructure ( jarClass, allowedExtensions, allowedPackages, null );
-    }
-
-    /**
-     * Returns JAR archive structure.
-     *
-     * @param jarClass          any class within the JAR
-     * @param allowedExtensions list of extension filters
-     * @param allowedPackages   list of allowed packages
-     * @param listener          jar download listener
-     * @return JAR archive structure
-     */
-    public static JarStructure getJarStructure ( final Class jarClass, final List<String> allowedExtensions,
-                                                 final List<String> allowedPackages, final FileDownloadListener listener )
-    {
-        try
-        {
-            final CodeSource src = jarClass.getProtectionDomain ().getCodeSource ();
-            if ( src != null )
-            {
-                // Creating structure
-
-                // Source url
-                final URL jarUrl = src.getLocation ();
-                final URI uri = jarUrl.toURI ();
-
-                // Source file
-                final File jarFile;
-                final String scheme = uri.getScheme ();
-                if ( scheme != null && scheme.equalsIgnoreCase ( "file" ) )
-                {
-                    // Local jar-file
-                    jarFile = new File ( uri );
-                }
-                else
-                {
-                    // Remote jar-file
-                    jarFile = FileUtils.downloadFile ( jarUrl.toString (), File.createTempFile ( jarUrl.getFile (), ".tmp" ), listener );
-                }
-
-                // Creating JAR structure
-                final JarStructure jarStructure = new JarStructure ();
-                jarStructure.setJarLocation ( jarFile.getAbsolutePath () );
-
-                // Updating root element
-                final JarEntry rootEntry = new JarEntry ( jarStructure, JarEntryType.jarEntry, jarFile.getName () );
-                jarStructure.setRoot ( rootEntry );
-
-                // Reading all entries and parsing them into structure
-                final ZipInputStream zip = new ZipInputStream ( jarUrl.openStream () );
-                ZipEntry zipEntry;
-                while ( ( zipEntry = zip.getNextEntry () ) != null )
-                {
-                    final String entryName = zipEntry.getName ();
-                    if ( isAllowedPackage ( entryName, allowedPackages ) &&
-                            ( zipEntry.isDirectory () || isAllowedExtension ( entryName, allowedExtensions ) ) )
-                    {
-                        parseElement ( jarStructure, rootEntry, entryName, zipEntry );
-                    }
-                }
-                zip.close ();
-
-                return jarStructure;
-            }
-        }
-        catch ( final IOException e )
-        {
-            Log.error ( ReflectUtils.class, e );
-        }
-        catch ( final URISyntaxException e )
-        {
-            Log.error ( ReflectUtils.class, e );
-        }
-        return null;
-    }
-
-    /**
-     * Returns JAR location URL for the specified class.
-     *
-     * @param jarClass any class from that JAR
-     * @return JAR location URL
-     */
-    public static URL getJarLocationURL ( final Class jarClass )
-    {
-        final CodeSource src = jarClass.getProtectionDomain ().getCodeSource ();
-        return src != null ? src.getLocation () : null;
-    }
-
-    /**
-     * Returns JAR location File for the specified class.
-     *
-     * @param jarClass any class from that JAR
-     * @return JAR location File
-     */
-    public static File getJarLocationFile ( final Class jarClass )
-    {
-        try
-        {
-            final CodeSource src = jarClass.getProtectionDomain ().getCodeSource ();
-            if ( src != null )
-            {
-                final URL jarUrl = src.getLocation ();
-                final URI uri = jarUrl.toURI ();
-                final String scheme = uri.getScheme ();
-                if ( scheme != null && scheme.equalsIgnoreCase ( "file" ) )
-                {
-                    return new File ( uri );
-                }
-            }
-        }
-        catch ( final URISyntaxException e )
-        {
-            Log.error ( ReflectUtils.class, e );
-        }
-        return null;
-    }
-
-    /**
-     * Returns whether JAR entry with the specified name is allowed by the extensions list or not.
-     *
-     * @param entryName         JAR entry name
-     * @param allowedExtensions list of allowed extensions
-     * @return true if JAR entry with the specified name is allowed by the extensions list, false otherwise
-     */
-    private static boolean isAllowedExtension ( final String entryName, final List<String> allowedExtensions )
-    {
-        if ( allowedExtensions == null || allowedExtensions.size () == 0 )
-        {
-            return true;
-        }
-        else
-        {
-            final String entryExt = FileUtils.getFileExtPart ( entryName, true ).toLowerCase ( Locale.ROOT );
-            return allowedExtensions.contains ( entryExt );
-        }
-    }
-
-    /**
-     * Returns whether JAR entry with the specified name is allowed by the packages list or not.
-     *
-     * @param entryName       JAR entry name
-     * @param allowedPackages list of allowed packages
-     * @return true if JAR entry with the specified name is allowed by the packages list, false otherwise
-     */
-    private static boolean isAllowedPackage ( final String entryName, final List<String> allowedPackages )
-    {
-        if ( allowedPackages == null || allowedPackages.size () == 0 )
-        {
-            return true;
-        }
-        else
-        {
-            for ( final String packageStart : allowedPackages )
-            {
-                if ( entryName.startsWith ( packageStart ) )
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
-
-    /**
-     * Parses single JAR entry with the specified name.
-     *
-     * @param jarStructure JAR structure
-     * @param jarEntry     JAR entry
-     * @param entryName    JAR entry name
-     * @param zipEntry     ZIP entry
-     */
-    private static void parseElement ( final JarStructure jarStructure, final JarEntry jarEntry, final String entryName,
-                                       final ZipEntry zipEntry )
-    {
-        final String[] path = entryName.split ( "/" );
-        JarEntry currentLevel = jarEntry;
-        for ( int i = 0; i < path.length; i++ )
-        {
-            if ( i < path.length - 1 )
-            {
-                // We are getting deeper into packages
-                JarEntry child = currentLevel.getChildByName ( path[ i ] );
-                if ( child == null )
-                {
-                    child = new JarEntry ( jarStructure, JarEntryType.packageEntry, path[ i ], currentLevel );
-                    child.setZipEntry ( zipEntry );
-                    currentLevel.addChild ( child );
-                }
-                currentLevel = child;
-            }
-            else
-            {
-                // We reached last element
-                final JarEntry newEntry = new JarEntry ( jarStructure, getJarEntryType ( path[ i ] ), path[ i ], currentLevel );
-                newEntry.setZipEntry ( zipEntry );
-                currentLevel.addChild ( newEntry );
-            }
-        }
-    }
-
-    /**
-     * Returns JAR entry type.
-     *
-     * @param file file to process
-     * @return JAR entry type
-     */
-    private static JarEntryType getJarEntryType ( final String file )
-    {
-        final String ext = FileUtils.getFileExtPart ( file, false );
-        if ( ext.equals ( "java" ) )
-        {
-            return JarEntryType.javaEntry;
-        }
-        else if ( ext.equals ( "class" ) )
-        {
-            return JarEntryType.classEntry;
-        }
-        else if ( !ext.isEmpty () )
-        {
-            return JarEntryType.fileEntry;
-        }
-        else
-        {
-            return JarEntryType.packageEntry;
-        }
-    }
-
-    /**
-     * Returns method caller class.
-     * It is not recommended to use this method anywhere but in debugging.
-     *
-     * @return method caller class
-     */
-    public static Class getCallerClass ()
-    {
-        // We have to add one to depth since this method call is increasing it
-        return getCallerClass ( 1 );
-    }
-
-    /**
-     * Returns method caller class.
-     * It is not recommended to use this method anywhere but in debugging.
-     *
-     * @param additionalDepth additional methods depth
-     * @return method caller class
-     */
-    public static Class getCallerClass ( final int additionalDepth )
-    {
-        // Depth explanation:
-        // 0 - this method class
-        // 1 - this method caller class
-        // 2 - caller's class caller
-        // additionalDepth - in case call goes through additional methods this is required
-        final int depth = 2 + additionalDepth;
-
-        try
-        {
-            // We add additional 3 levels of depth due to reflection calls here
-            return callStaticMethod ( "sun.reflect.Reflection", "getCallerClass", depth + 3 );
-        }
-        catch ( final Throwable e )
-        {
-            try
-            {
-                // Simply use determined depth
-                return Class.forName ( new Throwable ().getStackTrace ()[ depth ].getClassName () );
-            }
-            catch ( final ClassNotFoundException ex )
-            {
-                return null;
-            }
-        }
+        final Field actualField = getField ( classType, fieldName );
+        ModifierType.STATIC.check ( actualField );
+        return ( T ) actualField.get ( null );
     }
 
     /**
@@ -980,7 +849,8 @@ public final class ReflectUtils
         }
 
         // Throwing proper exception that constructor was not found
-        throw new NoSuchMethodException ( theClass.getCanonicalName () + argumentTypesToString ( parameterTypes ) );
+        throw new NoSuchMethodException ( "Constructor was not found: " +
+                theClass.getCanonicalName () + argumentTypesToString ( parameterTypes ) );
     }
 
     /**
@@ -1464,7 +1334,8 @@ public final class ReflectUtils
         }
 
         // Throwing proper method not found exception
-        throw new NoSuchMethodException ( topClass.getCanonicalName () + "." + methodName + argumentTypesToString ( types ) );
+        throw new NoSuchMethodException ( "Method was not found: " +
+                topClass.getCanonicalName () + "." + methodName + argumentTypesToString ( types ) );
     }
 
     /**
@@ -1560,7 +1431,7 @@ public final class ReflectUtils
      *
      * @param type checked whether is assignable, always not null
      * @param from checked type, might be null
-     * @return true if first type is assignable from second one, false otherwise
+     * @return {@code true} if first type is assignable from second one, {@code false} otherwise
      */
     public static boolean isAssignable ( final Class type, final Class from )
     {
@@ -1619,7 +1490,7 @@ public final class ReflectUtils
      *
      * @param theClass class to process
      * @param text     text to search for
-     * @return true if one of superclasses contains specified text in its name, false otherwise
+     * @return {@code true} if one of superclasses contains specified text in its name, {@code false} otherwise
      */
     public static boolean containsInClassOrSuperclassName ( final Class theClass, final String text )
     {

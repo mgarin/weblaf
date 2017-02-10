@@ -78,7 +78,7 @@ public class WebFileTableExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final File[] home = FileUtils.getUserHome ().listFiles ();
             final List<File> files = CollectionUtils.asList ( home.length > 4 ? Arrays.copyOfRange ( home, 0, 4 ) : home );
@@ -103,7 +103,7 @@ public class WebFileTableExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebFileTable table = new WebFileTable ( getStyleId () );
             table.setDisplayedDirectory ( FileUtils.getUserHome () );
@@ -128,7 +128,7 @@ public class WebFileTableExample extends AbstractStylePreviewExample
         }
 
         @Override
-        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        protected List<? extends JComponent> createPreviewElements ()
         {
             final WebFileTable table = new WebFileTable ( getStyleId () );
             table.setDisplayedDirectory ( FileUtils.getUserHome () );

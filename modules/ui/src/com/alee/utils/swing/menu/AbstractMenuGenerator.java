@@ -22,6 +22,7 @@ import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LM;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
+import com.alee.utils.TextUtils;
 import com.alee.utils.swing.UnselectableButtonGroup;
 
 import javax.swing.*;
@@ -174,9 +175,7 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
      */
     public void setIconSettings ( final String path, final String extension )
     {
-        this.nearClass = null;
-        this.path = path;
-        this.extension = extension;
+        setIconSettings ( null, path, extension );
     }
 
     /**
@@ -188,9 +187,9 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
      */
     public void setIconSettings ( final Class nearClass, final String path, final String extension )
     {
-        this.nearClass = nearClass;
-        this.path = path;
-        this.extension = extension;
+        setNearClass ( nearClass );
+        setPath ( path );
+        setExtension ( extension );
     }
 
     /**
@@ -205,12 +204,13 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
 
     /**
      * Sets menu language key prefix.
+     * todo Update all existing items?
      *
      * @param prefix menu language key prefix
      */
     public void setLanguagePrefix ( final String prefix )
     {
-        this.languagePrefix = prefix;
+        this.languagePrefix = !TextUtils.isEmpty ( prefix ) ? prefix : null;
     }
 
     /**
@@ -221,14 +221,15 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
      */
     public String getLanguageKey ( final String text )
     {
-        if ( languagePrefix == null )
+        final String prefix = getLanguagePrefix ();
+        if ( prefix != null )
         {
-            return text;
+            final String key = prefix + "." + text;
+            return LM.contains ( key ) ? key : text;
         }
         else
         {
-            final String key = languagePrefix + "." + text;
-            return LM.contains ( key ) ? key : text;
+            return text;
         }
     }
 
@@ -1296,10 +1297,8 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
 
         // Creting sub-menu generator
         final MenuGenerator menuGenerator = new MenuGenerator ( menu );
-        menuGenerator.setNearClass ( nearClass );
-        menuGenerator.setPath ( path );
-        menuGenerator.setExtension ( extension );
-        menuGenerator.setLanguagePrefix ( languagePrefix );
+        menuGenerator.setIconSettings ( getNearClass (), getPath (), getExtension () );
+        menuGenerator.setLanguagePrefix ( getLanguagePrefix () );
         return menuGenerator;
     }
 
@@ -1410,7 +1409,7 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
      */
     public boolean isEmpty ()
     {
-        return menu.getComponentCount () == 0;
+        return getMenu ().getComponentCount () == 0;
     }
 
     /**
@@ -1427,18 +1426,18 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
             {
                 try
                 {
-                    if ( nearClass != null )
+                    if ( getNearClass () != null )
                     {
-                        return new ImageIcon ( nearClass.getResource ( path + icon + extension ) );
+                        return new ImageIcon ( getNearClass ().getResource ( getPath () + icon + getExtension () ) );
                     }
                     else
                     {
-                        return new ImageIcon ( new File ( path, icon + extension ).getAbsolutePath () );
+                        return new ImageIcon ( new File ( getPath (), icon + getExtension () ).getAbsolutePath () );
                     }
                 }
                 catch ( final Throwable e )
                 {
-                    Log.warn ( "Unable to find menu icon for path: " + path + icon + extension, e );
+                    Log.warn ( "Unable to find menu icon for path: " + getPath () + icon + getExtension (), e );
                     return null;
                 }
             }

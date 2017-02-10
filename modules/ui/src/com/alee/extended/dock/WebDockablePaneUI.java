@@ -26,7 +26,10 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.*;
+import com.alee.utils.CollectionUtils;
+import com.alee.utils.CompareUtils;
+import com.alee.utils.ImageUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -42,12 +45,14 @@ import java.beans.PropertyChangeListener;
 /**
  * Custom UI for {@link WebDockablePane} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  * @see WebDockablePane
  */
 
-public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, MarginSupport, PaddingSupport, PropertyChangeListener
+public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneUI<C>
+        implements ShapeSupport, MarginSupport, PaddingSupport, PropertyChangeListener
 {
     /**
      * UI properties.
@@ -70,17 +75,16 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
     /**
      * Runtime variables.
      */
-    protected WebDockablePane dockablePane;
     protected Insets margin = null;
     protected Insets padding = null;
     protected JComponent emptyContent;
 
     /**
-     * Returns an instance of the WebDockablePaneUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebDockablePaneUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebDockablePaneUI
+     * @return instance of the {@link WebDockablePaneUI}
      */
     @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
@@ -88,33 +92,20 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
         return new WebDockablePaneUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
-        // Saving dockable pane reference
-        dockablePane = ( WebDockablePane ) c;
-
-        // Installing default settings
-        installDefaults ();
+        // Installing UI
+        super.installUI ( c );
 
         // Applying skin
-        StyleManager.installSkin ( dockablePane );
+        StyleManager.installSkin ( pane );
 
         // Installing actions
         installComponents ();
         installActions ();
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
@@ -123,23 +114,10 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
         uninstallComponents ();
 
         // Uninstalling applied skin
-        StyleManager.uninstallSkin ( dockablePane );
+        StyleManager.uninstallSkin ( pane );
 
-        // Removing dockable pane reference
-        dockablePane = null;
-    }
-
-    /**
-     * Installs default component settings.
-     */
-    protected void installDefaults ()
-    {
-        dockablePane.setSidebarVisibility ( SidebarVisibility.minimized );
-        dockablePane.setSidebarButtonAction ( SidebarButtonAction.restore );
-        dockablePane.setContentSpacing ( 0 );
-        dockablePane.setResizeGripper ( 10 );
-        dockablePane.setMinimumElementSize ( new Dimension ( 40, 40 ) );
-        dockablePane.setOccupyMinimumSizeForChildren ( true );
+        // Uninstalling UI
+        super.uninstallUI ( c );
     }
 
     /**
@@ -147,10 +125,10 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
      */
     protected void installComponents ()
     {
-        emptyContent = new WebPanel ( StyleId.dockablepaneEmpty.at ( dockablePane ) );
-        if ( dockablePane.getContent () == null )
+        emptyContent = new WebPanel ( StyleId.dockablepaneEmpty.at ( pane ) );
+        if ( pane.getContent () == null )
         {
-            dockablePane.setContent ( emptyContent );
+            pane.setContent ( emptyContent );
         }
     }
 
@@ -159,9 +137,9 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
      */
     protected void uninstallComponents ()
     {
-        if ( dockablePane.getContent () == emptyContent )
+        if ( pane.getContent () == emptyContent )
         {
-            dockablePane.setContent ( null );
+            pane.setContent ( null );
         }
         emptyContent = null;
     }
@@ -171,14 +149,14 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
      */
     protected void installActions ()
     {
-        visibilityBehavior = new ComponentVisibilityBehavior ( dockablePane )
+        visibilityBehavior = new ComponentVisibilityBehavior ( pane )
         {
             @Override
             public void displayed ()
             {
                 // We have to manually initialize all dialogs for floating frames when dockable pane becomes visible
                 //
-                for ( final WebDockableFrame frame : dockablePane.frames )
+                for ( final WebDockableFrame frame : pane.frames )
                 {
                     if ( frame.isFloating () )
                     {
@@ -190,7 +168,7 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
             @Override
             public void hidden ()
             {
-                for ( final WebDockableFrame frame : dockablePane.frames )
+                for ( final WebDockableFrame frame : pane.frames )
                 {
                     if ( frame.isFloating () )
                     {
@@ -200,7 +178,7 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
             }
         };
         visibilityBehavior.install ();
-        dockablePane.addPropertyChangeListener ( this );
+        pane.addPropertyChangeListener ( this );
     }
 
     /**
@@ -208,7 +186,7 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
      */
     protected void uninstallActions ()
     {
-        dockablePane.removePropertyChangeListener ( this );
+        pane.removePropertyChangeListener ( this );
         visibilityBehavior.uninstall ();
         visibilityBehavior = null;
     }
@@ -230,8 +208,8 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
         else if ( CompareUtils.equals ( property, WebDockablePane.CONTENT_SPACING_PROPERTY, WebDockablePane.RESIZE_GRIPPER_PROPERTY ) )
         {
             // Updating dockable pane layout
-            dockablePane.revalidate ();
-            dockablePane.repaint ();
+            pane.revalidate ();
+            pane.repaint ();
         }
         else if ( CompareUtils.equals ( property, WebDockablePane.GLASS_LAYER_PROPERTY ) )
         {
@@ -264,9 +242,9 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
                 WebDockablePane.OCCUPY_MINIMUM_SIZE_FOR_CHILDREN_PROPERTY ) )
         {
             // Validating sizes
-            dockablePane.getModel ().getRoot ().validateSize ( dockablePane );
-            dockablePane.revalidate ();
-            dockablePane.repaint ();
+            pane.getModel ().getRoot ().validateSize ( pane );
+            pane.revalidate ();
+            pane.repaint ();
         }
     }
 
@@ -277,14 +255,14 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
     protected void updateFrameData ()
     {
         // Ensures data for all added frames exist in the model
-        for ( final WebDockableFrame frame : dockablePane.frames )
+        for ( final WebDockableFrame frame : pane.frames )
         {
-            dockablePane.getModel ().updateFrame ( dockablePane, frame );
+            pane.getModel ().updateFrame ( pane, frame );
         }
 
         // Ensure dockable pane layout is correct
-        dockablePane.revalidate ();
-        dockablePane.repaint ();
+        pane.revalidate ();
+        pane.repaint ();
     }
 
     /**
@@ -297,14 +275,14 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
     {
         if ( oldGlassLayer != null )
         {
-            dockablePane.remove ( oldGlassLayer );
+            pane.remove ( oldGlassLayer );
         }
         if ( newGlassLayer != null )
         {
-            dockablePane.add ( newGlassLayer, 0 );
+            pane.add ( newGlassLayer, 0 );
         }
-        dockablePane.revalidate ();
-        dockablePane.repaint ();
+        pane.revalidate ();
+        pane.repaint ();
     }
 
     /**
@@ -312,27 +290,27 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
      */
     protected void updateSidebarsVisibility ()
     {
-        if ( !CollectionUtils.isEmpty ( dockablePane.frames ) )
+        if ( !CollectionUtils.isEmpty ( pane.frames ) )
         {
-            for ( final WebDockableFrame frame : dockablePane.frames )
+            for ( final WebDockableFrame frame : pane.frames )
             {
                 if ( frame.isSidebarButtonVisible () )
                 {
-                    if ( !dockablePane.contains ( frame.getSidebarButton () ) )
+                    if ( !pane.contains ( frame.getSidebarButton () ) )
                     {
-                        dockablePane.add ( frame.getSidebarButton () );
+                        pane.add ( frame.getSidebarButton () );
                     }
                 }
                 else
                 {
-                    if ( dockablePane.contains ( frame.getSidebarButton () ) )
+                    if ( pane.contains ( frame.getSidebarButton () ) )
                     {
-                        dockablePane.remove ( frame.getSidebarButton () );
+                        pane.remove ( frame.getSidebarButton () );
                     }
                 }
             }
-            dockablePane.revalidate ();
-            dockablePane.repaint ();
+            pane.revalidate ();
+            pane.repaint ();
         }
     }
 
@@ -345,16 +323,16 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
     {
         if ( frame.isPreview () || frame.isDocked () )
         {
-            if ( !dockablePane.contains ( frame ) )
+            if ( !pane.contains ( frame ) )
             {
-                dockablePane.add ( frame );
+                pane.add ( frame );
             }
         }
         else
         {
-            if ( dockablePane.contains ( frame ) )
+            if ( pane.contains ( frame ) )
             {
-                dockablePane.remove ( frame );
+                pane.remove ( frame );
             }
         }
     }
@@ -371,25 +349,25 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
         if ( oldContent != null )
         {
             // Removing old content
-            dockablePane.remove ( oldContent );
+            pane.remove ( oldContent );
             update = true;
         }
         if ( newContent != null )
         {
             // Adding new content
-            dockablePane.add ( newContent );
+            pane.add ( newContent );
             update = true;
         }
         else
         {
             // Restore empty content
-            dockablePane.setContent ( emptyContent );
+            pane.setContent ( emptyContent );
         }
         if ( update )
         {
             // Performing update only if necessary
-            dockablePane.revalidate ();
-            dockablePane.repaint ();
+            pane.revalidate ();
+            pane.repaint ();
         }
     }
 
@@ -403,18 +381,18 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
         boolean updateLayout = false;
 
         // Adding model element
-        dockablePane.getModel ().updateFrame ( dockablePane, frame );
+        pane.getModel ().updateFrame ( pane, frame );
 
         // Adding frame and its elements to this dockable pane
-        frame.setDockablePane ( dockablePane );
+        frame.setDockablePane ( pane );
         if ( frame.isPreview () || frame.isDocked () )
         {
-            dockablePane.add ( frame );
+            pane.add ( frame );
             updateLayout = true;
         }
         if ( frame.isSidebarButtonVisible () )
         {
-            dockablePane.add ( frame.getSidebarButton () );
+            pane.add ( frame.getSidebarButton () );
             updateLayout = true;
         }
         final PropertyChangeListener frameListener = new PropertyChangeListener ()
@@ -428,7 +406,7 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
                     // Since frame ID changed it is almost the same as adding new one
                     // But we skip actual frame addition into dockable pane since it is already there
                     // We also don't need to remove data for old frame ID, we can keep it
-                    dockablePane.getModel ().updateFrame ( dockablePane, frame );
+                    pane.getModel ().updateFrame ( pane, frame );
                 }
                 else if ( CompareUtils.equals ( property, WebDockableFrame.STATE_PROPERTY ) )
                 {
@@ -436,7 +414,7 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
                     final DockableFrameState newState = ( DockableFrameState ) evt.getNewValue ();
 
                     // Updating model frame state
-                    final DockableFrameElement element = dockablePane.getModel ().getElement ( frame.getId () );
+                    final DockableFrameElement element = pane.getModel ().getElement ( frame.getId () );
                     element.setState ( frame.getState () );
 
                     // Disposing floating frame dialog
@@ -448,8 +426,8 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
                     // Updating frame and its sidebar button visibility
                     updateFrameVisibility ( frame );
                     updateSidebarsVisibility ();
-                    dockablePane.revalidate ();
-                    dockablePane.repaint ();
+                    pane.revalidate ();
+                    pane.repaint ();
 
                     // Creating floating frame dialog
                     if ( newState == DockableFrameState.floating )
@@ -467,7 +445,7 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
                     // Ensure none other frame is maximized
                     if ( frame.isMaximized () )
                     {
-                        for ( final WebDockableFrame other : dockablePane.frames )
+                        for ( final WebDockableFrame other : pane.frames )
                         {
                             if ( other != frame && other.isMaximized () )
                             {
@@ -480,7 +458,7 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
                 else if ( CompareUtils.equals ( property, WebDockableFrame.RESTORE_STATE_PROPERTY ) )
                 {
                     // Updating frame restore state
-                    final DockableFrameElement element = dockablePane.getModel ().getElement ( frame.getId () );
+                    final DockableFrameElement element = pane.getModel ().getElement ( frame.getId () );
                     element.setRestoreState ( frame.getRestoreState () );
                 }
                 else if ( CompareUtils.equals ( property, WebDockableFrame.TITLE_PROPERTY ) )
@@ -510,7 +488,7 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
         frame.addFrameListener ( getProxyListener () );
 
         // Restores frame dialog
-        if ( dockablePane.isShowing () && frame.isFloating () )
+        if ( pane.isShowing () && frame.isFloating () )
         {
             showFrameDialog ( frame );
         }
@@ -518,8 +496,8 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
         // Updating dockable pane layout
         if ( updateLayout )
         {
-            dockablePane.revalidate ();
-            dockablePane.repaint ();
+            pane.revalidate ();
+            pane.repaint ();
         }
 
         // Informing frame
@@ -544,21 +522,21 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
         frame.putClientProperty ( FRAME_LISTENER, null );
         if ( frame.isSidebarButtonVisible () )
         {
-            dockablePane.remove ( frame.getSidebarButton () );
+            pane.remove ( frame.getSidebarButton () );
             updateLayout = true;
         }
         if ( frame.isPreview () || frame.isDocked () )
         {
-            dockablePane.remove ( frame );
+            pane.remove ( frame );
             updateLayout = true;
         }
         frame.setDockablePane ( null );
 
         // Removing model element
-        dockablePane.getModel ().removeFrame ( dockablePane, frame );
+        pane.getModel ().removeFrame ( pane, frame );
 
         // Disposes frame dialog
-        if ( dockablePane.isShowing () && frame.isFloating () )
+        if ( pane.isShowing () && frame.isFloating () )
         {
             disposeFrameDialog ( frame );
         }
@@ -566,8 +544,8 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
         // Updating dockable pane layout
         if ( updateLayout )
         {
-            dockablePane.revalidate ();
-            dockablePane.repaint ();
+            pane.revalidate ();
+            pane.repaint ();
         }
 
         // Informing frame
@@ -588,26 +566,26 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
                 @Override
                 public void frameAdded ( final WebDockableFrame frame, final WebDockablePane dockablePane )
                 {
-                    dockablePane.fireFrameAdded ( frame, dockablePane );
+                    pane.fireFrameAdded ( frame, dockablePane );
                 }
 
                 @Override
                 public void frameStateChanged ( final WebDockableFrame frame, final DockableFrameState oldState,
                                                 final DockableFrameState newState )
                 {
-                    dockablePane.fireFrameStateChanged ( frame, oldState, newState );
+                    pane.fireFrameStateChanged ( frame, oldState, newState );
                 }
 
                 @Override
                 public void frameMoved ( final WebDockableFrame frame, final CompassDirection position )
                 {
-                    dockablePane.fireFrameMoved ( frame, position );
+                    pane.fireFrameMoved ( frame, position );
                 }
 
                 @Override
                 public void frameRemoved ( final WebDockableFrame frame, final WebDockablePane dockablePane )
                 {
-                    dockablePane.fireFrameRemoved ( frame, dockablePane );
+                    pane.fireFrameRemoved ( frame, dockablePane );
                 }
             };
         }
@@ -622,26 +600,26 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
      */
     protected void showFrameDialog ( final WebDockableFrame frame )
     {
-        final StyleId dialogStyle = StyleId.dockablepaneFloating.at ( dockablePane );
-        final WebDialog dialog = new WebDialog ( dialogStyle, dockablePane, frame.getTitle () );
+        final StyleId dialogStyle = StyleId.dockablepaneFloating.at ( pane );
+        final WebDialog dialog = new WebDialog ( dialogStyle, pane, frame.getTitle () );
         dialog.setIconImage ( ImageUtils.getBufferedImage ( frame.getIcon () ) );
         dialog.add ( frame, BorderLayout.CENTER );
         dialog.setMinimumSize ( SwingUtils.stretch ( frame.getUI ().getMinimumDialogSize (), dialog.getRootPane ().getInsets () ) );
-        dialog.setBounds ( dockablePane.getModel ().getFloatingBounds ( dockablePane, frame, dialog ) );
+        dialog.setBounds ( pane.getModel ().getFloatingBounds ( pane, frame, dialog ) );
         dialog.setDefaultCloseOperation ( WindowConstants.DO_NOTHING_ON_CLOSE );
         dialog.addComponentListener ( new ComponentAdapter ()
         {
             @Override
             public void componentResized ( final ComponentEvent e )
             {
-                final DockableFrameElement element = dockablePane.getModel ().getElement ( frame.getId () );
+                final DockableFrameElement element = pane.getModel ().getElement ( frame.getId () );
                 element.saveFloatingBounds ( frame );
             }
 
             @Override
             public void componentMoved ( final ComponentEvent e )
             {
-                final DockableFrameElement element = dockablePane.getModel ().getElement ( frame.getId () );
+                final DockableFrameElement element = pane.getModel ().getElement ( frame.getId () );
                 element.saveFloatingBounds ( frame );
             }
         } );
@@ -680,13 +658,13 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
     @Override
     public JComponent createGlassLayer ()
     {
-        return new DockablePaneGlassLayer ( dockablePane );
+        return new DockablePaneGlassLayer ( pane );
     }
 
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( dockablePane, painter );
+        return PainterSupport.getShape ( pane, painter );
     }
 
     @Override
@@ -722,7 +700,7 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**
@@ -733,7 +711,7 @@ public class WebDockablePaneUI extends WDockablePaneUI implements ShapeSupport, 
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( dockablePane, new DataRunnable<IDockablePanePainter> ()
+        PainterSupport.setPainter ( pane, new DataRunnable<IDockablePanePainter> ()
         {
             @Override
             public void run ( final IDockablePanePainter newPainter )

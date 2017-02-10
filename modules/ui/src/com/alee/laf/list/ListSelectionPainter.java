@@ -23,8 +23,8 @@ import com.alee.painter.decoration.IDecoration;
 import javax.swing.*;
 
 /**
- * List selection painter based on {@link com.alee.painter.decoration.AbstractSectionDecorationPainter}.
- * It is used within {@link com.alee.laf.list.ListPainter} to paint selection.
+ * List selection painter based on {@link AbstractSectionDecorationPainter}.
+ * It is used within {@link ListPainter} to paint selection.
  *
  * @param <E> component type
  * @param <U> component UI type

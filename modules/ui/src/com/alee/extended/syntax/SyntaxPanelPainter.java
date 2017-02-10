@@ -22,6 +22,7 @@ import com.alee.laf.panel.WebPanelUI;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.AbstractPainter;
 import com.alee.utils.GraphicsUtils;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,6 +36,7 @@ import java.awt.*;
  * @see com.alee.painter.Painter
  */
 
+@XStreamAlias ( "SyntaxPanelPainter" )
 public class SyntaxPanelPainter<E extends JPanel, U extends WebPanelUI> extends AbstractPainter<E, U> implements IPanelPainter<E, U>
 {
     /**

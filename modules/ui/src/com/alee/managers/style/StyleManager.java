@@ -17,27 +17,30 @@
 
 package com.alee.managers.style;
 
-import com.alee.extended.canvas.GripperContent;
-import com.alee.extended.checkbox.MixedIconContent;
+import com.alee.extended.canvas.Gripper;
+import com.alee.extended.checkbox.MixedIcon;
 import com.alee.extended.label.AbstractStyledTextContent;
-import com.alee.extended.label.StyledLabelTextContent;
-import com.alee.extended.label.WebHotkeyLabelBackground;
-import com.alee.extended.statusbar.WebMemoryBarBackground;
+import com.alee.extended.label.HotkeyLabelBackground;
+import com.alee.extended.label.StyledLabelText;
+import com.alee.extended.panel.SelectablePanelPainter;
+import com.alee.extended.statusbar.MemoryBarBackground;
+import com.alee.extended.syntax.SyntaxPanelPainter;
+import com.alee.extended.window.PopOverPainter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.*;
-import com.alee.laf.checkbox.CheckIconContent;
-import com.alee.laf.label.LabelContentLayout;
-import com.alee.laf.label.LabelIconContent;
-import com.alee.laf.label.LabelTextContent;
-import com.alee.laf.menu.AcceleratorTextContent;
-import com.alee.laf.menu.MenuItemContentLayout;
-import com.alee.laf.progressbar.ProgressBarTextContent;
-import com.alee.laf.radiobutton.RadioIconContent;
-import com.alee.laf.separator.SeparatorContent;
-import com.alee.laf.separator.SeparatorLine;
-import com.alee.laf.separator.SeparatorLines;
-import com.alee.laf.tooltip.StyledToolTipTextContent;
-import com.alee.laf.tooltip.ToolTipTextContent;
+import com.alee.laf.checkbox.CheckIcon;
+import com.alee.laf.label.LabelIcon;
+import com.alee.laf.label.LabelLayout;
+import com.alee.laf.label.LabelText;
+import com.alee.laf.menu.AcceleratorText;
+import com.alee.laf.menu.MenuItemLayout;
+import com.alee.laf.progressbar.ProgressBarText;
+import com.alee.laf.radiobutton.RadioIcon;
+import com.alee.laf.separator.SeparatorStripes;
+import com.alee.painter.decoration.content.Stripe;
+import com.alee.painter.decoration.content.Stripes;
+import com.alee.laf.tooltip.StyledToolTipText;
+import com.alee.laf.tooltip.ToolTipText;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.painter.Painter;
@@ -51,8 +54,8 @@ import com.alee.painter.decoration.border.AbstractBorder;
 import com.alee.painter.decoration.border.LineBorder;
 import com.alee.painter.decoration.content.*;
 import com.alee.painter.decoration.layout.AbstractContentLayout;
-import com.alee.painter.decoration.layout.BorderContentLayout;
-import com.alee.painter.decoration.layout.IconTextContentLayout;
+import com.alee.painter.decoration.layout.BorderLayout;
+import com.alee.painter.decoration.layout.IconTextLayout;
 import com.alee.painter.decoration.shadow.AbstractShadow;
 import com.alee.painter.decoration.shadow.ExpandingShadow;
 import com.alee.painter.decoration.shadow.WebShadow;
@@ -177,39 +180,43 @@ public final class StyleManager
             XmlUtils.processAnnotations ( TextureType.class );
             XmlUtils.processAnnotations ( GradientType.class );
             XmlUtils.processAnnotations ( GradientColor.class );
-            XmlUtils.processAnnotations ( SeparatorLines.class );
-            XmlUtils.processAnnotations ( SeparatorLine.class );
-            XmlUtils.processAnnotations ( GripperContent.class );
-            XmlUtils.processAnnotations ( BorderContentLayout.class );
+            XmlUtils.processAnnotations ( Stripes.class );
+            XmlUtils.processAnnotations ( Stripe.class );
+            XmlUtils.processAnnotations ( Gripper.class );
+            XmlUtils.processAnnotations ( BorderLayout.class );
             XmlUtils.processAnnotations ( AbstractContentLayout.class );
-            XmlUtils.processAnnotations ( IconTextContentLayout.class );
+            XmlUtils.processAnnotations ( IconTextLayout.class );
             XmlUtils.processAnnotations ( AbstractContent.class );
-            XmlUtils.processAnnotations ( CheckIconContent.class );
-            XmlUtils.processAnnotations ( RadioIconContent.class );
-            XmlUtils.processAnnotations ( MixedIconContent.class );
-            XmlUtils.processAnnotations ( LineContent.class );
-            XmlUtils.processAnnotations ( SeparatorContent.class );
-            XmlUtils.processAnnotations ( BackgroundContent.class );
-            XmlUtils.processAnnotations ( DashFocusContent.class );
+            XmlUtils.processAnnotations ( CheckIcon.class );
+            XmlUtils.processAnnotations ( RadioIcon.class );
+            XmlUtils.processAnnotations ( MixedIcon.class );
+            XmlUtils.processAnnotations ( SeparatorStripes.class );
+            XmlUtils.processAnnotations ( RoundRectangle.class );
+            XmlUtils.processAnnotations ( DashFocus.class );
             XmlUtils.processAnnotations ( AbstractIconContent.class );
             XmlUtils.processAnnotations ( AbstractTextContent.class );
             XmlUtils.processAnnotations ( AbstractStyledTextContent.class );
-            XmlUtils.processAnnotations ( ToolTipTextContent.class );
-            XmlUtils.processAnnotations ( StyledToolTipTextContent.class );
-            XmlUtils.processAnnotations ( ButtonContentLayout.class );
-            XmlUtils.processAnnotations ( ButtonIconContent.class );
-            XmlUtils.processAnnotations ( ButtonTextContent.class );
-            XmlUtils.processAnnotations ( SimpleButtonIconContent.class );
-            XmlUtils.processAnnotations ( StyledButtonTextContent.class );
-            XmlUtils.processAnnotations ( LabelContentLayout.class );
-            XmlUtils.processAnnotations ( LabelIconContent.class );
-            XmlUtils.processAnnotations ( LabelTextContent.class );
-            XmlUtils.processAnnotations ( StyledLabelTextContent.class );
-            XmlUtils.processAnnotations ( MenuItemContentLayout.class );
-            XmlUtils.processAnnotations ( AcceleratorTextContent.class );
-            XmlUtils.processAnnotations ( ProgressBarTextContent.class );
-            XmlUtils.processAnnotations ( WebHotkeyLabelBackground.class );
-            XmlUtils.processAnnotations ( WebMemoryBarBackground.class );
+            XmlUtils.processAnnotations ( ToolTipText.class );
+            XmlUtils.processAnnotations ( StyledToolTipText.class );
+            XmlUtils.processAnnotations ( ButtonLayout.class );
+            XmlUtils.processAnnotations ( ButtonIcon.class );
+            XmlUtils.processAnnotations ( ButtonText.class );
+            XmlUtils.processAnnotations ( SimpleButtonIcon.class );
+            XmlUtils.processAnnotations ( StyledButtonText.class );
+            XmlUtils.processAnnotations ( LabelLayout.class );
+            XmlUtils.processAnnotations ( LabelIcon.class );
+            XmlUtils.processAnnotations ( LabelText.class );
+            XmlUtils.processAnnotations ( StyledLabelText.class );
+            XmlUtils.processAnnotations ( MenuItemLayout.class );
+            XmlUtils.processAnnotations ( AcceleratorText.class );
+            XmlUtils.processAnnotations ( ProgressBarText.class );
+            XmlUtils.processAnnotations ( HotkeyLabelBackground.class );
+            XmlUtils.processAnnotations ( MemoryBarBackground.class );
+
+            // Painter aliases
+            XmlUtils.processAnnotations ( PopOverPainter.class );
+            XmlUtils.processAnnotations ( SelectablePanelPainter.class );
+            XmlUtils.processAnnotations ( SyntaxPanelPainter.class );
 
             // Updating initialization mark
             initialized = true;
@@ -752,7 +759,8 @@ public final class StyleManager
         }
         if ( !StyleableComponent.isSupported ( component ) )
         {
-            throw new StyleException ( "Component \"" + component + "\" is not supported" );
+            final String msg = "Component '%s' is not supported";
+            throw new StyleException ( String.format ( msg, component ) );
         }
     }
 
@@ -770,7 +778,8 @@ public final class StyleManager
         }
         if ( !skin.isSupported () )
         {
-            throw new StyleException ( "Skin \"" + skin.getTitle () + "\" is not supported in this system" );
+            final String msg = "Skin '%s' is not supported in this system";
+            throw new StyleException ( String.format ( msg, skin.getTitle () ) );
         }
     }
 
@@ -788,7 +797,8 @@ public final class StyleManager
         }
         catch ( final Throwable e )
         {
-            throw new StyleException ( "Unable to initialize skin from its class", e );
+            final String msg = "Unable to initialize skin for class '%s'";
+            throw new StyleException ( String.format ( msg, skinClass ), e );
         }
     }
 }

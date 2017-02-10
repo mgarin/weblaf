@@ -279,7 +279,7 @@ public class SvgIcon extends SVGIcon
     }
 
     /**
-     * Checks SVG diagram existance.
+     * Checks SVG diagram existence.
      */
     protected void checkSVGDiagram ()
     {
@@ -392,7 +392,7 @@ public class SvgIcon extends SVGIcon
         }
         catch ( final SVGElementException e )
         {
-            throw new RuntimeException ( "Unable to check attribte \"" + attribute + "\" existance for element: " + element );
+            throw new RuntimeException ( "Unable to check attribte \"" + attribute + "\" existence for element: " + element );
         }
     }
 

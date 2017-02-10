@@ -92,8 +92,8 @@ public final class StyleConverterUtils
                 }
                 catch ( final Throwable e )
                 {
-                    throw new StyleException ( "Component property \"" + propertyName + "\" value from style \"" + styleId +
-                            "\" cannot be read", e );
+                    final String msg = "Component property '%s' value from style '%s' cannot be read";
+                    throw new StyleException ( String.format ( msg, propertyName, styleId ), e );
                 }
             }
             else
@@ -110,14 +110,15 @@ public final class StyleConverterUtils
                     }
                     catch ( final Throwable e )
                     {
-                        throw new StyleException ( "Component property \"" + propertyName + "\" value from style \"" + styleId +
-                                "\" cannot be read", e );
+                        final String msg = "Component property '%s' value from style '%s' cannot be read";
+                        throw new StyleException ( String.format ( msg, propertyName, styleId ), e );
                     }
                 }
                 else
                 {
-                    throw new StyleException ( "Component property \"" + propertyName + "\" type from style \"" + styleId +
-                            "\" cannot be determined! Make sure it points to existing field or getter method" );
+                    final String msg = "Component property '%s' type from style '%s' cannot be determined. " +
+                            "Make sure it points to existing field or getter method";
+                    throw new StyleException ( String.format ( msg, propertyName, styleId ) );
                 }
             }
         }
@@ -132,10 +133,10 @@ public final class StyleConverterUtils
      */
     public static Class<? extends Painter> getDefaultPainter ( final Class inClass, final String field )
     {
-        // Checking class existance
+        // Checking class existence
         if ( inClass != null )
         {
-            // Checking field existance
+            // Checking field existence
             final Field painterField = ReflectUtils.getFieldSafely ( inClass, field );
             painterField.setAccessible ( true );
             if ( painterField != null )
@@ -151,8 +152,8 @@ public final class StyleConverterUtils
             else
             {
                 // Since this is a major issue that we try a wrong field we will throw exception
-                throw new StyleException (
-                        "Unable to find painter field \"" + field + "\" in class \"" + inClass + "\" for default painter class retrieval" );
+                final String msg = "Unable to find painter field '%s' in class '%s' for default painter class retrieval";
+                throw new StyleException ( String.format ( msg, field, inClass ) );
             }
         }
         return null;

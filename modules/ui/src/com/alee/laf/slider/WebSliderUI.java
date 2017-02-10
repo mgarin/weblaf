@@ -41,7 +41,7 @@ public class WebSliderUI extends BasicSliderUI implements ShapeSupport, MarginSu
     /**
      * Component painter.
      */
-    @DefaultPainter (SliderPainter.class)
+    @DefaultPainter ( SliderPainter.class )
     protected ISliderPainter painter;
 
     /**
@@ -51,11 +51,11 @@ public class WebSliderUI extends BasicSliderUI implements ShapeSupport, MarginSu
     protected Insets padding = null;
 
     /**
-     * Returns an instance of the WebSliderUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebSliderUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebSliderUI
+     * @return instance of the {@link WebSliderUI}
      */
     public static ComponentUI createUI ( final JComponent c )
     {
@@ -72,11 +72,6 @@ public class WebSliderUI extends BasicSliderUI implements ShapeSupport, MarginSu
         super ( b );
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
@@ -87,11 +82,6 @@ public class WebSliderUI extends BasicSliderUI implements ShapeSupport, MarginSu
         StyleManager.installSkin ( slider );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
@@ -141,7 +131,7 @@ public class WebSliderUI extends BasicSliderUI implements ShapeSupport, MarginSu
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

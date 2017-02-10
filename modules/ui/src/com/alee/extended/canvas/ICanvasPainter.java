@@ -20,7 +20,7 @@ package com.alee.extended.canvas;
 import com.alee.painter.SpecificPainter;
 
 /**
- * Base interface for {@link com.alee.extended.canvas.WebCanvas} component painters.
+ * Base interface for {@link WebCanvas} component painters.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -29,4 +29,7 @@ import com.alee.painter.SpecificPainter;
 
 public interface ICanvasPainter<E extends WebCanvas, U extends WCanvasUI> extends SpecificPainter<E, U>
 {
+    /**
+     * This interface doesn't offer any additional methods to implement.
+     */
 }

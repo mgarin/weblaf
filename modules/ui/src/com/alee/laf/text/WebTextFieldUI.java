@@ -46,7 +46,7 @@ public class WebTextFieldUI extends WTextFieldUI implements ShapeSupport, Margin
     /**
      * Component painter.
      */
-    @DefaultPainter (TextFieldPainter.class)
+    @DefaultPainter ( TextFieldPainter.class )
     protected ITextFieldPainter painter;
 
     /**
@@ -75,7 +75,7 @@ public class WebTextFieldUI extends WTextFieldUI implements ShapeSupport, Margin
      * @param c component that will use UI instance
      * @return instance of the WebTextFieldUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTextFieldUI ();
@@ -170,7 +170,7 @@ public class WebTextFieldUI extends WTextFieldUI implements ShapeSupport, Margin
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

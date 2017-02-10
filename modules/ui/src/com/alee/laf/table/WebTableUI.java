@@ -52,7 +52,7 @@ public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupp
     /**
      * Component painter.
      */
-    @DefaultPainter (TablePainter.class)
+    @DefaultPainter ( TablePainter.class )
     protected ITablePainter painter;
 
     /**
@@ -67,23 +67,18 @@ public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupp
     protected Insets padding = null;
 
     /**
-     * Returns an instance of the WebTreeUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebTableUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebTreeUI
+     * @return instance of the {@link WebTableUI}
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTableUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
@@ -133,11 +128,6 @@ public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupp
         StyleManager.installSkin ( table );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
@@ -205,7 +195,7 @@ public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupp
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**

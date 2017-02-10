@@ -153,7 +153,7 @@ public class StyleSettings implements IStyleSettings
             // New possible variables might be added in future
         }
 
-        // Checking styles existance
+        // Checking styles existence
         if ( p || b || i || fg != null || bg != null || customStyles.size () > 0 )
         {
             // Creating style

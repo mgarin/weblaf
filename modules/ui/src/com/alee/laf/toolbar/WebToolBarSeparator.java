@@ -35,8 +35,8 @@ import java.util.Map;
  *
  * @author Mikle Garin
  * @see JToolBar.Separator
- * @see com.alee.laf.separator.WebSeparatorUI
- * @see com.alee.laf.separator.SeparatorPainter
+ * @see WebToolBarSeparatorUI
+ * @see ToolBarSeparatorPainter
  */
 
 public class WebToolBarSeparator extends JToolBar.Separator implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods
@@ -210,14 +210,35 @@ public class WebToolBarSeparator extends JToolBar.Separator implements Styleable
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WToolBarSeparatorUI} object that renders this component
+     */
+    @Override
+    public WToolBarSeparatorUI getUI ()
+    {
+        return ( WToolBarSeparatorUI ) ui;
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WToolBarSeparatorUI}
+     */
+    public void setUI ( final WToolBarSeparatorUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebToolBarSeparatorUI ) )
+        if ( getUI () == null || !( getUI () instanceof WToolBarSeparatorUI ) )
         {
             try
             {
-                setUI ( ( WebToolBarSeparatorUI ) UIManager.getUI ( this ) );
+                setUI ( ( WToolBarSeparatorUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

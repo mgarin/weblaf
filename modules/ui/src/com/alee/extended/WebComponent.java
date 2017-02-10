@@ -34,13 +34,14 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
+import java.util.List;
 import java.util.Map;
 
 /**
  * The base class for fully custom WebLaF components.
  *
- * @param <U> component UI type
  * @param <C> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 
@@ -330,7 +331,7 @@ public abstract class WebComponent<C extends WebComponent<C, U>, U extends Compo
     }
 
     @Override
-    public void removeToolTips ( final java.util.List<WebCustomTooltip> tooltips )
+    public void removeToolTips ( final List<WebCustomTooltip> tooltips )
     {
         TooltipManager.removeTooltips ( this, tooltips );
     }
@@ -545,17 +546,9 @@ public abstract class WebComponent<C extends WebComponent<C, U>, U extends Compo
         return SizeMethodsImpl.setPreferredSize ( this, width, height );
     }
 
-    /**
-     * Resets the UI property to a value from the current look and feel.
-     */
     @Override
     public abstract void updateUI ();
 
-    /**
-     * Returns UI class ID.
-     *
-     * @return UI class ID
-     */
     @Override
     public abstract String getUIClassID ();
 }

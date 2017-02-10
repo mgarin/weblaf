@@ -30,66 +30,52 @@ import java.awt.*;
 /**
  * Custom UI for {@link JRadioButton} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public class WebRadioButtonUI extends WRadioButtonUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebRadioButtonUI<C extends JRadioButton> extends WRadioButtonUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter (RadioButtonPainter.class)
+    @DefaultPainter ( RadioButtonPainter.class )
     protected IRadioButtonPainter painter;
 
     /**
      * Runtime variables.
      */
-    protected JRadioButton radioButton;
     protected Insets margin = null;
     protected Insets padding = null;
 
     /**
-     * Returns an instance of the WebRadioButtonUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebRadioButtonUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebRadioButtonUI
+     * @return instance of the {@link WebRadioButtonUI}
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebRadioButtonUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
+        // Installing UI
         super.installUI ( c );
 
-        // Saving radiobutton to local variable
-        radioButton = ( JRadioButton ) c;
-
         // Applying skin
-        StyleManager.installSkin ( radioButton );
+        StyleManager.installSkin ( button );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.uninstallSkin ( radioButton );
-
-        radioButton = null;
+        StyleManager.uninstallSkin ( button );
 
         // Uninstalling UI
         super.uninstallUI ( c );
@@ -98,7 +84,7 @@ public class WebRadioButtonUI extends WRadioButtonUI implements ShapeSupport, Ma
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( radioButton, painter );
+        return PainterSupport.getShape ( button, painter );
     }
 
     @Override
@@ -134,7 +120,7 @@ public class WebRadioButtonUI extends WRadioButtonUI implements ShapeSupport, Ma
      */
     public Painter getPainter ()
     {
-        return PainterSupport.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**
@@ -145,7 +131,7 @@ public class WebRadioButtonUI extends WRadioButtonUI implements ShapeSupport, Ma
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( radioButton, new DataRunnable<IRadioButtonPainter> ()
+        PainterSupport.setPainter ( button, new DataRunnable<IRadioButtonPainter> ()
         {
             @Override
             public void run ( final IRadioButtonPainter newPainter )
