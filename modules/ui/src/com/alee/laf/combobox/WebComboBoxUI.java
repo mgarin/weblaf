@@ -81,6 +81,8 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
     protected boolean mouseWheelScrollingEnabled = WebComboBoxStyle.mouseWheelScrollingEnabled;
     protected boolean widerPopupAllowed = WebComboBoxStyle.widerPopupAllowed;
     protected boolean useFirstValueAsPrototype = false;
+    protected boolean buttonEnabled = true;
+    protected boolean buttonVisible = true;
 
     protected WebButton arrow = null;
     protected MouseWheelListener mouseWheelListener = null;
@@ -331,6 +333,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
         super.configureArrowButton ();
         if ( arrowButton != null )
         {
+            arrowButton.setEnabled ( buttonEnabled );
             arrowButton.setFocusable ( false );
         }
     }
@@ -460,6 +463,11 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
             @Override
             public void show ()
             {
+                if ( !buttonEnabled )
+                {
+                    return;
+                }
+
                 comboBox.firePopupMenuWillBecomeVisible ();
 
                 setListSelection ( comboBox.getSelectedIndex () );
@@ -677,6 +685,36 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
     public void setWiderPopupAllowed ( final boolean allowed )
     {
         this.widerPopupAllowed = allowed;
+    }
+
+    public boolean isButtonEnabled ()
+    {
+        return buttonEnabled;
+    }
+
+    public void setButtonEnabled ( final boolean enabled )
+    {
+        this.buttonEnabled = enabled;
+
+        if ( arrow != null )
+        {
+            arrow.setEnabled ( enabled );
+        }
+    }
+
+    public boolean isButtonVisible ()
+    {
+        return buttonVisible;
+    }
+
+    public void setButtonVisible ( final boolean visible )
+    {
+        this.buttonVisible = visible;
+
+        if ( arrow != null )
+        {
+            comboBox.revalidate ();
+        }
     }
 
     /**
@@ -1028,7 +1066,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
             {
                 final Insets insets = getInsets ();
                 final int buttonHeight = height - ( insets.top + insets.bottom );
-                final int buttonWidth = arrowButton.getPreferredSize ().width;
+                final int buttonWidth = buttonVisible ? arrowButton.getPreferredSize ().width : 0;
                 if ( cb.getComponentOrientation ().isLeftToRight () )
                 {
                     arrowButton.setBounds ( width - ( insets.right + buttonWidth ), insets.top, buttonWidth, buttonHeight );
