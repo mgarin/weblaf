@@ -463,7 +463,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
             @Override
             public void show ()
             {
-                if ( !buttonEnabled )
+                if ( !buttonEnabled || !buttonVisible )
                 {
                     return;
                 }
