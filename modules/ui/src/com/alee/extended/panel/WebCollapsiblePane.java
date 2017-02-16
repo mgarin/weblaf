@@ -39,6 +39,7 @@ import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.ImageUtils;
 import com.alee.utils.swing.DataProvider;
 import com.alee.utils.swing.WebTimer;
 
@@ -989,16 +990,9 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Lang
     {
         if ( expandButton != null )
         {
-            if ( expanded )
-            {
-                expandButton.setIcon ( getExpandIcon () );
-                expandButton.setDisabledIcon ( getExpandIcon () );
-            }
-            else
-            {
-                expandButton.setIcon ( getExpandIcon () );
-                expandButton.setDisabledIcon ( getExpandIcon () );
-            }
+            Icon expandIcon = getExpandIcon ( );
+            expandButton.setIcon ( expandIcon );
+            expandButton.setDisabledIcon ( ImageUtils.createDisabledCopy ( ImageUtils.getImageIcon ( expandIcon ) ) );
         }
     }
 
@@ -1242,6 +1236,13 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Lang
                 return new Dimension ( ps.width - Math.round ( cps.width * transitionProgress ), ps.height );
             }
         }
+    }
+
+    @Override
+    public void setEnabled ( boolean enabled )
+    {
+        super.setEnabled ( enabled );
+        expandButton.setEnabled ( enabled );
     }
 
     @Override
