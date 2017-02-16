@@ -28,7 +28,7 @@ import java.util.List;
 
 /**
  * Simple tree node painter based on {@link AbstractSectionDecorationPainter}.
- * It is used within {@link com.alee.laf.tree.TreePainter} to paint nodes background.
+ * It is used within {@link TreePainter} to paint nodes background.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -36,7 +36,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class TreeNodePainter<E extends JTree, U extends WebTreeUI, D extends IDecoration<E, D>>
+public class TreeNodePainter<E extends JTree, U extends WTreeUI, D extends IDecoration<E, D>>
         extends AbstractSectionDecorationPainter<E, U, D> implements ITreeNodePainter<E, U>
 {
     /**

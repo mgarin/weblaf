@@ -29,7 +29,7 @@ import java.util.List;
 
 /**
  * Simple tree drop location painter based on {@link AbstractSectionDecorationPainter}.
- * It is used within {@link com.alee.laf.tree.TreePainter} to paint drop location on the tree.
+ * It is used within {@link TreePainter} to paint drop location on the tree.
  *
  * @param <E> component type
  * @param <U> component UI type

@@ -29,7 +29,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public interface ITreeRowPainter<E extends JTree, U extends WebTreeUI> extends SectionPainter<E, U>
+public interface ITreeRowPainter<E extends JTree, U extends WTreeUI> extends SectionPainter<E, U>
 {
     /**
      * Prepares painter to paint tree row.

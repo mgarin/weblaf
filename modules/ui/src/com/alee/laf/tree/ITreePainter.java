@@ -8,7 +8,7 @@ import javax.swing.tree.TreePath;
 import java.util.Hashtable;
 
 /**
- * Base interface for JTree component painters.
+ * Base interface for {@link JTree} component painters.
  *
  * @param <E> component type
  * @param <U> UI type

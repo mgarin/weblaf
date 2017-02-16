@@ -206,6 +206,20 @@ public interface DecorationState
     public static final String odd = "odd";
 
     /**
+     * Even position state.
+     *
+     * @see com.alee.laf.tree.GroupedTreeRowPainter#getDecorationStates()
+     */
+    public static final String innerEven = "inner-even";
+
+    /**
+     * Odd position state.
+     *
+     * @see com.alee.laf.tree.GroupedTreeRowPainter#getDecorationStates()
+     */
+    public static final String innerOdd = "inner-odd";
+
+    /**
      * Natively decorated window.
      * Set for all windows using native decoration.
      *

@@ -25,7 +25,7 @@ import javax.swing.plaf.basic.BasicComboBoxUI;
 import java.awt.*;
 
 /**
- * Pluggable look and feel interface for {@link WebComboBox} component.
+ * Pluggable look and feel interface for {@link JComboBox} component.
  *
  * @author Mikle Garin
  */

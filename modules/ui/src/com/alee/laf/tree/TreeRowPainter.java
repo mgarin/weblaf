@@ -28,7 +28,7 @@ import java.util.List;
 
 /**
  * Simple tree row painter based on {@link AbstractSectionDecorationPainter}.
- * It is used within {@link com.alee.laf.tree.TreePainter} to paint rows background.
+ * It is used within {@link TreePainter} to paint rows background.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -36,7 +36,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class TreeRowPainter<E extends JTree, U extends WebTreeUI, D extends IDecoration<E, D>>
+public class TreeRowPainter<E extends JTree, U extends WTreeUI, D extends IDecoration<E, D>>
         extends AbstractSectionDecorationPainter<E, U, D> implements ITreeRowPainter<E, U>
 {
     /**
@@ -47,11 +47,21 @@ public class TreeRowPainter<E extends JTree, U extends WebTreeUI, D extends IDec
     @Override
     protected List<String> getDecorationStates ()
     {
-        final List<String> states = super.getDecorationStates ();
+        return modifyStates ( super.getDecorationStates () );
+    }
 
-        // Checking setings initialization
+    /**
+     * Modifies list of states provided by this painter.
+     *
+     * @param states previously added states
+     * @return modified list of states
+     */
+    protected List<String> modifyStates ( final List<String> states )
+    {
+        // Ensure row is specified
         if ( row != null )
         {
+            // Ensure path exists
             final TreePath path = component.getPathForRow ( row );
             if ( path != null )
             {
@@ -68,7 +78,7 @@ public class TreeRowPainter<E extends JTree, U extends WebTreeUI, D extends IDec
                     states.add ( DecorationState.expanded );
                 }
 
-                // Adding possible node states
+                // Adding possible extra node states
                 final Object pathComponent = path.getLastPathComponent ();
                 if ( pathComponent != null && pathComponent instanceof Stateful )
                 {
@@ -76,7 +86,6 @@ public class TreeRowPainter<E extends JTree, U extends WebTreeUI, D extends IDec
                 }
             }
         }
-
         return states;
     }
 
