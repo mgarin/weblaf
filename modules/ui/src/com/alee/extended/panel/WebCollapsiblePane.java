@@ -18,13 +18,13 @@
 package com.alee.extended.panel;
 
 import com.alee.api.data.BoxOrientation;
-import com.alee.extended.icon.OrientedIcon;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.hotkey.Hotkey;
+import com.alee.managers.icon.Icons;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
@@ -66,29 +66,9 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Lang
      */
 
     /**
-     * Collapsed state icon.
-     */
-    public static ImageIcon EXPAND_ICON = new ImageIcon ( WebCollapsiblePane.class.getResource ( "icons/arrow.png" ) );
-
-    /**
-     * Expanded state icon.
-     */
-    public static ImageIcon COLLAPSE_ICON = ImageUtils.rotateImage180 ( EXPAND_ICON );
-
-    /**
      * Whether animate transition between states or not.
      */
     protected Boolean animate;
-
-    /**
-     * Collapsed state icon.
-     */
-    protected ImageIcon expandIcon;
-
-    /**
-     * Expanded state icon.
-     */
-    protected ImageIcon collapseIcon;
 
     /**
      * Whether rotate state icon according to title pane position or not.
@@ -114,26 +94,6 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Lang
      * Collapsible pane listeners.
      */
     protected List<CollapsiblePaneListener> listeners = new ArrayList<CollapsiblePaneListener> ( 1 );
-
-    /**
-     * Cached collapsed state icon.
-     */
-    protected ImageIcon cachedExpandIcon = null;
-
-    /**
-     * Cached disabled collapsed state icon.
-     */
-    protected ImageIcon cachedDisabledExpandIcon = null;
-
-    /**
-     * Cached expanded state icon.
-     */
-    protected ImageIcon cachedCollapseIcon = null;
-
-    /**
-     * Cached disabled expanded state icon.
-     */
-    protected ImageIcon cachedDisabledCollapseIcon = null;
 
     /**
      * Handler that dynamically enable and disable collapsible pane state changes by providing according boolean value.
@@ -357,7 +317,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Lang
 
         updateDefaultTitleComponent ( icon, title );
 
-        expandButton = new WebButton ( StyleId.collapsiblepaneExpandButton.at ( this ), getCollapseIcon () );
+        expandButton = new WebButton ( StyleId.collapsiblepaneExpandButton.at ( this ), getExpandIcon () );
         expandButton.addActionListener ( new ActionListener ()
         {
             @Override
@@ -953,50 +913,6 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Lang
     }
 
     /**
-     * Returns expanded state icon.
-     *
-     * @return expanded state icon
-     */
-    public ImageIcon getCollapseIcon ()
-    {
-        return collapseIcon != null ? collapseIcon : COLLAPSE_ICON;
-    }
-
-    /**
-     * Sets expanded state icon.
-     *
-     * @param collapseIcon new expanded state icon
-     */
-    public void setCollapseIcon ( final ImageIcon collapseIcon )
-    {
-        this.collapseIcon = collapseIcon;
-        clearCachedCollapseIcons ();
-        setStateIcons ();
-    }
-
-    /**
-     * Returns collapsed state icon.
-     *
-     * @return collapsed state icon
-     */
-    public ImageIcon getExpandIcon ()
-    {
-        return expandIcon != null ? expandIcon : EXPAND_ICON;
-    }
-
-    /**
-     * Sets collapsed state icon.
-     *
-     * @param expandIcon new collapsed state icon
-     */
-    public void setExpandIcon ( final ImageIcon expandIcon )
-    {
-        this.expandIcon = expandIcon;
-        clearCachedExpandIcons ();
-        setStateIcons ();
-    }
-
-    /**
      * Returns whether rotate state icon according to title pane position or not.
      *
      * @return true if stat icon must be rotated according to title pane position, false otherwise
@@ -1064,8 +980,6 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Lang
      */
     protected void updateStateIcons ()
     {
-        clearCachedCollapseIcons ();
-        clearCachedExpandIcons ();
         setStateIcons ();
     }
 
@@ -1076,116 +990,53 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Lang
     {
         if ( expandButton != null )
         {
-            if ( expanded )
-            {
-                expandButton.setIcon ( getCachedCollapseIcon () );
-                expandButton.setDisabledIcon ( getCachedDisabledCollapseIcon () );
-            }
-            else
-            {
-                expandButton.setIcon ( getCachedExpandIcon () );
-                expandButton.setDisabledIcon ( getCachedDisabledExpandIcon () );
-            }
+            Icon expandIcon = getExpandIcon ( );
+            expandButton.setIcon ( expandIcon );
+            expandButton.setDisabledIcon ( ImageUtils.createDisabledCopy ( ImageUtils.getImageIcon ( expandIcon ) ) );
         }
     }
 
-    /**
-     * Clears cached expanded state icons.
-     */
-    protected void clearCachedCollapseIcons ()
+    private Icon getExpandIcon ()
     {
-        cachedCollapseIcon = null;
-        cachedDisabledCollapseIcon = null;
-    }
-
-    /**
-     * Returns cached expanded state icon.
-     *
-     * @return cached expanded state icon
-     */
-    protected ImageIcon getCachedCollapseIcon ()
-    {
-        if ( cachedCollapseIcon == null )
+        if ( rotateStateIcon )
         {
-            // todo Proper icon for RTL
-            // boolean ltr = getComponentOrientation ().isLeftToRight ();
-            if ( !rotateStateIcon || titlePanePosition == TOP || titlePanePosition == BOTTOM )
+            if ( titlePanePosition == TOP )
             {
-                cachedCollapseIcon = new OrientedIcon ( getCollapseIcon () );
+                return expanded ? Icons.upSmall : Icons.downSmall;
+            }
+            else if ( titlePanePosition == BOTTOM )
+            {
+                return expanded ? Icons.downSmall : Icons.upSmall;
             }
             else if ( titlePanePosition == LEFT )
             {
-                cachedCollapseIcon = ImageUtils.rotateImage90CCW ( getCollapseIcon () );
+                return expanded ? Icons.leftSmall : Icons.rightSmall;
             }
             else if ( titlePanePosition == RIGHT )
             {
-                cachedCollapseIcon = ImageUtils.rotateImage90CW ( getCollapseIcon () );
+                return expanded ? Icons.rightSmall : Icons.leftSmall;
             }
         }
-        return cachedCollapseIcon;
-    }
-
-    /**
-     * Returns cached disabled expanded state icon.
-     *
-     * @return cached disabled expanded state icon
-     */
-    protected ImageIcon getCachedDisabledCollapseIcon ()
-    {
-        if ( cachedDisabledCollapseIcon == null )
+        else
         {
-            cachedDisabledCollapseIcon = ImageUtils.createDisabledCopy ( getCachedCollapseIcon () );
-        }
-        return cachedDisabledCollapseIcon;
-    }
-
-    /**
-     * Clears cached collapsed state icons.
-     */
-    protected void clearCachedExpandIcons ()
-    {
-        cachedExpandIcon = null;
-        cachedDisabledExpandIcon = null;
-    }
-
-    /**
-     * Returns cached collapsed state icon.
-     *
-     * @return cached collapsed state icon
-     */
-    protected ImageIcon getCachedExpandIcon ()
-    {
-        if ( cachedExpandIcon == null )
-        {
-            final boolean ltr = getComponentOrientation ().isLeftToRight ();
-            if ( !rotateStateIcon || titlePanePosition == TOP || titlePanePosition == BOTTOM )
+            if ( titlePanePosition == TOP )
             {
-                cachedExpandIcon = getExpandIcon ();
+                return Icons.upSmall;
             }
-            else if ( ltr ? titlePanePosition == LEFT : titlePanePosition == RIGHT )
+            else if ( titlePanePosition == BOTTOM )
             {
-                cachedExpandIcon = ImageUtils.rotateImage90CCW ( getExpandIcon () );
+                return Icons.downSmall;
             }
-            else if ( ltr ? titlePanePosition == RIGHT : titlePanePosition == LEFT )
+            else if ( titlePanePosition == LEFT )
             {
-                cachedExpandIcon = ImageUtils.rotateImage90CW ( getExpandIcon () );
+                return Icons.leftSmall;
+            }
+            else if ( titlePanePosition == RIGHT )
+            {
+                return expanded ? Icons.rightSmall : Icons.leftSmall;
             }
         }
-        return cachedExpandIcon;
-    }
-
-    /**
-     * Returns cached disabled collapsed state icon.
-     *
-     * @return cached disabled collapsed state icon
-     */
-    protected ImageIcon getCachedDisabledExpandIcon ()
-    {
-        if ( cachedDisabledExpandIcon == null )
-        {
-            cachedDisabledExpandIcon = ImageUtils.createDisabledCopy ( getCachedExpandIcon () );
-        }
-        return cachedDisabledExpandIcon;
+        return Icons.downSmall;
     }
 
     /**
@@ -1385,6 +1236,13 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Lang
                 return new Dimension ( ps.width - Math.round ( cps.width * transitionProgress ), ps.height );
             }
         }
+    }
+
+    @Override
+    public void setEnabled ( boolean enabled )
+    {
+        super.setEnabled ( enabled );
+        expandButton.setEnabled ( enabled );
     }
 
     @Override

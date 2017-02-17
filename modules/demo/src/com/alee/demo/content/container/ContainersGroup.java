@@ -37,6 +37,6 @@ public class ContainersGroup extends AbstractExampleGroup
     @Override
     protected List<Class> getExampleClasses ()
     {
-        return CollectionUtils.<Class>asList ( JPanelExample.class, GroupPaneExample.class );
+        return CollectionUtils.<Class>asList ( JPanelExample.class, GroupPaneExample.class, WebCollapsiblePaneExample.class );
     }
 }

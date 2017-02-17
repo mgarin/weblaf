@@ -1089,6 +1089,36 @@
                     </record>
                 </Dictionary>
             </Dictionary>
+            <Dictionary prefix="collapsiblepane">
+                <record key="title">
+                    <value lang="en">WebCollapsiblePane</value>
+                    <value lang="ru">WebCollapsiblePane</value>
+                </record>
+                <Dictionary prefix="left">
+                    <record key="title">
+                        <value lang="en">Left WebCollapsiblePane</value>
+                        <value lang="ru">Left WebCollapsiblePane</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="right">
+                    <record key="title">
+                        <value lang="en">Right WebCollapsiblePane</value>
+                        <value lang="ru">Right WebCollapsiblePane</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="top">
+                    <record key="title">
+                        <value lang="en">Top WebCollapsiblePane</value>
+                        <value lang="ru">Top WebCollapsiblePane</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="bottom">
+                    <record key="title">
+                        <value lang="en">Bottom WebCollapsiblePane</value>
+                        <value lang="ru">Bottom WebCollapsiblePane</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
         </Dictionary>
         <Dictionary prefix="progress">
             <record key="title">
