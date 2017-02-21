@@ -34,77 +34,77 @@ public class WebBreadcrumbToggleButton extends WebToggleButton implements Breadc
 
     public WebBreadcrumbToggleButton ()
     {
-        super ( StyleId.breadcrumbToggleButton);
+        super ( StyleId.breadcrumbToggleButton );
     }
 
     public WebBreadcrumbToggleButton ( final Icon icon )
     {
-        super (  StyleId.breadcrumbToggleButton,icon );
+        super ( StyleId.breadcrumbToggleButton, icon );
     }
 
     public WebBreadcrumbToggleButton ( final Icon icon, final boolean selected )
     {
-        super ( StyleId.breadcrumbToggleButton,icon, selected );
+        super ( StyleId.breadcrumbToggleButton, icon, selected );
     }
 
     public WebBreadcrumbToggleButton ( final String text )
     {
-        super (StyleId.breadcrumbToggleButton, text );
+        super ( StyleId.breadcrumbToggleButton, text );
     }
 
     public WebBreadcrumbToggleButton ( final String text, final boolean selected )
     {
-        super ( StyleId.breadcrumbToggleButton,text, selected );
+        super ( StyleId.breadcrumbToggleButton, text, selected );
     }
 
     public WebBreadcrumbToggleButton ( final String text, final Icon icon )
     {
-        super (StyleId.breadcrumbToggleButton, text, icon );
+        super ( StyleId.breadcrumbToggleButton, text, icon );
     }
 
     public WebBreadcrumbToggleButton ( final String text, final Icon icon, final boolean selected )
     {
-        super ( StyleId.breadcrumbToggleButton,text, icon, selected );
+        super ( StyleId.breadcrumbToggleButton, text, icon, selected );
     }
 
     public WebBreadcrumbToggleButton ( final ActionListener listener )
     {
-        super (StyleId.breadcrumbToggleButton, listener );
+        super ( StyleId.breadcrumbToggleButton, listener );
     }
 
     public WebBreadcrumbToggleButton ( final Icon icon, final ActionListener listener )
     {
-        super ( StyleId.breadcrumbToggleButton,icon, listener );
+        super ( StyleId.breadcrumbToggleButton, icon, listener );
     }
 
     public WebBreadcrumbToggleButton ( final Icon icon, final boolean selected, final ActionListener listener )
     {
-        super ( StyleId.breadcrumbToggleButton,icon, selected, listener );
+        super ( StyleId.breadcrumbToggleButton, icon, selected, listener );
     }
 
     public WebBreadcrumbToggleButton ( final String text, final ActionListener listener )
     {
-        super ( StyleId.breadcrumbToggleButton,text, listener );
+        super ( StyleId.breadcrumbToggleButton, text, listener );
     }
 
     public WebBreadcrumbToggleButton ( final String text, final boolean selected, final ActionListener listener )
     {
-        super ( StyleId.breadcrumbToggleButton,text, selected, listener );
+        super ( StyleId.breadcrumbToggleButton, text, selected, listener );
     }
 
     public WebBreadcrumbToggleButton ( final String text, final Icon icon, final ActionListener listener )
     {
-        super (StyleId.breadcrumbToggleButton, text, icon, listener );
+        super ( StyleId.breadcrumbToggleButton, text, icon, listener );
     }
 
     public WebBreadcrumbToggleButton ( final String text, final Icon icon, final boolean selected, final ActionListener listener )
     {
-        super (StyleId.breadcrumbToggleButton,text, icon, selected, listener );
+        super ( StyleId.breadcrumbToggleButton, text, icon, selected, listener );
     }
 
     public WebBreadcrumbToggleButton ( final Action a )
     {
-        super ( StyleId.breadcrumbToggleButton,a );
+        super ( StyleId.breadcrumbToggleButton, a );
     }
 
     public WebBreadcrumbToggleButton ( final StyleId id )
@@ -172,7 +172,8 @@ public class WebBreadcrumbToggleButton extends WebToggleButton implements Breadc
         super ( id, text, icon, listener );
     }
 
-    public WebBreadcrumbToggleButton ( final StyleId id, final String text, final Icon icon, final boolean selected, final ActionListener listener )
+    public WebBreadcrumbToggleButton ( final StyleId id, final String text, final Icon icon, final boolean selected,
+                                       final ActionListener listener )
     {
         super ( id, text, icon, selected, listener );
     }

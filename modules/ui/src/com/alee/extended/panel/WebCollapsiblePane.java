@@ -295,7 +295,8 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Lang
             @Override
             public void mouseReleased ( final MouseEvent e )
             {
-                if ( SwingUtilities.isLeftMouseButton ( e ) && BoundsType.margin.bounds ( WebCollapsiblePane.this ).contains ( e.getPoint () ) )
+                if ( SwingUtilities.isLeftMouseButton ( e ) &&
+                        BoundsType.margin.bounds ( WebCollapsiblePane.this ).contains ( e.getPoint () ) )
                 {
                     invertExpandState ();
                     takeFocus ();
@@ -990,13 +991,18 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Lang
     {
         if ( expandButton != null )
         {
-            Icon expandIcon = getExpandIcon ( );
+            final Icon expandIcon = getExpandIcon ();
             expandButton.setIcon ( expandIcon );
             expandButton.setDisabledIcon ( ImageUtils.createDisabledCopy ( ImageUtils.getImageIcon ( expandIcon ) ) );
         }
     }
 
-    private Icon getExpandIcon ()
+    /**
+     * Returns expand {@link Icon}.
+     *
+     * @return expand {@link Icon}
+     */
+    protected Icon getExpandIcon ()
     {
         if ( rotateStateIcon )
         {
@@ -1239,7 +1245,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Lang
     }
 
     @Override
-    public void setEnabled ( boolean enabled )
+    public void setEnabled ( final boolean enabled )
     {
         super.setEnabled ( enabled );
         expandButton.setEnabled ( enabled );

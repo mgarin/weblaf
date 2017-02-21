@@ -2623,7 +2623,7 @@ public final class FileUtils
             {
                 name = fsv.getSystemDisplayName ( file );
             }
-            if ( TextUtils.isEmpty ( name ) )
+            if ( TextUtils.isBlank ( name ) )
             {
                 name = getFileTypeDescription ( file );
             }

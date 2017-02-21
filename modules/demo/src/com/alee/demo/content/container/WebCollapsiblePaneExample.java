@@ -24,7 +24,6 @@ import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 
 /**
@@ -75,7 +74,7 @@ public class WebCollapsiblePaneExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebCollapsiblePane e1 = new WebCollapsiblePane ( createCustomContent () );
+            final WebCollapsiblePane e1 = new WebCollapsiblePane ( createCollapsiblePaneContent () );
             e1.setTitlePanePosition ( WebCollapsiblePane.LEFT );
             return CollectionUtils.asList ( e1 );
         }
@@ -100,7 +99,7 @@ public class WebCollapsiblePaneExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebCollapsiblePane e1 = new WebCollapsiblePane ( createCustomContent () );
+            final WebCollapsiblePane e1 = new WebCollapsiblePane ( createCollapsiblePaneContent () );
             e1.setTitlePanePosition ( WebCollapsiblePane.RIGHT );
             return CollectionUtils.asList ( e1 );
         }
@@ -125,7 +124,7 @@ public class WebCollapsiblePaneExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebCollapsiblePane e1 = new WebCollapsiblePane ( createCustomContent () );
+            final WebCollapsiblePane e1 = new WebCollapsiblePane ( createCollapsiblePaneContent () );
             e1.setTitlePanePosition ( WebCollapsiblePane.TOP );
             return CollectionUtils.asList ( e1 );
         }
@@ -150,19 +149,22 @@ public class WebCollapsiblePaneExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebCollapsiblePane e1 = new WebCollapsiblePane ( createCustomContent () );
+            final WebCollapsiblePane e1 = new WebCollapsiblePane ( createCollapsiblePaneContent () );
             e1.setTitlePanePosition ( WebCollapsiblePane.BOTTOM );
             return CollectionUtils.asList ( e1 );
         }
     }
 
-    private static WebTextArea createCustomContent ( )
+    /**
+     * Returns collapsible pane example content.
+     *
+     * @return collapsible pane example content
+     */
+    protected JComponent createCollapsiblePaneContent ()
     {
-        // Content text area
-        final WebTextArea textArea = new WebTextArea ( );
-        textArea.setText ( "Sample\nmultiline\ntext" );
-        textArea.setPreferredSize ( new Dimension ( 150, 100 ) );
-
+        final WebTextArea textArea = new WebTextArea ();
+        textArea.setText ( "Sample" + "\n" + "multiline" + "\n" + "text" );
+        textArea.setPreferredSize ( 150, 100 );
         return textArea;
     }
 }

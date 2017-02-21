@@ -883,14 +883,25 @@ public final class TextUtils
     }
 
     /**
-     * Returns whether specified text is empty or not.
+     * Returns whether or not specified text is {@code null} or empty.
      *
-     * @param text text to process
-     * @return true if specified text is empty, false otherwise
+     * @param text text to check
+     * @return {@code true} if specified text is {@code null} or empty, {@code false} otherwise
      */
     public static boolean isEmpty ( final String text )
     {
-        return text == null || text.trim ().isEmpty ();
+        return text == null || text.isEmpty ();
+    }
+
+    /**
+     * Returns whether or not specified text is {@code null} or empty excluding linebreaks and whitespaces.
+     *
+     * @param text text to check
+     * @return {@code true} if specified text is {@code null} or emptyexcluding linebreaks and whitespaces, {@code false} otherwise
+     */
+    public static boolean isBlank ( final String text )
+    {
+        return text == null || text.isEmpty () || removeLineBreaks ( text ).trim ().isEmpty ();
     }
 
     /**

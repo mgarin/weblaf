@@ -26,6 +26,7 @@ import com.kitfox.svg.app.beans.SVGIcon;
 import com.kitfox.svg.xml.StyleAttribute;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
@@ -462,5 +463,54 @@ public class SvgIcon extends SVGIcon
     public void setPreferredSize ( final int width, final int height )
     {
         setPreferredSize ( new Dimension ( width, height ) );
+    }
+
+    /**
+     * Returns this {@link SvgIcon} painted on {@link BufferedImage}.
+     * Preferred {@link SvgIcon} size will be used to determine {@link BufferedImage} size.
+     *
+     * @return this {@link SvgIcon} painted on {@link BufferedImage}
+     */
+    public BufferedImage asBufferedImage ()
+    {
+        return asBufferedImage ( getPreferredSize () );
+    }
+
+    /**
+     * Returns this {@link SvgIcon} painted on {@link BufferedImage} of the specified size.
+     *
+     * @param size resulting {@link BufferedImage} size
+     * @return this {@link SvgIcon} painted on {@link BufferedImage} of the specified size
+     */
+    public BufferedImage asBufferedImage ( final Dimension size )
+    {
+        return asBufferedImage ( size.width, size.height );
+    }
+
+    /**
+     * Returns this {@link SvgIcon} painted on {@link BufferedImage} of the specified size.
+     *
+     * @param width resulting {@link BufferedImage} width
+     * @param height resulting {@link BufferedImage} height
+     * @return this {@link SvgIcon} painted on {@link BufferedImage} of the specified size
+     */
+    public BufferedImage asBufferedImage ( final int width, final int height )
+    {
+        // Save initial preferred size
+        final Dimension ps = getPreferredSize ();
+
+        // Setup temporary preferred size
+        setPreferredSize ( width, height );
+
+        // Create image
+        final BufferedImage image = new BufferedImage ( width, height, BufferedImage.TYPE_INT_ARGB );
+        final Graphics2D g2d = image.createGraphics ();
+        paintIcon ( null, g2d, 0, 0 );
+        g2d.dispose ();
+
+        // Restoring initial preferred size
+        setPreferredSize ( ps );
+
+        return image;
     }
 }

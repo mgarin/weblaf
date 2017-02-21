@@ -797,7 +797,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     protected String getWindowTitle ()
     {
         final String title = isDialog () ? dialog.getTitle () : isFrame () ? frame.getTitle () : null;
-        final String t = !TextUtils.isEmpty ( title ) ? title : emptyTitleText != null ? LM.get ( emptyTitleText ) : null;
+        final String t = !TextUtils.isBlank ( title ) ? title : emptyTitleText != null ? LM.get ( emptyTitleText ) : null;
         return !TextUtils.isEmpty ( t ) ? t : " ";
     }
 
