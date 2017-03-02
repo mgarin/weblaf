@@ -364,7 +364,11 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
      */
     protected void installSettings ()
     {
-        // No settings by default
+        if ( isFrame () )
+        {
+            // Installing maximized frame bounds
+            frame.setMaximizedBounds ( SystemUtils.getMaximizedBounds ( frame ) );
+        }
     }
 
     /**
@@ -374,7 +378,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     {
         if ( isFrame () )
         {
-            // Resetting maximum frame size
+            // Uninstalling maximized frame bounds
             frame.setMaximizedBounds ( null );
         }
     }
