@@ -17,7 +17,6 @@
 
 package com.alee.extended.tree;
 
-import com.alee.laf.tree.TreeUtils;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.laf.tree.WebTree;
 import com.alee.laf.tree.WebTreeModel;
@@ -48,9 +47,9 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
      */
 
     /**
-     * Whether or not should optimize dragged nodes list to minimum.
+     * {@link NodesAcceptPolicy} that defines a way to filter dragged nodes.
      */
-    protected boolean optimizeDraggedNodes = true;
+    protected NodesAcceptPolicy nodesAcceptPolicy = NodesAcceptPolicy.ancestors;
 
     /**
      * Whether or not should expand single dragged node when it is dropped onto the tree.
@@ -100,23 +99,23 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
     }
 
     /**
-     * Return whether or not should optimize dragged nodes list to minimum.
+     * Return {@link NodesAcceptPolicy} that defines a way to filter dragged nodes.
      *
-     * @return true if should optimize dragged nodes list to minimum, false otherwise
+     * @return {@link NodesAcceptPolicy} that defines a way to filter dragged nodes
      */
-    public boolean isOptimizeDraggedNodes ()
+    public NodesAcceptPolicy getNodesAcceptPolicy ()
     {
-        return optimizeDraggedNodes;
+        return nodesAcceptPolicy;
     }
 
     /**
-     * Sets whether or not should optimize dragged nodes list to minimum.
+     * Sets {@link NodesAcceptPolicy} that defines a way to filter dragged nodes.
      *
-     * @param optimize whether or not should optimize dragged nodes list to minimum
+     * @param policy {@link NodesAcceptPolicy} that defines a way to filter dragged nodes
      */
-    public void setOptimizeDraggedNodes ( final boolean optimize )
+    public void setNodesAcceptPolicy ( final NodesAcceptPolicy policy )
     {
-        this.optimizeDraggedNodes = optimize;
+        this.nodesAcceptPolicy = policy;
     }
 
     /**
@@ -142,7 +141,7 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
     /**
      * Returns whether or not should expand multiply dragged nodes when they are dropped onto the tree.
      *
-     * @return true if should expand multiply dragged nodes when they are dropped onto the tree, false otherwise
+     * @return {@code true} if should expand multiply dragged nodes when they are dropped onto the tree, {@code false} otherwise
      */
     public boolean isExpandMultiplyNodes ()
     {
@@ -193,7 +192,7 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
     }
 
     /**
-     * Creates a Transferable to use as the source for a data transfer.
+     * Creates a {@link Transferable} to use as the source for a data transfer.
      * Returns the representation of the data to be transferred, or null if the component's property is null
      *
      * @param c the component holding the data to be transferred, provided to enable sharing of TransferHandlers
@@ -212,10 +211,10 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
                 return null;
             }
 
-            // Optimizing dragged nodes
-            if ( optimizeDraggedNodes )
+            // Excluding descendants if needed
+            if ( nodesAcceptPolicy !=null )
             {
-                TreeUtils.trimNodes ( nodes );
+                nodesAcceptPolicy.filter ( nodes );
             }
 
             // Checking whether or not can drag specified nodes
@@ -351,7 +350,7 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
      * @param tree        destination tree
      * @param model       tree model
      * @param destination node onto which drop was performed
-     * @return true if the specified destination is acceptable for drop, false otherwise
+     * @return {@code true} if the specified destination is acceptable for drop, {@code false} otherwise
      */
     protected boolean canDropTo ( final TransferSupport support, final T tree, final M model, final N destination )
     {
@@ -410,7 +409,7 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
      * @param model     tree model
      * @param parent    parent node to drop nodes into
      * @param dropIndex preliminary nodes drop index
-     * @return true if drop operation was successfully completed, false otherwise
+     * @return {@code true} if drop operation was successfully completed, {@code false} otherwise
      */
     protected boolean prepareDropOperation ( final TransferSupport support, final T tree, final M model, final N parent,
                                              final int dropIndex )
@@ -467,7 +466,7 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
      * @param model       tree model
      * @param destination parent node to drop nodes into
      * @param index       nodes drop index
-     * @return true if drop operation was successfully completed, false otherwise
+     * @return {@code true} if drop operation was successfully completed, {@code false} otherwise
      */
     protected boolean performDropOperation ( final TransferSupport support, final T tree, final M model, final N destination,
                                              final int index )

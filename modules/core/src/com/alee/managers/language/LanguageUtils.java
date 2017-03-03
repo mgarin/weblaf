@@ -107,22 +107,22 @@ public class LanguageUtils
     /**
      * Merges specified dictionary with the global dictionary.
      *
-     * @param dictionary dictionary to merge
      * @param mergeInto  dictionary to merge into
+     * @param dictionary dictionary to merge
      */
-    public static void mergeDictionary ( final Dictionary dictionary, final Dictionary mergeInto )
+    public static void mergeDictionary ( final Dictionary mergeInto, final Dictionary dictionary )
     {
-        mergeDictionary ( dictionary.getPrefix (), dictionary, mergeInto );
+        mergeDictionary ( dictionary.getPrefix (), mergeInto, dictionary );
     }
 
     /**
      * Merges specified dictionary with the global dictionary.
      *
      * @param prefix     dictionary prefix
-     * @param dictionary dictionary to merge
      * @param mergeInto  dictionary to merge into
+     * @param dictionary dictionary to merge
      */
-    private static void mergeDictionary ( String prefix, final Dictionary dictionary, final Dictionary mergeInto )
+    private static void mergeDictionary ( String prefix, final Dictionary mergeInto, final Dictionary dictionary )
     {
         // Determining prefix
         prefix = fixKeyPrefix ( prefix );
@@ -152,7 +152,7 @@ public class LanguageUtils
         {
             for ( final Dictionary subDictionary : dictionary.getSubdictionaries () )
             {
-                mergeDictionary ( combineKeyPrefix ( prefix, subDictionary ), subDictionary, mergeInto );
+                mergeDictionary ( combineKeyPrefix ( prefix, subDictionary ), mergeInto, subDictionary );
             }
         }
     }

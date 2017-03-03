@@ -32,27 +32,13 @@ import java.util.List;
 public interface TreeCheckingModel<E extends DefaultMutableTreeNode>
 {
     /**
-     * Returns list of checked nodes.
+     * Returns list of nodes for the specified state.
      *
-     * @param optimize whether should optimize the resulting list by removing checked node children or not
-     * @return list of checked nodes
+     * @param state  {@link CheckState} to return nodes for
+     * @param policy {@link NodesAcceptPolicy} that defines a way to filter nodes
+     * @return list of nodes for the specified state
      */
-    public List<E> getCheckedNodes ( boolean optimize );
-
-    /**
-     * Returns list of nodes in mixed state.
-     *
-     * @return list of nodes in mixed state
-     */
-    public List<E> getMixedNodes ();
-
-    /**
-     * Sets specified nodes state to checked.
-     *
-     * @param nodes   nodes to check
-     * @param checked whether the specified tree nodes should be checked or not
-     */
-    public void setChecked ( Collection<E> nodes, boolean checked );
+    public List<E> getNodes ( CheckState state, NodesAcceptPolicy policy );
 
     /**
      * Returns specified tree node check state.
@@ -71,6 +57,14 @@ public interface TreeCheckingModel<E extends DefaultMutableTreeNode>
     public void setChecked ( E node, boolean checked );
 
     /**
+     * Sets specified nodes state to checked.
+     *
+     * @param nodes   nodes to check
+     * @param checked whether the specified tree nodes should be checked or not
+     */
+    public void setChecked ( Collection<E> nodes, boolean checked );
+
+    /**
      * Inverts tree node check.
      *
      * @param node tree node to process
@@ -85,14 +79,14 @@ public interface TreeCheckingModel<E extends DefaultMutableTreeNode>
     public void invertCheck ( Collection<E> nodes );
 
     /**
-     * Unchecks all tree nodes.
-     */
-    public void uncheckAll ();
-
-    /**
      * Checks all tree nodes.
      */
     public void checkAll ();
+
+    /**
+     * Unchecks all tree nodes.
+     */
+    public void uncheckAll ();
 
     /**
      * Notifies model about checking mode change.

@@ -19,8 +19,8 @@ package com.alee.utils.swing;
 
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CoreSwingUtils;
-import com.alee.utils.TextUtils;
 import com.alee.utils.TimeUtils;
+import com.alee.utils.parsing.DurationUnits;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -163,7 +163,7 @@ public class WebTimer
      */
     public WebTimer ( final String delay )
     {
-        this ( TextUtils.parseDelay ( delay ) );
+        this ( DurationUnits.get ().fromString ( delay ) );
     }
 
     /**
@@ -184,7 +184,7 @@ public class WebTimer
      */
     public WebTimer ( final String name, final String delay )
     {
-        this ( name, TextUtils.parseDelay ( delay ) );
+        this ( name, DurationUnits.get ().fromString ( delay ) );
     }
 
     /**
@@ -229,7 +229,7 @@ public class WebTimer
      */
     public WebTimer ( final String delay, final ActionListener listener )
     {
-        this ( TextUtils.parseDelay ( delay ), listener );
+        this ( DurationUnits.get ().fromString ( delay ), listener );
     }
 
     /**
@@ -252,7 +252,7 @@ public class WebTimer
      */
     public WebTimer ( final String name, final String delay, final ActionListener listener )
     {
-        this ( name, TextUtils.parseDelay ( delay ), listener );
+        this ( name, DurationUnits.get ().fromString ( delay ), listener );
     }
 
     /**
@@ -289,7 +289,7 @@ public class WebTimer
      */
     public WebTimer ( final String name, final String delay, final String initialDelay, final ActionListener listener )
     {
-        this ( name, TextUtils.parseDelay ( delay ), TextUtils.parseDelay ( initialDelay ), listener );
+        this ( name, DurationUnits.get ().fromString ( delay ), DurationUnits.get ().fromString ( initialDelay ), listener );
     }
 
     /**
@@ -326,7 +326,7 @@ public class WebTimer
      */
     public String getInitialStringDelay ()
     {
-        return TextUtils.toStringDelay ( initialDelay );
+        return DurationUnits.get ().toString ( initialDelay );
     }
 
     /**
@@ -337,7 +337,7 @@ public class WebTimer
      */
     public WebTimer setInitialDelay ( final String initialDelay )
     {
-        setInitialDelay ( TextUtils.parseDelay ( initialDelay ) );
+        setInitialDelay ( DurationUnits.get ().fromString ( initialDelay ) );
         return this;
     }
 
@@ -377,7 +377,7 @@ public class WebTimer
      */
     public String getStringDelay ()
     {
-        return TextUtils.toStringDelay ( delay );
+        return DurationUnits.get ().toString ( delay );
     }
 
     /**
@@ -388,7 +388,7 @@ public class WebTimer
      */
     public WebTimer setDelay ( final String delay )
     {
-        setDelay ( TextUtils.parseDelay ( delay ) );
+        setDelay ( DurationUnits.get ().fromString ( delay ) );
         return this;
     }
 
@@ -1042,7 +1042,7 @@ public class WebTimer
      */
     public static WebTimer delay ( final String delay, final ActionListener listener )
     {
-        return delay ( TextUtils.parseDelay ( delay ), listener );
+        return delay ( DurationUnits.get ().fromString ( delay ), listener );
     }
 
     /**
@@ -1067,7 +1067,7 @@ public class WebTimer
      */
     public static WebTimer delay ( final String name, final String delay, final ActionListener listener )
     {
-        return delay ( name, TextUtils.parseDelay ( delay ), listener );
+        return delay ( name, DurationUnits.get ().fromString ( delay ), listener );
     }
 
     /**
@@ -1093,7 +1093,7 @@ public class WebTimer
      */
     public static WebTimer delay ( final String delay, final boolean useEventDispatchThread, final ActionListener listener )
     {
-        return delay ( TextUtils.parseDelay ( delay ), useEventDispatchThread, listener );
+        return delay ( DurationUnits.get ().fromString ( delay ), useEventDispatchThread, listener );
     }
 
     /**
@@ -1121,7 +1121,7 @@ public class WebTimer
     public static WebTimer delay ( final String name, final String delay, final boolean useEventDispatchThread,
                                    final ActionListener listener )
     {
-        return delay ( name, TextUtils.parseDelay ( delay ), useEventDispatchThread, listener );
+        return delay ( name, DurationUnits.get ().fromString ( delay ), useEventDispatchThread, listener );
     }
 
     /**
@@ -1152,7 +1152,7 @@ public class WebTimer
      */
     public static WebTimer repeat ( final String delay, final ActionListener listener )
     {
-        final long pd = TextUtils.parseDelay ( delay );
+        final long pd = DurationUnits.get ().fromString ( delay );
         return repeat ( defaultThreadName, pd, pd, defaultCyclesLimit, useEdtByDefault, listener );
     }
 
@@ -1166,7 +1166,7 @@ public class WebTimer
      */
     public static WebTimer repeat ( final String delay, final int cyclesLimit, final ActionListener listener )
     {
-        final long pd = TextUtils.parseDelay ( delay );
+        final long pd = DurationUnits.get ().fromString ( delay );
         return repeat ( defaultThreadName, pd, pd, cyclesLimit, useEdtByDefault, listener );
     }
 
@@ -1205,7 +1205,7 @@ public class WebTimer
      */
     public static WebTimer repeat ( final String name, final String delay, final ActionListener listener )
     {
-        final long pd = TextUtils.parseDelay ( delay );
+        final long pd = DurationUnits.get ().fromString ( delay );
         return repeat ( name, pd, pd, defaultCyclesLimit, useEdtByDefault, listener );
     }
 
@@ -1220,7 +1220,7 @@ public class WebTimer
      */
     public static WebTimer repeat ( final String name, final String delay, final int cyclesLimit, final ActionListener listener )
     {
-        final long pd = TextUtils.parseDelay ( delay );
+        final long pd = DurationUnits.get ().fromString ( delay );
         return repeat ( name, pd, pd, cyclesLimit, useEdtByDefault, listener );
     }
 
@@ -1261,7 +1261,7 @@ public class WebTimer
      */
     public static WebTimer repeat ( final String delay, final boolean useEventDispatchThread, final ActionListener listener )
     {
-        final long pd = TextUtils.parseDelay ( delay );
+        final long pd = DurationUnits.get ().fromString ( delay );
         return repeat ( defaultThreadName, pd, pd, defaultCyclesLimit, useEventDispatchThread, listener );
     }
 
@@ -1277,7 +1277,7 @@ public class WebTimer
     public static WebTimer repeat ( final String delay, final int cyclesLimit, final boolean useEventDispatchThread,
                                     final ActionListener listener )
     {
-        final long pd = TextUtils.parseDelay ( delay );
+        final long pd = DurationUnits.get ().fromString ( delay );
         return repeat ( defaultThreadName, pd, pd, cyclesLimit, useEventDispatchThread, listener );
     }
 
@@ -1321,7 +1321,7 @@ public class WebTimer
     public static WebTimer repeat ( final String name, final String delay, final boolean useEventDispatchThread,
                                     final ActionListener listener )
     {
-        final long pd = TextUtils.parseDelay ( delay );
+        final long pd = DurationUnits.get ().fromString ( delay );
         return repeat ( name, pd, pd, defaultCyclesLimit, useEventDispatchThread, listener );
     }
 
@@ -1338,7 +1338,7 @@ public class WebTimer
     public static WebTimer repeat ( final String name, final String delay, final int cyclesLimit, final boolean useEventDispatchThread,
                                     final ActionListener listener )
     {
-        final long pd = TextUtils.parseDelay ( delay );
+        final long pd = DurationUnits.get ().fromString ( delay );
         return repeat ( name, pd, pd, cyclesLimit, useEventDispatchThread, listener );
     }
 

@@ -18,7 +18,6 @@
 package com.alee.extended.tree;
 
 import com.alee.laf.checkbox.CheckState;
-import com.alee.laf.tree.TreeUtils;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -36,17 +35,22 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
     /**
      * Checkbox tree which uses this checking model.
      */
-    protected WebCheckBoxTree<E> checkBoxTree;
+    protected final WebCheckBoxTree<E> checkBoxTree;
 
     /**
      * Node check states cache.
      */
-    protected Map<E, CheckState> nodeCheckStates = new WeakHashMap<E, CheckState> ();
+    protected Map<E, CheckState> nodeCheckStates;
 
     /**
      * Checkbox tree check state change listeners.
      */
-    protected List<CheckStateChangeListener<E>> checkStateChangeListeners = new ArrayList<CheckStateChangeListener<E>> ( 1 );
+    protected List<CheckStateChangeListener<E>> checkStateChangeListeners;
+
+    /**
+     * Returned nodes comparator.
+     */
+    protected Comparator<E> nodesComparator;
 
     /**
      * @param checkBoxTree checkbox tree which uses this checking model.
@@ -55,88 +59,77 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
     {
         super ();
         this.checkBoxTree = checkBoxTree;
+        this.nodeCheckStates = new WeakHashMap<E, CheckState> ();
+        this.checkStateChangeListeners = new ArrayList<CheckStateChangeListener<E>> ( 1 );
+        this.nodesComparator = createNodesComparator ();
     }
 
     /**
-     * Returns checkbox tree which uses this checking model.
+     * Returns new {@link Comparator} for nodes.
+     * Can also return {@code null} to disable nodes sorting.
      *
-     * @return checkbox tree which uses this checking model
+     * @return new {@link Comparator} for nodes
      */
-    public WebCheckBoxTree<E> getCheckBoxTree ()
+    protected Comparator<E> createNodesComparator ()
     {
-        return checkBoxTree;
-    }
-
-    /**
-     * Sets checkbox tree which uses this checking model.
-     * This method call also forces cache to clear all stored values.
-     *
-     * @param checkBoxTree checkbox tree which uses this checking model.
-     */
-    public void setCheckBoxTree ( final WebCheckBoxTree<E> checkBoxTree )
-    {
-        nodeCheckStates.clear ();
-        this.checkBoxTree = checkBoxTree;
+        return new NodesPositionComparator<E> ();
     }
 
     @Override
-    public List<E> getCheckedNodes ( final boolean optimize )
+    public List<E> getNodes ( final CheckState state, final NodesAcceptPolicy policy )
     {
-        return getAllNodesForState ( CheckState.checked, optimize );
-    }
-
-    @Override
-    public List<E> getMixedNodes ()
-    {
-        return getAllNodesForState ( CheckState.mixed, false );
-    }
-
-    /**
-     * Returns list of nodes for the specified state.
-     * For a reasonable cause this will not work for unchecked state.
-     *
-     * @param state    check state
-     * @param optimize whether should optimize selected nodes or not
-     * @return list of nodes for the specified state
-     */
-    protected List<E> getAllNodesForState ( final CheckState state, final boolean optimize )
-    {
-        final List<E> checkedNodes = new ArrayList<E> ( nodeCheckStates.size () );
-        for ( final Map.Entry<E, CheckState> entry : nodeCheckStates.entrySet () )
+        // Collecting nodes for state
+        final List<E> collected = new ArrayList<E> ();
+        if ( state == CheckState.checked || state == CheckState.mixed )
         {
-            if ( entry.getValue () == state )
+            // Collecting checked or mixed nodes
+            for ( final Map.Entry<E, CheckState> entry : nodeCheckStates.entrySet () )
             {
-                checkedNodes.add ( entry.getKey () );
+                if ( entry.getValue () == state )
+                {
+                    collected.add ( entry.getKey () );
+                }
             }
         }
-        if ( optimize )
+        else
         {
-            TreeUtils.trimNodes ( checkedNodes );
-        }
-        return checkedNodes;
-    }
+            // Collecting unchecked nodes
+            final List<E> runthrough = new ArrayList<E> ();
+            runthrough.add ( checkBoxTree.getRootNode () );
+            while ( !runthrough.isEmpty () )
+            {
+                // Removing first element to shrink runthrough list
+                final E node = runthrough.remove ( 0 );
+                final CheckState nodeState = nodeCheckStates.get ( node );
+                final boolean unchecked = nodeState == null || nodeState == CheckState.unchecked;
 
-    @Override
-    public void setChecked ( final Collection<E> nodes, final boolean checked )
-    {
-        // Collecting state changes
-        final boolean collectChanges = checkStateChangeListeners.size () > 0;
-        List<CheckStateChange<E>> changes = null;
-        if ( collectChanges )
+                // Simply adding unchecked node
+                if ( unchecked )
+                {
+                    collected.add ( node );
+                }
+
+                // Make sure to check all child nodes
+                for ( int i = 0; i < node.getChildCount (); i++ )
+                {
+                    runthrough.add ( ( E ) node.getChildAt ( i ) );
+                }
+            }
+        }
+
+        // Removing chilren of collected nodes
+        if ( policy != null )
         {
-            changes = new ArrayList<CheckStateChange<E>> ( nodes.size () );
+            policy.filter ( collected );
         }
 
-        // Updating states
-        final List<E> toUpdate = new ArrayList<E> ();
-        for ( final E node : nodes )
+        // Sorting nodes by their position in the tree
+        if ( nodesComparator != null )
         {
-            setCheckedImpl ( node, checked, toUpdate, changes );
+            Collections.sort ( collected, nodesComparator );
         }
-        repaintTreeNodes ( toUpdate );
 
-        // Informing about state changes
-        fireCheckStateChanged ( changes );
+        return collected;
     }
 
     @Override
@@ -160,6 +153,29 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
         // Updating states
         final List<E> toUpdate = new ArrayList<E> ();
         setCheckedImpl ( node, checked, toUpdate, changes );
+        repaintTreeNodes ( toUpdate );
+
+        // Informing about state changes
+        fireCheckStateChanged ( changes );
+    }
+
+    @Override
+    public void setChecked ( final Collection<E> nodes, final boolean checked )
+    {
+        // Collecting state changes
+        final boolean collectChanges = checkStateChangeListeners.size () > 0;
+        List<CheckStateChange<E>> changes = null;
+        if ( collectChanges )
+        {
+            changes = new ArrayList<CheckStateChange<E>> ( nodes.size () );
+        }
+
+        // Updating states
+        final List<E> toUpdate = new ArrayList<E> ();
+        for ( final E node : nodes )
+        {
+            setCheckedImpl ( node, checked, toUpdate, changes );
+        }
         repaintTreeNodes ( toUpdate );
 
         // Informing about state changes
@@ -374,32 +390,6 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
     }
 
     @Override
-    public void uncheckAll ()
-    {
-        // Collecting state changes
-        List<CheckStateChange<E>> changes = null;
-        if ( checkStateChangeListeners.size () > 0 )
-        {
-            changes = new ArrayList<CheckStateChange<E>> ( nodeCheckStates.size () );
-            for ( final Map.Entry<E, CheckState> entry : nodeCheckStates.entrySet () )
-            {
-                final CheckState state = entry.getValue ();
-                if ( state == CheckState.mixed || state == CheckState.checked )
-                {
-                    changes.add ( new CheckStateChange<E> ( entry.getKey (), state, CheckState.unchecked ) );
-                }
-            }
-        }
-
-        // Updating states
-        nodeCheckStates.clear ();
-        repaintVisibleTreeRect ();
-
-        // Informing about state changes
-        fireCheckStateChanged ( changes );
-    }
-
-    @Override
     public void checkAll ()
     {
         final List<E> allNodes = checkBoxTree.getAllNodes ();
@@ -430,6 +420,32 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
         fireCheckStateChanged ( changes );
     }
 
+    @Override
+    public void uncheckAll ()
+    {
+        // Collecting state changes
+        List<CheckStateChange<E>> changes = null;
+        if ( checkStateChangeListeners.size () > 0 )
+        {
+            changes = new ArrayList<CheckStateChange<E>> ( nodeCheckStates.size () );
+            for ( final Map.Entry<E, CheckState> entry : nodeCheckStates.entrySet () )
+            {
+                final CheckState state = entry.getValue ();
+                if ( state == CheckState.mixed || state == CheckState.checked )
+                {
+                    changes.add ( new CheckStateChange<E> ( entry.getKey (), state, CheckState.unchecked ) );
+                }
+            }
+        }
+
+        // Updating states
+        nodeCheckStates.clear ();
+        repaintVisibleTreeRect ();
+
+        // Informing about state changes
+        fireCheckStateChanged ( changes );
+    }
+
     /**
      * Returns next check state for check invertion action.
      *
@@ -442,10 +458,11 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
         {
             case unchecked:
                 return CheckState.checked;
-            case checked:
-                return CheckState.unchecked;
+
             case mixed:
                 return checkBoxTree.isCheckMixedOnToggle () ? CheckState.checked : CheckState.unchecked;
+
+            case checked:
             default:
                 return CheckState.unchecked;
         }
@@ -542,7 +559,7 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
      *
      * @param node    node to process
      * @param childOf node to compare parent nodes with
-     * @return true if the specified node is a child of another node or some of its child nodes, false otherwise
+     * @return {@code true} if the specified node is a child of another node or some of its child nodes, {@code false} otherwise
      */
     protected boolean isChildNode ( final E node, final E childOf )
     {
@@ -610,7 +627,7 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
         {
             for ( final CheckStateChangeListener<E> listener : CollectionUtils.copy ( checkStateChangeListeners ) )
             {
-                listener.checkStateChanged ( stateChanges );
+                listener.checkStateChanged ( checkBoxTree, stateChanges );
             }
         }
     }

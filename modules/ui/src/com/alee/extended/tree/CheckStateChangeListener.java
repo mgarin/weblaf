@@ -21,8 +21,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.util.List;
 
 /**
- * Special listener for WebCheckBoxTree check state changes.
+ * Special listener for {@link WebCheckBoxTree} check state changes.
  *
+ * @param <E> nodes type
  * @author Mikle Garin
  */
 
@@ -31,7 +32,8 @@ public interface CheckStateChangeListener<E extends DefaultMutableTreeNode>
     /**
      * Informs about single or multiply check state changes.
      *
+     * @param tree         {@link WebCheckBoxTree}
      * @param stateChanges check state changes list
      */
-    public void checkStateChanged ( List<CheckStateChange<E>> stateChanges );
+    public void checkStateChanged ( WebCheckBoxTree<E> tree, List<CheckStateChange<E>> stateChanges );
 }

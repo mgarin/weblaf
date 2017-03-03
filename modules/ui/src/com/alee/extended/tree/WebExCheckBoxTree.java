@@ -257,9 +257,9 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
     }
 
     /**
-     * Returns whether ex tree model is installed or not.
+     * Returns whether {@link ExTreeModel} is installed or not.
      *
-     * @return true if ex tree model is installed, false otherwise
+     * @return {@code true} if {@link ExTreeModel} is installed, {@code false} otherwise
      */
     public boolean isExModel ()
     {
@@ -347,7 +347,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * This method will have effect only if node exists.
      *
      * @param nodeId ID of the node to remove
-     * @return true if tree structure was changed by the operation, false otherwise
+     * @return {@code true} if tree structure was changed by the operation, {@code false} otherwise
      */
     public boolean removeNode ( final String nodeId )
     {
@@ -359,7 +359,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * This method will have effect only if node exists.
      *
      * @param node node to remove
-     * @return true if tree structure was changed by the operation, false otherwise
+     * @return {@code true} if tree structure was changed by the operation, {@code false} otherwise
      */
     public boolean removeNode ( final E node )
     {

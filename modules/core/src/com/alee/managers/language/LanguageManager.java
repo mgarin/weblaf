@@ -1369,7 +1369,7 @@ public class LanguageManager implements LanguageConstants
         dictionaries.add ( dictionary );
 
         // Updating global dictionary
-        LanguageUtils.mergeDictionary ( dictionary, globalDictionary );
+        LanguageUtils.mergeDictionary ( globalDictionary, dictionary );
 
         // Updating global cache
         updateCache ( dictionary );
@@ -1421,7 +1421,7 @@ public class LanguageManager implements LanguageConstants
             // Updating dictionaries
             for ( final Dictionary d : dictionaries )
             {
-                LanguageUtils.mergeDictionary ( d, globalDictionary );
+                LanguageUtils.mergeDictionary ( globalDictionary, d );
             }
 
             // Updating global cache

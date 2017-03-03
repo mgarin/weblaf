@@ -18,7 +18,6 @@
 package com.alee.utils;
 
 import com.alee.utils.compare.Filter;
-import com.alee.utils.text.DelayFormatException;
 import com.alee.utils.text.SimpleTextProvider;
 import com.alee.utils.text.TextProvider;
 import com.alee.utils.xml.ColorConverter;
@@ -198,6 +197,17 @@ public final class TextUtils
     public static String removeLineBreaks ( final String text )
     {
         return text.replaceAll ( "\\r\\n|\\r|\\n", "" );
+    }
+
+    /**
+     * Returns text with all spacings removed.
+     *
+     * @param text text to remove spacings from
+     * @return text with all spacings removed
+     */
+    public static String removeSpacings ( final String text )
+    {
+        return text.replaceAll ( " |\\t", "" );
     }
 
     /**
@@ -1130,122 +1140,5 @@ public final class TextUtils
         {
             return setting.toString ();
         }
-    }
-
-    /**
-     * Either returns delay retrieved from string or throws an exception if it cannot be parsed.
-     * Full string format is "Xd Yh Zm s ms" but you can skip any part of it. Yet you must specify atleast one value.
-     * For example string "2h 5s" will be a valid delay declaration and will be converted into (2*60*60*1000+5*1000) long value.
-     *
-     * @param delay string delay
-     * @return delay retrieved from string
-     * @throws com.alee.utils.text.DelayFormatException when delay cannot be parsed
-     */
-    public static long parseDelay ( final String delay ) throws DelayFormatException
-    {
-        try
-        {
-            long summ = 0;
-            final String[] parts = delay.split ( " " );
-            for ( final String part : parts )
-            {
-                if ( !TextUtils.isEmpty ( part ) )
-                {
-                    for ( int i = 0; i < part.length (); i++ )
-                    {
-                        final char ch = part.charAt ( i );
-                        if ( !Character.isDigit ( ch ) && ch != '.' )
-                        {
-                            final double time = Double.parseDouble ( part.substring ( 0, i ) );
-                            final PartType type = PartType.valueOf ( part.substring ( i ) );
-                            switch ( type )
-                            {
-                                case w:
-                                    summ += time * TimeUtils.msInWeek;
-                                    break;
-
-                                case d:
-                                    summ += time * TimeUtils.msInDay;
-                                    break;
-
-                                case h:
-                                    summ += time * TimeUtils.msInHour;
-                                    break;
-
-                                case m:
-                                    summ += time * TimeUtils.msInMinute;
-                                    break;
-
-                                case s:
-                                    summ += time * TimeUtils.msInSecond;
-                                    break;
-
-                                case ms:
-                                    summ += time;
-                                    break;
-
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-            return summ;
-        }
-        catch ( final Throwable e )
-        {
-            throw new DelayFormatException ( e );
-        }
-    }
-
-    /**
-     * Returns delay string representation.
-     * Delay cannot be less or equal to zero.
-     *
-     * @param delay delay to process
-     * @return delay string representation
-     */
-    public static String toStringDelay ( final long delay )
-    {
-        if ( delay <= 0 )
-        {
-            throw new IllegalArgumentException ( "Invalid delay: " + delay );
-        }
-
-        long time = delay;
-
-        final long w = time / TimeUtils.msInWeek;
-        time = time - w * TimeUtils.msInWeek;
-
-        final long d = time / TimeUtils.msInDay;
-        time = time - d * TimeUtils.msInDay;
-
-        final long h = time / TimeUtils.msInHour;
-        time = time - h * TimeUtils.msInHour;
-
-        final long m = time / TimeUtils.msInMinute;
-        time = time - m * TimeUtils.msInMinute;
-
-        final long s = time / TimeUtils.msInSecond;
-        time = time - s * TimeUtils.msInSecond;
-
-        final long ms = time;
-
-        final String stringDelay = ( w > 0 ? w + "w " : "" ) +
-                ( d > 0 ? d + "d " : "" ) +
-                ( h > 0 ? h + "h " : "" ) +
-                ( m > 0 ? m + "m " : "" ) +
-                ( s > 0 ? s + "s " : "" ) +
-                ( ms > 0 ? ms + "ms " : "" );
-
-        return stringDelay.trim ();
-    }
-
-    /**
-     * Time part type enumeration used to parse string delay.
-     */
-    private enum PartType
-    {
-        w, d, h, m, s, ms
     }
 }

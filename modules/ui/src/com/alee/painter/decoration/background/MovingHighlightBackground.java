@@ -23,7 +23,7 @@ import com.alee.global.StyleConstants;
 import com.alee.managers.animation.transition.*;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.GraphicsUtils;
-import com.alee.utils.TextUtils;
+import com.alee.utils.parsing.DurationUnits;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -110,14 +110,14 @@ public class MovingHighlightBackground<E extends JComponent, D extends IDecorati
 
                 // Adding delay if required
                 // Delay is added first to avoid repetitive animation
-                final long del = TextUtils.parseDelay ( delay );
+                final long del = DurationUnits.get ().fromString ( delay );
                 if ( del > 0 )
                 {
                     transitionsQueue.add ( new IdleTransition ( passes % 2 == 0 ? 0f : 1f, del ) );
                 }
 
                 // Adding passes
-                final long dur = TextUtils.parseDelay ( duration );
+                final long dur = DurationUnits.get ().fromString ( duration );
                 for ( int i = 0; i < passes; i++ )
                 {
                     final float from = i % 2 == 0 ? 0f : 1f;

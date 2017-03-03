@@ -18,8 +18,7 @@
 package com.alee.laf.tree;
 
 import javax.swing.*;
-import javax.swing.tree.*;
-import java.util.List;
+import javax.swing.tree.TreePath;
 
 /**
  * This class provides a set of utilities for trees.
@@ -31,7 +30,8 @@ import java.util.List;
 public final class TreeUtils
 {
     /**
-     * todo 1. Create proper state restoration for WebAsyncTree
+     * todo 1. Change this static utility class into {@link TreeState}-related class 
+     * todo 2. Proper state restoration for {@link com.alee.extended.tree.WebAsyncTree}
      */
 
     /**
@@ -211,47 +211,6 @@ public final class TreeUtils
             {
                 tree.removeSelectionPath ( path );
             }
-        }
-    }
-
-    /**
-     * Trims list of nodes by removing those which already have their parent node in the list.
-     *
-     * @param nodes nodes list to trim
-     */
-    public static <E extends DefaultMutableTreeNode> void trimNodes ( final List<E> nodes )
-    {
-        for ( int i = nodes.size () - 1; i >= 0; i-- )
-        {
-            final E node = nodes.get ( i );
-            for ( final E other : nodes )
-            {
-                if ( other != node && node.isNodeAncestor ( other ) )
-                {
-                    nodes.remove ( i );
-                    break;
-                }
-            }
-        }
-    }
-
-    /**
-     * Updates visual representation of all visible tree nodes.
-     * This will forces renderer to iterate through all those nodes and update the view appropriately.
-     *
-     * @param tree tree to update visible nodes for
-     */
-    public static void updateAllVisibleNodes ( final JTree tree )
-    {
-        final TreeModel model = tree.getModel ();
-        if ( model instanceof DefaultTreeModel )
-        {
-            ( ( DefaultTreeModel ) model ).nodeStructureChanged ( ( TreeNode ) model.getRoot () );
-        }
-        else
-        {
-            tree.revalidate ();
-            tree.repaint ();
         }
     }
 }
