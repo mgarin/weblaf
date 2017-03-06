@@ -233,7 +233,7 @@ public abstract class AbstractHoverBehavior<C extends JComponent> extends MouseA
     {
         if ( component.isShowing () && !DragManager.isDragging () )
         {
-            final Point mousePoint = CoreSwingUtils.getMousePoint ( component );
+            final Point mousePoint = CoreSwingUtils.getMouseLocation ( component );
             if ( component.getVisibleRect ().contains ( mousePoint ) )
             {
                 setHover ( true );

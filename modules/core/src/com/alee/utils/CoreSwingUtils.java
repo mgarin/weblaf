@@ -232,16 +232,38 @@ public class CoreSwingUtils
     }
 
     /**
-     * Returns mouse point relative to specified component.
+     * Returns pointer information.
+     * todo Add some sort of caching to enhance performance?
+     * todo For example keep it for 10 ms in case there will be multiple incoming requests
      *
-     * @param component component to process
-     * @return mouse point relative to specified component
+     * @return pointer information
      */
-    public static Point getMousePoint ( final Component component )
+    public static PointerInfo getPointerInfo ()
     {
-        final Point p = MouseInfo.getPointerInfo ().getLocation ();
+        return MouseInfo.getPointerInfo ();
+    }
+
+    /**
+     * Returns mouse location on the screen.
+     *
+     * @return mouse location on the screen
+     */
+    public static Point getMouseLocation ()
+    {
+        return getPointerInfo ().getLocation ();
+    }
+
+    /**
+     * Returns mouse location on the screen relative to specified component.
+     *
+     * @param component component
+     * @return mouse location on the screen relative to specified component
+     */
+    public static Point getMouseLocation ( final Component component )
+    {
+        final Point mouse = getMouseLocation ();
         final Point los = component.getLocationOnScreen ();
-        return new Point ( p.x - los.x, p.y - los.y );
+        return new Point ( mouse.x - los.x, mouse.y - los.y );
     }
 
     /**

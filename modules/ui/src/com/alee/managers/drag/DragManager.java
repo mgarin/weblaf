@@ -246,7 +246,7 @@ public final class DragManager
                  */
                 public Point getLocation ( final WebGlassPane gp, final DragSourceDragEvent dsde, final BufferedImage view )
                 {
-                    final Point mp = SwingUtils.getMousePoint ( gp );
+                    final Point mp = SwingUtils.getMouseLocation ( gp );
                     final Point vp = dragViewHandler.getViewRelativeLocation ( data, dsde, view );
                     return new Point ( mp.x + vp.x, mp.y + vp.y );
                 }

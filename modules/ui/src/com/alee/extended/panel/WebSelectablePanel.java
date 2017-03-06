@@ -4,6 +4,7 @@ import com.alee.extended.layout.ComponentPanelLayout;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.style.StyleId;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -124,7 +125,7 @@ public class WebSelectablePanel extends WebPanel
 
             private int getY ()
             {
-                return MouseInfo.getPointerInfo ().getLocation ().y;
+                return CoreSwingUtils.getMouseLocation ().y;
             }
         };
         addMouseListener ( mouseAdapter );

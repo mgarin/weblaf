@@ -22,6 +22,7 @@ import com.alee.managers.drag.DragListener;
 import com.alee.managers.drag.DragManager;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.CoreSwingUtils;
+import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -235,12 +236,27 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
      */
     protected void updateHover ()
     {
+        // Make sure component is visible on the screen and there is no ongoing D&D operation
         if ( component.isShowing () && !DragManager.isDragging () )
         {
-            final Point mousePoint = CoreSwingUtils.getMousePoint ( component );
-            if ( component.getVisibleRect ().contains ( mousePoint ) )
+            // Ensure that this component is the top one under the mouse
+            // We have to do that to avoid displaying hover on components which recieve update events while not directly being hovered
+            // This case can be easily reproduced by using scroll pane with hovering scroll bars - draging the bars should not trigger hover
+            final JRootPane window = SwingUtils.getRootPane ( component );
+            final Point windowPoint = CoreSwingUtils.getMouseLocation ( window );
+            final Component topComponentAt = SwingUtils.getTopComponentAt ( window, windowPoint.x, windowPoint.y );
+            if ( topComponentAt == component )
             {
-                updateHover ( mousePoint );
+                // Ensure that mouse is directly hovering component visible area
+                final Point mouseLocation = CoreSwingUtils.getMouseLocation ( component );
+                if ( component.getVisibleRect ().contains ( mouseLocation ) )
+                {
+                    updateHover ( mouseLocation );
+                }
+                else
+                {
+                    clearHover ();
+                }
             }
             else
             {

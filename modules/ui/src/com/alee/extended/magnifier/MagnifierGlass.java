@@ -483,7 +483,7 @@ public class MagnifierGlass extends JComponent
 
             // Filling-in image content
             // todo Use alpha background instead of Color.WHITE?
-            final Point mp = MouseInfo.getPointerInfo ().getLocation ();
+            final Point mp = CoreSwingUtils.getMouseLocation ();
             final Rectangle gb = SwingUtils.getBoundsOnScreen ( zoomProvider );
             if ( gb.contains ( mp ) )
             {

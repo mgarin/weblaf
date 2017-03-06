@@ -34,10 +34,7 @@ import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.BoundsType;
-import com.alee.utils.ColorUtils;
-import com.alee.utils.ImageUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.SystemUtils;
+import com.alee.utils.*;
 import com.alee.utils.swing.ChooserListener;
 
 import javax.swing.*;
@@ -424,7 +421,7 @@ public class WebColorChooserField extends WebTextField
                                 {
                                     if ( screen != null )
                                     {
-                                        final Point p = MouseInfo.getPointerInfo ().getLocation ();
+                                        final Point p = CoreSwingUtils.getMouseLocation ();
                                         screenshot = robot.createScreenCapture (
                                                 new Rectangle ( p.x - eyedropperImageSide / 2, p.y - eyedropperImageSide / 2,
                                                         eyedropperImageSide, eyedropperImageSide ) );
@@ -585,7 +582,7 @@ public class WebColorChooserField extends WebTextField
 
                     private void updateWindowLocation ()
                     {
-                        final Point p = MouseInfo.getPointerInfo ().getLocation ();
+                        final Point p = CoreSwingUtils.getMouseLocation ();
                         final Rectangle b = SystemUtils.getDeviceBounds ( p, true );
                         final int ww = window.getWidth ();
                         final int wh = window.getHeight ();

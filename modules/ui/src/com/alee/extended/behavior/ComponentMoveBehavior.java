@@ -18,6 +18,7 @@
 package com.alee.extended.behavior;
 
 import com.alee.managers.style.BoundsType;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -126,7 +127,7 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
                     if ( dragStartBounds != null && dragStartBounds.contains ( e.getPoint () ) )
                     {
                         dragging = true;
-                        initialPoint = MouseInfo.getPointerInfo ().getLocation ();
+                        initialPoint = CoreSwingUtils.getMouseLocation ();
                         initialBounds = dragged.getBounds ();
                         componentMoveStarted ( initialPoint, initialBounds.getLocation () );
                     }
@@ -144,7 +145,7 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
     {
         if ( dragging )
         {
-            final Point mouse = MouseInfo.getPointerInfo ().getLocation ();
+            final Point mouse = CoreSwingUtils.getMouseLocation ();
             final int x = initialBounds.x + ( mouse.x - initialPoint.x );
             final int y = initialBounds.y + ( mouse.y - initialPoint.y );
             final Point location = new Point ( x, y );
@@ -158,7 +159,7 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
     {
         if ( dragging )
         {
-            final Point mouse = MouseInfo.getPointerInfo ().getLocation ();
+            final Point mouse = CoreSwingUtils.getMouseLocation ();
             final Point location = dragged.getLocation ();
             dragging = false;
             dragged = null;

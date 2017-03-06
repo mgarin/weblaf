@@ -1669,7 +1669,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         // Mouse coordinates
         if ( showRulerCursorPosition || showAreaCursorPosition )
         {
-            final Point mouse = SwingUtils.getMousePoint ( this );
+            final Point mouse = SwingUtils.getMouseLocation ( this );
             if ( mouse.x > vr.x + RULER_LENGTH && mouse.x < vr.x + vr.width &&
                     mouse.y > vr.y + RULER_LENGTH && mouse.y < vr.y + vr.height )
             {

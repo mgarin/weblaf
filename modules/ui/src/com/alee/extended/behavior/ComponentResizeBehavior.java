@@ -19,6 +19,7 @@ package com.alee.extended.behavior;
 
 import com.alee.api.jdk.Function;
 import com.alee.api.data.CompassDirection;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -222,7 +223,7 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
             }
 
             // Calculating new resulting bounds
-            final Point ml = MouseInfo.getPointerInfo ().getLocation ();
+            final Point ml = CoreSwingUtils.getMouseLocation ();
             final Point shift = new Point ( ml.x - initialPoint.x, ml.y - initialPoint.y );
             final Rectangle newBounds = new Rectangle ( initialBounds );
             switch ( currentDirection )

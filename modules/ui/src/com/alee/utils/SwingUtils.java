@@ -486,21 +486,44 @@ public final class SwingUtils extends CoreSwingUtils
      * Returns top component inside the specified container component at the specified point.
      *
      * @param component container component to process
-     * @param x         X coordinate
-     * @param y         Y coordinate
+     * @param point     point on the component
+     * @return top component inside the specified container component at the specified point
+     */
+    public static Component getTopComponentAt ( final Component component, final Point point )
+    {
+        return getTopComponentAt ( component, point.x, point.y );
+    }
+
+    /**
+     * Returns top component inside the specified container component at the specified point.
+     *
+     * @param component container component to process
+     * @param x         X coordinate on the component
+     * @param y         Y coordinate on the component
      * @return top component inside the specified container component at the specified point
      */
     public static Component getTopComponentAt ( final Component component, final int x, final int y )
     {
-        final Component child = component.getComponentAt ( x, y );
-        if ( child == component || !( child instanceof Container ) )
+        if ( component != null && component.isVisible () )
         {
-            return component;
+            if ( component instanceof Container )
+            {
+                final Container container = ( Container ) component;
+                for ( int i = 0; i < container.getComponentCount (); i++ )
+                {
+                    final Component child = container.getComponent ( i );
+                    final Component topInChild = getTopComponentAt ( child, x - child.getX (), y - child.getY () );
+                    if ( topInChild != null )
+                    {
+                        return topInChild;
+                    }
+                }
+            }
+            return component.contains ( x, y ) ? component : null;
         }
         else
         {
-            final Rectangle b = child.getBounds ();
-            return getTopComponentAt ( child, x - b.x, y - b.y );
+            return null;
         }
     }
 
