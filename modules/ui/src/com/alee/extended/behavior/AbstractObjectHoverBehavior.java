@@ -244,7 +244,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
             // This case can be easily reproduced by using scroll pane with hovering scroll bars - draging the bars should not trigger hover
             final JRootPane window = SwingUtils.getRootPane ( component );
             final Point windowPoint = CoreSwingUtils.getMouseLocation ( window );
-            final Component topComponentAt = SwingUtils.getTopComponentAt ( window, windowPoint.x, windowPoint.y );
+            final Component topComponentAt = SwingUtils.getTopComponentAt ( window, windowPoint );
             if ( topComponentAt == component )
             {
                 // Ensure that mouse is directly hovering component visible area

@@ -87,7 +87,7 @@ public final class ComponentInspectBehavior implements Behavior
                     // Limiting affected area of UI elements by the root
                     final MouseEvent mouseEvent = ( MouseEvent ) event;
                     final Component source = ( Component ) event.getSource ();
-                    final Component component = SwingUtils.getTopComponentAt ( source, mouseEvent.getX (), mouseEvent.getY () );
+                    final Component component = SwingUtils.getTopComponentAt ( source, mouseEvent.getPoint () );
                     if ( SwingUtils.isAncestorOf ( ComponentInspectBehavior.this.root, component ) )
                     {
                         // Performing on-event actions
