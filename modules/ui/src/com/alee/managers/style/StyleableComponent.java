@@ -291,7 +291,7 @@ public enum StyleableComponent implements IconSupport, TitleSupport
     {
         final Class type = ReflectUtils.getClassSafely ( UIManager.getString ( getUIClassID () ) );
         final Class defaultType = ReflectUtils.getClassSafely ( getDefaultUIClass () );
-        return ReflectUtils.isAssignable ( defaultType, type ) ? type : defaultType;
+        return type !=null && ReflectUtils.isAssignable ( defaultType, type ) ? type : defaultType;
     }
 
     /**
