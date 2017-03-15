@@ -17,21 +17,20 @@
 
 package com.alee.api.merge.type;
 
+import com.alee.api.merge.Merge;
+import com.alee.api.merge.MergePolicy;
+
 /**
- * Objects merge restriction policy.
+ * Allows merge of any objects.
  *
  * @author Mikle Garin
- * @see com.alee.api.merge.Merge
  */
 
-public interface MergePolicy
+public final class AnyTypeMergePolicy implements MergePolicy
 {
-    /**
-     * Returns whether or not objects could be merged.
-     *
-     * @param object base object
-     * @param merged object to merge
-     * @return {@code true} if objects can be merged, {@code false} otherwise
-     */
-    public boolean accept ( Object object, Object merged );
+    @Override
+    public boolean accept ( final Merge merge, final Object object, final Object merged )
+    {
+        return true;
+    }
 }

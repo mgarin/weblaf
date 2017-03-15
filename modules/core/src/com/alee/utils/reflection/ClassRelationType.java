@@ -80,7 +80,17 @@ public enum ClassRelationType
      */
     public boolean isUnrelated ()
     {
-        return this == DESCENDANT;
+        return this == UNRELATED;
+    }
+
+    /**
+     * Returns whether or not classes are related.
+     *
+     * @return {@code true} if classes are related, {@code false} otherwise
+     */
+    public boolean isRelated ()
+    {
+        return this != UNRELATED;
     }
 
     /**

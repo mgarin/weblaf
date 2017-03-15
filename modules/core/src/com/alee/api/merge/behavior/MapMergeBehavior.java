@@ -18,11 +18,12 @@
 package com.alee.api.merge.behavior;
 
 import com.alee.api.merge.Merge;
+import com.alee.api.merge.MergeBehavior;
 
 import java.util.Map;
 
 /**
- * {@link Map} objects merge behavior.
+ * {@link Map} merge behavior.
  * Only elements under the same keys will be merged.
  * Non-existing elements will simply be added into existing map.
  *
@@ -31,8 +32,12 @@ import java.util.Map;
 
 public final class MapMergeBehavior implements MergeBehavior
 {
+    /**
+     * todo 1. Provide a different merge behavior similar to {@link ListMergeBehavior} for {@link java.util.LinkedHashMap}
+     */
+
     @Override
-    public boolean supports ( final Object object, final Object merged )
+    public boolean supports ( final Merge merge, final Object object, final Object merged )
     {
         return object instanceof Map && merged instanceof Map;
     }

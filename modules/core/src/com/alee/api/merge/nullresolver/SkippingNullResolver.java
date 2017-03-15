@@ -15,23 +15,22 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.api.merge.type;
+package com.alee.api.merge.nullresolver;
 
 import com.alee.api.merge.Merge;
-import com.alee.api.merge.MergePolicy;
-import com.alee.utils.reflection.ClassRelationType;
+import com.alee.api.merge.MergeNullResolver;
 
 /**
- * Restricts merge to objects with the same class type only.
+ * Overwrites base object only if merged object is not {@code null}.
  *
  * @author Mikle Garin
  */
 
-public final class ExactTypeMergePolicy implements MergePolicy
+public final class SkippingNullResolver implements MergeNullResolver
 {
     @Override
-    public boolean accept ( final Merge merge, final Object object, final Object merged )
+    public <T> T resolve ( final Merge merge, final Object object, final Object merged )
     {
-        return ClassRelationType.of ( object, merged ).isSame ();
+        return ( T ) ( merged != null ? merged : object );
     }
 }

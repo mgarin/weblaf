@@ -22,16 +22,16 @@ import com.alee.api.merge.MergePolicy;
 import com.alee.utils.reflection.ClassRelationType;
 
 /**
- * Restricts merge to objects with the same class type only.
- *
+ * Restricts merge to objects with related class types only.
+ * 
  * @author Mikle Garin
  */
 
-public final class ExactTypeMergePolicy implements MergePolicy
+public final class RelatedTypeMergePolicy implements MergePolicy
 {
     @Override
     public boolean accept ( final Merge merge, final Object object, final Object merged )
     {
-        return ClassRelationType.of ( object, merged ).isSame ();
+        return ClassRelationType.of ( object, merged ).isRelated ();
     }
 }

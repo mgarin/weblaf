@@ -18,28 +18,33 @@
 package com.alee.api.merge.behavior;
 
 import com.alee.api.merge.Merge;
+import com.alee.api.merge.MergeBehavior;
 
 import java.lang.reflect.Array;
 
 /**
- * Arrays merge behavior.
- * Only elements under the same indices will be merged.
+ * {@link Array} merge behavior by their element indices.
+ * Only elements under the same indices will be merged, everything else will be added at the end of array.
  * If existing array is smaller than merged array new array will be created for the merge result.
  * Also new array will be created for the merge result if existing and merged array component types are inconsistent.
  *
  * @author Mikle Garin
  */
 
-public final class ArrayMergeBehavior implements MergeBehavior
+public final class IndexArrayMergeBehavior implements MergeBehavior
 {
+    /**
+     * todo 1. Provide a different merge behavior similar to {@link ListMergeBehavior}
+     */
+
     @Override
-    public boolean supports ( final Object object, final Object merged )
+    public boolean supports ( final Merge merge, final Object object, final Object merged )
     {
         return object.getClass ().isArray () && merged.getClass ().isArray ();
     }
 
     @Override
-    public <T> T  merge ( final Merge merge, final Object object, final Object merged )
+    public <T> T merge ( final Merge merge, final Object object, final Object merged )
     {
         final int el = Array.getLength ( object );
         final int ml = Array.getLength ( merged );
@@ -49,10 +54,23 @@ public final class ArrayMergeBehavior implements MergeBehavior
         final Object result = et == mt && el >= ml ? object : Array.newInstance ( type, ml );
         for ( int i = 0; i < ml; i++ )
         {
-            final Object ev = Array.get ( object, i );
-            final Object mv = Array.get ( merged, i );
-            Array.set ( result, i, merge.merge ( ev, mv ) );
+            if ( i < el && i < ml )
+            {
+                final Object ev = Array.get ( object, i );
+                final Object mv = Array.get ( merged, i );
+                Array.set ( result, i, merge.merge ( ev, mv ) );
+            }
+            else if ( i < el )
+            {
+                final Object ev = Array.get ( object, i );
+                Array.set ( result, i, ev );
+            }
+            else
+            {
+                final Object mv = Array.get ( merged, i );
+                Array.set ( result, i, mv );
+            }
         }
-        return (T)result;
+        return ( T ) result;
     }
 }

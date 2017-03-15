@@ -19,6 +19,7 @@ package com.alee.api.merge.behavior;
 
 import com.alee.api.Mergeable;
 import com.alee.api.merge.Merge;
+import com.alee.api.merge.MergeBehavior;
 
 /**
  * {@link Mergeable} objects merge behavior.
@@ -29,7 +30,7 @@ import com.alee.api.merge.Merge;
 public final class MergeableMergeBehavior implements MergeBehavior
 {
     @Override
-    public boolean supports ( final Object object, final Object merged )
+    public boolean supports ( final Merge merge, final Object object, final Object merged )
     {
         return object instanceof Mergeable && merged instanceof Mergeable;
     }

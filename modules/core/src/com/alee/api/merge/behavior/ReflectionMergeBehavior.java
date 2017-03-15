@@ -19,6 +19,7 @@ package com.alee.api.merge.behavior;
 
 import com.alee.api.Overwriting;
 import com.alee.api.merge.Merge;
+import com.alee.api.merge.MergeBehavior;
 import com.alee.api.merge.MergeException;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ReflectUtils;
@@ -26,13 +27,13 @@ import com.alee.utils.reflection.ClassRelationType;
 import com.alee.utils.reflection.ModifierType;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Merge behavior for any types of {@link Object}.
+ * Smart merge behavior for any types of {@link Object} with related class types.
  *
  * @author Mikle Garin
+ * @see ClassRelationType#isRelated()
  */
 
 public final class ReflectionMergeBehavior implements MergeBehavior
@@ -40,7 +41,7 @@ public final class ReflectionMergeBehavior implements MergeBehavior
     /**
      * Modifiers of fields to ignore.
      */
-    private final ArrayList<ModifierType> ignoredModifiers;
+    private final List<ModifierType> ignoredModifiers;
 
     /**
      * Constructs new {@link ReflectionMergeBehavior} ignoring static and transient fields.
@@ -62,21 +63,20 @@ public final class ReflectionMergeBehavior implements MergeBehavior
     }
 
     @Override
-    public boolean supports ( final Object object, final Object merged )
+    public boolean supports ( final Merge merge, final Object object, final Object merged )
     {
-        return !ClassRelationType.of ( object, merged ).isUnrelated ();
+        return ClassRelationType.of ( object, merged ).isRelated ();
     }
 
     @Override
     public <T> T merge ( final Merge merge, final Object object, final Object merged )
     {
-        // Resolving class relations
-        final Class<?> objectClass = object.getClass ();
-        final Class<?> mergedClass = merged.getClass ();
-        final ClassRelationType relation = ClassRelationType.of ( objectClass, mergedClass );
+        // Resolving object classes relation
+        final ClassRelationType relation = ClassRelationType.of ( object, merged );
 
         // Resolving fields that should be merged
-        final Class<?> fieldsClass = relation.isSame () || relation.isAncestor () ? objectClass : mergedClass;
+        // This is required to avoid modifying inexistant object fields
+        final Class<?> fieldsClass = relation.isAncestor () ? object.getClass () : merged.getClass ();
         final List<Field> fields = ReflectUtils.getFields ( fieldsClass );
 
         // Continue only if there are any fields to merge
@@ -109,16 +109,19 @@ public final class ReflectionMergeBehavior implements MergeBehavior
 
                 try
                 {
+                    // Ensure we can access field value
+                    field.setAccessible ( true );
+
                     // Resolving merge result
                     final Object mergeResult;
                     if ( overwrite )
                     {
-                        // Overwriting value
+                        // Overwriting value if requested
                         mergeResult = field.get ( merged );
                     }
                     else
                     {
-                        // Merging values
+                        // Merging non-primitive values
                         final Object objectValue = field.get ( object );
                         final Object mergedValue = field.get ( merged );
                         mergeResult = mergedValue != null ? merge.merge ( objectValue, mergedValue ) : objectValue;
@@ -127,10 +130,11 @@ public final class ReflectionMergeBehavior implements MergeBehavior
                     // Saving merged value
                     field.set ( object, mergeResult );
                 }
-                catch ( final IllegalAccessException e )
+                catch ( final Throwable e )
                 {
                     // Throwing merge exception
-                    throw new MergeException ( "Unable to merge field " + field + " values for objects " + object + " and " + merged, e );
+                    final String message = "Unable to merge field {%s} values for objects {%s} and {%s}";
+                    throw new MergeException ( String.format ( message, field, object, merged ), e );
                 }
             }
         }

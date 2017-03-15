@@ -15,37 +15,29 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.api.merge.behavior;
+package com.alee.api.merge;
 
-import com.alee.api.merge.Merge;
+import java.io.Serializable;
 
 /**
- * Objects merge behavior.
+ * Object merge {@code null} case resolver.
+ * It is asked to choose one of the specified objects.
  *
  * @author Mikle Garin
  * @see Merge
  */
 
-public interface MergeBehavior
+public interface MergeNullResolver extends Serializable
 {
     /**
-     * Returns whether or not this behavior supports specified objects merge.
-     *
-     * @param object base object
-     * @param merged object to merge
-     * @return {@code true} if this behavior supports specified objects merge, {@code false} otherwise
-     */
-    public boolean supports ( Object object, Object merged );
-
-    /**
-     * Performs merge of the two provided objects and returns resulting object.
-     * Depending on the case it might be one of the two provided objects or their merge result.
+     * Returns one of the specified objects.
+     * One of the passed objects will always be {@code null}.
      *
      * @param merge  merge algorithm
      * @param object base object
      * @param merged object to merge
      * @param <T>    resulting object type
-     * @return merge result
+     * @return either {@code object} or {@code merged} object
      */
-    public <T> T merge ( Merge merge, Object object, Object merged );
+    public <T> T resolve ( Merge merge, Object object, Object merged );
 }

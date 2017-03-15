@@ -15,23 +15,27 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.api.merge.type;
+package com.alee.api.merge;
 
-import com.alee.api.merge.Merge;
-import com.alee.api.merge.MergePolicy;
-import com.alee.utils.reflection.ClassRelationType;
+import java.io.Serializable;
 
 /**
- * Restricts merge to objects with the same class type only.
+ * Objects merge restriction policy.
+ * It is asked whether or not specified objects can be merged.
  *
  * @author Mikle Garin
+ * @see com.alee.api.merge.Merge
  */
 
-public final class ExactTypeMergePolicy implements MergePolicy
+public interface MergePolicy extends Serializable
 {
-    @Override
-    public boolean accept ( final Merge merge, final Object object, final Object merged )
-    {
-        return ClassRelationType.of ( object, merged ).isSame ();
-    }
+    /**
+     * Returns whether or not specified objects can be merged.
+     *
+     * @param merge  merge algorithm
+     * @param object base object
+     * @param merged object to merge
+     * @return {@code true} if specified objects can be merged, {@code false} otherwise
+     */
+    public boolean accept ( Merge merge, Object object, Object merged );
 }

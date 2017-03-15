@@ -19,12 +19,13 @@ package com.alee.api.merge.behavior;
 
 import com.alee.api.Identifiable;
 import com.alee.api.merge.Merge;
+import com.alee.api.merge.MergeBehavior;
 import com.alee.utils.CompareUtils;
 
 import java.util.List;
 
 /**
- * {@link List} objects merge behavior.
+ * Smart {@link List} merge behavior that tracks `Identifiable` elements
  * It will attempt to find identifiable elements in list and merge them.
  * Other elements will simply be added to the end of the list in provided order.
  * This is the best way we can handle list elements merge without any additional information on the elements
@@ -34,8 +35,13 @@ import java.util.List;
 
 public final class ListMergeBehavior implements MergeBehavior
 {
+    /**
+     * todo 1. Merging two lists of Identifiable elements gives unexpected results (https://github.com/mgarin/weblaf/issues/448)
+     * todo 2. Provide a simple lists merge behavior similar to {@link IndexArrayMergeBehavior}
+     */
+
     @Override
-    public boolean supports ( final Object object, final Object merged )
+    public boolean supports ( final Merge merge, final Object object, final Object merged )
     {
         return object instanceof List && merged instanceof List;
     }

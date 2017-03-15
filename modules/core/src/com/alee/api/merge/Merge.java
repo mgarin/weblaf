@@ -18,9 +18,10 @@
 package com.alee.api.merge;
 
 import com.alee.api.merge.behavior.*;
+import com.alee.api.merge.nullresolver.SkippingNullResolver;
 import com.alee.api.merge.type.ExactTypeMergePolicy;
-import com.alee.api.merge.type.MergePolicy;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,28 +30,36 @@ import java.util.List;
  * It can be customized through the settings provided in its constructor once on creation.
  *
  * @author Mikle Garin
+ * @see MergeNullResolver
  * @see MergePolicy
  * @see MergeBehavior
  */
 
-public final class Merge
+public final class Merge implements Serializable
 {
     /**
      * Most common merge algorithm which only merges objects of the same type.
      */
-    public static Merge EXACT = new Merge ( false, new ExactTypeMergePolicy (), new MergeableMergeBehavior (), new ArrayMergeBehavior (),
-            new MapMergeBehavior (), new ListMergeBehavior (), new ReflectionMergeBehavior () );
+    public static Merge EXACT = new Merge (
+            new SkippingNullResolver (),
+            new ExactTypeMergePolicy (),
+            new BasicMergeBehavior (),
+            new MergeableMergeBehavior (),
+            new IndexArrayMergeBehavior (),
+            new MapMergeBehavior (),
+            new ListMergeBehavior (),
+            new ReflectionMergeBehavior ()
+    );
 
     /**
-     * Whether or not should merge {@code null} values on top of non-{@code null} ones.
+     * Object merge {@code null} case resolver.
      */
-    private final boolean replaceWithNulls;
+    private final MergeNullResolver nullResolver;
 
     /**
      * Policy which defines whether objects can be merged or not on a global level.
-     * This interface implementation works pretty much as a condition allowing two objects to be merged.
      */
-    private final MergePolicy mergePolicy;
+    private final MergePolicy policy;
 
     /**
      * List of behaviors taking part in this merge algorithm instance.
@@ -61,27 +70,27 @@ public final class Merge
     /**
      * Constructs new merge algorithm.
      *
-     * @param replaceWithNulls whether or not should merge {@code null} values on top of non-{@code null} ones
-     * @param mergePolicy      policy which defines whether objects can be merged or not on a global level
-     * @param behaviors        behaviors taking part in this merge algorithm instance
+     * @param nullResolver object merge {@code null} case resolver
+     * @param policy       policy which defines whether objects can be merged or not on a global level
+     * @param behaviors    behaviors taking part in this merge algorithm instance
      */
-    public Merge ( final boolean replaceWithNulls, final MergePolicy mergePolicy, final MergeBehavior... behaviors )
+    public Merge ( final MergeNullResolver nullResolver, final MergePolicy policy, final MergeBehavior... behaviors )
     {
-        this ( replaceWithNulls, mergePolicy, Arrays.asList ( behaviors ) );
+        this ( nullResolver, policy, Arrays.asList ( behaviors ) );
     }
 
     /**
      * Constructs new merge algorithm.
      *
-     * @param replaceWithNulls whether or not should merge {@code null} values on top of non-{@code null} ones
-     * @param mergePolicy      policy which defines whether objects can be merged or not on a global level
-     * @param behaviors        behaviors taking part in this merge algorithm instance
+     * @param nullResolver object merge {@code null} case resolver
+     * @param policy       policy which defines whether objects can be merged or not on a global level
+     * @param behaviors    behaviors taking part in this merge algorithm instance
      */
-    public Merge ( final boolean replaceWithNulls, final MergePolicy mergePolicy, final List<MergeBehavior> behaviors )
+    public Merge ( final MergeNullResolver nullResolver, final MergePolicy policy, final List<MergeBehavior> behaviors )
     {
         super ();
-        this.replaceWithNulls = replaceWithNulls;
-        this.mergePolicy = mergePolicy;
+        this.nullResolver = nullResolver;
+        this.policy = policy;
         this.behaviors = behaviors;
     }
 
@@ -100,35 +109,27 @@ public final class Merge
         if ( object != null && merged != null )
         {
             // Checking merge possibility
-            if ( mergePolicy.accept ( object, merged ) )
+            if ( policy.accept ( this, object, merged ) )
             {
                 // Trying to find fitting merge behavior
                 for ( final MergeBehavior behavior : behaviors )
                 {
-                    if ( behavior.supports ( object, merged ) )
+                    // Checking that behavior supports objects
+                    if ( behavior.supports ( this, object, merged ) )
                     {
+                        // Executing merge behavior
                         return ( T ) behavior.merge ( this, object, merged );
                     }
                 }
+            }
 
-                // Simply replacing value
-                return ( T ) merged;
-            }
-            else
-            {
-                // Simply replacing value
-                return ( T ) merged;
-            }
-        }
-        else if ( merged != null || replaceWithNulls )
-        {
-            // Replacing value
+            // Simply replacing value
             return ( T ) merged;
         }
         else
         {
-            // Returning existing value
-            return ( T ) object;
+            // Resolving null case outcome
+            return nullResolver.resolve ( this, object, merged );
         }
     }
 }
