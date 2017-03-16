@@ -23,11 +23,15 @@ import java.io.Serializable;
  * Objects merge behavior.
  * It is asked to perform merge if it {@link #supports(Merge, Object, Object)} provided objects.
  *
+ * @param <O> base object type
+ * @param <M> merged object type
+ * @param <R> resulting object type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
  * @see Merge
  */
 
-public interface MergeBehavior extends Serializable
+public interface MergeBehavior<O, M, R> extends Serializable
 {
     /**
      * Returns whether or not this behavior supports specified objects merge.
@@ -46,8 +50,7 @@ public interface MergeBehavior extends Serializable
      * @param merge  merge algorithm
      * @param object base object
      * @param merged object to merge
-     * @param <T>    resulting object type
      * @return merge result
      */
-    public <T> T merge ( Merge merge, Object object, Object merged );
+    public R merge ( Merge merge, O object, M merged );
 }

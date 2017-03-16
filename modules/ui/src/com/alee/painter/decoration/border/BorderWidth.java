@@ -17,7 +17,7 @@
 
 package com.alee.painter.decoration.border;
 
-import com.alee.api.Mergeable;
+import com.alee.api.merge.Mergeable;
 import com.alee.utils.MergeUtils;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 

@@ -17,7 +17,7 @@
 
 package com.alee.painter.decoration;
 
-import com.alee.api.Mergeable;
+import com.alee.api.merge.Mergeable;
 import com.alee.utils.MergeUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;

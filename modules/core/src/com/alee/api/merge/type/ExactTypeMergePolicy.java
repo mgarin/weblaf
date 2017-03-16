@@ -25,6 +25,8 @@ import com.alee.utils.reflection.ClassRelationType;
  * Restricts merge to objects with the same class type only.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
+ * @see Merge
  */
 
 public final class ExactTypeMergePolicy implements MergePolicy

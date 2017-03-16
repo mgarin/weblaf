@@ -431,8 +431,8 @@ public final class ReflectUtils
      * This method allows to access and modify even private fields.
      *
      * @param classType type of the class where static field can be located
-     * @param field  object field
-     * @param value  field value
+     * @param field     object field
+     * @param value     field value
      * @return true if value was applied successfully, false otherwise
      */
     public static boolean setStaticFieldValueSafely ( final Class classType, final String field, final Object value )
@@ -1101,17 +1101,17 @@ public final class ReflectUtils
      */
     public static Method getFieldGetter ( final Class aClass, final String field )
     {
-        // Try "get" method first
+        // Look for "get" method
         final Method get = getMethodSafely ( aClass, getGetterMethodName ( field ) );
         if ( get != null )
         {
+            // Return "get" method
             return get;
         }
         else
         {
-            // Try "is" method second
-            final Method is = getMethodSafely ( aClass, getIsGetterMethodName ( field ) );
-            return is != null ? is : null;
+            // Return "is" method
+            return getMethodSafely ( aClass, getIsGetterMethodName ( field ) );
         }
     }
 
@@ -1483,6 +1483,38 @@ public final class ReflectUtils
             }
         }
         return false;
+    }
+
+    /**
+     * Returns whether or not specified object has primitive type.
+     * Specified {@code object} must never be {@code null}.
+     *
+     * @param object object to check
+     * @return {@code true} if specified object has primitive type, {@code false} otherwise
+     */
+    public static boolean isPrimitive ( final Object object )
+    {
+        return isPrimitive ( object.getClass () );
+    }
+
+    /**
+     * Returns whether or not specified class type is primitive.
+     * Specified {@code clazz} must never be {@code null}.
+     *
+     * @param clazz class type to check
+     * @return {@code true} if specified class type is primitive, {@code false} otherwise
+     */
+    public static boolean isPrimitive ( final Class<?> clazz )
+    {
+        return clazz.isPrimitive () ||
+                Boolean.class.isAssignableFrom ( clazz ) ||
+                Integer.class.isAssignableFrom ( clazz ) ||
+                Character.class.isAssignableFrom ( clazz ) ||
+                Byte.class.isAssignableFrom ( clazz ) ||
+                Short.class.isAssignableFrom ( clazz ) ||
+                Long.class.isAssignableFrom ( clazz ) ||
+                Float.class.isAssignableFrom ( clazz ) ||
+                Double.class.isAssignableFrom ( clazz );
     }
 
     /**

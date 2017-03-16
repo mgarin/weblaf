@@ -18,7 +18,7 @@
 package com.alee.painter.decoration.shadow;
 
 import com.alee.api.Identifiable;
-import com.alee.api.Mergeable;
+import com.alee.api.merge.Mergeable;
 import com.alee.api.Overwriting;
 import com.alee.painter.decoration.DecoratonElement;
 import com.alee.painter.decoration.IDecoration;

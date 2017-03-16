@@ -33,10 +33,12 @@ import java.util.List;
  * Smart merge behavior for any types of {@link Object} with related class types.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
+ * @see Merge
  * @see ClassRelationType#isRelated()
  */
 
-public final class ReflectionMergeBehavior implements MergeBehavior
+public final class ReflectionMergeBehavior implements MergeBehavior<Object, Object, Object>
 {
     /**
      * Modifiers of fields to ignore.
@@ -69,7 +71,7 @@ public final class ReflectionMergeBehavior implements MergeBehavior
     }
 
     @Override
-    public <T> T merge ( final Merge merge, final Object object, final Object merged )
+    public Object merge ( final Merge merge, final Object object, final Object merged )
     {
         // Resolving object classes relation
         final ClassRelationType relation = ClassRelationType.of ( object, merged );
@@ -137,8 +139,14 @@ public final class ReflectionMergeBehavior implements MergeBehavior
                     throw new MergeException ( String.format ( message, field, object, merged ), e );
                 }
             }
-        }
 
-        return ( T ) object;
+            // Return base object where we merged field values
+            return object;
+        }
+        else
+        {
+            // Simply return merged object
+            return merged;
+        }
     }
 }

@@ -28,11 +28,14 @@ import java.util.List;
 /**
  * Configurable merge algorithm.
  * It can be customized through the settings provided in its constructor once on creation.
+ * To merge any two objects using this class instance simply call {@link #merge(Object, Object)} method.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
  * @see MergeNullResolver
  * @see MergePolicy
  * @see MergeBehavior
+ * @see Mergeable
  */
 
 public final class Merge implements Serializable
@@ -129,7 +132,7 @@ public final class Merge implements Serializable
         else
         {
             // Resolving null case outcome
-            return nullResolver.resolve ( this, object, merged );
+            return ( T ) nullResolver.resolve ( this, object, merged );
         }
     }
 }

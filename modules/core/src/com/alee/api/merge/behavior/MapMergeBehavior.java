@@ -27,10 +27,13 @@ import java.util.Map;
  * Only elements under the same keys will be merged.
  * Non-existing elements will simply be added into existing map.
  *
+ * @param <T> {@link Map} type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
+ * @see Merge
  */
 
-public final class MapMergeBehavior implements MergeBehavior
+public final class MapMergeBehavior<T extends Map> implements MergeBehavior<T, T, T>
 {
     /**
      * todo 1. Provide a different merge behavior similar to {@link ListMergeBehavior} for {@link java.util.LinkedHashMap}
@@ -43,17 +46,16 @@ public final class MapMergeBehavior implements MergeBehavior
     }
 
     @Override
-    public <T> T merge ( final Merge merge, final Object object, final Object merged )
+    public T merge ( final Merge merge, final T object, final T merged )
     {
-        final Map<Object, Object> em = ( Map<Object, Object> ) object;
-        final Map<Object, Object> mm = ( Map<Object, Object> ) merged;
-        for ( final Map.Entry<Object, Object> entry : mm.entrySet () )
+        for ( final Object e : merged.entrySet () )
         {
-            final Object k = entry.getKey ();
-            final Object e = em.get ( k );
-            final Object v = entry.getValue ();
-            em.put ( k, merge.merge ( e, v ) );
+            final Map.Entry entry = ( Map.Entry ) e;
+            final Object key = entry.getKey ();
+            final Object value = entry.getValue ();
+            final Object baseValue = object.get ( key );
+            object.put ( key, merge.merge ( baseValue, value ) );
         }
-        return ( T ) em;
+        return ( T ) object;
     }
 }

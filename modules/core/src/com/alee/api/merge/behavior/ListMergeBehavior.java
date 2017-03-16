@@ -30,10 +30,13 @@ import java.util.List;
  * Other elements will simply be added to the end of the list in provided order.
  * This is the best way we can handle list elements merge without any additional information on the elements
  *
+ * @param <T> {@link List} type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
+ * @see Merge
  */
 
-public final class ListMergeBehavior implements MergeBehavior
+public final class ListMergeBehavior<T extends List> implements MergeBehavior<T, T, T>
 {
     /**
      * todo 1. Merging two lists of Identifiable elements gives unexpected results (https://github.com/mgarin/weblaf/issues/448)
@@ -47,11 +50,9 @@ public final class ListMergeBehavior implements MergeBehavior
     }
 
     @Override
-    public <T> T merge ( final Merge merge, final Object object, final Object merged )
+    public T merge ( final Merge merge, final T object, final T merged )
     {
-        final List el = ( List ) object;
-        final List ml = ( List ) merged;
-        for ( final Object mergedObject : ml )
+        for ( final Object mergedObject : merged )
         {
             // We only merge identifiable objects as there is no other way to ensure we really need to merge them
             // We don't really want to have two different objects of the same type with the same ID in one list
@@ -61,15 +62,15 @@ public final class ListMergeBehavior implements MergeBehavior
                 // Then we compare their IDs and merge them using the same algorithm if IDs are equal
                 final String mid = ( ( Identifiable ) mergedObject ).getId ();
                 boolean found = false;
-                for ( int j = 0; j < el.size (); j++ )
+                for ( int j = 0; j < object.size (); j++ )
                 {
-                    final Object existingObject = el.get ( j );
+                    final Object existingObject = object.get ( j );
                     if ( existingObject != null )
                     {
                         final String eid = ( ( Identifiable ) existingObject ).getId ();
                         if ( CompareUtils.equals ( eid, mid ) )
                         {
-                            el.set ( j, merge.merge ( existingObject, mergedObject ) );
+                            object.set ( j, merge.merge ( existingObject, mergedObject ) );
                             found = true;
                             break;
                         }
@@ -78,15 +79,15 @@ public final class ListMergeBehavior implements MergeBehavior
                 if ( !found )
                 {
                     // Simply adding object to the end of the list
-                    el.add ( mergedObject );
+                    object.add ( mergedObject );
                 }
             }
             else
             {
                 // Simply adding non-identifiable object to the end of the list
-                el.add ( mergedObject );
+                object.add ( mergedObject );
             }
         }
-        return ( T ) el;
+        return object;
     }
 }

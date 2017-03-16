@@ -22,6 +22,8 @@ package com.alee.api.merge;
  * It extends {@link RuntimeException} to allow throwing this exception while normal runtime.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
+ * @see Merge
  */
 
 public final class MergeException extends RuntimeException

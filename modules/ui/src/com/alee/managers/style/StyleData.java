@@ -528,7 +528,7 @@ public final class StyleData implements PropertyChangeListener
         // Resetting child IDs first
         if ( recursively && !CollectionUtils.isEmpty ( children ) )
         {
-            // We have to be careful here since resetting child styles might modify childs list
+            // We have to be careful here since resetting child styles might modify children list
             // That will actually happen more often than not since default styles are usually not structured
             for ( final WeakReference<JComponent> reference : CollectionUtils.copy ( children ) )
             {

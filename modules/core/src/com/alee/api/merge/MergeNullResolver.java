@@ -24,6 +24,7 @@ import java.io.Serializable;
  * It is asked to choose one of the specified objects.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
  * @see Merge
  */
 
@@ -36,8 +37,7 @@ public interface MergeNullResolver extends Serializable
      * @param merge  merge algorithm
      * @param object base object
      * @param merged object to merge
-     * @param <T>    resulting object type
      * @return either {@code object} or {@code merged} object
      */
-    public <T> T resolve ( Merge merge, Object object, Object merged );
+    public Object resolve ( Merge merge, Object object, Object merged );
 }

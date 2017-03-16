@@ -24,7 +24,8 @@ import java.io.Serializable;
  * It is asked whether or not specified objects can be merged.
  *
  * @author Mikle Garin
- * @see com.alee.api.merge.Merge
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
+ * @see Merge
  */
 
 public interface MergePolicy extends Serializable

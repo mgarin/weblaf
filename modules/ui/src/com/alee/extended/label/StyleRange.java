@@ -17,7 +17,7 @@
 
 package com.alee.extended.label;
 
-import com.alee.api.Mergeable;
+import com.alee.api.merge.Mergeable;
 import com.alee.utils.CollectionUtils;
 
 import java.awt.*;

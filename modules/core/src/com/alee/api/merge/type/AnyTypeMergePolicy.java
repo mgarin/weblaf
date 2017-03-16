@@ -24,6 +24,8 @@ import com.alee.api.merge.MergePolicy;
  * Allows merge of any objects.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
+ * @see Merge
  */
 
 public final class AnyTypeMergePolicy implements MergePolicy

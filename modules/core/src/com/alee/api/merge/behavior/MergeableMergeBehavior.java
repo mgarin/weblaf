@@ -17,17 +17,21 @@
 
 package com.alee.api.merge.behavior;
 
-import com.alee.api.Mergeable;
 import com.alee.api.merge.Merge;
 import com.alee.api.merge.MergeBehavior;
+import com.alee.api.merge.Mergeable;
 
 /**
  * {@link Mergeable} objects merge behavior.
  *
+ * @param <T> {@link Mergeable} type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
+ * @see Merge
+ * @see Mergeable
  */
 
-public final class MergeableMergeBehavior implements MergeBehavior
+public final class MergeableMergeBehavior<T extends Mergeable<T>> implements MergeBehavior<T, T, T>
 {
     @Override
     public boolean supports ( final Merge merge, final Object object, final Object merged )
@@ -36,8 +40,8 @@ public final class MergeableMergeBehavior implements MergeBehavior
     }
 
     @Override
-    public <T> T merge ( final Merge merge, final Object object, final Object merged )
+    public T merge ( final Merge merge, final T object, final T merged )
     {
-        return ( T ) ( ( Mergeable ) object ).merge ( ( Mergeable ) merged );
+        return object.merge ( merged );
     }
 }

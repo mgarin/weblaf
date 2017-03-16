@@ -19,21 +19,49 @@ package com.alee.api.merge.type;
 
 import com.alee.api.merge.Merge;
 import com.alee.api.merge.MergePolicy;
-import com.alee.utils.reflection.ClassRelationType;
+import com.alee.utils.CollectionUtils;
+
+import java.util.HashSet;
 
 /**
- * Restricts merge to objects with related class types only.
+ * Restricts merge to objects of the specified types only.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
  * @see Merge
  */
 
-public final class RelatedTypeMergePolicy implements MergePolicy
+public class SpecificTypesMergePolicy implements MergePolicy
 {
+    /**
+     * Accepted object types.
+     */
+    private final HashSet<Class<?>> types;
+
+    /**
+     * Constructs new {@link SpecificTypesMergePolicy}.
+     *
+     * @param types accepted object types
+     */
+    public SpecificTypesMergePolicy ( final Class<?>... types )
+    {
+        this ( CollectionUtils.asHashSet ( types ) );
+    }
+
+    /**
+     * Constructs new {@link SpecificTypesMergePolicy}.
+     *
+     * @param types accepted object types
+     */
+    public SpecificTypesMergePolicy ( final HashSet<Class<?>> types )
+    {
+        super ();
+        this.types = types;
+    }
+
     @Override
     public boolean accept ( final Merge merge, final Object object, final Object merged )
     {
-        return ClassRelationType.of ( object, merged ).isRelated ();
+        return types.contains ( object.getClass () ) && types.contains ( merged.getClass () );
     }
 }

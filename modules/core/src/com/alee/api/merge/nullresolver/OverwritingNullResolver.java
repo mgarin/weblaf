@@ -24,13 +24,15 @@ import com.alee.api.merge.MergeNullResolver;
  * Always overwrites base object.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
+ * @see Merge
  */
 
 public final class OverwritingNullResolver implements MergeNullResolver
 {
     @Override
-    public <T> T resolve ( final Merge merge, final Object object, final Object merged )
+    public Object resolve ( final Merge merge, final Object object, final Object merged )
     {
-        return ( T ) merged;
+        return merged;
     }
 }

@@ -19,7 +19,7 @@ package com.alee.utils;
 
 
 import com.alee.api.Identifiable;
-import com.alee.api.Mergeable;
+import com.alee.api.merge.Mergeable;
 import com.alee.managers.log.Log;
 
 import java.lang.reflect.Array;

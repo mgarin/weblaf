@@ -15,24 +15,23 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.api.merge.nullresolver;
-
-import com.alee.api.merge.Merge;
-import com.alee.api.merge.MergeNullResolver;
+package com.alee.api;
 
 /**
- * Overwrites base object only if merged object is not {@code null}.
+ * Basic conjunctions that can be used anywhere in the code.
  *
  * @author Mikle Garin
- * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
- * @see Merge
  */
 
-public final class SkippingNullResolver implements MergeNullResolver
+public enum Conjunction
 {
-    @Override
-    public Object resolve ( final Merge merge, final Object object, final Object merged )
-    {
-        return merged != null ? merged : object;
-    }
+    /**
+     * "And" conjunction.
+     */
+    AND,
+
+    /**
+     * "Or" conjunction.
+     */
+    OR
 }

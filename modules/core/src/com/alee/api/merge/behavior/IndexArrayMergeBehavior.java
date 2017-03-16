@@ -29,9 +29,11 @@ import java.lang.reflect.Array;
  * Also new array will be created for the merge result if existing and merged array component types are inconsistent.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
+ * @see Merge
  */
 
-public final class IndexArrayMergeBehavior implements MergeBehavior
+public final class IndexArrayMergeBehavior implements MergeBehavior<Object, Object, Object>
 {
     /**
      * todo 1. Provide a different merge behavior similar to {@link ListMergeBehavior}
@@ -44,7 +46,7 @@ public final class IndexArrayMergeBehavior implements MergeBehavior
     }
 
     @Override
-    public <T> T merge ( final Merge merge, final Object object, final Object merged )
+    public Object merge ( final Merge merge, final Object object, final Object merged )
     {
         final int el = Array.getLength ( object );
         final int ml = Array.getLength ( merged );
@@ -71,6 +73,6 @@ public final class IndexArrayMergeBehavior implements MergeBehavior
                 Array.set ( result, i, mv );
             }
         }
-        return ( T ) result;
+        return result;
     }
 }

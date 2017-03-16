@@ -536,12 +536,7 @@ public final class CollectionUtils
      */
     public static <T> Vector<T> toVector ( final Collection<T> collection )
     {
-        final Vector<T> vector = new Vector<T> ( collection.size () );
-        for ( final T element : collection )
-        {
-            vector.add ( element );
-        }
-        return vector;
+        return new Vector<T> ( collection );
     }
 
     /**
@@ -647,5 +642,31 @@ public final class CollectionUtils
             list.add ( supplier.get ( i ) );
         }
         return list;
+    }
+
+    /**
+     * Returns data converted into {@link HashSet}.
+     *
+     * @param data data
+     * @param <T>  data type
+     * @return data {@link HashSet}
+     */
+    public static <T> HashSet<T> asHashSet ( final Collection<T> data )
+    {
+        return new HashSet<T> ( data );
+    }
+
+    /**
+     * Returns data converted into {@link HashSet}.
+     *
+     * @param data data
+     * @param <T>  data type
+     * @return data {@link HashSet}
+     */
+    public static <T> HashSet<T> asHashSet ( final T... data )
+    {
+        final HashSet<T> set = new HashSet<T> ( data.length );
+        Collections.addAll ( set, data );
+        return set;
     }
 }

@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.api;
+package com.alee.api.merge;
 
 /**
  * This interface is an indicator of the fact that this class instances can be merged with each other.
@@ -23,10 +23,16 @@ package com.alee.api;
  *
  * @param <T> object type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
+ * @see Merge
  */
 
 public interface Mergeable<T extends Mergeable>
 {
+    /**
+     * todo 1. Pass {@link com.alee.api.merge.Merge} object in {@link #merge(Mergeable)} method
+     */
+
     /**
      * Performs merge of this object with another object of the same type.
      * Returns this object as a result of the performed merge.
