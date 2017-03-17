@@ -1540,4 +1540,29 @@ public final class ReflectUtils
             return containsInClassOrSuperclassName ( theClass.getSuperclass (), text );
         }
     }
+
+    /**
+     * Returns closest superclass for both of the specified classes.
+     *
+     * @param class1 first class
+     * @param class2 second class
+     * @return closest superclass for both of the specified classes
+     */
+    public static Class getClosestSuperclass ( final Class class1, final Class class2 )
+    {
+        if ( class1.isAssignableFrom ( class2 ) )
+        {
+            return class1;
+        }
+        else if ( class2.isAssignableFrom ( class1 ) )
+        {
+            return class2;
+        }
+        else
+        {
+            final Class super1 = class1.getSuperclass ();
+            final Class super2 = class2.getSuperclass ();
+            return getClosestSuperclass ( super1, super2 );
+        }
+    }
 }

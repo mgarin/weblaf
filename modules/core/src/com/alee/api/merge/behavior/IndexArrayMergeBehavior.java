@@ -19,6 +19,7 @@ package com.alee.api.merge.behavior;
 
 import com.alee.api.merge.Merge;
 import com.alee.api.merge.MergeBehavior;
+import com.alee.utils.ReflectUtils;
 
 import java.lang.reflect.Array;
 
@@ -48,13 +49,21 @@ public final class IndexArrayMergeBehavior implements MergeBehavior<Object, Obje
     @Override
     public Object merge ( final Merge merge, final Object object, final Object merged )
     {
+        // Calculating resulting array size
         final int el = Array.getLength ( object );
         final int ml = Array.getLength ( merged );
-        final Class<?> et = object.getClass ().getComponentType ();
-        final Class<?> mt = merged.getClass ().getComponentType ();
-        final Class<?> type = et == mt ? mt : Object.class;
-        final Object result = et == mt && el >= ml ? object : Array.newInstance ( type, ml );
-        for ( int i = 0; i < ml; i++ )
+        final int rl = Math.max ( el, ml );
+
+        // Determining resulting array type
+        final Class et = object.getClass ().getComponentType ();
+        final Class mt = merged.getClass ().getComponentType ();
+        final Class type = et == mt ? et : ReflectUtils.getClosestSuperclass ( et, mt );
+
+        // Picking resulting array instance
+        final Object result = et == mt && el >= ml ? object : Array.newInstance ( type, rl );
+
+        // Merging two arrays
+        for ( int i = 0; i < rl; i++ )
         {
             if ( i < el && i < ml )
             {
@@ -73,6 +82,7 @@ public final class IndexArrayMergeBehavior implements MergeBehavior<Object, Obje
                 Array.set ( result, i, mv );
             }
         }
+
         return result;
     }
 }
