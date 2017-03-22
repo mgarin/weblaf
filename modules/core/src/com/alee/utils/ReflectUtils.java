@@ -72,9 +72,10 @@ public final class ReflectUtils
      * Returns class for the specified canonical name.
      *
      * @param canonicalName class canonical name
+     * @param <T>           class type
      * @return class for the specified canonical name
      */
-    public static Class getClassSafely ( final String canonicalName )
+    public static <T> Class<T> getClassSafely ( final String canonicalName )
     {
         try
         {
@@ -94,12 +95,78 @@ public final class ReflectUtils
      * Returns class for the specified canonical name.
      *
      * @param canonicalName class canonical name
+     * @param <T>           class type
      * @return class for the specified canonical name
      * @throws java.lang.ClassNotFoundException if class was not found
      */
     public static <T> Class<T> getClass ( final String canonicalName ) throws ClassNotFoundException
     {
         return ( Class<T> ) Class.forName ( canonicalName );
+    }
+
+    /**
+     * Returns inner class with the specified name.
+     *
+     * @param fromClass      class to look for the inner class
+     * @param innerClassName inner class name
+     * @param <T>            inner class type
+     * @return inner class with the specified name
+     */
+    public static <T> Class<T> getInnerClassSafely ( final Class fromClass, final String innerClassName )
+    {
+        return getInnerClassSafely ( fromClass.getCanonicalName (), innerClassName );
+    }
+
+    /**
+     * Returns inner class with the specified name.
+     *
+     * @param fromClassName  name of the class to look for the inner class
+     * @param innerClassName inner class name
+     * @param <T>            inner class type
+     * @return inner class with the specified name
+     */
+    public static <T> Class<T> getInnerClassSafely ( final String fromClassName, final String innerClassName )
+    {
+        try
+        {
+            return getInnerClass ( fromClassName, innerClassName );
+        }
+        catch ( final Throwable e )
+        {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: getInnerClassSafely ( " + fromClassName + ", " + innerClassName + " )", e );
+            }
+            return null;
+        }
+    }
+
+    /**
+     * Returns inner class with the specified name.
+     *
+     * @param fromClass      class to look for the inner class
+     * @param innerClassName inner class name
+     * @param <T>            inner class type
+     * @return inner class with the specified name
+     * @throws java.lang.ClassNotFoundException if inner class was not found
+     */
+    public static <T> Class<T> getInnerClass ( final Class fromClass, final String innerClassName ) throws ClassNotFoundException
+    {
+        return getInnerClass ( fromClass.getCanonicalName (), innerClassName );
+    }
+
+    /**
+     * Returns inner class with the specified name.
+     *
+     * @param fromClassName  name of the class to look for the inner class
+     * @param innerClassName inner class name
+     * @param <T>            inner class type
+     * @return inner class with the specified name
+     * @throws java.lang.ClassNotFoundException if inner class was not found
+     */
+    public static <T> Class<T> getInnerClass ( final String fromClassName, final String innerClassName ) throws ClassNotFoundException
+    {
+        return getClass ( fromClassName + "$" + innerClassName );
     }
 
     /**
@@ -683,25 +750,6 @@ public final class ReflectUtils
     public static String[] getPackages ( final String packageName )
     {
         return packageName.split ( "\\." );
-    }
-
-    /**
-     * Returns inner class with the specified name.
-     *
-     * @param fromClass      class to look for the inner class
-     * @param innerClassName inner class name
-     * @return inner class with the specified name
-     */
-    public static Class getInnerClass ( final Class fromClass, final String innerClassName )
-    {
-        for ( final Class innerClass : fromClass.getDeclaredClasses () )
-        {
-            if ( getClassName ( innerClass ).equals ( innerClassName ) )
-            {
-                return innerClass;
-            }
-        }
-        return null;
     }
 
     /**

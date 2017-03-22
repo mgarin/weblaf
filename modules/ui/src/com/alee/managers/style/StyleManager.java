@@ -275,7 +275,8 @@ public final class StyleManager
      */
     public static Class<? extends Skin> setDefaultSkin ( final String skinClassName )
     {
-        return setDefaultSkin ( ReflectUtils.getClassSafely ( skinClassName ) );
+        final Class<? extends Skin> skinClass = ReflectUtils.getClassSafely ( skinClassName );
+        return setDefaultSkin ( skinClass );
     }
 
     /**

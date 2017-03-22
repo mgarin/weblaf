@@ -17,6 +17,7 @@
 
 package com.alee.laf.button;
 
+import com.alee.managers.log.Log;
 import com.alee.utils.LafLookup;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
@@ -69,10 +70,18 @@ public class WButtonListener implements MouseListener, MouseMotionListener, Focu
      */
     public static void loadActionMap ( final LazyActionMap map )
     {
-        // Using BasicButtonListener.Actions class instead of our own implementation due to proprietary APIs usage there
-        final Class actions = ReflectUtils.getInnerClass ( BasicButtonListener.class, "Actions" );
-        map.put ( ( Action ) ReflectUtils.createInstanceSafely ( actions, PRESSED ) );
-        map.put ( ( Action ) ReflectUtils.createInstanceSafely ( actions, RELEASED ) );
+        try
+        {
+            // Using BasicButtonListener.Actions class instead of our own implementation due to proprietary APIs usage there
+            final Class actionClass = ReflectUtils.getInnerClass ( BasicButtonListener.class, "Actions" );
+            map.put ( ( Action ) ReflectUtils.createInstanceSafely ( actionClass, PRESSED ) );
+            map.put ( ( Action ) ReflectUtils.createInstanceSafely ( actionClass, RELEASED ) );
+        }
+        catch ( final ClassNotFoundException e )
+        {
+            // Informing about inaccessible actions
+            Log.get ().error ( "Unable to initialize lazy actions for button" );
+        }
     }
 
     /**
