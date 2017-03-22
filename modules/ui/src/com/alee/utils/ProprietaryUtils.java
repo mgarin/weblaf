@@ -89,10 +89,8 @@ public final class ProprietaryUtils
     /**
      * Installs some proprietary L&amp;F defaults for proper text rendering.
      * Basically this method is a workaround for this simple call:
-     * {@code
-     * table.put ( sun.swing.SwingUtilities2.AA_TEXT_PROPERTY_KEY, sun.swing.SwingUtilities2.AATextInfo.getAATextInfo ( true ) );
-     * }
-     * but it doesn't directly use any proprietary API.
+     * {@code table.put ( sun.swing.SwingUtilities2.AA_TEXT_PROPERTY_KEY, sun.swing.SwingUtilities2.AATextInfo.getAATextInfo ( true ) );}
+     * But this implementation doesn't directly use any proprietary API.
      *
      * @param table defaults table
      */
@@ -304,7 +302,7 @@ public final class ProprietaryUtils
                 {
                     // For Java 7 and later this will work just fine
                     final Color bg = ReflectUtils.callMethod ( window, "getBackground" );
-                    isOpaque = bg.getAlpha () == 255;
+                    isOpaque = bg == null || bg.getAlpha () == 255;
                 }
                 else
                 {

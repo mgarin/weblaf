@@ -17,15 +17,15 @@
 
 package com.alee.laf.button;
 
-import com.alee.utils.CompareUtils;
+import com.alee.utils.LafLookup;
 import com.alee.utils.LafUtils;
+import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.LazyActionMap;
-import sun.swing.DefaultLookup;
-import sun.swing.UIAction;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentInputMapUIResource;
+import javax.swing.plaf.basic.BasicButtonListener;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -42,14 +42,24 @@ import java.beans.PropertyChangeListener;
 public class WButtonListener implements MouseListener, MouseMotionListener, FocusListener, PropertyChangeListener
 {
     /**
+     * Pressed action name.
+     */
+    protected static final String PRESSED = "pressed";
+
+    /**
+     * Released action name.
+     */
+    protected static final String RELEASED = "released";
+
+    /**
      * Last button press timestamp.
      */
-    private long lastPressedTimestamp = -1;
+    protected long lastPressedTimestamp = -1;
 
     /**
      * Multiclick threshhold support.
      */
-    private boolean shouldDiscardRelease = false;
+    protected boolean shouldDiscardRelease = false;
 
     /**
      * Loads all available button actions.
@@ -59,8 +69,10 @@ public class WButtonListener implements MouseListener, MouseMotionListener, Focu
      */
     public static void loadActionMap ( final LazyActionMap map )
     {
-        map.put ( new Action ( Action.PRESSED ) );
-        map.put ( new Action ( Action.RELEASED ) );
+        // Using BasicButtonListener.Actions class instead of our own implementation due to proprietary APIs usage there
+        final Class actions = ReflectUtils.getInnerClass ( BasicButtonListener.class, "Actions" );
+        map.put ( ( Action ) ReflectUtils.createInstanceSafely ( actions, PRESSED ) );
+        map.put ( ( Action ) ReflectUtils.createInstanceSafely ( actions, RELEASED ) );
     }
 
     /**
@@ -110,7 +122,7 @@ public class WButtonListener implements MouseListener, MouseMotionListener, Focu
             if ( root != null )
             {
                 final WButtonUI ui = LafUtils.getUI ( button );
-                if ( ui != null && DefaultLookup.getBoolean ( button, ui, ui.getPropertyPrefix () + "defaultButtonFollowsFocus", true ) )
+                if ( ui != null && LafLookup.getBoolean ( button, ui, ui.getPropertyPrefix () + "defaultButtonFollowsFocus", true ) )
                 {
                     root.putClientProperty ( "temporaryDefaultButton", button );
                     root.setDefaultButton ( ( JButton ) button );
@@ -131,7 +143,7 @@ public class WButtonListener implements MouseListener, MouseMotionListener, Focu
             if ( button != initialDefault )
             {
                 final WButtonUI ui = LafUtils.getUI ( button );
-                if ( ui != null && DefaultLookup.getBoolean ( button, ui, ui.getPropertyPrefix () + "defaultButtonFollowsFocus", true ) )
+                if ( ui != null && LafLookup.getBoolean ( button, ui, ui.getPropertyPrefix () + "defaultButtonFollowsFocus", true ) )
                 {
                     root.setDefaultButton ( initialDefault );
                 }
@@ -258,8 +270,8 @@ public class WButtonListener implements MouseListener, MouseMotionListener, Focu
                 SwingUtilities.replaceUIInputMap ( button, JComponent.WHEN_IN_FOCUSED_WINDOW, map );
             }
             map.clear ();
-            map.put ( KeyStroke.getKeyStroke ( m, SwingUtils.getFocusAcceleratorKeyMask (), false ), Action.PRESSED );
-            map.put ( KeyStroke.getKeyStroke ( m, SwingUtils.getFocusAcceleratorKeyMask (), true ), Action.RELEASED );
+            map.put ( KeyStroke.getKeyStroke ( m, SwingUtils.getFocusAcceleratorKeyMask (), false ), PRESSED );
+            map.put ( KeyStroke.getKeyStroke ( m, SwingUtils.getFocusAcceleratorKeyMask (), true ), RELEASED );
             map.put ( KeyStroke.getKeyStroke ( m, 0, true ), "released" );
         }
         else
@@ -286,67 +298,71 @@ public class WButtonListener implements MouseListener, MouseMotionListener, Focu
             final WButtonUI ui = LafUtils.getUI ( button );
             if ( ui != null )
             {
-                return ( InputMap ) DefaultLookup.get ( button, ui, ui.getPropertyPrefix () + "focusInputMap" );
+                return ( InputMap ) LafLookup.get ( button, ui, ui.getPropertyPrefix () + "focusInputMap" );
             }
         }
         return null;
     }
 
     /**
-     * Actions for Buttons.
-     * Two types of action are supported:
-     * - pressed: Moves the button to a pressed state
-     * - released: Disarms the button.
+     * Disabled due to {@link sun.swing.UIAction} being proprietary Sun API.
+     * Since it is actually referenced within {@link SwingUtilities#notifyAction} we cannot simply use {@link Action}.
+     * Maybe it will be exposed as public API in the future JDK versions then we can use this implementation.
      */
-    protected static class Action extends UIAction
-    {
-        /**
-         * Pressed action name.
-         */
-        public static final String PRESSED = "pressed";
-
-        /**
-         * Released action name.
-         */
-        public static final String RELEASED = "released";
-
-        /**
-         * Constructs new button {@link Action} with the specified name.
-         *
-         * @param name {@link Action} name
-         */
-        public Action ( final String name )
-        {
-            super ( name );
-        }
-
-        @Override
-        public void actionPerformed ( final ActionEvent e )
-        {
-            final AbstractButton b = ( AbstractButton ) e.getSource ();
-            if ( CompareUtils.equals ( getName (), PRESSED ) )
-            {
-                final ButtonModel model = b.getModel ();
-                model.setArmed ( true );
-                model.setPressed ( true );
-                if ( !b.hasFocus () )
-                {
-                    b.requestFocus ();
-                }
-            }
-            else if ( CompareUtils.equals ( getName (), RELEASED ) )
-            {
-                final ButtonModel model = b.getModel ();
-                model.setPressed ( false );
-                model.setArmed ( false );
-            }
-        }
-
-        @Override
-        public boolean isEnabled ( final Object sender )
-        {
-            return !( sender != null && ( sender instanceof AbstractButton ) &&
-                    !( ( AbstractButton ) sender ).getModel ().isEnabled () );
-        }
-    }
+    //    /**
+    //     * Actions for Buttons.
+    //     * Two types of action are supported:
+    //     * - pressed: Moves the button to a pressed state
+    //     * - released: Disarms the button.
+    //     */
+    //    protected static class Action extends UIAction
+    //    {
+    //        /**
+    //         * Pressed action name.
+    //         */
+    //        public static final String PRESSED = "pressed";
+    //
+    //        /**
+    //         * Released action name.
+    //         */
+    //        public static final String RELEASED = "released";
+    //
+    //        /**
+    //         * Constructs new button {@link Action} with the specified name.
+    //         *
+    //         * @param name {@link Action} name
+    //         */
+    //        public Action ( final String name )
+    //        {
+    //            super ( name );
+    //        }
+    //
+    //        @Override
+    //        public void actionPerformed ( final ActionEvent e )
+    //        {
+    //            final AbstractButton b = ( AbstractButton ) e.getSource ();
+    //            if ( CompareUtils.equals ( getName (), PRESSED ) )
+    //            {
+    //                final ButtonModel model = b.getModel ();
+    //                model.setArmed ( true );
+    //                model.setPressed ( true );
+    //                if ( !b.hasFocus () )
+    //                {
+    //                    b.requestFocus ();
+    //                }
+    //            }
+    //            else if ( CompareUtils.equals ( getName (), RELEASED ) )
+    //            {
+    //                final ButtonModel model = b.getModel ();
+    //                model.setPressed ( false );
+    //                model.setArmed ( false );
+    //            }
+    //        }
+    //
+    //        @Override
+    //        public boolean isEnabled ( final Object sender )
+    //        {
+    //            return sender == null || !( sender instanceof AbstractButton ) || ( ( AbstractButton ) sender ).getModel ().isEnabled ();
+    //        }
+    //    }
 }

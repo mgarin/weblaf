@@ -25,10 +25,10 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
+import com.alee.utils.LafLookup;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.TextUtils;
 import com.alee.utils.swing.DataRunnable;
-import sun.swing.DefaultLookup;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -170,7 +170,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
         cons.gridx = cons.gridy = 0;
         cons.gridwidth = GridBagConstraints.REMAINDER;
         cons.gridheight = 1;
-        cons.anchor = DefaultLookup.getInt ( optionPane, this, "OptionPane.messageAnchor", GridBagConstraints.CENTER );
+        cons.anchor = LafLookup.getInt ( optionPane, this, "OptionPane.messageAnchor", GridBagConstraints.CENTER );
         cons.insets = new Insets ( 0, 0, 3, 0 );
         addMessageComponents ( body, cons, getMessage (), getMaxCharactersPerLineCount (), false );
 
@@ -358,10 +358,10 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
     @Override
     protected Container createButtonArea ()
     {
-        final boolean sameSizeButtons = DefaultLookup.getBoolean ( optionPane, this, "OptionPane.sameSizeButtons", true );
-        final int buttonPadding = DefaultLookup.getInt ( optionPane, this, "OptionPane.buttonPadding", 6 );
-        final int buttonOrientation = DefaultLookup.getInt ( optionPane, this, "OptionPane.buttonOrientation", SwingConstants.CENTER );
-        final boolean isYesLast = DefaultLookup.getBoolean ( optionPane, this, "OptionPane.isYesLast", false );
+        final boolean sameSizeButtons = LafLookup.getBoolean ( optionPane, this, "OptionPane.sameSizeButtons", true );
+        final int buttonPadding = LafLookup.getInt ( optionPane, this, "OptionPane.buttonPadding", 6 );
+        final int buttonOrientation = LafLookup.getInt ( optionPane, this, "OptionPane.buttonOrientation", SwingConstants.CENTER );
+        final boolean isYesLast = LafLookup.getBoolean ( optionPane, this, "OptionPane.isYesLast", false );
         final ButtonAreaLayout layout = ReflectUtils.createInstanceSafely ( ButtonAreaLayout.class, sameSizeButtons,
                 buttonPadding, buttonOrientation, isYesLast );
 
