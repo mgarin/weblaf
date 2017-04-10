@@ -130,22 +130,22 @@ public class WebFileChooserUI extends FileChooserUI
                 fileChooser.cancelSelection ();
             }
         } );
-        //        fileChooserPanel.addFileChooserListener ( new FileChooserListener ()
-        //        {
-        //            public void directoryChanged ( File newDirectory )
-        //            {
-        //                ignoreFileSelectionChanges = true;
-        //                fileChooser.setCurrentDirectory ( newDirectory );
-        //                ignoreFileSelectionChanges = false;
-        //            }
-        //
-        //            public void selectionChanged ( List<File> selectedFiles )
-        //            {
-        //                ignoreFileSelectionChanges = true;
-        //                fileChooser.setSelectedFiles ( selectedFiles.toArray ( new File[ selectedFiles.size () ] ) );
-        //                ignoreFileSelectionChanges = false;
-        //            }
-        //        } );
+        fileChooserPanel.addFileChooserListener ( new FileChooserListener ()
+        {
+            public void directoryChanged ( File newDirectory )
+            {
+                ignoreFileSelectionChanges = true;
+                fileChooser.setCurrentDirectory ( newDirectory );
+                ignoreFileSelectionChanges = false;
+            }
+
+            public void selectionChanged ( List<File> selectedFiles )
+            {
+                ignoreFileSelectionChanges = true;
+                fileChooser.setSelectedFiles ( selectedFiles.toArray ( new File[ selectedFiles.size () ] ) );
+                ignoreFileSelectionChanges = false;
+            }
+        } );
         fileChooser.add ( fileChooserPanel, BorderLayout.CENTER );
 
         propertyChangeListener = new PropertyChangeListener ()
