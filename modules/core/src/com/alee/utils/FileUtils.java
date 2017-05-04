@@ -2450,7 +2450,7 @@ public final class FileUtils
      */
     public static boolean isDirectory ( final File file )
     {
-        if ( file == null )
+        if ( file == null || !file.exists() )
         {
             return false;
         }
