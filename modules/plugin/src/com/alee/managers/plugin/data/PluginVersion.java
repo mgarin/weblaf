@@ -28,6 +28,7 @@ import java.io.Serializable;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
+ * @see <a href="http://semver.org/">Semantic Versioning</a>
  * @see com.alee.managers.plugin.PluginManager
  */
 
@@ -37,35 +38,42 @@ public class PluginVersion implements Serializable
     /**
      * Simple default v1.0.0 version.
      */
-    public static final PluginVersion DEFAULT = new PluginVersion ( 1, 0, 0 );
+    public static final PluginVersion DEFAULT = new PluginVersion ( 1, 0, 0, null );
 
     /**
      * Major plugin version.
+     * Version when you make incompatible API changes.
      */
     @XStreamAsAttribute
     private int major;
 
     /**
      * Minor plugin version.
+     * Version when you add functionality in a backwards-compatible manner.
      */
     @XStreamAsAttribute
     private int minor;
 
     /**
-     * Plugin build version.
+     * Plugin patch version.
+     * Version when you make backwards-compatible bug fixes.
      */
     @XStreamAsAttribute
-    private Integer build;
+    private Integer patch;
+
+    /**
+     * Plugin build version.
+     * Additional labels for pre-release and build metadata.
+     */
+    @XStreamAsAttribute
+    private String build;
 
     /**
      * Constructs new plugin version data object.
      */
     public PluginVersion ()
     {
-        super ();
-        this.major = DEFAULT.major;
-        this.minor = DEFAULT.minor;
-        this.build = DEFAULT.build;
+        this ( DEFAULT.major, DEFAULT.minor, DEFAULT.patch, DEFAULT.build );
     }
 
     /**
@@ -76,10 +84,7 @@ public class PluginVersion implements Serializable
      */
     public PluginVersion ( final int major, final int minor )
     {
-        super ();
-        this.major = major;
-        this.minor = minor;
-        this.build = null;
+        this ( major, minor, null, null );
     }
 
     /**
@@ -87,13 +92,27 @@ public class PluginVersion implements Serializable
      *
      * @param major major version number
      * @param minor minor version number
-     * @param build build version number
+     * @param patch patch version number
      */
-    public PluginVersion ( final int major, final int minor, final Integer build )
+    public PluginVersion ( final int major, final int minor, final Integer patch )
+    {
+        this ( major, minor, patch, null );
+    }
+
+    /**
+     * Constructs new plugin version data object with the specified major and minor version numbers.
+     *
+     * @param major major version number
+     * @param minor minor version number
+     * @param patch patch version number
+     * @param build build
+     */
+    public PluginVersion ( final int major, final int minor, final Integer patch, final String build )
     {
         super ();
         this.major = major;
         this.minor = minor;
+        this.patch = patch;
         this.build = build;
     }
 
@@ -138,12 +157,32 @@ public class PluginVersion implements Serializable
     }
 
     /**
+     * Returns plugin patch version.
+     *
+     * @return plugin patch version
+     */
+    public Integer getPatch ()
+    {
+        return patch;
+    }
+
+    /**
+     * Sets plugin patch version.
+     *
+     * @param patch plugin patch version
+     */
+    public void setPatch ( final Integer patch )
+    {
+        this.patch = patch;
+    }
+
+    /**
      * Returns plugin build version.
      * Might return null in case build is not specified.
      *
      * @return plugin build version
      */
-    public Integer getBuild ()
+    public String getBuild ()
     {
         return build;
     }
@@ -154,7 +193,7 @@ public class PluginVersion implements Serializable
      *
      * @param build plugin build version
      */
-    public void setBuild ( final Integer build )
+    public void setBuild ( final String build )
     {
         this.build = build;
     }
@@ -169,8 +208,8 @@ public class PluginVersion implements Serializable
     {
         return this.major > ov.major ||
                 this.major == ov.major && this.minor > ov.minor ||
-                this.major == ov.major && this.minor == ov.minor && this.build != null && ov.build == null ||
-                this.major == ov.major && this.minor == ov.minor && this.build == null && ov.build != null && this.build > ov.build;
+                this.major == ov.major && this.minor == ov.minor && this.patch != null && ov.patch == null ||
+                this.major == ov.major && this.minor == ov.minor && this.patch == null && ov.patch != null && this.patch > ov.patch;
     }
 
     /**
@@ -194,8 +233,8 @@ public class PluginVersion implements Serializable
     {
         return ov.major > this.major ||
                 ov.major == this.major && ov.minor > this.minor ||
-                ov.major == this.major && ov.minor == this.minor && ov.build != null && this.build == null ||
-                ov.major == this.major && ov.minor == this.minor && ov.build != null && this.build != null && ov.build > this.build;
+                ov.major == this.major && ov.minor == this.minor && ov.patch != null && this.patch == null ||
+                ov.major == this.major && ov.minor == this.minor && ov.patch != null && this.patch != null && ov.patch > this.patch;
     }
 
     /**
@@ -217,12 +256,19 @@ public class PluginVersion implements Serializable
      */
     public boolean isSame ( final PluginVersion ov )
     {
-        return ov.major == this.major && ov.minor == this.minor && CompareUtils.equals ( ov.build, this.build );
+        return ov.major == this.major && ov.minor == this.minor && CompareUtils.equals ( ov.patch, this.patch );
+    }
+
+    @Override
+    public boolean equals ( final Object obj )
+    {
+        return obj != null && obj instanceof PluginVersion && isSame ( ( PluginVersion ) obj ) &&
+                CompareUtils.equals ( ( ( PluginVersion ) obj ).build, this.patch );
     }
 
     @Override
     public String toString ()
     {
-        return "v" + major + "." + minor + ( build != null ? ( "." + build ) : "" );
+        return "v" + major + "." + minor + ( patch != null ? ( "." + patch ) : "" ) + ( build != null ? build : "" );
     }
 }

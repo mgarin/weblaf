@@ -47,6 +47,10 @@ import java.util.zip.ZipFile;
 public abstract class PluginManager<T extends Plugin>
 {
     /**
+     * todo 1. Replace {@link #applyInitializationStrategy()} this with a custom comparator for listener events
+     */
+
+    /**
      * Global class loader for all plugin managers implementations.
      *
      * @see #getGlobalClassLoader()
@@ -281,7 +285,7 @@ public abstract class PluginManager<T extends Plugin>
      */
     public void registerPlugin ( final T plugin )
     {
-        registerPlugin ( plugin, plugin.getPluginInformation (), !SystemUtils.isHeadlessEnvironment () ? plugin.getPluginLogo () : null );
+        registerPlugin ( plugin, plugin.getInformation (), !SystemUtils.isHeadlessEnvironment () ? plugin.getPluginLogo () : null );
     }
 
     /**
@@ -551,43 +555,115 @@ public abstract class PluginManager<T extends Plugin>
                 for ( final DetectedPlugin<T> plugin : recentlyDetected )
                 {
                     final List<PluginDependency> dependencies = plugin.getInformation ().getDependencies ();
-                    if ( dependencies != null )
+                    if ( CollectionUtils.notEmpty ( dependencies ) )
                     {
+                        // List of resulting dependencies
+                        // There could be less resulting dependenies due to missing optional ones
+                        final List<String> dependencyIds = new ArrayList<String> ( dependencies.size () );
+
+                        // List of missing dependencies
+                        final List<PluginDependency> missingDependencies = new ArrayList<PluginDependency> ( 1 );
+
                         // Iterating through detected plugin dependencies
-                        boolean dependenciesMet = true;
+                        boolean allDependenciesLoaded = true;
                         for ( final PluginDependency dependency : dependencies )
                         {
-                            // Checking whether or not each dependency is met
-                            boolean met = false;
-                            for ( final T availablePlugin : availablePlugins )
+                            // Checking that dependency is already loaded
+                            boolean dependencyLoaded = false;
+                            for ( final T available : availablePlugins )
                             {
-                                // todo This is a bad optional workaround, it should actually take part in sorting
-                                if ( dependency.isOptional () || dependency.accept ( availablePlugin ) )
+                                if ( dependency.accept ( available.getInformation () ) )
                                 {
-                                    met = true;
+                                    dependencyLoaded = true;
                                     break;
                                 }
                             }
-                            if ( !met )
+
+                            // Checking whether optional dependency is in detected list
+                            boolean dependencyDetected = false;
+                            if ( dependencyLoaded )
                             {
-                                dependenciesMet = false;
+                                for ( final DetectedPlugin<T> detected : recentlyDetected )
+                                {
+                                    if ( dependency.accept ( detected.getInformation () ) )
+                                    {
+                                        dependencyDetected = true;
+                                        break;
+                                    }
+                                }
                             }
 
-                            // Mapping dependency references
-                            final String id = dependency.getPluginId ();
-                            List<DetectedPlugin<T>> ref = references.get ( id );
-                            if ( ref == null )
+                            // Different solutions for optional and non-optional dependencies
+                            // It contains important differences in dependencies mapping
+                            if ( dependency.isOptional () )
                             {
-                                ref = new ArrayList<DetectedPlugin<T>> ( 1 );
-                                references.put ( id, ref );
+                                // Optional dependency is not loaded only when exists in detected list
+                                if ( dependencyDetected )
+                                {
+                                    allDependenciesLoaded = false;
+                                }
+
+                                // We perform this only if it is already loaded or at least detected
+                                if ( dependencyLoaded || dependencyDetected )
+                                {
+                                    // Saving resulting dependency ID
+                                    dependencyIds.add ( dependency.getPluginId () );
+                                }
                             }
-                            ref.add ( plugin );
+                            else
+                            {
+                                // Checking dependency existance
+                                if ( dependencyLoaded || dependencyDetected )
+                                {
+                                    // Required dependency is not loaded when its not in available list
+                                    if ( !dependencyLoaded )
+                                    {
+                                        allDependenciesLoaded = false;
+                                    }
+
+                                    // Saving resulting dependency ID
+                                    dependencyIds.add ( dependency.getPluginId () );
+                                }
+                                else
+                                {
+                                    // Plugin cannot be loaded due to missing required dependency
+                                    missingDependencies.add ( dependency );
+                                }
+                            }
                         }
 
-                        // Adding plugin into root plugins list if its dependencies are met
-                        if ( dependenciesMet )
+                        // Continue only if plugin can be loaded
+                        if ( CollectionUtils.isEmpty ( missingDependencies ) )
                         {
-                            root.add ( plugin );
+                            // Mapping all dependencies of this plugin
+                            if ( CollectionUtils.notEmpty ( dependencyIds ) )
+                            {
+                                for ( final String dependencyId : dependencyIds )
+                                {
+                                    List<DetectedPlugin<T>> dependant = references.get ( dependencyId );
+                                    if ( dependant == null )
+                                    {
+                                        dependant = new ArrayList<DetectedPlugin<T>> ( 1 );
+                                        references.put ( dependencyId, dependant );
+                                    }
+                                    dependant.add ( plugin );
+                                }
+                            }
+
+                            // Adding plugin into root plugins list if its dependencies are met
+                            if ( !allDependenciesLoaded )
+                            {
+                                root.add ( plugin );
+                            }
+                        }
+                        else
+                        {
+                            // Updating plugin status
+                            plugin.setStatus ( PluginStatus.failed );
+
+                            // Saving list of missing dependencies
+                            final String missing = TextUtils.listToString ( missingDependencies, "\n" );
+                            plugin.setFailureCause ( "Plugin has missing dependencies:\n" + missing );
                         }
                     }
                     else
@@ -621,7 +697,7 @@ public abstract class PluginManager<T extends Plugin>
                 // Adding plugins which didn't get into graph into the end
                 // There might be such plugin for example in case it has some side dependencies
                 // It might still be properly initialized, we just don't know anything about its dependencies
-                // Such plugins should be initialized after anything else to increase their chances
+                // Such plugins should be initialized after anything else to increase their chances to load
                 for ( final DetectedPlugin<T> plugin : recentlyDetected )
                 {
                     if ( !sorted.contains ( plugin ) )

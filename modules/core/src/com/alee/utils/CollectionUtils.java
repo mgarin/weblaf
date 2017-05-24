@@ -43,6 +43,17 @@ public final class CollectionUtils
     }
 
     /**
+     * Returns whether specified collection is empty or not.
+     *
+     * @param collection collection to process
+     * @return true if specified collection is empty, false otherwise
+     */
+    public static boolean notEmpty ( final Collection collection )
+    {
+        return collection != null && !collection.isEmpty ();
+    }
+
+    /**
      * Returns list with limited amount of objects from the initial list.
      * Only specified amount of first objects in initial list will be transferred to new list.
      *

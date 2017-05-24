@@ -26,7 +26,6 @@ import java.util.List;
 
 /**
  * Base class for any plugin.
- * You still might want to use {@code AbstractPlugin} instead as it has some basic plugin methods.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
@@ -100,7 +99,7 @@ public abstract class Plugin<T extends Plugin<T>>
      *
      * @return information about this plugin
      */
-    public PluginInformation getPluginInformation ()
+    public PluginInformation getInformation ()
     {
         return detectedPlugin != null ? detectedPlugin.getInformation () : null;
     }
@@ -122,7 +121,7 @@ public abstract class Plugin<T extends Plugin<T>>
      */
     public String getId ()
     {
-        return getPluginInformation ().getId ();
+        return getInformation ().getId ();
     }
 
     /**
@@ -132,7 +131,7 @@ public abstract class Plugin<T extends Plugin<T>>
      */
     public String getType ()
     {
-        return getPluginInformation ().getType ();
+        return getInformation ().getType ();
     }
 
     /**
@@ -142,7 +141,7 @@ public abstract class Plugin<T extends Plugin<T>>
      */
     public String getTypes ()
     {
-        return getPluginInformation ().getTypes ();
+        return getInformation ().getTypes ();
     }
 
     /**
@@ -154,7 +153,7 @@ public abstract class Plugin<T extends Plugin<T>>
      */
     public boolean isDisableable ()
     {
-        return getPluginInformation ().isDisableable ();
+        return getInformation ().isDisableable ();
     }
 
     /**
@@ -164,7 +163,7 @@ public abstract class Plugin<T extends Plugin<T>>
      */
     public String getMainClass ()
     {
-        return getPluginInformation ().getMainClass ();
+        return getInformation ().getMainClass ();
     }
 
     /**
@@ -174,7 +173,7 @@ public abstract class Plugin<T extends Plugin<T>>
      */
     public String getTitle ()
     {
-        return getPluginInformation ().getTitle ();
+        return getInformation ().getTitle ();
     }
 
     /**
@@ -184,7 +183,7 @@ public abstract class Plugin<T extends Plugin<T>>
      */
     public String getDescription ()
     {
-        return getPluginInformation ().getDescription ();
+        return getInformation ().getDescription ();
     }
 
     /**
@@ -194,7 +193,7 @@ public abstract class Plugin<T extends Plugin<T>>
      */
     public PluginVersion getVersion ()
     {
-        return getPluginInformation ().getVersion ();
+        return getInformation ().getVersion ();
     }
 
     /**
@@ -204,7 +203,7 @@ public abstract class Plugin<T extends Plugin<T>>
      */
     public List<PluginLibrary> getLibraries ()
     {
-        return getPluginInformation ().getLibraries ();
+        return getInformation ().getLibraries ();
     }
 
     /**
@@ -214,7 +213,7 @@ public abstract class Plugin<T extends Plugin<T>>
      */
     public List<PluginDependency> getDependencies ()
     {
-        return getPluginInformation ().getDependencies ();
+        return getInformation ().getDependencies ();
     }
 
     /**
@@ -258,12 +257,12 @@ public abstract class Plugin<T extends Plugin<T>>
             }
             else
             {
-                Log.warn ( this, "Plugin [ " + getPluginInformation () + " ] is already disabled" );
+                Log.warn ( this, "Plugin [ " + getInformation () + " ] is already disabled" );
             }
         }
         else
         {
-            Log.error ( this, "Plugin [ " + getPluginInformation () + " ] cannot be disabled" );
+            Log.error ( this, "Plugin [ " + getInformation () + " ] cannot be disabled" );
         }
     }
 
@@ -291,12 +290,12 @@ public abstract class Plugin<T extends Plugin<T>>
             }
             else
             {
-                Log.warn ( this, "Plugin [ " + getPluginInformation () + " ] is already enabled" );
+                Log.warn ( this, "Plugin [ " + getInformation () + " ] is already enabled" );
             }
         }
         else
         {
-            Log.error ( this, "Plugin [ " + getPluginInformation () + " ] cannot be re-enabled" );
+            Log.error ( this, "Plugin [ " + getInformation () + " ] cannot be re-enabled" );
         }
     }
 

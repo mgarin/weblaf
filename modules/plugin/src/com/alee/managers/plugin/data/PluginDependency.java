@@ -17,7 +17,6 @@
 
 package com.alee.managers.plugin.data;
 
-import com.alee.managers.plugin.Plugin;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import java.io.Serializable;
@@ -221,12 +220,12 @@ public class PluginDependency implements Serializable
     }
 
     /**
-     * Returns whether the specified plugin is accepted by this dependency or not.
+     * Returns whether plugin with the specified information is accepted by this dependency or not.
      *
-     * @param plugin plugin to check
-     * @return true if the specified plugin is accepted by this dependency, false otherwise
+     * @param plugin plugin information to check
+     * @return {@code true} if plugin with the specified information is accepted by this dependency, {@code false} otherwise
      */
-    public boolean accept ( final Plugin plugin )
+    public boolean accept ( final PluginInformation plugin )
     {
         if ( plugin != null && plugin.getId ().equals ( pluginId ) )
         {
