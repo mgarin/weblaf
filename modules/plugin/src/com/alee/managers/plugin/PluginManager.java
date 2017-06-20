@@ -17,11 +17,12 @@
 
 package com.alee.managers.plugin;
 
-import com.alee.global.GlobalConstants;
 import com.alee.managers.log.Log;
 import com.alee.managers.plugin.data.*;
 import com.alee.utils.*;
+import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.compare.Filter;
+import com.alee.utils.filefilter.DirectoriesFilter;
 import com.alee.utils.sort.GraphDataProvider;
 
 import javax.swing.*;
@@ -317,8 +318,8 @@ public abstract class PluginManager<T extends Plugin>
 
         Log.info ( this, prefix + "Pre-loaded plugin initialized" );
 
-        // Informing
-        firePluginsInitialized ( Arrays.asList ( plugin ) );
+        // Informing everyone about plugin registration
+        firePluginsInitialized ( new ImmutableList<T> ( plugin ) );
     }
 
     /**
@@ -499,7 +500,7 @@ public abstract class PluginManager<T extends Plugin>
         // Checking sub-directories recursively
         if ( recursively )
         {
-            final File[] subfolders = dir.listFiles ( GlobalConstants.DIRECTORIES_FILTER );
+            final File[] subfolders = dir.listFiles ( new DirectoriesFilter () );
             if ( subfolders != null )
             {
                 for ( final File subfolder : subfolders )

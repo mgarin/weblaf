@@ -17,9 +17,9 @@
 
 package com.alee.managers.focus;
 
-import com.alee.global.GlobalConstants;
 import com.alee.managers.log.Log;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.DebugUtils;
 
 import java.awt.*;
 import java.awt.event.AWTEventListener;
@@ -120,7 +120,7 @@ public class FocusManager
                     focusOwner = new WeakReference<Component> ( newFocus );
 
                     // Debug info
-                    if ( GlobalConstants.DEBUG )
+                    if ( DebugUtils.isGlobalDebugEnabled () )
                     {
                         final String oldName = oldFocus != null ? oldFocus.getClass ().getName () : null;
                         final String newName = newFocus != null ? newFocus.getClass ().getName () : null;

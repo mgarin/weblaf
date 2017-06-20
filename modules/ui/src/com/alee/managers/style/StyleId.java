@@ -19,6 +19,7 @@ import java.lang.ref.WeakReference;
  * @author Mikle Garin
  */
 
+@SuppressWarnings ( "unused" )
 public final class StyleId
 {
     /**
@@ -86,6 +87,7 @@ public final class StyleId
     public static final StyleId labelTag = StyleId.of ( "tag" );
     public static final StyleId labelVerticalCCW = StyleId.of ( "vertical-ccw" );
     public static final StyleId labelVerticalCW = StyleId.of ( "vertical-cw" );
+    public static final StyleId labelSeparator = StyleId.of ( "separator" );
 
     /**
      * {@link com.alee.extended.label.WebStyledLabel} style IDs.
@@ -93,8 +95,10 @@ public final class StyleId
     public static final StyleId styledlabel = StyleId.of ( "styledlabel" );
     public static final StyleId styledlabelIcon = StyleId.of ( "icon" );
     public static final StyleId styledlabelShadow = StyleId.of ( "shadow" );
+    public static final StyleId styledlabelTag = StyleId.of ( "tag" );
     public static final StyleId styledlabelVerticalCCW = StyleId.of ( "vertical-ccw" );
     public static final StyleId styledlabelVerticalCW = StyleId.of ( "vertical-cw" );
+    public static final StyleId styledlabelSeparator = StyleId.of ( "separator" );
 
     /**
      * {@link com.alee.laf.tooltip.WebToolTip} style IDs.
@@ -237,6 +241,7 @@ public final class StyleId
      */
     public static final StyleId frame = StyleId.of ( "frame" );
     public static final StyleId frameDecorated = StyleId.of ( "frame-decorated" );
+    public static final StyleId frameTransparent = StyleId.of ( "frame-transparent" );
     public static final ChildStyleId frameGlassDialog = ChildStyleId.of ( "glass-dialog" );
 
     /**
@@ -244,6 +249,7 @@ public final class StyleId
      */
     public static final StyleId dialog = StyleId.of ( "dialog" );
     public static final StyleId dialogDecorated = StyleId.of ( "dialog-decorated" );
+    public static final StyleId dialogTransparent = StyleId.of ( "dialog-transparent" );
 
     /**
      * {@link com.alee.laf.tabbedpane.WebTabbedPane} style IDs.
@@ -298,6 +304,7 @@ public final class StyleId
     public static final StyleId scrollpaneNoFocus = StyleId.of ( "nofocus" );
     public static final StyleId scrollpaneTransparent = StyleId.of ( "transparent" );
     public static final StyleId scrollpaneTransparentButtonless = StyleId.of ( "transparent-buttonless" );
+    public static final StyleId scrollpaneHovering = StyleId.of ( "hovering" );
     public static final StyleId scrollpanePopup = StyleId.of ( "popup" );
     public static final ChildStyleId scrollpaneViewport = ChildStyleId.of ( "viewport" );
     public static final ChildStyleId scrollpaneBar = ChildStyleId.of ( "scrollbar" );
@@ -464,32 +471,38 @@ public final class StyleId
      * {@link com.alee.extended.tree.WebExTree} style IDs.
      */
     public static final StyleId extree = StyleId.of ( "extree" );
+    public static final StyleId extreeTransparent = StyleId.of ( "extree-transparent" );
 
     /**
      * {@link com.alee.extended.tree.WebAsyncTree} style IDs.
      */
     public static final StyleId asynctree = StyleId.of ( "asynctree" );
+    public static final StyleId asynctreeTransparent = StyleId.of ( "asynctree-transparent" );
 
     /**
      * {@link com.alee.extended.tree.WebFileTree} style IDs.
      */
     public static final StyleId filetree = StyleId.of ( "filetree" );
+    public static final StyleId filetreeTransparent = StyleId.of ( "filetree-transparent" );
 
     /**
      * {@link com.alee.extended.tree.WebCheckBoxTree} style IDs.
      */
     public static final StyleId checkboxtree = StyleId.of ( "checkboxtree" );
+    public static final StyleId checkboxtreeTransparent = StyleId.of ( "checkboxtree-transparent" );
     public static final ChildStyleId checkboxtreeCellRenderer = ChildStyleId.of ( "renderer" );
 
     /**
      * {@link com.alee.extended.tree.WebExCheckBoxTree} style IDs.
      */
     public static final StyleId excheckboxtree = StyleId.of ( "excheckboxtree" );
+    public static final StyleId excheckboxtreeTransparent = StyleId.of ( "excheckboxtree-transparent" );
 
     /**
      * {@link com.alee.extended.inspector.InterfaceTree} style IDs.
      */
     public static final StyleId interfacetree = StyleId.of ( "interfacetree" );
+    public static final StyleId interfacetreeTransparent = StyleId.of ( "interfacetree-transparent" );
 
     /**
      * {@link com.alee.laf.colorchooser.WebColorChooser} style IDs.

@@ -1,10 +1,5 @@
 <IconSet id="weblaf-demo" nearClass="com.alee.demo.skin.DarkIconSet" base="icons/">
 
-    <!-- Demo application icon -->
-    <SvgIcon id="icon16" path="icon.svg" size="16,16">
-        <SvgFill selector="svg" color="white" />
-    </SvgIcon>
-
     <!-- Example frame icons -->
     <SvgIcon id="examples16" path="frames/examples.svg" size="16,16">
         <SvgFill selector="svg" color="240,240,240" />
@@ -39,9 +34,23 @@
         <SvgFill selector="svg" color="240,240,240" />
     </SvgIcon>
 
+    <!-- General purpose 19x19 icons -->
+    <SvgIcon id="java19" path="general/java.svg" size="19,19">
+        <SvgFill selector="svg" color="white" />
+    </SvgIcon>
+    <SvgIcon id="github19" path="general/github.svg" size="19,19">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="gitter19" path="general/gitter.svg" size="19,19">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+
     <!-- General purpose 16x16 icons -->
+    <SvgIcon id="java16" path="general/java.svg" size="16,16">
+        <SvgFill selector="svg" color="white" />
+    </SvgIcon>
     <SvgIcon id="legend16" path="general/legend.svg" size="16,16">
-        <SvgFill selector="svg" color="100,180,100" />
+        <SvgFill selector="svg" color="130,210,130" />
     </SvgIcon>
     <SvgIcon id="menu16" path="general/menu.svg" size="16,16">
         <SvgFill selector="svg" color="240,240,240" />
@@ -50,9 +59,6 @@
         <SvgFill selector="svg" color="240,240,240" />
     </SvgIcon>
     <SvgIcon id="github16" path="general/github.svg" size="16,16">
-        <SvgFill selector="svg" color="240,240,240" />
-    </SvgIcon>
-    <SvgIcon id="gitter16" path="general/gitter.svg" size="16,16">
         <SvgFill selector="svg" color="240,240,240" />
     </SvgIcon>
     <SvgIcon id="settings16" path="general/settings.svg" size="16,16">

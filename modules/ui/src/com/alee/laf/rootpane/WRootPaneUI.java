@@ -19,6 +19,7 @@ package com.alee.laf.rootpane;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicRootPaneUI;
+import java.awt.*;
 
 /**
  * Pluggable look and feel interface for {@link WebRootPane} component.
@@ -163,4 +164,57 @@ public abstract class WRootPaneUI extends BasicRootPaneUI
      * @return true if window this root pane is attached to is maximized, false otherwise
      */
     public abstract boolean isMaximized ();
+
+    /**
+     * Returns window for the root pane this UI is applied to.
+     *
+     * @return window for the root pane this UI is applied to
+     */
+    public abstract Window getWindow ();
+
+    /**
+     * Returns whether or not this root pane is attached to frame.
+     *
+     * @return true if this root pane is attached to frame, false otherwise
+     */
+    public abstract boolean isFrame ();
+
+    /**
+     * Returns whether or not this root pane is attached to dialog.
+     *
+     * @return true if this root pane is attached to dialog, false otherwise
+     */
+    public abstract boolean isDialog ();
+
+    /**
+     * Closes the Window.
+     */
+    public abstract void close ();
+
+    /**
+     * Iconifies the Frame.
+     */
+    public abstract void iconify ();
+
+    /**
+     * Maximizes the Frame.
+     */
+    public abstract void maximize ();
+
+    /**
+     * Maximizes the Frame to the west (left) half of the screen.
+     * todo Unfortunately MAXIMIZED_VERT state seems not to be supported anywhere
+     */
+    public abstract void maximizeWest ();
+
+    /**
+     * Maximizes the Frame to the east (right) half of the screen.
+     * todo Unfortunately MAXIMIZED_VERT state seems not to be supported anywhere
+     */
+    public abstract void maximizeEast ();
+
+    /**
+     * Restores the Frame size.
+     */
+    public abstract void restore ();
 }

@@ -17,6 +17,7 @@
 
 package com.alee.extended.ninepatch;
 
+import com.alee.api.clone.Clone;
 import com.alee.extended.layout.TableLayout;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.managers.style.StyleId;
@@ -355,9 +356,9 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         }
 
         // Update NinePatchIcon data
-        ninePatchIcon.setMargin ( MergeUtils.clone ( state.getMargin () ) );
-        ninePatchIcon.setHorizontalStretch ( MergeUtils.clone ( state.getHorizontalStretch () ) );
-        ninePatchIcon.setVerticalStretch ( MergeUtils.clone ( state.getVerticalStretch () ) );
+        ninePatchIcon.setMargin ( Clone.clone ( state.getMargin () ) );
+        ninePatchIcon.setHorizontalStretch ( Clone.clone ( state.getHorizontalStretch () ) );
+        ninePatchIcon.setVerticalStretch ( Clone.clone ( state.getVerticalStretch () ) );
 
         // Updates shown image
         validateIcon ();
@@ -381,9 +382,9 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
             // Adding new state
             final NinePatchInfo info = new NinePatchInfo ();
             info.setImageSize ( ninePatchIcon.getRealImageSize () );
-            info.setMargin ( MergeUtils.clone ( ninePatchIcon.getMargin () ) );
-            info.setHorizontalStretch ( MergeUtils.clone ( ninePatchIcon.getHorizontalStretch () ) );
-            info.setVerticalStretch ( MergeUtils.clone ( ninePatchIcon.getVerticalStretch () ) );
+            info.setMargin ( Clone.clone ( ninePatchIcon.getMargin () ) );
+            info.setHorizontalStretch ( Clone.clone ( ninePatchIcon.getHorizontalStretch () ) );
+            info.setVerticalStretch ( Clone.clone ( ninePatchIcon.getVerticalStretch () ) );
             history.add ( info );
             historyState = history.size () - 1;
 

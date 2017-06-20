@@ -47,7 +47,7 @@ public class ExpandingShadow<E extends JComponent, D extends IDecoration<E, D>, 
     /**
      * Shadow images cache.
      */
-    protected static final Map<String, WeakReference<NinePatchIcon>> shadowCache = new HashMap<String, WeakReference<NinePatchIcon>> ( 4 );
+    protected static transient final Map<String, WeakReference<NinePatchIcon>> shadowCache = new HashMap<String, WeakReference<NinePatchIcon>> ( 4 );
 
     /**
      * Last shadow image cache key.

@@ -34,12 +34,12 @@ import com.alee.demo.content.window.WindowsGroup;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.JarUtils;
+import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.jar.JarEntry;
 import com.alee.utils.jar.JarStructure;
 
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -156,8 +156,8 @@ public final class ExamplesManager
 
         // Creating structure using any of classes contained inside jar
         // progress.setText ( "Creating source files structure..." );
-        final List<String> extensions = Arrays.asList ( ".java", ".png", ".gif", ".jpg", ".txt", ".xml" );
-        final List<String> packages = Arrays.asList ( "com/alee", "licenses" );
+        final List<String> extensions = new ImmutableList<String> ( ".java", ".png", ".gif", ".jpg", ".txt", ".xml" );
+        final List<String> packages = new ImmutableList<String> ( "com/alee", "licenses" );
         final JarStructure jarStructure = JarUtils.getJarStructure ( ExamplesManager.class, extensions, packages );
 
         // Applying some custom icons

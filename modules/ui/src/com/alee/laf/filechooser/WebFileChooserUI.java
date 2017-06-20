@@ -17,7 +17,6 @@
 
 package com.alee.laf.filechooser;
 
-import com.alee.global.GlobalConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.style.*;
@@ -25,6 +24,7 @@ import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.FileUtils;
+import com.alee.utils.filefilter.AllFilesFilter;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -231,7 +231,7 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
                 }
                 else
                 {
-                    fileChooserPanel.setFileFilter ( GlobalConstants.ALL_FILES_FILTER );
+                    fileChooserPanel.setFileFilter ( new AllFilesFilter () );
                 }
             }
         }
@@ -368,7 +368,7 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
     @Override
     public FileFilter getAcceptAllFileFilter ( final JFileChooser fc )
     {
-        return GlobalConstants.ALL_FILES_FILTER;
+        return new AllFilesFilter ();
     }
 
     @Override

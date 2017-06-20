@@ -18,7 +18,7 @@
 package com.alee.utils.general;
 
 
-import com.alee.utils.MergeUtils;
+import com.alee.api.clone.Clone;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -149,6 +149,6 @@ public class Pair<K, V> implements Serializable, Cloneable
     @Override
     public Pair<K, V> clone ()
     {
-        return MergeUtils.cloneByFieldsSafely ( this );
+        return Clone.cloneByFieldsSafely ( this );
     }
 }

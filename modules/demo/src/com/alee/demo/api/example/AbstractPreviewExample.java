@@ -23,11 +23,11 @@ import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.laf.panel.WebPanel;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.collection.ImmutableList;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -36,6 +36,11 @@ import java.util.List;
 
 public abstract class AbstractPreviewExample extends AbstractExample
 {
+    /**
+     * Static propeperty listened to keep component size updated.
+     */
+    protected static final List<String> TEXT_PROPERTY = new ImmutableList<String> ( AbstractButton.TEXT_CHANGED_PROPERTY );
+
     /**
      * Previews cache.
      */
@@ -103,7 +108,7 @@ public abstract class AbstractPreviewExample extends AbstractExample
             }
 
             // Equalizing preview elements
-            SwingUtils.equalizeComponentsWidth ( Arrays.asList ( AbstractButton.TEXT_CHANGED_PROPERTY ), components );
+            SwingUtils.equalizeComponentsWidth ( TEXT_PROPERTY, components );
         }
         return examplesPane;
     }

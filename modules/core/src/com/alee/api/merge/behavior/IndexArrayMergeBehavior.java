@@ -18,7 +18,7 @@
 package com.alee.api.merge.behavior;
 
 import com.alee.api.merge.Merge;
-import com.alee.api.merge.MergeBehavior;
+import com.alee.api.merge.GlobalMergeBehavior;
 import com.alee.utils.ReflectUtils;
 
 import java.lang.reflect.Array;
@@ -34,7 +34,7 @@ import java.lang.reflect.Array;
  * @see Merge
  */
 
-public final class IndexArrayMergeBehavior implements MergeBehavior<Object, Object, Object>
+public final class IndexArrayMergeBehavior implements GlobalMergeBehavior<Object, Object, Object>
 {
     /**
      * todo 1. Provide a different merge behavior similar to {@link ListMergeBehavior}

@@ -17,17 +17,24 @@
 
 package com.alee.utils.jar;
 
-import java.util.Arrays;
+import com.alee.utils.collection.ImmutableList;
+
 import java.util.Comparator;
 import java.util.List;
 
 /**
+ * {@link Comparator} implementation for {@link JarEntry} objects.
+ * It sorts {@link JarEntry}s by their {@link JarEntryType}s.
+ *
  * @author Mikle Garin
  */
 
-public class JarEntryComparator implements Comparator<JarEntry>
+public final class JarEntryComparator implements Comparator<JarEntry>
 {
-    private final List<JarEntryType> typePriority = Arrays.asList ( JarEntryType.values () );
+    /**
+     * {@link JarEntryType}s sorted by priority.
+     */
+    private final List<JarEntryType> typePriority = new ImmutableList<JarEntryType> ( JarEntryType.values () );
 
     @Override
     public int compare ( final JarEntry e1, final JarEntry e2 )

@@ -27,6 +27,7 @@ import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.ShapeUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.swing.AncestorAdapter;
 
 import javax.swing.*;
@@ -35,7 +36,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -44,11 +44,16 @@ import java.util.List;
 
 public class WebButtonPopup extends WebInnerPopup
 {
-    private static final List<String> BUTTON_PROPERTIES =
-            Arrays.asList ( AbstractButton.ICON_CHANGED_PROPERTY, AbstractButton.TEXT_CHANGED_PROPERTY,
-                    AbstractButton.HORIZONTAL_ALIGNMENT_CHANGED_PROPERTY, AbstractButton.VERTICAL_ALIGNMENT_CHANGED_PROPERTY,
-                    AbstractButton.HORIZONTAL_TEXT_POSITION_CHANGED_PROPERTY, AbstractButton.VERTICAL_TEXT_POSITION_CHANGED_PROPERTY,
-                    WebLookAndFeel.ICON_TEXT_GAP_PROPERTY, WebLookAndFeel.BORDER_PROPERTY );
+    private static final List<String> BUTTON_PROPERTIES = new ImmutableList<String> (
+            AbstractButton.ICON_CHANGED_PROPERTY,
+            AbstractButton.TEXT_CHANGED_PROPERTY,
+            AbstractButton.HORIZONTAL_ALIGNMENT_CHANGED_PROPERTY,
+            AbstractButton.VERTICAL_ALIGNMENT_CHANGED_PROPERTY,
+            AbstractButton.HORIZONTAL_TEXT_POSITION_CHANGED_PROPERTY,
+            AbstractButton.VERTICAL_TEXT_POSITION_CHANGED_PROPERTY,
+            WebLookAndFeel.ICON_TEXT_GAP_PROPERTY,
+            WebLookAndFeel.BORDER_PROPERTY
+    );
 
     private PopupWay popupWay;
 

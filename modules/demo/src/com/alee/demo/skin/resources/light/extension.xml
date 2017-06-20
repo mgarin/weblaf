@@ -9,8 +9,9 @@
     <iconSet>com.alee.demo.skin.LightIconSet</iconSet>
 
     <!-- Empty central area panel -->
-    <style type="panel" id="emptycontent">
+    <style type="panel" id="emptycontent" extends="transparent" margin="10">
 
+        <!-- Empty content label -->
         <style type="styledlabel" id="emptycontent">
             <component>
                 <foreground>100,100,100</foreground>
@@ -21,7 +22,7 @@
     </style>
 
     <!-- Tree -->
-    <style type="tree" id="examples">
+    <style type="tree" id="examples" extends="transparent">
         <painter>
 
             <!-- Row background painter -->
@@ -84,18 +85,6 @@
         </painter>
     </style>
 
-    <!-- Background panel -->
-    <style type="panel" id="plain">
-        <painter>
-            <decorations>
-                <decoration>
-                    <BoundsShape />
-                    <ColorBackground color="white" />
-                </decoration>
-            </decorations>
-        </painter>
-    </style>
-
     <!-- Light preview panel -->
     <style type="panel" id="preview" extends="preview-base">
         <painter>
@@ -126,32 +115,6 @@
             <component>
                 <foreground>black</foreground>
             </component>
-        </style>
-
-    </style>
-
-    <!-- Skin selectors panel -->
-    <style type="panel" id="skin-selectors">
-        <painter>
-            <decorations>
-                <decoration>
-                    <WebShape round="0" sides="0,0,1,0" />
-                    <LineBorder color="170,170,170" />
-                    <ColorBackground color="white" />
-                </decoration>
-            </decorations>
-        </painter>
-
-        <!-- Skin selector button -->
-        <style type="togglebutton" id="skin-selector">
-            <painter>
-                <decorations>
-                    <decoration>
-                        <WebShape round="0" />
-                        <WebShadow type="outer" width="0" />
-                    </decoration>
-                </decorations>
-            </painter>
         </style>
 
     </style>

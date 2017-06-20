@@ -27,7 +27,7 @@ import java.awt.*;
 public class HorizontalFlowLayout extends AbstractLayoutManager
 {
     /**
-     * todo 1. Alignment
+     * todo 1. Add horizontal alignment setting
      */
 
     protected int gap;
@@ -96,7 +96,7 @@ public class HorizontalFlowLayout extends AbstractLayoutManager
             final Component c = parent.getComponent ( i );
             if ( c.isVisible () )
             {
-                int w = ( min ) ? c.getMinimumSize ().width : c.getPreferredSize ().width;
+                int w = min ? c.getMinimumSize ().width : c.getPreferredSize ().width;
                 if ( xsWidth > 0 )
                 {
                     w += w * xsWidth / required.width;
@@ -138,7 +138,7 @@ public class HorizontalFlowLayout extends AbstractLayoutManager
             final Component c = parent.getComponent ( i );
             if ( c.isVisible () )
             {
-                final Dimension tmp = ( min ) ? c.getMinimumSize () : c.getPreferredSize ();
+                final Dimension tmp = min ? c.getMinimumSize () : c.getPreferredSize ();
                 size.height = Math.max ( tmp.height, size.height );
                 size.width += tmp.width;
                 size.width += getHorizontalGap ();

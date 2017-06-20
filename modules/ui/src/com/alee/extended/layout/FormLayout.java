@@ -31,6 +31,10 @@ import java.util.WeakHashMap;
 public class FormLayout extends AbstractLayoutManager
 {
     /**
+     * todo 1. Fix {@link #LINE} and {@link RIGHT} constraints behavior
+     */
+
+    /**
      * Form elements constraint constants.
      */
     public static final String LEFT = "left";

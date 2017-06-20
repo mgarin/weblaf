@@ -19,6 +19,7 @@ package com.alee.laf.scroll;
 
 import com.alee.api.data.Corner;
 import com.alee.extended.canvas.WebCanvas;
+import com.alee.laf.LookAndFeelException;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
@@ -199,6 +200,10 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
         // Removing listener and custom corners
         removeCorners ();
 
+        // Resetting layout to default used within JScrollPane
+        // This update will ensure that we properly cleanup scrollpane layout after ourselves
+        scrollpane.setLayout ( new ScrollPaneLayout.UIResource () );
+
         // Uninstalling UI
         super.uninstallUI ( c );
     }
@@ -305,9 +310,9 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
                                 }
                                 else
                                 {
-                                    // Scroll left
-                                    if ( ( leftToRight && direction < 0 ) || ( !leftToRight && direction > 0 ) )
+                                    if ( leftToRight && direction < 0 || !leftToRight && direction > 0 )
                                     {
+                                        // Scroll left
                                         viewRect.x -= unitIncr;
                                         if ( leftToRight )
                                         {
@@ -318,9 +323,9 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
                                             }
                                         }
                                     }
-                                    // Scroll right
-                                    else if ( ( leftToRight && direction > 0 ) || ( !leftToRight && direction < 0 ) )
+                                    else if ( leftToRight && direction > 0 || !leftToRight && direction < 0 )
                                     {
+                                        // Scroll right
                                         viewRect.x += unitIncr;
                                         if ( leftToRight )
                                         {
@@ -333,7 +338,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
                                     }
                                     else
                                     {
-                                        assert false : "Non-sensical ComponentOrientation / scroll direction";
+                                        throw new LookAndFeelException ( "Non-sensical ComponentOrientation / scroll direction" );
                                     }
                                 }
                             }
@@ -351,7 +356,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
                                 }
                                 else
                                 {
-                                    // rightToLeft scrollbars are oriented with minValue on the right and maxValue on the left
+                                    // RTL scrollbars are oriented with minValue on the right and maxValue on the left
                                     int newPos = toScroll.getValue () - ( viewRect.x - startingX );
                                     if ( newPos < scrollMin )
                                     {
@@ -384,8 +389,10 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
      * Method for scrolling by a unit increment.
      * Added for mouse wheel scrolling support, RFE 4202656.
      *
-     * If {@code limitByBlock} is set to {@code true}, the scrollbar will scroll at least 1 unit increment, but will not scroll farther
-     * than the block increment.
+     * This method is called from {@link BasicScrollPaneUI} to implement wheel scrolling, as well as from scrollByUnit().
+     *
+     * If {@code limitByBlock} is set to {@code true}, the scrollbar will scroll at least 1 unit increment,
+     * but will not scroll farther than the block increment.
      *
      * This is a full copy of {@link javax.swing.plaf.basic.BasicScrollBarUI#scrollByUnits(javax.swing.JScrollBar, int, int, boolean)}.
      *
@@ -397,8 +404,6 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
     protected void scrollByUnits ( final JScrollBar scrollbar, final int direction,
                                    final int units, final boolean limitToBlock )
     {
-        // This method is called from BasicScrollPaneUI to implement wheel
-        // scrolling, as well as from scrollByUnit().
         int delta;
         int limit = -1;
 
@@ -444,8 +449,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
 
             if ( limitToBlock && i > 0 )
             {
-                assert limit != -1;
-                if ( ( direction < 0 && newValue < limit ) || ( direction > 0 && newValue > limit ) )
+                if ( direction < 0 && newValue < limit || direction > 0 && newValue > limit )
                 {
                     break;
                 }
@@ -458,6 +462,8 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
      * Method for scrolling by a block increment.
      * Added for mouse wheel scrolling support, RFE 4202656.
      *
+     * This method is called from {@link BasicScrollPaneUI} to implement wheel scrolling, and also from scrollByBlock().
+     *
      * This is a full copy of {@link javax.swing.plaf.basic.BasicScrollBarUI#scrollByBlock(javax.swing.JScrollBar, int)}.
      *
      * @param scrollbar scroll bar
@@ -465,11 +471,9 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
      */
     protected void scrollByBlock ( final JScrollBar scrollbar, final int direction )
     {
-        // This method is called from BasicScrollPaneUI to implement wheel
-        // scrolling, and also from scrollByBlock().
         final int oldValue = scrollbar.getValue ();
         final int blockIncrement = scrollbar.getBlockIncrement ( direction );
-        final int delta = blockIncrement * ( ( direction > 0 ) ? +1 : -1 );
+        final int delta = blockIncrement * ( direction > 0 ? +1 : -1 );
         int newValue = oldValue + delta;
 
         // Check for overflow.
@@ -562,6 +566,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
                 }
                 if ( corner == null )
                 {
+                    // todo Make this corner optional
                     if ( type == Corner.lowerLeading || type == Corner.lowerTrailing || type == Corner.upperTrailing )
                     {
                         corner = new WebCanvas ( StyleId.scrollpaneCorner.at ( scrollpane ), type.name () );

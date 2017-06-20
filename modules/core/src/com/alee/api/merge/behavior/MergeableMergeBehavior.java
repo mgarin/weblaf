@@ -17,26 +17,26 @@
 
 package com.alee.api.merge.behavior;
 
+import com.alee.api.merge.GlobalMergeBehavior;
 import com.alee.api.merge.Merge;
 import com.alee.api.merge.MergeBehavior;
-import com.alee.api.merge.Mergeable;
 
 /**
- * {@link Mergeable} objects merge behavior.
+ * Merge behavior for objects implementing {@link MergeBehavior}.
  *
- * @param <T> {@link Mergeable} type
+ * @param <T> {@link MergeBehavior} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
  * @see Merge
- * @see Mergeable
+ * @see MergeBehavior
  */
 
-public final class MergeableMergeBehavior<T extends Mergeable<T>> implements MergeBehavior<T, T, T>
+public final class MergeableMergeBehavior<T extends MergeBehavior<T>> implements GlobalMergeBehavior<T, T, T>
 {
     @Override
     public boolean supports ( final Merge merge, final Object object, final Object merged )
     {
-        return object instanceof Mergeable && merged instanceof Mergeable;
+        return object instanceof MergeBehavior && merged instanceof MergeBehavior;
     }
 
     @Override

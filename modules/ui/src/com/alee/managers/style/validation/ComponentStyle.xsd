@@ -3,6 +3,7 @@
 
     <xs:include schemaLocation="lang/Class.xsd" />
     <xs:include schemaLocation="awt/Insets.xsd" />
+    <xs:include schemaLocation="awt/LayoutManager.xsd" />
     <xs:include schemaLocation="ext/StyleableComponent.xsd" />
     <xs:include schemaLocation="Decoration.xsd" />
 
@@ -66,6 +67,14 @@
 
                     <!-- Opaque -->
                     <xs:element name="opaque" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+
+                    <!-- Layout -->
+                    <xs:choice minOccurs="0" maxOccurs="1">
+
+                        <!-- Any custom layout settings -->
+                        <xs:element name="layout" type="LayoutManager" />
+
+                    </xs:choice>
 
                 </xs:sequence>
 
@@ -151,6 +160,9 @@
                     </xs:choice>
 
                 </xs:sequence>
+
+                <!-- Specific Painter class -->
+                <xs:attribute name="overwrite" type="xs:boolean" use="optional" />
 
                 <!-- Specific Painter class -->
                 <xs:attribute name="class" type="Class" use="optional" />

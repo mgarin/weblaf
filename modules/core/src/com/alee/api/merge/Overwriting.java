@@ -15,11 +15,11 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.api;
+package com.alee.api.merge;
 
 /**
- * This interface is an indicator of the fact that this class instances can fully overwrite another one on merge.
- * Whether or not it will actualy be overwritten on merge depends on the value returned by {@link #isOverwrite()} method.
+ * This interface is an indicator of the fact that this class instances can fully overwrite each other upon {@link Merge}.
+ * Whether or not it should actually happen depends on the value returned by {@link #isOverwrite()} method.
  *
  * @author Mikle Garin
  */
@@ -27,9 +27,9 @@ package com.alee.api;
 public interface Overwriting
 {
     /**
-     * Returns whether or not this object should overwrite previous one when merged.
+     * Returns whether or not this object should overwrite another one upon merge.
      *
-     * @return true if this object should overwrite previous one when merged, false otherwise
+     * @return {@code true} if this object should overwrite another one upon merge, {@code false} otherwise
      */
     public boolean isOverwrite ();
 }

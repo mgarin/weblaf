@@ -17,15 +17,13 @@
 
 package com.alee.utils.xml;
 
-import com.alee.utils.CollectionUtils;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Custom converter for {@link java.util.List} of {@link java.lang.String}.
+ * Custom XStream converter for {@link List} of {@link String}.
  *
  * @author Mikle Garin
  */
@@ -42,26 +40,12 @@ public class ListToStringConverter extends AbstractSingleValueConverter
     public String toString ( final Object obj )
     {
         final List list = ( List ) obj;
-        if ( CollectionUtils.isEmpty ( list ) )
-        {
-            return null;
-        }
-        else
-        {
-            return TextUtils.listToString ( list, "," );
-        }
+        return TextUtils.listToString ( list, "," );
     }
 
     @Override
     public Object fromString ( final String str )
     {
-        if ( TextUtils.isEmpty ( str ) )
-        {
-            return new ArrayList<String> ( 0 );
-        }
-        else
-        {
-            return TextUtils.stringToList ( str, "," );
-        }
+        return TextUtils.stringToList ( str, "," );
     }
 }

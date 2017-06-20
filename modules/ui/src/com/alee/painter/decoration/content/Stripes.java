@@ -63,6 +63,12 @@ public class Stripes<E extends JComponent, D extends IDecoration<E, D>, I extend
     @XStreamImplicit
     protected List<Stripe> stripes;
 
+    @Override
+    public String getId ()
+    {
+        return id != null ? id : "stripes";
+    }
+
     /**
      * Returns stripes orientation.
      *
@@ -159,15 +165,37 @@ public class Stripes<E extends JComponent, D extends IDecoration<E, D>, I extend
             final int y2;
             if ( orientation.isVertical () )
             {
-                x1 = x2 = ltr ? bounds.x + i : bounds.x + bounds.width - i - 1;
+                if ( ltr ? align == BoxOrientation.left : align == BoxOrientation.right )
+                {
+                    x1 = x2 = bounds.x + i;
+                }
+                else if ( !ltr ? align == BoxOrientation.left : align == BoxOrientation.right )
+                {
+                    x1 = x2 = bounds.x + bounds.width - i - 1;
+                }
+                else
+                {
+                    x1 = x2 = bounds.x + ( bounds.width - stripes.size () ) / 2 + i;
+                }
                 y1 = bounds.y;
                 y2 = bounds.y + bounds.height - 1;
             }
             else
             {
+                if ( align == BoxOrientation.top )
+                {
+                    y1 = y2 = bounds.y + i;
+                }
+                else if ( align == BoxOrientation.bottom )
+                {
+                    y1 = y2 = bounds.y + bounds.height - stripes.size () + i;
+                }
+                else
+                {
+                    y1 = y2 = bounds.y + ( bounds.height - stripes.size () ) / 2 + i;
+                }
                 x1 = bounds.x;
                 x2 = bounds.x + bounds.width - 1;
-                y1 = y2 = bounds.y + i;
             }
 
             // Painting stripe

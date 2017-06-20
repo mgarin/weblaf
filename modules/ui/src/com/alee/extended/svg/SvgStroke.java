@@ -15,39 +15,38 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.icon.data;
+package com.alee.extended.svg;
 
-import com.alee.extended.svg.SvgIcon;
-import com.kitfox.svg.SVGElement;
+import com.alee.utils.ColorUtils;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
-import java.util.List;
+import java.awt.*;
 
 /**
- * Base class for any adjustments for {@link SvgIcon}.
+ * Adds or replaces existing stroke color on the target {@link com.kitfox.svg.SVGElement}.
  *
  * @author Mikle Garin
  */
 
-public abstract class SvgAdjustment implements IconAdjustment<SvgIcon>
+@XStreamAlias ( "SvgStroke" )
+public class SvgStroke extends SvgAttributeAdjustment
 {
     /**
-     * SVG element selector.
+     * Stroke color.
      */
     @XStreamAsAttribute
-    protected String selector;
+    protected Color color;
 
     @Override
-    public void apply ( final SvgIcon icon )
+    protected String getAttribute ( final SvgIcon icon )
     {
-        apply ( icon, icon.find ( selector ) );
+        return SvgElements.STROKE;
     }
 
-    /**
-     * Applies this adjustment to the specified SVG icon elements.
-     *
-     * @param icon    SVG icon to adjust
-     * @param elements SVG elements to adjust
-     */
-    protected abstract void apply ( SvgIcon icon, List<SVGElement> elements );
+    @Override
+    protected String getValue ( final SvgIcon icon )
+    {
+        return color != null ? ColorUtils.getHexColor ( color ) : "none";
+    }
 }

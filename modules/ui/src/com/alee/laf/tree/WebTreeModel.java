@@ -215,7 +215,7 @@ public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeM
      */
     public void updateNodes ( final List<E> nodes )
     {
-        if ( !CollectionUtils.isEmpty ( nodes ) )
+        if ( CollectionUtils.notEmpty ( nodes ) )
         {
             for ( final E node : nodes )
             {

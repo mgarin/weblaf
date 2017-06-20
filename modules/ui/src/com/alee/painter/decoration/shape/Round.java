@@ -17,8 +17,8 @@
 
 package com.alee.painter.decoration.shape;
 
-import com.alee.api.merge.Mergeable;
-import com.alee.utils.MergeUtils;
+import com.alee.api.clone.Clone;
+import com.alee.api.merge.MergeBehavior;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 import java.io.Serializable;
@@ -30,7 +30,7 @@ import java.io.Serializable;
  */
 
 @XStreamConverter ( RoundConverter.class )
-public final class Round implements Serializable, Cloneable, Mergeable<Round>
+public final class Round implements Serializable, Cloneable, MergeBehavior<Round>
 {
     /**
      * Top left corner round.
@@ -112,6 +112,6 @@ public final class Round implements Serializable, Cloneable, Mergeable<Round>
     @Override
     public Round clone ()
     {
-        return MergeUtils.cloneByFieldsSafely ( this );
+        return Clone.cloneByFieldsSafely ( this );
     }
 }

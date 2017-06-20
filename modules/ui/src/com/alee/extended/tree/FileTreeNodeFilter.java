@@ -17,13 +17,13 @@
 
 package com.alee.extended.tree;
 
-import com.alee.global.GlobalConstants;
 import com.alee.utils.compare.Filter;
+import com.alee.utils.filefilter.NonHiddenFilter;
 
 import java.io.File;
 
 /**
- * Custom filter for file tree nodes.
+ * Custom filter for {@link FileTreeNode}s.
  *
  * @author Mikle Garin
  */
@@ -31,20 +31,20 @@ import java.io.File;
 public class FileTreeNodeFilter implements Filter<FileTreeNode>
 {
     /**
-     * Used file filter.
+     * {@link Filter} used for filtering {@link File}s.
      */
     protected Filter<File> filter;
 
     /**
-     * Constructs new FileTreeNodeFilter with default file filter.
+     * Constructs new {@link FileTreeNodeFilter} with default file filter.
      */
     public FileTreeNodeFilter ()
     {
-        this ( GlobalConstants.NON_HIDDEN_ONLY_FILTER );
+        this ( new NonHiddenFilter () );
     }
 
     /**
-     * Constructs new FileTreeNodeFilter using the specified file filter.
+     * Constructs new {@link FileTreeNodeFilter} using the specified file filter.
      *
      * @param filter file filter
      */
@@ -55,9 +55,9 @@ public class FileTreeNodeFilter implements Filter<FileTreeNode>
     }
 
     /**
-     * Returns used file filter.
+     * Returns {@link Filter} used for filtering {@link File}s.
      *
-     * @return used file filter
+     * @return {@link Filter} used for filtering {@link File}s
      */
     public Filter<File> getFilter ()
     {
@@ -65,9 +65,9 @@ public class FileTreeNodeFilter implements Filter<FileTreeNode>
     }
 
     /**
-     * Sets used file filter.
+     * Sets {@link Filter} used for filtering {@link File}s.
      *
-     * @param filter used file filter
+     * @param filter {@link Filter} used for filtering {@link File}s
      */
     public void setFilter ( final Filter<File> filter )
     {

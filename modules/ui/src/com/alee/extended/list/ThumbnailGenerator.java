@@ -17,7 +17,6 @@
 
 package com.alee.extended.list;
 
-import com.alee.global.GlobalConstants;
 import com.alee.utils.FileUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.concurrent.DaemonThreadFactory;
@@ -255,7 +254,7 @@ public class ThumbnailGenerator implements Runnable
     {
         // Using either image thumbnails or default file extension icons
         final String ext = FileUtils.getFileExtPart ( file.getName (), false ).toLowerCase ( Locale.ROOT );
-        if ( preview && GlobalConstants.IMAGE_FORMATS.contains ( ext ) )
+        if ( preview && ImageUtils.VIEWABLE_IMAGES.contains ( ext ) )
         {
             // If thumbnail was already specified we should re-use it
             // It will save us a lot of time if we simply need to generate disabled state in addition to enabled one
@@ -397,8 +396,8 @@ public class ThumbnailGenerator implements Runnable
             synchronized ( element.getLock () )
             {
                 // Skip generation if it was already done or in queue
-                if ( disabled ? ( element.isDisabledThumbnailQueued () || element.getDisabledThumbnail () != null ) :
-                        ( element.isThumbnailQueued () || element.getEnabledThumbnail () != null ) )
+                if ( disabled ? element.isDisabledThumbnailQueued () || element.getDisabledThumbnail () != null :
+                        element.isThumbnailQueued () || element.getEnabledThumbnail () != null )
                 {
                     return;
                 }

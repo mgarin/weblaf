@@ -17,7 +17,7 @@
 
 package com.alee.extended.colorchooser;
 
-import com.alee.utils.MergeUtils;
+import com.alee.api.clone.Clone;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -31,7 +31,7 @@ import java.io.Serializable;
  */
 
 @XStreamAlias ( "GradientColorData" )
-public class GradientColorData implements Serializable, Cloneable
+public class GradientColorData implements Cloneable, Serializable
 {
     /**
      * Color location.
@@ -108,12 +108,6 @@ public class GradientColorData implements Serializable, Cloneable
         this.location = location;
     }
 
-    /**
-     * Returns whether this {@link GradientColorData} is equal to the specified object or not.
-     *
-     * @param obj object to compare with
-     * @return {@code true} if this {@link GradientColorData} is equal to the specified object, {@code false} otherwise
-     */
     @Override
     public boolean equals ( final Object obj )
     {
@@ -126,14 +120,9 @@ public class GradientColorData implements Serializable, Cloneable
         return Float.compare ( getLocation (), other.getLocation () ) == 0 && getColor ().equals ( other.getColor () );
     }
 
-    /**
-     * Returns cloned {@link GradientColorData}.
-     *
-     * @return cloned {@link GradientColorData}
-     */
     @Override
     public GradientColorData clone ()
     {
-        return MergeUtils.cloneByFieldsSafely ( this );
+        return Clone.cloneByFieldsSafely ( this );
     }
 }

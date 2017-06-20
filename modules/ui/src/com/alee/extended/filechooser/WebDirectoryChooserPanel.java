@@ -23,7 +23,6 @@ import com.alee.extended.pathfield.WebPathField;
 import com.alee.extended.tree.FileTreeNode;
 import com.alee.extended.tree.FileTreeRootType;
 import com.alee.extended.tree.WebFileTree;
-import com.alee.global.GlobalConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.optionpane.WebOptionPane;
 import com.alee.laf.panel.WebPanel;
@@ -39,7 +38,8 @@ import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.filefilter.AbstractFileFilter;
+import com.alee.utils.collection.ImmutableList;
+import com.alee.utils.filefilter.*;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
@@ -50,7 +50,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -75,7 +74,7 @@ public class WebDirectoryChooserPanel extends WebPanel
     /**
      * File filter.
      */
-    protected AbstractFileFilter filter = GlobalConstants.NON_HIDDEN_DIRECTORIES_FILTER;
+    protected AbstractFileFilter filter = new GroupedFileFilter ( FilterGroupType.AND, new DirectoriesFilter (), new NonHiddenFilter () );
 
     /**
      * Toolbar components.
@@ -394,7 +393,8 @@ public class WebDirectoryChooserPanel extends WebPanel
 
         controlsPanel.add ( new GroupPanel ( 4, acceptButton, cancelButton ), BorderLayout.LINE_END );
 
-        SwingUtils.equalizeComponentsWidth ( Arrays.asList ( AbstractButton.TEXT_CHANGED_PROPERTY ), acceptButton, cancelButton );
+        final List<String> properties = new ImmutableList<String> ( AbstractButton.TEXT_CHANGED_PROPERTY );
+        SwingUtils.equalizeComponentsWidth ( properties, acceptButton, cancelButton );
 
         // Buttons updater
         updateButtonsState ( getSelectedDirectory () );

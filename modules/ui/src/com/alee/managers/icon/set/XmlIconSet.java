@@ -74,7 +74,7 @@ public class XmlIconSet extends AbstractIconSet
         super ( iconSetData.getId () );
 
         // Updating and caching icons information
-        if ( !CollectionUtils.isEmpty ( iconSetData.getIcons () ) )
+        if ( CollectionUtils.notEmpty ( iconSetData.getIcons () ) )
         {
             for ( final IconData iconData : iconSetData.getIcons () )
             {

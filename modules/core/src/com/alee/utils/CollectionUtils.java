@@ -24,7 +24,7 @@ import com.alee.utils.text.TextProvider;
 import java.util.*;
 
 /**
- * This class provides a set of utilities to work with collections.
+ * This class provides a set of utilities to work with {@link Collection} implementations.
  *
  * @author Mikle Garin
  */
@@ -32,10 +32,10 @@ import java.util.*;
 public final class CollectionUtils
 {
     /**
-     * Returns whether specified collection is empty or not.
+     * Returns whether specified {@link Collection} is empty or not.
      *
-     * @param collection collection to process
-     * @return true if specified collection is empty, false otherwise
+     * @param collection {@link Collection} to process
+     * @return {@code true} if specified {@link Collection} is empty, {@code false} otherwise
      */
     public static boolean isEmpty ( final Collection collection )
     {
@@ -43,14 +43,26 @@ public final class CollectionUtils
     }
 
     /**
-     * Returns whether specified collection is empty or not.
+     * Returns whether specified {@link Collection} is empty or not.
      *
-     * @param collection collection to process
-     * @return true if specified collection is empty, false otherwise
+     * @param collection {@link Collection} to process
+     * @return {@code true} if specified {@link Collection} is not empty, {@code false} otherwise
      */
     public static boolean notEmpty ( final Collection collection )
     {
         return collection != null && !collection.isEmpty ();
+    }
+
+    /**
+     * Returns non-{@code null} {@link List} that is either specified {@code list} or new empty {@link ArrayList}.
+     *
+     * @param list {@link List}
+     * @param <T>  elements type
+     * @return non-{@code null} {@link List} that is either specified {@code list} or new empty {@link ArrayList}
+     */
+    public static <T> List<T> nonNull ( final List<T> list )
+    {
+        return list != null ? list : new ArrayList<T> ( 0 );
     }
 
     /**
@@ -269,7 +281,7 @@ public final class CollectionUtils
      * @param collection list to fill
      * @param objects    objects
      * @param <T>        objects type
-     * @return true if list changed as the result of this operation, false otherwise
+     * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
      */
     public static <T> boolean addAll ( final Collection<T> collection, final T... objects )
     {
@@ -290,7 +302,7 @@ public final class CollectionUtils
      * @param collection list to fill
      * @param objects    objects
      * @param <T>        objects type
-     * @return true if list changed as the result of this operation, false otherwise
+     * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
      */
     public static <T> boolean addAllNonNull ( final Collection<T> collection, final T... objects )
     {
@@ -311,7 +323,7 @@ public final class CollectionUtils
      * @param collection list to fill
      * @param objects    objects
      * @param <T>        objects type
-     * @return true if list changed as the result of this operation, false otherwise
+     * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
      */
     public static <T> boolean addAll ( final Collection<T> collection, final Collection<T> objects )
     {
@@ -332,7 +344,7 @@ public final class CollectionUtils
      * @param collection list to fill
      * @param objects    objects
      * @param <T>        objects type
-     * @return true if list changed as the result of this operation, false otherwise
+     * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
      */
     public static <T> boolean addAllNonNull ( final Collection<T> collection, final Collection<T> objects )
     {
@@ -353,7 +365,7 @@ public final class CollectionUtils
      * @param collection list to fill
      * @param objects    objects
      * @param <T>        objects type
-     * @return true if list changed as the result of this operation, false otherwise
+     * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
      */
     public static <T> boolean removeAll ( final Collection<T> collection, final T... objects )
     {
@@ -391,7 +403,7 @@ public final class CollectionUtils
         {
             for ( final Collection<T> collection : collections )
             {
-                if ( !isEmpty ( collection ) )
+                if ( notEmpty ( collection ) )
                 {
                     list.addAll ( collection );
                 }
@@ -445,7 +457,7 @@ public final class CollectionUtils
      *
      * @param list1 first list
      * @param list2 second list
-     * @return true if lists are equal, false otherwise
+     * @return {@code true} if lists are equal, {@code false} otherwise
      */
     public static boolean equals ( final List list1, final List list2 )
     {

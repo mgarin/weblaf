@@ -17,40 +17,24 @@
 
 package com.alee.api.merge;
 
-import java.io.Serializable;
-
 /**
- * Objects merge behavior.
- * It is asked to perform merge if it {@link #supports(Merge, Object, Object)} provided objects.
+ * Single object type merge behavior.
+ * If you want to simply indicate that your object instances can be merged implement {@link Mergeable} interface instead.
  *
- * @param <O> base object type
- * @param <M> merged object type
- * @param <R> resulting object type
+ * @param <T> merged objects type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
  * @see Merge
+ * @see Mergeable
  */
 
-public interface MergeBehavior<O, M, R> extends Serializable
+public interface MergeBehavior<T extends MergeBehavior<T>> extends Mergeable
 {
     /**
-     * Returns whether or not this behavior supports specified objects merge.
+     * Returns object as a result of merging another {@code object} on top of this one.
      *
-     * @param merge  merge algorithm
-     * @param object base object
-     * @param merged object to merge
-     * @return {@code true} if this behavior supports specified objects merge, {@code false} otherwise
+     * @param object object to merge into this one, it might also be {@code null}
+     * @return object as a result of merging another {@code object} on top of this one
      */
-    public boolean supports ( Merge merge, Object object, Object merged );
-
-    /**
-     * Performs merge of the two provided objects and returns resulting object.
-     * Depending on the case it might be one of the two provided objects or their merge result.
-     *
-     * @param merge  merge algorithm
-     * @param object base object
-     * @param merged object to merge
-     * @return merge result
-     */
-    public R merge ( Merge merge, O object, M merged );
+    public T merge ( T object );
 }

@@ -5,4 +5,14 @@
     <!-- File tree -->
     <style type="tree" id="filetree" />
 
+    <!-- Transparent file tree -->
+    <style type="tree" id="filetree-transparent" extends="filetree">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
 </skin>

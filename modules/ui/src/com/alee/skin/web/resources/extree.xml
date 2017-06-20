@@ -5,4 +5,14 @@
     <!-- Extended tree -->
     <style type="tree" id="extree" />
 
+    <!-- Transparent extended tree -->
+    <style type="tree" id="extree-transparent" extends="extree">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
 </skin>

@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This object contains style data for single component instance.
+ * This object contains runtime style data for single component instance.
  * This is basically all {@link com.alee.managers.style.StyleManager} knows about the component styling.
  *
  * @author Mikle Garin
@@ -42,6 +42,10 @@ import java.util.Map;
 
 public final class StyleData implements PropertyChangeListener
 {
+    /**
+     * todo 1. Probably listen to JComponent UI property changes and destroy {@link StyleData} when UI changes to non-WebLaF one
+     */
+
     /**
      * Component this style data is referencing.
      */
@@ -65,7 +69,10 @@ public final class StyleData implements PropertyChangeListener
 
     /**
      * Custom painters.
+     *
+     * @deprecated there should only be one painter available at a time
      */
+    @Deprecated
     private Map<String, Painter> painters;
 
     /**
@@ -89,6 +96,24 @@ public final class StyleData implements PropertyChangeListener
 
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
+
+        // Ensure that component has correct UI first, fix for #376
+        // This should never happen if WebLaF is installed before creating any Swing components
+        // Component might be missing UI here because it's style ID was applied from upper level component
+        if ( !LafUtils.isWebLafUI ( component ) )
+        {
+            // Trying to make component use WebLaF UI by forcefully updating it
+            // Thought we do not force any specific UI on the component here
+            component.updateUI ();
+
+            // Checking that proper UI was installed
+            if ( !LafUtils.isWebLafUI ( component ) )
+            {
+                // Our attempt to apply WebLaF UI has failed, throwing appropriate exception
+                final String msg = "Component '%s' doesn't use WebLaF UI";
+                throw new StyleException ( String.format ( msg, component.getClass () ) );
+            }
+        }
 
         // Saving component weak reference
         this.component = new WeakReference<JComponent> ( component );
@@ -170,37 +195,18 @@ public final class StyleData implements PropertyChangeListener
 
     /**
      * Returns component this style data is referencing.
+     * It also ensures that component still exists.
      *
      * @return component this style data is referencing
      */
     public JComponent getComponent ()
     {
         final JComponent component = this.component.get ();
-
-        // Ensure that component still exists
         if ( component == null )
         {
             final String msg = "Component for style ID '%s' has been destroyed";
             throw new StyleException ( String.format ( msg, styleId.getCompleteId () ) );
         }
-
-        // Ensure that component has correct UI first, fix for #376
-        // This will never happen if WebLaF is installed before creating any Swing components
-        // Component might be missing UI here because it's style ID was applied from upper level component
-        if ( !LafUtils.isWebLafUI ( component ) )
-        {
-            // Trying to update UI
-            component.updateUI ();
-
-            // Checking that proper UI was installed
-            if ( !LafUtils.isWebLafUI ( component ) )
-            {
-                // Our attempt to apply WebLaF UI has failed, throwing appropriate exception
-                final String msg = "Unable to apply StyleId to '%s' because it doesn't use WebLaF UI";
-                throw new StyleException ( String.format ( msg, component ) );
-            }
-        }
-
         return component;
     }
 
@@ -282,7 +288,7 @@ public final class StyleData implements PropertyChangeListener
         }
 
         // Applying skin to component's style children
-        if ( skin != null && children && !CollectionUtils.isEmpty ( this.children ) )
+        if ( skin != null && children && CollectionUtils.notEmpty ( this.children ) )
         {
             for ( final WeakReference<JComponent> reference : this.children )
             {
@@ -366,7 +372,7 @@ public final class StyleData implements PropertyChangeListener
         getSkin ().updateSkin ( component );
 
         // Updating children skins
-        if ( children && !CollectionUtils.isEmpty ( this.children ) )
+        if ( children && CollectionUtils.notEmpty ( this.children ) )
         {
             for ( final WeakReference<JComponent> reference : this.children )
             {
@@ -526,7 +532,7 @@ public final class StyleData implements PropertyChangeListener
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Resetting child IDs first
-        if ( recursively && !CollectionUtils.isEmpty ( children ) )
+        if ( recursively && CollectionUtils.notEmpty ( children ) )
         {
             // We have to be careful here since resetting child styles might modify children list
             // That will actually happen more often than not since default styles are usually not structured

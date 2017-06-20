@@ -62,7 +62,8 @@ public class WebRootPaneLayout extends AbstractLayoutManager
         final boolean showTitleComponent = titleComponent != null && rootUI.isDisplayTitleComponent ();
         final boolean showMenuBar = menuBar != null && rootUI.isDisplayMenuBar ();
 
-        int nextY = 0;
+        // Extra height taken by root pane elements
+        int extraHeight = 0;
 
         // Placing window buttons
         int buttonsWidth = 0;
@@ -89,7 +90,7 @@ public class WebRootPaneLayout extends AbstractLayoutManager
             final Dimension ps = titleComponent.getPreferredSize ();
             titleComponent.setVisible ( true );
             titleComponent.setBounds ( ltr ? i.left : i.left + buttonsWidth, i.top, w - buttonsWidth, ps.height );
-            nextY += ps.height;
+            extraHeight += ps.height;
         }
         else if ( titleComponent != null )
         {
@@ -100,20 +101,33 @@ public class WebRootPaneLayout extends AbstractLayoutManager
         final JLayeredPane layeredPane = root.getLayeredPane ();
         if ( layeredPane != null )
         {
-            layeredPane.setBounds ( i.left, i.top, w, h );
+            layeredPane.setBounds ( 0, 0, s.width, s.height );
+            // layeredPane.setBounds ( i.left, i.top, w, h );
         }
 
         // Placing menu bar
+        // Note that it is actually placed within JLayeredPane and not JRootPane
+        // So we need to adjust coordinates according to JLayeredPane position
         if ( showMenuBar )
         {
             final Dimension mbd = menuBar.getPreferredSize ();
             menuBar.setVisible ( true );
-            menuBar.setBounds ( 0, nextY, w, mbd.height );
-            nextY += mbd.height;
+            menuBar.setBounds ( i.left, i.top + extraHeight, w, mbd.height );
+            extraHeight += mbd.height;
         }
         else if ( menuBar != null )
         {
             menuBar.setVisible ( false );
+        }
+
+        // Placing content pane
+        // Note that it is actually placed within JLayeredPane and not JRootPane
+        // So we need to adjust coordinates according to JLayeredPane position
+        final Container contentPane = root.getContentPane ();
+        if ( contentPane != null )
+        {
+            final int contentHeight = h > extraHeight ? h - extraHeight : 0;
+            contentPane.setBounds ( i.left,  i.top +extraHeight, w, contentHeight );
         }
 
         // Placing glass pane
@@ -121,12 +135,6 @@ public class WebRootPaneLayout extends AbstractLayoutManager
         if ( glassPane != null )
         {
             glassPane.setBounds ( i.left, i.top, w, h );
-        }
-
-        final Container contentPane = root.getContentPane ();
-        if ( contentPane != null )
-        {
-            contentPane.setBounds ( 0, nextY, w, h < nextY ? 0 : h - nextY );
         }
     }
 

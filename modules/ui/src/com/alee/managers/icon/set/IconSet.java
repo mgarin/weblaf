@@ -24,8 +24,8 @@ import javax.swing.*;
 import java.util.List;
 
 /**
- * Icon set (collection) description.
- * Provides commong methods to add and retrieve icons from the set.
+ * This interface is a base for any icon set (collection) implementation.
+ * Its API has only a few methods to add and retrieve {@link Icon}s from the set.
  *
  * @author Mikle Garin
  */
@@ -33,24 +33,24 @@ import java.util.List;
 public interface IconSet extends Identifiable
 {
     /**
-     * Returns IDs of all icons in the set.
+     * Returns identifiers of all {@link Icon}s in the set.
      *
-     * @return IDs of all icons in the set
+     * @return identifiers of all {@link Icon}s in the set
      */
     public List<String> getIds ();
 
     /**
-     * Adds new icon into the set.
+     * Adds new {@link Icon} referenced by specified {@link IconData} into the set.
      *
-     * @param icon new icon information
+     * @param icon {@link IconData} of the {@link Icon} to add
      */
     public void addIcon ( IconData icon );
 
     /**
-     * Returns icon for the specified ID.
+     * Returns {@link Icon} for the specified identifier.
      *
-     * @param id unique icon ID
-     * @return icon for the specified ID
+     * @param id unique {@link Icon} identifier
+     * @return {@link Icon} for the specified identifier
      */
     public Icon getIcon ( String id );
 }

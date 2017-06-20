@@ -17,21 +17,23 @@
 
 package com.alee.managers.drag.transfer;
 
+import com.alee.utils.CollectionUtils;
+
 import javax.swing.*;
 import java.awt.datatransfer.Transferable;
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 
 /**
- * Custom {@link javax.swing.TransferHandler} that provides easy and convenient way to support files drag and drop in any Swing component.
+ * Custom {@link TransferHandler} that provides easy and convenient way to support files drag and drop in any Swing component.
  * <p>
  * To provide drag functionality set {@link #dragEnabled} to {@code true} and override {@link #getDraggedFiles()} or
  * {@link #getDraggedFile()} method to provide list of files or single dragged file.
- * You will also have to call "exportAsDrag" method of TransferHandler to initialize drag operation from where you want it to start.
+ * <p>
+ * You will also have to call "exportAsDrag" method of {@link TransferHandler} to initialize drag operation from where you want it to start.
  * That can be done from {@link java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)} method for example.
  * <p>
- * To provide drop functionality set {@link #dropEnabled} to {@code true} and override {@link #filesDropped(java.util.List)} method.
+ * To provide drop functionality set {@link #dropEnabled} to {@code true} and override {@link #filesDropped(List)} method.
  * In that method you can perform any desired action with the list of dropped files.
  *
  * @author Mikle Garin
@@ -65,15 +67,15 @@ public class FilesTransferHandler extends AbstractTransferHandler
     }
 
     /**
-     * Informs that drag action has started and list of dragged files should be provided.
-     * You can override this method to provide custom list of dragged files.
+     * Returns list of dragged {@link File}s.
+     * You can override this method to provide custom list of dragged {@link File}s.
      *
-     * @return list of dragged files
+     * @return list of dragged {@link File}s
      */
     public List<File> getDraggedFiles ()
     {
         final File file = getDraggedFile ();
-        return file != null ? Arrays.asList ( file ) : null;
+        return file != null ? CollectionUtils.asList ( file ) : null;
     }
 
     /**

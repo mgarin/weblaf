@@ -33,7 +33,7 @@ public interface MergePolicy extends Serializable
     /**
      * Returns whether or not specified objects can be merged.
      *
-     * @param merge  merge algorithm
+     * @param merge  {@link Merge} algorithm
      * @param object base object
      * @param merged object to merge
      * @return {@code true} if specified objects can be merged, {@code false} otherwise

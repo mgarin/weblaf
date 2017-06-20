@@ -290,6 +290,8 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
 
         // Registering drag view handler
         dragViewHandler = new DocumentDragViewHandler ( this );
+
+        // Special behavior to keep view handler only while document pane is visible
         new ComponentVisibilityBehavior ( this )
         {
             @Override
@@ -305,7 +307,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
             }
         }.install ();
 
-        // Add initial pane
+        // Adding initial pane
         initialize ();
     }
 

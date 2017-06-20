@@ -26,7 +26,7 @@ import java.awt.*;
 /**
  * This interface provides basic methods for drawing components or sections of components.
  * Using painters you can easily change Swing and WebLaF components visual representation.
- * <p>
+ * <p/>
  * Whether or not single painter can be used for multiply components exclusively depends on its implementation.
  * In most cases painters which does some animation won't work well with multiply components unless stated otherwise in JavaDoc.
  *
@@ -42,6 +42,12 @@ import java.awt.*;
 
 public interface Painter<E extends JComponent, U extends ComponentUI>
 {
+    /**
+     * todo 1. Add "E c, U ui" parameters to methods missing them OR
+     * todo    Remove "E c, U ui" from all methods except {@link #install} and {@link #uninstall}
+     * todo    Probably second option is better to clarify painters usage
+     */
+
     /**
      * Called when painter is installed onto some component.
      * You might want to use this method to add custom component listeners or modify component settings.
@@ -72,8 +78,6 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
      * Returned value might affect component opacity depending on painter support inside that component UI.
      * Simply return null if you don't want to change default component opacity.
      *
-     * todo Add "E c, U ui" parameters to this method
-     *
      * @return {@code true} if the view provided by this painter is opaque, {@code false} otherwise
      */
     public Boolean isOpaque ();
@@ -85,8 +89,6 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
      * These borders should not take component orientation into account, painter will take care of it later.
      * <p>
      * You may pass {@code null} in case additional borders aren't needed for this painter.
-     *
-     * todo Add "E c, U ui" parameters to this method
      *
      * @return borders required for the view provided by this painter or {@code null} in case those aren't needed
      */
@@ -130,8 +132,6 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
     /**
      * Returns preferred size required for proper painting of the view provided by this painter.
      * This should not take into account any sizes not related to the painter itself.
-     *
-     * todo Add "E c, U ui" parameters to this method
      *
      * @return preferred size required for proper painting of the view provided by this painter
      */

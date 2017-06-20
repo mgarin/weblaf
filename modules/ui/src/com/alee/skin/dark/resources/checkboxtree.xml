@@ -10,4 +10,14 @@
 
     </style>
 
+    <!-- Transparent checkbox tree -->
+    <style type="tree" id="checkboxtree-transparent" extends="checkboxtree">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
 </skin>

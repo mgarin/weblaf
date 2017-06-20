@@ -17,14 +17,19 @@
 
 package com.alee.managers.style.data;
 
-import com.alee.utils.MergeUtils;
+import com.alee.api.clone.Clone;
+import com.alee.api.merge.Mergeable;
+import com.alee.api.merge.Overwriting;
+import com.alee.painter.Painter;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 import java.io.Serializable;
 import java.util.Map;
 
 /**
- * Painter style information class.
+ * Contains single {@link Painter} style data.
+ * It stores any {@link Painter}-related data without instantiating {@link Painter} itself.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
@@ -32,18 +37,26 @@ import java.util.Map;
  */
 
 @XStreamConverter ( PainterStyleConverter.class )
-public final class PainterStyle implements Serializable, Cloneable
+public final class PainterStyle implements Mergeable, Overwriting, Serializable, Cloneable
 {
+    /**
+     * Whether or not this {@link Painter} should overwrite another one when merged.
+     */
+    @XStreamAsAttribute
+    protected Boolean overwrite;
+
     /**
      * Painter ID.
      * Refers to painter type.
      * It is required since a lot of components has more than just one painter.
      */
+    @Deprecated
     private String id;
 
     /**
      * Whether this is base component painter or not.
      */
+    @Deprecated
     private boolean base;
 
     /**
@@ -66,11 +79,28 @@ public final class PainterStyle implements Serializable, Cloneable
         super ();
     }
 
+    @Override
+    public boolean isOverwrite ()
+    {
+        return overwrite != null && overwrite;
+    }
+
+    /**
+     * Sets whether or not this {@link Painter} should overwrite another one when merged.
+     *
+     * @param overwrite whether or not this {@link Painter} should overwrite another one when merged
+     */
+    public void setOverwrite ( final Boolean overwrite )
+    {
+        this.overwrite = overwrite;
+    }
+
     /**
      * Returns painter ID.
      *
      * @return painter ID
      */
+    @Deprecated
     public String getId ()
     {
         return id;
@@ -81,6 +111,7 @@ public final class PainterStyle implements Serializable, Cloneable
      *
      * @param id new painter ID
      */
+    @Deprecated
     public void setId ( final String id )
     {
         this.id = id;
@@ -91,6 +122,7 @@ public final class PainterStyle implements Serializable, Cloneable
      *
      * @return true if this is base component painter, false otherwise
      */
+    @Deprecated
     public boolean isBase ()
     {
         return base;
@@ -101,6 +133,7 @@ public final class PainterStyle implements Serializable, Cloneable
      *
      * @param base whether this is base component painter or not
      */
+    @Deprecated
     public void setBase ( final boolean base )
     {
         this.base = base;
@@ -146,14 +179,9 @@ public final class PainterStyle implements Serializable, Cloneable
         this.properties = properties;
     }
 
-    /**
-     * Returns cloned instance of this painter style.
-     *
-     * @return cloned instance of this painter style
-     */
     @Override
     public PainterStyle clone ()
     {
-        return MergeUtils.cloneByFieldsSafely ( this );
+        return Clone.cloneByFieldsSafely ( this );
     }
 }

@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Abstract icon set containing implementations for most common methods.
+ * Abstract {@link IconSet} common method implementations.
  *
  * @author Mikle Garin
  */
@@ -36,26 +36,26 @@ import java.util.Map;
 public abstract class AbstractIconSet implements IconSet
 {
     /**
-     * Unique icon set ID.
+     * Unique {@link IconSet} identifier.
      */
     private final String id;
 
     /**
-     * Icons information cache for lazy loading.
-     * It contains: icon key -> icon information
+     * {@link IconData} cache used for loading icons lazily.
+     * It contains: {@link Icon} identifier -> {@link IconData}.
      */
     private final Map<String, IconData> iconsData;
 
     /**
-     * Loaded icons cache.
-     * It contains: icon key -> weak icon reference
+     * Loaded {@link Icon}s cache.
+     * It contains: {@link Icon} identifier -> weak reference to loaded {@link Icon}.
      */
     private final Map<String, Icon> cache;
 
     /**
-     * Constructs new abstract icon set.
+     * Constructs new {@link AbstractIconSet}.
      *
-     * @param id icon set ID
+     * @param id unique {@link IconSet} identifier
      */
     public AbstractIconSet ( final String id )
     {

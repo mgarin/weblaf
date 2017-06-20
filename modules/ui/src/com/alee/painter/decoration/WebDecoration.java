@@ -19,6 +19,7 @@ package com.alee.painter.decoration;
 
 import com.alee.api.ColorSupport;
 import com.alee.api.StrokeSupport;
+import com.alee.api.merge.Merge;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.background.IBackground;
 import com.alee.painter.decoration.border.BorderWidth;
@@ -30,7 +31,6 @@ import com.alee.painter.decoration.shape.IShape;
 import com.alee.painter.decoration.shape.ShapeType;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.GraphicsUtils;
-import com.alee.utils.MergeUtils;
 import com.alee.utils.SwingUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
@@ -173,7 +173,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
      */
     public boolean hasShape ()
     {
-        return !CollectionUtils.isEmpty ( shapes );
+        return CollectionUtils.notEmpty ( shapes );
     }
 
     /**
@@ -183,7 +183,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
      */
     public IShape getShape ()
     {
-        if ( !CollectionUtils.isEmpty ( shapes ) )
+        if ( CollectionUtils.notEmpty ( shapes ) )
         {
             if ( shapes.size () == 1 )
             {
@@ -208,7 +208,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
      */
     public boolean hasShadow ( final ShadowType type )
     {
-        return !CollectionUtils.isEmpty ( shadows ) && getShadow ( type ) != null;
+        return CollectionUtils.notEmpty ( shadows ) && getShadow ( type ) != null;
     }
 
     /**
@@ -219,7 +219,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
      */
     public IShadow getShadow ( final ShadowType type )
     {
-        if ( !CollectionUtils.isEmpty ( shadows ) )
+        if ( CollectionUtils.notEmpty ( shadows ) )
         {
             if ( shadows.size () == 1 )
             {
@@ -270,7 +270,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
      */
     public boolean hasBorder ()
     {
-        return !CollectionUtils.isEmpty ( borders );
+        return CollectionUtils.notEmpty ( borders );
     }
 
     /**
@@ -280,7 +280,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
      */
     public IBorder getBorder ()
     {
-        if ( !CollectionUtils.isEmpty ( borders ) )
+        if ( CollectionUtils.notEmpty ( borders ) )
         {
             if ( borders.size () == 1 )
             {
@@ -315,7 +315,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
      */
     public boolean hasBackground ()
     {
-        return !CollectionUtils.isEmpty ( backgrounds );
+        return CollectionUtils.notEmpty ( backgrounds );
     }
 
     /**
@@ -325,7 +325,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
      */
     public List<IBackground> getBackgrounds ()
     {
-        return !CollectionUtils.isEmpty ( backgrounds ) ? backgrounds : null;
+        return CollectionUtils.notEmpty ( backgrounds ) ? backgrounds : null;
     }
 
     @Override
@@ -503,10 +503,11 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     public I merge ( final I decoration )
     {
         super.merge ( decoration );
-        shapes = decoration.isOverwrite () ? decoration.shapes : MergeUtils.merge ( shapes, decoration.shapes );
-        shadows = decoration.isOverwrite () ? decoration.shadows : MergeUtils.merge ( shadows, decoration.shadows );
-        borders = decoration.isOverwrite () ? decoration.borders : MergeUtils.merge ( borders, decoration.borders );
-        backgrounds = decoration.isOverwrite () ? decoration.backgrounds : MergeUtils.merge ( backgrounds, decoration.backgrounds );
+        shapes = decoration.isOverwrite () ? decoration.shapes : Merge.COMMON.<List<IShape>>merge ( shapes, decoration.shapes );
+        shadows = decoration.isOverwrite () ? decoration.shadows : Merge.COMMON.<List<IShadow>>merge ( shadows, decoration.shadows );
+        borders = decoration.isOverwrite () ? decoration.borders : Merge.COMMON.<List<IBorder>>merge ( borders, decoration.borders );
+        backgrounds = decoration.isOverwrite () ? decoration.backgrounds :
+                Merge.COMMON.<List<IBackground>>merge ( backgrounds, decoration.backgrounds );
         return ( I ) this;
     }
 }

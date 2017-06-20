@@ -34,7 +34,7 @@ public interface MergeNullResolver extends Serializable
      * Returns one of the specified objects.
      * One of the passed objects will always be {@code null}.
      *
-     * @param merge  merge algorithm
+     * @param merge  {@link Merge} algorithm
      * @param object base object
      * @param merged object to merge
      * @return either {@code object} or {@code merged} object

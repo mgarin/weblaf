@@ -25,7 +25,7 @@ import com.alee.managers.style.XmlSkinExtension;
  * @author Mikle Garin
  */
 
-public class DarkSkinExtension extends XmlSkinExtension
+public final class DarkSkinExtension extends XmlSkinExtension
 {
     /**
      * Constructs new demo dark skin extension.

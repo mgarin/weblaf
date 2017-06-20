@@ -1475,10 +1475,6 @@
                         <value lang="en">Simple frame %s</value>
                         <value lang="ru">Простой фрейм %s</value>
                     </record>
-                    <record key="content">
-                        <value lang="en">Frame with no content</value>
-                        <value lang="ru">Фрейм без контента</value>
-                    </record>
                 </Dictionary>
             </Dictionary>
         </Dictionary>

@@ -27,7 +27,10 @@ import java.util.ArrayList;
 
 public class WrapFlowLayout extends AbstractLayoutManager implements SwingConstants
 {
-    // todo support RTL + LEADING/TRAILING support
+    /**
+     * todo 1. Support for RTL
+     * todo 2. Add LEADING/TRAILING alignments
+     */
 
     protected boolean fitWidth = true;
     protected boolean fillWidth = true;

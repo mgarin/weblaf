@@ -21,7 +21,7 @@ import com.alee.managers.style.ChildStyleId;
 import com.alee.managers.style.StyleId;
 
 /**
- * Demo Application styles.
+ * {@link com.alee.demo.DemoApplication} styles.
  *
  * @author Mikle Garin
  */
@@ -31,7 +31,6 @@ public final class DemoStyles
     /**
      * General.
      */
-    public static final StyleId toolLabel = StyleId.of ( "tool" );
     public static final StyleId toolButton = StyleId.of ( "tool" );
     public static final StyleId toolCombobox = StyleId.of ( "tool" );
     public static final StyleId filterfield = StyleId.of ( "filter" );
@@ -56,7 +55,6 @@ public final class DemoStyles
     public static final StyleId exampleToolbar = StyleId.of ( "example" );
     public static final StyleId wikiLabel = StyleId.of ( "wiki" );
     public static final StyleId wikiLink = StyleId.of ( "wiki" );
-    public static final StyleId plainPanel = StyleId.of ( "plain" );
     public static final StyleId previewsPanel = StyleId.of ( "previews" );
 
     /**
@@ -72,12 +70,6 @@ public final class DemoStyles
      */
     public static final StyleId easingEastBar = StyleId.of ( "easing-east-bar" );
     public static final StyleId easingSouthBar = StyleId.of ( "easing-south-bar" );
-
-    /**
-     * Style code preview panel.
-     */
-    public static final StyleId skinSelectorsPanel = StyleId.of ( "skin-selectors" );
-    public static final ChildStyleId skinSelectorButton = ChildStyleId.of ( "skin-selector" );
 
     /**
      * Example styles.

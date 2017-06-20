@@ -17,6 +17,7 @@
 
 package com.alee.laf.scroll;
 
+import com.alee.laf.viewport.WebViewport;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
@@ -130,6 +131,12 @@ public class WebScrollPane extends JScrollPane
     {
         super ( view, vsbPolicy, hsbPolicy );
         setStyleId ( id );
+    }
+
+    @Override
+    protected JViewport createViewport ()
+    {
+        return new WebViewport ();
     }
 
     @Override

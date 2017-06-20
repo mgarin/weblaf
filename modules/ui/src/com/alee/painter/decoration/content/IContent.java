@@ -18,8 +18,8 @@
 package com.alee.painter.decoration.content;
 
 import com.alee.api.Identifiable;
-import com.alee.api.merge.Mergeable;
-import com.alee.api.Overwriting;
+import com.alee.api.merge.MergeBehavior;
+import com.alee.api.merge.Overwriting;
 import com.alee.managers.style.BoundsType;
 import com.alee.painter.decoration.DecoratonElement;
 import com.alee.painter.decoration.IDecoration;
@@ -38,7 +38,7 @@ import java.io.Serializable;
  */
 
 public interface IContent<E extends JComponent, D extends IDecoration<E, D>, I extends IContent<E, D, I>>
-        extends Identifiable, DecoratonElement<E, D, I>, Mergeable<I>, Overwriting, Cloneable, Serializable
+        extends Identifiable, DecoratonElement<E, D, I>, MergeBehavior<I>, Overwriting, Cloneable, Serializable
 {
     /**
      * Returns content bounds type.

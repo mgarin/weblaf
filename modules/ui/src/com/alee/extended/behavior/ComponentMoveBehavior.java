@@ -146,8 +146,8 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
         if ( dragging )
         {
             final Point mouse = CoreSwingUtils.getMouseLocation ();
-            final int x = initialBounds.x + ( mouse.x - initialPoint.x );
-            final int y = initialBounds.y + ( mouse.y - initialPoint.y );
+            final int x = initialBounds.x + mouse.x - initialPoint.x;
+            final int y = initialBounds.y + mouse.y - initialPoint.y;
             final Point location = new Point ( x, y );
             dragged.setLocation ( location );
             componentMoved ( mouse, location );

@@ -17,12 +17,10 @@
 
 package com.alee.demo.content.data.grid;
 
-import com.alee.demo.api.example.AbstractStylePreview;
-import com.alee.demo.api.example.FeatureState;
-import com.alee.demo.api.example.FeatureType;
-import com.alee.demo.api.example.Preview;
+import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
+import com.alee.demo.content.SampleData;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
@@ -34,7 +32,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class JTableExample extends AbstractTableExample
+public class JTableExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()
@@ -87,7 +85,7 @@ public class JTableExample extends AbstractTableExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final JTable table = new JTable ( createShortTableModel () );
+            final JTable table = new JTable ( SampleData.createShortTableModel () );
             table.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
             return CollectionUtils.asList ( table );
         }
@@ -111,7 +109,7 @@ public class JTableExample extends AbstractTableExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final JTable table = new JTable ( createLongTableModel () );
+            final JTable table = new JTable ( SampleData.createLongTableModel () );
             table.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
             table.setAutoResizeMode ( JTable.AUTO_RESIZE_OFF );
             return CollectionUtils.asList ( new WebScrollPane ( table ).setPreferredSize ( 300, 100 ) );
@@ -136,7 +134,7 @@ public class JTableExample extends AbstractTableExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final JTable table = new JTable ( createLongTableModel () );
+            final JTable table = new JTable ( SampleData.createLongTableModel () );
             table.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
             table.setAutoResizeMode ( JTable.AUTO_RESIZE_OFF );
             return CollectionUtils.asList ( new WebScrollPane ( table ).setPreferredSize ( 300, 100 ) );

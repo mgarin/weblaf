@@ -212,7 +212,7 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
             }
 
             // Excluding descendants if needed
-            if ( nodesAcceptPolicy !=null )
+            if ( nodesAcceptPolicy != null )
             {
                 nodesAcceptPolicy.filter ( nodes );
             }
@@ -372,7 +372,7 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
         for ( final TreeDropHandler<N, T, M> dropHandler : dropHandlers )
         {
             final List<DataFlavor> flavors = dropHandler.getSupportedFlavors ();
-            if ( !CollectionUtils.isEmpty ( flavors ) )
+            if ( CollectionUtils.notEmpty ( flavors ) )
             {
                 for ( final DataFlavor flavor : flavors )
                 {

@@ -17,7 +17,7 @@
 
 package com.alee.extended.label;
 
-import com.alee.api.merge.Mergeable;
+import com.alee.api.merge.MergeBehavior;
 import com.alee.utils.CollectionUtils;
 
 import java.awt.*;
@@ -32,7 +32,7 @@ import java.util.List;
  * @see com.alee.extended.label.WebStyledLabel
  */
 
-public class StyleRange implements Cloneable, Mergeable<StyleRange>
+public class StyleRange implements MergeBehavior<StyleRange>, Cloneable
 {
     /**
      * Text style start index.

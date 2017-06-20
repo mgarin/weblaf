@@ -93,7 +93,7 @@
                 <painter>
 
                     <!-- Hide hover cell background painter -->
-                    <hoverPainter />
+                    <hoverPainter overwrite="true" />
 
                 </painter>
 

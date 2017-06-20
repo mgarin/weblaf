@@ -18,7 +18,8 @@
 package com.alee.managers.icon.data;
 
 import com.alee.api.Identifiable;
-import com.alee.utils.MergeUtils;
+import com.alee.api.clone.Clone;
+import com.alee.extended.svg.SvgIconData;
 import com.alee.utils.xml.ClassConverter;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -29,13 +30,13 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Basic icon information.
+ * Abstract {@link IconData} containing basic {@link Icon} information.
  *
  * @param <T> icon type
  * @author Mikle Garin
  * @see com.alee.managers.icon.IconManager
  * @see com.alee.managers.icon.data.ImageIconData
- * @see com.alee.managers.icon.data.SvgIconData
+ * @see SvgIconData
  */
 
 public abstract class IconData<T extends Icon> implements Serializable, Cloneable, Identifiable
@@ -45,20 +46,20 @@ public abstract class IconData<T extends Icon> implements Serializable, Cloneabl
      * Used to access icon through {@link com.alee.managers.icon.IconManager}.
      */
     @XStreamAsAttribute
-    private String id;
+    protected String id;
 
     /**
      * Class which specified path is relative to.
      */
     @XStreamAsAttribute
     @XStreamConverter ( ClassConverter.class )
-    private Class nearClass;
+    protected Class nearClass;
 
     /**
      * Icon file path.
      */
     @XStreamAsAttribute
-    private String path;
+    protected String path;
 
     /**
      * Customizable icon adjustments.
@@ -186,6 +187,6 @@ public abstract class IconData<T extends Icon> implements Serializable, Cloneabl
     @Override
     public IconData clone ()
     {
-        return MergeUtils.cloneByFieldsSafely ( this );
+        return Clone.cloneByFieldsSafely ( this );
     }
 }

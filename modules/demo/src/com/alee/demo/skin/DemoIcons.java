@@ -28,11 +28,6 @@ import com.alee.managers.icon.LazyIcon;
 public final class DemoIcons
 {
     /**
-     * Application icon.
-     */
-    public static final LazyIcon icon16 = new LazyIcon ( "icon16" );
-
-    /**
      * Examples frame.
      */
     public static final LazyIcon examples16 = new LazyIcon ( "examples16" );
@@ -65,13 +60,20 @@ public final class DemoIcons
     public static final LazyIcon github36 = new LazyIcon ( "github36" );
 
     /**
+     * General purpose 19x19 icons.
+     */
+    public static final LazyIcon java19 = new LazyIcon ( "java19" );
+    public static final LazyIcon github19 = new LazyIcon ( "github19" );
+    public static final LazyIcon gitter19 = new LazyIcon ( "gitter19" );
+
+    /**
      * General purpose 16x16 icons.
      */
+    public static final LazyIcon java16 = new LazyIcon ( "java16" );
     public static final LazyIcon legend16 = new LazyIcon ( "legend16" );
     public static final LazyIcon menu16 = new LazyIcon ( "menu16" );
     public static final LazyIcon brush16 = new LazyIcon ( "brush16" );
     public static final LazyIcon github16 = new LazyIcon ( "github16" );
-    public static final LazyIcon gitter16 = new LazyIcon ( "gitter16" );
     public static final LazyIcon settings16 = new LazyIcon ( "settings16" );
     public static final LazyIcon key16 = new LazyIcon ( "key16" );
     public static final LazyIcon dollar16 = new LazyIcon ( "dollar16" );

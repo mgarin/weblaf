@@ -814,7 +814,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     protected Image getWindowImage ()
     {
         final List<Image> images = window != null ? window.getIconImages () : null;
-        if ( !CollectionUtils.isEmpty ( images ) )
+        if ( CollectionUtils.notEmpty ( images ) )
         {
             if ( images.size () > 1 )
             {
@@ -846,40 +846,26 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
         }
     }
 
-    /**
-     * Returns window for the root pane this UI is applied to.
-     *
-     * @return window for the root pane this UI is applied to
-     */
+    @Override
     public Window getWindow ()
     {
         return SwingUtils.getWindowAncestor ( root );
     }
 
-    /**
-     * Returns whether or not this root pane is attached to frame.
-     *
-     * @return true if this root pane is attached to frame, false otherwise
-     */
+    @Override
     public boolean isFrame ()
     {
         return frame != null;
     }
 
-    /**
-     * Returns whether or not this root pane is attached to dialog.
-     *
-     * @return true if this root pane is attached to dialog, false otherwise
-     */
+    @Override
     public boolean isDialog ()
     {
         return dialog != null;
     }
 
-    /**
-     * Closes the Window.
-     */
-    protected void close ()
+    @Override
+    public void close ()
     {
         if ( window != null )
         {
@@ -887,10 +873,8 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
         }
     }
 
-    /**
-     * Iconifies the Frame.
-     */
-    protected void iconify ()
+    @Override
+    public void iconify ()
     {
         if ( frame != null )
         {
@@ -898,10 +882,8 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
         }
     }
 
-    /**
-     * Maximizes the Frame.
-     */
-    protected void maximize ()
+    @Override
+    public void maximize ()
     {
         if ( frame != null )
         {
@@ -913,11 +895,8 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
         }
     }
 
-    /**
-     * Maximizes the Frame to the west (left) half of the screen.
-     * todo Unfortunately MAXIMIZED_VERT state seems not to be supported anywhere
-     */
-    protected void maximizeWest ()
+    @Override
+    public void maximizeWest ()
     {
         if ( frame != null )
         {
@@ -933,11 +912,8 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
         }
     }
 
-    /**
-     * Maximizes the Frame to the east (right) half of the screen.
-     * todo Unfortunately MAXIMIZED_VERT state seems not to be supported anywhere
-     */
-    protected void maximizeEast ()
+    @Override
+    public void maximizeEast ()
     {
         if ( frame != null )
         {
@@ -952,10 +928,8 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
         }
     }
 
-    /**
-     * Restores the Frame size.
-     */
-    protected void restore ()
+    @Override
+    public void restore ()
     {
         if ( frame != null )
         {

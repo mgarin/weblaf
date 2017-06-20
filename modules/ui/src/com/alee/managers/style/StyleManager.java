@@ -36,9 +36,8 @@ import com.alee.laf.menu.AcceleratorText;
 import com.alee.laf.menu.MenuItemLayout;
 import com.alee.laf.progressbar.ProgressBarText;
 import com.alee.laf.radiobutton.RadioIcon;
+import com.alee.laf.scroll.layout.WebScrollPaneLayout;
 import com.alee.laf.separator.SeparatorStripes;
-import com.alee.painter.decoration.content.Stripe;
-import com.alee.painter.decoration.content.Stripes;
 import com.alee.laf.tooltip.StyledToolTipText;
 import com.alee.laf.tooltip.ToolTipText;
 import com.alee.managers.style.data.ComponentStyle;
@@ -64,10 +63,7 @@ import com.alee.painter.decoration.shape.BoundsShape;
 import com.alee.painter.decoration.shape.EllipseShape;
 import com.alee.painter.decoration.shape.WebShape;
 import com.alee.skin.web.WebSkin;
-import com.alee.utils.CollectionUtils;
-import com.alee.utils.MapUtils;
-import com.alee.utils.ReflectUtils;
-import com.alee.utils.XmlUtils;
+import com.alee.utils.*;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
@@ -75,8 +71,8 @@ import javax.swing.event.EventListenerList;
 import java.util.*;
 
 /**
- * This manager handles WebLaF component styles.
- * It also provides API to install and uninstall application skins in runtime.
+ * This manager handles all default Swing and custom WebLaF component styles.
+ * It provides API to manage global {@link Skin}s in runtime, customize
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
@@ -217,6 +213,23 @@ public final class StyleManager
             XmlUtils.processAnnotations ( PopOverPainter.class );
             XmlUtils.processAnnotations ( SelectablePanelPainter.class );
             XmlUtils.processAnnotations ( SyntaxPanelPainter.class );
+
+            // Layout aliases
+            XmlUtils.processAnnotations ( WebScrollPaneLayout.class );
+            XmlUtils.processAnnotations ( WebScrollPaneLayout.UIResource.class );
+
+            // Workaround for ScrollPaneLayout due to neccessity of its usage
+            XmlUtils.omitField ( ScrollPaneLayout.class, "viewport" );
+            XmlUtils.omitField ( ScrollPaneLayout.class, "vsb" );
+            XmlUtils.omitField ( ScrollPaneLayout.class, "hsb" );
+            XmlUtils.omitField ( ScrollPaneLayout.class, "rowHead" );
+            XmlUtils.omitField ( ScrollPaneLayout.class, "colHead" );
+            XmlUtils.omitField ( ScrollPaneLayout.class, "lowerLeft" );
+            XmlUtils.omitField ( ScrollPaneLayout.class, "lowerRight" );
+            XmlUtils.omitField ( ScrollPaneLayout.class, "upperLeft" );
+            XmlUtils.omitField ( ScrollPaneLayout.class, "upperRight" );
+            XmlUtils.omitField ( ScrollPaneLayout.class, "vsbPolicy" );
+            XmlUtils.omitField ( ScrollPaneLayout.class, "hsbPolicy" );
 
             // Updating initialization mark
             initialized = true;

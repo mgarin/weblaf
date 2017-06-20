@@ -17,25 +17,24 @@
 
 package com.alee.extended.filechooser;
 
-import com.alee.global.GlobalConstants;
 import com.alee.laf.table.WebTable;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.filefilter.AbstractFileFilter;
+import com.alee.utils.filefilter.NonHiddenFilter;
 
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 /**
- * File table component.
- * It can either display specified folder content or custom list of files.
+ * {@link WebTable} extension for {@link File} elements.
+ * It can either display specified folder content or custom list of {@link File}s.
  * <p/>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
@@ -55,7 +54,7 @@ public class WebFileTable extends WebTable implements FileTableColumns
     /**
      * File filter.
      */
-    protected AbstractFileFilter fileFilter = GlobalConstants.NON_HIDDEN_ONLY_FILTER;
+    protected AbstractFileFilter fileFilter = new NonHiddenFilter ();
 
     /**
      * Displayed directory.
@@ -270,7 +269,7 @@ public class WebFileTable extends WebTable implements FileTableColumns
         // Update files data
         final File[] listedFiles = file != null ? FileUtils.listFiles ( file, ( FileFilter ) fileFilter ) : null;
         final File[] files = file != null ? FileUtils.sortFiles ( listedFiles ) : FileUtils.getDiskRoots ();
-        getFileTableModel ().setFiles ( Arrays.asList ( files ) );
+        getFileTableModel ().setFiles ( CollectionUtils.asList ( files ) );
 
         // Restoring selection if its same folder
         if ( FileUtils.equals ( displayedDirectory, file ) )
@@ -310,7 +309,7 @@ public class WebFileTable extends WebTable implements FileTableColumns
      */
     public void setColumns ( final String... columns )
     {
-        setColumns ( Arrays.asList ( columns ) );
+        setColumns ( CollectionUtils.asList ( columns ) );
     }
 
     /**

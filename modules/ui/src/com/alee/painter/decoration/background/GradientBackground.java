@@ -131,7 +131,7 @@ public class GradientBackground<E extends JComponent, D extends IDecoration<E, D
         type = bg.isOverwrite () || bg.type != null ? bg.type : type;
         from = bg.isOverwrite () || bg.from != null ? bg.from : from;
         to = bg.isOverwrite () || bg.to != null ? bg.to : to;
-        colors = bg.isOverwrite () || !CollectionUtils.isEmpty ( bg.colors ) ? CollectionUtils.copy ( bg.colors ) : colors;
+        colors = bg.isOverwrite () || CollectionUtils.notEmpty ( bg.colors ) ? CollectionUtils.copy ( bg.colors ) : colors;
         return ( I ) this;
     }
 }

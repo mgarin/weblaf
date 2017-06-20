@@ -158,10 +158,25 @@ public final class LafUtils
      * @param component component to check used UI at
      * @return true if specified component uses WebLaF UI, false otherwise
      */
-    public static boolean isWebLafUI ( final JComponent component )
+    public static boolean isWebLafUI ( final Component component )
     {
-        return StyleableComponent.isSupported ( component ) &&
-                StyleableComponent.get ( component ).getUIClass ().isAssignableFrom ( LafUtils.getUI ( component ).getClass () );
+        final boolean webUI;
+        if ( StyleableComponent.isSupported ( component ) )
+        {
+            // Checking that currently installed UI is compatible with WebLaF UI class
+            // todo This should be changed to a more simple case like "instanceof WebUI"
+            // todo But WebUI is not yet implemented by all UI classes so this way works as a temporary measure
+            final ComponentUI ui = LafUtils.getUI ( component );
+            webUI = ui != null && StyleableComponent.get ( component ).getUIClass ().isAssignableFrom ( ui.getClass () );
+        }
+        else
+        {
+            // This might be the case when L&F is not installed
+            // Specifically for complex components like WebScrollPane
+            // Look at issue #458 for more details
+            webUI = false;
+        }
+        return webUI;
     }
 
     /**

@@ -36,15 +36,15 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-@SuppressWarnings ( "Duplicates" )
 public final class TextUtils
 {
     /**
      * Separators used to determine words in text.
      */
-    private static final List<String> textSeparators =
-            Arrays.asList ( " ", ".", ",", ":", ";", "/", "\\", "\n", "\t", "|", "{", "}", "[", "]", "(", ")", "<", ">", "-", "+", "\"",
-                    "'", "*", "%", "$", "#", "@", "!", "~", "^", "&", "?" );
+    private static final List<String> textSeparators = CollectionUtils.asList (
+            " ", ".", ",", ":", ";", "/", "|", "{", "}", "[", "]", "(", ")", "<", ">",
+            "\\", "\n", "\t", "\"", "'", "-", "+", "*", "%", "$", "#", "@", "!", "~", "^", "&", "?"
+    );
 
     /**
      * Text provider for any type of objects.
@@ -207,7 +207,7 @@ public final class TextUtils
      */
     public static String removeSpacings ( final String text )
     {
-        return text.replaceAll ( " |\\t", "" );
+        return text.replaceAll ( "[ \\t]", "" );
     }
 
     /**
@@ -640,7 +640,7 @@ public final class TextUtils
     public static <T> String listToString ( final List<T> list, final String separator, final TextProvider<T> textProvider,
                                             final Filter<T> filter )
     {
-        if ( list != null && list.size () > 0 )
+        if ( CollectionUtils.notEmpty ( list ) )
         {
             final StringBuilder stringBuilder = new StringBuilder ();
             boolean hasPreviouslyAccepted = false;

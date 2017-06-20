@@ -290,7 +290,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
      */
     protected void updateSidebarsVisibility ()
     {
-        if ( !CollectionUtils.isEmpty ( pane.frames ) )
+        if ( CollectionUtils.notEmpty ( pane.frames ) )
         {
             for ( final WebDockableFrame frame : pane.frames )
             {

@@ -30,12 +30,12 @@ import com.alee.laf.window.WebDialog;
 import com.alee.managers.language.LanguageManager;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.collection.ImmutableList;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -182,7 +182,8 @@ public class WebExtendedOptionPane extends WebDialog
         }
 
         // Equalize button widths
-        SwingUtils.equalizeComponentsWidth ( Arrays.asList ( AbstractButton.TEXT_CHANGED_PROPERTY ), buttons.getComponents ()  );
+        final List<String> properties = new ImmutableList<String> ( AbstractButton.TEXT_CHANGED_PROPERTY );
+        SwingUtils.equalizeComponentsWidth ( properties, buttons.getComponents ()  );
 
         // Dialog settings
         setModal ( true );

@@ -23,6 +23,8 @@ import com.alee.painter.Painter;
 import com.alee.utils.ReflectUtils;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
+import com.thoughtworks.xstream.mapper.CannotResolveClassException;
+import com.thoughtworks.xstream.mapper.Mapper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -42,19 +44,20 @@ public final class StyleConverterUtils
     /**
      * Read properties for the specified class into the provided properties map.
      *
-     * @param reader     {@link com.thoughtworks.xstream.io.HierarchicalStreamReader}
-     * @param context    {@link com.thoughtworks.xstream.converters.UnmarshallingContext}
+     * @param reader     {@link HierarchicalStreamReader}
+     * @param context    {@link UnmarshallingContext}
+     * @param mapper     {@link Mapper}
      * @param properties map to read properties into
      * @param clazz      class to read properties for, it will be used to retrieve properties field types
      * @param styleId    component style ID, might be used to report problems
      */
-    public static void readProperties ( final HierarchicalStreamReader reader, final UnmarshallingContext context,
+    public static void readProperties ( final HierarchicalStreamReader reader, final UnmarshallingContext context, final Mapper mapper,
                                         final Map<String, Object> properties, final Class clazz, final String styleId )
     {
         while ( reader.hasMoreChildren () )
         {
             reader.moveDown ();
-            readProperty ( reader, context, styleId, properties, clazz, reader.getNodeName () );
+            readProperty ( reader, context, mapper, styleId, properties, clazz, reader.getNodeName () );
             reader.moveUp ();
         }
     }
@@ -62,15 +65,17 @@ public final class StyleConverterUtils
     /**
      * Parses single style property into properties map.
      *
-     * @param reader        {@link com.thoughtworks.xstream.io.HierarchicalStreamReader}
-     * @param context       {@link com.thoughtworks.xstream.converters.UnmarshallingContext}
+     * @param reader        {@link HierarchicalStreamReader}
+     * @param context       {@link UnmarshallingContext}
+     * @param mapper        {@link Mapper}
      * @param styleId       component style ID, might be used to report problems
      * @param properties    map to read property into
      * @param propertyClass class to read property for, it will be used to retrieve property field type
      * @param propertyName  property name
      */
-    public static void readProperty ( final HierarchicalStreamReader reader, final UnmarshallingContext context, final String styleId,
-                                      final Map<String, Object> properties, final Class propertyClass, final String propertyName )
+    private static void readProperty ( final HierarchicalStreamReader reader, final UnmarshallingContext context, final Mapper mapper,
+                                      final String styleId, final Map<String, Object> properties, final Class propertyClass,
+                                      final String propertyName )
     {
         final String ignored = reader.getAttribute ( IGNORED_ATTRIBUTE );
         if ( ignored != null && Boolean.parseBoolean ( ignored ) )
@@ -81,8 +86,31 @@ public final class StyleConverterUtils
         }
         else
         {
-            // Trying to retrieve field type by its name
-            final Class fieldClass = ReflectUtils.getFieldTypeSafely ( propertyClass, propertyName );
+            // Retrieving field class
+            final Class fieldClass;
+            final String classAttribute = reader.getAttribute ( "class" );
+            if ( classAttribute != null )
+            {
+                try
+                {
+                    // This would be the case for interface implementations as they cannot be instantiated directly
+                    // We also rethrow appropriate exception here in case unknown type have been specified
+                    fieldClass = mapper.realClass ( classAttribute );
+                }
+                catch ( final CannotResolveClassException e )
+                {
+                    final String msg = "Component property '%s' value from style '%s' has unknown type: %s";
+                    throw new StyleException ( String.format ( msg, propertyName, styleId, classAttribute ), e );
+                }
+            }
+            else
+            {
+                // Trying to retrieve field type by its name
+                // This would be the case for common types like String or int
+                fieldClass = ReflectUtils.getFieldTypeSafely ( propertyClass, propertyName );
+            }
+
+            // Reading property value
             if ( fieldClass != null )
             {
                 try

@@ -17,9 +17,9 @@
 
 package com.alee.managers.language.data;
 
+import com.alee.api.clone.Clone;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
-import com.alee.utils.MergeUtils;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -216,7 +216,7 @@ public final class Record implements Serializable, Cloneable
     @Override
     public Record clone ()
     {
-        return MergeUtils.cloneByFieldsSafely ( this );
+        return Clone.cloneByFieldsSafely ( this );
     }
 
     @Override

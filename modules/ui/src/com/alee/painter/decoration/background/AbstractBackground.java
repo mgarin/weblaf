@@ -17,8 +17,8 @@
 
 package com.alee.painter.decoration.background;
 
+import com.alee.api.clone.Clone;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.MergeUtils;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
@@ -98,6 +98,6 @@ public abstract class AbstractBackground<E extends JComponent, D extends IDecora
     @Override
     public I clone ()
     {
-        return ( I ) MergeUtils.cloneByFieldsSafely ( this );
+        return ( I ) Clone.cloneByFieldsSafely ( this );
     }
 }

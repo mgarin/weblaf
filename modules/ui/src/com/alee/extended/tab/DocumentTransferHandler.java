@@ -294,11 +294,16 @@ public class DocumentTransferHandler extends TransferHandler
         final MouseAdapter dragAdapter = new MouseAdapter ()
         {
             protected boolean readyToDrag = false;
+            protected Point startingPoint = null;
 
             @Override
             public void mousePressed ( final MouseEvent e )
             {
-                readyToDrag = paneData.getDocumentPane ().isDragEnabled () && SwingUtils.isLeftMouseButton ( e );
+                if ( paneData.getDocumentPane ().isDragEnabled () && SwingUtils.isLeftMouseButton ( e ) )
+                {
+                    readyToDrag = true;
+                    startingPoint = e.getPoint ();
+                }
             }
 
             @Override
@@ -306,15 +311,25 @@ public class DocumentTransferHandler extends TransferHandler
             {
                 if ( readyToDrag )
                 {
-                    readyToDrag = false;
-                    tabbedPane.getTransferHandler ().exportAsDrag ( tabbedPane, e, TransferHandler.MOVE );
+                    // Ensure that cursor have moved for at least 5 pixels before we start drag operation
+                    // This is necessary to avoid accidental tabs drag when they are selected and to make them feel sticky
+                    final Point point = e.getPoint ();
+                    if ( Math.abs ( startingPoint.x - point.x ) > 5 || Math.abs ( startingPoint.y - point.y ) > 5 )
+                    {
+                        readyToDrag = false;
+                        startingPoint = null;
+                        tabbedPane.getTransferHandler ().exportAsDrag ( tabbedPane, e, TransferHandler.MOVE );
+                    }
                 }
             }
 
             @Override
             public void mouseReleased ( final MouseEvent e )
             {
-                readyToDrag = false;
+                if ( SwingUtils.isLeftMouseButton ( e ) )
+                {
+                    readyToDrag = false;
+                }
             }
         };
         tabbedPane.addMouseListener ( dragAdapter );

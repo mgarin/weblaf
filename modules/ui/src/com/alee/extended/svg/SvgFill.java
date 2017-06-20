@@ -15,10 +15,8 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.icon.data;
+package com.alee.extended.svg;
 
-import com.alee.extended.svg.SvgElements;
-import com.alee.extended.svg.SvgIcon;
 import com.alee.utils.ColorUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -26,7 +24,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import java.awt.*;
 
 /**
- * Adds or replaces existing fill color on the target SVG element.
+ * Adds or replaces existing fill color on the target {@link com.kitfox.svg.SVGElement}.
  *
  * @author Mikle Garin
  */

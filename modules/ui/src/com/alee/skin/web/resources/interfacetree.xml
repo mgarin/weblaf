@@ -5,4 +5,14 @@
     <!-- Interface components tree -->
     <style type="tree" id="interfacetree" extends="extree" />
 
+    <!-- Transparent interface components tree -->
+    <style type="tree" id="interfacetree-transparent" extends="interfacetree">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
 </skin>

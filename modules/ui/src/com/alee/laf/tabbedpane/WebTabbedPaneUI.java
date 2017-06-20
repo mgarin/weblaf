@@ -17,12 +17,12 @@
 
 package com.alee.laf.tabbedpane;
 
+import com.alee.api.clone.Clone;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.SectionPainter;
-import com.alee.utils.MergeUtils;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -158,36 +158,43 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
         this.tabStretchType = tabStretchType;
     }
 
+    @Override
     public Vector<View> getHtmlViews ()
     {
         return htmlViews;
     }
 
+    @Override
     public ScrollableTabSupport getTabScroller ()
     {
         return tabScroller;
     }
 
+    @Override
     public int[] getTabRuns ()
     {
         return tabRuns;
     }
 
+    @Override
     public Rectangle[] getRects ()
     {
         return rects;
     }
 
+    @Override
     public int getMaxTabHeight ()
     {
         return maxTabHeight;
     }
 
+    @Override
     public int getMaxTabWidth ()
     {
         return maxTabWidth;
     }
 
+    @Override
     public SectionPainter getBackgroundPainterAt ( final int tabIndex )
     {
         return backgroundPainterAt.get ( tabIndex );
@@ -288,7 +295,7 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
     @Override
     protected Insets getTabInsets ( final int tabPlacement, final int tabIndex )
     {
-        final Insets insets = MergeUtils.clone ( tabInsets );
+        final Insets insets = Clone.clone ( tabInsets );
         if ( tabIndex == 0 && tabPane.getSelectedIndex () == 0 )
         {
             // Fix for 1st element

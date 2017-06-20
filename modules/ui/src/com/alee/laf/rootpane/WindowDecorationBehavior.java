@@ -45,15 +45,14 @@ import java.awt.event.MouseMotionListener;
 public class WindowDecorationBehavior extends ComponentMoveBehavior
 {
     /**
-     * todo 1. Replace WebRootPaneUI with WRootPaneUI
-     * todo 2. Properly adjust window location when dragged in maximized state
-     * todo 3. Eased fade out transition for glass dialog
+     * todo 1. Properly adjust window location when dragged in maximized state
+     * todo 2. Eased fade out transition for glass dialog
      */
 
     /**
-     * {@link WebRootPaneUI} containing title this behavior is attached to.
+     * {@link WRootPaneUI} containing title this behavior is attached to.
      */
-    protected final WebRootPaneUI rootPaneUI;
+    protected final WRootPaneUI rootPaneUI;
 
     /**
      * Custom-styled glass dialog displaying side frame might be attached to.
@@ -83,9 +82,9 @@ public class WindowDecorationBehavior extends ComponentMoveBehavior
     /**
      * Constructs new behavior for windows with custom decoration.
      *
-     * @param rootPaneUI {@link WebRootPaneUI}
+     * @param rootPaneUI {@link WRootPaneUI}
      */
-    public WindowDecorationBehavior ( final WebRootPaneUI rootPaneUI )
+    public WindowDecorationBehavior ( final WRootPaneUI rootPaneUI )
     {
         super ();
         this.rootPaneUI = rootPaneUI;
@@ -122,7 +121,7 @@ public class WindowDecorationBehavior extends ComponentMoveBehavior
     @Override
     public void mouseClicked ( final MouseEvent e )
     {
-        if ( rootPaneUI.isFrame () && rootPaneUI.isDisplayMaximizeButton () && SwingUtils.isDoubleClick ( e ) )
+        if ( SwingUtils.isDoubleClick ( e ) && isMaximizable () )
         {
             if ( rootPaneUI.isMaximized () )
             {
@@ -227,7 +226,7 @@ public class WindowDecorationBehavior extends ComponentMoveBehavior
                     }
                     case east:
                     {
-                        rootPaneUI.maximizeWest ();
+                        rootPaneUI.maximizeEast ();
                         break;
                     }
                     case north:
@@ -355,17 +354,47 @@ public class WindowDecorationBehavior extends ComponentMoveBehavior
     }
 
     /**
+     * Returns whether or not {@link #rootPaneUI} is used for {@link JFrame} root pane.
+     *
+     * @return {@code true} if {@link #rootPaneUI} is used for {@link JFrame} root pane, {@code false} otherwise
+     */
+    protected boolean isFrame ()
+    {
+        return rootPaneUI.isFrame ();
+    }
+
+    /**
      * Returns frame this behavior is working with at this moment.
      *
      * @return frame this behavior is working with at this moment
      */
     protected JFrame getFrame ()
     {
-        if ( !rootPaneUI.isFrame () )
+        if ( !isFrame () )
         {
             throw new RuntimeException ( "Incorrect window type requested" );
         }
         return ( JFrame ) getWindow ();
+    }
+
+    /**
+     * Returns whether or not resize is available for this behavior.
+     *
+     * @return {@code true} if resize is available for this behavior, {@code false} otherwise
+     */
+    protected boolean isResizable ()
+    {
+        return isFrame () && getFrame ().isResizable ();
+    }
+
+    /**
+     * Returns whether or not maximize is available for this behavior.
+     *
+     * @return {@code true} if maximize is available for this behavior, {@code false} otherwise
+     */
+    protected boolean isMaximizable ()
+    {
+        return isResizable () && rootPaneUI.isDisplayMaximizeButton ();
     }
 
     /**
@@ -375,16 +404,16 @@ public class WindowDecorationBehavior extends ComponentMoveBehavior
      */
     protected boolean isStickingAvailable ()
     {
-        return SystemUtils.isWindows () && rootPaneUI.isFrame ();
+        return SystemUtils.isWindows () && isMaximizable ();
     }
 
     /**
      * Installs behavior to the specified UI.
      *
-     * @param ui {@link WebRootPaneUI} to install behavior into
+     * @param ui {@link WRootPaneUI} to install behavior into
      * @return installed behavior
      */
-    public static WindowDecorationBehavior install ( final WebRootPaneUI ui )
+    public static WindowDecorationBehavior install ( final WRootPaneUI ui )
     {
         // Uninstalling old behavior first
         uninstall ( ui );
@@ -400,9 +429,9 @@ public class WindowDecorationBehavior extends ComponentMoveBehavior
     /**
      * Uninstalls behavior from the specified gripper component.
      *
-     * @param ui {@link WebRootPaneUI} to uninstall behavior from
+     * @param ui {@link WRootPaneUI} to uninstall behavior from
      */
-    public static void uninstall ( final WebRootPaneUI ui )
+    public static void uninstall ( final WRootPaneUI ui )
     {
         final JComponent titleComponent = ui.getTitleComponent ();
         for ( final MouseListener listener : titleComponent.getMouseListeners () )

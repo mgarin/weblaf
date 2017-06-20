@@ -17,11 +17,17 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.api.clone.Clone;
+import com.alee.api.merge.Merge;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Painter;
-import com.alee.utils.*;
+import com.alee.utils.CollectionUtils;
+import com.alee.utils.CompareUtils;
+import com.alee.utils.LafUtils;
+import com.alee.utils.ReflectUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 import javax.swing.*;
@@ -58,6 +64,7 @@ public final class ComponentStyle implements Serializable, Cloneable
      * Style component type.
      * Refers to component type this style belongs to.
      */
+    @XStreamAsAttribute
     private StyleableComponent type;
 
     /**
@@ -66,12 +73,14 @@ public final class ComponentStyle implements Serializable, Cloneable
      * Use {@link com.alee.managers.style.StyleId#getDefault(javax.swing.JComponent)} to retrieve component-specific default style ID.
      * Use {@link com.alee.managers.style.StyleableComponent#getDefaultStyleId()} to retrieve static default style ID.
      */
+    @XStreamAsAttribute
     private String id;
 
     /**
      * Another component style ID which is extended by this style.
      * You can specify any existing style ID here to extend it.
      */
+    @XStreamAsAttribute
     private String extendsId;
 
     /**
@@ -89,6 +98,8 @@ public final class ComponentStyle implements Serializable, Cloneable
     /**
      * Component painters settings.
      * Contains list of painter style information objects.
+     *
+     * @deprecated there should only be one painter style available at a time
      */
     @Deprecated
     private List<PainterStyle> painters;
@@ -510,43 +521,51 @@ public final class ComponentStyle implements Serializable, Cloneable
      * @param object object instance
      * @param field  object field
      * @param value  field value
-     * @return true if value was applied successfully, false otherwise
      * @throws java.lang.reflect.InvocationTargetException if method throws an exception
      * @throws java.lang.IllegalAccessException            if method is inaccessible
      */
-    private boolean setFieldValue ( final Object object, final String field, final Object value )
+    private void setFieldValue ( final Object object, final String field, final Object value )
             throws InvocationTargetException, IllegalAccessException
     {
-        // Skip ignored values
+        // Skipping value if it is marked as ignored
         if ( value == IgnoredValue.VALUE )
         {
-            return false;
+            return;
         }
 
-        // todo Still need to check method here? Throw exceptions?
-        // Trying to use setter method to apply the specified value
+        // Creating separate usable value to avoid source object modifications
+        // We have limited options here, so for now we simply clone objects which are defined as Cloneable
+        final Object usable;
         try
         {
+            usable = Clone.clone ( value );
+        }
+        catch ( final Throwable e )
+        {
+            final String msg = "Unable to clone value: %s";
+            throw new StyleException ( String.format ( msg, value ), e );
+        }
+
+        try
+        {
+            // todo Still need to check method here? Throw exceptions?
+            // todo Add more options on the method names here?
+            // Trying to use setter method to apply the specified value
             final String setterMethod = ReflectUtils.getSetterMethodName ( field );
-            ReflectUtils.callMethod ( object, setterMethod, value );
-            return true;
+            ReflectUtils.callMethod ( object, setterMethod, usable );
         }
-        catch ( final NoSuchMethodException e )
+        catch ( final Throwable me )
         {
-            // Ignoring this error and proceeding to direct field access
-        }
-
-        // Applying field value directly
-        try
-        {
-            final Field actualField = ReflectUtils.getField ( object.getClass (), field );
-            actualField.set ( object, value );
-            return true;
-        }
-        catch ( final NoSuchFieldException e )
-        {
-            Log.error ( ComponentStyle.class, e );
-            return false;
+            try
+            {
+                // Applying field value directly
+                ReflectUtils.setFieldValue ( object, field, usable );
+            }
+            catch ( final Throwable fe )
+            {
+                final String msg = "Unable to set `%s` object `%s` field value to: %s";
+                throw new StyleException ( String.format ( msg, object, field, usable ), fe );
+            }
         }
     }
 
@@ -732,7 +751,7 @@ public final class ComponentStyle implements Serializable, Cloneable
         else if ( mergedCount > 0 )
         {
             // Simply set merged styles
-            final List<ComponentStyle> mergedStylesClone = MergeUtils.clone ( style.getStyles () );
+            final List<ComponentStyle> mergedStylesClone = Clone.clone ( style.getStyles () );
             for ( final ComponentStyle mergedStyleClone : mergedStylesClone )
             {
                 mergedStyleClone.setParent ( this );
@@ -742,7 +761,7 @@ public final class ComponentStyle implements Serializable, Cloneable
         else if ( nestedCount > 0 )
         {
             // Simply set base styles
-            final List<ComponentStyle> baseStylesClone = MergeUtils.clone ( getStyles () );
+            final List<ComponentStyle> baseStylesClone = Clone.clone ( getStyles () );
             for ( final ComponentStyle baseStyleClone : baseStylesClone )
             {
                 baseStyleClone.setParent ( this );
@@ -876,10 +895,10 @@ public final class ComponentStyle implements Serializable, Cloneable
             try
             {
                 // Cloning existing property value properly
-                final Object existing = MergeUtils.clone ( e );
+                final Object existing = Clone.clone ( e );
 
                 // Merging another one on top of it
-                final Object result = MergeUtils.merge ( existing, m );
+                final Object result = Merge.DEEP.merge ( existing, m );
 
                 // Saving merge result
                 properties.put ( key, result );
@@ -924,13 +943,13 @@ public final class ComponentStyle implements Serializable, Cloneable
     public ComponentStyle clone ()
     {
         // Creating style clone
-        final ComponentStyle clone = MergeUtils.cloneByFieldsSafely ( this );
+        final ComponentStyle clone = Clone.cloneByFieldsSafely ( this );
 
         // Updating transient parent field
         clone.setParent ( getParent () );
 
         // Updating transient parent field for children to cloned one
-        if ( !CollectionUtils.isEmpty ( clone.getStyles () ) )
+        if ( CollectionUtils.notEmpty ( clone.getStyles () ) )
         {
             for ( final ComponentStyle style : clone.getStyles () )
             {

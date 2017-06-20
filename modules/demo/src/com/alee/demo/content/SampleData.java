@@ -15,9 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.demo.content.data.grid;
-
-import com.alee.demo.api.example.AbstractStylePreviewExample;
+package com.alee.demo.content;
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -26,19 +24,19 @@ import javax.swing.table.TableModel;
  * @author Mikle Garin
  */
 
-public abstract class AbstractTableExample extends AbstractStylePreviewExample
+public final class SampleData
 {
     /**
      * Returns sample short table model.
      *
      * @return sample short table model
      */
-    protected static TableModel createShortTableModel ()
+    public static TableModel createShortTableModel ()
     {
-        final Object[] columns = { "First Name", "Last Name", "Sport", "# of Years", "Vegetarian" };
-        final Object[] kathy = { "Kathy", "Smith", "Snowboarding", 5, false };
-        final Object[] john = { "John", "Doe", "Rowing", 3, true };
-        final Object[] sue = { "Sue", "Black", "Knitting", 2, false };
+        final Object[] columns = { "First Name", "Last Name", "Hobby", "Age", "Vegetarian" };
+        final Object[] kathy = { "Kathy", "Smith", "Snowboarding", 19, false };
+        final Object[] john = { "John", "Doe", "Rowing", 32, true };
+        final Object[] sue = { "Sue", "Black", "Knitting", 56, false };
         final Object[] jane = { "Jane", "White", "Speed reading", 20, true };
         final Object[][] data = { kathy, john, sue, jane };
         return new DefaultTableModel ( data, columns )
@@ -56,18 +54,22 @@ public abstract class AbstractTableExample extends AbstractStylePreviewExample
      *
      * @return sample long table model
      */
-    protected static TableModel createLongTableModel ()
+    public static TableModel createLongTableModel ()
     {
-        final Object[] columns = { "First Name", "Last Name", "Sport", "# of Years", "Vegetarian" };
-        final Object[] kathy = { "Kathy", "Smith", "Snowboarding", 5, false };
-        final Object[] john = { "John", "Doe", "Rowing", 3, true };
-        final Object[] sue = { "Sue", "Black", "Knitting", 2, false };
+        final Object[] columns = { "First Name", "Last Name", "Hobby", "Age", "Vegetarian" };
+        final Object[] kathy = { "Kathy", "Smith", "Snowboarding", 19, false };
+        final Object[] john = { "John", "Doe", "Rowing", 32, true };
+        final Object[] sue = { "Sue", "Black", "Knitting", 56, false };
         final Object[] jane = { "Jane", "White", "Speed reading", 20, true };
-        final Object[] joe = { "Joe", "Brown", "Pool", 10, false };
+        final Object[] joe = { "Joe", "Brown", "Swimming", 14, false };
         final Object[] sven = { "Sven", "Alister", "Boxing", 36, false };
         final Object[] allen = { "Allen", "Snow", "Diving", 18, true };
-        final Object[] mikle = { "Mikle", "Garin", "Judo", 26, false };
-        final Object[][] data = { kathy, john, sue, jane, joe, sven, allen, mikle };
+        final Object[] mikle = { "Mikle", "Garin", "Judo", 27, false };
+        final Object[] jake = { "Jake", "Alduin", "Fencing", 35, false };
+        final Object[] andrew = { "Andrew", "Garfild", "Programming", 26, false };
+        final Object[] kate = { "Kate", "Matthew", "Bowling", 22, false };
+        final Object[] paul = { "Paul", "Johnson", "Modelling", 38, false };
+        final Object[][] data = { kathy, john, sue, jane, joe, sven, allen, mikle, jake, andrew, kate, paul };
         return new DefaultTableModel ( data, columns )
         {
             @Override

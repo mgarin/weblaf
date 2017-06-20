@@ -25,7 +25,7 @@ import com.alee.managers.icon.set.XmlIconSet;
  * @author Mikle Garin
  */
 
-public class LightIconSet extends XmlIconSet
+public final class LightIconSet extends XmlIconSet
 {
     /**
      * Constructs new demo light icon set.

@@ -17,13 +17,15 @@
 
 package com.alee.painter.decoration;
 
-import com.alee.api.merge.Mergeable;
-import com.alee.utils.MergeUtils;
+import com.alee.api.clone.Clone;
+import com.alee.api.merge.Merge;
+import com.alee.api.merge.MergeBehavior;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 import javax.swing.*;
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
@@ -37,7 +39,7 @@ import java.util.List;
 
 @XStreamAlias ( "Decorations" )
 public final class Decorations<E extends JComponent, D extends IDecoration<E, D>>
-        implements Iterable<D>, Mergeable<Decorations<E, D>>, Cloneable
+        implements Iterable<D>, MergeBehavior<Decorations<E, D>>, Cloneable, Serializable
 {
     /**
      * Whether or not these decorations should overwrite previous ones when merged.
@@ -81,13 +83,13 @@ public final class Decorations<E extends JComponent, D extends IDecoration<E, D>
     public Decorations<E, D> merge ( final Decorations<E, D> object )
     {
         overwrite = overwrite != null && overwrite || object.overwrite != null && object.overwrite;
-        decorations = object.isOverwrite () ? object.decorations : MergeUtils.merge ( decorations, object.decorations );
+        decorations = object.isOverwrite () ? object.decorations : Merge.COMMON.<List<D>>merge ( decorations, object.decorations );
         return this;
     }
 
     @Override
     public Object clone ()
     {
-        return MergeUtils.cloneByFieldsSafely ( this );
+        return Clone.cloneByFieldsSafely ( this );
     }
 }

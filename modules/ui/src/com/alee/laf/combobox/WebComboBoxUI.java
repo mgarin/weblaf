@@ -84,7 +84,6 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
      */
     protected Insets margin = null;
     protected Insets padding = null;
-    protected Dimension cachedDisplaySize = new Dimension ( 0, 0 );
     protected JSeparator separator;
 
     /**

@@ -17,8 +17,8 @@
 
 package com.alee.extended.label;
 
+import com.alee.api.merge.Merge;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.MergeUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -141,7 +141,7 @@ public class TextRanges implements ITextRanges
                                 if ( Math.max ( styleStart, start ) < Math.min ( styleEnd, end ) )
                                 {
                                     // Merging styles
-                                    styleRange = MergeUtils.merge ( styleRange, style );
+                                    styleRange = Merge.COMMON.merge ( styleRange, style );
                                 }
                             }
                         }

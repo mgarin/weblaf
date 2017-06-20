@@ -20,13 +20,14 @@ package com.alee.api.merge;
 import com.alee.api.merge.behavior.*;
 import com.alee.api.merge.nullresolver.SkippingNullResolver;
 import com.alee.api.merge.type.ExactTypeMergePolicy;
+import com.alee.utils.collection.ImmutableList;
+import com.alee.utils.reflection.ModifierType;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 
 /**
- * Configurable merge algorithm.
+ * Configurable algorithm for merging object instances.
  * It can be customized through the settings provided in its constructor once on creation.
  * To merge any two objects using this class instance simply call {@link #merge(Object, Object)} method.
  *
@@ -34,67 +35,111 @@ import java.util.List;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
  * @see MergeNullResolver
  * @see MergePolicy
+ * @see GlobalMergeBehavior
  * @see MergeBehavior
  * @see Mergeable
+ * @see Overwriting
  */
 
 public final class Merge implements Serializable
 {
     /**
-     * Most common merge algorithm which only merges objects of the same type.
+     * {@link GlobalMergeBehavior}s list for common merge operations.
+     * It contains behaviors for smart merging of any primitive and simple types, arrays, maps and lists.
+     * It also contains {@link ReflectionMergeBehavior} which allows merging any other types of objects by accessing their fields directly.
      */
-    public static Merge EXACT = new Merge (
+    public static final List<GlobalMergeBehavior> COMMON_MERGE_BEHAVIORS = new ImmutableList<GlobalMergeBehavior> (
+            new BasicMergeBehavior (),
+            new MergeableMergeBehavior (),
+            new IndexArrayMergeBehavior (),
+            new MapMergeBehavior (),
+            new ListMergeBehavior ()
+    );
+
+    /**
+     * One of the most common {@link Merge} algorithms.
+     * Whenever {@code merged} value is {@code null} it is skipped and {@code source} value is used instead.
+     * Also it only clones objects of the same type, other objects are fully overwritten upon merge.
+     */
+    public static final Merge COMMON = new Merge (
             new SkippingNullResolver (),
             new ExactTypeMergePolicy (),
+            COMMON_MERGE_BEHAVIORS
+    );
+
+    /**
+     * {@link GlobalMergeBehavior}s list for deep merge operations.
+     * It contains behaviors for smart merging of any primitive and simple types, arrays, maps and lists.
+     */
+    public static final List<GlobalMergeBehavior> DEEP_MERGE_BEHAVIORS = new ImmutableList<GlobalMergeBehavior> (
             new BasicMergeBehavior (),
             new MergeableMergeBehavior (),
             new IndexArrayMergeBehavior (),
             new MapMergeBehavior (),
             new ListMergeBehavior (),
-            new ReflectionMergeBehavior ()
+            new ReflectionMergeBehavior ( ModifierType.STATIC, ModifierType.TRANSIENT )
+    );
+
+    /**
+     * More enhanced {@link Merge} algorithm using {@link ReflectionMergeBehavior}.
+     * Be careful when using this merge algorithm as it will go through all object references and will merge any existing fields.
+     * Whenever {@code merged} value is {@code null} it is skipped and {@code source} value is used instead.
+     * Also it only clones objects of the same type, other objects are fully overwritten upon merge.
+     */
+    public static final Merge DEEP = new Merge (
+            new SkippingNullResolver (),
+            new ExactTypeMergePolicy (),
+            DEEP_MERGE_BEHAVIORS
     );
 
     /**
      * Object merge {@code null} case resolver.
+     * It is used to resolve merge outcome when either of {@code source} and {@code merged} objects are {@code null}.
+     *
+     * @see MergeNullResolver
      */
     private final MergeNullResolver nullResolver;
 
     /**
      * Policy which defines whether objects can be merged or not on a global level.
+     *
+     * @see MergePolicy
      */
     private final MergePolicy policy;
 
     /**
      * List of behaviors taking part in this merge algorithm instance.
      * These behaviors define which object types can actually be merged and which ones will simply be overwritten.
+     *
+     * @see GlobalMergeBehavior
      */
-    private final List<MergeBehavior> behaviors;
+    private final List<GlobalMergeBehavior> behaviors;
 
     /**
-     * Constructs new merge algorithm.
+     * Constructs new {@link Merge} algorithm.
      *
      * @param nullResolver object merge {@code null} case resolver
      * @param policy       policy which defines whether objects can be merged or not on a global level
      * @param behaviors    behaviors taking part in this merge algorithm instance
      */
-    public Merge ( final MergeNullResolver nullResolver, final MergePolicy policy, final MergeBehavior... behaviors )
+    public Merge ( final MergeNullResolver nullResolver, final MergePolicy policy, final GlobalMergeBehavior... behaviors )
     {
-        this ( nullResolver, policy, Arrays.asList ( behaviors ) );
+        this ( nullResolver, policy, new ImmutableList<GlobalMergeBehavior> ( behaviors ) );
     }
 
     /**
-     * Constructs new merge algorithm.
+     * Constructs new {@link Merge} algorithm.
      *
      * @param nullResolver object merge {@code null} case resolver
      * @param policy       policy which defines whether objects can be merged or not on a global level
      * @param behaviors    behaviors taking part in this merge algorithm instance
      */
-    public Merge ( final MergeNullResolver nullResolver, final MergePolicy policy, final List<MergeBehavior> behaviors )
+    public Merge ( final MergeNullResolver nullResolver, final MergePolicy policy, final List<GlobalMergeBehavior> behaviors )
     {
         super ();
         this.nullResolver = nullResolver;
         this.policy = policy;
-        this.behaviors = behaviors;
+        this.behaviors = behaviors instanceof ImmutableList ? behaviors : new ImmutableList<GlobalMergeBehavior> ( behaviors );
     }
 
     /**
@@ -114,14 +159,18 @@ public final class Merge implements Serializable
             // Checking merge possibility
             if ( policy.accept ( this, object, merged ) )
             {
-                // Trying to find fitting merge behavior
-                for ( final MergeBehavior behavior : behaviors )
+                // Ensuring that merged object doesn't want to fully overwrite source one
+                if ( !isOverwrite ( merged ) )
                 {
-                    // Checking that behavior supports objects
-                    if ( behavior.supports ( this, object, merged ) )
+                    // Trying to find fitting merge behavior
+                    for ( final GlobalMergeBehavior behavior : behaviors )
                     {
-                        // Executing merge behavior
-                        return ( T ) behavior.merge ( this, object, merged );
+                        // Checking that behavior supports objects
+                        if ( behavior.supports ( this, object, merged ) )
+                        {
+                            // Executing merge behavior
+                            return ( T ) behavior.merge ( this, object, merged );
+                        }
                     }
                 }
             }
@@ -134,5 +183,16 @@ public final class Merge implements Serializable
             // Resolving null case outcome
             return ( T ) nullResolver.resolve ( this, object, merged );
         }
+    }
+
+    /**
+     * Returns whether or not specified object should overwrite another one upon merge.
+     *
+     * @param object object to check overwrite flag for
+     * @return {@code true} if specified object should overwrite another one upon merge, {@code false} otherwise
+     */
+    private boolean isOverwrite ( final Object object )
+    {
+        return object instanceof Overwriting && ( ( Overwriting ) object ).isOverwrite ();
     }
 }

@@ -17,8 +17,8 @@
 
 package com.alee.painter.decoration.shadow;
 
+import com.alee.api.clone.Clone;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.MergeUtils;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
@@ -37,16 +37,16 @@ public abstract class AbstractShadow<E extends JComponent, D extends IDecoration
         implements IShadow<E, D, I>
 {
     /**
-     * Shadow type.
-     */
-    @XStreamAsAttribute
-    protected ShadowType type;
-
-    /**
      * Whether or not this shadow should overwrite previous one when merged.
      */
     @XStreamAsAttribute
     protected Boolean overwrite;
+
+    /**
+     * Shadow type.
+     */
+    @XStreamAsAttribute
+    protected ShadowType type;
 
     /**
      * Shadow opacity.
@@ -135,6 +135,6 @@ public abstract class AbstractShadow<E extends JComponent, D extends IDecoration
     @Override
     public I clone ()
     {
-        return ( I ) MergeUtils.cloneByFieldsSafely ( this );
+        return ( I ) Clone.cloneByFieldsSafely ( this );
     }
 }

@@ -20,6 +20,7 @@ package com.alee.demo.content.desktoppane;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
+import com.alee.demo.content.SampleData;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleId;
@@ -119,9 +120,10 @@ public class JInternalFrameExample extends AbstractPreviewExample
             internalFrame.setFrameIcon ( loadExampleIcon ( "frame16.png" ) );
             LanguageManager.registerComponent ( internalFrame, getExampleLanguagePrefix () + "frame.title", index );
 
-            final JLabel content = new JLabel ( "", JLabel.CENTER );
-            LanguageManager.registerComponent ( content, getExampleLanguagePrefix () + "frame.content" );
-            internalFrame.add ( content );
+            final JTable table = new JTable ( SampleData.createLongTableModel () );
+            final JScrollPane scrollPane = new JScrollPane ( table );
+            scrollPane.setPreferredSize ( new Dimension ( 300, 150 ) );
+            internalFrame.add ( scrollPane );
 
             final JButton internalFrameIcon = new JButton ( "", loadExampleIcon ( "frame32.png" ) );
             internalFrameIcon.setHorizontalTextPosition ( JButton.CENTER );
@@ -159,8 +161,9 @@ public class JInternalFrameExample extends AbstractPreviewExample
             internalFrameIcon.setBounds ( 25, 25 + 100 * index, 100, 75 );
             desktopPane.add ( internalFrameIcon );
 
-            internalFrame.setBounds ( 150 + 25 * index, 25 + 25 * index, 300, 300 );
             internalFrame.setClosed ( true );
+            internalFrame.setLocation ( 150 + 25 * index, 25 + 25 * index );
+            internalFrame.pack ();
         }
 
         @Override

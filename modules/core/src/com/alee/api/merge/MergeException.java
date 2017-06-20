@@ -18,8 +18,7 @@
 package com.alee.api.merge;
 
 /**
- * Special exception class used to display various merge problems.
- * It extends {@link RuntimeException} to allow throwing this exception while normal runtime.
+ * Special unchecked exception used to display various merge problems.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>

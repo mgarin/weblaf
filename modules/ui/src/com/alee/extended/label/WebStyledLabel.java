@@ -427,7 +427,7 @@ public class WebStyledLabel extends JLabel
      */
     protected void addStyleRangesImpl ( final List<StyleRange> styleRanges )
     {
-        if ( !CollectionUtils.isEmpty ( styleRanges ) )
+        if ( CollectionUtils.notEmpty ( styleRanges ) )
         {
             for ( final StyleRange styleRange : styleRanges )
             {

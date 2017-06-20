@@ -426,15 +426,4 @@ public class RootPanePainter<E extends JRootPane, U extends WRootPaneUI, D exten
             // }
         }
     }
-
-    /**
-     * Returns whether or not root pane window is currently active.
-     *
-     * @param c root pane
-     * @return true if root pane window is currently active, false otherwise
-     */
-    protected boolean isActive ( final E c )
-    {
-        return SwingUtils.getWindowAncestor ( c ).isFocused ();
-    }
 }

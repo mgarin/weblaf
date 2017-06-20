@@ -77,4 +77,19 @@
 
     </style>
 
+    <!-- Transparent control-less dialog -->
+    <style type="rootpane" id="dialog-transparent" extends="dialog">
+        <ui>
+            <installComponents>false</installComponents>
+        </ui>
+        <painter>
+            <decorations overwrite="true">
+                <decoration>
+                    <WebShape />
+                </decoration>
+            </decorations>
+        </painter>
+        <style type="panel" id="content" extends="transparent" />
+    </style>
+
 </skin>

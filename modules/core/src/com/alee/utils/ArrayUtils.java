@@ -18,9 +18,6 @@
 package com.alee.utils;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * This class provides a set of utilities to work with arrays.
@@ -35,7 +32,7 @@ public final class ArrayUtils
      *
      * @param data data
      * @param <T>  data type
-     * @return true if data is empty, false otherwise
+     * @return {@code true} if data is empty, {@code false} otherwise
      */
     public static <T> boolean isEmpty ( final T... data )
     {
@@ -43,17 +40,15 @@ public final class ArrayUtils
     }
 
     /**
-     * Returns data converted into list.
+     * Returns whether or not data is empty.
      *
      * @param data data
      * @param <T>  data type
-     * @return data list
+     * @return {@code true} if data is not empty, {@code false} otherwise
      */
-    public static <T> List<T> asList ( final T... data )
+    public static <T> boolean notEmpty ( final T... data )
     {
-        final List<T> list = new ArrayList<T> ( data.length );
-        Collections.addAll ( list, data );
-        return list;
+        return data != null && data.length > 0;
     }
 
     /**
@@ -61,7 +56,7 @@ public final class ArrayUtils
      *
      * @param number number to find
      * @param array  array to process
-     * @return true if array contains the specified number, false otherwise
+     * @return {@code true} if array contains the specified number, {@code false} otherwise
      */
     public static boolean contains ( final int number, final int[] array )
     {
@@ -73,7 +68,7 @@ public final class ArrayUtils
      *
      * @param number number to find
      * @param array  array to process
-     * @return true if array contains the specified number, false otherwise
+     * @return {@code true} if array contains the specified number, {@code false} otherwise
      */
     public static boolean contains ( final long number, final long[] array )
     {
@@ -85,7 +80,7 @@ public final class ArrayUtils
      *
      * @param number number to find
      * @param array  array to process
-     * @return true if array contains the specified number, false otherwise
+     * @return {@code true} if array contains the specified number, {@code false} otherwise
      */
     public static boolean contains ( final float number, final float[] array )
     {
@@ -97,7 +92,7 @@ public final class ArrayUtils
      *
      * @param number number to find
      * @param array  array to process
-     * @return true if array contains the specified number, false otherwise
+     * @return {@code true} if array contains the specified number, {@code false} otherwise
      */
     public static boolean contains ( final double number, final double[] array )
     {
@@ -109,7 +104,7 @@ public final class ArrayUtils
      *
      * @param number character to find
      * @param array  array to process
-     * @return true if array contains the specified character, false otherwise
+     * @return {@code true} if array contains the specified character, {@code false} otherwise
      */
     public static boolean contains ( final char number, final char[] array )
     {
@@ -121,7 +116,7 @@ public final class ArrayUtils
      *
      * @param number byte to find
      * @param array  array to process
-     * @return true if array contains the specified byte, false otherwise
+     * @return {@code true} if array contains the specified byte, {@code false} otherwise
      */
     public static boolean contains ( final byte number, final byte[] array )
     {
@@ -133,7 +128,7 @@ public final class ArrayUtils
      *
      * @param number text to find
      * @param array  array to process
-     * @return true if array contains the specified text, false otherwise
+     * @return {@code true} if array contains the specified text, {@code false} otherwise
      */
     public static boolean contains ( final String number, final String[] array )
     {
@@ -145,7 +140,7 @@ public final class ArrayUtils
      *
      * @param object object to find
      * @param array  array to process
-     * @return true if array contains the specified object, false otherwise
+     * @return {@code true} if array contains the specified object, {@code false} otherwise
      */
     public static boolean contains ( final Object object, final Object[] array )
     {
@@ -310,6 +305,26 @@ public final class ArrayUtils
     public static int indexOf ( final Object object, final Object[] array )
     {
         for ( int i = 0; i < array.length; i++ )
+        {
+            final Object obj = array[ i ];
+            if ( obj == null && object == null || obj != null && object != null && obj.equals ( object ) )
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Returns last index of specified object in array.
+     *
+     * @param object object to find
+     * @param array  array to process
+     * @return last index of specified object in array
+     */
+    public static int lastIndexOf ( final Object object, final Object[] array )
+    {
+        for ( int i = array.length - 1; i >= 0; i-- )
         {
             final Object obj = array[ i ];
             if ( obj == null && object == null || obj != null && object != null && obj.equals ( object ) )

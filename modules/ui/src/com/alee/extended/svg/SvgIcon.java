@@ -34,10 +34,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Slightly customized SvgSalamander library {@link com.kitfox.svg.app.beans.SVGIcon} implementation.
+ * Slightly customized SvgSalamander library {@link SVGIcon} implementation.
  * This extension provides a set of predefined convenient constructors and offers some additional customization methods.
  *
- * Note that distinct {@link com.kitfox.svg.SVGUniverse} should be provided in case you want to reconfigure the same icon differently.
+ * Note that distinct {@link SVGUniverse} should be provided in case you want to reconfigure the same icon differently.
  * Otherwise default universe is used and changes will be applied to all icons coming from the same source.
  *
  * When you want to modify some SVG settings you will have to reference SVG elements.
@@ -58,7 +58,12 @@ import java.util.List;
 public class SvgIcon extends SVGIcon
 {
     /**
-     * Constructs new empty SVG icon.
+     * Cached raster image.
+     */
+    protected BufferedImage cache;
+
+    /**
+     * Constructs new empty {@link SvgIcon}.
      */
     public SvgIcon ()
     {
@@ -66,7 +71,7 @@ public class SvgIcon extends SVGIcon
     }
 
     /**
-     * Constructs new SVG icon based on SVG file.
+     * Constructs new {@link SvgIcon} based on SVG file.
      *
      * @param file path to SVG file
      */
@@ -76,7 +81,7 @@ public class SvgIcon extends SVGIcon
     }
 
     /**
-     * Constructs new SVG icon based on SVG file with the specified width and height.
+     * Constructs new {@link SvgIcon} based on SVG file with the specified width and height.
      *
      * @param file   path to SVG file
      * @param width  preferred icon width
@@ -88,9 +93,9 @@ public class SvgIcon extends SVGIcon
     }
 
     /**
-     * Constructs new SVG icon based on SVG resource near class.
+     * Constructs new {@link SvgIcon} based on SVG resource near {@link Class}.
      *
-     * @param clazz class near which SVG resource is located
+     * @param clazz {@link Class} near which SVG resource is located
      * @param path  SVG resource path
      */
     public SvgIcon ( final Class clazz, final String path )
@@ -99,9 +104,9 @@ public class SvgIcon extends SVGIcon
     }
 
     /**
-     * Constructs new SVG icon based on SVG resource near class with the specified width and height.
+     * Constructs new {@link SvgIcon} based on SVG resource near {@link Class} with the specified width and height.
      *
-     * @param clazz  class near which SVG resource is located
+     * @param clazz  {@link Class} near which SVG resource is located
      * @param path   SVG resource path
      * @param width  preferred icon width
      * @param height preferred icon height
@@ -112,9 +117,9 @@ public class SvgIcon extends SVGIcon
     }
 
     /**
-     * Constructs new SVG icon based on SVG file URL.
+     * Constructs new {@link SvgIcon} based on SVG file {@link URL}.
      *
-     * @param url SVG file URL
+     * @param url SVG file {@link URL}
      */
     public SvgIcon ( final URL url )
     {
@@ -122,9 +127,9 @@ public class SvgIcon extends SVGIcon
     }
 
     /**
-     * Constructs new SVG icon based on SVG file URL.
+     * Constructs new {@link SvgIcon} based on SVG file {@link URL}.
      *
-     * @param url    SVG file URL
+     * @param url    SVG file {@link URL}
      * @param width  preferred icon width
      * @param height preferred icon height
      */
@@ -134,9 +139,9 @@ public class SvgIcon extends SVGIcon
     }
 
     /**
-     * Constructs new SVG icon based on SVG file URI.
+     * Constructs new {@link SvgIcon} based on SVG file {@link URI}.
      *
-     * @param uri SVG file URI
+     * @param uri SVG file {@link URI}
      */
     public SvgIcon ( final URI uri )
     {
@@ -144,9 +149,9 @@ public class SvgIcon extends SVGIcon
     }
 
     /**
-     * Constructs new SVG icon based on SVG file URI.
+     * Constructs new {@link SvgIcon} based on SVG file {@link URI}.
      *
-     * @param uri    SVG file URI
+     * @param uri    SVG file {@link URI}
      * @param width  preferred icon width
      * @param height preferred icon height
      */
@@ -156,9 +161,9 @@ public class SvgIcon extends SVGIcon
     }
 
     /**
-     * Constructs new empty SVG icon.
+     * Constructs new empty {@link SvgIcon}.
      *
-     * @param universe SVG Universe
+     * @param universe {@link SVGUniverse}
      */
     public SvgIcon ( final SVGUniverse universe )
     {
@@ -166,9 +171,9 @@ public class SvgIcon extends SVGIcon
     }
 
     /**
-     * Constructs new SVG icon based on SVG file.
+     * Constructs new {@link SvgIcon} based on SVG file.
      *
-     * @param universe SVG Universe
+     * @param universe {@link SVGUniverse}
      * @param file     path to SVG file
      */
     public SvgIcon ( final SVGUniverse universe, final String file )
@@ -177,9 +182,9 @@ public class SvgIcon extends SVGIcon
     }
 
     /**
-     * Constructs new SVG icon based on SVG file with the specified width and height.
+     * Constructs new {@link SvgIcon} based on SVG file with the specified width and height.
      *
-     * @param universe SVG Universe
+     * @param universe {@link SVGUniverse}
      * @param file     path to SVG file
      * @param width    preferred icon width
      * @param height   preferred icon height
@@ -190,10 +195,10 @@ public class SvgIcon extends SVGIcon
     }
 
     /**
-     * Constructs new SVG icon based on SVG resource near class.
+     * Constructs new {@link SvgIcon} based on SVG resource near {@link Class}.
      *
-     * @param universe SVG Universe
-     * @param clazz    class near which SVG resource is located
+     * @param universe {@link SVGUniverse}
+     * @param clazz    {@link Class} near which SVG resource is located
      * @param path     SVG resource path
      */
     public SvgIcon ( final SVGUniverse universe, final Class clazz, final String path )
@@ -202,10 +207,10 @@ public class SvgIcon extends SVGIcon
     }
 
     /**
-     * Constructs new SVG icon based on SVG resource near class with the specified width and height.
+     * Constructs new {@link SvgIcon} based on SVG resource near {@link Class} with the specified width and height.
      *
-     * @param universe SVG Universe
-     * @param clazz    class near which SVG resource is located
+     * @param universe {@link SVGUniverse}
+     * @param clazz    {@link Class} near which SVG resource is located
      * @param path     SVG resource path
      * @param width    preferred icon width
      * @param height   preferred icon height
@@ -216,10 +221,10 @@ public class SvgIcon extends SVGIcon
     }
 
     /**
-     * Constructs new SVG icon based on SVG file URL.
+     * Constructs new {@link SvgIcon} based on SVG file {@link URL}.
      *
-     * @param universe SVG Universe
-     * @param url      SVG file URL
+     * @param universe {@link SVGUniverse}
+     * @param url      SVG file {@link URL}
      */
     public SvgIcon ( final SVGUniverse universe, final URL url )
     {
@@ -227,10 +232,10 @@ public class SvgIcon extends SVGIcon
     }
 
     /**
-     * Constructs new SVG icon based on SVG file URL.
+     * Constructs new {@link SvgIcon} based on SVG file {@link URL}.
      *
-     * @param universe SVG Universe
-     * @param url      SVG file URL
+     * @param universe {@link SVGUniverse}
+     * @param url      SVG file {@link URL}
      * @param width    preferred icon width
      * @param height   preferred icon height
      */
@@ -240,10 +245,10 @@ public class SvgIcon extends SVGIcon
     }
 
     /**
-     * Constructs new SVG icon based on SVG file URI.
+     * Constructs new {@link SvgIcon} based on SVG file {@link URI}.
      *
-     * @param universe SVG Universe
-     * @param uri      SVG file URI
+     * @param universe {@link SVGUniverse}
+     * @param uri      SVG file {@link URI}
      */
     public SvgIcon ( final SVGUniverse universe, final URI uri )
     {
@@ -251,10 +256,10 @@ public class SvgIcon extends SVGIcon
     }
 
     /**
-     * Constructs new SVG icon based on SVG file URI.
+     * Constructs new {@link SvgIcon} based on SVG file {@link URI}.
      *
-     * @param universe SVG Universe
-     * @param uri      SVG file URI
+     * @param universe {@link SVGUniverse}
+     * @param uri      SVG file {@link URI}
      * @param width    preferred icon width
      * @param height   preferred icon height
      */
@@ -286,7 +291,8 @@ public class SvgIcon extends SVGIcon
     {
         if ( getDiagram () == null )
         {
-            throw new RuntimeException ( "Unable to load SVG file: " + getSvgURI () );
+            final String msg = "Unable to load SVG file: %s";
+            throw new RuntimeException ( String.format ( msg, getSvgURI () ) );
         }
     }
 
@@ -374,7 +380,8 @@ public class SvgIcon extends SVGIcon
         }
         else
         {
-            throw new RuntimeException ( "SVG element selector cannot be empty" );
+            final String msg = "SVG element selector cannot be empty";
+            throw new RuntimeException ( msg );
         }
     }
 
@@ -393,7 +400,8 @@ public class SvgIcon extends SVGIcon
         }
         catch ( final SVGElementException e )
         {
-            throw new RuntimeException ( "Unable to check attribte \"" + attribute + "\" existence for element: " + element );
+            final String msg = "Unable to check attribute %s existence for element: %s";
+            throw new RuntimeException ( String.format ( msg, attribute, element ) );
         }
     }
 
@@ -432,8 +440,8 @@ public class SvgIcon extends SVGIcon
         }
         catch ( final SVGElementException e )
         {
-            throw new RuntimeException (
-                    "Unable to set SVG attribute \"" + attribute + "\" with value \"" + value + "\" for element: " + element );
+            final String msg = "Unable to set SVG attribute %s with value %s for element: %s";
+            throw new RuntimeException ( String.format ( msg, attribute, value, element ) );
         }
     }
 
@@ -446,16 +454,42 @@ public class SvgIcon extends SVGIcon
     {
         try
         {
+            // Updating SVG diagram
             element.updateTime ( 0 );
+
+            // Cleaning up cache
+            cache = null;
         }
         catch ( final SVGException e )
         {
-            throw new RuntimeException ( "Unable to set update element: " + element );
+            final String msg = "Unable to update element: %s";
+            throw new RuntimeException ( String.format ( msg, element ) );
         }
     }
 
+    @Override
+    public void paintIcon ( final Component component, final Graphics g, final int x, final int y )
+    {
+        // Validating cache
+        final Dimension size = getPreferredSize ();
+        if ( cache == null || cache.getWidth () != size.width || cache.getHeight () != size.height )
+        {
+            // Flushing previous icon cache
+            if ( cache != null )
+            {
+                cache.flush ();
+            }
+
+            // Create new cached image
+            cache = asBufferedImage ( size );
+        }
+
+        // Painting SVG icon from raster cache image
+        g.drawImage ( cache, x, y, null );
+    }
+
     /**
-     * Sets SVG icon preferred size.
+     * Sets {@link SvgIcon} preferred size.
      *
      * @param width  preferred icon width
      * @param height preferred icon height
@@ -490,7 +524,7 @@ public class SvgIcon extends SVGIcon
     /**
      * Returns this {@link SvgIcon} painted on {@link BufferedImage} of the specified size.
      *
-     * @param width resulting {@link BufferedImage} width
+     * @param width  resulting {@link BufferedImage} width
      * @param height resulting {@link BufferedImage} height
      * @return this {@link SvgIcon} painted on {@link BufferedImage} of the specified size
      */
@@ -505,7 +539,7 @@ public class SvgIcon extends SVGIcon
         // Create image
         final BufferedImage image = new BufferedImage ( width, height, BufferedImage.TYPE_INT_ARGB );
         final Graphics2D g2d = image.createGraphics ();
-        paintIcon ( null, g2d, 0, 0 );
+        super.paintIcon ( null, g2d, 0, 0 );
         g2d.dispose ();
 
         // Restoring initial preferred size

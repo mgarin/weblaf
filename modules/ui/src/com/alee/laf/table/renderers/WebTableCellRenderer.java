@@ -35,7 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Default table cell renderer for WebLaF tables.
+ * Default {@link TableCellRenderer} implementation based on {@link WebStyledLabel}.
+ * Unline common implementations this one contains multiple methods for convenient renderer component customization.
  *
  * @author Mikle Garin
  */
@@ -193,7 +194,7 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
      */
     @SuppressWarnings ( "UnusedParameters" )
     protected Icon iconForValue ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row,
-                                final int column )
+                                  final int column )
     {
         final Icon icon;
         if ( value instanceof IconSupport )
@@ -365,13 +366,13 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
     }
 
     /**
-     * A subclass of {@link com.alee.laf.table.renderers.WebTableCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
+     * A subclass of {@link WebTableCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
      */
     public static class UIResource extends WebTableCellRenderer implements javax.swing.plaf.UIResource
     {
         /**
-         * Implementation is used completely from {@link com.alee.laf.table.renderers.WebTableCellRenderer}.
+         * Implementation is used completely from {@link WebTableCellRenderer}.
          */
     }
 }

@@ -17,10 +17,10 @@
 
 package com.alee.utils;
 
-import com.alee.global.GlobalConstants;
 import com.alee.global.StyleConstants;
 import com.alee.graphics.filters.ShadowFilter;
 import com.alee.managers.log.Log;
+import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.xml.Resource;
 import com.alee.utils.xml.ResourceLocation;
 import com.mortennobel.imagescaling.ResampleOp;
@@ -44,9 +44,16 @@ import java.util.List;
 public final class ImageUtils
 {
     /**
-     * Cached image data parts separator.
+     * Image cache keys separator.
      */
-    public static final String IMAGE_CACHE_SEPARATOR = StyleConstants.SEPARATOR;
+    private static final String IMAGE_CACHE_KEYS_SEPARATOR = "|";
+
+    /**
+     * Viewable image formats.
+     */
+    public static final List<String> VIEWABLE_IMAGES = new ImmutableList<String> (
+            "png", "apng", "gif", "agif", "jpg", "jpeg", "jpeg2000", "bmp"
+    );
 
     /**
      * Returns whether or not image pixel at the specified X and Y coordinates is fully transparent.
@@ -162,12 +169,12 @@ public final class ImageUtils
      * Returns Images list instead of ImageIcons list
      */
 
-    public static List<Image> toImagesList ( final List<? extends ImageIcon> imageIcons )
+    public static List<Image> toImagesList ( final List<? extends ImageIcon> icons )
     {
-        final List<Image> images = new ArrayList<Image> ( imageIcons.size () );
-        for ( final ImageIcon imageIcon : imageIcons )
+        final List<Image> images = new ArrayList<Image> ( icons.size () );
+        for ( final ImageIcon icon : icons )
         {
-            images.add ( imageIcon.getImage () );
+            images.add ( icon.getImage () );
         }
         return images;
     }
@@ -729,7 +736,7 @@ public final class ImageUtils
 
     public static boolean isImageLoadable ( final String name )
     {
-        return GlobalConstants.IMAGE_FORMATS.contains ( FileUtils.getFileExtPart ( name, false ).toLowerCase ( Locale.ROOT ) );
+        return VIEWABLE_IMAGES.contains ( FileUtils.getFileExtPart ( name, false ).toLowerCase ( Locale.ROOT ) );
     }
 
     /**
@@ -1210,15 +1217,15 @@ public final class ImageUtils
 
     public static ImageIcon getSizedImagePreview ( final String src, final int length, final boolean drawBorder )
     {
-        if ( sizedPreviewCache.containsKey ( length + IMAGE_CACHE_SEPARATOR + src ) )
+        if ( sizedPreviewCache.containsKey ( length + IMAGE_CACHE_KEYS_SEPARATOR + src ) )
         {
-            return sizedPreviewCache.get ( length + IMAGE_CACHE_SEPARATOR + src );
+            return sizedPreviewCache.get ( length + IMAGE_CACHE_KEYS_SEPARATOR + src );
         }
         else
         {
             final ImageIcon icon = createThumbnailIcon ( src, length );
             final ImageIcon sized = createSizedImagePreview ( icon, length, drawBorder );
-            sizedPreviewCache.put ( length + IMAGE_CACHE_SEPARATOR + src, sized );
+            sizedPreviewCache.put ( length + IMAGE_CACHE_KEYS_SEPARATOR + src, sized );
             return sized;
         }
     }

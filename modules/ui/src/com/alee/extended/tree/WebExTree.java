@@ -30,7 +30,6 @@ import com.alee.utils.compare.Filter;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -290,7 +289,7 @@ public class WebExTree<E extends UniqueNode> extends WebTree<E>
      */
     public void addChildNode ( final E parent, final E child )
     {
-        getExModel ().addChildNodes ( parent, Arrays.asList ( child ) );
+        getExModel ().addChildNodes ( parent, CollectionUtils.asList ( child ) );
     }
 
     /**

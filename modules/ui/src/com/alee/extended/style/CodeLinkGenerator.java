@@ -30,6 +30,7 @@ import com.alee.managers.style.StyleableComponent;
 import com.alee.managers.style.data.ComponentStyleConverter;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.MathUtils;
+import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.xml.ColorConverter;
 import com.alee.utils.xml.InsetsConverter;
 import com.thoughtworks.xstream.converters.basic.FloatConverter;
@@ -47,7 +48,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -60,14 +60,17 @@ public class CodeLinkGenerator implements LinkGenerator
     /**
      * Code constants.
      */
-    private static final List<String> propertyNodes =
-            Arrays.asList ( ComponentStyleConverter.COMPONENT_NODE, ComponentStyleConverter.UI_NODE, ComponentStyleConverter.PAINTER_NODE );
+    private static final List<String> propertyNodes = new ImmutableList<String> (
+            ComponentStyleConverter.COMPONENT_NODE,
+            ComponentStyleConverter.UI_NODE,
+            ComponentStyleConverter.PAINTER_NODE
+    );
     private static final String trueString = "true";
     private static final String falseString = "false";
-    private static final List<String> booleanContent = Arrays.asList ( trueString, falseString );
-    private static final List<String> colorContent = Arrays.asList ( "foreground", "fg", "background", "bg", "color" );
-    private static final List<String> insetsContent = Arrays.asList ( "insets", "margin" );
-    private static final List<String> opacityContent = Arrays.asList ( "opacity", "transparency" );
+    private static final List<String> booleanContent = new ImmutableList<String> ( trueString, falseString );
+    private static final List<String> colorContent = new ImmutableList<String> ( "foreground", "fg", "background", "bg", "color" );
+    private static final List<String> insetsContent = new ImmutableList<String> ( "insets", "margin" );
+    private static final List<String> opacityContent = new ImmutableList<String> ( "opacity", "transparency" );
 
     /**
      * Data converters.

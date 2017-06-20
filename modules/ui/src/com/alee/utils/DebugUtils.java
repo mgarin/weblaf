@@ -18,7 +18,6 @@
 package com.alee.utils;
 
 import com.alee.extended.inspector.ComponentHighlighter;
-import com.alee.global.GlobalConstants;
 import com.alee.managers.style.BoundsType;
 
 import javax.swing.*;
@@ -38,10 +37,35 @@ import java.text.NumberFormat;
 public final class DebugUtils
 {
     /**
+     * Global debug information output mark.
+     */
+    private static boolean GLOBAL_DEBUG_ENABLED = false;
+
+    /**
      * Debug option.
      */
     public static final Font DEBUG_FONT = new Font ( "Dialog", Font.BOLD, 8 );
     public static final NumberFormat DEBUG_FORMAT = new DecimalFormat ( "#0.00" );
+
+    /**
+     * Returns whether or not global debug information output is enabled.
+     *
+     * @return {@code true} if global debug information output is enabled, {@code false} otherwise
+     */
+    public static boolean isGlobalDebugEnabled ()
+    {
+        return GLOBAL_DEBUG_ENABLED;
+    }
+
+    /**
+     * Sets whether or not global debug information output is enabled.
+     *
+     * @param enabled whether or not global debug information output is enabled
+     */
+    public static void setGlobalDebugEnabled ( final boolean enabled )
+    {
+        DebugUtils.GLOBAL_DEBUG_ENABLED = enabled;
+    }
 
     /**
      * Returns deadlocked threads stack trace.
@@ -52,18 +76,18 @@ public final class DebugUtils
     {
         final ThreadMXBean bean = ManagementFactory.getThreadMXBean ();
         final long[] threadIds = bean.findDeadlockedThreads ();
-        String trace = null;
+        final StringBuilder stackTrace = new StringBuilder ();
         if ( threadIds != null )
         {
             final ThreadInfo[] infos = bean.getThreadInfo ( threadIds );
-            trace = "";
             for ( final ThreadInfo info : infos )
             {
                 final StackTraceElement[] stack = info.getStackTrace ();
-                trace += ExceptionUtils.getStackTrace ( stack ) + ( info != infos[ infos.length - 1 ] ? "\n" : "" );
+                stackTrace.append ( ExceptionUtils.getStackTrace ( stack ) );
+                stackTrace.append ( info != infos[ infos.length - 1 ] ? "\n" : "" );
             }
         }
-        return trace;
+        return stackTrace.toString ();
     }
 
     /**
@@ -72,7 +96,7 @@ public final class DebugUtils
      */
     public static void initTimeDebugInfo ()
     {
-        if ( GlobalConstants.DEBUG )
+        if ( isGlobalDebugEnabled () )
         {
             TimeUtils.pinNanoTime ();
         }
@@ -86,7 +110,7 @@ public final class DebugUtils
      */
     public static void paintTimeDebugInfo ( final Graphics g )
     {
-        if ( GlobalConstants.DEBUG )
+        if ( isGlobalDebugEnabled () )
         {
             paintDebugInfoImpl ( ( Graphics2D ) g );
         }
@@ -100,7 +124,7 @@ public final class DebugUtils
      */
     public static void paintTimeDebugInfo ( final Graphics2D g2d )
     {
-        if ( GlobalConstants.DEBUG )
+        if ( isGlobalDebugEnabled () )
         {
             paintDebugInfoImpl ( g2d );
         }

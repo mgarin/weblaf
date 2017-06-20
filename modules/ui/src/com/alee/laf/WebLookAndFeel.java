@@ -81,13 +81,12 @@ import javax.swing.plaf.basic.BasicLookAndFeel;
 import javax.swing.text.DefaultEditorKit;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.*;
 import java.util.List;
 
 /**
  * L&F class containing methods to conveniently install, configure and uninstall WebLaF.
+ * Most of the configurations are provided by {@link StyleManager} as it contains actual list of supported components.
  *
  * @author Mikle Garin
  * @see <a href="http://weblookandfeel.com/">WebLaF site</a>
@@ -100,10 +99,6 @@ import java.util.List;
 
 public class WebLookAndFeel extends BasicLookAndFeel
 {
-    /**
-     * todo 1. Install default UI classes automatically (not manually) using SupportedComponent enumeration
-     */
-
     /**
      * If this client property is set to {@link Boolean#TRUE} on a component, UI delegates should follow the typical Swing behavior of not
      * overriding a user-defined border on it.
@@ -120,6 +115,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * Common Swing component properties.
      */
     public static final String LOOK_AND_FEEL_PROPERTY = "lookAndFeel";
+    public static final String UI_PROPERTY = "UI";
     public static final String COMPONENT_ORIENTATION_PROPERTY = "componentOrientation";
     public static final String MARGIN_PROPERTY = "margin";
     public static final String ENABLED_PROPERTY = "enabled";
@@ -163,43 +159,32 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * JavaFX has a similar check enabled by default which would cause an exception whenever you try to access UI elements outside of the
      * JavaFX thread which you can ask to execute any code through Platform class.
      */
-    private static boolean forceSingleEventsThread = false;
+    protected static boolean forceSingleEventsThread = false;
 
     /**
      * Special handler for exceptions thrown when any UI operation is executed outside of the Event Dispatch Thread.
      */
-    private static NonEventThreadHandler nonEventThreadHandler = new ExceptionNonEventThreadHandler ();
+    protected static NonEventThreadHandler nonEventThreadHandler = new ExceptionNonEventThreadHandler ();
 
     /**
-     * List of WebLookAndFeel icons.
+     * {@link WebLookAndFeel} icons.
      */
-    private static List<ImageIcon> icons = null;
+    protected static List<ImageIcon> icons = null;
 
     /**
      * Disabled icons cache.
      */
-    private static final Map<Icon, ImageIcon> disabledIcons = new WeakHashMap<Icon, ImageIcon> ( 50 );
+    protected static final Map<Icon, ImageIcon> disabledIcons = new WeakHashMap<Icon, ImageIcon> ( 50 );
 
     /**
      * Alt hotkey processor for application windows with menu.
      */
-    public static final AltProcessor altProcessor = new AltProcessor ();
+    protected static final AltProcessor altProcessor = new AltProcessor ();
 
     /**
      * Whether to hide component mnemonics by default or not.
      */
-    private static boolean isMnemonicHidden = true;
-
-    /**
-     * Default scroll mode used by JViewportUI to handle scrolling repaints.
-     * It is different in WebLaF by default due to issues in other scroll mode on some OS.
-     * <p>
-     * Some information about scroll modes:
-     * BLIT_SCROLL_MODE - handles all cases pretty well, but has some issues on Win 8 earlier versions
-     * BACKINGSTORE_SCROLL_MODE - doesn't allow viewport transparency
-     * SIMPLE_SCROLL_MODE - pretty slow since it fully repaints scrolled area with each move
-     */
-    private static int scrollMode = JViewport.BLIT_SCROLL_MODE;
+    protected static boolean isMnemonicHidden = true;
 
     /**
      * Globally applied orientation.
@@ -209,7 +194,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @see #setOrientation(java.awt.ComponentOrientation)
      * @see #setOrientation(boolean)
      */
-    private static ComponentOrientation orientation;
+    protected static ComponentOrientation orientation;
 
     /**
      * Reassignable LookAndFeel UI class names.
@@ -409,9 +394,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static Font editorPaneFont;
 
     /**
-     * Returns WebLookAndFeel name.
+     * Returns {@link WebLookAndFeel} name.
      *
-     * @return WebLookAndFeel name
+     * @return {@link WebLookAndFeel} name
      */
     @Override
     public String getName ()
@@ -420,9 +405,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
-     * Returns unique WebLookAndFeel ID.
+     * Returns unique {@link WebLookAndFeel} identifier.
      *
-     * @return unique WebLookAndFeel ID
+     * @return unique {@link WebLookAndFeel} identifier
      */
     @Override
     public String getID ()
@@ -431,9 +416,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
-     * Returns short WebLookAndFeel description.
+     * Returns short {@link WebLookAndFeel} description.
      *
-     * @return short WebLookAndFeel description
+     * @return short {@link WebLookAndFeel} description
      */
     @Override
     public String getDescription ()
@@ -442,9 +427,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
-     * Always returns false since WebLookAndFeel is not native for any platform.
+     * Always returns {@code false} since {@link WebLookAndFeel} is not native for any platform.
      *
-     * @return false
+     * @return {@code false}
      */
     @Override
     public boolean isNativeLookAndFeel ()
@@ -453,9 +438,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
-     * Always returns true since WebLookAndFeel supports any platform which can run Java applications.
+     * Always returns {@code true} since {@link WebLookAndFeel} supports any platform which can run Java applications.
      *
-     * @return true
+     * @return {@code true}
      */
     @Override
     public boolean isSupportedLookAndFeel ()
@@ -464,9 +449,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
-     * Returns whether window decorations are supported for underlying system.
+     * Always returns {@code true} since {@link WebLookAndFeel} supports window decorations under all platforms.
      *
-     * @return true if window decorations are supported for underlying system, false otherwise
+     * @return {@code true} since {@link WebLookAndFeel} supports window decorations under all platforms
      */
     @Override
     public boolean getSupportsWindowDecorations ()
@@ -475,9 +460,38 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
-     * Initializes WebLookAndFeel UI classes.
+     * Initializes custom WebLookAndFeel features.
+     */
+    @Override
+    public void initialize ()
+    {
+        // Initializing WebLaF managers
+        initializeManagers ();
+
+        // Inititalizes default L&F settings
+        super.initialize ();
+
+        // Listening to ALT key for menubar quick focusing
+        KeyboardFocusManager.getCurrentKeyboardFocusManager ().addKeyEventPostProcessor ( altProcessor );
+    }
+
+    /**
+     * Uninititalizes custom WebLookAndFeel features.
+     */
+    @Override
+    public void uninitialize ()
+    {
+        // Uninititalizes default L&F settings
+        super.uninitialize ();
+
+        // Removing alt processor
+        KeyboardFocusManager.getCurrentKeyboardFocusManager ().removeKeyEventPostProcessor ( altProcessor );
+    }
+
+    /**
+     * Initializes {@link WebLookAndFeel} UI classes.
      *
-     * @param table UIDefaults table
+     * @param table {@link UIDefaults} table
      */
     @Override
     protected void initClassDefaults ( final UIDefaults table )
@@ -931,7 +945,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param table UIDefaults table
      */
-    private static void initializeFonts ( final UIDefaults table )
+    protected static void initializeFonts ( final UIDefaults table )
     {
         initializeFont ( table, "Canvas.font", canvasFont, globalControlFont );
         initializeFont ( table, "Image.font", imageFont, globalControlFont );
@@ -1007,70 +1021,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
-     * Initializes custom WebLookAndFeel features.
-     */
-    @Override
-    public void initialize ()
-    {
-        super.initialize ();
-
-        // Listening to ALT key for menubar quick focusing
-        KeyboardFocusManager.getCurrentKeyboardFocusManager ().addKeyEventPostProcessor ( altProcessor );
-
-        // Initialize managers only when L&F was changed
-        UIManager.addPropertyChangeListener ( new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                if ( evt.getPropertyName ().equals ( LOOK_AND_FEEL_PROPERTY ) )
-                {
-                    // Initializing managers if WebLaF was installed
-                    if ( evt.getNewValue () instanceof WebLookAndFeel )
-                    {
-                        // Initializing WebLaF managers
-                        initializeManagers ();
-
-                        //                        try
-                        //                        {
-                        //                            // todo Temporary workaround for JSpinner ENTER update issue when created after JTextField [ #118 ]
-                        //                            new JSpinner ();
-                        //                        }
-                        //                        catch ( final Throwable e )
-                        //                        {
-                        //                            // Ignore exceptions caused by this workaround
-                        //                        }
-                    }
-
-                    // Remove listener in any case
-                    UIManager.removePropertyChangeListener ( this );
-                }
-            }
-        } );
-    }
-
-    /**
-     * Initializes library managers.
-     * Initialization order is strict since some managers require other managers to be loaded.
-     */
-    public static void initializeManagers ()
-    {
-        UIManagers.initialize ();
-    }
-
-    /**
-     * Uninitializes custom WebLookAndFeel features.
-     */
-    @Override
-    public void uninitialize ()
-    {
-        super.uninitialize ();
-
-        // Removing alt processor
-        KeyboardFocusManager.getCurrentKeyboardFocusManager ().removeKeyEventPostProcessor ( altProcessor );
-    }
-
-    /**
      * Hides or displays button mnemonics.
      *
      * @param hide whether hide button mnemonics or not
@@ -1092,6 +1042,15 @@ public class WebLookAndFeel extends BasicLookAndFeel
             isMnemonicHidden = false;
         }
         return isMnemonicHidden;
+    }
+
+    /**
+     * Initializes library managers.
+     * Initialization order is strict since some managers require other managers to be loaded.
+     */
+    public static void initializeManagers ()
+    {
+        UIManagers.initialize ();
     }
 
     /**
@@ -1382,26 +1341,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static void setAllowLinuxTransparency ( final boolean allow )
     {
         ProprietaryUtils.setAllowLinuxTransparency ( allow );
-    }
-
-    /**
-     * Returns default scroll mode used by JViewportUI to handle scrolling repaints.
-     *
-     * @return default scroll mode used by JViewportUI to handle scrolling repaints
-     */
-    public static int getScrollMode ()
-    {
-        return scrollMode;
-    }
-
-    /**
-     * Sets default scroll mode used by JViewportUI to handle scrolling repaints.
-     *
-     * @param scrollMode new default scroll mode
-     */
-    public static void setScrollMode ( final int scrollMode )
-    {
-        WebLookAndFeel.scrollMode = scrollMode;
     }
 
     /**

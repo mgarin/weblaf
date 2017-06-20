@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -168,7 +167,7 @@ public class FilesTransferable implements Transferable
                 final File file = new File ( new URL ( url ).getPath () );
 
                 // Returning file
-                return Arrays.asList ( file );
+                return CollectionUtils.asList ( file );
             }
         }
         catch ( final Throwable e )

@@ -17,7 +17,13 @@
 
 package com.alee.managers.icon;
 
-import com.alee.managers.icon.data.*;
+import com.alee.extended.svg.SvgFill;
+import com.alee.extended.svg.SvgIconData;
+import com.alee.extended.svg.SvgStroke;
+import com.alee.extended.svg.SvgTransform;
+import com.alee.managers.icon.data.IconData;
+import com.alee.managers.icon.data.ImageIconData;
+import com.alee.managers.icon.data.SetIcon;
 import com.alee.managers.icon.set.IconSet;
 import com.alee.managers.icon.set.IconSetData;
 import com.alee.utils.XmlUtils;
@@ -27,18 +33,14 @@ import java.lang.ref.WeakReference;
 import java.util.*;
 
 /**
- * This class manages customizable component icons.
- * It will eventually be in control of all icons used within WebLaF.
+ * This class manages customizable component {@link Icon}s.
+ * All {@link Icon}s are provided through {@link IconSet} implementations that can be added and removed here.
  *
  * @author Mikle Garin
  */
 
 public final class IconManager
 {
-    /**
-     * todo 1. Move default icon sets into styles?
-     */
-
     /**
      * Added icon sets.
      */
@@ -63,8 +65,10 @@ public final class IconManager
         {
             initialized = true;
 
-            // Icon sets
+            // Added icon sets
             iconSets = new ArrayList<IconSet> ( 2 );
+
+            // Simple icons cache
             cache = new HashMap<String, WeakReference<Icon>> ( 60 );
 
             // Base XStream aliases
@@ -186,11 +190,14 @@ public final class IconManager
             }
 
             // No icon found
-            throw new IconException ( "Could not find Icon for ID: " + id );
+            final String msg = "Could not find Icon for ID: %s";
+            throw new IconException ( String.format ( msg, id ) );
         }
         else
         {
-            throw new IconException ( "There are no icon sets added" );
+            // No icon sets added at all
+            final String msg = "There are no icon sets added";
+            throw new IconException ( msg );
         }
     }
 }

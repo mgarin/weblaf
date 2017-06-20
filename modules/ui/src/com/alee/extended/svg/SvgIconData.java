@@ -15,9 +15,9 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.icon.data;
+package com.alee.extended.svg;
 
-import com.alee.extended.svg.SvgIcon;
+import com.alee.managers.icon.data.IconData;
 import com.alee.utils.TextUtils;
 import com.kitfox.svg.SVGUniverse;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -33,16 +33,15 @@ import java.util.Map;
  *
  * @author Mikle Garin
  * @see SvgIcon
- * @see com.kitfox.svg.app.beans.SVGIcon
- * @see com.kitfox.svg.SVGUniverse
+ * @see SVGUniverse
  */
 
 @XStreamAlias ( "SvgIcon" )
-public final class SvgIconData extends IconData<SvgIcon>
+public class SvgIconData extends IconData<SvgIcon>
 {
     /**
-     * Custom universes.
-     * Mostly used for distinct icons from the same source.
+     * Static {@link SVGUniverse} cache shared between all {@link SvgIconData} instances.
+     * It can be used for adjusting {@link SvgIcon}s originating from the same source.
      */
     protected static Map<String, SVGUniverse> universes;
 
@@ -119,16 +118,19 @@ public final class SvgIconData extends IconData<SvgIcon>
     }
 
     /**
-     * Returns SVG universe for this icon.
+     * Returns {@link SVGUniverse} for this {@link SvgIconData}.
+     * Returns new {@link SVGUniverse} instance instead of {@link com.kitfox.svg.SVGCache#getSVGUniverse()} by default.
+     * This is made to simplify work with {@link SvgIcon} as they would share all changes when originating from the same source otherwise.
      *
-     * @return SVG universe for this icon
+     * Practically this method would rarely be called outside of {@link EventDispatchThread}, but synchronization is still added to ensure
+     * it is thread-safe and that there won't b two {@link #universes} instances created at any time.
+     *
+     * @return {@link SVGUniverse} for this {@link SvgIconData}
      */
-    protected SVGUniverse getSVGUniverse ()
+    protected synchronized SVGUniverse getSVGUniverse ()
     {
         if ( TextUtils.isEmpty ( universe ) )
         {
-            // Using new one instead of {@code SVGCache.getSVGUniverse()} when not specified
-            // This is made to simplify work with SVG icons in general case
             return new SVGUniverse ();
         }
         else

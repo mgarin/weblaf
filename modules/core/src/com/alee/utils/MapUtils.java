@@ -25,7 +25,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * This class provides a set of utilities to work with various maps.
+ * This class provides a set of utilities to work with various {@link Map} implementations.
  *
  * @author Mikle Garin
  */
@@ -33,22 +33,46 @@ import java.util.Map;
 public final class MapUtils
 {
     /**
-     * Returns whether specified map is empty or not.
+     * Returns whether specified {@link Map} is empty or not.
      *
-     * @param map map to process
-     * @return true if specified map is empty, false otherwise
+     * @param map {@link Map} to process
+     * @return {@code true} if specified {@link Map} is empty, {@code false} otherwise
      */
-    public static boolean isEmpty ( final Map<?, ?> map )
+    public static boolean isEmpty ( final Map map )
     {
         return map == null || map.isEmpty ();
     }
 
     /**
+     * Returns whether specified {@link Map} is empty or not.
+     *
+     * @param map {@link Map} to process
+     * @return {@code true} if specified {@link Map} is not empty, {@code false} otherwise
+     */
+    public static boolean notEmpty ( final Map map )
+    {
+        return map != null && !map.isEmpty ();
+    }
+
+    /**
+     * Returns non-{@code null} {@link Map} that is either specified {@code map} or new empty {@link HashMap}.
+     *
+     * @param map {@link Map}
+     * @param <K> map key type
+     * @param <V> map value type
+     * @return non-{@code null} {@link Map} that is either specified {@code map} or new empty {@link HashMap}
+     */
+    public static <K, V> Map<K, V> nonNull ( final Map<K, V> map )
+    {
+        return map != null ? map : new HashMap ( 0 );
+    }
+
+    /**
      * Returns copied Map.
      *
-     * @param map Map to copy
-     * @param <K> Map key type
-     * @param <V> Map value type
+     * @param map map to copy
+     * @param <K> map key type
+     * @param <V> map value type
      * @return copied Map
      */
     public static <K, V> HashMap<K, V> copyMap ( final Map<K, V> map )

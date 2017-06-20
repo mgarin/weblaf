@@ -19,10 +19,10 @@ package com.alee.painter;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.Bounds;
-import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.laf.WebBorder;
 
 import javax.swing.*;
@@ -35,8 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This abstract painter provides a few additional useful features atop of the Painter interface.
- * Usually this class is extended by various painters instead of implementing Painter interface directly.
+ * This abstract {@link Painter} implementation provides a few basic commonly used features.
+ * You might want to extended this class instead of implementing {@link Painter} interface directly.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -49,7 +49,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     /**
      * Painter listeners.
      */
-    protected transient final List<PainterListener> listeners = new ArrayList<PainterListener> ( 1 );
+    protected transient List<PainterListener> listeners;
 
     /**
      * Listeners.
@@ -355,7 +355,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     {
         if ( isSettingsUpdateAllowed () && component != null && component.isShowing () )
         {
-            for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+            for ( final PainterListener listener : getPainterListeners () )
             {
                 listener.repaint ();
             }
@@ -384,7 +384,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     {
         if ( isSettingsUpdateAllowed () && component.isShowing () )
         {
-            for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+            for ( final PainterListener listener : getPainterListeners () )
             {
                 listener.repaint ( x, y, width, height );
             }
@@ -402,7 +402,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
             updateBorder ();
 
             // Revalidating layout
-            for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+            for ( final PainterListener listener : getPainterListeners () )
             {
                 listener.revalidate ();
             }
@@ -416,7 +416,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     {
         if ( isSettingsUpdateAllowed () )
         {
-            for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+            for ( final PainterListener listener : getPainterListeners () )
             {
                 listener.updateOpacity ();
             }
@@ -432,7 +432,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         if ( isSettingsUpdateAllowed () )
         {
             updateBorder ();
-            for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+            for ( final PainterListener listener : getPainterListeners () )
             {
                 listener.updateOpacity ();
                 listener.revalidate ();
@@ -453,13 +453,39 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     @Override
     public void addPainterListener ( final PainterListener listener )
     {
+        createPainterListenersList ();
         listeners.add ( listener );
     }
 
     @Override
     public void removePainterListener ( final PainterListener listener )
     {
-        listeners.remove ( listener );
+        if ( listeners != null )
+        {
+            listeners.remove ( listener );
+        }
+    }
+
+    /**
+     * Creates list for {@link PainterListener}s.
+     */
+    protected void createPainterListenersList ()
+    {
+        if ( listeners == null )
+        {
+            listeners = new ArrayList<PainterListener> ( 1 );
+        }
+    }
+
+    /**
+     * Returns {@link ImmutableList} of {@link PainterListener}s.
+     *
+     * @return {@link ImmutableList} of {@link PainterListener}s
+     */
+    protected List<PainterListener> getPainterListeners ()
+    {
+        createPainterListenersList ();
+        return new ImmutableList<PainterListener> ( listeners );
     }
 
     /**

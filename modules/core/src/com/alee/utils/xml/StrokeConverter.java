@@ -17,14 +17,14 @@
 
 package com.alee.utils.xml;
 
+import com.alee.utils.CollectionUtils;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Custom {@link java.awt.Stroke} object converter.
+ * Custom {@link Stroke} object converter.
  *
  * @author Mikle Garin
  */
@@ -35,17 +35,18 @@ public class StrokeConverter extends AbstractSingleValueConverter
      * Stroke settings separators.
      */
     public static final String separator = ";";
+
+    /**
+     * Single setting parts separator.
+     */
     public static final String subSeparator = ",";
 
     /**
      * Supported stroke types.
      */
-    public static final List<StrokeConverterSupport> supported = new ArrayList<StrokeConverterSupport> ();
-
-    static
-    {
-        supported.add ( new BasicStrokeConverterSupport () );
-    }
+    public static final List<StrokeConverterSupport> supported = CollectionUtils.<StrokeConverterSupport>asList (
+            new BasicStrokeConverterSupport ()
+    );
 
     @Override
     public boolean canConvert ( final Class type )

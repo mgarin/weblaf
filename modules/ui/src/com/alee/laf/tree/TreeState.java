@@ -17,7 +17,7 @@
 
 package com.alee.laf.tree;
 
-import com.alee.utils.MergeUtils;
+import com.alee.api.clone.Clone;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
@@ -120,14 +120,9 @@ public class TreeState implements Serializable, Cloneable
         return state != null && state.isSelected ();
     }
 
-    /**
-     * Returns cloned tree state.
-     *
-     * @return cloned tree state
-     */
     @Override
     public TreeState clone ()
     {
-        return MergeUtils.cloneByFieldsSafely ( this );
+        return Clone.cloneByFieldsSafely ( this );
     }
 }

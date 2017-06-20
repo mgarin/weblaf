@@ -17,8 +17,8 @@
 
 package com.alee.api.merge.behavior;
 
+import com.alee.api.merge.GlobalMergeBehavior;
 import com.alee.api.merge.Merge;
-import com.alee.api.merge.MergeBehavior;
 import com.alee.api.merge.MergeException;
 import com.alee.utils.ReflectUtils;
 
@@ -35,7 +35,7 @@ import java.util.Date;
  * @see Merge
  */
 
-public final class BasicMergeBehavior implements MergeBehavior<Object, Object, Object>
+public final class BasicMergeBehavior implements GlobalMergeBehavior<Object, Object, Object>
 {
     @Override
     public boolean supports ( final Merge merge, final Object object, final Object merged )
@@ -120,7 +120,12 @@ public final class BasicMergeBehavior implements MergeBehavior<Object, Object, O
     private boolean isSimpleImmutable ( final Object object )
     {
         final Class<?> clazz = object.getClass ();
-        return clazz == Class.class || clazz == String.class || clazz == Date.class || clazz == Color.class || clazz == Font.class;
+        return clazz.isEnum () ||
+                clazz == Class.class ||
+                clazz == String.class ||
+                clazz == Date.class ||
+                clazz == Color.class ||
+                clazz == Font.class;
     }
 
     /**
@@ -132,7 +137,9 @@ public final class BasicMergeBehavior implements MergeBehavior<Object, Object, O
     private boolean isSimpleMutable ( final Object object )
     {
         final Class<?> clazz = object.getClass ();
-        return clazz == Insets.class || clazz == Dimension.class ||
-                Point2D.class.isAssignableFrom ( clazz ) || Rectangle2D.class.isAssignableFrom ( clazz );
+        return clazz == Insets.class ||
+                clazz == Dimension.class ||
+                Point2D.class.isAssignableFrom ( clazz ) ||
+                Rectangle2D.class.isAssignableFrom ( clazz );
     }
 }

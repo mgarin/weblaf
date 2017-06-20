@@ -29,6 +29,7 @@ import com.alee.laf.panel.WebPanel;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -38,7 +39,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -351,7 +351,7 @@ public class WebNotification<T extends WebNotification<T>> extends WebPopup<T>
      */
     public void setOptions ( final NotificationOption... options )
     {
-        setOptions ( Arrays.asList ( options ) );
+        setOptions ( CollectionUtils.asList ( options ) );
     }
 
     /**
@@ -371,7 +371,7 @@ public class WebNotification<T extends WebNotification<T>> extends WebPopup<T>
     protected void updateOptionButtons ()
     {
         optionsPanel.removeAll ();
-        if ( !CollectionUtils.isEmpty ( options ) )
+        if ( CollectionUtils.notEmpty ( options ) )
         {
             for ( final NotificationOption option : options )
             {
@@ -392,7 +392,7 @@ public class WebNotification<T extends WebNotification<T>> extends WebPopup<T>
             }
             if ( equalizeButtonWidths )
             {
-                final List<String> properties = Arrays.asList ( AbstractButton.TEXT_CHANGED_PROPERTY );
+                final List<String> properties = new ImmutableList<String> ( AbstractButton.TEXT_CHANGED_PROPERTY );
                 SwingUtils.equalizeComponentsWidth ( properties, optionsPanel.getComponents () );
             }
             if ( !contains ( southPanel ) )

@@ -23,11 +23,11 @@ import com.alee.demo.api.example.FeatureState;
 import com.alee.demo.skin.DemoIcons;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.extended.dock.WebDockableFrame;
-import com.alee.extended.image.WebImage;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.GroupingType;
 import com.alee.extended.tree.WebTreeFilterField;
+import com.alee.laf.label.WebLabel;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.laf.tree.TreeNodeEventRunnable;
@@ -84,13 +84,13 @@ public final class ExamplesFrame extends WebDockableFrame
                 open ( node );
             }
         } );
-        final WebScrollPane examplesTreeScroll = new WebScrollPane ( StyleId.scrollpaneUndecorated, examplesTree );
+        final WebScrollPane examplesTreeScroll = new WebScrollPane ( StyleId.scrollpaneHovering, examplesTree );
 
         // Filtering field
         final WebTreeFilterField filter = new WebTreeFilterField ( DemoStyles.filterfield, examplesTree );
 
         // Legend for colors
-        final WebImage legend = new WebImage ( DemoIcons.legend16 );
+        final WebLabel legend = new WebLabel ( DemoIcons.legend16 );
         legend.setCursor ( Cursor.getDefaultCursor () );
         legend.onMousePress ( MouseButton.left, new MouseEventRunnable ()
         {
@@ -101,19 +101,19 @@ public final class ExamplesFrame extends WebDockableFrame
             {
                 if ( legendTip == null )
                 {
-                    // todo Redo the legend tip to something better
+                    // todo Include colors for different states
+                    // todo Make a better markup for legend elements
                     final FeatureState[] states = FeatureState.values ();
-                    String legendText = "";
+                    final StringBuilder legendText = new StringBuilder ();
                     for ( int i = 0; i < states.length; i++ )
                     {
                         final FeatureState state = states[ i ];
                         final String title = state.getTitle ();
-                        //final String color = ColorConverter.colorToString ( state.getColor () );
-                        legendText += title;//"{" + title + ":c(" + color + ")}";
-                        legendText += " - " + state.geDescription ();
-                        legendText += i < states.length - 1 ? "\n" : "";
+                        legendText.append ( title );
+                        legendText.append ( " - " ).append ( state.geDescription () );
+                        legendText.append ( i < states.length - 1 ? "\n" : "" );
                     }
-                    legendTip = new WebStyledLabel ( legendText );
+                    legendTip = new WebStyledLabel ( legendText.toString () );
                     legendTip.setForeground ( Color.WHITE );
                 }
                 TooltipManager.showOneTimeTooltip ( legend, null, legendTip, TooltipWay.down );

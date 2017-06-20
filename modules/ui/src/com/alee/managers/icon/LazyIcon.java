@@ -21,10 +21,12 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Lazy icon implementation.
+ * Lazy {@link Icon} implementation.
+ * It represents an {@link Icon} that will be loaded on demand from the {@link IconManager}.
+ * Actual {@link Icon} is referenced through {@link #id} which is unique for all icons within {@link IconManager}.
  *
  * @author Mikle Garin
- * @see com.alee.managers.icon.IconManager
+ * @see IconManager
  */
 
 public final class LazyIcon implements Icon
@@ -32,14 +34,14 @@ public final class LazyIcon implements Icon
     /**
      * Referenced icon ID.
      */
-    protected final String id;
+    private final String id;
 
     /**
-     * Constructs new {@link com.alee.managers.icon.LazyIcon}.
-     * It will retrieve icon from {@link com.alee.managers.icon.IconManager} using the specified {@code id}.
+     * Constructs new {@link LazyIcon}.
+     * It will retrieve icon from {@link IconManager} using the specified {@code id}.
      *
      * @param id icon ID
-     * @see com.alee.managers.icon.IconManager
+     * @see IconManager
      */
     public LazyIcon ( final String id )
     {
@@ -48,9 +50,9 @@ public final class LazyIcon implements Icon
     }
 
     /**
-     * Returns referenced icon ID.
+     * Returns referenced {@link Icon} identifier.
      *
-     * @return referenced icon ID
+     * @return referenced {@link Icon} identifier
      */
     public String getId ()
     {
@@ -58,12 +60,12 @@ public final class LazyIcon implements Icon
     }
 
     /**
-     * Returns actual icon.
-     * Use this method wisely as it will load icon into memory.
+     * Returns actual {@link Icon} used by this {@link LazyIcon}.
+     * Use this method wisely as it will load {@link Icon} into memory.
      *
-     * @return actual icon
+     * @return actual {@link Icon} used by this {@link LazyIcon}
      */
-    protected Icon getIcon ()
+    public Icon getIcon ()
     {
         return IconManager.getIcon ( getId () );
     }

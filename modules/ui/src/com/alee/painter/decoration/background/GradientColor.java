@@ -17,7 +17,7 @@
 
 package com.alee.painter.decoration.background;
 
-import com.alee.utils.MergeUtils;
+import com.alee.api.clone.Clone;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -93,6 +93,6 @@ public class GradientColor implements Serializable, Cloneable
     @Override
     public GradientColor clone ()
     {
-        return MergeUtils.cloneByFieldsSafely ( this );
+        return Clone.cloneByFieldsSafely ( this );
     }
 }

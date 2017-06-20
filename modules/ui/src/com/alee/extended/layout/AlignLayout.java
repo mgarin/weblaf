@@ -18,10 +18,10 @@
 package com.alee.extended.layout;
 
 import com.alee.utils.SwingUtils;
+import com.alee.utils.collection.ImmutableList;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,12 +46,12 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
     /**
      * Horizontal alignment constraints.
      */
-    public static final List<Integer> horizontals = Arrays.asList ( LEFT, CENTER, RIGHT );
+    public static final List<Integer> horizontals = new ImmutableList<Integer> ( LEFT, CENTER, RIGHT );
 
     /**
      * Vertical alignment constraints.
      */
-    public static final List<Integer> verticals = Arrays.asList ( TOP, CENTER, BOTTOM );
+    public static final List<Integer> verticals = new ImmutableList<Integer> ( TOP, CENTER, BOTTOM );
 
     /**
      * Constraints cache for added components.

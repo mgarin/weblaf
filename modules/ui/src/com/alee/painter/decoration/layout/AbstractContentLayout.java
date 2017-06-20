@@ -17,11 +17,11 @@
 
 package com.alee.painter.decoration.layout;
 
+import com.alee.api.merge.Merge;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractContent;
 import com.alee.painter.decoration.content.IContent;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.MergeUtils;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 import javax.swing.*;
@@ -45,10 +45,10 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
      * Optional layout contents.
      * Contents can be standalone elements or complex layout elements containing other contents.
      *
-     * @see com.alee.painter.decoration.content.IContent
-     * @see com.alee.painter.decoration.content.AbstractContent
-     * @see com.alee.painter.decoration.layout.IContentLayout
-     * @see com.alee.painter.decoration.layout.AbstractContentLayout
+     * @see IContent
+     * @see AbstractContent
+     * @see IContentLayout
+     * @see AbstractContentLayout
      */
     @XStreamImplicit
     protected List<IContent> contents;
@@ -127,7 +127,7 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
     @Override
     public List<IContent> getContents ( final E c, final D d )
     {
-        return !CollectionUtils.isEmpty ( contents ) ? contents : Collections.<IContent>emptyList ();
+        return CollectionUtils.notEmpty ( contents ) ? contents : Collections.<IContent>emptyList ();
     }
 
     /**
@@ -140,11 +140,11 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
      */
     protected List<IContent> getContents ( final E c, final D d, final String constraints )
     {
-        if ( !CollectionUtils.isEmpty ( contents ) )
+        if ( CollectionUtils.notEmpty ( contents ) )
         {
             final Map<String, List<IContent>> contentsCache = getContentsCache ( c, d );
             final List<IContent> contents = contentsCache.get ( constraints );
-            return !CollectionUtils.isEmpty ( contents ) ? contents : Collections.<IContent>emptyList ();
+            return CollectionUtils.notEmpty ( contents ) ? contents : Collections.<IContent>emptyList ();
         }
         return Collections.emptyList ();
     }
@@ -277,7 +277,7 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
     public I merge ( final I layout )
     {
         super.merge ( layout );
-        contents = layout.isOverwrite () ? layout.contents : MergeUtils.merge ( contents, layout.contents );
+        contents = layout.isOverwrite () ? layout.contents : Merge.COMMON.<List<IContent>>merge ( contents, layout.contents );
         return ( I ) this;
     }
 }

@@ -37,8 +37,9 @@ import com.alee.managers.settings.SettingsManager;
 public class CoreManagers
 {
     /**
-     * Initializes core managers.
-     * Managers initialization order does matter.
+     * Initializes L&F core managers.
+     * This method can be performed outside of EDT.
+     * Initialization order is important and any changes should be performed with care.
      */
     public static synchronized void initialize ()
     {

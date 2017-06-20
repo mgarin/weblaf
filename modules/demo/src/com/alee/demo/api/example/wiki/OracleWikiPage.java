@@ -75,7 +75,7 @@ public class OracleWikiPage implements WikiPage
     public JComponent createLink ()
     {
         final WebPanel link = new WebPanel ( StyleId.panelTransparent, new HorizontalFlowLayout ( 4, false ) );
-        link.add ( new WebLabel ( DemoStyles.wikiLabel, "demo.content.example.wiki.oracle", DemoIcons.icon16 ) );
+        link.add ( new WebLabel ( DemoStyles.wikiLabel, "demo.content.example.wiki.oracle", DemoIcons.java16 ) );
         link.add ( new WebLink ( DemoStyles.wikiLink, getTitle (), new UrlLinkAction ( getAddress () ) ) );
         return link;
     }

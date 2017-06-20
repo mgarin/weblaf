@@ -18,7 +18,7 @@
 package com.alee.api.merge.behavior;
 
 import com.alee.api.merge.Merge;
-import com.alee.api.merge.MergeBehavior;
+import com.alee.api.merge.GlobalMergeBehavior;
 
 import java.util.Map;
 
@@ -33,7 +33,7 @@ import java.util.Map;
  * @see Merge
  */
 
-public final class MapMergeBehavior<T extends Map> implements MergeBehavior<T, T, T>
+public final class MapMergeBehavior<T extends Map> implements GlobalMergeBehavior<T, T, T>
 {
     /**
      * todo 1. Provide a different merge behavior similar to {@link ListMergeBehavior} for {@link java.util.LinkedHashMap}

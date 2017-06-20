@@ -52,12 +52,13 @@ import com.alee.managers.version.VersionManager;
 public class UIManagers
 {
     /**
-     * Initializes WebLaF managers.
-     * Managers initialization order is important.
+     * Initializes L&F UI managers.
+     * This method should be performed on EDT like other Swing UI operations.
+     * Initialization order is important and any changes should be performed with care.
      */
     public static synchronized void initialize ()
     {
-        // Event Dispatch Thread check
+        // Ensuring that operation is performed on EDT
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Initializing managers

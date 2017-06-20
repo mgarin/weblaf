@@ -20,14 +20,15 @@ package com.alee.managers.notification;
 import com.alee.extended.image.WebImage;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.panel.AlignPanel;
+import com.alee.extended.window.PopupAdapter;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
-import com.alee.extended.window.PopupAdapter;
 import com.alee.managers.popup.WebInnerPopup;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -37,7 +38,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -357,7 +357,7 @@ public class WebInnerNotification extends WebInnerPopup
      */
     public void setOptions ( final NotificationOption... options )
     {
-        setOptions ( Arrays.asList ( options ) );
+        setOptions ( CollectionUtils.asList ( options ) );
     }
 
     /**
@@ -377,7 +377,7 @@ public class WebInnerNotification extends WebInnerPopup
     protected void updateOptionButtons ()
     {
         optionsPanel.removeAll ();
-        if ( !CollectionUtils.isEmpty ( options ) )
+        if ( CollectionUtils.notEmpty ( options ) )
         {
             for ( final NotificationOption option : options )
             {
@@ -398,7 +398,7 @@ public class WebInnerNotification extends WebInnerPopup
             }
             if ( equalizeButtonWidths )
             {
-                final List<String> properties = Arrays.asList ( AbstractButton.TEXT_CHANGED_PROPERTY );
+                final List<String> properties = new ImmutableList<String> ( AbstractButton.TEXT_CHANGED_PROPERTY );
                 SwingUtils.equalizeComponentsWidth ( properties, optionsPanel.getComponents () );
             }
             if ( !contains ( southPanel ) )

@@ -31,7 +31,6 @@ import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -237,7 +236,7 @@ public class WebFileChooser extends JFileChooser
      */
     public void setDialogImage ( final Image icon )
     {
-        setDialogImages ( Arrays.asList ( icon ) );
+        setDialogImages ( CollectionUtils.asList ( icon ) );
     }
 
     /**

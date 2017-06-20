@@ -865,7 +865,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
             {
                 cachedChildren.add ( index, children[ i ] );
             }
-            cacheNodesById ( Arrays.asList ( children ) );
+            cacheNodesById ( CollectionUtils.asList ( children ) );
         }
 
         // Clearing nodes cache

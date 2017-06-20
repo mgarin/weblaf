@@ -21,7 +21,7 @@ public class WebScrollPaneBar extends WebScrollBar implements UIResource
     /**
      * Enclosing scroll pane reference.
      */
-    private final WeakReference<JScrollPane> scrollPane;
+    private final transient WeakReference<JScrollPane> scrollPane;
 
     /**
      * Set to true when the unit increment has been explicitly set.
@@ -77,7 +77,7 @@ public class WebScrollPaneBar extends WebScrollBar implements UIResource
     public int getUnitIncrement ( final int direction )
     {
         final JViewport vp = scrollPane.get ().getViewport ();
-        if ( !unitIncrementSet && ( vp != null ) && ( vp.getView () instanceof Scrollable ) )
+        if ( !unitIncrementSet && vp != null && vp.getView () instanceof Scrollable )
         {
             final Scrollable view = ( Scrollable ) vp.getView ();
             final Rectangle vr = vp.getViewRect ();

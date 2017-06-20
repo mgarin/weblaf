@@ -3,6 +3,7 @@
 
     <xs:include schemaLocation="../ext/BoundsType.xsd" />
     <xs:include schemaLocation="../awt/Insets.xsd" />
+    <xs:include schemaLocation="../awt/Dimension.xsd" />
     <xs:include schemaLocation="../ext/Rotation.xsd" />
 
     <!-- com.alee.painter.decoration.content.AbstractContent -->
@@ -22,6 +23,9 @@
 
         <!-- Content padding -->
         <xs:attribute name="padding" type="Insets" />
+
+        <!-- Preferred content size -->
+        <xs:attribute name="size" type="Dimension" />
 
         <!-- Content rotation -->
         <xs:attribute name="rotation" type="Rotation" />

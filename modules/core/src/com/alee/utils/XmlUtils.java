@@ -24,6 +24,7 @@ import com.alee.utils.xml.*;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.SingleValueConverter;
+import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
 import com.thoughtworks.xstream.core.util.CompositeClassLoader;
 import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
@@ -48,23 +49,9 @@ public final class XmlUtils
      */
 
     /**
-     * Whether should offer better aliases for standard Java classes like Point and Rectangle or not.
+     * Whether or not should offer better aliases for standard JDK classes like {@link Point} and {@link Rectangle}.
      */
-    public static boolean aliasJdkClasses = true;
-
-    /**
-     * Custom converters.
-     */
-    public static final Point2DConverter point2dConverter = new Point2DConverter ();
-    public static final ColorConverter colorConverter = new ColorConverter ();
-    public static final DimensionConverter dimensionConverter = new DimensionConverter ();
-    public static final InsetsConverter insetsConverter = new InsetsConverter ();
-    public static final StrokeConverter strokeConverter = new StrokeConverter ();
-
-    /**
-     * Custom password converter that encrypts serialized passwords.
-     */
-    public static final PasswordConverter passwordConverter = new PasswordConverter ();
+    private static boolean aliasJdkClasses = true;
 
     /**
      * XStream driver.
@@ -97,9 +84,17 @@ public final class XmlUtils
     {
         try
         {
-            // XStream instance initialization
+            // Custom ReflectionProvider to provide pure-java objects instantiation
+            // Unlike default SunUnsafeReflectionProvider it has limited objects instantiation options
+            // Also it properly initializes object field values specified directly near the fields
+            final PureJavaReflectionProvider reflectionProvider = new PureJavaReflectionProvider ();
+
+            // Custom HierarchicalStreamDriver implementation based on StaxDriver
+            // It provides us HierarchicalStreamReader to allow XStreamContext usage
             hierarchicalStreamDriver = new XmlDriver ();
-            xStream = new XStream ( hierarchicalStreamDriver );
+
+            // XStream instance initialization
+            xStream = new XStream ( reflectionProvider, hierarchicalStreamDriver );
 
             // Make sure that XStream ClassLoader finds WebLaF classes in cases where multiple ClassLoaders are used
             // E.g. IntelliJ IDEA uses different ClassLoaders for plugins (e.g. JFormDesigner) and its core (which includes XStream)
@@ -128,11 +123,11 @@ public final class XmlUtils
 
                 // Custom {@link java.awt.geom.Point2D} mapping
                 xStream.alias ( "Point2D", Point2D.class );
-                xStream.registerConverter ( point2dConverter );
+                xStream.registerConverter ( new Point2DConverter () );
 
                 // Custom {@link java.awt.Dimension} mapping
                 xStream.alias ( "Dimension", Dimension.class );
-                xStream.registerConverter ( dimensionConverter );
+                xStream.registerConverter ( new DimensionConverter () );
 
                 // Custom {@link java.awt.Rectangle} mapping
                 xStream.alias ( "Rectangle", Rectangle.class );
@@ -146,18 +141,16 @@ public final class XmlUtils
 
                 // Custom {@link java.awt.Color} mapping
                 xStream.alias ( "Color", Color.class );
-                xStream.registerConverter ( colorConverter );
+                xStream.registerConverter ( new ColorConverter () );
 
                 // Custom {@link java.awt.Insets} mapping
                 xStream.alias ( "Insets", Insets.class );
-                xStream.registerConverter ( insetsConverter );
+                xStream.registerConverter ( new InsetsConverter () );
 
                 // Custom {@link java.awt.Stroke} mapping
                 xStream.alias ( "Stroke", Stroke.class );
-                xStream.registerConverter ( strokeConverter );
+                xStream.registerConverter ( new StrokeConverter () );
             }
-
-            // todo All these annotations should be initialized somewhere else
 
             // XML resources aliases
             xStream.processAnnotations ( ResourceLocation.class );
@@ -171,6 +164,26 @@ public final class XmlUtils
         {
             Log.get ().error ( "Unable to initialize XStream instance", e );
         }
+    }
+
+    /**
+     * Returns whether or not aliases for standard JDK classes like {@link Point} and {@link Rectangle} are used.
+     *
+     * @return {@code true} if should use aliases for standard JDK classes are used, {@code false} otherwise
+     */
+    public static boolean isAliasJdkClasses ()
+    {
+        return aliasJdkClasses;
+    }
+
+    /**
+     * Sets whether or not aliases for standard JDK classes like {@link Point} and {@link Rectangle} should be used.
+     *
+     * @param alias whether or not aliases for standard JDK classes should be used
+     */
+    public static void setAliasJdkClasses ( final boolean alias )
+    {
+        XmlUtils.aliasJdkClasses = alias;
     }
 
     /**
@@ -203,6 +216,17 @@ public final class XmlUtils
     public static void alias ( final String name, final Class type )
     {
         getXStream ().alias ( name, type );
+    }
+
+    /**
+     * Prevents field from being serialized.
+     *
+     * @param type  class owning the field
+     * @param field name of the field
+     */
+    public static void omitField ( final Class type, final String field )
+    {
+        getXStream ().omitField ( type, field );
     }
 
     /**

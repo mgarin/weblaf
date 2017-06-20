@@ -21,7 +21,6 @@ import com.alee.extended.layout.TableLayout;
 import com.alee.extended.panel.ResizablePanel;
 import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.tree.WebFileTree;
-import com.alee.global.GlobalConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.colorchooser.WebColorChooserDialog;
@@ -45,6 +44,10 @@ import com.alee.managers.style.BoundsType;
 import com.alee.managers.style.StyleId;
 import com.alee.painter.common.ColorPainter;
 import com.alee.utils.*;
+import com.alee.utils.filefilter.DirectoriesFilter;
+import com.alee.utils.filefilter.FilterGroupType;
+import com.alee.utils.filefilter.GroupedFileFilter;
+import com.alee.utils.filefilter.ImageFilesFilter;
 import com.alee.utils.laf.WebBorder;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.ninepatch.NinePatchInterval;
@@ -143,7 +146,7 @@ public class NinePatchEditorPanel extends WebPanel
 
         fileTree = new WebFileTree ();
         fileTree.setSelectionMode ( TreeSelectionModel.SINGLE_TREE_SELECTION );
-        fileTree.setFileFilter ( GlobalConstants.IMAGES_AND_FOLDERS_FILTER );
+        fileTree.setFileFilter ( new GroupedFileFilter ( FilterGroupType.OR, new ImageFilesFilter (), new DirectoriesFilter () ) );
         fileTree.addMouseListener ( new MouseAdapter ()
         {
             @Override
@@ -215,8 +218,8 @@ public class NinePatchEditorPanel extends WebPanel
                     wfc = new WebFileChooser ( imageSrc );
                     wfc.setDialogTitleKey ( "weblaf.ex.npeditor.openImage.title" );
                     wfc.setMultiSelectionEnabled ( false );
-                    wfc.addChoosableFileFilter ( GlobalConstants.IMAGES_FILTER );
-                    wfc.setFileFilter ( GlobalConstants.IMAGES_FILTER );
+                    wfc.addChoosableFileFilter ( new ImageFilesFilter () );
+                    wfc.setFileFilter ( new ImageFilesFilter () );
                 }
                 if ( imageSrc != null )
                 {

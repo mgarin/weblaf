@@ -253,6 +253,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     public WebPopup ( final StyleId styleId, final LayoutManager layout, final Component... components )
     {
         super ();
+        setFocusCycleRoot ( true );
         setLayout ( layout );
         updateUI ();
         setStyleId ( styleId );

@@ -17,10 +17,8 @@
 
 package com.alee.demo.content.data.grid;
 
-import com.alee.demo.api.example.AbstractStylePreview;
-import com.alee.demo.api.example.FeatureState;
-import com.alee.demo.api.example.FeatureType;
-import com.alee.demo.api.example.Preview;
+import com.alee.demo.api.example.*;
+import com.alee.demo.content.SampleData;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.table.WebTable;
 import com.alee.managers.style.StyleId;
@@ -33,7 +31,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebTableExample extends AbstractTableExample
+public class WebTableExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()
@@ -80,7 +78,7 @@ public class WebTableExample extends AbstractTableExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebTable table = new WebTable ( getStyleId (), createShortTableModel () );
+            final WebTable table = new WebTable ( getStyleId (), SampleData.createShortTableModel () );
             table.optimizeColumnWidths ( true );
             return CollectionUtils.asList ( table );
         }
@@ -104,7 +102,7 @@ public class WebTableExample extends AbstractTableExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebTable table = new WebTable ( getStyleId (), createLongTableModel () );
+            final WebTable table = new WebTable ( getStyleId (), SampleData.createLongTableModel () );
             table.setAutoResizeMode ( JTable.AUTO_RESIZE_OFF );
             table.setVisibleRowCount ( 5 );
             table.optimizeColumnWidths ( true );
@@ -130,7 +128,7 @@ public class WebTableExample extends AbstractTableExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebTable table = new WebTable ( getStyleId (), createLongTableModel () );
+            final WebTable table = new WebTable ( getStyleId (), SampleData.createLongTableModel () );
             table.setAutoResizeMode ( JTable.AUTO_RESIZE_OFF );
             table.setVisibleRowCount ( 5 );
             table.optimizeColumnWidths ( true );

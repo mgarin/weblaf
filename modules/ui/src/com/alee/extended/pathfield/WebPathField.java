@@ -19,7 +19,6 @@ package com.alee.extended.pathfield;
 
 import com.alee.extended.filechooser.PathFieldListener;
 import com.alee.extended.layout.HorizontalFlowLayout;
-import com.alee.global.GlobalConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.list.WebList;
@@ -42,6 +41,7 @@ import com.alee.utils.FileUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.SystemUtils;
 import com.alee.utils.filefilter.AbstractFileFilter;
+import com.alee.utils.filefilter.DirectoriesFilter;
 
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
@@ -116,7 +116,7 @@ public class WebPathField extends WebPanel
     /**
      * Field settings.
      */
-    protected AbstractFileFilter fileFilter = GlobalConstants.DIRECTORIES_FILTER;
+    protected AbstractFileFilter fileFilter = new DirectoriesFilter ();
     protected int preferredWidth = -1;
     protected boolean filesDropEnabled = true;
     protected File selectedPath;

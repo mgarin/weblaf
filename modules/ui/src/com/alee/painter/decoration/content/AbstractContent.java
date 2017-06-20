@@ -17,11 +17,11 @@
 
 package com.alee.painter.decoration.content;
 
+import com.alee.api.clone.Clone;
 import com.alee.api.data.Rotation;
 import com.alee.managers.style.BoundsType;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.GraphicsUtils;
-import com.alee.utils.MergeUtils;
 import com.alee.utils.SwingUtils;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -76,6 +76,13 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      */
     @XStreamAsAttribute
     protected Insets padding;
+
+    /**
+     * Preferred content size.
+     * Only specify it when you want to hardcode specific content size.
+     */
+    @XStreamAsAttribute
+    protected Dimension size;
 
     /**
      * Content rotation.
@@ -145,6 +152,18 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
         {
             return null;
         }
+    }
+
+    /**
+     * Returns preferred content size.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return preferred content size
+     */
+    protected Dimension getSize ( final E c, final D d )
+    {
+        return size;
     }
 
     /**
@@ -335,17 +354,31 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
         // Actual padding
         final Insets padding = getPadding ( c, d );
 
+        // Actial rotation
+        final Rotation rotation = getActualRotation ( c, d );
+
         // Calculating proper available width
         // We have to take padding and rotation into account here
         final Dimension shrunk = SwingUtils.shrink ( available, padding );
-        final Dimension transposed = getRotation ( c, d ).transpose ( shrunk );
+        final Dimension transposed = rotation.transpose ( shrunk );
 
         // Calculating content preferred size
-        final Dimension ps = getContentPreferredSize ( c, d, transposed );
+        final Dimension ps;
+        final Dimension hardcoded = getSize ( c, d );
+        if ( hardcoded != null )
+        {
+            // Make sure to apply rotation to the preferred size
+            ps = rotation.transpose ( hardcoded );
+        }
+        else
+        {
+            // Calculate dynamic preferred size
+            ps = getContentPreferredSize ( c, d, transposed );
+        }
 
         // Adding content padding
         final Dimension stretched = SwingUtils.stretch ( ps, padding );
-        return getActualRotation ( c, d ).transpose ( stretched );
+        return rotation.transpose ( stretched );
     }
 
     /**
@@ -390,6 +423,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
         bounds = content.isOverwrite () || content.bounds != null ? content.bounds : bounds;
         constraints = content.isOverwrite () || content.constraints != null ? content.constraints : constraints;
         padding = content.isOverwrite () || content.padding != null ? content.padding : padding;
+        size = content.isOverwrite () || content.size != null ? content.size : size; 
         rotation = content.isOverwrite () || content.rotation != null ? content.rotation : rotation;
         opacity = content.isOverwrite () || content.opacity != null ? content.opacity : opacity;
         return ( I ) this;
@@ -398,6 +432,6 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
     @Override
     public I clone ()
     {
-        return ( I ) MergeUtils.cloneByFieldsSafely ( this );
+        return ( I ) Clone.cloneByFieldsSafely ( this );
     }
 }

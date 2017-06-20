@@ -17,8 +17,8 @@
 
 package com.alee.painter.decoration.border;
 
+import com.alee.api.clone.Clone;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.MergeUtils;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
@@ -94,6 +94,6 @@ public abstract class AbstractBorder<E extends JComponent, D extends IDecoration
     @Override
     public I clone ()
     {
-        return ( I ) MergeUtils.cloneByFieldsSafely ( this );
+        return ( I ) Clone.cloneByFieldsSafely ( this );
     }
 }

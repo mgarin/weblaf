@@ -145,7 +145,7 @@ public final class DemoApplication extends WebFrame
      */
     private void initializeContent ()
     {
-        examplesPane = new WebDocumentPane<ExampleData> ();
+        examplesPane = new WebDocumentPane<ExampleData> ( DemoStyles.expamplesPane );
         examplesPane.setClosable ( true );
         examplesPane.setDragEnabled ( true );
         examplesPane.setDragBetweenPanesEnabled ( false );
@@ -162,14 +162,16 @@ public final class DemoApplication extends WebFrame
         final WebOverlay overlay = new WebOverlay ( StyleId.panelFocusable, examplesPane );
 
         final WebPanel overlayContainer = new WebPanel ( DemoStyles.emptycontentPanel );
+
         final StyleId overlayLabelId = DemoStyles.emptycontentLabel.at ( overlayContainer );
+
         final WebStyledLabel guide = new WebStyledLabel ( overlayLabelId, "demo.content.empty", DemoIcons.compass36 );
         guide.changeFontSize ( 5 ).setWrap ( TextWrap.none );
+
         final WebStyledLabel issues = new WebStyledLabel ( overlayLabelId, "demo.content.issues", DemoIcons.bug36 );
         issues.changeFontSize ( 5 ).setWrap ( TextWrap.none );
-        final GroupPanel infoGroup = new GroupPanel ( 20, false, guide, issues );
-        infoGroup.setMargin ( 15 );
-        overlayContainer.add ( infoGroup );
+
+        overlayContainer.add ( new GroupPanel ( 20, false, guide, issues ) );
 
         examplesPane.addDocumentListener ( new DocumentAdapter<ExampleData> ()
         {
@@ -241,13 +243,13 @@ public final class DemoApplication extends WebFrame
     {
         final WebStatusBar statusBar = new WebStatusBar ();
 
-        statusBar.add ( new WebLink ( DemoStyles.resourceLink, DemoIcons.icon16, "demo.statusbar.resources.weblaf",
+        statusBar.add ( new WebLink ( DemoStyles.resourceLink, DemoIcons.java19, "demo.statusbar.resources.weblaf",
                 new UrlLinkAction ( WEBLAF_SITE ) ) );
 
-        statusBar.add ( new WebLink ( DemoStyles.resourceLink, DemoIcons.github16, "demo.statusbar.resources.github",
+        statusBar.add ( new WebLink ( DemoStyles.resourceLink, DemoIcons.github19, "demo.statusbar.resources.github",
                 new UrlLinkAction ( WEBLAF_GITHUB ) ) );
 
-        statusBar.add ( new WebLink ( DemoStyles.resourceLink, DemoIcons.gitter16, "demo.statusbar.resources.gitter",
+        statusBar.add ( new WebLink ( DemoStyles.resourceLink, DemoIcons.gitter19, "demo.statusbar.resources.gitter",
                 new UrlLinkAction ( WEBLAF_GITTER ) ) );
 
         final WebMemoryBar memoryBar = new WebMemoryBar ();

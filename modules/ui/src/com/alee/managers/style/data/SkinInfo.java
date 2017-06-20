@@ -19,13 +19,13 @@ package com.alee.managers.style.data;
 
 import com.alee.api.IconSupport;
 import com.alee.api.TitleSupport;
+import com.alee.api.merge.Merge;
 import com.alee.managers.icon.IconManager;
 import com.alee.managers.icon.set.IconSet;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
-import com.alee.utils.MergeUtils;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -357,7 +357,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
      */
     private void installIconSets ( final List<IconSet> iconSets )
     {
-        if ( !CollectionUtils.isEmpty ( iconSets ) )
+        if ( CollectionUtils.notEmpty ( iconSets ) )
         {
             for ( final IconSet iconSet : iconSets )
             {
@@ -382,7 +382,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
      */
     private void uninstallIconSets ( final List<IconSet> iconSets )
     {
-        if ( !CollectionUtils.isEmpty ( iconSets ) )
+        if ( CollectionUtils.notEmpty ( iconSets ) )
         {
             for ( final IconSet iconSet : iconSets )
             {
@@ -578,9 +578,8 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
      */
     private void updateCache ( final SkinInfo extension )
     {
-        // todo Replace this with new configurable Merge is available
         // Merging icon sets from extension
-        iconSets = MergeUtils.merge ( iconSets, extension.getIconSets () );
+        iconSets = Merge.COMMON.merge ( iconSets, extension.getIconSets () );
 
         // Installing extension icon sets
         installIconSets ( extension.getIconSets () );

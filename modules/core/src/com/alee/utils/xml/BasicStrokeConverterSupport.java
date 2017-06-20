@@ -23,11 +23,13 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * Conversion support for {@link java.awt.BasicStroke}.
+ * Conversion support for {@link BasicStroke}.
  *
  * @author Mikle Garin
- * @see java.awt.BasicStroke
- * @see com.alee.utils.xml.StrokeConverter
+ * @see StrokeConverter
+ * @see StrokeConverterSupport
+ * @see BasicStroke
+ * @see Stroke
  */
 
 public class BasicStrokeConverterSupport implements StrokeConverterSupport<BasicStroke>

@@ -19,7 +19,7 @@ package com.alee.api.merge.behavior;
 
 import com.alee.api.Identifiable;
 import com.alee.api.merge.Merge;
-import com.alee.api.merge.MergeBehavior;
+import com.alee.api.merge.GlobalMergeBehavior;
 import com.alee.utils.CompareUtils;
 
 import java.util.List;
@@ -36,11 +36,12 @@ import java.util.List;
  * @see Merge
  */
 
-public final class ListMergeBehavior<T extends List> implements MergeBehavior<T, T, T>
+public final class ListMergeBehavior<T extends List> implements GlobalMergeBehavior<T, T, T>
 {
     /**
      * todo 1. Merging two lists of Identifiable elements gives unexpected results (https://github.com/mgarin/weblaf/issues/448)
      * todo 2. Provide a simple lists merge behavior similar to {@link IndexArrayMergeBehavior}
+     * todo 3. Provide an appropriate support for {@link com.alee.utils.collection.ImmutableList}
      */
 
     @Override

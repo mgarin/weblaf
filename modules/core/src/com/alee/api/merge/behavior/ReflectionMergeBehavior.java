@@ -17,10 +17,10 @@
 
 package com.alee.api.merge.behavior;
 
-import com.alee.api.Overwriting;
+import com.alee.api.merge.GlobalMergeBehavior;
 import com.alee.api.merge.Merge;
-import com.alee.api.merge.MergeBehavior;
 import com.alee.api.merge.MergeException;
+import com.alee.api.merge.Overwriting;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.reflection.ClassRelationType;
@@ -30,7 +30,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 /**
- * Smart merge behavior for any types of {@link Object} with related class types.
+ * Tricky merge behavior for any types of {@link Object} with related class types.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
@@ -38,20 +38,12 @@ import java.util.List;
  * @see ClassRelationType#isRelated()
  */
 
-public final class ReflectionMergeBehavior implements MergeBehavior<Object, Object, Object>
+public final class ReflectionMergeBehavior implements GlobalMergeBehavior<Object, Object, Object>
 {
     /**
      * Modifiers of fields to ignore.
      */
     private final List<ModifierType> ignoredModifiers;
-
-    /**
-     * Constructs new {@link ReflectionMergeBehavior} ignoring static and transient fields.
-     */
-    public ReflectionMergeBehavior ()
-    {
-        this ( ModifierType.STATIC, ModifierType.TRANSIENT );
-    }
 
     /**
      * Constructs new {@link ReflectionMergeBehavior} ignoring fields with specified modifiers.
@@ -82,7 +74,7 @@ public final class ReflectionMergeBehavior implements MergeBehavior<Object, Obje
         final List<Field> fields = ReflectUtils.getFields ( fieldsClass );
 
         // Continue only if there are any fields to merge
-        if ( !CollectionUtils.isEmpty ( fields ) )
+        if ( CollectionUtils.notEmpty ( fields ) )
         {
             // Checking whether values should be overwritten instead of being merged
             final boolean overwrite = merged instanceof Overwriting && ( ( Overwriting ) merged ).isOverwrite ();
@@ -91,7 +83,7 @@ public final class ReflectionMergeBehavior implements MergeBehavior<Object, Obje
             for ( final Field field : fields )
             {
                 // Ensure that this field should not be ignored
-                if ( !CollectionUtils.isEmpty ( ignoredModifiers ) )
+                if ( CollectionUtils.notEmpty ( ignoredModifiers ) )
                 {
                     boolean ignore = false;
                     final List<ModifierType> modifiers = ModifierType.get ( field );

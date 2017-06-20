@@ -17,9 +17,9 @@
 
 package com.alee.painter.decoration;
 
+import com.alee.api.clone.Clone;
 import com.alee.managers.style.Bounds;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.MergeUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.TextUtils;
 import com.alee.utils.swing.CursorType;
@@ -56,7 +56,7 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
     protected List<String> states;
 
     /**
-     * Whether or not this decoration should overwrite previous one when merged.
+     * Whether or not this decoration should overwrite another one when merged.
      */
     @XStreamAsAttribute
     protected Boolean overwrite;
@@ -232,7 +232,7 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
     @Override
     public Dimension getPreferredSize ( final E c )
     {
-        return size != null ? size : null;
+        return size;
     }
 
     @Override
@@ -250,7 +250,7 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
     @Override
     public I clone ()
     {
-        return ( I ) MergeUtils.cloneByFieldsSafely ( this );
+        return ( I ) Clone.cloneByFieldsSafely ( this );
     }
 
     @Override

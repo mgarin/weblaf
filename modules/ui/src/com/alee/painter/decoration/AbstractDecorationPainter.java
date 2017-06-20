@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration;
 
+import com.alee.api.clone.Clone;
 import com.alee.extended.behavior.AbstractHoverBehavior;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.grouping.GroupingLayout;
@@ -588,7 +589,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         if ( ui instanceof Stateful )
         {
             final List<String> uiStates = ( ( Stateful ) ui ).getStates ();
-            if ( !CollectionUtils.isEmpty ( uiStates ) )
+            if ( CollectionUtils.notEmpty ( uiStates ) )
             {
                 states.addAll ( uiStates );
             }
@@ -598,7 +599,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         if ( component instanceof Stateful )
         {
             final List<String> componentStates = ( ( Stateful ) component ).getStates ();
-            if ( !CollectionUtils.isEmpty ( componentStates ) )
+            if ( CollectionUtils.notEmpty ( componentStates ) )
             {
                 states.addAll ( componentStates );
             }
@@ -651,7 +652,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         if ( !usesState )
         {
             final List<SectionPainter<E, U>> sectionPainters = getSectionPainters ();
-            if ( !CollectionUtils.isEmpty ( sectionPainters ) )
+            if ( CollectionUtils.notEmpty ( sectionPainters ) )
             {
                 for ( final SectionPainter<E, U> section : sectionPainters )
                 {
@@ -776,7 +777,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                     else if ( decorations.size () == 1 )
                     {
                         // Single existing decoration for the states
-                        decoration = MergeUtils.clone ( decorations.get ( 0 ) );
+                        decoration = Clone.clone ( decorations.get ( 0 ) );
                     }
                     else
                     {
@@ -794,7 +795,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                         }
 
                         // Merging multiple decorations together
-                        decoration = MergeUtils.clone ( decorations.get ( 0 ) );
+                        decoration = Clone.clone ( decorations.get ( 0 ) );
                         for ( int i = 1; i < decorations.size (); i++ )
                         {
                             decoration.merge ( decorations.get ( i ) );
@@ -905,7 +906,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
             // Updating section painters decoration states
             // This is required to provide state changes into section painters used within this painter
             final List<SectionPainter<E, U>> sectionPainters = getSectionPainters ();
-            if ( !CollectionUtils.isEmpty ( sectionPainters ) )
+            if ( CollectionUtils.notEmpty ( sectionPainters ) )
             {
                 for ( final SectionPainter<E, U> section : sectionPainters )
                 {

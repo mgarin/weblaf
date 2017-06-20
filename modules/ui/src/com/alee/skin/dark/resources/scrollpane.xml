@@ -7,6 +7,10 @@
         <component>
             <opaque>false</opaque>
             <background>68,68,68</background>
+            <layout class="WebScrollPaneLayout$UIResource">
+                <Vertical zOrder="0" leading="false" trailing="false"  hovering="false" extending="true" />
+                <Horizontal zOrder="1" leading="false" trailing="false" hovering="false" extending="true" />
+            </layout>
         </component>
         <painter>
             <decorations>
@@ -63,7 +67,7 @@
         </painter>
     </style>
 
-    <!-- No focus scroll pane -->
+    <!-- Scroll pane with no focus display -->
     <style type="scrollpane" id="nofocus">
         <painter>
             <decorations>
@@ -90,6 +94,42 @@
 
         <!-- Transparent scrollbar -->
         <style type="scrollbar" id="scrollbar" extends="undecorated-buttonless" />
+
+    </style>
+
+    <!-- Hovering scroll pane -->
+    <style type="scrollpane" id="hovering" extends="transparent-buttonless">
+        <component>
+            <layout class="WebScrollPaneLayout$UIResource">
+                <Vertical hovering="true" />
+                <Horizontal hovering="true" />
+            </layout>
+        </component>
+
+        <!-- Scroll bars -->
+        <style type="scrollbar" id="scrollbar" padding="2">
+            <painter>
+                <thumbRound>0</thumbRound>
+                <thumbMargin>0,0,0,0</thumbMargin>
+                <scrollBarWidth>10</scrollBarWidth>
+                <thumbBorderColor>220,220,220,48</thumbBorderColor>
+                <thumbBackgroundColor>210,210,210,48</thumbBackgroundColor>
+                <thumbDisabledBorderColor>220,220,220,24</thumbDisabledBorderColor>
+                <thumbDisabledBackgroundColor>210,210,210,24</thumbDisabledBackgroundColor>
+                <thumbRolloverBorderColor>250,250,250,64</thumbRolloverBorderColor>
+                <thumbRolloverBackgroundColor>240,240,240,64</thumbRolloverBackgroundColor>
+                <thumbPressedBorderColor>250,250,250,64</thumbPressedBorderColor>
+                <thumbPressedBackgroundColor>250,250,250,86</thumbPressedBackgroundColor>
+            </painter>
+        </style>
+        <style type="scrollbar" id="horizontal" extends="scrollbar" padding="2,2,2,14" />
+
+        <!-- Corners -->
+        <style type="canvas" id="corner">
+            <painter>
+                <decorations overwrite="true" />
+            </painter>
+        </style>
 
     </style>
 

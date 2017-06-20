@@ -18,27 +18,23 @@
 package com.alee.api.merge;
 
 /**
- * This interface is an indicator of the fact that this class instances can be merged with each other.
- * Result of this merge will be one of those instances with values merged with values from another instance.
+ * This interface is an indicator of the fact that instances of this interface implementators can be merged with each other.
  *
- * @param <T> object type
+ * Easiest way to merge two object instances is to use {@link Merge} to perform merge operation.
+ * Result can vary a lot depending on object implementation and provided {@link Merge} settings.
+ *
+ * To customize the way object can be merged implement {@link MergeBehavior} directly instead of this interface.
+ * It will provide you with a method which could be invoked upon merge operation in case it is supported by specific {@link Merge} instance.
+ *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
  * @see Merge
+ * @see MergeBehavior
  */
 
-public interface Mergeable<T extends Mergeable>
+public interface Mergeable
 {
     /**
-     * todo 1. Pass {@link com.alee.api.merge.Merge} object in {@link #merge(Mergeable)} method
+     * This is an indicator interface, it doesn't have any methods to implement.
      */
-
-    /**
-     * Performs merge of this object with another object of the same type.
-     * Returns this object as a result of the performed merge.
-     *
-     * @param object object to merge into this one
-     * @return this object as a result of the performed merge
-     */
-    public T merge ( T object );
 }

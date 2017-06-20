@@ -17,8 +17,8 @@
 
 package com.alee.painter.decoration.border;
 
-import com.alee.api.merge.Mergeable;
-import com.alee.utils.MergeUtils;
+import com.alee.api.clone.Clone;
+import com.alee.api.merge.MergeBehavior;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 import java.io.Serializable;
@@ -30,7 +30,7 @@ import java.io.Serializable;
  */
 
 @XStreamConverter ( BorderWidthConverter.class )
-public final class BorderWidth implements Serializable, Cloneable, Mergeable<BorderWidth>
+public final class BorderWidth implements MergeBehavior<BorderWidth>, Cloneable, Serializable
 {
     /**
      * Empty border width constant.
@@ -127,6 +127,6 @@ public final class BorderWidth implements Serializable, Cloneable, Mergeable<Bor
     @Override
     public BorderWidth clone ()
     {
-        return MergeUtils.cloneByFieldsSafely ( this );
+        return Clone.cloneByFieldsSafely ( this );
     }
 }

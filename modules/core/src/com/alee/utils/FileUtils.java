@@ -17,16 +17,16 @@
 
 package com.alee.utils;
 
-import com.alee.global.GlobalConstants;
-import com.alee.global.StyleConstants;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.log.Log;
 import com.alee.managers.proxy.ProxyManager;
 import com.alee.utils.compare.Filter;
+import com.alee.utils.file.FileComparator;
 import com.alee.utils.file.FileDescription;
 import com.alee.utils.file.FileDownloadListener;
 import com.alee.utils.file.SystemFileListener;
 import com.alee.utils.filefilter.AbstractFileFilter;
+import com.alee.utils.filefilter.AllFilesFilter;
 import com.alee.utils.filefilter.IOFileFilterAdapter;
 import com.alee.utils.filefilter.SwingFileFilterAdapter;
 import com.alee.utils.swing.WebTimer;
@@ -61,6 +61,11 @@ public final class FileUtils
     /**
      * todo 1. File.exists doesn't work in JDK7? Probably should add workaround for that?
      */
+
+    /**
+     * Image cache keys separator.
+     */
+    private static final String CACHE_KEYS_SEPARATOR = "|";
 
     /**
      * Number of bytes in 1 kilobyte.
@@ -188,6 +193,11 @@ public final class FileUtils
      * Default file tracking updates delay.
      */
     private static final int FILE_TRACKING_DELAY = 5000;
+
+    /**
+     * File comparator.
+     */
+    public static final FileComparator FILE_COMPARATOR = new FileComparator ();
 
     /**
      * Clears all caches for specified files.
@@ -938,7 +948,7 @@ public final class FileUtils
     {
         if ( files != null )
         {
-            Collections.sort ( files, GlobalConstants.FILE_COMPARATOR );
+            Collections.sort ( files, FILE_COMPARATOR );
         }
         return files;
     }
@@ -953,7 +963,7 @@ public final class FileUtils
     {
         if ( files != null )
         {
-            Arrays.sort ( files, GlobalConstants.FILE_COMPARATOR );
+            Arrays.sort ( files, FILE_COMPARATOR );
         }
         return files;
     }
@@ -1164,8 +1174,7 @@ public final class FileUtils
         }
         else
         {
-            return new IOFileFilterAdapter ( fileFilter, GlobalConstants.ALL_FILES_FILTER.getIcon (),
-                    LanguageManager.get ( "weblaf.file.filter.custom" ) );
+            return new IOFileFilterAdapter ( fileFilter, AllFilesFilter.ICON, LanguageManager.get ( "weblaf.file.filter.custom" ) );
         }
     }
 
@@ -1183,7 +1192,7 @@ public final class FileUtils
         }
         else
         {
-            return new SwingFileFilterAdapter ( fileFilter, GlobalConstants.ALL_FILES_FILTER.getIcon () );
+            return new SwingFileFilterAdapter ( fileFilter, AllFilesFilter.ICON );
         }
     }
 
@@ -1785,7 +1794,7 @@ public final class FileUtils
      */
     public static File downloadFile ( final String url, final File dstFile )
     {
-        return downloadFile ( url, dstFile, false, null, GlobalConstants.SHORT_TIMEOUT, null );
+        return downloadFile ( url, dstFile, false, null, 3000, null );
     }
 
     /**
@@ -1799,7 +1808,7 @@ public final class FileUtils
      */
     public static File downloadFile ( final String url, final File dstFile, final FileDownloadListener listener )
     {
-        return downloadFile ( url, dstFile, false, null, GlobalConstants.SHORT_TIMEOUT, listener );
+        return downloadFile ( url, dstFile, false, null, 3000, listener );
     }
 
     /**
@@ -2984,7 +2993,7 @@ public final class FileUtils
     private static String getStandardFileIconCacheKey ( final String extension, final boolean large, final float opacity,
                                                         final boolean enabled )
     {
-        return extension + StyleConstants.SEPARATOR + large + StyleConstants.SEPARATOR + opacity + StyleConstants.SEPARATOR + enabled;
+        return extension + CACHE_KEYS_SEPARATOR + large + CACHE_KEYS_SEPARATOR + opacity + CACHE_KEYS_SEPARATOR + enabled;
     }
 
     /**
@@ -3025,7 +3034,7 @@ public final class FileUtils
      */
     public static ImageIcon getIconResource ( final Class nearClass, final String resource, final float opacity )
     {
-        final String key = nearClass.getCanonicalName () + StyleConstants.SEPARATOR + resource + StyleConstants.SEPARATOR + opacity;
+        final String key = nearClass.getCanonicalName () + CACHE_KEYS_SEPARATOR + resource + CACHE_KEYS_SEPARATOR + opacity;
         if ( resourceIconsCache.containsKey ( key ) )
         {
             return resourceIconsCache.get ( key );

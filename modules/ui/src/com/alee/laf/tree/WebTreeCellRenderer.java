@@ -37,7 +37,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Custom default cell renderer for WebLaF trees.
+ * Default {@link TreeCellRenderer} implementation based on {@link WebStyledLabel}.
+ * Unline common implementations this one contains multiple methods for convenient renderer component customization.
  *
  * @author Mikle Garin
  */
@@ -521,13 +522,13 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
     }
 
     /**
-     * A subclass of {@link com.alee.laf.tree.WebTreeCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
+     * A subclass of {@link WebTreeCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
      */
     public static class UIResource extends WebTreeCellRenderer implements javax.swing.plaf.UIResource
     {
         /**
-         * Implementation is used completely from {@link com.alee.laf.tree.WebTreeCellRenderer}.
+         * Implementation is used completely from {@link WebTreeCellRenderer}.
          */
     }
 }

@@ -17,11 +17,11 @@
 
 package com.alee.painter.decoration;
 
+import com.alee.api.merge.Merge;
 import com.alee.managers.style.Bounds;
 import com.alee.managers.style.BoundsType;
 import com.alee.painter.decoration.content.IContent;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.MergeUtils;
 import com.alee.utils.SwingUtils;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
@@ -83,7 +83,7 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
     @Override
     public boolean hasContent ()
     {
-        return !CollectionUtils.isEmpty ( contents );
+        return CollectionUtils.notEmpty ( contents );
     }
 
     /**
@@ -189,7 +189,7 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
     public I merge ( final I decoration )
     {
         super.merge ( decoration );
-        contents = decoration.isOverwrite () ? decoration.contents : MergeUtils.merge ( contents, decoration.contents );
+        contents = decoration.isOverwrite () ? decoration.contents : Merge.COMMON.<List<IContent>>merge ( contents, decoration.contents );
         return ( I ) this;
     }
 }

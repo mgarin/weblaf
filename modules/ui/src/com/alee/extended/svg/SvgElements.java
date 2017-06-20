@@ -17,10 +17,10 @@
 
 package com.alee.extended.svg;
 
+import com.alee.utils.MapUtils;
 import com.kitfox.svg.*;
 import com.kitfox.svg.animation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -59,47 +59,43 @@ public final class SvgElements
     /**
      * Classes used to represent SVG elements.
      */
-    public static final Map<String, Class> CLASSES;
-
-    static
-    {
-        CLASSES = new HashMap<String, Class> ();
-        CLASSES.put ( "a", A.class );
-        CLASSES.put ( "animate", Animate.class );
-        CLASSES.put ( "animatecolor", AnimateColor.class );
-        CLASSES.put ( "animatemotion", AnimateMotion.class );
-        CLASSES.put ( "animatetransform", AnimateTransform.class );
-        CLASSES.put ( "circle", Circle.class );
-        CLASSES.put ( "clippath", ClipPath.class );
-        CLASSES.put ( "defs", Defs.class );
-        CLASSES.put ( "desc", Desc.class );
-        CLASSES.put ( "ellipse", Ellipse.class );
-        CLASSES.put ( "filter", Filter.class );
-        CLASSES.put ( "font", Font.class );
-        CLASSES.put ( "font-face", FontFace.class );
-        CLASSES.put ( "g", Group.class );
-        CLASSES.put ( "glyph", Glyph.class );
-        CLASSES.put ( "hkern", Hkern.class );
-        CLASSES.put ( "image", ImageSVG.class );
-        CLASSES.put ( "line", Line.class );
-        CLASSES.put ( "lineargradient", LinearGradient.class );
-        CLASSES.put ( "metadata", Metadata.class );
-        CLASSES.put ( "missing-glyph", MissingGlyph.class );
-        CLASSES.put ( "path", Path.class );
-        CLASSES.put ( "pattern", PatternSVG.class );
-        CLASSES.put ( "polygon", Polygon.class );
-        CLASSES.put ( "polyline", Polyline.class );
-        CLASSES.put ( "radialgradient", RadialGradient.class );
-        CLASSES.put ( "rect", Rect.class );
-        CLASSES.put ( "set", SetSmil.class );
-        CLASSES.put ( "shape", ShapeElement.class );
-        CLASSES.put ( "stop", Stop.class );
-        CLASSES.put ( "style", Style.class );
-        CLASSES.put ( "svg", SVGRoot.class );
-        CLASSES.put ( "symbol", Symbol.class );
-        CLASSES.put ( "text", Text.class );
-        CLASSES.put ( "title", Title.class );
-        CLASSES.put ( "tspan", Tspan.class );
-        CLASSES.put ( "use", Use.class );
-    }
+    public static final Map<String, Class> CLASSES = MapUtils.newHashMap (
+            "a", A.class,
+            "animate", Animate.class,
+            "animatecolor", AnimateColor.class,
+            "animatemotion", AnimateMotion.class,
+            "animatetransform", AnimateTransform.class,
+            "circle", Circle.class,
+            "clippath", ClipPath.class,
+            "defs", Defs.class,
+            "desc", Desc.class,
+            "ellipse", Ellipse.class,
+            "filter", Filter.class,
+            "font", Font.class,
+            "font-face", FontFace.class,
+            "g", Group.class,
+            "glyph", Glyph.class,
+            "hkern", Hkern.class,
+            "image", ImageSVG.class,
+            "line", Line.class,
+            "lineargradient", LinearGradient.class,
+            "metadata", Metadata.class,
+            "missing-glyph", MissingGlyph.class,
+            "path", Path.class,
+            "pattern", PatternSVG.class,
+            "polygon", Polygon.class,
+            "polyline", Polyline.class,
+            "radialgradient", RadialGradient.class,
+            "rect", Rect.class,
+            "set", SetSmil.class,
+            "shape", ShapeElement.class,
+            "stop", Stop.class,
+            "style", Style.class,
+            "svg", SVGRoot.class,
+            "symbol", Symbol.class,
+            "text", Text.class,
+            "title", Title.class,
+            "tspan", Tspan.class,
+            "use", Use.class
+    );
 }

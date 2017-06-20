@@ -21,8 +21,8 @@ import com.alee.api.Conjunction;
 import com.alee.api.merge.Merge;
 import com.alee.api.merge.MergeException;
 import com.alee.api.merge.MergePolicy;
+import com.alee.utils.collection.ImmutableList;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -53,7 +53,7 @@ public class CompoundMergePolicy implements MergePolicy
      */
     public CompoundMergePolicy ( final Conjunction conjunction, final MergePolicy... policies )
     {
-        this ( conjunction, Arrays.asList ( policies ) );
+        this ( conjunction, new ImmutableList<MergePolicy> ( policies ) );
     }
 
     /**
@@ -66,7 +66,7 @@ public class CompoundMergePolicy implements MergePolicy
     {
         super ();
         this.conjunction = conjunction;
-        this.policies = policies;
+        this.policies = policies instanceof ImmutableList ? policies : new ImmutableList<MergePolicy> ( policies );
     }
 
     @Override

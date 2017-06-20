@@ -15,9 +15,8 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.icon.data;
+package com.alee.extended.svg;
 
-import com.alee.extended.svg.SvgIcon;
 import com.kitfox.svg.SVGElement;
 
 import java.util.List;
@@ -48,18 +47,18 @@ public abstract class SvgAttributeAdjustment extends SvgAdjustment
     }
 
     /**
-     * Returns SVG element attribute to adjust.
+     * Returns {@link SVGElement} attribute to adjust.
      *
-     * @param icon icon to adjust
-     * @return SVG element attribute to adjust
+     * @param icon {@link SvgIcon} to adjust
+     * @return {@link SVGElement} attribute to adjust
      */
     protected abstract String getAttribute ( SvgIcon icon );
 
     /**
-     * Returns SVG element value to apply.
+     * Returns {@link SVGElement} value to apply.
      *
-     * @param icon icon to adjust
-     * @return SVG element value to apply
+     * @param icon {@link SvgIcon} to adjust
+     * @return {@link SVGElement} value to apply
      */
     protected abstract String getValue ( SvgIcon icon );
 }

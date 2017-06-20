@@ -17,9 +17,10 @@
 
 package com.alee.managers.settings.processors.data;
 
+import com.alee.api.clone.Clone;
+import com.alee.api.merge.Mergeable;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.CoreSwingUtils;
-import com.alee.utils.MergeUtils;
 import com.alee.utils.SystemUtils;
 import com.alee.utils.xml.DimensionConverter;
 import com.alee.utils.xml.PointConverter;
@@ -36,24 +37,27 @@ import java.util.List;
  * Custom {@link javax.swing.JRootPane} settings holder.
  *
  * @author bspkrs
+ * @author Mikle Garin
  */
 
 @XStreamAlias ( "WindowSettings" )
-public class WindowSettings implements Serializable, Cloneable
+public class WindowSettings implements Mergeable, Cloneable, Serializable
 {
     /**
-     * todo 1. Add support for custom west/east maximized states which are not natively supported in extended states
+     * todo 1. Unify all constructors to avoid issues in future
+     * todo 2. Current saving way is lacking options for packed/non-resizable windows and might even break size
+     * todo 3. Add support for custom west/east maximized states which are not natively supported in extended states
      */
 
     /**
-     * Window non-maximized state location.
+     * Window location for non-maximized window state.
      */
     @XStreamAsAttribute
     @XStreamConverter ( PointConverter.class )
     protected Point location;
 
     /**
-     * Window non-maximized state bounds.
+     * Window bounds for non-maximized state.
      */
     @XStreamAsAttribute
     @XStreamConverter ( DimensionConverter.class )
@@ -76,13 +80,27 @@ public class WindowSettings implements Serializable, Cloneable
     /**
      * Constructs new root pane settings with the specified window width and height.
      *
-     * @param width  window width
-     * @param height window height
+     * @param location window location for non-maximized window state
+     * @param size     window bounds for non-maximized state
      */
-    public WindowSettings ( final int width, final int height )
+    public WindowSettings ( final Point location, final Dimension size )
+    {
+        this ( location, size, Frame.NORMAL );
+    }
+
+    /**
+     * Constructs new root pane settings with the specified window width and height.
+     *
+     * @param location window location for non-maximized window state
+     * @param size     window bounds for non-maximized state
+     * @param state    frame-exclusive state
+     */
+    public WindowSettings ( final Point location, final Dimension size, final Integer state )
     {
         super ();
-        size = new Dimension ( width, height );
+        this.location = location;
+        this.size = size;
+        this.state = state;
     }
 
     /**
@@ -237,6 +255,6 @@ public class WindowSettings implements Serializable, Cloneable
     @Override
     public WindowSettings clone ()
     {
-        return MergeUtils.cloneByFieldsSafely ( this );
+        return Clone.cloneByFieldsSafely ( this );
     }
 }

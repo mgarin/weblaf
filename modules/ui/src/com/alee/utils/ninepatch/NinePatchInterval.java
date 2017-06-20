@@ -17,7 +17,7 @@
 
 package com.alee.utils.ninepatch;
 
-import com.alee.utils.MergeUtils;
+import com.alee.api.clone.Clone;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -142,6 +142,7 @@ public final class NinePatchInterval implements Serializable, Cloneable
         return ninePatchInterval != null && this.getId ().equals ( ninePatchInterval.getId () );
     }
 
+    @Override
     public boolean equals ( final Object obj )
     {
         if ( obj != null && obj instanceof NinePatchInterval )
@@ -159,6 +160,6 @@ public final class NinePatchInterval implements Serializable, Cloneable
     @Override
     public NinePatchInterval clone ()
     {
-        return MergeUtils.cloneByFieldsSafely ( this, getId () );
+        return Clone.cloneByFieldsSafely ( this, getId () );
     }
 }

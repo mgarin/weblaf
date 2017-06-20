@@ -17,8 +17,8 @@
 
 package com.alee.painter.decoration.shape;
 
-import com.alee.api.merge.Mergeable;
-import com.alee.utils.MergeUtils;
+import com.alee.api.clone.Clone;
+import com.alee.api.merge.MergeBehavior;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 import java.io.Serializable;
@@ -48,7 +48,7 @@ import java.io.Serializable;
  */
 
 @XStreamConverter ( SidesConverter.class )
-public final class Sides implements Serializable, Cloneable, Mergeable<Sides>
+public final class Sides implements Serializable, Cloneable, MergeBehavior<Sides>
 {
     /**
      * Sides constants.
@@ -155,6 +155,6 @@ public final class Sides implements Serializable, Cloneable, Mergeable<Sides>
     @Override
     public Sides clone ()
     {
-        return MergeUtils.cloneByFieldsSafely ( this );
+        return Clone.cloneByFieldsSafely ( this );
     }
 }

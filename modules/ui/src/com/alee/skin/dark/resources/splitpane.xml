@@ -1,0 +1,20 @@
+<skin xmlns="http://weblookandfeel.com">
+
+    <!-- com.alee.laf.splitpane.WebSplitPane -->
+
+    <!-- Split pane -->
+    <style type="splitpane">
+        <component>
+            <opaque>true</opaque>
+            <background>106,110,112</background>
+        </component>
+        <painter />
+
+        <!-- Split one-touch collapse buttons -->
+        <style type="button" id="onetouch" extends="undecorated" />
+        <style type="button" id="onetouch-left" extends="onetouch" />
+        <style type="button" id="onetouch-right" extends="onetouch" />
+
+    </style>
+
+</skin>

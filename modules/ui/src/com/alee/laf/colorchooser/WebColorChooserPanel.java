@@ -32,6 +32,7 @@ import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.swing.DialogOptions;
 
 import javax.swing.*;
@@ -45,7 +46,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -378,7 +378,8 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         } );
         controlsPanel.add ( cancel, ToolbarLayout.END );
 
-        SwingUtils.equalizeComponentsWidth ( Arrays.asList ( AbstractButton.TEXT_CHANGED_PROPERTY ), ok, reset, cancel );
+        final List<String> properties = new ImmutableList<String> ( AbstractButton.TEXT_CHANGED_PROPERTY );
+        SwingUtils.equalizeComponentsWidth ( properties, ok, reset, cancel );
 
         return controlsPanel;
     }

@@ -19,6 +19,7 @@ package com.alee.painter.decoration.layout;
 
 import com.alee.api.data.BoxOrientation;
 import com.alee.painter.decoration.IDecoration;
+import com.alee.utils.MathUtils;
 import com.alee.utils.SwingUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -28,7 +29,8 @@ import java.awt.*;
 
 /**
  * Abstract implementation of simple icon and text layout.
- * It only paints contents placed under {@link #ICON} and {@link #TEXT} constraints.
+ * Main constraints are {@link #ICON} and {@link #TEXT} which are always placed in the middle of layout.
+ * Side spacing constraints are also supported which place contents similar to {@link BorderLayout}.
  *
  * @param <E> component type
  * @param <D> decoration type
@@ -45,6 +47,10 @@ public class IconTextLayout<E extends JComponent, D extends IDecoration<E, D>, I
      */
     public static final String ICON = "icon";
     public static final String TEXT = "text";
+    public static final String TOP_SPACE = "top-space";
+    public static final String LEFT_SPACE = "left-space";
+    public static final String RIGHT_SPACE = "right-space";
+    public static final String BOTTOM_SPACE = "bottom-space";
 
     /**
      * Gap between icon and text contents.
@@ -141,42 +147,82 @@ public class IconTextLayout<E extends JComponent, D extends IDecoration<E, D>, I
     {
         final ContentLayoutData layoutData = new ContentLayoutData ( 2 );
 
-        // Calculating available size
-        final Dimension size = getContentPreferredSize ( c, d, bounds.getSize () );
-        size.width = Math.min ( size.width, bounds.width );
-        size.height = Math.min ( size.height, bounds.height );
-
-        // Calculating smallest content bounds
-        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
+        final Dimension available = bounds.getSize ();
+        final boolean ltr = isLeftToRight ( c, d );
         final int halign = getHorizontalAlignment ( c, d );
         final int valign = getVerticalAlignment ( c, d );
-        final Rectangle b = new Rectangle ( 0, 0, size.width, size.height );
+
+        // Retrieving spacing preferred sizes
+        final Dimension top = getPreferredSize ( c, d, TOP_SPACE, available );
+        final Dimension left = getPreferredSize ( c, d, LEFT_SPACE, available );
+        final Dimension right = getPreferredSize ( c, d, RIGHT_SPACE, available );
+        final Dimension bottom = getPreferredSize ( c, d, BOTTOM_SPACE, available );
+
+        // Calculating actual spacing sizes
+        // We have to find maximum of two in case axis alignment for main content is CENTER
+        final int lw = halign == CENTER ? Math.max ( left.width, right.width ) : left.width;
+        final int rw = halign == CENTER ? Math.max ( left.width, right.width ) : right.width;
+        final int th = valign == CENTER ? Math.max ( top.height, bottom.height ) : top.height;
+        final int bh = valign == CENTER ? Math.max ( top.height, bottom.height ) : bottom.height;
+
+        // Calculating icon and text preferred size
+        final Dimension iconTextAvailable = new Dimension ( available.width - lw - rw, available.height - th - bh );
+        final Dimension iconTextPS = getIconTextPreferredSize ( c, d, iconTextAvailable );
+
+        // Adjusting available size
+        iconTextPS.width = Math.max ( 0, Math.min ( iconTextPS.width, bounds.width - lw - rw ) );
+        iconTextPS.height = Math.max ( 0, Math.min ( iconTextPS.height, bounds.height - th - bh ) );
+
+        // Calculating smallest content bounds required for text and icon
+        final Rectangle b = new Rectangle ( 0, 0, iconTextPS.width, iconTextPS.height );
         if ( halign == LEFT || halign == LEADING && ltr )
         {
-            b.x = bounds.x;
+            b.x = bounds.x + lw;
         }
         else if ( halign == CENTER )
         {
-            b.x = bounds.x + bounds.width / 2 - size.width / 2;
+            b.x = bounds.x + bounds.width / 2 - iconTextPS.width / 2;
         }
         else
         {
-            b.x = bounds.x + bounds.width - size.width;
+            b.x = bounds.x + bounds.width - iconTextPS.width - rw;
         }
         if ( valign == TOP )
         {
-            b.y = bounds.y;
+            b.y = bounds.y + th;
         }
         else if ( valign == CENTER )
         {
-            b.y = bounds.y + bounds.height / 2 - size.height / 2;
+            b.y = bounds.y + bounds.height / 2 - iconTextPS.height / 2;
         }
         else
         {
-            b.y = bounds.y + bounds.height - size.height;
+            b.y = bounds.y + bounds.height - iconTextPS.height - bh;
         }
 
-        // Painting contents
+        // Calculating spacings positioning
+        if ( !isEmpty ( c, d, TOP_SPACE ) )
+        {
+            layoutData.put ( TOP_SPACE, new Rectangle ( bounds.x, bounds.y,
+                    bounds.width, b.y - bounds.y ) );
+        }
+        if ( !isEmpty ( c, d, LEFT_SPACE ) )
+        {
+            layoutData.put ( LEFT_SPACE, new Rectangle ( bounds.x, b.y,
+                    b.x - bounds.x, b.height ) );
+        }
+        if ( !isEmpty ( c, d, RIGHT_SPACE ) )
+        {
+            layoutData.put ( RIGHT_SPACE, new Rectangle ( b.x + b.width, b.y,
+                    bounds.x + bounds.width - b.x - b.width, b.height ) );
+        }
+        if ( !isEmpty ( c, d, BOTTOM_SPACE ) )
+        {
+            layoutData.put ( BOTTOM_SPACE, new Rectangle ( bounds.x, b.y + b.height,
+                    bounds.width, bounds.y + bounds.height - b.y - b.height ) );
+        }
+
+        // Calculating text and icon positioning
         final boolean hasIcon = !isEmpty ( c, d, ICON );
         final boolean hasText = !isEmpty ( c, d, TEXT );
         if ( hasIcon && hasText )
@@ -185,7 +231,7 @@ public class IconTextLayout<E extends JComponent, D extends IDecoration<E, D>, I
             final int vpos = getVerticalTextPosition ( c, d );
             if ( hpos != CENTER || vpos != CENTER )
             {
-                final Dimension ips = getPreferredSize ( c, d, ICON, bounds.getSize () );
+                final Dimension ips = getPreferredSize ( c, d, ICON, available );
                 final int gap = getIconTextGap ( c, d );
                 if ( hpos == RIGHT || hpos == TRAILING && ltr )
                 {
@@ -232,6 +278,43 @@ public class IconTextLayout<E extends JComponent, D extends IDecoration<E, D>, I
     @Override
     protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
     {
+        final int halign = getHorizontalAlignment ( c, d );
+        final int valign = getVerticalAlignment ( c, d );
+
+        // Retrieving spacing preferred sizes
+        final Dimension top = getPreferredSize ( c, d, TOP_SPACE, available );
+        final Dimension left = getPreferredSize ( c, d, LEFT_SPACE, available );
+        final Dimension right = getPreferredSize ( c, d, RIGHT_SPACE, available );
+        final Dimension bottom = getPreferredSize ( c, d, BOTTOM_SPACE, available );
+
+        // Calculating actual spacing sizes
+        // We have to find maximum of two in case axis alignment for main content is CENTER
+        final int lw = halign == CENTER ? Math.max ( left.width, right.width ) : left.width;
+        final int rw = halign == CENTER ? Math.max ( left.width, right.width ) : right.width;
+        final int th = valign == CENTER ? Math.max ( top.height, bottom.height ) : top.height;
+        final int bh = valign == CENTER ? Math.max ( top.height, bottom.height ) : bottom.height;
+
+        // Calculating icon and text preferred size
+        final Dimension iconTextAvailable = new Dimension ( available.width - lw - rw, available.height - th - bh );
+        final Dimension iconText = getIconTextPreferredSize ( c, d, iconTextAvailable );
+
+        // Calculating resulting preferred sizes
+        final int pw = MathUtils.max ( top.width, lw + iconText.width + rw, bottom.width );
+        final int ph = th + MathUtils.max ( left.height, iconText.height, right.height ) + bh;
+        return new Dimension ( pw, ph );
+    }
+
+    /**
+     * Returns icon and text preferred size.
+     *
+     * @param c         painted component
+     * @param d         painted decoration state
+     * @param available available space
+     * @return icon and text preferred size
+     */
+    protected Dimension getIconTextPreferredSize ( final E c, final D d, final Dimension available )
+    {
+        final Dimension size;
         final boolean hasIcon = !isEmpty ( c, d, ICON );
         final boolean hasText = !isEmpty ( c, d, TEXT );
         if ( hasIcon && hasText )
@@ -246,32 +329,33 @@ public class IconTextLayout<E extends JComponent, D extends IDecoration<E, D>, I
                 {
                     final Dimension havailable = new Dimension ( available.width - gap - ips.width, available.height );
                     final Dimension cps = getPreferredSize ( c, d, TEXT, havailable );
-                    return new Dimension ( ips.width + gap + cps.width, Math.max ( ips.height, cps.height ) );
+                    size = new Dimension ( ips.width + gap + cps.width, Math.max ( ips.height, cps.height ) );
                 }
                 else
                 {
                     final Dimension vavailable = new Dimension ( available.width, available.height - gap - ips.height );
                     final Dimension cps = getPreferredSize ( c, d, TEXT, vavailable );
-                    return new Dimension ( Math.max ( ips.width, cps.width ), ips.height + gap + cps.height );
+                    size = new Dimension ( Math.max ( ips.width, cps.width ), ips.height + gap + cps.height );
                 }
             }
             else
             {
-                return SwingUtils.max ( ips, getPreferredSize ( c, d, TEXT, available ) );
+                size = SwingUtils.max ( ips, getPreferredSize ( c, d, TEXT, available ) );
             }
         }
         else if ( hasIcon )
         {
-            return getPreferredSize ( c, d, ICON, available );
+            size = getPreferredSize ( c, d, ICON, available );
         }
         else if ( hasText )
         {
-            return getPreferredSize ( c, d, TEXT, available );
+            size = getPreferredSize ( c, d, TEXT, available );
         }
         else
         {
-            return new Dimension ( 0, 0 );
+            size = new Dimension ( 0, 0 );
         }
+        return size;
     }
 
     @Override

@@ -25,7 +25,6 @@ import com.alee.extended.list.WebFileList;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.pathfield.WebPathField;
 import com.alee.extended.tree.WebFileTree;
-import com.alee.global.GlobalConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.label.WebLabel;
@@ -48,10 +47,9 @@ import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.*;
-import com.alee.utils.filefilter.AbstractFileFilter;
-import com.alee.utils.filefilter.FilterGroupType;
-import com.alee.utils.filefilter.GroupedFileFilter;
-import com.alee.utils.filefilter.NonHiddenFilter;
+import com.alee.utils.collection.ImmutableList;
+import com.alee.utils.file.FileComparator;
+import com.alee.utils.filefilter.*;
 import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.DataProvider;
 import com.alee.utils.text.FileNameProvider;
@@ -64,7 +62,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.FileFilter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -325,7 +325,7 @@ public class WebFileChooserPanel extends WebPanel
         // Updating view data
         updateSelectionMode ();
         updateDirectoryComponentFilters ();
-        setFileFilter ( GlobalConstants.ALL_FILES_FILTER );
+        setFileFilter ( new AllFilesFilter () );
         restoreButtonText ();
     }
 
@@ -930,7 +930,7 @@ public class WebFileChooserPanel extends WebPanel
             final Comparator<File> comp;
             if ( columnId.equals ( FileTableColumns.NAME_COLUMN ) )
             {
-                comp = GlobalConstants.FILE_COMPARATOR;
+                comp = new FileComparator ();
             }
             else if ( columnId.equals ( FileTableColumns.SIZE_COLUMN ) )
             {
@@ -1082,7 +1082,8 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        SwingUtils.equalizeComponentsWidth ( Arrays.asList ( AbstractButton.TEXT_CHANGED_PROPERTY ), acceptButton, cancelButton );
+        final List<String> properties = new ImmutableList<String> ( AbstractButton.TEXT_CHANGED_PROPERTY );
+        SwingUtils.equalizeComponentsWidth ( properties, acceptButton, cancelButton );
 
         updateControls ();
 
@@ -1333,7 +1334,9 @@ public class WebFileChooserPanel extends WebPanel
         if ( chooserType == FileChooserType.save )
         {
             // Returning custom file
-            return Arrays.asList ( new File ( currentFolder, selectedFilesTextField.getText ().trim () ) );
+            final String fileName = selectedFilesTextField.getText ().trim ();
+            final File file = new File ( currentFolder, fileName );
+            return CollectionUtils.asList ( file );
         }
         else
         {
@@ -1397,11 +1400,11 @@ public class WebFileChooserPanel extends WebPanel
         }
         if ( file != null && !file.exists () )
         {
-            updateSelectedFilesFieldImpl ( Arrays.asList ( file ) );
+            updateSelectedFilesFieldImpl ( CollectionUtils.asList ( file ) );
         }
         else
         {
-            updateSelectedFilesFieldImpl ( Collections.EMPTY_LIST );
+            updateSelectedFilesFieldImpl ( new ArrayList<File> ( 0 ) );
         }
     }
 
@@ -1674,8 +1677,9 @@ public class WebFileChooserPanel extends WebPanel
     protected GroupedFileFilter applyDirectoriesFilter ( final AbstractFileFilter fileFilter )
     {
         return new GroupedFileFilter (
-                getFileSelectionMode () == FileSelectionMode.directoriesOnly ? FilterGroupType.AND : FilterGroupType.OR, fileFilter,
-                GlobalConstants.DIRECTORIES_FILTER );
+                getFileSelectionMode () == FileSelectionMode.directoriesOnly ? FilterGroupType.AND : FilterGroupType.OR,
+                fileFilter, new DirectoriesFilter ()
+        );
     }
 
     /**
@@ -1683,8 +1687,8 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected void updateDirectoryComponentFilters ()
     {
-        pathField.setFileFilter ( applyHiddenFilesFilter ( GlobalConstants.DIRECTORIES_FILTER ) );
-        fileTree.setFileFilter ( applyHiddenFilesFilter ( GlobalConstants.DIRECTORIES_FILTER ) );
+        pathField.setFileFilter ( applyHiddenFilesFilter ( new DirectoriesFilter () ) );
+        fileTree.setFileFilter ( applyHiddenFilesFilter ( new DirectoriesFilter () ) );
     }
 
     /**
@@ -1895,7 +1899,7 @@ public class WebFileChooserPanel extends WebPanel
      */
     public void setFileFilter ( final AbstractFileFilter fileFilter )
     {
-        this.availableFilters = Arrays.asList ( fileFilter );
+        this.availableFilters = CollectionUtils.asList ( fileFilter );
         updateFiltersComboBox ();
         setActiveFileFilter ( fileFilter );
     }
@@ -1975,7 +1979,7 @@ public class WebFileChooserPanel extends WebPanel
      */
     public void setFileFilters ( final int index, final AbstractFileFilter[] fileFilters )
     {
-        this.availableFilters = Arrays.asList ( fileFilters );
+        this.availableFilters = CollectionUtils.asList ( fileFilters );
         updateFiltersComboBox ();
         setActiveFileFilter ( availableFilters.get ( index ) );
     }

@@ -144,7 +144,7 @@ public class AccordionLayout extends AbstractGroupingLayout
                 int length = base.get ( i );
                 if ( expandState > 0f )
                 {
-                    end += ( totalFillLength * expandState / totalStates ) % 1;
+                    end += totalFillLength * expandState / totalStates % 1;
                     length += Math.round ( ( float ) Math.floor ( totalFillLength * expandState / totalStates ) ) +
                             ( i == lastFillIndex ? Math.round ( end ) : 0 );
                 }

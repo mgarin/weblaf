@@ -17,9 +17,9 @@
 
 package com.alee.extended.colorchooser;
 
+import com.alee.api.clone.Clone;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.utils.ColorUtils;
-import com.alee.utils.MergeUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
@@ -284,12 +284,6 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
         Collections.sort ( gradientColorsData, locationsComparator );
     }
 
-    /**
-     * Returns whether this {@link GradientData} is equal to the specified object or not.
-     *
-     * @param obj object to compare with
-     * @return {@code true} if this {@link GradientData} is equal to the specified object, {@code false} otherwise
-     */
     @Override
     public boolean equals ( final Object obj )
     {
@@ -314,15 +308,10 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
         return true;
     }
 
-    /**
-     * Returns cloned {@link GradientData}.
-     *
-     * @return cloned {@link GradientData}
-     */
     @Override
     public GradientData clone ()
     {
-        return MergeUtils.cloneByFieldsSafely ( this );
+        return Clone.cloneByFieldsSafely ( this );
     }
 
     /**

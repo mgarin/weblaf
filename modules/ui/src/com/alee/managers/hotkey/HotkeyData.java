@@ -17,7 +17,7 @@
 
 package com.alee.managers.hotkey;
 
-import com.alee.utils.MergeUtils;
+import com.alee.api.clone.Clone;
 import com.alee.utils.SwingUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -298,34 +298,18 @@ public class HotkeyData implements Serializable, Cloneable
         isShift = SwingUtils.isShift ( modifiers );
     }
 
-    /**
-     * Indicates whether other hotkey is equal to this one.
-     *
-     * @param obj other hotkey
-     * @return true if other hotkey is equal to this one, false otherwise
-     */
     @Override
     public boolean equals ( final Object obj )
     {
         return obj != null && obj instanceof HotkeyData && obj.hashCode () == hashCode ();
     }
 
-    /**
-     * Returns hotkey text representation.
-     *
-     * @return hotkey text representation
-     */
     @Override
     public String toString ()
     {
         return SwingUtils.hotkeyToString ( this );
     }
 
-    /**
-     * Returns hotkey hash code.
-     *
-     * @return hotkey hash code
-     */
     @Override
     public int hashCode ()
     {
@@ -336,14 +320,9 @@ public class HotkeyData implements Serializable, Cloneable
         return hashCode;
     }
 
-    /**
-     * Returns cloned HotkeyData instance.
-     *
-     * @return cloned HotkeyData instance
-     */
     @Override
     protected HotkeyData clone ()
     {
-        return MergeUtils.cloneByFieldsSafely ( this );
+        return Clone.cloneByFieldsSafely ( this );
     }
 }

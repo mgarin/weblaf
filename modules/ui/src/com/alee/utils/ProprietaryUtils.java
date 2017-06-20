@@ -35,21 +35,6 @@ import java.lang.reflect.InvocationTargetException;
 public final class ProprietaryUtils
 {
     /**
-     * Key used to indicate a light weight popup should be used.
-     */
-    public static final int LIGHT_WEIGHT_POPUP = 0;
-
-    /**
-     * Key used to indicate a medium weight Popup should be used.
-     */
-    public static final int MEDIUM_WEIGHT_POPUP = 1;
-
-    /*
-     * Key used to indicate a heavy weight Popup should be used.
-     */
-    public static final int HEAVY_WEIGHT_POPUP = 2;
-
-    /**
      * Whether or not window transparency is allowed globally or not.
      */
     private static boolean windowTransparencyAllowed = true;

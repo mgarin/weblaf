@@ -34,7 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Default cell renderer for WebLaF lists.
+ * Default {@link ListCellRenderer} implementation based on {@link WebStyledLabel}.
+ * Unline common implementations this one contains multiple methods for convenient renderer component customization.
  *
  * @author Mikle Garin
  */
@@ -353,13 +354,13 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
     }
 
     /**
-     * A subclass of {@link com.alee.laf.list.WebListCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
+     * A subclass of {@link WebListCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
      */
     public static class UIResource extends WebListCellRenderer implements javax.swing.plaf.UIResource
     {
         /**
-         * Implementation is used completely from {@link com.alee.laf.list.WebListCellRenderer}.
+         * Implementation is used completely from {@link WebListCellRenderer}.
          */
     }
 }

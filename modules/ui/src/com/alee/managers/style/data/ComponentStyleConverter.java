@@ -64,6 +64,7 @@ public final class ComponentStyleConverter extends ReflectionConverter
     public static final String COMPONENT_NODE = "component";
     public static final String UI_NODE = "ui";
     public static final String PAINTER_NODE = "painter";
+    public static final String OVERWRITE_ATTRIBUTE = "overwrite";
     @Deprecated
     public static final String PAINTER_ID_ATTRIBUTE = "id";
     @Deprecated
@@ -402,7 +403,7 @@ public final class ComponentStyleConverter extends ReflectionConverter
         context.put ( CONTEXT_COMPONENT_CLASS, componentType );
 
         // Reading component properties based on the component class
-        StyleConverterUtils.readProperties ( reader, context, properties, componentType, styleId );
+        StyleConverterUtils.readProperties ( reader, context, mapper, properties, componentType, styleId );
     }
 
     /**
@@ -450,7 +451,7 @@ public final class ComponentStyleConverter extends ReflectionConverter
         context.put ( CONTEXT_UI_CLASS, uiType );
 
         // Reading UI properties based on component UI class
-        StyleConverterUtils.readProperties ( reader, context, properties, uiType, styleId );
+        StyleConverterUtils.readProperties ( reader, context, mapper, properties, uiType, styleId );
     }
 
     /**
@@ -464,6 +465,10 @@ public final class ComponentStyleConverter extends ReflectionConverter
     protected void readPainterStyles ( final HierarchicalStreamReader reader, final UnmarshallingContext context,
                                        final List<PainterStyle> painters, final String styleId )
     {
+        // Retrieving overwrite policy
+        final String ow = reader.getAttribute ( OVERWRITE_ATTRIBUTE );
+        final boolean overwrite = Boolean.valueOf ( ow );
+
         // Collecting style IDs
         // This part is unique to {@link com.alee.managers.style.data.ComponentStyleConverter}
         // {@link com.alee.managers.style.data.PainterConverter} does not do this as it always knows where painter will be used
@@ -504,6 +509,7 @@ public final class ComponentStyleConverter extends ReflectionConverter
         for ( final String id : indices )
         {
             final PainterStyle painterStyle = new PainterStyle ();
+            painterStyle.setOverwrite ( overwrite );
             painterStyle.setId ( id );
             painterStyle.setPainterClass ( painterClass.getCanonicalName () );
             separateStyles.add ( painterStyle );
@@ -512,7 +518,7 @@ public final class ComponentStyleConverter extends ReflectionConverter
         // Reading painter style properties
         // Using LinkedHashMap to keep properties order
         final LinkedHashMap<String, Object> painterProperties = new LinkedHashMap<String, Object> ();
-        StyleConverterUtils.readProperties ( reader, context, painterProperties, painterClass, styleId );
+        StyleConverterUtils.readProperties ( reader, context, mapper, painterProperties, painterClass, styleId );
 
         // Applying painter properties to each separate painter style
         for ( final PainterStyle painterStyle : separateStyles )

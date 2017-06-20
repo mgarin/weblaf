@@ -17,8 +17,8 @@
 
 package com.alee.managers.language.data;
 
+import com.alee.api.clone.Clone;
 import com.alee.utils.HtmlUtils;
-import com.alee.utils.MergeUtils;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -76,7 +76,7 @@ public final class Text implements Serializable, Cloneable
     @Override
     public Text clone ()
     {
-        return MergeUtils.cloneByFieldsSafely ( this );
+        return Clone.cloneByFieldsSafely ( this );
     }
 
     @Override

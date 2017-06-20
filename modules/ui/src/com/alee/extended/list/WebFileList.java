@@ -17,11 +17,11 @@
 
 package com.alee.extended.list;
 
-import com.alee.global.GlobalConstants;
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.editor.ListCellEditor;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.FileUtils;
+import com.alee.utils.filefilter.NonHiddenFilter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -67,7 +67,7 @@ public class WebFileList extends WebList
     /**
      * File filter.
      */
-    protected FileFilter fileFilter = GlobalConstants.NON_HIDDEN_ONLY_FILTER;
+    protected FileFilter fileFilter = new NonHiddenFilter ();
 
     /**
      * Custom thumbnail provider.

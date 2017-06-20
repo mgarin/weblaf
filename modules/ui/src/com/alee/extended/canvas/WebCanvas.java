@@ -121,7 +121,7 @@ public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Sta
      */
     public void addStates ( final String... states )
     {
-        if ( !ArrayUtils.isEmpty ( states ) )
+        if ( ArrayUtils.notEmpty ( states ) )
         {
             final List<String> old = CollectionUtils.copy ( this.states );
             if ( this.states == null )
@@ -140,15 +140,12 @@ public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Sta
      */
     public void removeStates ( final String... states )
     {
-        if ( !ArrayUtils.isEmpty ( states ) )
+        if ( ArrayUtils.notEmpty ( states ) )
         {
             final List<String> old = CollectionUtils.copy ( this.states );
             if ( this.states != null )
             {
-                for ( final String state : states )
-                {
-                    this.states.remove ( state );
-                }
+                CollectionUtils.removeAll ( this.states, states );
             }
             fireStatesChanged ( old, this.states );
         }

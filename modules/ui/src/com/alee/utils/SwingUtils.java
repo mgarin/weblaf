@@ -27,6 +27,7 @@ import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.log.Log;
 import com.alee.painter.decoration.content.TextRasterization;
+import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.swing.WebTimer;
 import com.alee.utils.swing.extensions.SizeMethods;
 
@@ -1328,7 +1329,7 @@ public final class SwingUtils extends CoreSwingUtils
     public static List<Component> disableRecursively ( final Component component, final boolean startFromChildren,
                                                        final boolean excludePanels, final Component... excluded )
     {
-        return disableRecursively ( component, startFromChildren, excludePanels, Arrays.asList ( excluded ) );
+        return disableRecursively ( component, startFromChildren, excludePanels, new ImmutableList<Component> ( excluded ) );
     }
 
     /**
@@ -1678,7 +1679,7 @@ public final class SwingUtils extends CoreSwingUtils
         }
         else
         {
-            return ( lci < uci ) ? lci : uci;
+            return lci < uci ? lci : uci;
         }
     }
 
@@ -2305,7 +2306,7 @@ public final class SwingUtils extends CoreSwingUtils
                                                      final Component... components )
     {
         equalizeComponentsSizeImpl ( width, height, components );
-        if ( !CollectionUtils.isEmpty ( properties ) )
+        if ( CollectionUtils.notEmpty ( properties ) )
         {
             final PropertyChangeListener listener = new PropertyChangeListener ()
             {
@@ -2962,7 +2963,7 @@ public final class SwingUtils extends CoreSwingUtils
      */
     public static String clipStringIfNecessary ( final JComponent c, final FontMetrics fm, final String string, final int availTextWidth )
     {
-        if ( ( string == null ) || string.equals ( "" ) )
+        if ( string == null || string.equals ( "" ) )
         {
             return "";
         }
@@ -3062,7 +3063,7 @@ public final class SwingUtils extends CoreSwingUtils
      */
     public static int getLeftSideBearing ( final JComponent c, final FontMetrics fm, final String string )
     {
-        if ( ( string == null ) || ( string.length () == 0 ) )
+        if ( string == null || string.length () == 0 )
         {
             return 0;
         }
@@ -3094,7 +3095,7 @@ public final class SwingUtils extends CoreSwingUtils
      */
     public static int getRightSideBearing ( final JComponent c, final FontMetrics fm, final String string )
     {
-        if ( ( string == null ) || ( string.length () == 0 ) )
+        if ( string == null || string.length () == 0 )
         {
             return 0;
         }
@@ -3178,7 +3179,7 @@ public final class SwingUtils extends CoreSwingUtils
                 entry = searchKey;
                 cacheEntry ( entry );
             }
-            return ( isLeftBearing ) ? entry.getLeftSideBearing ( c ) : entry.getRightSideBearing ( c );
+            return isLeftBearing ? entry.getLeftSideBearing ( c ) : entry.getRightSideBearing ( c );
         }
     }
 
@@ -3316,7 +3317,7 @@ public final class SwingUtils extends CoreSwingUtils
                 rsb = 0;
             }
 
-            final int bearing = ( ( lsb + 127 ) << 8 ) + rsb + 127;
+            final int bearing = ( lsb + 127 << 8 ) + rsb + 127;
             return ( short ) bearing;
         }
 

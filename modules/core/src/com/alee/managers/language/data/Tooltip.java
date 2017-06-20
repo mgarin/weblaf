@@ -17,7 +17,7 @@
 
 package com.alee.managers.language.data;
 
-import com.alee.utils.MergeUtils;
+import com.alee.api.clone.Clone;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
@@ -128,7 +128,7 @@ public final class Tooltip implements Serializable, Cloneable
     @Override
     public Tooltip clone ()
     {
-        return MergeUtils.cloneByFieldsSafely ( this );
+        return Clone.cloneByFieldsSafely ( this );
     }
 
     @Override

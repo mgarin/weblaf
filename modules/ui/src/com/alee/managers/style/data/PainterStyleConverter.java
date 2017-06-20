@@ -30,16 +30,21 @@ import com.thoughtworks.xstream.mapper.Mapper;
 import java.util.LinkedHashMap;
 
 /**
- * Custom XStream converter for {@link com.alee.managers.style.data.PainterStyle} class.
+ * Custom XStream converter for {@link PainterStyle} class.
  *
  * Note that this converter does not handle direct style painters - those are explicitely converted by
- * {@link com.alee.managers.style.data.ComponentStyleConverter} as it provides an additional degree of associated features.
+ * {@link ComponentStyleConverter} as it provides an additional degree of associated features.
  *
  * @author Mikle Garin
  */
 
 public final class PainterStyleConverter extends ReflectionConverter
 {
+    /**
+     * todo 1. Rework this class to actually be used as a proper converter for {@link PainterStyle} within style
+     * todo 2. Provide appropriate marshalling implementation
+     */
+
     /**
      * Constructs PainterConverter with the specified mapper and reflection provider.
      *
@@ -65,6 +70,10 @@ public final class PainterStyleConverter extends ReflectionConverter
         // Either way it is not critical for painter unmarshal so we will simply ignore it if its not there
         final String styleId = ( String ) context.get ( ComponentStyleConverter.CONTEXT_STYLE_ID );
 
+        // Retrieving overwrite policy
+        final String ow = reader.getAttribute ( ComponentStyleConverter.OVERWRITE_ATTRIBUTE );
+        final boolean overwrite = Boolean.valueOf ( ow );
+
         // Retrieving default painter class based on parent painter and this node name
         // Basically we are reading this painter as a field of another painter here
         final Class<? extends Painter> parent = ( Class<? extends Painter> ) context.get ( ComponentStyleConverter.CONTEXT_PAINTER_CLASS );
@@ -79,10 +88,11 @@ public final class PainterStyleConverter extends ReflectionConverter
         // Reading painter style properties
         // Using LinkedHashMap to keep properties order
         final LinkedHashMap<String, Object> painterProperties = new LinkedHashMap<String, Object> ();
-        StyleConverterUtils.readProperties ( reader, context, painterProperties, painterClass, styleId );
+        StyleConverterUtils.readProperties ( reader, context, mapper, painterProperties, painterClass, styleId );
 
         // Creating painter style
         final PainterStyle painterStyle = new PainterStyle ();
+        painterStyle.setOverwrite ( overwrite );
         painterStyle.setPainterClass ( painterClass.getCanonicalName () );
         painterStyle.setProperties ( painterProperties );
 

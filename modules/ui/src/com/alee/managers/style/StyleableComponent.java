@@ -395,9 +395,14 @@ public enum StyleableComponent implements IconSupport, TitleSupport
      * @return supported component type by component
      * @throws com.alee.managers.style.StyleException in case component is not supported
      */
-    public static StyleableComponent get ( final JComponent component )
+    public static StyleableComponent get ( final Component component )
     {
-        return get ( component.getUIClassID () );
+        if ( !( component instanceof JComponent ) )
+        {
+            final String msg = "Unsupported component: %s";
+            throw new StyleException ( String.format ( msg, component ) );
+        }
+        return get ( ( ( JComponent ) component ).getUIClassID () );
     }
 
     /**
@@ -412,7 +417,7 @@ public enum StyleableComponent implements IconSupport, TitleSupport
         final StyleableComponent type = getImpl ( uiClassID );
         if ( type == null )
         {
-            final String msg = "Component UI class ID '%s' is not supported";
+            final String msg = "Unsupported component UI class ID: %s";
             throw new StyleException ( String.format ( msg, uiClassID ) );
         }
         return type;

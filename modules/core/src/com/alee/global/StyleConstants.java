@@ -17,7 +17,6 @@
 
 package com.alee.global;
 
-import com.alee.utils.ColorUtils;
 import com.alee.utils.laf.FocusType;
 import com.alee.utils.laf.ShadeType;
 
@@ -28,15 +27,12 @@ import java.awt.*;
  * Most of the styles listed here are used within other style classes.
  *
  * @author Mikle Garin
+ * @deprecated This is an artifact of older styling system and it should be removed completely
  */
 
+@Deprecated
 public class StyleConstants
 {
-    /**
-     * System text separator.
-     */
-    public static final String SEPARATOR = ";#&;";
-
     /**
      * Transparent color constant.
      */
@@ -68,7 +64,6 @@ public class StyleConstants
      */
     public static Color borderColor = new Color ( 170, 170, 170 );
     public static Color darkBorderColor = Color.GRAY;
-    public static Color averageBorderColor = ColorUtils.getIntermediateColor ( borderColor, darkBorderColor, 0.5f );
     public static Color disabledBorderColor = Color.LIGHT_GRAY;
 
     /**

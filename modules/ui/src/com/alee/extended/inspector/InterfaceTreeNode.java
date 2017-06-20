@@ -26,6 +26,7 @@ import com.alee.extended.inspector.info.StyleableInfo;
 import com.alee.laf.tree.TreeState;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.managers.style.*;
+import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -53,9 +54,9 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
     /**
      * Component state listeners.
      */
-    private ComponentAdapter componentAdapter;
-    private ContainerAdapter containerAdapter;
-    private StyleListener styleListener;
+    private transient ComponentAdapter componentAdapter;
+    private transient ContainerAdapter containerAdapter;
+    private transient StyleListener styleListener;
 
     /**
      * Constructs interface tree node.
@@ -118,6 +119,7 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
 
         if ( !( component instanceof CellRendererPane ) )
         {
+            // Additional container listeners
             if ( component instanceof Container )
             {
                 containerAdapter = new ContainerAdapter ()
@@ -162,7 +164,9 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
                 ( ( Container ) component ).addContainerListener ( containerAdapter );
             }
 
-            if ( component instanceof JComponent && StyleableComponent.isSupported ( component ) )
+            // Additional listeners for components using WebLaF-based UI
+            // This is checked instead of styling support to avoid issues when WebLaF is not installed as L&F
+            if ( LafUtils.isWebLafUI ( component ) )
             {
                 styleListener = new StyleListener ()
                 {
@@ -258,7 +262,7 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
      */
     protected StyleableComponent getType ( final Component component )
     {
-        return StyleableComponent.isSupported ( component ) ? StyleableComponent.get ( ( JComponent ) component ) : null;
+        return StyleableComponent.isSupported ( component ) ? StyleableComponent.get ( component ) : null;
     }
 
     /**

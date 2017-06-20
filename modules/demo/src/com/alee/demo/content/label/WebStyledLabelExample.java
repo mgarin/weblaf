@@ -21,11 +21,14 @@ import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.WebLafWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.extended.label.WebStyledLabel;
+import com.alee.extended.layout.CompactFlowLayout;
+import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -62,10 +65,12 @@ public class WebStyledLabelExample extends AbstractStylePreviewExample
     protected List<Preview> createPreviews ()
     {
         final StyledLabel e1 = new StyledLabel ( "basic", FeatureState.updated, StyleId.styledlabel );
-        final StyledLabel e2 = new StyledLabel ( "shadow", FeatureState.updated, StyleId.labelShadow );
-        final StyledLabel e3 = new StyledLabel ( "ccw", FeatureState.release, StyleId.labelVerticalCCW );
-        final StyledLabel e4 = new StyledLabel ( "cw", FeatureState.release, StyleId.labelVerticalCW );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3, e4 );
+        final StyledLabel e2 = new StyledLabel ( "shadow", FeatureState.updated, StyleId.styledlabelShadow );
+        final StyledLabel e3 = new StyledLabel ( "tag", FeatureState.release, StyleId.styledlabelTag );
+        final StyledLabel e4 = new StyledLabel ( "ccw", FeatureState.release, StyleId.styledlabelVerticalCCW );
+        final StyledLabel e5 = new StyledLabel ( "cw", FeatureState.release, StyleId.styledlabelVerticalCW );
+        final SeparatorStyledLabel e6 = new SeparatorStyledLabel ( "separator", FeatureState.beta, StyleId.styledlabelSeparator );
+        return CollectionUtils.<Preview>asList ( e1, e2, e3, e4, e5, e6 );
     }
 
     /**
@@ -86,6 +91,12 @@ public class WebStyledLabelExample extends AbstractStylePreviewExample
         }
 
         @Override
+        protected LayoutManager createPreviewLayout ()
+        {
+            return new CompactFlowLayout ( FlowLayout.LEADING, 8, 0 );
+        }
+
+        @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
             final String labelText = "{Custom:b} {styled:c(blue)} {2:sup} text" + "\n" + "{And:b} {And:c(red)} And {another:b} row";
@@ -95,6 +106,43 @@ public class WebStyledLabelExample extends AbstractStylePreviewExample
             final WebStyledLabel icon = new WebStyledLabel ( getStyleId (), iconText, WebLookAndFeel.getIcon ( 16 ) );
 
             return CollectionUtils.asList ( label, icon );
+        }
+    }
+
+    /**
+     * Separator label preview.
+     */
+    protected class SeparatorStyledLabel extends AbstractStylePreview
+    {
+        /**
+         * Constructs new style preview.
+         *
+         * @param id           preview ID
+         * @param featureState feature state
+         * @param styleId      preview style ID
+         */
+        public SeparatorStyledLabel ( final String id, final FeatureState featureState, final StyleId styleId )
+        {
+            super ( WebStyledLabelExample.this, id, featureState, styleId );
+        }
+
+        @Override
+        protected LayoutManager createPreviewLayout ()
+        {
+            return new VerticalFlowLayout ( 8, true, false );
+        }
+
+        @Override
+        protected List<? extends JComponent> createPreviewElements ()
+        {
+            final WebStyledLabel leading = new WebStyledLabel ( getStyleId (), "Leading text", WebStyledLabel.LEADING );
+
+            final ImageIcon icon = WebLookAndFeel.getIcon ( 16 );
+            final WebStyledLabel center = new WebStyledLabel ( getStyleId (), "Centered text with icon", icon, WebStyledLabel.CENTER );
+
+            final WebStyledLabel trailing = new WebStyledLabel ( getStyleId (), "Trailing text", WebStyledLabel.TRAILING );
+
+            return CollectionUtils.asList ( leading, center, trailing );
         }
     }
 }

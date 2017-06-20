@@ -37,7 +37,7 @@
     <include>resources/viewport.xml</include>
     <include>resources/scrollpane.xml</include>
     <include>resources/progressbar.xml</include>
-    <!--<include>resources/splitpane.xml</include>-->
+    <include>resources/splitpane.xml</include>
     <include>resources/separator.xml</include>
     <!--<include>resources/slider.xml</include>-->
     <include>resources/menubar.xml</include>
@@ -97,8 +97,8 @@
     <!--<include>resources/collapsiblepane.xml</include>-->
     <!--<include>resources/accordion.xml</include>-->
     <!--<include>resources/breadcrumb.xml</include>-->
-    <!--<include>resources/syntaxarea.xml</include>-->
-    <!--<include>resources/syntaxpanel.xml</include>-->
+    <include>resources/syntaxarea.xml</include>
+    <include>resources/syntaxpanel.xml</include>
     <!--<include>resources/componentpane.xml</include>-->
     <!--<include>resources/directorychooser.xml</include>-->
     <include>resources/dockablepane.xml</include>
