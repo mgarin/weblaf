@@ -201,7 +201,7 @@ public final class PainterSupport
                         final Boolean opaque = painter.isOpaque ();
                         if ( opaque != null )
                         {
-                            c.get ().setOpaque ( opaque );
+                            LookAndFeel.installProperty ( c.get (), WebLookAndFeel.OPAQUE_PROPERTY, opaque ? Boolean.TRUE : Boolean.FALSE );
                         }
                     }
                 }

@@ -5,11 +5,15 @@
     <!-- Extended checkbox tree -->
     <style type="tree" id="excheckboxtree" extends="checkboxtree" />
 
-    <!-- Transparent extended checkbox tree -->
-    <style type="tree" id="excheckboxtree-transparent" extends="excheckboxtree">
+    <!-- Non-opaque extended checkbox tree -->
+    <style type="tree" id="excheckboxtree-non-opaque" extends="excheckboxtree">
         <component>
             <opaque>false</opaque>
         </component>
+    </style>
+
+    <!-- Transparent extended checkbox tree -->
+    <style type="tree" id="excheckboxtree-transparent" extends="excheckboxtree-non-opaque">
         <painter>
             <decorations overwrite="true" />
         </painter>

@@ -141,7 +141,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
         // In that case we would also need to track root pane contents for layered pane changes which is excessive
         // Content pane is usually not changed or provided by the root pane override and this style will be applied then
         final Container contentPane = root.getContentPane ();
-        if ( contentPane instanceof JComponent )
+        if ( LafUtils.isWebLafUI ( contentPane ) )
         {
             StyleId.rootpaneContent.at ( root ).set ( ( JComponent ) contentPane );
         }

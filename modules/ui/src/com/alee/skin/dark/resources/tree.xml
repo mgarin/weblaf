@@ -6,6 +6,7 @@
     <style type="tree">
         <component>
             <opaque>true</opaque>
+            <background>106,110,112</background>
         </component>
         <ui>
             <selectionStyle>line</selectionStyle>
@@ -87,11 +88,15 @@
 
     </style>
 
-    <!-- Transparent tree -->
-    <style type="tree" id="transparent">
+    <!-- Non-opaque tree -->
+    <style type="tree" id="non-opaque">
         <component>
             <opaque>false</opaque>
         </component>
+    </style>
+
+    <!-- Transparent tree -->
+    <style type="tree" id="transparent" extends="non-opaque">
         <painter>
             <decorations overwrite="true" />
         </painter>

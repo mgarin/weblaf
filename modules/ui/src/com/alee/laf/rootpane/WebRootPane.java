@@ -17,6 +17,8 @@
 
 package com.alee.laf.rootpane;
 
+import com.alee.laf.panel.WebPanel;
+import com.alee.managers.glasspane.WebGlassPane;
 import com.alee.managers.log.Log;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
@@ -62,6 +64,24 @@ public class WebRootPane extends JRootPane implements Styleable, Paintable, Shap
     {
         super ();
         setStyleId ( id );
+    }
+
+    @Override
+    protected Container createContentPane ()
+    {
+        final WebPanel c = new WebPanel ( StyleId.rootpaneContent.at ( this ) );
+        c.setName ( getName () + ".contentPane" );
+        c.setLayout ( new BorderLayout () );
+        return c;
+    }
+
+    @Override
+    protected Component createGlassPane ()
+    {
+        final WebGlassPane glassPane = new WebGlassPane ();
+        glassPane.setName ( getName () + ".glassPane" );
+        glassPane.setVisible ( false );
+        return glassPane;
     }
 
     @Override

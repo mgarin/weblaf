@@ -30,6 +30,7 @@ import java.awt.geom.Area;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -381,10 +382,7 @@ public class WebGlassPane extends WebPanel
      */
     public void removeHighlightedComponents ( final Component... components )
     {
-        for ( final Component component : components )
-        {
-            highlightedComponents.remove ( component );
-        }
+        highlightedComponents.removeAll ( Arrays.asList ( components ) );
         repaint ();
     }
 
@@ -395,10 +393,7 @@ public class WebGlassPane extends WebPanel
      */
     public void removeHighlightedComponents ( final List<Component> components )
     {
-        for ( final Component component : components )
-        {
-            highlightedComponents.remove ( component );
-        }
+        highlightedComponents.removeAll ( components );
         repaint ();
     }
 

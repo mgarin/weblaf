@@ -112,8 +112,10 @@ import java.util.Locale;
 public class StyleEditor extends WebFrame
 {
     /**
-     * todo 1. Translate editor
-     * todo 2. Add JavaDoc
+     * todo 1. Fix multiple major style and functional issues
+     * todo 2. Move into separate module?
+     * todo 3. Translate editor?
+     * todo 4. Add appropriate JavaDoc
      */
 
     protected static final ImageIcon magnifierIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/magnifier.png" ) );
@@ -361,6 +363,8 @@ public class StyleEditor extends WebFrame
      */
     protected void createPreviewPanel ()
     {
+        final LoremIpsum loremIpsum = new LoremIpsum ();
+
         previewScroll = new WebScrollPane ( StyleId.styleeditorPreviewScroll.at ( previewContainer ) );
         previewScroll.getVerticalScrollBar ().setUnitIncrement ( 15 );
         previewContainer.add ( previewScroll, BorderLayout.CENTER );
@@ -434,13 +438,21 @@ public class StyleEditor extends WebFrame
 
         final WebTextArea textArea = new WebTextArea ();
         textArea.setRows ( 5 );
-
-        final LoremIpsum loremIpsum = new LoremIpsum ();
         textArea.setText ( loremIpsum.getParagraphs ( 5 ) );
 
         final WebScrollPane sp = new WebScrollPane ( textArea );
         sp.setPreferredWidth ( 0 );
         addViewComponent ( "Scroll pane", sp, sp, false );
+
+        //
+
+        final WebTextArea textArea2 = new WebTextArea ( StyleId.textareaNonOpaque );
+        textArea2.setRows ( 5 );
+        textArea2.setText ( loremIpsum.getParagraphs ( 5 ) );
+
+        final WebScrollPane hsp = new WebScrollPane ( StyleId.scrollpaneHovering, textArea2 );
+        hsp.setPreferredWidth ( 0 );
+        addViewComponent ( "Hovering scroll pane", hsp, hsp, false );
 
         //
 
@@ -486,7 +498,8 @@ public class StyleEditor extends WebFrame
         homeFileTree.setSelectionStyle ( TreeSelectionStyle.group );
         homeFileTree.onKeyRelease ( Hotkey.SPACE, new KeyEventRunnable ()
         {
-            public void run ( KeyEvent e )
+            @Override
+            public void run ( final KeyEvent e )
             {
                 homeFileTree.updateVisibleNodes ();
             }

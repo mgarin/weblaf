@@ -344,11 +344,11 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
             final StyleRange style = textRange.styleRange;
 
             // Updating font if need
-            final int size = ( style != null && ( style.isSuperscript () || style.isSubscript () ) ) ?
+            final int size = style != null && ( style.isSuperscript () || style.isSubscript () ) ?
                     Math.round ( ( float ) defaultFontSize / getScriptFontRatio ( c, d ) ) : defaultFontSize;
 
             font = c.getFont ();
-            if ( style != null && ( ( style.getStyle () != -1 && font.getStyle () != style.getStyle () ) || font.getSize () != size ) )
+            if ( style != null && ( style.getStyle () != -1 && font.getStyle () != style.getStyle () || font.getSize () != size ) )
             {
                 font = FontUtils.getCachedDerivedFont ( font, style.getStyle () == -1 ? font.getStyle () : style.getStyle (), size );
             }
@@ -377,7 +377,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
 
                 if ( wt != TextWrap.none && widthLeft < strWidth && widthLeft >= 0 )
                 {
-                    if ( ( ( mr > 0 && rowCount < mr - 1 ) || mr <= 0 ) && y + maxRowHeight + Math.max ( 0, rg ) <= endY )
+                    if ( ( mr > 0 && rowCount < mr - 1 || mr <= 0 ) && y + maxRowHeight + Math.max ( 0, rg ) <= endY )
                     {
                         int availLength = s.length () * widthLeft / strWidth + 1; // Optimistic prognoses
                         int firstWordOffset = Math.max ( 0, TextUtils.findFirstWordFromIndex ( s, 0 ) );
@@ -436,7 +436,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
                         }
                         while ( strWidth > widthLeft && availLength > 0 );
 
-                        if ( nextRowStartInSubString > 0 && ( availLength > 0 || ( availLength <= 0 && row.isEmpty () ) ) )
+                        if ( nextRowStartInSubString > 0 && ( availLength > 0 || availLength <= 0 && row.isEmpty () ) )
                         {
                             // Extracting wrapped text fragment
                             s = s.substring ( 0, Math.min ( nextRowStartInSubString, s.length () ) );
@@ -495,7 +495,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
                 i--;
 
                 // Checking that row is last
-                if ( y > endY || ( mr > 0 && rowCount >= mr - 1 ) )
+                if ( y > endY || mr > 0 && rowCount >= mr - 1 )
                 {
                     break;
                 }
@@ -562,11 +562,11 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
             final StyleRange style = textRange.getStyleRange ();
 
             // Updating font if need
-            final int size = ( style != null && ( style.isSuperscript () || style.isSubscript () ) ) ?
+            final int size = style != null && ( style.isSuperscript () || style.isSubscript () ) ?
                     Math.round ( ( float ) defaultFontSize / getScriptFontRatio ( c, d ) ) : defaultFontSize;
 
             Font cFont = c.getFont ();
-            if ( style != null && ( ( style.getStyle () != -1 && cFont.getStyle () != style.getStyle () ) || cFont.getSize () != size ) )
+            if ( style != null && ( style.getStyle () != -1 && cFont.getStyle () != style.getStyle () || cFont.getSize () != size ) )
             {
                 cFont = FontUtils.getCachedDerivedFont ( cFont, style.getStyle () == -1 ? cFont.getStyle () : style.getStyle (), size );
             }
@@ -658,11 +658,11 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
         for ( final TextRange textRange : textRanges )
         {
             final StyleRange style = textRange.styleRange;
-            final int size = ( style != null && ( style.isSuperscript () || style.isSubscript () ) ) ?
+            final int size = style != null && ( style.isSuperscript () || style.isSubscript () ) ?
                     Math.round ( ( float ) defaultFontSize / getScriptFontRatio ( c, d ) ) : defaultFontSize;
 
             Font cFont = font;
-            if ( style != null && ( ( style.getStyle () != -1 && cFont.getStyle () != style.getStyle () ) || cFont.getSize () != size ) )
+            if ( style != null && ( style.getStyle () != -1 && cFont.getStyle () != style.getStyle () || cFont.getSize () != size ) )
             {
                 cFont = FontUtils.getCachedDerivedFont ( cFont, style.getStyle () == -1 ? cFont.getStyle () : style.getStyle (), size );
                 final FontMetrics fm2 = c.getFontMetrics ( cFont );

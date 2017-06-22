@@ -20,7 +20,6 @@ package com.alee.utils.collection;
 import com.alee.utils.ArrayUtils;
 import com.alee.utils.array.ArrayIterator;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -34,7 +33,7 @@ import java.util.Iterator;
  * @author Mikle Garin
  */
 
-public class ImmutableCollection<E> implements Collection<E>, Serializable
+public class ImmutableCollection<E> implements Collection<E>
 {
     /**
      * Collection data.

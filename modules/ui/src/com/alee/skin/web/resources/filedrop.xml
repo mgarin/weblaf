@@ -3,7 +3,10 @@
     <!-- com.alee.extended.filechooser.WebFileDrop -->
 
     <!-- Container panel -->
-    <style type="panel" id="filedrop" extends="white" padding="2,2,2,2">
+    <style type="panel" id="filedrop" padding="2,2,2,2">
+        <component>
+            <background>white</background>
+        </component>
 
         <!-- Single file panel -->
         <style type="panel" id="plate" padding="0,3,0,0">

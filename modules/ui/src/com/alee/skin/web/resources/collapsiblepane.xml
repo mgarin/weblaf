@@ -87,7 +87,11 @@
         </style>
 
         <!-- Content panel -->
-        <style type="panel" id="content" extends="white" />
+        <style type="panel" id="content">
+            <component>
+                <background>white</background>
+            </component>
+        </style>
 
     </style>
 

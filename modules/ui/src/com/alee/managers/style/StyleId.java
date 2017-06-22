@@ -213,8 +213,8 @@ public final class StyleId
      * {@link com.alee.laf.panel.WebPanel} style IDs.
      */
     public static final StyleId panel = StyleId.of ( "panel" );
+    public static final StyleId panelNonOpaque = StyleId.of ( "non-opaque" );
     public static final StyleId panelTransparent = StyleId.of ( "transparent" );
-    public static final StyleId panelWhite = StyleId.of ( "white" );
     public static final StyleId panelDecorated = StyleId.of ( "decorated" );
     public static final StyleId panelFocusable = StyleId.of ( "focusable" );
 
@@ -303,8 +303,10 @@ public final class StyleId
     public static final StyleId scrollpaneUndecorated = StyleId.of ( "undecorated" );
     public static final StyleId scrollpaneNoFocus = StyleId.of ( "nofocus" );
     public static final StyleId scrollpaneTransparent = StyleId.of ( "transparent" );
+    public static final StyleId scrollpaneButtonless = StyleId.of ( "buttonless" );
     public static final StyleId scrollpaneTransparentButtonless = StyleId.of ( "transparent-buttonless" );
     public static final StyleId scrollpaneHovering = StyleId.of ( "hovering" );
+    public static final StyleId scrollpaneTransparentHovering = StyleId.of ( "transparent-hovering" );
     public static final StyleId scrollpanePopup = StyleId.of ( "popup" );
     public static final ChildStyleId scrollpaneViewport = ChildStyleId.of ( "viewport" );
     public static final ChildStyleId scrollpaneBar = ChildStyleId.of ( "scrollbar" );
@@ -377,18 +379,24 @@ public final class StyleId
      * {@link com.alee.laf.text.WebTextArea} style IDs.
      */
     public static final StyleId textarea = StyleId.of ( "textarea" );
+    public static final StyleId textareaNonOpaque = StyleId.of ( "non-opaque" );
+    public static final StyleId textareaTransparent = StyleId.of ( "transparent" );
     public static final StyleId textareaDecorated = StyleId.of ( "decorated" );
 
     /**
      * {@link com.alee.laf.text.WebEditorPane} style IDs.
      */
     public static final StyleId editorpane = StyleId.of ( "editorpane" );
+    public static final StyleId editorpaneNonOpaque = StyleId.of ( "non-opaque" );
+    public static final StyleId editorpaneTransparent = StyleId.of ( "transparent" );
     public static final StyleId editorpaneDecorated = StyleId.of ( "decorated" );
 
     /**
      * {@link com.alee.laf.text.WebTextPane} style IDs.
      */
     public static final StyleId textpane = StyleId.of ( "textpane" );
+    public static final StyleId textpaneNonOpaque = StyleId.of ( "non-opaque" );
+    public static final StyleId textpaneTransparent = StyleId.of ( "transparent" );
     public static final StyleId textpaneDecorated = StyleId.of ( "decorated" );
 
     /**
@@ -401,6 +409,8 @@ public final class StyleId
      * {@link com.alee.laf.table.WebTable} style IDs.
      */
     public static final StyleId table = StyleId.of ( "table" );
+    public static final StyleId tableNonOpaque = StyleId.of ( "non-opaque" );
+    public static final StyleId tableTransparent = StyleId.of ( "transparent" );
     public static final ChildStyleId tableHeader = ChildStyleId.of ( "header" );
     public static final ChildStyleId tableHeaderCellRenderer = ChildStyleId.of ( "renderer" );
     public static final ChildStyleId tableCorner = ChildStyleId.of ( "corner" );
@@ -419,6 +429,8 @@ public final class StyleId
      * {@link com.alee.extended.filechooser.WebFileTable} style IDs.
      */
     public static final StyleId filetable = StyleId.of ( "filetable" );
+    public static final StyleId filetableNonOpaque = StyleId.of ( "filetable-non-opaque" );
+    public static final StyleId filetableTransparent = StyleId.of ( "filetable-transparent" );
 
     /**
      * {@link com.alee.laf.slider.WebSlider} style IDs.
@@ -453,6 +465,7 @@ public final class StyleId
      * {@link com.alee.laf.list.WebList} style IDs.
      */
     public static final StyleId list = StyleId.of ( "list" );
+    public static final StyleId listNonOpaque = StyleId.of ( "non-opaque" );
     public static final StyleId listTransparent = StyleId.of ( "transparent" );
     public static final ChildStyleId listCellRenderer = ChildStyleId.of ( "renderer" );
     public static final ChildStyleId listTextCellRenderer = ChildStyleId.of ( "text-renderer" );
@@ -463,6 +476,7 @@ public final class StyleId
      * {@link com.alee.laf.tree.WebTree} style IDs.
      */
     public static final StyleId tree = StyleId.of ( "tree" );
+    public static final StyleId treeNonOpaque = StyleId.of ( "non-opaque" );
     public static final StyleId treeTransparent = StyleId.of ( "transparent" );
     public static final ChildStyleId treeCellRenderer = ChildStyleId.of ( "renderer" );
     public static final ChildStyleId treeCellEditor = ChildStyleId.of ( "editor" );
@@ -471,24 +485,28 @@ public final class StyleId
      * {@link com.alee.extended.tree.WebExTree} style IDs.
      */
     public static final StyleId extree = StyleId.of ( "extree" );
+    public static final StyleId extreeNonOpaque = StyleId.of ( "extree-non-opaque" );
     public static final StyleId extreeTransparent = StyleId.of ( "extree-transparent" );
 
     /**
      * {@link com.alee.extended.tree.WebAsyncTree} style IDs.
      */
     public static final StyleId asynctree = StyleId.of ( "asynctree" );
+    public static final StyleId asynctreeNonOpaque = StyleId.of ( "asynctree-non-opaque" );
     public static final StyleId asynctreeTransparent = StyleId.of ( "asynctree-transparent" );
 
     /**
      * {@link com.alee.extended.tree.WebFileTree} style IDs.
      */
     public static final StyleId filetree = StyleId.of ( "filetree" );
+    public static final StyleId filetreeNonOpaque = StyleId.of ( "filetree-non-opaque" );
     public static final StyleId filetreeTransparent = StyleId.of ( "filetree-transparent" );
 
     /**
      * {@link com.alee.extended.tree.WebCheckBoxTree} style IDs.
      */
     public static final StyleId checkboxtree = StyleId.of ( "checkboxtree" );
+    public static final StyleId checkboxtreeNonOpaque = StyleId.of ( "checkboxtree-non-opaque" );
     public static final StyleId checkboxtreeTransparent = StyleId.of ( "checkboxtree-transparent" );
     public static final ChildStyleId checkboxtreeCellRenderer = ChildStyleId.of ( "renderer" );
 
@@ -496,12 +514,14 @@ public final class StyleId
      * {@link com.alee.extended.tree.WebExCheckBoxTree} style IDs.
      */
     public static final StyleId excheckboxtree = StyleId.of ( "excheckboxtree" );
+    public static final StyleId excheckboxtreeNonOpaque = StyleId.of ( "excheckboxtree-non-opaque" );
     public static final StyleId excheckboxtreeTransparent = StyleId.of ( "excheckboxtree-transparent" );
 
     /**
      * {@link com.alee.extended.inspector.InterfaceTree} style IDs.
      */
     public static final StyleId interfacetree = StyleId.of ( "interfacetree" );
+    public static final StyleId interfacetreeNonOpaque = StyleId.of ( "interfacetree-non-opaque" );
     public static final StyleId interfacetreeTransparent = StyleId.of ( "interfacetree-transparent" );
 
     /**
@@ -658,6 +678,8 @@ public final class StyleId
      * todo Create custom UI for this list and enclose these styles with it
      */
     public static final StyleId checkboxlist = StyleId.of ( "checkboxlist" );
+    public static final StyleId checkboxlistNonOpaque = StyleId.of ( "checkboxlist-non-opaque" );
+    public static final StyleId checkboxlistTransparent = StyleId.of ( "checkboxlist-transparent" );
     public static final ChildStyleId checkboxlistCellRenderer = ChildStyleId.of ( "renderer" );
     public static final ChildStyleId checkboxlistCellEditor = ChildStyleId.of ( "editor" );
 
@@ -665,6 +687,8 @@ public final class StyleId
      * {@link com.alee.extended.list.WebFileList} style IDs.
      */
     public static final StyleId filelist = StyleId.of ( "filelist" );
+    public static final StyleId filelistNonOpaque = StyleId.of ( "filelist-non-opaque" );
+    public static final StyleId filelistTransparent = StyleId.of ( "filelist-transparent" );
     public static final StyleId filelistTiles = StyleId.of ( "tiles" );
     public static final StyleId filelistIcons = StyleId.of ( "icons" );
     public static final ChildStyleId filelistCellRenderer = ChildStyleId.of ( "renderer" );

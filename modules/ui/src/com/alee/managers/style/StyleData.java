@@ -63,7 +63,7 @@ public final class StyleData implements PropertyChangeListener
     private boolean pinnedSkin;
 
     /**
-     * Style ID.
+     * Style identifier.
      */
     private StyleId styleId;
 
@@ -99,7 +99,7 @@ public final class StyleData implements PropertyChangeListener
 
         // Ensure that component has correct UI first, fix for #376
         // This should never happen if WebLaF is installed before creating any Swing components
-        // Component might be missing UI here because it's style ID was applied from upper level component
+        // Component might be missing UI here because it's style identifier was applied from upper level component
         if ( !LafUtils.isWebLafUI ( component ) )
         {
             // Trying to make component use WebLaF UI by forcefully updating it
@@ -126,7 +126,7 @@ public final class StyleData implements PropertyChangeListener
         this.children = null;
         this.listeners = null;
 
-        // Adding style ID listener
+        // Adding style identifier listener
         component.addPropertyChangeListener ( StyleId.STYLE_PROPERTY, this );
         component.addPropertyChangeListener ( StyleId.PARENT_STYLE_PROPERTY, this );
     }
@@ -139,7 +139,7 @@ public final class StyleData implements PropertyChangeListener
         final Object styleId = component.getClientProperty ( StyleId.STYLE_PROPERTY );
         if ( styleId != null )
         {
-            // Applying style ID if it was set explicitly
+            // Applying style identifier if it was set explicitly
             if ( styleId instanceof StyleId )
             {
                 // StyleId specified directly
@@ -147,7 +147,7 @@ public final class StyleData implements PropertyChangeListener
             }
             else if ( styleId instanceof String )
             {
-                // String style ID was passed
+                // String style identifier was passed
                 final String id = ( String ) styleId;
 
                 // Trying to retrieve parent
@@ -188,7 +188,7 @@ public final class StyleData implements PropertyChangeListener
         }
         else
         {
-            // Restoring default style ID value
+            // Restoring default style identifier value
             resetStyleId ( false );
         }
     }
@@ -204,7 +204,7 @@ public final class StyleData implements PropertyChangeListener
         final JComponent component = this.component.get ();
         if ( component == null )
         {
-            final String msg = "Component for style ID '%s' has been destroyed";
+            final String msg = "Component for style identifier '%s' has been destroyed";
             throw new StyleException ( String.format ( msg, styleId.getCompleteId () ) );
         }
         return component;
@@ -440,9 +440,9 @@ public final class StyleData implements PropertyChangeListener
     }
 
     /**
-     * Returns currently used style ID.
+     * Returns currently used style identifier.
      *
-     * @return currently used style ID
+     * @return currently used style identifier
      */
     public StyleId getStyleId ()
     {
@@ -450,10 +450,10 @@ public final class StyleData implements PropertyChangeListener
     }
 
     /**
-     * Sets currently used style ID.
+     * Sets currently used style identifier.
      *
-     * @param id new style ID
-     * @return previously used style ID
+     * @param id new style identifier
+     * @return previously used style identifier
      */
     public StyleId setStyleId ( final StyleId id )
     {
@@ -463,17 +463,17 @@ public final class StyleData implements PropertyChangeListener
         // Retrieving component and checking its existence
         final JComponent component = getComponent ();
 
-        // Resolving actual provided style ID
+        // Resolving actual provided style identifier
         final StyleId styleId = id != null && id.getId () != null ? id : StyleId.getDefault ( component );
 
-        // Perform operation if IDs are actually different
+        // Perform operation only if different styles are referenced
         final StyleId old = getStyleId ();
         if ( !CompareUtils.equals ( styleId, old ) )
         {
-            // Saving old style ID reference
+            // Saving old style identifier reference
             final StyleId oldStyleId = this.styleId;
 
-            // Saving new style ID
+            // Saving new style identifier
             this.styleId = styleId;
 
             // Removing child reference from old parent style data
@@ -521,17 +521,17 @@ public final class StyleData implements PropertyChangeListener
     }
 
     /**
-     * Resets style ID to default value.
+     * Resets style identifier to default value.
      *
      * @param recursively whether or not child styles should also be reset
-     * @return previously used style ID
+     * @return previously used style identifier
      */
     public StyleId resetStyleId ( final boolean recursively )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
-        // Resetting child IDs first
+        // Resetting child identifiers first
         if ( recursively && CollectionUtils.notEmpty ( children ) )
         {
             // We have to be careful here since resetting child styles might modify children list
@@ -546,7 +546,7 @@ public final class StyleData implements PropertyChangeListener
             }
         }
 
-        // Resetting style ID
+        // Resetting style identifier
         return setStyleId ( null );
     }
 
@@ -653,8 +653,8 @@ public final class StyleData implements PropertyChangeListener
      * Informs about component style change.
      *
      * @param component  component which style has changed
-     * @param oldStyleId previously used style ID
-     * @param newStyleId currently used style ID
+     * @param oldStyleId previously used style identifier
+     * @param newStyleId currently used style identifier
      */
     private void fireStyleChanged ( final JComponent component, final StyleId oldStyleId, final StyleId newStyleId )
     {
@@ -669,10 +669,10 @@ public final class StyleData implements PropertyChangeListener
 
     /**
      * Informs about component skin visual update.
-     * Skin update might occur when component style ID changes or its parent style component style ID changes.
+     * Skin update might occur when component style identifier changes or its parent style component style identifier changes.
      *
      * @param component component which style have been updated
-     * @param styleId   component style ID
+     * @param styleId   component style identifier
      */
     private void fireSkinUpdated ( final JComponent component, final StyleId styleId )
     {

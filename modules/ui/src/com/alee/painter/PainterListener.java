@@ -17,13 +17,15 @@
 
 package com.alee.painter;
 
+import java.util.EventListener;
+
 /**
  * Painter listener interface.
  *
  * @author Mikle Garin
  */
 
-public interface PainterListener
+public interface PainterListener extends EventListener
 {
     /**
      * Called when painter visual representation changes.

@@ -5,11 +5,15 @@
     <!-- Asynchronous tree -->
     <style type="tree" id="asynctree" />
 
-    <!-- Transparent asynchronous tree -->
-    <style type="tree" id="asynctree-transparent" extends="asynctree">
+    <!-- Non-opaque asynchronous tree -->
+    <style type="tree" id="asynctree-non-opaque" extends="asynctree">
         <component>
             <opaque>false</opaque>
         </component>
+    </style>
+
+    <!-- Transparent asynchronous tree -->
+    <style type="tree" id="asynctree-transparent" extends="asynctree-non-opaque">
         <painter>
             <decorations overwrite="true" />
         </painter>

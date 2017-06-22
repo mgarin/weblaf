@@ -346,8 +346,38 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
          * Now fixup the header and scrollbar widths/heights.
          */
 
-        vsbR.height = availR.height + ( hsbNeeded && vpos.isTrailing () ? hsbR.height : 0 ) + viewInsets.top + viewInsets.bottom;
-        hsbR.width = availR.width + ( vsbNeeded && hpos.isTrailing () ? vsbR.width : 0 ) + viewInsets.left + viewInsets.right;
+        vsbR.height = availR.height + viewInsets.top + viewInsets.bottom;
+        if ( hsbNeeded )
+        {
+            // Increase height to take space of the trailing corner
+            if ( vpos.isTrailing () )
+            {
+                vsbR.height += hsbR.height;
+            }
+
+            // Reduce height to give space for the corner
+            if ( vpos.isHovering () )
+            {
+                vsbR.height -= hsbR.height;
+            }
+        }
+
+        hsbR.width = availR.width + viewInsets.left + viewInsets.right;
+        if ( vsbNeeded )
+        {
+            // Increase width to take space of the trailing corner
+            if ( hpos.isTrailing () )
+            {
+                hsbR.width += vsbR.width;
+            }
+
+            // Reduce width to give space for the corner
+            if ( hpos.isHovering () )
+            {
+                hsbR.width -= vsbR.width;
+            }
+        }
+
         rowHeadR.height = availR.height + viewInsets.top + viewInsets.bottom;
         rowHeadR.y = availR.y - viewInsets.top;
         colHeadR.width = availR.width + viewInsets.left + viewInsets.right;
@@ -385,7 +415,11 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
 
                 vsb.setVisible ( true );
                 vsb.setBounds ( vsbR );
-                parent.setComponentZOrder ( vsb, vpos.getZOrder () );
+
+                /**
+                 * Moving horizontal scroll bar to the top-most position to ensure it is painted on top of everything else.
+                 */
+                parent.setComponentZOrder ( vsb, 0 );
             }
             else
             {
@@ -414,7 +448,11 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
 
                 hsb.setVisible ( true );
                 hsb.setBounds ( hsbR );
-                parent.setComponentZOrder ( hsb, hpos.getZOrder () );
+
+                /**
+                 * Moving horizontal scroll bar to the second top-most position to ensure it is painted right below vertical scrollbar.
+                 */
+                parent.setComponentZOrder ( hsb, vsbNeeded ? 1 : 0 );
             }
             else
             {
@@ -438,6 +476,12 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
         {
             upperRight.setBounds ( ltr ? vsbR.x : rowHeadR.x, colHeadR.y, ltr ? vsbR.width : rowHeadR.width, colHeadR.height );
         }
+
+        /**
+         * Moving scroll viewport to bottom-most position to ensure it is painted last.
+         * This is necessary to ensure components intersecting with viewport are always painted first.
+         */
+        scrollPane.setComponentZOrder ( viewport, scrollPane.getComponentCount () - 1 );
     }
 
     /**

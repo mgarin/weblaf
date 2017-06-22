@@ -61,11 +61,15 @@
 
     </style>
 
-    <!-- List with transparent background -->
-    <style type="list" id="transparent">
+    <!-- Non-opaque list -->
+    <style type="list" id="non-opaque">
         <component>
             <opaque>false</opaque>
         </component>
+    </style>
+
+    <!-- Transparent list -->
+    <style type="list" id="transparent" extends="non-opaque">
         <painter>
             <decorations overwrite="true" />
         </painter>

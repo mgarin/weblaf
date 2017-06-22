@@ -6,6 +6,7 @@
     <style type="table">
         <component>
             <opaque>true</opaque>
+            <background>106,110,112</background>
             <rowHeight>18</rowHeight>
             <rowMargin>1</rowMargin>
             <fillsViewportHeight>false</fillsViewportHeight>
@@ -126,6 +127,20 @@
             </component>
         </style>
 
+    </style>
+
+    <!-- Non-opaque table -->
+    <style type="table" id="non-opaque">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
+    <!-- Transparent table -->
+    <style type="table" id="transparent" extends="non-opaque">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
     </style>
 
 </skin>

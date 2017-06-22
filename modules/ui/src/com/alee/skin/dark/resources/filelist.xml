@@ -84,7 +84,21 @@
         <style type="textfield" id="editor" extends="nofocus" />
     </style>
 
-    <!-- Tiles view -->
+    <!-- Non-opaque file list -->
+    <style type="list" id="filelist-non-opaque" extends="filelist">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
+    <!-- Transparent file list -->
+    <style type="list" id="filelist-transparent" extends="filelist-non-opaque">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
+    <!-- File list with tiles view -->
     <style type="list" id="tiles" extends="filelist">
         <component class="com.alee.extended.list.WebFileList">
             <preferredColumnCount>3</preferredColumnCount>
@@ -93,7 +107,7 @@
         </component>
     </style>
 
-    <!-- Icons view -->
+    <!-- File list with icons view -->
     <style type="list" id="icons" extends="filelist">
         <component class="com.alee.extended.list.WebFileList">
             <preferredColumnCount>7</preferredColumnCount>

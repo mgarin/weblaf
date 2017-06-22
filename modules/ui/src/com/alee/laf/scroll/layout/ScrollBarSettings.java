@@ -35,13 +35,6 @@ import java.io.Serializable;
 public class ScrollBarSettings implements Mergeable, Cloneable, Serializable
 {
     /**
-     * {@link javax.swing.JScrollBar} component Z-order inside {@link javax.swing.JScrollPane}.
-     * It might be helpful to adjust when both scroll bars intersect each other.
-     */
-    @XStreamAsAttribute
-    protected Integer zOrder;
-
-    /**
      * Whether or not scroll bar should take over the leading corner in scroll pane.
      * Exact corner taken by the scroll bar depends on the scroll bar orientation.
      * This setting is set to {@code false} by default to replicate common Swing scroll panes behavior.
@@ -79,37 +72,24 @@ public class ScrollBarSettings implements Mergeable, Cloneable, Serializable
      */
     public ScrollBarSettings ()
     {
-        this ( null, null, null, null, null );
+        this ( null, null, null, null );
     }
 
     /**
      * Constructs new {@link ScrollBarSettings} with the specified settings.
      *
-     * @param zOrder    {@link javax.swing.JScrollBar} component Z-order inside {@link javax.swing.JScrollPane}
      * @param leading   whether or not scroll bar should take over the leading corner in scroll pane
      * @param trailing  whether or not scroll bar should take over the trailing corner in scroll pane
      * @param hovering  whether scroll bar should hover above the scroll pane content instead of taking extra space
      * @param extending whether or not scroll bar should be counted in scroll pane preferred size
      */
-    public ScrollBarSettings ( final Integer zOrder, final Boolean leading, final Boolean trailing, final Boolean hovering,
-                               final Boolean extending )
+    public ScrollBarSettings ( final Boolean leading, final Boolean trailing, final Boolean hovering, final Boolean extending )
     {
         super ();
-        this.zOrder = zOrder;
         this.leading = leading;
         this.trailing = trailing;
         this.hovering = hovering;
         this.extending = extending;
-    }
-
-    /**
-     * Returns {@link javax.swing.JScrollBar} component Z-order inside {@link javax.swing.JScrollPane}.
-     *
-     * @return {@link javax.swing.JScrollBar} component Z-order inside {@link javax.swing.JScrollPane}
-     */
-    public int getZOrder ()
-    {
-        return zOrder != null ? zOrder : 0;
     }
 
     /**

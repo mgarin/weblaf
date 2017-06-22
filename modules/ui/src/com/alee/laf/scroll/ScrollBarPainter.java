@@ -45,6 +45,11 @@ public class ScrollBarPainter<E extends JScrollBar, U extends WScrollBarUI> exte
         implements IScrollBarPainter<E, U>
 {
     /**
+     * todo 1. Split into proper AbstractDecorationPainter & AbstractSectionDecorationPainter implementations
+     * todo 2. Add extra states (provided when scroll bar is inside of a JScrollPane) indicating whether opposite bar is visible or not
+     */
+
+    /**
      * Style settings.
      */
     protected Integer thumbRound;

@@ -22,7 +22,7 @@
     </style>
 
     <!-- Tree -->
-    <style type="tree" id="examples" extends="transparent">
+    <style type="tree" id="examples" extends="extree-non-opaque">
         <painter>
 
             <!-- Row background painter -->

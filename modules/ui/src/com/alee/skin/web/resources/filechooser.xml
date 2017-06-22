@@ -119,7 +119,11 @@
         </style>
 
         <!-- Files removal confirmation list -->
-        <style type="panel" id="removal" extends="white" padding="4,4,4,4" />
+        <style type="panel" id="removal" padding="4,4,4,4">
+            <component>
+                <background>white</background>
+            </component>
+        </style>
 
     </style>
 

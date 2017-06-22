@@ -84,12 +84,12 @@
             <decorations>
                 <decoration>
                     <LabelLayout>
-                        <Stripes constraints="left-space" id="left-space" orientation="horizontal" padding="0,0,0,4">
+                        <Stripes constraints="left-space" id="left-space" orientation="horizontal" padding="0,0,0,4" size="10,1">
                             <Stripe>
                                 <color>10,10,10</color>
                             </Stripe>
                         </Stripes>
-                        <Stripes constraints="right-space" id="right-space" orientation="horizontal" padding="0,4,0,0">
+                        <Stripes constraints="right-space" id="right-space" orientation="horizontal" padding="0,4,0,0" size="10,1">
                             <Stripe>
                                 <color>10,10,10</color>
                             </Stripe>

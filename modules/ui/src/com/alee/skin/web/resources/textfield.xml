@@ -8,7 +8,7 @@
             <opaque>false</opaque>
             <foreground>black</foreground>
             <selectedTextColor>black</selectedTextColor>
-            <selectionColor>210,210,210</selectionColor>
+            <selectionColor>154,178,206</selectionColor>
             <caretColor>gray</caretColor>
         </component>
         <painter>
