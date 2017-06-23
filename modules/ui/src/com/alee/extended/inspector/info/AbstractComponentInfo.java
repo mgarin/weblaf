@@ -34,7 +34,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public abstract class AbstractComponentInfo<T extends Component> implements ComponentDescriptor<T>
+public abstract class AbstractComponentInfo<T extends Component> implements ComponentInfo<T>
 {
     /**
      * Opaque icon.

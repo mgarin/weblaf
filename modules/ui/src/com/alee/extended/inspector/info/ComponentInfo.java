@@ -29,7 +29,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public interface ComponentDescriptor<T extends Component>
+public interface ComponentInfo<T extends Component>
 {
     /**
      * Returns icon for the specified component.

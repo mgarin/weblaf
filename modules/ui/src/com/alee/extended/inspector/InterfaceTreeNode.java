@@ -20,7 +20,7 @@ package com.alee.extended.inspector;
 import com.alee.api.IconSupport;
 import com.alee.api.TitleSupport;
 import com.alee.extended.inspector.info.AWTComponentInfo;
-import com.alee.extended.inspector.info.ComponentDescriptor;
+import com.alee.extended.inspector.info.ComponentInfo;
 import com.alee.extended.inspector.info.JComponentInfo;
 import com.alee.extended.inspector.info.StyleableInfo;
 import com.alee.laf.tree.TreeState;
@@ -47,9 +47,9 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
     /**
      * Component short info providers.
      */
-    private static final ComponentDescriptor styleableDescriptor = new StyleableInfo ();
-    private static final ComponentDescriptor jComponentDescriptor = new JComponentInfo ();
-    private static final ComponentDescriptor awtComponentDescriptor = new AWTComponentInfo ();
+    private static final ComponentInfo styleableInfo = new StyleableInfo ();
+    private static final ComponentInfo jComponentInfo = new JComponentInfo ();
+    private static final ComponentInfo awtComponentInfo = new AWTComponentInfo ();
 
     /**
      * Component state listeners.
@@ -271,19 +271,19 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
      * @param component component to return descriptor for
      * @return component descriptor
      */
-    protected ComponentDescriptor getInfo ( final Component component )
+    protected ComponentInfo getInfo ( final Component component )
     {
         if ( StyleableComponent.isSupported ( component ) )
         {
-            return styleableDescriptor;
+            return styleableInfo;
         }
         else if ( component instanceof JComponent )
         {
-            return jComponentDescriptor;
+            return jComponentInfo;
         }
         else
         {
-            return awtComponentDescriptor;
+            return awtComponentInfo;
         }
     }
 
