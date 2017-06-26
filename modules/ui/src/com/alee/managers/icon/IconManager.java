@@ -166,7 +166,7 @@ public final class IconManager
      * @param id icon ID
      * @return icon for the specified ID
      */
-    public static Icon getIcon ( final String id )
+    public static <I extends Icon> I getIcon ( final String id )
     {
         if ( iconSets.size () > 0 )
         {
@@ -175,7 +175,7 @@ public final class IconManager
             Icon icon = reference != null ? reference.get () : null;
             if ( icon != null )
             {
-                return icon;
+                return ( I ) icon;
             }
 
             // Checking icon sets
@@ -185,7 +185,7 @@ public final class IconManager
                 icon = iter.previous ().getIcon ( id );
                 if ( icon != null )
                 {
-                    return icon;
+                    return ( I ) icon;
                 }
             }
 
