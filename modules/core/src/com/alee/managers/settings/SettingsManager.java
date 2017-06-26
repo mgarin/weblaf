@@ -820,7 +820,7 @@ public final class SettingsManager
         catch ( final ClassCastException e )
         {
             Log.error ( SettingsManager.class, "Unable to load settings value for group \"" + group + "\" and key \"" + key +
-                    "\" because it has inappropriate class type:", e );
+                    "\" because it has inappropriate class type", e );
 
             // Saving default value if needed
             if ( saveDefaultValues )
@@ -1043,7 +1043,7 @@ public final class SettingsManager
                     catch ( final Throwable e )
                     {
                         Log.error ( SettingsManager.class, "Unable to load settings group \"" + group +
-                                "\" due to unexpected exception:", e );
+                                "\" due to unexpected exception", e );
 
                         // Delete incorrect SettingsGroup file
                         FileUtils.deleteFile ( file );
@@ -1311,11 +1311,22 @@ public final class SettingsManager
             T value;
             try
             {
-                value = XmlUtils.fromXML ( getSettingsFile ( fileName ) );
+                final File settingsFile = getSettingsFile ( fileName );
+                if ( settingsFile.exists () )
+                {
+                    value = XmlUtils.fromXML ( settingsFile );
+                }
+                else
+                {
+                    value = defaultValue != null ? defaultValue.get () : null;
+                }
             }
             catch ( final Throwable e )
             {
-                value = defaultValue.get ();
+                Log.error ( SettingsManager.class, "Unable to load settings file \"" + fileName +
+                        "\" due to unexpected exception", e );
+
+                value = defaultValue != null ? defaultValue.get () : null;
             }
             files.put ( fileName, value );
             return value;
