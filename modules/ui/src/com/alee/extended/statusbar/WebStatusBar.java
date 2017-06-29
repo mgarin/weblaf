@@ -21,11 +21,9 @@ import com.alee.extended.WebContainer;
 import com.alee.extended.layout.ToolbarLayout;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.laf.toolbar.WhiteSpace;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleableComponent;
+import com.alee.managers.style.StyleManager;
 
-import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -207,27 +205,12 @@ public class WebStatusBar extends WebContainer<WebStatusBar, WStatusBarUI>
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WStatusBarUI ) )
-        {
-            try
-            {
-                setUI ( ( WStatusBarUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebStatusBarUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
     }
 
     @Override
     public String getUIClassID ()
     {
-        return StyleableComponent.statusbar.getUIClassID ();
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

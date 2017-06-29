@@ -17,7 +17,6 @@
 
 package com.alee.laf.tooltip;
 
-import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -237,22 +236,13 @@ public class WebToolTip extends JToolTip
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WToolTipUI ) )
-        {
-            try
-            {
-                setUI ( UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebToolTipUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 
     @Override

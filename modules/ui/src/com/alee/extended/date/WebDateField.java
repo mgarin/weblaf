@@ -18,16 +18,14 @@
 package com.alee.extended.date;
 
 import com.alee.extended.WebComponent;
-import com.alee.managers.log.Log;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleableComponent;
+import com.alee.managers.style.StyleManager;
 import com.alee.utils.swing.Customizer;
 
-import javax.swing.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,7 +33,7 @@ import java.util.Date;
 /**
  * Custom date chooser component.
  * It relies on {@link WebCalendar} component as a main date chooser.
- * <p/>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -45,7 +43,7 @@ import java.util.Date;
  * @see DateFieldPainter
  */
 
-public class WebDateField extends WebComponent<WebDateField,WDateFieldUI> implements SettingsMethods
+public class WebDateField extends WebComponent<WebDateField, WDateFieldUI> implements SettingsMethods
 {
     /**
      * Component properties.
@@ -363,27 +361,12 @@ public class WebDateField extends WebComponent<WebDateField,WDateFieldUI> implem
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WDateFieldUI ) )
-        {
-            try
-            {
-                setUI ( ( WDateFieldUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebDateFieldUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
     }
 
     @Override
     public String getUIClassID ()
     {
-        return StyleableComponent.datefield.getUIClassID ();
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

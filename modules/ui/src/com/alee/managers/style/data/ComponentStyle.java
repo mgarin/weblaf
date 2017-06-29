@@ -55,30 +55,35 @@ import java.util.Map;
 public final class ComponentStyle implements Serializable, Cloneable
 {
     /**
-     * Base painter ID.
+     * Base painter identifier.
      */
     @Deprecated
     public static final String BASE_PAINTER_ID = "painter";
 
     /**
      * Style component type.
-     * Refers to component type this style belongs to.
+     * Refers to identifier of a component this style belongs to.
+     *
+     * @see ComponentDescriptor#getId()
      */
     @XStreamAsAttribute
-    private StyleableComponent type;
+    private String type;
 
     /**
-     * Unique component style ID.
-     * Default component style depends on component type.
-     * Use {@link com.alee.managers.style.StyleId#getDefault(javax.swing.JComponent)} to retrieve component-specific default style ID.
-     * Use {@link com.alee.managers.style.StyleableComponent#getDefaultStyleId()} to retrieve static default style ID.
+     * Unique component style identifier.
+     * Default component style depends on component type and might also depend on the instance.
+     *
+     * @see ComponentDescriptor#getDefaultStyleId()
+     * @see ComponentDescriptor#getDefaultStyleId(JComponent)
+     * @see StyleId#getDefault(JComponent)
+     * @see StyleId#getDefault(Window)
      */
     @XStreamAsAttribute
     private String id;
 
     /**
-     * Another component style ID which is extended by this style.
-     * You can specify any existing style ID here to extend it.
+     * Different style identifier which is extended by this style.
+     * Any existing style identifier of the same component type can be used here, though extended style must be defined first.
      */
     @XStreamAsAttribute
     private String extendsId;
@@ -129,7 +134,7 @@ public final class ComponentStyle implements Serializable, Cloneable
      *
      * @return supported component type
      */
-    public StyleableComponent getType ()
+    public String getType ()
     {
         return type;
     }
@@ -140,7 +145,7 @@ public final class ComponentStyle implements Serializable, Cloneable
      * @param type new supported component type
      * @return this style
      */
-    public ComponentStyle setType ( final StyleableComponent type )
+    public ComponentStyle setType ( final String type )
     {
         this.type = type;
         return this;
@@ -548,13 +553,12 @@ public final class ComponentStyle implements Serializable, Cloneable
 
         try
         {
-            // todo Still need to check method here? Throw exceptions?
             // todo Add more options on the method names here?
             // Trying to use setter method to apply the specified value
             final String setterMethod = ReflectUtils.getSetterMethodName ( field );
             ReflectUtils.callMethod ( object, setterMethod, usable );
         }
-        catch ( final Throwable me )
+         catch ( final NoSuchMethodException e )
         {
             try
             {
@@ -722,7 +726,7 @@ public final class ComponentStyle implements Serializable, Cloneable
                 ComponentStyle existing = null;
                 for ( final ComponentStyle nestedStyle : getStyles () )
                 {
-                    if ( mergedNestedStyle.getType () == nestedStyle.getType () &&
+                    if ( CompareUtils.equals ( mergedNestedStyle.getType (), nestedStyle.getType () ) &&
                             CompareUtils.equals ( mergedNestedStyle.getId (), nestedStyle.getId () ) )
                     {
                         existing = nestedStyle;
@@ -825,8 +829,8 @@ public final class ComponentStyle implements Serializable, Cloneable
                 if ( painterClass == null || extendedPainterClass == null )
                 {
                     final String pc = painterClass == null ? mergedPainter.getPainterClass () : stylePainter.getPainterClass ();
-                    final String msg = "Component style '%s:%s' points to missing painter class '%s'";
-                    throw new StyleException ( String.format ( msg, merged.getType (), merged.getId (), pc ) );
+                    final String msg = "Component style '%s' points to a missing painter class: %s";
+                    throw new StyleException ( String.format ( msg, merged, pc ) );
                 }
                 if ( ReflectUtils.isAssignable ( extendedPainterClass, painterClass ) )
                 {
@@ -926,8 +930,8 @@ public final class ComponentStyle implements Serializable, Cloneable
             final String painterId = painter.getId ();
             if ( paintersMap.containsKey ( painterId ) )
             {
-                final String msg = "Component style '%s:%s' has duplicate painters for id '%s'";
-                throw new StyleException ( String.format ( msg, style.getType (), style.getId (), painterId ) );
+                final String msg = "Component style '%s' has duplicate painters under identifier: %s";
+                throw new StyleException ( String.format ( msg, style, painterId ) );
             }
             paintersMap.put ( painterId, painter );
         }

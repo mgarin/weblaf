@@ -137,7 +137,7 @@ public class StyleEditor extends WebFrame
     protected static final ImageIcon completeStackTraceIcon =
             new ImageIcon ( StyleEditor.class.getResource ( "icons/status/completeStackTrace.png" ) );
 
-    protected static final String COMPONENT_TYPE_KEY = "component.type.key";
+    protected static final String COMPONENT_DESCRIPTOR_KEY = "component.descriptor.key";
     protected static final String SINGLE_PREVIEW_KEY = "single.preview.key";
     protected static final String STYLE_ID_KEY = "style.id.key";
 
@@ -646,13 +646,13 @@ public class StyleEditor extends WebFrame
     protected void addViewComponent ( final String title, final StyleId styleId, final JComponent displayedView, final JComponent view,
                                       final boolean center )
     {
-        final StyleableComponent type = StyleableComponent.get ( view );
+        final ComponentDescriptor descriptor = StyleManager.getDescriptor ( view );
 
         final StyleId singleId = StyleId.styleeditorPreviewSingle.at ( previewPanel );
         final WebPanel singlePreview = new WebPanel ( singleId, new BorderLayout ( 0, 0 ) );
 
         final ChildStyleId titleId = StyleId.styleeditorPreviewSingleTitle;
-        final WebLabel titleLabel = new WebLabel ( titleId.at ( singlePreview ), title, type.getIcon (), WebLabel.LEADING );
+        final WebLabel titleLabel = new WebLabel ( titleId.at ( singlePreview ), title, descriptor.getIcon (), WebLabel.LEADING );
         singlePreview.add ( titleLabel, BorderLayout.NORTH );
 
         final StyleId emptyId = StyleId.styleeditorPreviewSingleEmpty.at ( singlePreview );
@@ -664,15 +664,8 @@ public class StyleEditor extends WebFrame
         final WebPanel viewPanel = new WebPanel ( viewId, center ? new CenterPanel ( boundsPanel ) : boundsPanel );
         singlePreview.add ( viewPanel, BorderLayout.CENTER );
 
-        singlePreview.putClientProperty ( COMPONENT_TYPE_KEY, type );
-        if ( styleId != null )
-        {
-            singlePreview.putClientProperty ( STYLE_ID_KEY, styleId );
-        }
-        else
-        {
-            singlePreview.putClientProperty ( STYLE_ID_KEY, StyleManager.getStyleId ( view ) );
-        }
+        singlePreview.putClientProperty ( COMPONENT_DESCRIPTOR_KEY, descriptor );
+        singlePreview.putClientProperty ( STYLE_ID_KEY, styleId != null ? styleId : StyleManager.getStyleId ( view ) );
 
         titleLabel.addMouseListener ( new MouseAdapter ()
         {
@@ -1052,8 +1045,8 @@ public class StyleEditor extends WebFrame
             if ( component instanceof JComponent )
             {
                 final JComponent jc = ( JComponent ) component;
-                final StyleableComponent sc = ( StyleableComponent ) jc.getClientProperty ( COMPONENT_TYPE_KEY );
-                if ( sc != null && sc == StyleableComponent.valueOf ( type ) )
+                final ComponentDescriptor descriptor = ( ComponentDescriptor ) jc.getClientProperty ( COMPONENT_DESCRIPTOR_KEY );
+                if ( descriptor != null && descriptor.getId ().equals ( type ) )
                 {
                     final StyleId styleId = ( StyleId ) jc.getClientProperty ( STYLE_ID_KEY );
                     final StyleId sid = styleId != null ? styleId : StyleId.getDefault ( jc );

@@ -19,7 +19,6 @@ package com.alee.laf.spinner;
 
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.data.TooltipWay;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
@@ -243,26 +242,37 @@ public class WebSpinner extends JSpinner
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WebSpinnerUI} object that renders this component
+     */
+    @Override
+    public WebSpinnerUI getUI ()
+    {
+        return ( WebSpinnerUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WebSpinnerUI}
+     */
+    public void setUI ( final WebSpinnerUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebSpinnerUI ) )
-        {
-            try
-            {
-                setUI ( ( WebSpinnerUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebSpinnerUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
-        revalidate ();
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 
     @Override

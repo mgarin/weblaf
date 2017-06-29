@@ -17,7 +17,6 @@
 
 package com.alee.laf.optionpane;
 
-import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -369,24 +368,36 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WebOptionPaneUI} object that renders this component
+     */
+    @Override
+    public WebOptionPaneUI getUI ()
+    {
+        return ( WebOptionPaneUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WebOptionPaneUI}
+     */
+    public void setUI ( final WebOptionPaneUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebOptionPaneUI ) )
-        {
-            try
-            {
-                setUI ( ( WebOptionPaneUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebOptionPaneUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

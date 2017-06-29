@@ -29,6 +29,10 @@ package com.alee.managers.settings;
 public interface DefaultValue
 {
     /**
+     * todo 1. Replace static method usage with default constructor (or custom one with special argument?) usage for convenience
+     */
+
+    /**
      * Define similar method in implementing class to provide its default value for other classes usage:
      * {@code public static T getDefaultValue ();}
      */

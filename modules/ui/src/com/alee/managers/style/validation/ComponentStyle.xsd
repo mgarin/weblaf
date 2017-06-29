@@ -4,7 +4,7 @@
     <xs:include schemaLocation="lang/Class.xsd" />
     <xs:include schemaLocation="awt/Insets.xsd" />
     <xs:include schemaLocation="awt/LayoutManager.xsd" />
-    <xs:include schemaLocation="ext/StyleableComponent.xsd" />
+    <xs:include schemaLocation="ext/ComponentType.xsd" />
     <xs:include schemaLocation="Decoration.xsd" />
 
     <!-- com.alee.managers.style.data.ComponentStyle -->
@@ -28,7 +28,7 @@
         </xs:sequence>
 
         <!-- Component type -->
-        <xs:attribute name="type" type="StyleableComponent" use="required" />
+        <xs:attribute name="type" type="ComponentType" use="required" />
 
         <!-- Style unique identifier -->
         <xs:attribute name="id" type="xs:string" use="optional" />

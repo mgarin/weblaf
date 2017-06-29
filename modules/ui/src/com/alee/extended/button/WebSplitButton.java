@@ -25,7 +25,6 @@ import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.LanguageUtils;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.language.updaters.LanguageUpdater;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
@@ -576,7 +575,7 @@ public class WebSplitButton extends JButton
      */
     public void removeSplitButtonListener ( final SplitButtonListener listener )
     {
-        if ( ( listener != null ) && ( getAction () == listener ) )
+        if ( listener != null && getAction () == listener )
         {
             setAction ( null );
         }
@@ -718,28 +717,13 @@ public class WebSplitButton extends JButton
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebSplitButtonUI ) )
-        {
-            try
-            {
-                setUI ( ( WebSplitButtonUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebSplitButtonUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
     }
 
     @Override
     public String getUIClassID ()
     {
-        return StyleableComponent.splitbutton.getUIClassID ();
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 
     @Override

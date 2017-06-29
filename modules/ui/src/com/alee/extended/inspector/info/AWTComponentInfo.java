@@ -17,7 +17,6 @@
 
 package com.alee.extended.inspector.info;
 
-import com.alee.managers.style.StyleableComponent;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
@@ -32,7 +31,7 @@ import java.awt.*;
 public class AWTComponentInfo<T extends Component> extends AbstractComponentInfo<T>
 {
     @Override
-    public ImageIcon getIconImpl ( final StyleableComponent type, final T component )
+    public Icon getIconImpl ( final T component )
     {
         if ( component instanceof Frame )
         {
@@ -53,7 +52,7 @@ public class AWTComponentInfo<T extends Component> extends AbstractComponentInfo
     }
 
     @Override
-    public String getText ( final StyleableComponent type, final T component )
+    public String getText ( final T component )
     {
         return "{" + ReflectUtils.getClassName ( component.getClass () ) + ":c(" + getTitleColor ( component ) + ")}";
     }

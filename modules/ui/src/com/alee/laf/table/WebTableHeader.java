@@ -17,12 +17,10 @@
 
 package com.alee.laf.table;
 
-import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
 
-import javax.swing.*;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
@@ -240,24 +238,36 @@ public class WebTableHeader extends JTableHeader implements Styleable, Paintable
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WebTableHeaderUI} object that renders this component
+     */
+    @Override
+    public WebTableHeaderUI getUI ()
+    {
+        return ( WebTableHeaderUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WebTableHeaderUI}
+     */
+    public void setUI ( final WebTableHeaderUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebTableHeaderUI ) )
-        {
-            try
-            {
-                setUI ( ( WebTableHeaderUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebTableHeaderUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

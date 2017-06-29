@@ -423,7 +423,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
         bounds = content.isOverwrite () || content.bounds != null ? content.bounds : bounds;
         constraints = content.isOverwrite () || content.constraints != null ? content.constraints : constraints;
         padding = content.isOverwrite () || content.padding != null ? content.padding : padding;
-        size = content.isOverwrite () || content.size != null ? content.size : size; 
+        size = content.isOverwrite () || content.size != null ? content.size : size;
         rotation = content.isOverwrite () || content.rotation != null ? content.rotation : rotation;
         opacity = content.isOverwrite () || content.opacity != null ? content.opacity : opacity;
         return ( I ) this;

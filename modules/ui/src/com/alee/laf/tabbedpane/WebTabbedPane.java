@@ -21,7 +21,6 @@ import com.alee.managers.language.LM;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
-import com.alee.managers.log.Log;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -371,22 +370,13 @@ public class WebTabbedPane extends JTabbedPane
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WTabbedPaneUI ) )
-        {
-            try
-            {
-                setUI ( ( WTabbedPaneUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebTabbedPaneUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 
     @Override

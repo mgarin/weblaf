@@ -17,7 +17,6 @@
 
 package com.alee.laf.menu;
 
-import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -375,22 +374,13 @@ public class WebPopupMenu extends JPopupMenu
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WPopupMenuUI ) )
-        {
-            try
-            {
-                setUI ( ( WPopupMenuUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebPopupMenuUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 
     @Override

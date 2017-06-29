@@ -90,6 +90,13 @@ public abstract class AbstractButtonPainter<E extends AbstractButton, U extends 
         return states;
     }
 
+    @Override
+    protected boolean usesHoverView ()
+    {
+        // Additional case of hover state usage for buttons exclusively
+        return component.isRolloverEnabled () || super.usesHoverView ();
+    }
+
     /**
      * Returns whether or not button is pressed.
      *
@@ -108,12 +115,5 @@ public abstract class AbstractButtonPainter<E extends AbstractButton, U extends 
     protected boolean isSelected ()
     {
         return component.getModel ().isSelected ();
-    }
-
-    @Override
-    protected boolean usesHover ()
-    {
-        // Additional case of hover state usage for buttons exclusively
-        return component.isRolloverEnabled () || super.usesHover ();
     }
 }

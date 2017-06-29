@@ -17,58 +17,17 @@
 
 package com.alee.laf;
 
-import com.alee.extended.button.WebSplitButtonUI;
-import com.alee.extended.canvas.WebCanvasUI;
-import com.alee.extended.checkbox.WebTristateCheckBoxUI;
-import com.alee.extended.date.WebDateFieldUI;
-import com.alee.extended.dock.WebDockableFrameUI;
-import com.alee.extended.dock.WebDockablePaneUI;
-import com.alee.extended.image.WebImageUI;
-import com.alee.extended.label.WebStyledLabelUI;
-import com.alee.extended.link.WebLinkUI;
-import com.alee.extended.statusbar.WebStatusBarUI;
 import com.alee.extended.svg.SvgIcon;
-import com.alee.extended.window.WebPopupUI;
 import com.alee.global.StyleConstants;
 import com.alee.graphics.image.gif.GifIcon;
-import com.alee.laf.button.WebButtonUI;
-import com.alee.laf.button.WebToggleButtonUI;
-import com.alee.laf.checkbox.WebCheckBoxUI;
-import com.alee.laf.colorchooser.WebColorChooserUI;
-import com.alee.laf.combobox.WebComboBoxUI;
-import com.alee.laf.desktoppane.WebDesktopIconUI;
-import com.alee.laf.desktoppane.WebDesktopPaneUI;
-import com.alee.laf.desktoppane.WebInternalFrameUI;
 import com.alee.laf.edt.ExceptionNonEventThreadHandler;
 import com.alee.laf.edt.NonEventThreadHandler;
-import com.alee.laf.filechooser.WebFileChooserUI;
-import com.alee.laf.label.WebLabelUI;
 import com.alee.laf.list.WebListCellRenderer;
-import com.alee.laf.list.WebListUI;
-import com.alee.laf.menu.*;
-import com.alee.laf.optionpane.WebOptionPaneUI;
-import com.alee.laf.panel.WebPanelUI;
-import com.alee.laf.progressbar.WebProgressBarUI;
-import com.alee.laf.radiobutton.WebRadioButtonUI;
-import com.alee.laf.rootpane.WebRootPaneUI;
-import com.alee.laf.scroll.WebScrollBarUI;
-import com.alee.laf.scroll.WebScrollPaneUI;
-import com.alee.laf.separator.WebSeparatorUI;
-import com.alee.laf.slider.WebSliderUI;
-import com.alee.laf.spinner.WebSpinnerUI;
-import com.alee.laf.splitpane.WebSplitPaneUI;
-import com.alee.laf.tabbedpane.WebTabbedPaneUI;
-import com.alee.laf.table.WebTableHeaderUI;
-import com.alee.laf.table.WebTableUI;
-import com.alee.laf.text.*;
-import com.alee.laf.toolbar.WebToolBarSeparatorUI;
-import com.alee.laf.toolbar.WebToolBarUI;
-import com.alee.laf.tooltip.WebToolTipUI;
 import com.alee.laf.tree.WebTreeUI;
-import com.alee.laf.viewport.WebViewportUI;
 import com.alee.managers.UIManagers;
 import com.alee.managers.icon.Icons;
 import com.alee.managers.icon.LazyIcon;
+import com.alee.managers.style.ComponentDescriptor;
 import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.*;
@@ -195,132 +154,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @see #setOrientation(boolean)
      */
     protected static ComponentOrientation orientation;
-
-    /**
-     * Reassignable LookAndFeel UI class names.
-     */
-
-    /**
-     * Basic components.
-     */
-    public static String canvasUI = WebCanvasUI.class.getCanonicalName ();
-    public static String imageUI = WebImageUI.class.getCanonicalName ();
-
-    /**
-     * Label-related components.
-     */
-    public static String labelUI = WebLabelUI.class.getCanonicalName ();
-    public static String styledLabelUI = WebStyledLabelUI.class.getCanonicalName ();
-    public static String linkUI = WebLinkUI.class.getCanonicalName ();
-    public static String toolTipUI = WebToolTipUI.class.getCanonicalName ();
-
-    /**
-     * Button-related components.
-     */
-    public static String buttonUI = WebButtonUI.class.getCanonicalName ();
-    public static String splitButtonUI = WebSplitButtonUI.class.getCanonicalName ();
-    public static String toggleButtonUI = WebToggleButtonUI.class.getCanonicalName ();
-    public static String checkBoxUI = WebCheckBoxUI.class.getCanonicalName ();
-    public static String tristateCheckBoxUI = WebTristateCheckBoxUI.class.getCanonicalName ();
-    public static String radioButtonUI = WebRadioButtonUI.class.getCanonicalName ();
-
-    /**
-     * Menu-related components.
-     */
-    public static String menuBarUI = WebMenuBarUI.class.getCanonicalName ();
-    public static String menuUI = WebMenuUI.class.getCanonicalName ();
-    public static String popupMenuUI = WebPopupMenuUI.class.getCanonicalName ();
-    public static String menuItemUI = WebMenuItemUI.class.getCanonicalName ();
-    public static String checkBoxMenuItemUI = WebCheckBoxMenuItemUI.class.getCanonicalName ();
-    public static String radioButtonMenuItemUI = WebRadioButtonMenuItemUI.class.getCanonicalName ();
-    public static String popupMenuSeparatorUI = WebPopupMenuSeparatorUI.class.getCanonicalName ();
-
-    /**
-     * Separator component.
-     */
-    public static String separatorUI = WebSeparatorUI.class.getCanonicalName ();
-
-    /**
-     * Scroll-related components.
-     */
-    public static String scrollBarUI = WebScrollBarUI.class.getCanonicalName ();
-    public static String scrollPaneUI = WebScrollPaneUI.class.getCanonicalName ();
-    public static String viewportUI = WebViewportUI.class.getCanonicalName ();
-
-    /**
-     * Text-related components.
-     */
-    public static String textFieldUI = WebTextFieldUI.class.getCanonicalName ();
-    public static String passwordFieldUI = WebPasswordFieldUI.class.getCanonicalName ();
-    public static String formattedTextFieldUI = WebFormattedTextFieldUI.class.getCanonicalName ();
-    public static String textAreaUI = WebTextAreaUI.class.getCanonicalName ();
-    public static String editorPaneUI = WebEditorPaneUI.class.getCanonicalName ();
-    public static String textPaneUI = WebTextPaneUI.class.getCanonicalName ();
-
-    /**
-     * Toolbar-related components.
-     */
-    public static String toolBarUI = WebToolBarUI.class.getCanonicalName ();
-    public static String toolBarSeparatorUI = WebToolBarSeparatorUI.class.getCanonicalName ();
-
-    /**
-     * Statusbar-related components.
-     */
-    public static String statusBarUI = WebStatusBarUI.class.getCanonicalName ();
-
-    /**
-     * Table-related components.
-     */
-    public static String tableUI = WebTableUI.class.getCanonicalName ();
-    public static String tableHeaderUI = WebTableHeaderUI.class.getCanonicalName ();
-
-    /**
-     * Chooser components.
-     */
-    public static String colorChooserUI = WebColorChooserUI.class.getCanonicalName ();
-    public static String fileChooserUI = WebFileChooserUI.class.getCanonicalName ();
-
-    /**
-     * Container-related components.
-     */
-    public static String panelUI = WebPanelUI.class.getCanonicalName ();
-    public static String rootPaneUI = WebRootPaneUI.class.getCanonicalName ();
-    public static String tabbedPaneUI = WebTabbedPaneUI.class.getCanonicalName ();
-    public static String splitPaneUI = WebSplitPaneUI.class.getCanonicalName ();
-    public static String popupUI = WebPopupUI.class.getCanonicalName ();
-
-    /**
-     * Other data-related components.
-     */
-    public static String progressBarUI = WebProgressBarUI.class.getCanonicalName ();
-    public static String sliderUI = WebSliderUI.class.getCanonicalName ();
-    public static String spinnerUI = WebSpinnerUI.class.getCanonicalName ();
-    public static String treeUI = WebTreeUI.class.getCanonicalName ();
-    public static String listUI = WebListUI.class.getCanonicalName ();
-    public static String comboBoxUI = WebComboBoxUI.class.getCanonicalName ();
-
-    /**
-     * Desktop-pane-related components.
-     */
-    public static String desktopPaneUI = WebDesktopPaneUI.class.getCanonicalName ();
-    public static String desktopIconUI = WebDesktopIconUI.class.getCanonicalName ();
-    public static String internalFrameUI = WebInternalFrameUI.class.getCanonicalName ();
-
-    /**
-     * Dockable-pane-related components.
-     */
-    public static String dockablePaneUI = WebDockablePaneUI.class.getCanonicalName ();
-    public static String dockableFrameUI = WebDockableFrameUI.class.getCanonicalName ();
-
-    /**
-     * Option pane component.
-     */
-    public static String optionPaneUI = WebOptionPaneUI.class.getCanonicalName ();
-
-    /**
-     * Chooser components.
-     */
-    public static String dateFieldUI = WebDateFieldUI.class.getCanonicalName ();
 
     /**
      * Reassignable LookAndFeel fonts.
@@ -496,93 +329,12 @@ public class WebLookAndFeel extends BasicLookAndFeel
     @Override
     protected void initClassDefaults ( final UIDefaults table )
     {
-        // Basic
-        table.put ( "CanvasUI", canvasUI );
-        table.put ( "ImageUI", imageUI );
-
-        // Label
-        table.put ( "LabelUI", labelUI );
-        table.put ( "StyledLabelUI", styledLabelUI );
-        table.put ( "ToolTipUI", toolTipUI );
-        table.put ( "LinkUI", linkUI );
-
-        // Button
-        table.put ( "ButtonUI", buttonUI );
-        table.put ( "SplitButtonUI", splitButtonUI );
-        table.put ( "ToggleButtonUI", toggleButtonUI );
-        table.put ( "CheckBoxUI", checkBoxUI );
-        table.put ( "TristateCheckBoxUI", tristateCheckBoxUI );
-        table.put ( "RadioButtonUI", radioButtonUI );
-
-        // Menu
-        table.put ( "MenuBarUI", menuBarUI );
-        table.put ( "MenuUI", menuUI );
-        table.put ( "PopupMenuUI", popupMenuUI );
-        table.put ( "MenuItemUI", menuItemUI );
-        table.put ( "CheckBoxMenuItemUI", checkBoxMenuItemUI );
-        table.put ( "RadioButtonMenuItemUI", radioButtonMenuItemUI );
-        table.put ( "PopupMenuSeparatorUI", popupMenuSeparatorUI );
-
-        // Separator
-        table.put ( "SeparatorUI", separatorUI );
-
-        // Scroll
-        table.put ( "ScrollBarUI", scrollBarUI );
-        table.put ( "ScrollPaneUI", scrollPaneUI );
-        table.put ( "ViewportUI", viewportUI );
-
-        // Text
-        table.put ( "TextFieldUI", textFieldUI );
-        table.put ( "PasswordFieldUI", passwordFieldUI );
-        table.put ( "FormattedTextFieldUI", formattedTextFieldUI );
-        table.put ( "TextAreaUI", textAreaUI );
-        table.put ( "EditorPaneUI", editorPaneUI );
-        table.put ( "TextPaneUI", textPaneUI );
-
-        // Toolbar
-        table.put ( "ToolBarUI", toolBarUI );
-        table.put ( "ToolBarSeparatorUI", toolBarSeparatorUI );
-
-        // Statusbar
-        table.put ( "StatusBarUI", statusBarUI );
-
-        // Table
-        table.put ( "TableUI", tableUI );
-        table.put ( "TableHeaderUI", tableHeaderUI );
-
-        // Chooser
-        table.put ( "ColorChooserUI", colorChooserUI );
-        table.put ( "FileChooserUI", fileChooserUI );
-
-        // Container
-        table.put ( "PanelUI", panelUI );
-        table.put ( "RootPaneUI", rootPaneUI );
-        table.put ( "TabbedPaneUI", tabbedPaneUI );
-        table.put ( "SplitPaneUI", splitPaneUI );
-        table.put ( "PopupUI", popupUI );
-
-        // Complex components
-        table.put ( "ProgressBarUI", progressBarUI );
-        table.put ( "SliderUI", sliderUI );
-        table.put ( "SpinnerUI", spinnerUI );
-        table.put ( "TreeUI", treeUI );
-        table.put ( "ListUI", listUI );
-        table.put ( "ComboBoxUI", comboBoxUI );
-
-        // Desktop pane
-        table.put ( "DesktopPaneUI", desktopPaneUI );
-        table.put ( "DesktopIconUI", desktopIconUI );
-        table.put ( "InternalFrameUI", internalFrameUI );
-
-        // Dockable pane
-        table.put ( "DockablePaneUI", dockablePaneUI );
-        table.put ( "DockableFrameUI", dockableFrameUI );
-
-        // Option pane
-        table.put ( "OptionPaneUI", optionPaneUI );
-
-        // Choosers
-        table.put ( "DateFieldUI", dateFieldUI );
+        // Dynamically provided UI classes
+        for ( final ComponentDescriptor descriptor : StyleManager.getDescriptors () )
+        {
+            // Registering each UI class under its identifier
+            table.put ( descriptor.getUIClassId (), descriptor.getUIClass ().getCanonicalName () );
+        }
     }
 
     /**

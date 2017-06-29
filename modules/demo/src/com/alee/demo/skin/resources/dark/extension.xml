@@ -9,7 +9,7 @@
     <iconSet>com.alee.demo.skin.DarkIconSet</iconSet>
 
     <!-- Empty central area panel -->
-    <style type="panel" id="emptycontent" extends="transparent" margin="10">
+    <style type="panel" id="emptycontent" extends="transparent" padding="10">
 
         <!-- Empty content label -->
         <style type="styledlabel" id="emptycontent">

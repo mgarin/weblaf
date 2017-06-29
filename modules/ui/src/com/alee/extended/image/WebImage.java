@@ -19,9 +19,8 @@ package com.alee.extended.image;
 
 import com.alee.extended.WebComponent;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleableComponent;
+import com.alee.managers.style.StyleManager;
 import com.alee.utils.ImageUtils;
 
 import javax.swing.*;
@@ -481,27 +480,12 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WImageUI ) )
-        {
-            try
-            {
-                setUI ( ( WImageUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebImageUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
     }
 
     @Override
     public String getUIClassID ()
     {
-        return StyleableComponent.image.getUIClassID ();
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

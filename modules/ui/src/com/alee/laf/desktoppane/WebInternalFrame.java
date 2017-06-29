@@ -444,25 +444,36 @@ public class WebInternalFrame extends JInternalFrame
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WebInternalFrameUI} object that renders this component
+     */
+    @Override
+    public WebInternalFrameUI getUI ()
+    {
+        return ( WebInternalFrameUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WebInternalFrameUI}
+     */
+    public void setUI ( final WebInternalFrameUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebInternalFrameUI ) )
-        {
-            try
-            {
-                setUI ( ( WebInternalFrameUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebInternalFrameUI ( this ) );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
-        invalidate ();
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

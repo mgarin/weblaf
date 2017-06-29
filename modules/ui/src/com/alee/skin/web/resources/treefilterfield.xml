@@ -16,14 +16,20 @@
 
     <!-- Inline tree filter field -->
     <style type="textfield" id="treefilterfield-inline" extends="treefilterfield">
-        <component>
-            <opaque>true</opaque>
-            <background>white</background>
-        </component>
         <painter>
-            <decorations>
-                <decoration visible="false" />
+            <decorations overwrite="true">
+                <decoration>
+                    <BoundsShape />
+                    <ColorBackground color="white" />
+                </decoration>
             </decorations>
+        </painter>
+    </style>
+
+    <!-- Transparent tree filter field -->
+    <style type="textfield" id="treefilterfield-transparent" extends="treefilterfield">
+        <painter>
+            <decorations overwrite="true" />
         </painter>
     </style>
 

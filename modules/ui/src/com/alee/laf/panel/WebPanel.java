@@ -19,7 +19,6 @@ package com.alee.laf.panel;
 
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.data.TooltipWay;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
@@ -293,22 +292,13 @@ public class WebPanel extends JPanel
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WPanelUI ) )
-        {
-            try
-            {
-                setUI ( ( WPanelUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebPanelUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 
     @Override

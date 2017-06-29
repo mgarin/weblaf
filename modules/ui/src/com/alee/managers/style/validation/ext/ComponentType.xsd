@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xs:schema targetNamespace="http://weblookandfeel.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 
-    <!-- com.alee.managers.style.StyleableComponent -->
-    <xs:simpleType name="StyleableComponent">
+    <!-- Predefined component type -->
+    <xs:simpleType name="ComponentType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="canvas" />
             <xs:enumeration value="image" />

@@ -22,7 +22,6 @@ import com.alee.laf.tree.behavior.TreeHoverSelectionBehavior;
 import com.alee.laf.tree.behavior.TreeSelectionExpandBehavior;
 import com.alee.laf.tree.behavior.TreeSingleChildExpandBehavior;
 import com.alee.managers.hotkey.HotkeyData;
-import com.alee.managers.log.Log;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -1616,28 +1615,16 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
         super.setUI ( ui );
     }
 
-    /**
-     * Installs a Web-UI into this component.
-     */
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WTreeUI ) )
-        {
-            try
-            {
-                setUI ( ( WTreeUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebTreeUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 
     /**

@@ -1155,7 +1155,8 @@ public final class SettingsManager
                 }
                 else
                 {
-                    throw new RuntimeException ( "Cannot create settings directory: " + dir.getAbsolutePath () );
+                    final String msg = "Cannot create settings directory: %s";
+                    throw new SettingsException ( String.format ( msg, dir.getAbsolutePath () ) );
                 }
             }
             catch ( final Throwable e )
@@ -1366,7 +1367,8 @@ public final class SettingsManager
             }
             else
             {
-                throw new RuntimeException ( "Cannot create settings directory: " + dir.getAbsolutePath () );
+                final String msg = "Cannot create settings directory: %s";
+                throw new SettingsException ( String.format ( msg, dir.getAbsolutePath () ) );
             }
         }
     }

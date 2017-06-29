@@ -22,10 +22,13 @@ import com.alee.api.TitleSupport;
 import com.alee.extended.inspector.info.AWTComponentInfo;
 import com.alee.extended.inspector.info.ComponentInfo;
 import com.alee.extended.inspector.info.JComponentInfo;
-import com.alee.extended.inspector.info.StyleableInfo;
+import com.alee.extended.inspector.info.WComponentInfo;
 import com.alee.laf.tree.TreeState;
 import com.alee.laf.tree.UniqueNode;
-import com.alee.managers.style.*;
+import com.alee.managers.style.Skin;
+import com.alee.managers.style.StyleId;
+import com.alee.managers.style.StyleListener;
+import com.alee.managers.style.StyleManager;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 
@@ -47,7 +50,7 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
     /**
      * Component short info providers.
      */
-    private static final ComponentInfo styleableInfo = new StyleableInfo ();
+    private static final ComponentInfo wComponentInfo = new WComponentInfo ();
     private static final ComponentInfo jComponentInfo = new JComponentInfo ();
     private static final ComponentInfo awtComponentInfo = new AWTComponentInfo ();
 
@@ -140,25 +143,18 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
                     public void componentRemoved ( final ContainerEvent e )
                     {
                         final TreeState treeState = tree.getTreeState ( InterfaceTreeNode.this );
-                        tree.reloadNode ( InterfaceTreeNode.this );
+                        final Component child = e.getChild ();
+                        for ( int i = 0; i < InterfaceTreeNode.this.getChildCount (); i++ )
+                        {
+                            final InterfaceTreeNode childNode = ( InterfaceTreeNode ) InterfaceTreeNode.this.getChildAt ( i );
+                            if ( childNode.getComponent () == child )
+                            {
+                                tree.removeNode ( childNode );
+                                childNode.destroy ();
+                                break;
+                            }
+                        }
                         tree.setTreeState ( treeState, InterfaceTreeNode.this );
-
-                        //                        final Component child = e.getChild ();
-                        //                        for ( int i = 0; i < InterfaceTreeNode.this.getChildCount (); i++ )
-                        //                        {
-                        //                            final InterfaceTreeNode childNode = ( InterfaceTreeNode ) InterfaceTreeNode.this.getChildAt ( i );
-                        //                            if ( childNode.getComponent () == child )
-                        //                            {
-                        //                                if ( child.getClass ().getCanonicalName ().contains ( "StyleFrame" ) )
-                        //                                {
-                        //                                    System.out.println ( InterfaceTreeNode.this.hashCode () + " Destroyed: " + childNode );
-                        //                                }
-                        //                                tree.removeNode ( childNode );
-                        //                                childNode.destroy ();
-                        //                                break;
-                        //                            }
-                        //                        }
-                        //                        tree.expand ( component );
                     }
                 };
                 ( ( Container ) component ).addContainerListener ( containerAdapter );
@@ -166,7 +162,7 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
 
             // Additional listeners for components using WebLaF-based UI
             // This is checked instead of styling support to avoid issues when WebLaF is not installed as L&F
-            if ( LafUtils.isWebLafUI ( component ) )
+            if ( LafUtils.hasWebLafUI ( component ) )
             {
                 styleListener = new StyleListener ()
                 {
@@ -242,27 +238,14 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
     public Icon getIcon ()
     {
         final Component component = getComponent ();
-        final StyleableComponent type = getType ( component );
-        return getInfo ( component ).getIcon ( type, component );
+        return getInfo ( component ).getIcon ( component );
     }
 
     @Override
     public String getTitle ()
     {
         final Component component = getComponent ();
-        final StyleableComponent type = getType ( component );
-        return getInfo ( component ).getText ( type, component );
-    }
-
-    /**
-     * Returns styleable component type or {@code null}.
-     *
-     * @param component component to detect type of
-     * @return styleable component type or {@code null}
-     */
-    protected StyleableComponent getType ( final Component component )
-    {
-        return StyleableComponent.isSupported ( component ) ? StyleableComponent.get ( component ) : null;
+        return getInfo ( component ).getText ( component );
     }
 
     /**
@@ -273,9 +256,9 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
      */
     protected ComponentInfo getInfo ( final Component component )
     {
-        if ( StyleableComponent.isSupported ( component ) )
+        if ( StyleManager.isSupported ( component ) )
         {
-            return styleableInfo;
+            return wComponentInfo;
         }
         else if ( component instanceof JComponent )
         {

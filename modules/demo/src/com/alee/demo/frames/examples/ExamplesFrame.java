@@ -84,7 +84,7 @@ public final class ExamplesFrame extends WebDockableFrame
                 open ( node );
             }
         } );
-        final WebScrollPane examplesTreeScroll = new WebScrollPane ( StyleId.scrollpaneHovering, examplesTree );
+        final WebScrollPane examplesTreeScroll = new WebScrollPane ( StyleId.scrollpaneTransparentHovering, examplesTree );
 
         // Filtering field
         final WebTreeFilterField filter = new WebTreeFilterField ( DemoStyles.filterfield, examplesTree );

@@ -21,7 +21,6 @@ import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.LanguageUtils;
 import com.alee.managers.language.updaters.LanguageUpdater;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -312,29 +311,37 @@ public class WebMenu extends JMenu
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WebMenuUI} object that renders this component
+     */
+    @Override
+    public WebMenuUI getUI ()
+    {
+        return ( WebMenuUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WebMenuUI}
+     */
+    public void setUI ( final WebMenuUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebMenuUI ) )
-        {
-            try
-            {
-                setUI ( ( WebMenuUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebMenuUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
-        if ( getPopupMenu () != null )
-        {
-            getPopupMenu ().updateUI ();
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 
     @Override

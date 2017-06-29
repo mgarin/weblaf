@@ -671,6 +671,7 @@ public final class StyleId
      */
     public static final StyleId treefilterfield = StyleId.of ( "treefilterfield" );
     public static final StyleId treefilterfieldInline = StyleId.of ( "treefilterfield-inline" );
+    public static final StyleId treefilterfieldTransparent = StyleId.of ( "treefilterfield-transparent" );
     public static final ChildStyleId treefilterfieldSettings = ChildStyleId.of ( "settings" );
 
     /**
@@ -1043,8 +1044,8 @@ public final class StyleId
      */
     public static StyleId getDefault ( final JComponent component )
     {
-        return component instanceof Styleable ? ( ( Styleable ) component ).getDefaultStyleId () :
-                StyleableComponent.get ( component ).getDefaultStyleId ();
+        final ComponentDescriptor descriptor = StyleManager.getDescriptor ( component );
+        return descriptor.getDefaultStyleId ( component );
     }
 
     /**

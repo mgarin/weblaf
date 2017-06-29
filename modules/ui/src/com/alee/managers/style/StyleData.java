@@ -100,14 +100,14 @@ public final class StyleData implements PropertyChangeListener
         // Ensure that component has correct UI first, fix for #376
         // This should never happen if WebLaF is installed before creating any Swing components
         // Component might be missing UI here because it's style identifier was applied from upper level component
-        if ( !LafUtils.isWebLafUI ( component ) )
+        if ( !LafUtils.hasWebLafUI ( component ) )
         {
             // Trying to make component use WebLaF UI by forcefully updating it
             // Thought we do not force any specific UI on the component here
             component.updateUI ();
 
             // Checking that proper UI was installed
-            if ( !LafUtils.isWebLafUI ( component ) )
+            if ( !LafUtils.hasWebLafUI ( component ) )
             {
                 // Our attempt to apply WebLaF UI has failed, throwing appropriate exception
                 final String msg = "Component '%s' doesn't use WebLaF UI";

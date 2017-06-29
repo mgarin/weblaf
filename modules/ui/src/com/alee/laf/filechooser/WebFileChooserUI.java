@@ -449,6 +449,9 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
 
     /**
      * Special FileView for file chooser.
+     *
+     * todo 1. Make caching optional?
+     * todo 2. Make multiple default implementations?
      */
     protected class WebFileView extends FileView
     {

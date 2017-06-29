@@ -25,7 +25,6 @@ import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.LanguageUtils;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.language.updaters.LanguageUpdater;
-import com.alee.managers.log.Log;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -631,25 +630,37 @@ public class WebToggleButton extends JToggleButton
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WToggleButtonUI} object that renders this component
+     */
+    @Override
+    public WToggleButtonUI getUI ()
+    {
+        return ( WToggleButtonUI ) ui;
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WToggleButtonUI}
+     */
+    public void setUI ( final WToggleButtonUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebToggleButtonUI ) )
-        {
-            try
-            {
-                setUI ( ( WebToggleButtonUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebToggleButtonUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 
     @Override

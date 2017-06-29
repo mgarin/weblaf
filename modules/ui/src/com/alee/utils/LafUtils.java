@@ -149,31 +149,66 @@ public final class LafUtils
      */
     public static <T extends ComponentUI> T getUI ( final Component component )
     {
-        return ReflectUtils.callMethodSafely ( component, "getUI" );
+        try
+        {
+            return ReflectUtils.callMethod ( component, "getUI" );
+        }
+        catch ( final Throwable e )
+        {
+            throw new StyleException ( "Unable to retrieve component UI: " + component, e );
+        }
+    }
+
+    /**
+     * Setup provided UI into specified component.
+     *
+     * @param component component to setup UI for
+     * @param ui        component UI
+     */
+    public static void setUI ( final Component component, final ComponentUI ui )
+    {
+        try
+        {
+            ReflectUtils.callMethod ( component, "setUI", ui );
+        }
+        catch ( final Throwable e )
+        {
+            throw new StyleException ( "Unable to setup component UI: " + component, e );
+        }
+    }
+
+    /**
+     * Returns whether or not specified component uses UI.
+     *
+     * @param component component to check UI usage in
+     * @return {@code true} if specified component uses UI, {@code false} otherwise
+     */
+    public static boolean hasUI ( final Component component )
+    {
+        return ReflectUtils.hasMethod ( component, "getUI" );
     }
 
     /**
      * Returns whether or not specified component uses WebLaF UI.
      *
-     * @param component component to check used UI at
-     * @return true if specified component uses WebLaF UI, false otherwise
+     * @param component component to check WebLaF UI usage in
+     * @return {@code true} if specified component uses WebLaF UI, {@code false} otherwise
      */
-    public static boolean isWebLafUI ( final Component component )
+    public static boolean hasWebLafUI ( final Component component )
     {
         final boolean webUI;
-        if ( StyleableComponent.isSupported ( component ) )
+        if ( StyleManager.isSupported ( component ) )
         {
-            // Checking that currently installed UI is compatible with WebLaF UI class
-            // todo This should be changed to a more simple case like "instanceof WebUI"
-            // todo But WebUI is not yet implemented by all UI classes so this way works as a temporary measure
+            // Checking that currently installed UI is compatible with base UI class for this component
+            // For instance base UI class for JButton is WButtonUI, so WebButtonUI would be compatible and MetalButtonUI won't be
             final ComponentUI ui = LafUtils.getUI ( component );
-            webUI = ui != null && StyleableComponent.get ( component ).getUIClass ().isAssignableFrom ( ui.getClass () );
+            final ComponentDescriptor descriptor = StyleManager.getDescriptor ( ( JComponent ) component );
+            webUI = ui != null && descriptor.getBaseUIClass ().isAssignableFrom ( ui.getClass () );
         }
         else
         {
-            // This might be the case when L&F is not installed
-            // Specifically for complex components like WebScrollPane
-            // Look at issue #458 for more details
+            // This might be the case when L&F is not installed and another L&F is used across all common J-components
+            // Also it could be the case for complex components like WebScrollPane, look at issue #458 for more details on that case
             webUI = false;
         }
         return webUI;
@@ -209,8 +244,8 @@ public final class LafUtils
                 if ( color != null )
                 {
                     g2d.setPaint ( color );
-                    final int w = ( x + i * size + size > x + width ) ? ( width - i * size ) : size;
-                    final int h = ( y + j * size + size > y + height ) ? ( height - j * size ) : size;
+                    final int w = x + i * size + size > x + width ? width - i * size : size;
+                    final int h = y + j * size + size > y + height ? height - j * size : size;
                     g2d.fillRect ( x + i * size, y + j * size, w, h );
                 }
             }

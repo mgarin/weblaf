@@ -23,7 +23,6 @@ import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.LanguageUtils;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.language.updaters.LanguageUpdater;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
@@ -389,25 +388,37 @@ public class WebLabel extends JLabel
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WLabelUI} object that renders this component
+     */
+    @Override
+    public WLabelUI getUI ()
+    {
+        return ( WLabelUI ) ui;
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WLabelUI}
+     */
+    public void setUI ( final WLabelUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebLabelUI ) )
-        {
-            try
-            {
-                setUI ( ( WebLabelUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebLabelUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 
     @Override

@@ -127,7 +127,7 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
                 {
                     hoverHighlighter.uninstall ();
                 }
-                if ( current != null && ComponentHighlighter.canHighlight ( current.getComponent () ) )
+                if ( current != null && canHighlight ( current.getComponent () ) )
                 {
                     hoverHighlighter.install ( current.getComponent () );
                 }
@@ -162,7 +162,7 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
                         selectedHighlighters.put ( component, prevHighlighter );
                         prevHighlighters.remove ( component );
                     }
-                    else if ( ComponentHighlighter.canHighlight ( component ) )
+                    else if ( canHighlight ( component ) )
                     {
                         // Adding new highlighter
                         final ComponentHighlighter newHighlighter = new ComponentHighlighter ();
@@ -178,6 +178,17 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
                 }
             }
         } );
+    }
+
+    /**
+     * Returns whether or not component can be highlighted.
+     *
+     * @param component component to be highlighted
+     * @return {@code true} if component can be highlighted, {@code false} otherwise
+     */
+    public boolean canHighlight ( final Component component )
+    {
+        return component != null && component.isShowing () && !( component instanceof Window );
     }
 
     /**

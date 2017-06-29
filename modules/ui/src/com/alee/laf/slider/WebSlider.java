@@ -19,7 +19,6 @@ package com.alee.laf.slider;
 
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.data.TooltipWay;
-import com.alee.managers.log.Log;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -357,25 +356,37 @@ public class WebSlider extends JSlider
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WebSliderUI} object that renders this component
+     */
+    @Override
+    public WebSliderUI getUI ()
+    {
+        return ( WebSliderUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WebSliderUI}
+     */
+    public void setUI ( final WebSliderUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebSliderUI ) )
-        {
-            try
-            {
-                setUI ( ( WebSliderUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebSliderUI ( this ) );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 
     @Override

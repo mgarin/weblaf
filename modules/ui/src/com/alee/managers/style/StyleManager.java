@@ -17,29 +17,68 @@
 
 package com.alee.managers.style;
 
+import com.alee.extended.button.SplitButtonDescriptor;
+import com.alee.extended.canvas.CanvasDescriptor;
 import com.alee.extended.canvas.Gripper;
 import com.alee.extended.checkbox.MixedIcon;
+import com.alee.extended.checkbox.TristateCheckBoxDescriptor;
+import com.alee.extended.date.DateFieldDescriptor;
+import com.alee.extended.dock.DockableFrameDescriptor;
+import com.alee.extended.dock.DockablePaneDescriptor;
+import com.alee.extended.image.ImageDescriptor;
 import com.alee.extended.label.AbstractStyledTextContent;
 import com.alee.extended.label.HotkeyLabelBackground;
+import com.alee.extended.label.StyledLabelDescriptor;
 import com.alee.extended.label.StyledLabelText;
+import com.alee.extended.link.LinkDescriptor;
 import com.alee.extended.panel.SelectablePanelPainter;
 import com.alee.extended.statusbar.MemoryBarBackground;
+import com.alee.extended.statusbar.StatusBarDescriptor;
 import com.alee.extended.syntax.SyntaxPanelPainter;
 import com.alee.extended.window.PopOverPainter;
+import com.alee.extended.window.PopupDescriptor;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.*;
+import com.alee.laf.checkbox.CheckBoxDescriptor;
 import com.alee.laf.checkbox.CheckIcon;
+import com.alee.laf.colorchooser.ColorChooserDescriptor;
+import com.alee.laf.combobox.ComboBoxDescriptor;
+import com.alee.laf.desktoppane.DesktopIconDescriptor;
+import com.alee.laf.desktoppane.DesktopPaneDescriptor;
+import com.alee.laf.desktoppane.InternalFrameDescriptor;
+import com.alee.laf.filechooser.FileChooserDescriptor;
+import com.alee.laf.label.LabelDescriptor;
 import com.alee.laf.label.LabelIcon;
 import com.alee.laf.label.LabelLayout;
 import com.alee.laf.label.LabelText;
-import com.alee.laf.menu.AcceleratorText;
-import com.alee.laf.menu.MenuItemLayout;
+import com.alee.laf.list.ListDescriptor;
+import com.alee.laf.menu.*;
+import com.alee.laf.optionpane.OptionPaneDescriptor;
+import com.alee.laf.panel.PanelDescriptor;
+import com.alee.laf.progressbar.ProgressBarDescriptor;
 import com.alee.laf.progressbar.ProgressBarText;
+import com.alee.laf.radiobutton.RadioButtonDescriptor;
 import com.alee.laf.radiobutton.RadioIcon;
+import com.alee.laf.rootpane.RootPaneDescriptor;
+import com.alee.laf.scroll.ScrollBarDescriptor;
+import com.alee.laf.scroll.ScrollPaneDescriptor;
 import com.alee.laf.scroll.layout.WebScrollPaneLayout;
+import com.alee.laf.separator.SeparatorDescriptor;
 import com.alee.laf.separator.SeparatorStripes;
+import com.alee.laf.slider.SliderDescriptor;
+import com.alee.laf.spinner.SpinnerDescriptor;
+import com.alee.laf.splitpane.SplitPaneDescriptor;
+import com.alee.laf.tabbedpane.TabbedPaneDescriptor;
+import com.alee.laf.table.TableDescriptor;
+import com.alee.laf.table.TableHeaderDescriptor;
+import com.alee.laf.text.*;
+import com.alee.laf.toolbar.ToolBarDescriptor;
+import com.alee.laf.toolbar.ToolBarSeparatorDescriptor;
 import com.alee.laf.tooltip.StyledToolTipText;
+import com.alee.laf.tooltip.ToolTipDescriptor;
 import com.alee.laf.tooltip.ToolTipText;
+import com.alee.laf.tree.TreeDescriptor;
+import com.alee.laf.viewport.ViewportDescriptor;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.painter.Painter;
@@ -63,12 +102,18 @@ import com.alee.painter.decoration.shape.BoundsShape;
 import com.alee.painter.decoration.shape.EllipseShape;
 import com.alee.painter.decoration.shape.WebShape;
 import com.alee.skin.web.WebSkin;
-import com.alee.utils.*;
+import com.alee.utils.MapUtils;
+import com.alee.utils.ReflectUtils;
+import com.alee.utils.TextUtils;
+import com.alee.utils.XmlUtils;
+import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * This manager handles all default Swing and custom WebLaF component styles.
@@ -88,6 +133,29 @@ public final class StyleManager
      * List of listeners for various style events.
      */
     private static final EventListenerList listenerList = new EventListenerList ();
+
+    /**
+     * List of registered {@link ComponentDescriptor}s.
+     * These are widely used across WebLaF to provide various common information about existing components.
+     * {@link ComponentDescriptor}s were introduced to allow easy customization of component base supported by WebLaF.
+     * You can introduce an absolutely new {@link JComponent} implementation by simply registering {@link ComponentDescriptor} for it.
+     */
+    private static final List<ComponentDescriptor> descriptors = new ArrayList<ComponentDescriptor> ( 60 );
+
+    /**
+     * {@link ComponentDescriptor}s cached by their identifiers.
+     * This cache contains only {@link ComponentDescriptor}s which exist in {@link #descriptors} list.
+     * Whenever some {@link ComponentDescriptor} is unregistered or replaced by another one it is also cleared from this cache.
+     */
+    private static final Map<String, ComponentDescriptor> descriptorsByIdentifier = new HashMap<String, ComponentDescriptor> ( 60 );
+
+    /**
+     * {@link ComponentDescriptor}s cached by {@link JComponent} class.
+     * This cache contains only {@link ComponentDescriptor}s which exist in {@link #descriptors} list.
+     * Whenever some {@link ComponentDescriptor} is unregistered or replaced by another one it is also cleared from this cache.
+     */
+    private static final Map<Class<? extends JComponent>, ComponentDescriptor> descriptorsByClass =
+            new HashMap<Class<? extends JComponent>, ComponentDescriptor> ( 60 );
 
     /**
      * Various component style related data which includes:
@@ -113,6 +181,11 @@ public final class StyleManager
      * 2. You cannot put any style overrides into extensions
      */
     private static final List<SkinExtension> extensions = new ArrayList<SkinExtension> ();
+
+    /**
+     * Synchronization lock object for skin operations.
+     */
+    private static final Object skinLock = new Object ();
 
     /**
      * Default WebLaF skin class.
@@ -150,86 +223,11 @@ public final class StyleManager
     {
         if ( !initialized )
         {
-            // Class aliases
-            XmlUtils.processAnnotations ( SkinInfo.class );
-            XmlUtils.processAnnotations ( ComponentStyle.class );
-            XmlUtils.processAnnotations ( NinePatchIcon.class );
-            XmlUtils.processAnnotations ( AbstractDecoration.class );
-            XmlUtils.processAnnotations ( Decorations.class );
-            XmlUtils.processAnnotations ( WebDecoration.class );
-            XmlUtils.processAnnotations ( NinePatchDecoration.class );
-            XmlUtils.processAnnotations ( AbstractShadow.class );
-            XmlUtils.processAnnotations ( BoundsShape.class );
-            XmlUtils.processAnnotations ( WebShape.class );
-            XmlUtils.processAnnotations ( EllipseShape.class );
-            XmlUtils.processAnnotations ( ArrowShape.class );
-            XmlUtils.processAnnotations ( WebShadow.class );
-            XmlUtils.processAnnotations ( ExpandingShadow.class );
-            XmlUtils.processAnnotations ( AbstractBorder.class );
-            XmlUtils.processAnnotations ( LineBorder.class );
-            XmlUtils.processAnnotations ( AbstractBackground.class );
-            XmlUtils.processAnnotations ( ColorBackground.class );
-            XmlUtils.processAnnotations ( GradientBackground.class );
-            XmlUtils.processAnnotations ( PresetTextureBackground.class );
-            XmlUtils.processAnnotations ( AlphaLayerBackground.class );
-            XmlUtils.processAnnotations ( MovingHighlightBackground.class );
-            XmlUtils.processAnnotations ( TextureType.class );
-            XmlUtils.processAnnotations ( GradientType.class );
-            XmlUtils.processAnnotations ( GradientColor.class );
-            XmlUtils.processAnnotations ( Stripes.class );
-            XmlUtils.processAnnotations ( Stripe.class );
-            XmlUtils.processAnnotations ( Gripper.class );
-            XmlUtils.processAnnotations ( BorderLayout.class );
-            XmlUtils.processAnnotations ( AbstractContentLayout.class );
-            XmlUtils.processAnnotations ( IconTextLayout.class );
-            XmlUtils.processAnnotations ( AbstractContent.class );
-            XmlUtils.processAnnotations ( CheckIcon.class );
-            XmlUtils.processAnnotations ( RadioIcon.class );
-            XmlUtils.processAnnotations ( MixedIcon.class );
-            XmlUtils.processAnnotations ( SeparatorStripes.class );
-            XmlUtils.processAnnotations ( RoundRectangle.class );
-            XmlUtils.processAnnotations ( DashFocus.class );
-            XmlUtils.processAnnotations ( AbstractIconContent.class );
-            XmlUtils.processAnnotations ( AbstractTextContent.class );
-            XmlUtils.processAnnotations ( AbstractStyledTextContent.class );
-            XmlUtils.processAnnotations ( ToolTipText.class );
-            XmlUtils.processAnnotations ( StyledToolTipText.class );
-            XmlUtils.processAnnotations ( ButtonLayout.class );
-            XmlUtils.processAnnotations ( ButtonIcon.class );
-            XmlUtils.processAnnotations ( ButtonText.class );
-            XmlUtils.processAnnotations ( SimpleButtonIcon.class );
-            XmlUtils.processAnnotations ( StyledButtonText.class );
-            XmlUtils.processAnnotations ( LabelLayout.class );
-            XmlUtils.processAnnotations ( LabelIcon.class );
-            XmlUtils.processAnnotations ( LabelText.class );
-            XmlUtils.processAnnotations ( StyledLabelText.class );
-            XmlUtils.processAnnotations ( MenuItemLayout.class );
-            XmlUtils.processAnnotations ( AcceleratorText.class );
-            XmlUtils.processAnnotations ( ProgressBarText.class );
-            XmlUtils.processAnnotations ( HotkeyLabelBackground.class );
-            XmlUtils.processAnnotations ( MemoryBarBackground.class );
+            // Registering common annotations
+            initializeAnnotations ();
 
-            // Painter aliases
-            XmlUtils.processAnnotations ( PopOverPainter.class );
-            XmlUtils.processAnnotations ( SelectablePanelPainter.class );
-            XmlUtils.processAnnotations ( SyntaxPanelPainter.class );
-
-            // Layout aliases
-            XmlUtils.processAnnotations ( WebScrollPaneLayout.class );
-            XmlUtils.processAnnotations ( WebScrollPaneLayout.UIResource.class );
-
-            // Workaround for ScrollPaneLayout due to neccessity of its usage
-            XmlUtils.omitField ( ScrollPaneLayout.class, "viewport" );
-            XmlUtils.omitField ( ScrollPaneLayout.class, "vsb" );
-            XmlUtils.omitField ( ScrollPaneLayout.class, "hsb" );
-            XmlUtils.omitField ( ScrollPaneLayout.class, "rowHead" );
-            XmlUtils.omitField ( ScrollPaneLayout.class, "colHead" );
-            XmlUtils.omitField ( ScrollPaneLayout.class, "lowerLeft" );
-            XmlUtils.omitField ( ScrollPaneLayout.class, "lowerRight" );
-            XmlUtils.omitField ( ScrollPaneLayout.class, "upperLeft" );
-            XmlUtils.omitField ( ScrollPaneLayout.class, "upperRight" );
-            XmlUtils.omitField ( ScrollPaneLayout.class, "vsbPolicy" );
-            XmlUtils.omitField ( ScrollPaneLayout.class, "hsbPolicy" );
+            // Registering common component descriptors
+            initializeDescriptors ();
 
             // Updating initialization mark
             initialized = true;
@@ -237,6 +235,225 @@ public final class StyleManager
             // Applying default skin as current skin
             setSkin ( getDefaultSkin () );
         }
+    }
+
+    /**
+     * Initializes common XStream annotations.
+     */
+    private static void initializeAnnotations ()
+    {
+        // Class aliases
+        XmlUtils.processAnnotations ( SkinInfo.class );
+        XmlUtils.processAnnotations ( ComponentStyle.class );
+        XmlUtils.processAnnotations ( NinePatchIcon.class );
+        XmlUtils.processAnnotations ( AbstractDecoration.class );
+        XmlUtils.processAnnotations ( Decorations.class );
+        XmlUtils.processAnnotations ( WebDecoration.class );
+        XmlUtils.processAnnotations ( NinePatchDecoration.class );
+        XmlUtils.processAnnotations ( AbstractShadow.class );
+        XmlUtils.processAnnotations ( BoundsShape.class );
+        XmlUtils.processAnnotations ( WebShape.class );
+        XmlUtils.processAnnotations ( EllipseShape.class );
+        XmlUtils.processAnnotations ( ArrowShape.class );
+        XmlUtils.processAnnotations ( WebShadow.class );
+        XmlUtils.processAnnotations ( ExpandingShadow.class );
+        XmlUtils.processAnnotations ( AbstractBorder.class );
+        XmlUtils.processAnnotations ( LineBorder.class );
+        XmlUtils.processAnnotations ( AbstractBackground.class );
+        XmlUtils.processAnnotations ( ColorBackground.class );
+        XmlUtils.processAnnotations ( GradientBackground.class );
+        XmlUtils.processAnnotations ( PresetTextureBackground.class );
+        XmlUtils.processAnnotations ( AlphaLayerBackground.class );
+        XmlUtils.processAnnotations ( MovingHighlightBackground.class );
+        XmlUtils.processAnnotations ( TextureType.class );
+        XmlUtils.processAnnotations ( GradientType.class );
+        XmlUtils.processAnnotations ( GradientColor.class );
+        XmlUtils.processAnnotations ( Stripes.class );
+        XmlUtils.processAnnotations ( Stripe.class );
+        XmlUtils.processAnnotations ( Gripper.class );
+        XmlUtils.processAnnotations ( BorderLayout.class );
+        XmlUtils.processAnnotations ( AbstractContentLayout.class );
+        XmlUtils.processAnnotations ( IconTextLayout.class );
+        XmlUtils.processAnnotations ( AbstractContent.class );
+        XmlUtils.processAnnotations ( CheckIcon.class );
+        XmlUtils.processAnnotations ( RadioIcon.class );
+        XmlUtils.processAnnotations ( MixedIcon.class );
+        XmlUtils.processAnnotations ( SeparatorStripes.class );
+        XmlUtils.processAnnotations ( RoundRectangle.class );
+        XmlUtils.processAnnotations ( DashFocus.class );
+        XmlUtils.processAnnotations ( AbstractIconContent.class );
+        XmlUtils.processAnnotations ( AbstractTextContent.class );
+        XmlUtils.processAnnotations ( AbstractStyledTextContent.class );
+        XmlUtils.processAnnotations ( ToolTipText.class );
+        XmlUtils.processAnnotations ( StyledToolTipText.class );
+        XmlUtils.processAnnotations ( ButtonLayout.class );
+        XmlUtils.processAnnotations ( ButtonIcon.class );
+        XmlUtils.processAnnotations ( ButtonText.class );
+        XmlUtils.processAnnotations ( SimpleButtonIcon.class );
+        XmlUtils.processAnnotations ( StyledButtonText.class );
+        XmlUtils.processAnnotations ( LabelLayout.class );
+        XmlUtils.processAnnotations ( LabelIcon.class );
+        XmlUtils.processAnnotations ( LabelText.class );
+        XmlUtils.processAnnotations ( StyledLabelText.class );
+        XmlUtils.processAnnotations ( MenuItemLayout.class );
+        XmlUtils.processAnnotations ( AcceleratorText.class );
+        XmlUtils.processAnnotations ( ProgressBarText.class );
+        XmlUtils.processAnnotations ( HotkeyLabelBackground.class );
+        XmlUtils.processAnnotations ( MemoryBarBackground.class );
+
+        // Painter aliases
+        XmlUtils.processAnnotations ( PopOverPainter.class );
+        XmlUtils.processAnnotations ( SelectablePanelPainter.class );
+        XmlUtils.processAnnotations ( SyntaxPanelPainter.class );
+
+        // Layout aliases
+        XmlUtils.processAnnotations ( WebScrollPaneLayout.class );
+        XmlUtils.processAnnotations ( WebScrollPaneLayout.UIResource.class );
+
+        // Workaround for ScrollPaneLayout due to neccessity of its usage
+        XmlUtils.omitField ( ScrollPaneLayout.class, "viewport" );
+        XmlUtils.omitField ( ScrollPaneLayout.class, "vsb" );
+        XmlUtils.omitField ( ScrollPaneLayout.class, "hsb" );
+        XmlUtils.omitField ( ScrollPaneLayout.class, "rowHead" );
+        XmlUtils.omitField ( ScrollPaneLayout.class, "colHead" );
+        XmlUtils.omitField ( ScrollPaneLayout.class, "lowerLeft" );
+        XmlUtils.omitField ( ScrollPaneLayout.class, "lowerRight" );
+        XmlUtils.omitField ( ScrollPaneLayout.class, "upperLeft" );
+        XmlUtils.omitField ( ScrollPaneLayout.class, "upperRight" );
+        XmlUtils.omitField ( ScrollPaneLayout.class, "vsbPolicy" );
+        XmlUtils.omitField ( ScrollPaneLayout.class, "hsbPolicy" );
+    }
+
+    /**
+     * Initializes common {@link ComponentDescriptor}s.
+     */
+    private static void initializeDescriptors ()
+    {
+        /**
+         * Basic components.
+         */
+        registerComponentDescriptor ( new CanvasDescriptor () );
+        registerComponentDescriptor ( new ImageDescriptor () );
+
+        /**
+         * Label-related components.
+         */
+        registerComponentDescriptor ( new LabelDescriptor () );
+        registerComponentDescriptor ( new StyledLabelDescriptor () );
+        registerComponentDescriptor ( new ToolTipDescriptor () );
+        registerComponentDescriptor ( new LinkDescriptor () );
+
+        /**
+         * Button-related components.
+         */
+        registerComponentDescriptor ( new ButtonDescriptor () );
+        registerComponentDescriptor ( new SplitButtonDescriptor () );
+        registerComponentDescriptor ( new ToggleButtonDescriptor () );
+        registerComponentDescriptor ( new CheckBoxDescriptor () );
+        registerComponentDescriptor ( new TristateCheckBoxDescriptor () );
+        registerComponentDescriptor ( new RadioButtonDescriptor () );
+
+        /**
+         * Separator component.
+         */
+        registerComponentDescriptor ( new SeparatorDescriptor () );
+
+        /**
+         * Menu-related components.
+         */
+        registerComponentDescriptor ( new MenuBarDescriptor () );
+        registerComponentDescriptor ( new MenuDescriptor () );
+        registerComponentDescriptor ( new PopupMenuDescriptor () );
+        registerComponentDescriptor ( new MenuItemDescriptor () );
+        registerComponentDescriptor ( new CheckBoxMenuItemDescriptor () );
+        registerComponentDescriptor ( new RadioButtonMenuItemDescriptor () );
+        registerComponentDescriptor ( new PopupMenuSeparatorDescriptor () );
+
+        /**
+         * Container-related components.
+         */
+        registerComponentDescriptor ( new PanelDescriptor () );
+        registerComponentDescriptor ( new TabbedPaneDescriptor () );
+        registerComponentDescriptor ( new SplitPaneDescriptor () );
+        registerComponentDescriptor ( new PopupDescriptor () );
+
+        /**
+         * Rootpane-related components.
+         */
+        registerComponentDescriptor ( new RootPaneDescriptor () );
+
+        /**
+         * Toolbar-related components.
+         */
+        registerComponentDescriptor ( new ToolBarDescriptor () );
+        registerComponentDescriptor ( new ToolBarSeparatorDescriptor () );
+
+        /**
+         * Statusbar-related components.
+         */
+        registerComponentDescriptor ( new StatusBarDescriptor () );
+
+        /**
+         * Scroll-related components.
+         */
+        registerComponentDescriptor ( new ScrollBarDescriptor () );
+        registerComponentDescriptor ( new ScrollPaneDescriptor () );
+        registerComponentDescriptor ( new ViewportDescriptor () );
+
+        /**
+         * Text-related components.
+         */
+        registerComponentDescriptor ( new TextFieldDescriptor () );
+        registerComponentDescriptor ( new PasswordFieldDescriptor () );
+        registerComponentDescriptor ( new FormattedTextFieldDescriptor () );
+        registerComponentDescriptor ( new TextAreaDescriptor () );
+        registerComponentDescriptor ( new EditorPaneDescriptor () );
+        registerComponentDescriptor ( new TextPaneDescriptor () );
+
+        /**
+         * Table-related components.
+         */
+        registerComponentDescriptor ( new TableHeaderDescriptor () );
+        registerComponentDescriptor ( new TableDescriptor () );
+
+        /**
+         * Custom data-related components.
+         */
+        registerComponentDescriptor ( new ProgressBarDescriptor () );
+        registerComponentDescriptor ( new SliderDescriptor () );
+        registerComponentDescriptor ( new SpinnerDescriptor () );
+        registerComponentDescriptor ( new ComboBoxDescriptor () );
+        registerComponentDescriptor ( new ListDescriptor () );
+        registerComponentDescriptor ( new TreeDescriptor () );
+
+        /**
+         * Chooser components.
+         */
+        registerComponentDescriptor ( new ColorChooserDescriptor () );
+        registerComponentDescriptor ( new FileChooserDescriptor () );
+
+        /**
+         * Desktop-pane-related components.
+         */
+        registerComponentDescriptor ( new DesktopPaneDescriptor () );
+        registerComponentDescriptor ( new DesktopIconDescriptor () );
+        registerComponentDescriptor ( new InternalFrameDescriptor () );
+
+        /**
+         * Dockable-pane-related components.
+         */
+        registerComponentDescriptor ( new DockablePaneDescriptor () );
+        registerComponentDescriptor ( new DockableFrameDescriptor () );
+
+        /**
+         * Option pane component.
+         */
+        registerComponentDescriptor ( new OptionPaneDescriptor () );
+
+        /**
+         * Chooser components.
+         */
+        registerComponentDescriptor ( new DateFieldDescriptor () );
     }
 
     /**
@@ -271,6 +488,269 @@ public final class StyleManager
     }
 
     /**
+     * Returns all registered {@link ComponentDescriptor}s count.
+     *
+     * @return all registered {@link ComponentDescriptor}s count
+     */
+    public static int getDescriptorsCount ()
+    {
+        // Checking manager initialization
+        checkInitialization ();
+
+        // Synchronized by descriptors
+        synchronized ( descriptors )
+        {
+            // Return descriptors count
+            return descriptors.size ();
+        }
+    }
+
+    /**
+     * Returns immutable list of all registered {@link ComponentDescriptor}s.
+     *
+     * @return immutable list of all registered {@link ComponentDescriptor}s
+     */
+    public static List<ComponentDescriptor> getDescriptors ()
+    {
+        // Checking manager initialization
+        checkInitialization ();
+
+        // Synchronized by descriptors
+        synchronized ( descriptors )
+        {
+            // Return an immutable copy of the source list
+            return new ImmutableList<ComponentDescriptor> ( descriptors );
+        }
+    }
+
+    /**
+     * Returns {@link ComponentDescriptor} with the specified identifier.
+     *
+     * @param id  {@link ComponentDescriptor} identifier
+     * @param <C> {@link JComponent} type
+     * @return {@link ComponentDescriptor} with the specified identifier
+     */
+    public static <C extends JComponent> ComponentDescriptor<C> getDescriptor ( final String id )
+    {
+        // Checking manager initialization
+        checkInitialization ();
+
+        // Synchronized by descriptors
+        synchronized ( descriptors )
+        {
+            // Looking for descriptor
+            final ComponentDescriptor<C> descriptor = getDescriptorImpl ( id );
+
+            // Ensure we found descriptor
+            if ( descriptor == null )
+            {
+                throw new StyleException ( "There is no descriptor registered with identifier: " + id );
+            }
+
+            return descriptor;
+        }
+    }
+
+    /**
+     * Returns {@link ComponentDescriptor} for the specified {@link JComponent}.
+     *
+     * @param component {@link JComponent} to find {@link ComponentDescriptor} for
+     * @param <C>       {@link JComponent} type
+     * @return {@link ComponentDescriptor} for the specified {@link JComponent}
+     */
+    public static <C extends JComponent> ComponentDescriptor<C> getDescriptor ( final C component )
+    {
+        return getDescriptor ( component.getClass () );
+    }
+
+    /**
+     * Returns {@link ComponentDescriptor} for the specified {@link JComponent} class.
+     * This method will also ensure that returned {@link ComponentDescriptor} is never {@code null}.
+     *
+     * @param componentClass {@link JComponent} class to find {@link ComponentDescriptor} for
+     * @param <C>            {@link JComponent} type
+     * @return {@link ComponentDescriptor} for the specified {@link JComponent} class
+     */
+    public static <C extends JComponent> ComponentDescriptor<C> getDescriptor ( final Class<? extends JComponent> componentClass )
+    {
+        // Checking manager initialization
+        checkInitialization ();
+
+        // Synchronized by descriptors
+        synchronized ( descriptors )
+        {
+            // Looking for descriptor
+            final ComponentDescriptor<C> descriptor = getDescriptorImpl ( componentClass );
+
+            // Ensure we found descriptor
+            if ( descriptor == null )
+            {
+                throw new StyleException ( "There is no descriptor registered for: " + componentClass );
+            }
+
+            return descriptor;
+        }
+    }
+
+    /**
+     * Returns {@link ComponentDescriptor} for the specified {@link JComponent} identifier.
+     *
+     * @param id  {@link JComponent} identifier
+     * @param <C> {@link JComponent} type
+     * @return {@link ComponentDescriptor} for the specified {@link JComponent} identifier
+     */
+    private static <C extends JComponent> ComponentDescriptor<C> getDescriptorImpl ( final String id )
+    {
+        return descriptorsByIdentifier.get ( id );
+    }
+
+    /**
+     * Returns {@link ComponentDescriptor} for the specified {@link JComponent} class.
+     *
+     * @param componentClass {@link JComponent} class to find {@link ComponentDescriptor} for
+     * @param <C>            {@link JComponent} type
+     * @return {@link ComponentDescriptor} for the specified {@link JComponent} class
+     */
+    private static <C extends JComponent> ComponentDescriptor<C> getDescriptorImpl ( final Class<? extends JComponent> componentClass )
+    {
+        // Looking for superclass descriptors
+        final ComponentDescriptor<C> descriptor;
+        if ( descriptorsByClass.containsKey ( componentClass ) )
+        {
+            // Looking for registered descriptor
+            descriptor = descriptorsByClass.get ( componentClass );
+        }
+        else
+        {
+            // Only check descriptors for JComponent superclass types
+            final Class<?> superclass = componentClass.getSuperclass ();
+            if ( JComponent.class.isAssignableFrom ( superclass ) )
+            {
+                final Class<? extends JComponent> componentSuperClass = ( Class<? extends JComponent> ) superclass;
+
+                // Looking for component superclass descriptor
+                descriptor = getDescriptorImpl ( componentSuperClass );
+
+                // Caching descriptor
+                descriptorsByClass.put ( componentClass, descriptor );
+            }
+            else
+            {
+                // No descriptor
+                descriptor = null;
+            }
+        }
+        return descriptor;
+    }
+
+    /**
+     * Returns whether or not styling is supported for the component with the specified identifier.
+     *
+     * todo 1. Add support for JFrame/JDialog/JWindow and other similar components
+     *
+     * @param id identifier of the component to check styling support for
+     * @return {@code true} if styling is supported for the component with the specified identifier, {@code false} otherwise
+     */
+    public static boolean isSupported ( final String id )
+    {
+        return !TextUtils.isEmpty ( id ) && getDescriptorImpl ( id ) != null;
+    }
+
+    /**
+     * Returns whether or not specified component styling is supported.
+     *
+     * todo 1. Add support for JFrame/JDialog/JWindow and other similar components
+     *
+     * @param component component to check styling support for
+     * @return {@code true} if specified component styling is supported, {@code false} otherwise
+     */
+    public static boolean isSupported ( final Component component )
+    {
+        final boolean supported;
+        if ( component instanceof JComponent )
+        {
+            // Checking descriptor existance
+            final JComponent jComponent = ( JComponent ) component;
+            supported = getDescriptorImpl ( jComponent.getClass () ) != null;
+        }
+        else
+        {
+            // Only instances of JComponent are supported
+            supported = false;
+        }
+        return supported;
+    }
+
+
+    /**
+     * Registers new {@link ComponentDescriptor}.
+     * It will replace any other {@link ComponentDescriptor} registered for the same {@link JComponent} type.
+     * Manager initialization is not required to register {@link ComponentDescriptor}.
+     *
+     * @param descriptor {@link ComponentDescriptor} to register
+     */
+    public static void registerComponentDescriptor ( final ComponentDescriptor descriptor )
+    {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Synchronized by descriptors
+        synchronized ( descriptors )
+        {
+            final Class componentClass = descriptor.getComponentClass ();
+
+            // Removing existing descriptor with same class
+            final ComponentDescriptor toRemove = descriptorsByClass.get ( componentClass );
+            if ( toRemove != null )
+            {
+                unregisterComponentDescriptor ( toRemove );
+            }
+
+            // Saving new descriptor
+            descriptors.add ( descriptor );
+
+            // Caching descriptor
+            descriptorsByIdentifier.put ( descriptor.getId (), descriptor );
+            descriptorsByClass.put ( componentClass, descriptor );
+
+            // todo Listeners for these changes?
+        }
+    }
+
+    /**
+     * Unregisters existing {@link ComponentDescriptor}.
+     * Manager initialization is not required to unregister {@link ComponentDescriptor}.
+     *
+     * @param descriptor {@link ComponentDescriptor} to register
+     */
+    public static void unregisterComponentDescriptor ( final ComponentDescriptor descriptor )
+    {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Synchronized by descriptors
+        synchronized ( descriptors )
+        {
+            // Removing descriptor
+            descriptors.remove ( descriptor );
+
+            // Removing descriptor cache by identifier
+            descriptorsByIdentifier.remove ( descriptor.getId () );
+
+            // Removing descriptor cache by class
+            final Iterator<Map.Entry<Class<? extends JComponent>, ComponentDescriptor>> byClassIterator =
+                    descriptorsByClass.entrySet ().iterator ();
+            while ( byClassIterator.hasNext () )
+            {
+                if ( byClassIterator.next ().getValue () == descriptor )
+                {
+                    byClassIterator.remove ();
+                }
+            }
+        }
+    }
+
+    /**
      * Returns default skin.
      *
      * @return default skin
@@ -282,27 +762,45 @@ public final class StyleManager
 
     /**
      * Sets default skin.
+     * Manager initialization is not required to change default {@link Skin}.
      *
      * @param skinClassName default skin class name
      * @return previous default skin
      */
     public static Class<? extends Skin> setDefaultSkin ( final String skinClassName )
     {
-        final Class<? extends Skin> skinClass = ReflectUtils.getClassSafely ( skinClassName );
-        return setDefaultSkin ( skinClass );
+        try
+        {
+            final Class<? extends Skin> skinClass = ReflectUtils.getClass ( skinClassName );
+            return setDefaultSkin ( skinClass );
+        }
+        catch ( final ClassNotFoundException e )
+        {
+            final String msg = "Unable to load skin class for name: %s";
+            throw new StyleException ( String.format ( msg, skinClassName ), e );
+        }
     }
 
     /**
      * Sets default skin.
+     * Manager initialization is not required to change default {@link Skin}.
      *
      * @param skinClass default skin class
      * @return previous default skin
      */
     public static Class<? extends Skin> setDefaultSkin ( final Class<? extends Skin> skinClass )
     {
-        final Class<? extends Skin> oldSkin = StyleManager.defaultSkinClass;
-        StyleManager.defaultSkinClass = skinClass;
-        return oldSkin;
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Synchronized by skin lock
+        synchronized ( skinLock )
+        {
+            // Updating default skin class
+            final Class<? extends Skin> oldSkin = StyleManager.defaultSkinClass;
+            StyleManager.defaultSkinClass = skinClass;
+            return oldSkin;
+        }
     }
 
     /**
@@ -312,7 +810,11 @@ public final class StyleManager
      */
     public static Skin getSkin ()
     {
-        return currentSkin;
+        // Synchronized by skin lock
+        synchronized ( skinLock )
+        {
+            return currentSkin;
+        }
     }
 
     /**
@@ -336,7 +838,16 @@ public final class StyleManager
      */
     public static Skin setSkin ( final Class skinClass )
     {
-        return setSkin ( createSkin ( skinClass ) );
+        try
+        {
+            final Skin skin = ReflectUtils.createInstance ( skinClass );
+            return setSkin ( skin );
+        }
+        catch ( final Throwable e )
+        {
+            final String msg = "Unable to instantiate skin for class: %s";
+            throw new StyleException ( String.format ( msg, skinClass ), e );
+        }
     }
 
     /**
@@ -346,7 +857,7 @@ public final class StyleManager
      * @param skin skin to be applied
      * @return previously applied skin
      */
-    public static synchronized Skin setSkin ( final Skin skin )
+    public static Skin setSkin ( final Skin skin )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -354,119 +865,112 @@ public final class StyleManager
         // Checking manager initialization
         checkInitialization ();
 
-        // Checking skin support
-        checkSupport ( skin );
-
-        // Saving previously applied skin
-        final Skin previousSkin = currentSkin;
-
-        // Uninstalling previous skin
-        if ( previousSkin != null )
+        // Synchronized by skin lock
+        synchronized ( skinLock )
         {
-            previousSkin.uninstall ();
-        }
-
-        // Updating currently applied skin
-        currentSkin = skin;
-
-        // Installing new skin
-        if ( skin != null )
-        {
-            skin.install ();
-        }
-
-        // Applying new skin to all existing skinnable components
-        final HashMap<JComponent, StyleData> skins = MapUtils.copyMap ( styleData );
-        for ( final Map.Entry<JComponent, StyleData> entry : skins.entrySet () )
-        {
-            final JComponent component = entry.getKey ();
-            final StyleData data = getData ( component );
-            if ( !data.isPinnedSkin () && data.getSkin () == previousSkin )
+            // Checking skin reference
+            if ( skin == null )
             {
-                // There is no need to update child style components here as we will reach them anyway
-                // So we simply update each single component skin separately
-                data.applySkin ( skin, false );
+                throw new StyleException ( "Null skin provided" );
             }
+
+            // Checking skin support
+            if ( !skin.isSupported () )
+            {
+                final String msg = "Skin is not supported in this system: %s";
+                throw new StyleException ( String.format ( msg, skin ) );
+            }
+
+            // Saving previously applied skin
+            final Skin previousSkin = currentSkin;
+
+            // Uninstalling previous skin
+            if ( previousSkin != null )
+            {
+                previousSkin.uninstall ();
+            }
+
+            // Updating currently applied skin
+            currentSkin = skin;
+
+            // Installing new skin
+            if ( skin != null )
+            {
+                skin.install ();
+            }
+
+            // Applying new skin to all existing skinnable components
+            final HashMap<JComponent, StyleData> skins = MapUtils.copyMap ( styleData );
+            for ( final Map.Entry<JComponent, StyleData> entry : skins.entrySet () )
+            {
+                final JComponent component = entry.getKey ();
+                final StyleData data = getData ( component );
+                if ( !data.isPinnedSkin () && data.getSkin () == previousSkin )
+                {
+                    // There is no need to update child style components here as we will reach them anyway
+                    // So we simply update each single component skin separately
+                    data.applySkin ( skin, false );
+                }
+            }
+
+            // Informing about skin change
+            fireSkinChanged ( previousSkin, skin );
+
+            return previousSkin;
         }
-
-        // Informing about skin change
-        fireSkinChanged ( previousSkin, skin );
-
-        return previousSkin;
     }
 
     /**
-     * Adds skin change listener.
+     * Adds new {@link SkinExtension}s which will either be loaded right away if manager is initialized or later on if its not.
+     * Manager initialization is not required to provide additional {@link SkinExtension}s.
      *
-     * @param listener skin change listener to add
-     */
-    public static void addSkinListener ( final SkinListener listener )
-    {
-        listenerList.add ( SkinListener.class, listener );
-    }
-
-    /**
-     * Removes skin change listener.
-     *
-     * @param listener skin change listener to remove
-     */
-    public static void removeSkinListener ( final SkinListener listener )
-    {
-        listenerList.remove ( SkinListener.class, listener );
-    }
-
-    /**
-     * Informs listeners about skin change.
-     *
-     * @param previous previously used skin
-     * @param current  currently used skin
-     */
-    public static void fireSkinChanged ( final Skin previous, final Skin current )
-    {
-        for ( final SkinListener listener : listenerList.getListeners ( SkinListener.class ) )
-        {
-            listener.skinChanged ( previous, current );
-        }
-    }
-
-    /**
-     * Adds new skin extensions.
-     * These extensions are loaded after manager initialization.
-     * If it was already initialized before they will be loaded right away.
-     *
-     * @param extensions skin extensions to add
+     * @param extensions {@link SkinExtension}s to add
      */
     public static void addExtensions ( final SkinExtension... extensions )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
-        // Iterating through added extensions
-        for ( final SkinExtension extension : extensions )
+        // Synchronized by skin lock
+        synchronized ( skinLock )
         {
-            // Saving extension
-            StyleManager.extensions.add ( extension );
-
-            // Performing additional actions if manager was already initialized
-            // It is allowed to add extensions before L&F initialization to speedup startup
-            if ( initialized )
+            // Iterating through added extensions
+            for ( final SkinExtension extension : extensions )
             {
-                // Installing extension onto the current skin
-                // Components are not updated when extension is added because extension styles should not be used at this point yet
-                // If they are used it is an issue of components/extension initialization order and it should be fixed in application
-                getSkin ().applyExtension ( extension );
+                // Checking extension reference
+                if ( extension == null )
+                {
+                    throw new StyleException ( "Null extension provided" );
+                }
+
+                // Saving extension
+                StyleManager.extensions.add ( extension );
+
+                // Performing additional actions if manager was already initialized
+                // It is allowed to add extensions before L&F initialization to speedup startup
+                if ( initialized )
+                {
+                    // Installing extension onto the current skin
+                    // Components are not updated when extension is added because extension styles should not be used at this point yet
+                    // If they are used it is an issue of components/extension initialization order and it should be fixed in application
+                    getSkin ().applyExtension ( extension );
+                }
             }
         }
     }
 
     /**
-     * Returns list of installed skin extensions.
+     * Returns list of installed {@link SkinExtension}s.
      *
-     * @return list of installed skin extensions
+     * @return list of installed {@link SkinExtension}s
      */
     public static List<SkinExtension> getExtensions ()
     {
-        return CollectionUtils.copy ( extensions );
+        // Synchronized by skin lock
+        synchronized ( skinLock )
+        {
+            return new ImmutableList<SkinExtension> ( extensions );
+        }
     }
 
     /**
@@ -747,12 +1251,17 @@ public final class StyleManager
         checkInitialization ();
 
         // Checking component support
-        checkSupport ( component );
+        if ( !isSupported ( component ) )
+        {
+            final String msg = "Component styling is not supported: %s";
+            throw new StyleException ( String.format ( msg, component ) );
+        }
 
         // Retrieving component style data
         StyleData data = styleData.get ( component );
         if ( data == null )
         {
+            // Creating new component style data if it doesn't exist yet
             data = new StyleData ( component );
             styleData.put ( component, data );
         }
@@ -760,59 +1269,36 @@ public final class StyleManager
     }
 
     /**
-     * Performs component styling support check and throws an exception if it is not supported.
+     * Adds skin change listener.
      *
-     * @param component component to check
-     * @throws com.alee.managers.style.StyleException in case component is not specified or not supported
+     * @param listener skin change listener to add
      */
-    private static void checkSupport ( final JComponent component )
+    public static void addSkinListener ( final SkinListener listener )
     {
-        if ( component == null )
-        {
-            throw new StyleException ( "Component is not specified" );
-        }
-        if ( !StyleableComponent.isSupported ( component ) )
-        {
-            final String msg = "Component '%s' is not supported";
-            throw new StyleException ( String.format ( msg, component ) );
-        }
+        listenerList.add ( SkinListener.class, listener );
     }
 
     /**
-     * Performs skin support check and throws an exception if skin is not supported.
+     * Removes skin change listener.
      *
-     * @param skin skin to check
-     * @throws com.alee.managers.style.StyleException in case skin is not specified or not supported
+     * @param listener skin change listener to remove
      */
-    private static void checkSupport ( final Skin skin )
+    public static void removeSkinListener ( final SkinListener listener )
     {
-        if ( skin == null )
-        {
-            throw new StyleException ( "Skin is not provided or failed to load" );
-        }
-        if ( !skin.isSupported () )
-        {
-            final String msg = "Skin '%s' is not supported in this system";
-            throw new StyleException ( String.format ( msg, skin.getTitle () ) );
-        }
+        listenerList.remove ( SkinListener.class, listener );
     }
 
     /**
-     * Returns newly created skin class instance.
+     * Informs listeners about skin change.
      *
-     * @param skinClass skin class
-     * @return newly created skin class instance
+     * @param previous previously used skin
+     * @param current  currently used skin
      */
-    private static Skin createSkin ( final Class skinClass )
+    public static void fireSkinChanged ( final Skin previous, final Skin current )
     {
-        try
+        for ( final SkinListener listener : listenerList.getListeners ( SkinListener.class ) )
         {
-            return ( Skin ) ReflectUtils.createInstance ( skinClass );
-        }
-        catch ( final Throwable e )
-        {
-            final String msg = "Unable to initialize skin for class '%s'";
-            throw new StyleException ( String.format ( msg, skinClass ), e );
+            listener.skinChanged ( previous, current );
         }
     }
 }

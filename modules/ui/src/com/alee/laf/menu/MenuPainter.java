@@ -1,6 +1,6 @@
 package com.alee.laf.menu;
 
-import com.alee.managers.style.StyleableComponent;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
@@ -43,7 +43,9 @@ public class MenuPainter<E extends JMenu, U extends WebMenuUI, D extends IDecora
         if ( component.getParent () != null )
         {
             final boolean inPopupMenu = component.getParent () instanceof JPopupMenu;
-            states.add ( inPopupMenu ? StyleableComponent.popupmenu.name () : StyleableComponent.menubar.name () );
+            final Class<? extends JComponent> clazz = inPopupMenu ? JPopupMenu.class : JMenuBar.class;
+            final String state = StyleManager.getDescriptor ( clazz ).getId ();
+            states.add ( state );
         }
 
         return states;

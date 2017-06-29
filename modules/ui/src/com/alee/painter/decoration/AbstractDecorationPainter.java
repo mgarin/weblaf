@@ -28,6 +28,7 @@ import com.alee.managers.focus.GlobalFocusListener;
 import com.alee.managers.style.Bounds;
 import com.alee.managers.style.BoundsType;
 import com.alee.managers.style.PainterShapeProvider;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.AbstractPainter;
 import com.alee.painter.SectionPainter;
 import com.alee.utils.*;
@@ -81,9 +82,9 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     protected transient Map<String, D> stateDecorationCache;
     protected transient Map<String, D> decorationCache;
     protected transient String current;
-    protected transient boolean focused = false;
-    protected transient boolean inFocusedParent = false;
-    protected transient boolean hover = false;
+    protected transient boolean focused;
+    protected transient boolean inFocusedParent;
+    protected transient boolean hover;
     protected transient Container ancestor;
 
     @Override
@@ -91,9 +92,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     {
         super.install ( c, ui );
 
-        // Determining initial decoration state
-        this.focused = SwingUtils.hasFocusOwner ( c );
-        this.inFocusedParent = updateInFocusedParent ();
+        // Determining initial decoration states
         this.states = collectDecorationStates ();
 
         // Installing listeners
@@ -112,13 +111,13 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         // Uninstalling listeners
         uninstallHierarchyListener ();
         uninstallHoverListener ();
+        uninstallInFocusedParentListener ();
         uninstallFocusListener ();
 
-        // Cleaning up variables
+        // Cleaning up decoration states and caches
         this.decorationCache = null;
         this.stateDecorationCache = null;
         this.states = null;
-        this.focused = false;
 
         super.uninstall ( c, ui );
     }
@@ -128,6 +127,12 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     {
         // Perform basic actions on property changes
         super.propertyChanged ( property, oldValue, newValue );
+
+        // Updating focus listener
+        if ( CompareUtils.equals ( property, WebLookAndFeel.FOCUSABLE_PROPERTY ) )
+        {
+            updateFocusListener ();
+        }
 
         // Updating custom decoration states
         if ( CompareUtils.equals ( property, DECORATION_STATES_PROPERTY ) )
@@ -159,12 +164,24 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     /**
+     * Returns whether or not component has distinct focused view.
+     * Note that this is exactly distinct view and not state, distinct focused state might actually be missing.
+     *
+     * @return {@code true} if component has distinct focused view, {@code false} otherwise
+     */
+    protected boolean usesFocusedView ()
+    {
+        return component.isFocusable () && usesState ( DecorationState.focused );
+    }
+
+    /**
      * Installs listener that will perform decoration updates on focus state change.
      */
     protected void installFocusListener ()
     {
-        if ( usesState ( DecorationState.focused ) )
+        if ( usesFocusedView () )
         {
+            focused = SwingUtils.hasFocusOwner ( component );
             focusStateTracker = new DefaultFocusTracker ( true )
             {
                 @Override
@@ -180,10 +197,15 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
             };
             FocusManager.addFocusTracker ( component, focusStateTracker );
         }
+        else
+        {
+            focused = false;
+        }
     }
 
     /**
      * Informs about focus state changes.
+     * Note that this method will only be fired when component {@link #usesFocusedView()}.
      *
      * @param focused whether or not component has focus
      */
@@ -212,6 +234,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         {
             FocusManager.removeFocusTracker ( focusStateTracker );
             focusStateTracker = null;
+            focused = false;
         }
     }
 
@@ -220,7 +243,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      */
     protected void updateFocusListener ()
     {
-        if ( usesState ( DecorationState.focused ) )
+        if ( usesFocusedView () )
         {
             installFocusListener ();
         }
@@ -231,12 +254,24 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     /**
+     * Returns whether or not component has distinct in-focused-parent view.
+     * Note that this is exactly distinct view and not state, distinct in-focused-parent state might actually be missing.
+     *
+     * @return {@code true} if component has distinct in-focused-parent view, {@code false} otherwise
+     */
+    protected boolean usesInFocusedParentView ()
+    {
+        return usesState ( DecorationState.inFocusedParent );
+    }
+
+    /**
      * Installs listener that performs decoration updates on focused parent appearance and disappearance.
      */
     protected void installInFocusedParentListener ()
     {
-        if ( usesState ( DecorationState.inFocusedParent ) )
+        if ( usesInFocusedParentView () )
         {
+            inFocusedParent = updateInFocusedParent ();
             inFocusedParentTracker = new GlobalFocusListener ()
             {
                 @Override
@@ -246,30 +281,23 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                     // This might happen if painter is replaced from another GlobalFocusListener
                     if ( component != null )
                     {
-                        AbstractDecorationPainter.this.globalFocusChanged ( oldFocus, newFocus );
+                        // Updating {@link #inFocusedParent} state
+                        updateInFocusedParent ();
                     }
                 }
             };
             FocusManager.registerGlobalFocusListener ( inFocusedParentTracker );
         }
-    }
-
-    /**
-     * Informs about global focus change.
-     *
-     * @param oldFocus previously focused component
-     * @param newFocus currently focused component
-     */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected void globalFocusChanged ( final Component oldFocus, final Component newFocus )
-    {
-        // Updating {@link #inFocusedParent} mark
-        updateInFocusedParent ();
+        else
+        {
+            inFocusedParent = false;
+        }
     }
 
     /**
      * Updates {@link #inFocusedParent} mark.
      * For that we check whether or not any related component gained or lost focus.
+     * Note that this method will only be fired when component {@link #usesInFocusedParentView()}.
      *
      * @return {@code true} if component is placed within focused parent, {@code false} otherwise
      */
@@ -288,20 +316,24 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
             }
             else if ( current != component )
             {
-                // In a parent that tracks children focus and visually displays it
-                // This case is not obvious but really important for correct visual representation of the state
-                final ComponentUI ui = LafUtils.getUI ( current );
-                if ( ui != null )
+                // Ensure that component supports styling
+                if ( StyleManager.isSupported ( current ) )
                 {
-                    // todo Replace with proper painter retrieval upon Paintable interface implementation
-                    final Object painter = ReflectUtils.getFieldValueSafely ( ui, "painter" );
-                    if ( painter != null && painter instanceof AbstractDecorationPainter )
+                    // In a parent that tracks children focus and visually displays it
+                    // This case is not obvious but really important for correct visual representation of the state
+                    final ComponentUI ui = LafUtils.getUI ( current );
+                    if ( ui != null )
                     {
-                        final AbstractDecorationPainter dp = ( AbstractDecorationPainter ) painter;
-                        if ( dp.usesState ( DecorationState.focused ) )
+                        // todo Replace with proper painter retrieval upon Paintable interface implementation
+                        final Object painter = ReflectUtils.getFieldValueSafely ( ui, "painter" );
+                        if ( painter != null && painter instanceof AbstractDecorationPainter )
                         {
-                            inFocusedParent = dp.isFocused ();
-                            break;
+                            final AbstractDecorationPainter dp = ( AbstractDecorationPainter ) painter;
+                            if ( dp.usesFocusedView () )
+                            {
+                                inFocusedParent = dp.isFocused ();
+                                break;
+                            }
                         }
                     }
                 }
@@ -336,7 +368,19 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         {
             FocusManager.unregisterGlobalFocusListener ( inFocusedParentTracker );
             inFocusedParentTracker = null;
+            inFocusedParent = false;
         }
+    }
+
+    /**
+     * Returns whether or not component has distinct hover view.
+     * Note that this is exactly distinct view and not state, distinct hover state might actually be missing.
+     *
+     * @return {@code true} if component has distinct hover view, {@code false} otherwise
+     */
+    protected boolean usesHoverView ()
+    {
+        return usesState ( DecorationState.hover );
     }
 
     /**
@@ -344,8 +388,9 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      */
     protected void installHoverListener ()
     {
-        if ( hoverStateTracker == null && usesHover () )
+        if ( usesHoverView () )
         {
+            hover = SwingUtils.isHovered ( component );
             hoverStateTracker = new AbstractHoverBehavior<E> ( component, false )
             {
                 @Override
@@ -361,27 +406,21 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
             };
             hoverStateTracker.install ();
         }
-    }
-
-    /**
-     * Returns whether or not component has distinct hover view.
-     * Note that this is exactly distinct view and not state, distinct hover state might actually be missing.
-     *
-     * @return {@code true} if component has distinct hover view, {@code false} otherwise
-     */
-    protected boolean usesHover ()
-    {
-        return usesState ( DecorationState.hover );
+        else
+        {
+            hover = false;
+        }
     }
 
     /**
      * Informs about hover state changes.
+     * Note that this method will only be fired when component {@link #usesHoverView()}.
      *
      * @param hover whether or not mouse is on the component
      */
     protected void hoverChanged ( final boolean hover )
     {
-        AbstractDecorationPainter.this.hover = hover;
+        this.hover = hover;
         updateDecorationState ();
     }
 
@@ -404,6 +443,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         {
             hoverStateTracker.uninstall ();
             hoverStateTracker = null;
+            hover = false;
         }
     }
 
@@ -412,7 +452,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      */
     protected void updateHoverListener ()
     {
-        if ( usesHover () )
+        if ( usesHoverView () )
         {
             installHoverListener ();
         }
@@ -680,6 +720,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      */
     protected final boolean usesState ( final Decorations<E, D> decorations, final String state )
     {
+        // todo Cache returned value?
         if ( decorations != null && decorations.size () > 0 )
         {
             for ( final D decoration : decorations )

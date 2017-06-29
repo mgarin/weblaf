@@ -20,11 +20,13 @@ package com.alee.laf.filechooser;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.*;
+import com.alee.utils.CollectionUtils;
+import com.alee.utils.FileUtils;
+import com.alee.utils.ImageUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.Customizer;
 
 import javax.swing.*;
@@ -480,44 +482,13 @@ public class WebFileChooser extends JFileChooser
     @Override
     public void updateUI ()
     {
-        // Removing all files filter
-        if ( isAcceptAllFileFilterUsed () )
-        {
-            removeChoosableFileFilter ( getAcceptAllFileFilter () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
 
-        // Updating the UI itself
-        if ( getUI () == null || !( getUI () instanceof WFileChooserUI ) )
-        {
-            try
-            {
-                setUI ( ( WFileChooserUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebFileChooserUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
-
-        // Update file view as file chooser was probably deserialized
-        if ( getFileSystemView () == null )
-        {
-            setFileSystemView ( FileSystemView.getFileSystemView () );
-        }
-
-        // Updating UI file view for this file chooser
-        ReflectUtils.setFieldValueSafely ( this, "uiFileView", getUI ().getFileView ( this ) );
-
-        // Adding all files filter
-        if ( isAcceptAllFileFilterUsed () )
-        {
-            addChoosableFileFilter ( getAcceptAllFileFilter () );
-        }
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 
     @Override

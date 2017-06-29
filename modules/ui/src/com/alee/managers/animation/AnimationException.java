@@ -19,7 +19,6 @@ package com.alee.managers.animation;
 
 /**
  * Special exception class used to display various animation problems.
- * It extends {@link RuntimeException} to allow throwing this exception while normal runtime.
  *
  * @author Mikle Garin
  */

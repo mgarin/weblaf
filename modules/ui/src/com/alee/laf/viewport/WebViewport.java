@@ -17,7 +17,6 @@
 
 package com.alee.laf.viewport;
 
-import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -179,21 +178,12 @@ public class WebViewport extends JViewport implements Styleable, Paintable
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WViewportUI ) )
-        {
-            try
-            {
-                setUI ( ( WViewportUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebViewportUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

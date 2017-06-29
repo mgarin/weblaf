@@ -19,7 +19,6 @@ package com.alee.painter.decoration;
 
 /**
  * Special exception class used to display various decoration problems.
- * It extends {@link java.lang.RuntimeException} to allow throwing this exception while normal runtime.
  *
  * @author Mikle Garin
  */

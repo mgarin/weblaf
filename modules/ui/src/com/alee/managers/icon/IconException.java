@@ -19,7 +19,6 @@ package com.alee.managers.icon;
 
 /**
  * Special exception class used to display various icon problems.
- * It extends RuntimeException to allow throwing this exception while normal runtime.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-IconManager">How to use IconManager</a>

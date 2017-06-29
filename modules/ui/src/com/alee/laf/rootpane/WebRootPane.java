@@ -19,7 +19,6 @@ package com.alee.laf.rootpane;
 
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.glasspane.WebGlassPane;
-import com.alee.managers.log.Log;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -258,22 +257,13 @@ public class WebRootPane extends JRootPane implements Styleable, Paintable, Shap
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WRootPaneUI ) )
-        {
-            try
-            {
-                setUI ( ( WRootPaneUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebRootPaneUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 
     @Override

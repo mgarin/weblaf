@@ -1205,6 +1205,41 @@ public final class ReflectUtils
     }
 
     /**
+     * Returns whether method with the specified name and arguments exists in the specified object.
+     * If method is not found in the object class all superclasses will be searched for that method.
+     *
+     * @param object     object
+     * @param methodName method name
+     * @param arguments  method arguments
+     * @return {@code true} if method with the specified name and arguments exists in the specified object, {@code false} otherwise
+     */
+    public static boolean hasMethod ( final Object object, final String methodName, final Object... arguments )
+    {
+        return hasMethod ( object.getClass (), methodName, arguments );
+    }
+
+    /**
+     * Returns whether method with the specified name and arguments exists in the specified class.
+     * If method is not found in the object class all superclasses will be searched for that method.
+     *
+     * @param aClass     object class
+     * @param methodName method name
+     * @param arguments  method arguments
+     * @return {@code true} if method with the specified name and arguments exists in the specified class, {@code false} otherwise
+     */
+    public static boolean hasMethod ( final Class aClass, final String methodName, final Object... arguments )
+    {
+        try
+        {
+            return getMethod ( aClass, methodName, arguments ) != null;
+        }
+        catch ( final Throwable e )
+        {
+            return false;
+        }
+    }
+
+    /**
      * Calls object's method with the specified name and arguments.
      * If method is not found in the object class all superclasses will be searched for that method.
      * Returns result given by called method.
@@ -1415,7 +1450,7 @@ public final class ReflectUtils
                     buf.append ( ", " );
                 }
                 final Class c = argTypes[ i ];
-                buf.append ( ( c == null ) ? "null" : c.getCanonicalName () );
+                buf.append ( c == null ? "null" : c.getCanonicalName () );
             }
         }
         return buf.append ( ")" ).toString ();

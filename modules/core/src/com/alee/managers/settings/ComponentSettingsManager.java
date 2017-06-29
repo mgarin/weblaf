@@ -39,15 +39,15 @@ import java.util.WeakHashMap;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
  * @see com.alee.managers.settings.SettingsManager
- * @see com.alee.managers.settings.SettingsManager
  */
 
 public final class ComponentSettingsManager
 {
     /**
-     * todo 1. JListSettingsProcessor
-     * todo 2. JTableSettingsProcessor
-     * todo 3. JScrollPaneSettingsProcessor
+     * todo 1. Remove {@link #throwExceptions} and always properly throw them
+     * todo 2. JListSettingsProcessor
+     * todo 3. JTableSettingsProcessor
+     * todo 4. JScrollPaneSettingsProcessor
      */
 
     /**
@@ -199,8 +199,8 @@ public final class ComponentSettingsManager
                 if ( throwExceptions )
                 {
                     // Throw cannot instantiate SettingsProcessor exception
-                    throw new RuntimeException (
-                            "Cannot instantiate SettingsProcessor class: " + settingsProcessorClass.getCanonicalName () + ".", e );
+                    final String msg = "Unable to instantiate SettingsProcessor class: %s";
+                    throw new SettingsException ( String.format ( msg, settingsProcessorClass ), e );
                 }
                 else
                 {
@@ -232,7 +232,8 @@ public final class ComponentSettingsManager
         else if ( throwExceptions )
         {
             // Throw unsupported component exception
-            throw new RuntimeException ( "Component type " + data.getComponent ().getClass ().getCanonicalName () + " is not supported." );
+            final String msg = "Component type is not supported: %s";
+            throw new SettingsException ( String.format ( msg, data.getComponent ().getClass () ) );
         }
     }
 
@@ -271,7 +272,8 @@ public final class ComponentSettingsManager
         else if ( throwExceptions )
         {
             // Throw unsupported component exception
-            throw new RuntimeException ( "Component " + component + " was not registered." );
+            final String msg = "Processor is not registered for component: %s";
+            throw new SettingsException ( String.format ( msg, component ) );
         }
     }
 
@@ -304,7 +306,8 @@ public final class ComponentSettingsManager
         else if ( throwExceptions )
         {
             // Throw unsupported component exception
-            throw new RuntimeException ( "Component " + component + " was not registered." );
+            final String msg = "Processor is not registered for component: %s";
+            throw new SettingsException ( String.format ( msg, component ) );
         }
     }
 
@@ -327,10 +330,5 @@ public final class ComponentSettingsManager
             component.putClientProperty ( COMPONENT_SETTINGS_PROCESSOR_KEY, null );
             settingsProcessors.remove ( component );
         }
-        //        else if ( throwExceptions )
-        //        {
-        //            // Throw unsupported component exception
-        //            throw new RuntimeException ( "Component " + component + " was not registered." );
-        //        }
     }
 }

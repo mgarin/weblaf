@@ -22,7 +22,6 @@ import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.LanguageUtils;
 import com.alee.managers.language.updaters.LanguageUpdater;
-import com.alee.managers.log.Log;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -528,25 +527,37 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WebCheckBoxMenuItemUI} object that renders this component
+     */
+    @Override
+    public WebCheckBoxMenuItemUI getUI ()
+    {
+        return ( WebCheckBoxMenuItemUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WebCheckBoxMenuItemUI}
+     */
+    public void setUI ( final WebCheckBoxMenuItemUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebCheckBoxMenuItemUI ) )
-        {
-            try
-            {
-                setUI ( ( WebCheckBoxMenuItemUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebCheckBoxMenuItemUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 
     @Override

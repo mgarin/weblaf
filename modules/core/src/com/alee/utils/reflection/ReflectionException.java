@@ -19,7 +19,6 @@ package com.alee.utils.reflection;
 
 /**
  * Special exception class used to display various {@link com.alee.utils.ReflectUtils} problems.
- * It extends {@link RuntimeException} to allow throwing this exception while normal runtime.
  *
  * @author Mikle Garin
  */

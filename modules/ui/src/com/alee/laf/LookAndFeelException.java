@@ -19,7 +19,6 @@ package com.alee.laf;
 
 /**
  * Special exception class used to display various L&F problems.
- * It extends {@link RuntimeException} to allow throwing this exception while normal runtime.
  *
  * @author Mikle Garin
  */

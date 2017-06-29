@@ -20,6 +20,7 @@ package com.alee.extended.behavior;
 import com.alee.managers.drag.DragListener;
 import com.alee.managers.drag.DragManager;
 import com.alee.utils.CoreSwingUtils;
+import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -85,6 +86,7 @@ public abstract class AbstractHoverBehavior<C extends JComponent> extends MouseA
      */
     public void install ()
     {
+        hover = SwingUtils.isHovered ( component );
         component.addMouseListener ( this );
         component.addMouseMotionListener ( this );
         component.addAncestorListener ( this );
@@ -104,6 +106,7 @@ public abstract class AbstractHoverBehavior<C extends JComponent> extends MouseA
         component.removeAncestorListener ( this );
         component.removeMouseMotionListener ( this );
         component.removeMouseListener ( this );
+        hover = false;
     }
 
     /**
@@ -125,6 +128,16 @@ public abstract class AbstractHoverBehavior<C extends JComponent> extends MouseA
     {
         this.enabledOnly = enabledOnly;
         updateHover ();
+    }
+
+    /**
+     * Returns current hover state.
+     *
+     * @return current hover state
+     */
+    public boolean isHover ()
+    {
+        return hover;
     }
 
     @Override

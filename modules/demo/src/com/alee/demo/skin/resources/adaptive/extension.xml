@@ -43,7 +43,7 @@
     </style>
 
     <!-- Filter fields -->
-    <style type="textfield" id="filter" extends="treefilterfield-inline" margin="4">
+    <style type="textfield" id="filter" extends="treefilterfield-inline" padding="6">
 
         <!-- Settings menu button -->
         <style type="button" id="settings" padding="0,2,0,6" />
@@ -102,7 +102,7 @@
         </style>
 
         <!-- Preview title and content separator -->
-        <style type="separator" id="separator" extends="vertical" margin="2,0,2,0" />
+        <style type="separator" id="separator" extends="vertical" padding="2,0,2,0" />
 
         <!-- Preview components container -->
         <style type="panel" id="content" extends="transparent" padding="15,15,15,15" />

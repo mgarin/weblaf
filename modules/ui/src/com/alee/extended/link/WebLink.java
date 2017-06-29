@@ -20,9 +20,8 @@ package com.alee.extended.link;
 import com.alee.api.IconSupport;
 import com.alee.api.TitleSupport;
 import com.alee.extended.label.WebStyledLabel;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleableComponent;
+import com.alee.managers.style.StyleManager;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
@@ -378,27 +377,12 @@ public class WebLink extends WebStyledLabel
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WLinkUI ) )
-        {
-            try
-            {
-                setUI ( ( WLinkUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebLinkUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
     }
 
     @Override
     public String getUIClassID ()
     {
-        return StyleableComponent.link.getUIClassID ();
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

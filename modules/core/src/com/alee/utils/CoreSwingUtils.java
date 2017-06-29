@@ -18,6 +18,7 @@
 package com.alee.utils;
 
 import javax.swing.*;
+import java.applet.Applet;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 
@@ -25,6 +26,7 @@ import java.lang.reflect.InvocationTargetException;
  * @author Mikle Garin
  */
 
+@SuppressWarnings ( "NonFinalUtilityClass" )
 public class CoreSwingUtils
 {
     /**
@@ -264,6 +266,60 @@ public class CoreSwingUtils
         final Point mouse = getMouseLocation ();
         final Point los = component.getLocationOnScreen ();
         return new Point ( mouse.x - los.x, mouse.y - los.y );
+    }
+
+    /**
+     * Returns whether or not specified {@link Component} is currently hovered.
+     *
+     * @param component {@link Component}
+     * @return {@code true} if specified {@link Component} is currently hovered, {@code false} otherwise
+     */
+    public static boolean isHovered ( final Component component )
+    {
+        boolean hover = false;
+
+        // Ensure that component is showing
+        if ( component.isShowing () )
+        {
+            // Ensure component have non-zero visible width and height
+            final Rectangle vr = computeVisibleRect ( component, new Rectangle () );
+            if ( vr.width > 0 && vr.height > 0 )
+            {
+                // Ensure that mouse is hovering the component right now
+                if ( getBoundsOnScreen ( component ).contains ( getMouseLocation () ) )
+                {
+                    hover = true;
+                }
+            }
+        }
+
+        return hover;
+    }
+
+    /**
+     * Returns intersection of the visible rectangles for the component and all of its ancestors.
+     * Return value is also stored in {@code visibleRect}.
+     *
+     * @param component   {@link Component}
+     * @param visibleRect {@code Rectangle} containing intersection of the visible rectangles for the component and all of its ancestors
+     * @return intersection of the visible rectangles for the component and all of its ancestors
+     */
+    private static Rectangle computeVisibleRect ( final Component component, final Rectangle visibleRect )
+    {
+        final Container p = component.getParent ();
+        final Rectangle bounds = component.getBounds ();
+        if ( p == null || p instanceof Window || p instanceof Applet )
+        {
+            visibleRect.setBounds ( 0, 0, bounds.width, bounds.height );
+        }
+        else
+        {
+            computeVisibleRect ( p, visibleRect );
+            visibleRect.x -= bounds.x;
+            visibleRect.y -= bounds.y;
+            SwingUtilities.computeIntersection ( 0, 0, bounds.width, bounds.height, visibleRect );
+        }
+        return visibleRect;
     }
 
     /**

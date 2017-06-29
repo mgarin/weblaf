@@ -17,7 +17,6 @@
 
 package com.alee.laf.scroll;
 
-import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -331,22 +330,13 @@ public class WebScrollBar extends JScrollBar
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WScrollBarUI ) )
-        {
-            try
-            {
-                setUI ( ( WScrollBarUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebScrollBarUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 
     @Override

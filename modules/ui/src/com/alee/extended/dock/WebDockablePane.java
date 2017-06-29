@@ -20,13 +20,12 @@ package com.alee.extended.dock;
 import com.alee.api.data.CompassDirection;
 import com.alee.extended.WebContainer;
 import com.alee.extended.dock.data.DockableContainer;
-import com.alee.managers.log.Log;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleableComponent;
+import com.alee.managers.style.StyleManager;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 
@@ -734,28 +733,12 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WDockablePaneUI ) )
-        {
-            try
-            {
-                setUI ( ( WDockablePaneUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebDockablePaneUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
-        setGlassLayer ( getUI ().createGlassLayer () );
+        StyleManager.getDescriptor ( this ).updateUI ( this );
     }
 
     @Override
     public String getUIClassID ()
     {
-        return StyleableComponent.dockablepane.getUIClassID ();
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

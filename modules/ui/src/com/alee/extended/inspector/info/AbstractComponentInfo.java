@@ -17,7 +17,6 @@
 
 package com.alee.extended.inspector.info;
 
-import com.alee.managers.style.StyleableComponent;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.xml.InsetsConverter;
@@ -54,7 +53,7 @@ public abstract class AbstractComponentInfo<T extends Component> implements Comp
     /**
      * Merged icons cache.
      */
-    protected static final Map<String, ImageIcon> mergedCache = new HashMap<String, ImageIcon> ( 30 );
+    protected static final Map<String, Icon> mergedCache = new HashMap<String, Icon> ( 30 );
 
     /**
      * Basic style guidelines.
@@ -67,38 +66,36 @@ public abstract class AbstractComponentInfo<T extends Component> implements Comp
     protected static final String paddingColor = "0,150,70";
 
     @Override
-    public ImageIcon getIcon ( final StyleableComponent type, final T component )
+    public Icon getIcon ( final T component )
     {
-        final ImageIcon icon = getIconImpl ( type, component );
-        final ImageIcon transparency = SwingUtils.isOpaque ( component ) ? opaque : null;
-        if ( transparency != null )
+        // Retrieving component icon
+        Icon icon = getIconImpl ( component );
+
+        // Adding component opacity state icon
+        if ( SwingUtils.isOpaque ( component ) )
         {
-            final String key = icon.hashCode () + "," + transparency.hashCode ();
+            final String key = icon.hashCode () + "," + opaque.hashCode ();
             if ( mergedCache.containsKey ( key ) )
             {
-                return mergedCache.get ( key );
+                icon = mergedCache.get ( key );
             }
             else
             {
-                final ImageIcon mergedIcon = ImageUtils.mergeIcons ( icon, transparency );
-                mergedCache.put ( key, mergedIcon );
-                return mergedIcon;
+                icon = ImageUtils.mergeIcons ( icon, opaque );
+                mergedCache.put ( key, icon );
             }
         }
-        else
-        {
-            return icon;
-        }
+
+        return icon;
     }
 
     /**
      * Returns actual icon for the specified component.
      *
-     * @param type      styleable component type
      * @param component component to provide icon for
      * @return actual icon for the specified component
      */
-    protected abstract ImageIcon getIconImpl ( StyleableComponent type, T component );
+    protected abstract Icon getIconImpl ( T component );
 
     /**
      * Returns main title foreground color.

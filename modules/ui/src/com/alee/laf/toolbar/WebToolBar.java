@@ -18,7 +18,6 @@
 package com.alee.laf.toolbar;
 
 import com.alee.extended.layout.ToolbarLayout;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -411,25 +410,37 @@ public class WebToolBar extends JToolBar
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WebToolBarUI} object that renders this component
+     */
+    @Override
+    public WebToolBarUI getUI ()
+    {
+        return ( WebToolBarUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WebToolBarUI}
+     */
+    public void setUI ( final WebToolBarUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebToolBarUI ) )
-        {
-            try
-            {
-                setUI ( ( WebToolBarUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebToolBarUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 
     @Override

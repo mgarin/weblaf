@@ -18,15 +18,13 @@
 package com.alee.extended.canvas;
 
 import com.alee.extended.WebComponent;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleableComponent;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.Stateful;
 import com.alee.utils.ArrayUtils;
 import com.alee.utils.CollectionUtils;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -185,27 +183,12 @@ public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Sta
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WCanvasUI ) )
-        {
-            try
-            {
-                setUI ( ( WCanvasUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebCanvasUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
     }
 
     @Override
     public String getUIClassID ()
     {
-        return StyleableComponent.canvas.getUIClassID ();
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

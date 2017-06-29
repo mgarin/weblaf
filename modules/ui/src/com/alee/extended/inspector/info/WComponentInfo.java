@@ -17,8 +17,9 @@
 
 package com.alee.extended.inspector.info;
 
+import com.alee.managers.style.ComponentDescriptor;
 import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleableComponent;
+import com.alee.managers.style.StyleManager;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
@@ -33,10 +34,10 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class StyleableInfo<T extends JComponent> extends AbstractComponentInfo<T>
+public class WComponentInfo<T extends JComponent> extends AbstractComponentInfo<T>
 {
     @Override
-    public ImageIcon getIconImpl ( final StyleableComponent type, final T component )
+    public Icon getIconImpl ( final T component )
     {
         final JRootPane rootPane = SwingUtils.getRootPane ( component );
         if ( rootPane != null && rootPane.getGlassPane () == component )
@@ -45,16 +46,17 @@ public class StyleableInfo<T extends JComponent> extends AbstractComponentInfo<T
         }
         else
         {
-            return type.getIcon ();
+            final ComponentDescriptor<T> descriptor = StyleManager.getDescriptor ( component );
+            return descriptor.getIcon ();
         }
     }
 
     @Override
-    public String getText ( final StyleableComponent type, final T component )
+    public String getText ( final T component )
     {
         final String title = "{" + ReflectUtils.getClassName ( component.getClass () ) + ":c(" + getTitleColor ( component ) + ")}";
 
-        final boolean wlui = LafUtils.isWebLafUI ( component );
+        final boolean wlui = LafUtils.hasWebLafUI ( component );
         final String style = wlui ? " {[ " + StyleId.get ( component ).getCompleteId () + " ]:b;c(" + styleIdColor + ")}" : "";
 
         final Insets margin = LafUtils.getMargin ( component );

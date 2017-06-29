@@ -17,7 +17,6 @@
 
 package com.alee.laf.desktoppane;
 
-import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -210,24 +209,36 @@ public class WebDesktopPane extends JDesktopPane implements Styleable, Paintable
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WebDesktopPaneUI} object that renders this component
+     */
+    @Override
+    public WebDesktopPaneUI getUI ()
+    {
+        return ( WebDesktopPaneUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WebDesktopPaneUI}
+     */
+    public void setUI ( final WebDesktopPaneUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebDesktopPaneUI ) )
-        {
-            try
-            {
-                setUI ( ( WebDesktopPaneUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebDesktopPaneUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

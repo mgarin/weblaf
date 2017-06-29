@@ -17,7 +17,6 @@
 
 package com.alee.laf.menu;
 
-import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -210,24 +209,36 @@ public class WebMenuBar extends JMenuBar implements Styleable, Paintable, ShapeM
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WebMenuBarUI} object that renders this component
+     */
+    @Override
+    public WebMenuBarUI getUI ()
+    {
+        return ( WebMenuBarUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WebMenuBarUI}
+     */
+    public void setUI ( final WebMenuBarUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebMenuBarUI ) )
-        {
-            try
-            {
-                setUI ( ( WebMenuBarUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebMenuBarUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

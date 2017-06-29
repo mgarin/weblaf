@@ -6,7 +6,7 @@
     <style type="panel" id="inspector" extends="transparent">
 
         <!-- Tree filter field -->
-        <style type="textfield" id="filter" margin="4" extends="treefilterfield-inline">
+        <style type="textfield" id="filter" extends="treefilterfield-inline" padding="6">
 
             <!-- Settings menu button -->
             <style type="button" id="settings" padding="0,2,0,6" />
@@ -24,10 +24,10 @@
         <style type="separator" id="separator" extends="horizontal" />
 
         <!-- Components tree scroll pane -->
-        <style type="scrollpane" id="scroll" extends="undecorated">
+        <style type="scrollpane" id="scroll" extends="transparent-hovering">
 
             <!-- Components tree -->
-            <style type="tree" id="tree" />
+            <style type="tree" id="tree" extends="non-opaque" />
 
         </style>
 
@@ -35,6 +35,9 @@
 
     <!-- Popover inspector -->
     <style type="panel" id="inspector-popover" extends="inspector">
+
+        <!-- Tree filter field -->
+        <style type="textfield" id="filter" extends="treefilterfield-transparent" padding="6" />
 
         <!-- Components tree scroll pane -->
         <style type="scrollpane" id="scroll" extends="transparent-buttonless">

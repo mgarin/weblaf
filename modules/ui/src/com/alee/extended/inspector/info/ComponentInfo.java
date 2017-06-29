@@ -17,8 +17,6 @@
 
 package com.alee.extended.inspector.info;
 
-import com.alee.managers.style.StyleableComponent;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -34,18 +32,16 @@ public interface ComponentInfo<T extends Component>
     /**
      * Returns icon for the specified component.
      *
-     * @param type      styleable component type
      * @param component component to provide icon for
      * @return icon for the specified component
      */
-    public ImageIcon getIcon ( StyleableComponent type, T component );
+    public Icon getIcon ( T component );
 
     /**
      * Returns string value for the specified component.
      *
-     * @param type      styleable component type
      * @param component object to provide text for
      * @return string value for the specified component
      */
-    public String getText ( StyleableComponent type, T component );
+    public String getText ( T component );
 }

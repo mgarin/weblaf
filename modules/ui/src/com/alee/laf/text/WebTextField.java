@@ -22,7 +22,6 @@ import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.language.updaters.LanguageUpdater;
-import com.alee.managers.log.Log;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -432,23 +431,13 @@ public class WebTextField extends JTextField
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WTextFieldUI ) )
-        {
-            try
-            {
-                setUI ( ( WTextFieldUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebTextFieldUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
-        invalidate ();
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 
     @Override

@@ -17,7 +17,6 @@
 
 package com.alee.laf.menu;
 
-import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -235,27 +234,12 @@ public class WebPopupMenuSeparator extends JPopupMenu.Separator
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WPopupMenuSeparatorUI ) )
-        {
-            try
-            {
-                setUI ( ( WPopupMenuSeparatorUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebPopupMenuSeparatorUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
     }
 
     @Override
     public String getUIClassID ()
     {
-        return StyleableComponent.popupmenuseparator.getUIClassID ();
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

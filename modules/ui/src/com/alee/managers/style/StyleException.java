@@ -19,7 +19,6 @@ package com.alee.managers.style;
 
 /**
  * Special exception class used to display various style problems.
- * It extends {@link java.lang.RuntimeException} to allow throwing this exception while normal runtime.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>

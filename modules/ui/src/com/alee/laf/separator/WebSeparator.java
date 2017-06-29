@@ -17,7 +17,6 @@
 
 package com.alee.laf.separator;
 
-import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -255,22 +254,13 @@ public class WebSeparator extends JSeparator implements Styleable, Paintable, Sh
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WSeparatorUI ) )
-        {
-            try
-            {
-                setUI ( ( WSeparatorUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebSeparatorUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 
     /**

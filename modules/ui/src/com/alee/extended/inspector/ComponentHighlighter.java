@@ -194,7 +194,7 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
     /**
      * Updates highlighter position.
      */
-    protected void updateBounds ()
+    private void updateBounds ()
     {
         final Component glassPane = SwingUtils.getGlassPane ( component );
         final Rectangle rb = SwingUtils.getRelativeBounds ( component, glassPane );
@@ -207,7 +207,7 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
      *
      * @return highlighted component size tip text
      */
-    protected String getSizeTip ()
+    private String getSizeTip ()
     {
         return component.getWidth () + " x " + component.getHeight () + " px";
     }
@@ -232,7 +232,7 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
      *
      * @param g2d graphics context
      */
-    protected void paintSizeTip ( final Graphics2D g2d )
+    private void paintSizeTip ( final Graphics2D g2d )
     {
         final FontMetrics fm = g2d.getFontMetrics ( g2d.getFont () );
         final String sizeTip = getSizeTip ();
@@ -276,79 +276,102 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
      *
      * @param g2d graphics context
      */
-    protected void paintAreas ( final Graphics2D g2d )
+    private void paintAreas ( final Graphics2D g2d )
     {
-        final ComponentUI ui = LafUtils.getUI ( component );
         final Rectangle bounds = new Rectangle ( 0, sizeTipHeight, component.getWidth (), getHeight () - sizeTipHeight );
-        if ( ui != null )
+        if ( LafUtils.hasUI ( component ) )
         {
-            // Component margin
-            Insets m = ui instanceof MarginSupport ? ( ( MarginSupport ) ui ).getMargin () : null;
-            m = m != null ? m : emptyInsets;
-
-            // Component padding
-            Insets p = ui instanceof PaddingSupport ? ( ( PaddingSupport ) ui ).getPadding () : null;
-            p = p != null ? p : emptyInsets;
-
-            // Component painter border
-            Insets b = ( ( JComponent ) component ).getInsets ();
-            b = b != null && ( b.top > 0 || b.left > 0 || b.bottom > 0 || b.right > 0 ) ?
-                    new Insets ( b.top - m.top - p.top, b.left - m.left - p.left, b.bottom - m.bottom - p.bottom,
-                            b.right - m.right - p.right ) : emptyInsets;
-
-            // Computing area sizes
-            final Rectangle sr = new Rectangle ( bounds );
-            final Rectangle mr = new Rectangle ( sr.x + m.left, sr.y + m.top, sr.width - m.left - m.right, sr.height - m.top - m.bottom );
-            final Rectangle br = new Rectangle ( mr.x + b.left, mr.y + b.top, mr.width - b.left - b.right, mr.height - b.top - b.bottom );
-            final Rectangle pr = new Rectangle ( br.x + p.left, br.y + p.top, br.width - p.left - p.right, br.height - p.top - p.bottom );
-
-            // Painting component margin area
-            if ( m != emptyInsets )
+            final ComponentUI ui = LafUtils.getUI ( component );
+            if ( ui != null )
             {
-                g2d.setPaint ( marginColor );
-                final Area ma = new Area ( sr );
-                ma.exclusiveOr ( new Area ( mr ) );
-                g2d.fill ( ma );
-            }
+                // todo Probably request these settings through other means?
+                // todo Through Bounds maybe?
 
-            // Painting component painter border area
-            if ( b != emptyInsets )
+                // Component margin
+                final Insets margin = ui instanceof MarginSupport ? ( ( MarginSupport ) ui ).getMargin () : null;
+                final Insets m = margin != null ? margin : emptyInsets;
+
+                // Component padding
+                final Insets padding = ui instanceof PaddingSupport ? ( ( PaddingSupport ) ui ).getPadding () : null;
+                final Insets p = padding != null ? padding : emptyInsets;
+
+                // Component painter border
+                final Insets insets = component instanceof JComponent ? ( ( JComponent ) component ).getInsets () : emptyInsets;
+                final Insets b;
+                if ( insets != null && ( insets.top > 0 || insets.left > 0 || insets.bottom > 0 || insets.right > 0 ) )
+                {
+                    b = new Insets ( insets.top - m.top - p.top, insets.left - m.left - p.left,
+                            insets.bottom - m.bottom - p.bottom, insets.right - m.right - p.right );
+                }
+                else
+                {
+                    b = emptyInsets;
+                }
+
+                // Computing area sizes
+                final Rectangle sr = new Rectangle ( bounds );
+                final Rectangle mr = new Rectangle ( sr.x + m.left, sr.y + m.top,
+                        sr.width - m.left - m.right, sr.height - m.top - m.bottom );
+                final Rectangle br = new Rectangle ( mr.x + b.left, mr.y + b.top,
+                        mr.width - b.left - b.right, mr.height - b.top - b.bottom );
+                final Rectangle pr = new Rectangle ( br.x + p.left, br.y + p.top,
+                        br.width - p.left - p.right, br.height - p.top - p.bottom );
+
+                // Painting component margin area
+                paintComplexArea ( g2d, m, sr, mr, marginColor );
+
+                // Painting component painter border area
+                paintComplexArea ( g2d, b, mr, br, borderColor );
+
+                // Painting component padding area
+                paintComplexArea ( g2d, p, br, pr, paddingColor );
+
+                // Painting component bounds area
+                paintContentArea ( g2d, pr );
+            }
+            else
             {
-                g2d.setPaint ( borderColor );
-                final Area ba = new Area ( mr );
-                ba.exclusiveOr ( new Area ( br ) );
-                g2d.fill ( ba );
+                // Painting component bounds area
+                paintContentArea ( g2d, bounds );
             }
-
-            // Painting component padding area
-            if ( p != emptyInsets )
-            {
-                g2d.setPaint ( paddingColor );
-                final Area pa = new Area ( br );
-                pa.exclusiveOr ( new Area ( pr ) );
-                g2d.fill ( pa );
-            }
-
-            // Painting component bounds area
-            g2d.setPaint ( contentColor );
-            g2d.fill ( pr );
         }
         else
         {
             // Painting component bounds area
-            g2d.setPaint ( contentColor );
-            g2d.fill ( bounds );
+            paintContentArea ( g2d, bounds );
         }
     }
 
     /**
-     * Returns whether or not component can be highlighted.
+     * Paints complex component area.
      *
-     * @param component component to be highlighted
-     * @return {@code true} if component can be highlighted, {@code false} otherwise
+     * @param g2d    graphics context
+     * @param insets area insets
+     * @param outer  outer area bounds
+     * @param inner  inner area bounds
+     * @param color  area color
      */
-    public static boolean canHighlight ( final Component component )
+    private void paintComplexArea ( final Graphics2D g2d, final Insets insets, final Rectangle outer, final Rectangle inner,
+                                    final Color color )
     {
-        return component != null && component.isShowing () && !( component instanceof Window );
+        if ( insets != emptyInsets )
+        {
+            g2d.setPaint ( color );
+            final Area ma = new Area ( outer );
+            ma.exclusiveOr ( new Area ( inner ) );
+            g2d.fill ( ma );
+        }
+    }
+
+    /**
+     * Paints component content area.
+     *
+     * @param g2d    graphics context
+     * @param bounds content area bounds
+     */
+    private void paintContentArea ( final Graphics2D g2d, final Rectangle bounds )
+    {
+        g2d.setPaint ( contentColor );
+        g2d.fill ( bounds );
     }
 }

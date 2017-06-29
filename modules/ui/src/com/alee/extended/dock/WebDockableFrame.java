@@ -23,9 +23,8 @@ import com.alee.extended.WebContainer;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleableComponent;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.decoration.Stateful;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
@@ -881,27 +880,12 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WDockableFrameUI ) )
-        {
-            try
-            {
-                setUI ( ( WDockableFrameUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebDockableFrameUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
     }
 
     @Override
     public String getUIClassID ()
     {
-        return StyleableComponent.dockableframe.getUIClassID ();
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

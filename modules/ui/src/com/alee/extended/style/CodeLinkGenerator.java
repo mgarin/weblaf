@@ -25,8 +25,9 @@ import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.slider.WebSlider;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.ComponentDescriptor;
 import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleableComponent;
+import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.data.ComponentStyleConverter;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.MathUtils;
@@ -39,6 +40,7 @@ import org.fife.ui.rsyntaxtextarea.LinkGenerator;
 import org.fife.ui.rsyntaxtextarea.LinkGeneratorResult;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.HyperlinkEvent;
@@ -60,17 +62,17 @@ public class CodeLinkGenerator implements LinkGenerator
     /**
      * Code constants.
      */
-    private static final List<String> propertyNodes = new ImmutableList<String> (
+    private static final ImmutableList<String> propertyNodes = new ImmutableList<String> (
             ComponentStyleConverter.COMPONENT_NODE,
             ComponentStyleConverter.UI_NODE,
             ComponentStyleConverter.PAINTER_NODE
     );
     private static final String trueString = "true";
     private static final String falseString = "false";
-    private static final List<String> booleanContent = new ImmutableList<String> ( trueString, falseString );
-    private static final List<String> colorContent = new ImmutableList<String> ( "foreground", "fg", "background", "bg", "color" );
-    private static final List<String> insetsContent = new ImmutableList<String> ( "insets", "margin" );
-    private static final List<String> opacityContent = new ImmutableList<String> ( "opacity", "transparency" );
+    private static final ImmutableList<String> booleanContent = new ImmutableList<String> ( trueString, falseString );
+    private static final ImmutableList<String> colorContent = new ImmutableList<String> ( "foreground", "fg", "background", "bg", "color" );
+    private static final ImmutableList<String> insetsContent = new ImmutableList<String> ( "insets", "margin" );
+    private static final ImmutableList<String> opacityContent = new ImmutableList<String> ( "opacity", "transparency" );
 
     /**
      * Data converters.
@@ -139,7 +141,7 @@ public class CodeLinkGenerator implements LinkGenerator
                     {
                         final Segment content = attribute.getValueSegment ();
                         final String type = element.getAttributeValue ( ComponentStyleConverter.COMPONENT_TYPE_ATTRIBUTE );
-                        final StyleableComponent selectedType = StyleableComponent.valueOf ( type );
+                        final ComponentDescriptor<JComponent> descriptor = StyleManager.getDescriptor ( type );
 
                         return new LinkGeneratorResult ()
                         {
@@ -152,12 +154,13 @@ public class CodeLinkGenerator implements LinkGenerator
                                     typeChooser.setCloseOnFocusLoss ( true );
                                     typeChooser.setPadding ( 5, 0, 5, 0 );
 
-                                    final List<StyleableComponent> types = StyleableComponent.list ();
+                                    final List<ComponentDescriptor> types = StyleManager.getDescriptors ();
                                     final WebList typesList = new WebList ( types );
                                     typesList.setOpaque ( false );
                                     typesList.setVisibleRowCount ( Math.min ( 10, types.size () ) );
                                     typesList.setSelectOnHover ( true );
-                                    typesList.setSelectedValue ( selectedType );
+                                    typesList.setSelectedValue ( descriptor );
+
                                     final Runnable commitChanges = new Runnable ()
                                     {
                                         @Override
@@ -225,8 +228,8 @@ public class CodeLinkGenerator implements LinkGenerator
                     @Override
                     public HyperlinkEvent execute ()
                     {
-                        source.replaceRange ( contentString.equals ( trueString ) ? falseString : trueString, content.getBegin (),
-                                content.getEnd () );
+                        final String str = contentString.equals ( trueString ) ? falseString : trueString;
+                        source.replaceRange ( str, content.getBegin (), content.getEnd () );
                         return new HyperlinkEvent ( this, HyperlinkEvent.EventType.EXITED, null );
                     }
 

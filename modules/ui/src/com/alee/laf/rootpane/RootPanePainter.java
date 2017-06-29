@@ -47,6 +47,7 @@ public class RootPanePainter<E extends JRootPane, U extends WRootPaneUI, D exten
         super.install ( c, ui );
 
         // Installing window-related settings
+        // todo Maybe save window reference locally?
         final Window window = SwingUtils.getWindowAncestor ( c );
         if ( window != null )
         {
@@ -97,33 +98,37 @@ public class RootPanePainter<E extends JRootPane, U extends WRootPaneUI, D exten
     }
 
     @Override
+    protected boolean usesFocusedView ()
+    {
+        final Window window = SwingUtils.getWindowAncestor ( component );
+        return window != null && window.isFocusableWindow () && usesState ( DecorationState.focused );
+    }
+
+    @Override
     protected void installFocusListener ()
     {
         final Window window = SwingUtils.getWindowAncestor ( component );
-        if ( window != null )
+        if ( window != null && usesFocusedView () )
         {
-            if ( usesState ( DecorationState.focused ) )
+            windowFocusListener = new WindowFocusListener ()
             {
-                windowFocusListener = new WindowFocusListener ()
+                @Override
+                public void windowGainedFocus ( final WindowEvent e )
                 {
-                    @Override
-                    public void windowGainedFocus ( final WindowEvent e )
-                    {
-                        // Updating focus state
-                        RootPanePainter.this.focused = true;
-                        updateDecorationState ();
-                    }
+                    // Updating focus state
+                    RootPanePainter.this.focused = true;
+                    updateDecorationState ();
+                }
 
-                    @Override
-                    public void windowLostFocus ( final WindowEvent e )
-                    {
-                        // Updating decoration
-                        RootPanePainter.this.focused = false;
-                        updateDecorationState ();
-                    }
-                };
-                window.addWindowFocusListener ( windowFocusListener );
-            }
+                @Override
+                public void windowLostFocus ( final WindowEvent e )
+                {
+                    // Updating decoration
+                    RootPanePainter.this.focused = false;
+                    updateDecorationState ();
+                }
+            };
+            window.addWindowFocusListener ( windowFocusListener );
         }
     }
 
@@ -131,14 +136,10 @@ public class RootPanePainter<E extends JRootPane, U extends WRootPaneUI, D exten
     protected void uninstallFocusListener ()
     {
         final Window window = SwingUtils.getWindowAncestor ( component );
-        if ( window != null )
+        if ( window != null && windowFocusListener != null )
         {
-            // Removing window focus listener
-            if ( windowFocusListener != null )
-            {
-                window.removeWindowFocusListener ( windowFocusListener );
-                windowFocusListener = null;
-            }
+            window.removeWindowFocusListener ( windowFocusListener );
+            windowFocusListener = null;
         }
     }
 

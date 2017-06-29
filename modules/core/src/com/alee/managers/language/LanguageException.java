@@ -19,7 +19,6 @@ package com.alee.managers.language;
 
 /**
  * Special exception class used to display various language problems.
- * It extends RuntimeException to allow throwing this exception while normal runtime.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>

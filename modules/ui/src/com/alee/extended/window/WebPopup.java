@@ -27,9 +27,8 @@ import com.alee.laf.window.WindowMethods;
 import com.alee.laf.window.WindowMethodsImpl;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.GlobalFocusListener;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleableComponent;
+import com.alee.managers.style.StyleManager;
 import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.WebTimer;
@@ -1244,27 +1243,12 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WPopupUI ) )
-        {
-            try
-            {
-                setUI ( ( WPopupUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebPopupUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
     }
 
     @Override
     public String getUIClassID ()
     {
-        return StyleableComponent.popup.getUIClassID ();
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

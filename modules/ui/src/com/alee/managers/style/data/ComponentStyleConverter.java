@@ -17,8 +17,9 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.managers.style.ComponentDescriptor;
 import com.alee.managers.style.StyleException;
-import com.alee.managers.style.StyleableComponent;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.Painter;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.MapUtils;
@@ -102,17 +103,18 @@ public final class ComponentStyleConverter extends ReflectionConverter
     public void marshal ( final Object source, final HierarchicalStreamWriter writer, final MarshallingContext context )
     {
         final ComponentStyle componentStyle = ( ComponentStyle ) source;
+        final String type = componentStyle.getType ();
+        final ComponentDescriptor descriptor = StyleManager.getDescriptor ( type );
         final Map<String, Object> componentProperties = componentStyle.getComponentProperties ();
         final Map<String, Object> uiProperties = componentStyle.getUIProperties ();
         final List<PainterStyle> painters = componentStyle.getPainters ();
 
         // Style component type
-        final StyleableComponent type = componentStyle.getType ();
-        writer.addAttribute ( COMPONENT_TYPE_ATTRIBUTE, type.toString () );
+        writer.addAttribute ( COMPONENT_TYPE_ATTRIBUTE, type );
 
         // Component style ID
         final String styleId = componentStyle.getId ();
-        if ( styleId != null && !type.getDefaultStyleId ().getCompleteId ().equals ( styleId ) )
+        if ( styleId != null && !descriptor.getDefaultStyleId ().getCompleteId ().equals ( styleId ) )
         {
             writer.addAttribute ( STYLE_ID_ATTRIBUTE, styleId );
         }
@@ -235,20 +237,19 @@ public final class ComponentStyleConverter extends ReflectionConverter
         final List<ComponentStyle> styles = new ArrayList<ComponentStyle> ();
 
         // Reading style component type
-        final String sct = reader.getAttribute ( COMPONENT_TYPE_ATTRIBUTE );
-        final StyleableComponent type = StyleableComponent.valueOf ( sct );
-        if ( type == null )
-        {
-            final String msg = "Styleable component type '%s' cannot be resolved";
-            throw new StyleException ( String.format ( msg, sct ) );
-        }
+        final String type = reader.getAttribute ( COMPONENT_TYPE_ATTRIBUTE );
+        final ComponentDescriptor descriptor = StyleManager.getDescriptor ( type );
         style.setType ( type );
-        final StyleableComponent oldComponentType = ( StyleableComponent ) context.get ( CONTEXT_COMPONENT_TYPE );
+
+        // Saving context component type
+        final String oldComponentType = ( String ) context.get ( CONTEXT_COMPONENT_TYPE );
         context.put ( CONTEXT_COMPONENT_TYPE, type );
 
         // Reading style ID
         final String styleId = reader.getAttribute ( STYLE_ID_ATTRIBUTE );
-        style.setId ( styleId != null ? styleId : type.getDefaultStyleId ().getCompleteId () );
+        style.setId ( styleId != null ? styleId : descriptor.getDefaultStyleId ().getCompleteId () );
+
+        // Saving context style ID
         final String oldStyleId = ( String ) context.get ( CONTEXT_STYLE_ID );
         context.put ( CONTEXT_STYLE_ID, styleId );
 
@@ -275,8 +276,8 @@ public final class ComponentStyleConverter extends ReflectionConverter
 
         // Adding default component and UI class
         // This is required to avoid {@code null} references
-        context.put ( CONTEXT_COMPONENT_CLASS, type.getComponentClass () );
-        context.put ( CONTEXT_UI_CLASS, type.getUIClass () );
+        context.put ( CONTEXT_COMPONENT_CLASS, descriptor.getComponentClass () );
+        context.put ( CONTEXT_UI_CLASS, descriptor.getUIClass () );
 
         // Reading component and UI properties, painter styles and child styles
         while ( reader.hasMoreChildren () )
@@ -286,12 +287,12 @@ public final class ComponentStyleConverter extends ReflectionConverter
             if ( nodeName.equals ( COMPONENT_NODE ) )
             {
                 // Reading component settings
-                readComponentProperties ( reader, context, componentProperties, type, styleId );
+                readComponentProperties ( reader, context, componentProperties, descriptor, styleId );
             }
             else if ( nodeName.equals ( UI_NODE ) )
             {
                 // Reading UI settings
-                readUIProperties ( reader, context, uiProperties, type, styleId );
+                readUIProperties ( reader, context, uiProperties, descriptor, styleId );
             }
             else if ( nodeName.equals ( PAINTER_NODE ) )
             {
@@ -361,16 +362,17 @@ public final class ComponentStyleConverter extends ReflectionConverter
     /**
      * Reads component properties.
      *
-     * @param reader     {@link com.thoughtworks.xstream.io.HierarchicalStreamReader}
-     * @param context    {@link com.thoughtworks.xstream.converters.UnmarshallingContext}
+     * @param reader     {@link HierarchicalStreamReader}
+     * @param context    {@link UnmarshallingContext}
      * @param properties map to read properties into
-     * @param type       styleable component type to read properties for
+     * @param descriptor {@link ComponentDescriptor}
      * @param styleId    component style ID, might be used to report problems
      */
     protected void readComponentProperties ( final HierarchicalStreamReader reader, final UnmarshallingContext context,
-                                             final Map<String, Object> properties, final StyleableComponent type, final String styleId )
+                                             final Map<String, Object> properties, final ComponentDescriptor descriptor,
+                                             final String styleId )
     {
-        Class<? extends JComponent> componentType = type.getComponentClass ();
+        Class<? extends JComponent> componentType = descriptor.getComponentClass ();
 
         // Reading component class property
         // It might be specified explicitly to allow specifying additional parameters from the custom component class
@@ -409,16 +411,16 @@ public final class ComponentStyleConverter extends ReflectionConverter
     /**
      * Reads UI properties.
      *
-     * @param reader     {@link com.thoughtworks.xstream.io.HierarchicalStreamReader}
-     * @param context    {@link com.thoughtworks.xstream.converters.UnmarshallingContext}
+     * @param reader     {@link HierarchicalStreamReader}
+     * @param context    {@link UnmarshallingContext}
      * @param properties map to read properties into
-     * @param type       styleable component type to read properties for
+     * @param descriptor {@link ComponentDescriptor}
      * @param styleId    component style ID, might be used to report problems
      */
     protected void readUIProperties ( final HierarchicalStreamReader reader, final UnmarshallingContext context,
-                                      final Map<String, Object> properties, final StyleableComponent type, final String styleId )
+                                      final Map<String, Object> properties, final ComponentDescriptor descriptor, final String styleId )
     {
-        Class<? extends ComponentUI> uiType = type.getUIClass ();
+        Class<? extends ComponentUI> uiType = descriptor.getUIClass ();
 
         // Reading UI class property
         // It might be specified explicitly to allow specifying additional parameters from the custom UI class

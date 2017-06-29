@@ -17,8 +17,6 @@
 
 package com.alee.extended.inspector.info;
 
-import com.alee.managers.style.StyleableComponent;
-
 import javax.swing.*;
 
 /**
@@ -30,7 +28,7 @@ import javax.swing.*;
 public class JComponentInfo<T extends JComponent> extends AWTComponentInfo<T>
 {
     @Override
-    public ImageIcon getIconImpl ( final StyleableComponent type, final T component )
+    public Icon getIconImpl ( final T component )
     {
         if ( component instanceof JLayeredPane )
         {
@@ -38,7 +36,7 @@ public class JComponentInfo<T extends JComponent> extends AWTComponentInfo<T>
         }
         else
         {
-            return super.getIconImpl ( type, component );
+            return super.getIconImpl ( component );
         }
     }
 }

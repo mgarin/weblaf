@@ -135,12 +135,12 @@ public class WebStyledLabelExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebStyledLabel leading = new WebStyledLabel ( getStyleId (), "Leading text", WebStyledLabel.LEADING );
+            final WebStyledLabel leading = new WebStyledLabel ( getStyleId (), "{Leading:b} {text:c(blue)}", WebStyledLabel.LEADING );
 
             final ImageIcon icon = WebLookAndFeel.getIcon ( 16 );
-            final WebStyledLabel center = new WebStyledLabel ( getStyleId (), "Centered text with icon", icon, WebStyledLabel.CENTER );
+            final WebStyledLabel center = new WebStyledLabel ( getStyleId (), "{Centered:b} {text:c(blue)} {with:u} {icon:c(red)}", icon, WebStyledLabel.CENTER );
 
-            final WebStyledLabel trailing = new WebStyledLabel ( getStyleId (), "Trailing text", WebStyledLabel.TRAILING );
+            final WebStyledLabel trailing = new WebStyledLabel ( getStyleId (), "{Trailing:c(blue)} {text:b}", WebStyledLabel.TRAILING );
 
             return CollectionUtils.asList ( leading, center, trailing );
         }

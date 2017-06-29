@@ -113,7 +113,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
      * It is automatically filled-in by the {@link com.alee.managers.style.data.SkinInfoConverter} with compiled styles.
      * It is not serialized and only available and used in runtime for performance reasons.
      */
-    private transient Map<StyleableComponent, Map<String, ComponentStyle>> stylesCache;
+    private transient Map<String, Map<String, ComponentStyle>> stylesCache;
 
     /**
      * Extensions already processed by this data.
@@ -445,8 +445,8 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
         ensureCacheInitialized ();
 
         // Searching for appropriate style
-        final StyleableComponent type = StyleableComponent.get ( component );
-        final Map<String, ComponentStyle> componentStyles = stylesCache.get ( type );
+        final ComponentDescriptor descriptor = StyleManager.getDescriptor ( component );
+        final Map<String, ComponentStyle> componentStyles = stylesCache.get ( descriptor.getId () );
         if ( componentStyles != null )
         {
             final String styleId = StyleId.getCompleteId ( component );
@@ -459,8 +459,8 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
             else
             {
                 // Required style cannot be found, using default style
-                final String warn = "Unable to find style for ID \"%s\" for component: %s";
-                Log.warn ( this, String.format ( warn, styleId, component.getClass ().getName () ) );
+                final String warn = "Unable to find style '%s' for component: %s";
+                Log.warn ( this, String.format ( warn, styleId, component ) );
 
                 // Trying to use default component style
                 final String defaultStyleId = StyleId.getDefault ( component ).getCompleteId ();
@@ -472,16 +472,16 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
                 else
                 {
                     // Default style cannot be found, using default style
-                    final String error = "Unable to find default style for ID \"%s\" for component: %s";
-                    throw new StyleException ( String.format ( error, defaultStyleId, component.getClass ().getName () ) );
+                    final String error = "Unable to find default style for ID '%s' for component: %s";
+                    throw new StyleException ( String.format ( error, defaultStyleId, component ) );
                 }
             }
         }
         else
         {
             // For some reason type cache doesn't exist
-            final String error = "Skin \"%s\" doesn't support component type: %s";
-            throw new StyleException ( String.format ( error, getTitle (), type.name () ) );
+            final String error = "Skin '%s' doesn't have any styles for component type: %s";
+            throw new StyleException ( String.format ( error, getTitle (), descriptor ) );
         }
     }
 
@@ -495,7 +495,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
         if ( stylesCache == null )
         {
             // Creating cache map
-            stylesCache = new LinkedHashMap<StyleableComponent, Map<String, ComponentStyle>> ( StyleableComponent.values ().length );
+            stylesCache = new LinkedHashMap<String, Map<String, ComponentStyle>> ( StyleManager.getDescriptorsCount () );
 
             // Merging style overrides
             performOverride ( styles, 0 );
@@ -617,7 +617,8 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
             for ( int j = i + 1; j < styles.size (); j++ )
             {
                 final ComponentStyle style = styles.get ( j );
-                if ( style.getType () == currentStyle.getType () && CompareUtils.equals ( style.getId (), currentStyle.getId () ) )
+                if ( CompareUtils.equals ( style.getType (), currentStyle.getType () ) &&
+                        CompareUtils.equals ( style.getId (), currentStyle.getId () ) )
                 {
                     styles.set ( i, currentStyle.clone ().merge ( styles.remove ( j-- ) ) );
                 }
@@ -653,9 +654,10 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
         }
 
         // Trying to determine style we will extend
-        final StyleableComponent type = style.getType ();
+        final String type = style.getType ();
         final String completeId = style.getCompleteId ();
-        final String defaultStyleId = type.getDefaultStyleId ().getCompleteId ();
+        final ComponentDescriptor descriptor = StyleManager.getDescriptor ( type );
+        final String defaultStyleId = descriptor.getDefaultStyleId ().getCompleteId ();
         ComponentStyle extendedStyle = null;
 
         // Searching for extended style
@@ -666,16 +668,16 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
             final String extendsId = style.getExtendsId ();
             if ( extendsId.equals ( completeId ) )
             {
-                final String msg = "Component style '%s:%s' extends itself";
-                throw new StyleException ( String.format ( msg, type, completeId ) );
+                final String msg = "Style '%s' extends itself for type: %s";
+                throw new StyleException ( String.format ( msg, completeId, descriptor ) );
             }
 
             // Extended style must exist in loaded skin
             extendedStyle = findStyle ( type, extendsId, style.getId (), levelStyles, globalStyles, index, globalIndex );
             if ( extendedStyle == null )
             {
-                final String msg = "Component style '%s:%s' missing style '%s'";
-                throw new StyleException ( String.format ( msg, type, completeId, extendsId ) );
+                final String msg = "Style '%s' extends missing style '%s' for type: %s";
+                throw new StyleException ( String.format ( msg, completeId, extendsId, descriptor ) );
             }
         }
 
@@ -697,8 +699,8 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
             extendedStyle = findStyle ( type, defaultStyleId, style.getId (), levelStyles, globalStyles, index, globalIndex );
             if ( extendedStyle == null )
             {
-                final String msg = "Component style '%s:%s' missing default style '%s'";
-                throw new StyleException ( String.format ( msg, type, completeId, defaultStyleId ) );
+                final String msg = "Style '%s' extends missing default style '%s' for type: %s";
+                throw new StyleException ( String.format ( msg, completeId, defaultStyleId, descriptor ) );
             }
         }
 
@@ -737,7 +739,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
             final int maxIndex = oldStyle == null ? globalStyles.indexOf ( currentStyle ) : Integer.MAX_VALUE;
             if ( ( oldStyle = findStyle ( currentStyle.getType (), currentStyle.getId (), styles, maxIndex ) ) == null &&
                     ( oldStyle = findStyle ( currentStyle.getType (), currentStyle.getExtendsId (), styles, maxIndex ) ) == null &&
-                    ( oldStyle = findStyle ( currentStyle.getType (), currentStyle.getType ().toString (), styles, maxIndex ) ) == null )
+                    ( oldStyle = findStyle ( currentStyle.getType (), currentStyle.getType (), styles, maxIndex ) ) == null )
             {
                 break;
             }
@@ -752,14 +754,14 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
      * @param styles      styles available on this level
      * @param stylesCache styles cache map
      */
-    private void gatherStyles ( final List<ComponentStyle> styles, final Map<StyleableComponent, Map<String, ComponentStyle>> stylesCache )
+    private void gatherStyles ( final List<ComponentStyle> styles, final Map<String, Map<String, ComponentStyle>> stylesCache )
     {
         if ( styles != null )
         {
             for ( final ComponentStyle style : styles )
             {
                 // Retrieving styles map for this component type
-                final StyleableComponent type = style.getType ();
+                final String type = style.getType ();
                 Map<String, ComponentStyle> componentStyles = stylesCache.get ( type );
                 if ( componentStyles == null )
                 {
@@ -785,11 +787,11 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
      */
     private void buildStyles ( final List<ComponentStyle> styles, final int startIndex )
     {
-        // Creating built styles IDs map
-        final Map<StyleableComponent, List<String>> builtStyles = new HashMap<StyleableComponent, List<String>> ();
-        for ( final StyleableComponent type : StyleableComponent.values () )
+        // Creating built style identifiers map
+        final Map<String, List<String>> builtStyles = new HashMap<String, List<String>> ();
+        for ( final ComponentDescriptor descriptor : StyleManager.getDescriptors () )
         {
-            builtStyles.put ( type, new ArrayList<String> ( 1 ) );
+            builtStyles.put ( descriptor.getId (), new ArrayList<String> ( 1 ) );
         }
 
         // Special list that will keep only styles which are being built
@@ -813,19 +815,20 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
      * @return build style
      */
     private ComponentStyle buildStyle ( final List<ComponentStyle> levelStyles, final int index, final List<String> building,
-                                        final Map<StyleableComponent, List<String>> builtStyles )
+                                        final Map<String, List<String>> builtStyles )
     {
         final ComponentStyle style = levelStyles.get ( index );
 
-        final StyleableComponent type = style.getType ();
+        final String type = style.getType ();
+        final ComponentDescriptor descriptor = StyleManager.getDescriptor ( type );
         final String completeId = style.getCompleteId ();
         final String uniqueId = type + ":" + completeId;
 
         // Avoiding cyclic references
         if ( building.contains ( uniqueId ) )
         {
-            final String msg = "Style '%s' is used within cyclic references";
-            throw new StyleException ( String.format ( msg, uniqueId ) );
+            final String msg = "Style '%s' is used within cyclic references for type: %s";
+            throw new StyleException ( String.format ( msg, completeId, descriptor ) );
         }
 
         // Check whether this style was already built
@@ -868,7 +871,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
      * @param globalIndex global index
      * @return component style found either on local or global level
      */
-    private ComponentStyle findStyle ( final StyleableComponent type, final String id, final String excludeId,
+    private ComponentStyle findStyle ( final String type, final String id, final String excludeId,
                                        final List<ComponentStyle> levelStyles, final List<ComponentStyle> styles, final int maxIndex,
                                        final int globalIndex )
     {
@@ -894,14 +897,13 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
      * @param maxIndex max style index
      * @return component style found in the specified styles list
      */
-    private ComponentStyle findStyle ( final StyleableComponent type, final String id, final List<ComponentStyle> styles,
-                                       final int maxIndex )
+    private ComponentStyle findStyle ( final String type, final String id, final List<ComponentStyle> styles, final int maxIndex )
     {
         ComponentStyle fstyle = null;
         for ( int i = 0; i < styles.size () && i < maxIndex; i++ )
         {
             final ComponentStyle style = styles.get ( i );
-            if ( style.getType () == type && CompareUtils.equals ( style.getId (), id ) )
+            if ( CompareUtils.equals ( style.getType (), type ) && CompareUtils.equals ( style.getId (), id ) )
             {
                 fstyle = style;
             }

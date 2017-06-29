@@ -17,7 +17,6 @@
 
 package com.alee.laf.table;
 
-import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.Paintable;
@@ -708,35 +707,37 @@ public class WebTable extends JTable
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WebTableUI} object that renders this component
+     */
+    @Override
+    public WebTableUI getUI ()
+    {
+        return ( WebTableUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WebTableUI}
+     */
+    public void setUI ( final WebTableUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        // Update table header UI
-        if ( getTableHeader () != null )
-        {
-            getTableHeader ().updateUI ();
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
 
-        // Update table scroll view and UI
-        configureScrollPane ();
-
-        // Update table UI
-        if ( getUI () == null || !( getUI () instanceof WebTableUI ) )
-        {
-            try
-            {
-                setUI ( ( WebTableUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebTableUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 
     /**
