@@ -1,26 +1,25 @@
 package com.alee.laf.menu;
 
-import com.alee.extended.layout.ToolbarLayout;
-import com.alee.laf.menu.IMenuBarPainter;
-import com.alee.laf.menu.WebMenuBarUI;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
 
 /**
+ * Basic painter for {@link JMenuBar} component.
+ * It is used as {@link WebMenuBarUI} default painter.
+ *
+ * @param <E> component type
+ * @param <U> component UI type
+ * @param <D> decoration type
  * @author Alexandr Zernov
+ * @author Mikle Garin
  */
 
 public class MenuBarPainter<E extends JMenuBar, U extends WebMenuBarUI, D extends IDecoration<E, D>>
         extends AbstractDecorationPainter<E, U, D> implements IMenuBarPainter<E, U>
 {
-    @Override
-    public void install ( final E c, final U ui )
-    {
-        super.install ( c, ui );
-
-        // Installing custom layout for the menu bar
-        component.setLayout ( new ToolbarLayout ( 0 ) );
-    }
+    /**
+     * Implementation is used completely from {@link AbstractDecorationPainter}.
+     */
 }

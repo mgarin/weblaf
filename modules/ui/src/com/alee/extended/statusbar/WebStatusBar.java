@@ -18,7 +18,6 @@
 package com.alee.extended.statusbar;
 
 import com.alee.extended.WebContainer;
-import com.alee.extended.layout.ToolbarLayout;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.laf.toolbar.WhiteSpace;
 import com.alee.managers.style.StyleId;
@@ -29,7 +28,7 @@ import java.awt.*;
 /**
  * Implementation of status bar panel.
  * It is a container that is usually used at the bottom side of the application UI and contains some status information.
- * <p/>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -57,7 +56,7 @@ public class WebStatusBar extends WebContainer<WebStatusBar, WStatusBarUI>
     public WebStatusBar ( final StyleId id )
     {
         super ();
-        setLayout ( new ToolbarLayout () );
+        setLayout ( new StatusBarLayout () );
         updateUI ();
         setStyleId ( id );
     }
@@ -75,7 +74,7 @@ public class WebStatusBar extends WebContainer<WebStatusBar, WStatusBarUI>
      */
     public void addToMiddle ( final Component component )
     {
-        add ( component, ToolbarLayout.MIDDLE );
+        add ( component, StatusBarLayout.MIDDLE );
     }
 
     /**
@@ -85,7 +84,7 @@ public class WebStatusBar extends WebContainer<WebStatusBar, WStatusBarUI>
      */
     public void addFill ( final Component component )
     {
-        add ( component, ToolbarLayout.FILL );
+        add ( component, StatusBarLayout.FILL );
     }
 
     /**
@@ -95,7 +94,7 @@ public class WebStatusBar extends WebContainer<WebStatusBar, WStatusBarUI>
      */
     public void addToEnd ( final Component component )
     {
-        add ( component, ToolbarLayout.END );
+        add ( component, StatusBarLayout.END );
     }
 
     /**
@@ -103,7 +102,7 @@ public class WebStatusBar extends WebContainer<WebStatusBar, WStatusBarUI>
      */
     public void addSeparator ()
     {
-        addSeparator ( ToolbarLayout.START );
+        addSeparator ( StatusBarLayout.START );
     }
 
     /**
@@ -111,7 +110,7 @@ public class WebStatusBar extends WebContainer<WebStatusBar, WStatusBarUI>
      */
     public void addSeparatorToEnd ()
     {
-        addSeparator ( ToolbarLayout.END );
+        addSeparator ( StatusBarLayout.END );
     }
 
     /**
@@ -149,7 +148,7 @@ public class WebStatusBar extends WebContainer<WebStatusBar, WStatusBarUI>
      */
     public void addSpacing ( final int spacing )
     {
-        addSpacing ( spacing, ToolbarLayout.START );
+        addSpacing ( spacing, StatusBarLayout.START );
     }
 
     /**
@@ -167,7 +166,7 @@ public class WebStatusBar extends WebContainer<WebStatusBar, WStatusBarUI>
      */
     public void addSpacingToEnd ( final int spacing )
     {
-        addSpacing ( spacing, ToolbarLayout.END );
+        addSpacing ( spacing, StatusBarLayout.END );
     }
 
     /**

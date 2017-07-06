@@ -6,7 +6,7 @@
     <style type="panel" id="inspector" extends="transparent">
 
         <!-- Tree filter field -->
-        <style type="textfield" id="filter" extends="treefilterfield-inline" padding="6">
+        <style type="textfield" id="filter" extends="treefilterfield-non-opaque" padding="6">
 
             <!-- Settings menu button -->
             <style type="button" id="settings" padding="0,2,0,6" />

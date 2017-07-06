@@ -40,7 +40,7 @@ public class WebTableBooleanCellRenderer extends WebCheckBox implements TableCel
     /**
      * Additional renderer decoration states.
      */
-    protected final List<String> states = new ArrayList<String> ( 3 );
+    protected final List<String> states;
 
     /**
      * Constructs default boolean table cell renderer.
@@ -49,6 +49,7 @@ public class WebTableBooleanCellRenderer extends WebCheckBox implements TableCel
     {
         super ();
         setName ( "Table.cellRenderer" );
+        states = new ArrayList<String> ( 3 );
     }
 
     @Override
@@ -72,18 +73,16 @@ public class WebTableBooleanCellRenderer extends WebCheckBox implements TableCel
                                   final int column )
     {
         states.clear ();
-        if ( isSelected )
-        {
-            states.add ( DecorationState.selected );
-        }
+
+        // Basic states
+        states.add ( isSelected ? DecorationState.selected : DecorationState.unselected );
         if ( hasFocus )
         {
             states.add ( DecorationState.focused );
         }
-        if ( value instanceof Stateful )
-        {
-            states.addAll ( ( ( Stateful ) value ).getStates () );
-        }
+
+        // Extra states provided by value
+        states.addAll ( DecorationUtils.getExtraStates ( value ) );
     }
 
     /**
@@ -146,13 +145,13 @@ public class WebTableBooleanCellRenderer extends WebCheckBox implements TableCel
     }
 
     /**
-     * A subclass of {@link com.alee.laf.table.renderers.WebTableBooleanCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
+     * A subclass of {@link WebTableBooleanCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
      */
     public static class UIResource extends WebTableBooleanCellRenderer implements javax.swing.plaf.UIResource
     {
         /**
-         * Implementation is used completely from {@link com.alee.laf.table.renderers.WebTableBooleanCellRenderer}.
+         * Implementation is used completely from {@link WebTableBooleanCellRenderer}.
          */
     }
 }

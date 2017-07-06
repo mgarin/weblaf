@@ -28,7 +28,6 @@ import com.alee.managers.focus.GlobalFocusListener;
 import com.alee.managers.style.Bounds;
 import com.alee.managers.style.BoundsType;
 import com.alee.managers.style.PainterShapeProvider;
-import com.alee.managers.style.StyleManager;
 import com.alee.painter.AbstractPainter;
 import com.alee.painter.SectionPainter;
 import com.alee.utils.*;
@@ -93,9 +92,29 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         super.install ( c, ui );
 
         // Determining initial decoration states
+        // We should always update states last to ensure initial values are correct
         this.states = collectDecorationStates ();
+    }
 
-        // Installing listeners
+    @Override
+    public void uninstall ( final E c, final U ui )
+    {
+        // Making sure last used decoration is properly deactivated
+        // If we don't perform this here it will stay active and will keep recieving component updates
+        deactivateLastDecoration ( component );
+
+        super.uninstall ( c, ui );
+
+        // Cleaning up decoration states and caches
+        this.decorationCache = null;
+        this.stateDecorationCache = null;
+        this.states = null;
+    }
+
+    @Override
+    protected void installPropertiesAndListeners ()
+    {
+        super.installPropertiesAndListeners ();
         installFocusListener ();
         installInFocusedParentListener ();
         installHoverListener ();
@@ -103,23 +122,13 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     @Override
-    public void uninstall ( final E c, final U ui )
+    protected void uninstallPropertiesAndListeners ()
     {
-        // Deactivating decoaration
-        deactivateLastDecoration ( c );
-
-        // Uninstalling listeners
         uninstallHierarchyListener ();
         uninstallHoverListener ();
         uninstallInFocusedParentListener ();
         uninstallFocusListener ();
-
-        // Cleaning up decoration states and caches
-        this.decorationCache = null;
-        this.stateDecorationCache = null;
-        this.states = null;
-
-        super.uninstall ( c, ui );
+        super.uninstallPropertiesAndListeners ();
     }
 
     @Override
@@ -314,14 +323,15 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                 inFocusedParent = true;
                 break;
             }
-            else if ( current != component )
+            else if ( current != component && current instanceof JComponent )
             {
                 // Ensure that component supports styling
-                if ( StyleManager.isSupported ( current ) )
+                final JComponent jComponent = ( JComponent ) current;
+                if ( LafUtils.hasWebLafUI ( jComponent ) )
                 {
                     // In a parent that tracks children focus and visually displays it
                     // This case is not obvious but really important for correct visual representation of the state
-                    final ComponentUI ui = LafUtils.getUI ( current );
+                    final ComponentUI ui = LafUtils.getUI ( jComponent );
                     if ( ui != null )
                     {
                         // todo Replace with proper painter retrieval upon Paintable interface implementation
@@ -626,24 +636,10 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         final List<String> states = getDecorationStates ();
 
         // Adding custom UI decoration states
-        if ( ui instanceof Stateful )
-        {
-            final List<String> uiStates = ( ( Stateful ) ui ).getStates ();
-            if ( CollectionUtils.notEmpty ( uiStates ) )
-            {
-                states.addAll ( uiStates );
-            }
-        }
+        states.addAll ( DecorationUtils.getExtraStates ( ui ) );
 
         // Adding custom component decoration states
-        if ( component instanceof Stateful )
-        {
-            final List<String> componentStates = ( ( Stateful ) component ).getStates ();
-            if ( CollectionUtils.notEmpty ( componentStates ) )
-            {
-                states.addAll ( componentStates );
-            }
-        }
+        states.addAll ( DecorationUtils.getExtraStates ( component ) );
 
         // Sorting states to always keep the same order
         Collections.sort ( states );
@@ -839,7 +835,8 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                         decoration = Clone.clone ( decorations.get ( 0 ) );
                         for ( int i = 1; i < decorations.size (); i++ )
                         {
-                            decoration.merge ( decorations.get ( i ) );
+                            final D merged = Clone.clone ( decorations.get ( i ) );
+                            decoration.merge ( merged );
                         }
                     }
 
@@ -965,7 +962,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     @Override
-    public Insets getBorders ()
+    protected Insets getBorder ()
     {
         final D decoration = getDecoration ();
         if ( isDecorationAvailable ( decoration ) )

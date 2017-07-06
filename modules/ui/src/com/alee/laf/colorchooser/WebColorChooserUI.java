@@ -40,7 +40,7 @@ import java.awt.*;
 public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
-     * todo 1. Implement base JColorChooser features
+     * todo 1. Implement some of the missing JColorChooser features
      */
 
     /**
@@ -52,12 +52,10 @@ public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, 
     /**
      * Runtime variables.
      */
-    protected Insets margin = null;
-    protected Insets padding = null;
-    protected WebColorChooserPanel colorChooserPanel;
-    protected ColorSelectionModel selectionModel;
-    protected ChangeListener modelChangeListener;
-    protected boolean modifying = false;
+    protected transient WebColorChooserPanel colorChooserPanel;
+    protected transient ColorSelectionModel selectionModel;
+    protected transient ChangeListener modelChangeListener;
+    protected transient boolean modifying = false;
 
     /**
      * Returns an instance of the {@link WebColorChooserUI} for the specified component.
@@ -145,27 +143,25 @@ public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, 
     @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( chooser );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setMargin ( chooser, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return padding;
+        return PainterSupport.getPadding ( chooser );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setPadding ( chooser, padding );
     }
 
     /**

@@ -301,10 +301,6 @@ public class NinePatchIcon implements Icon
     }
 
     /**
-     * Horizontal image patches data
-     */
-
-    /**
      * Returns list of horizontal stretch intervals taken from image patches.
      *
      * @return list of horizontal stretch intervals taken from image patches

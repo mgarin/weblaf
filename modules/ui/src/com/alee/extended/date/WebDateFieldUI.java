@@ -58,7 +58,8 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C>
         implements ShapeSupport, MarginSupport, PaddingSupport, PropertyChangeListener
 {
     /**
-     * todo 1. Change popover to popup-based window. Probably another variation of popover would be handy?
+     * todo 1. Change popover to popup-based window
+     * todo    Probably another variation of popover would be handy?
      */
 
     /**
@@ -78,8 +79,6 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C>
     /**
      * Runtime variables.
      */
-    protected Insets margin = null;
-    protected Insets padding = null;
     protected boolean updating = false;
 
     /**
@@ -397,27 +396,25 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C>
     @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( dateField );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setMargin ( dateField, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return padding;
+        return PainterSupport.getPadding ( dateField );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setPadding ( dateField, padding );
     }
 
     /**

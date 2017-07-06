@@ -15,29 +15,28 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.utils.swing;
-
-import javax.swing.event.DocumentEvent;
+package com.alee.laf;
 
 /**
- * DocumentChangeListener extension that informs about string value changes.
+ * Interface for elements supporting input prompt.
+ * It could be anything from component or UI to any custom object.
  *
  * @author Mikle Garin
  */
 
-public abstract class DocumentTextChangeListener extends DocumentChangeListener
+public interface IInputPrompt
 {
-    @Override
-    public void documentChanged ( final DocumentEvent e )
-    {
-        documentChanged ( e, getText ( e ) );
-    }
+    /**
+     * Returns input prompt text.
+     *
+     * @return input prompt text
+     */
+    public String getInputPrompt ();
 
     /**
-     * Informs that string value contained in the document has changed in some way.
+     * Sets input prompt text.
      *
-     * @param e    document event
-     * @param text new document text
+     * @param text input prompt text
      */
-    public abstract void documentChanged ( DocumentEvent e, String text );
+    public void setInputPrompt ( String text );
 }

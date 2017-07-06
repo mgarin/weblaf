@@ -122,11 +122,6 @@ public final class WebTabbedPaneStyle
     public static boolean forceUseSelectedTabBgColors = false;
 
     /**
-     * Default background color.
-     */
-    public static Color backgroundColor = new Color ( 237, 237, 237 );
-
-    /**
      * If true, only the top border is painted.
      */
     public static boolean paintOnlyTopBorder = false;

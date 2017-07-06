@@ -20,7 +20,6 @@ package com.alee.extended.style;
 import com.alee.extended.button.SplitButtonAdapter;
 import com.alee.extended.button.WebSplitButton;
 import com.alee.extended.checkbox.WebTristateCheckBox;
-import com.alee.extended.label.StyleRange;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.magnifier.MagnifierGlass;
@@ -34,7 +33,6 @@ import com.alee.extended.syntax.WebSyntaxScrollPane;
 import com.alee.extended.tree.WebFileTree;
 import com.alee.extended.window.PopOverLocation;
 import com.alee.extended.window.WebPopOver;
-import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
@@ -66,6 +64,10 @@ import com.alee.laf.text.WebTextPane;
 import com.alee.laf.toolbar.WebToolBar;
 import com.alee.laf.tree.TreeSelectionStyle;
 import com.alee.laf.window.WebFrame;
+import com.alee.managers.animation.AnimationManager;
+import com.alee.managers.animation.easing.Exponential;
+import com.alee.managers.animation.easing.Quadratic;
+import com.alee.managers.animation.transition.*;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
@@ -78,7 +80,9 @@ import com.alee.managers.style.data.SkinInfoConverter;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.skin.web.WebSkin;
 import com.alee.utils.*;
-import com.alee.utils.swing.*;
+import com.alee.utils.swing.IntTextDocument;
+import com.alee.utils.swing.MouseButton;
+import com.alee.utils.swing.WebTimer;
 import com.alee.utils.swing.extensions.DocumentEventRunnable;
 import com.alee.utils.swing.extensions.KeyEventRunnable;
 import com.alee.utils.swing.extensions.MouseEventRunnable;
@@ -382,7 +386,6 @@ public class StyleEditor extends WebFrame
 
         final String styledText = "{Simple styled label:b;c(128,128,0);u}\n" + "with {hard:b} line breaks\n" + "across the text";
         final WebStyledLabel styledLabel = new WebStyledLabel ( styledText );
-        styledLabel.addStyleRange ( new StyleRange ( 1, 3, Font.ITALIC ) );
         addViewComponent ( "Styled label", styledLabel, styledLabel, true );
 
         //
@@ -480,8 +483,30 @@ public class StyleEditor extends WebFrame
         //
 
         final WebProgressBar progress = new WebProgressBar ();
-        progress.setValue ( 33 );
         addViewComponent ( "Progress bar", progress, progress, true );
+
+        final int min = progress.getMinimum ();
+        final int max = progress.getMaximum ();
+        final QueueTransition<Integer> progressAnimator = new QueueTransition<Integer> ( true );
+        progressAnimator.add ( new TimedTransition<Integer> ( min, max, new Quadratic.Out (), 2000L ) );
+        progressAnimator.add ( new IdleTransition<Integer> ( max, 1000L ) );
+        progressAnimator.add ( new TimedTransition<Integer> ( max, min, new Exponential.Out (), 2000L ) );
+        progressAnimator.add ( new IdleTransition<Integer> ( min, 1000L ) );
+        progressAnimator.addListener ( new TransitionAdapter<Integer> ()
+        {
+            @Override
+            public void started ( final Transition transition, final Integer value )
+            {
+                progress.setValue ( value );
+            }
+
+            @Override
+            public void adjusted ( final Transition transition, final Integer value )
+            {
+                progress.setValue ( value );
+            }
+        } );
+        AnimationManager.play ( progressAnimator );
 
         //
 
@@ -697,16 +722,19 @@ public class StyleEditor extends WebFrame
 
         final StyleId delayId = StyleId.styleeditorStatusDelay.at ( statusBar );
         final WebTextField delayField = new WebTextField ( delayId, new IntTextDocument (), "" + updateDelay, 3 );
-        delayField.setHorizontalAlignment ( WebTextField.CENTER );
-        delayField.getDocument ().addDocumentListener ( new IntDocumentChangeListener ()
+        delayField.onChange ( new DocumentEventRunnable<WebTextField> ()
         {
             @Override
-            public void documentChanged ( final Integer newValue, final DocumentEvent e )
+            public void run ( final WebTextField component, final DocumentEvent event )
             {
-                updateDelay = newValue != null ? newValue : updateDelay;
-                if ( updateDelay < 0 )
+                try
                 {
-                    updateDelay = 0;
+                    final int value = Integer.parseInt ( component.getText () );
+                    updateDelay = value >= 0 ? value : 0;
+                }
+                catch ( final Exception e )
+                {
+                    // Leave delay unchanged
                 }
             }
         } );
@@ -804,12 +832,12 @@ public class StyleEditor extends WebFrame
                 popOver.add ( searchField );
 
                 // Jump to tabs while typing
-                searchField.getDocument ().addDocumentListener ( new DocumentChangeListener ()
+                searchField.onChange ( new DocumentEventRunnable<WebTextField> ()
                 {
                     @Override
-                    public void documentChanged ( final DocumentEvent e )
+                    public void run ( final WebTextField component, final DocumentEvent event )
                     {
-                        final String text = searchField.getText ().toLowerCase ( Locale.ROOT );
+                        final String text = component.getText ().toLowerCase ( Locale.ROOT );
                         if ( !TextUtils.isEmpty ( text ) )
                         {
                             for ( final String name : xmlNames )
@@ -873,7 +901,7 @@ public class StyleEditor extends WebFrame
         final WebSyntaxScrollPane xmlEditorScroll = new WebSyntaxScrollPane ( StyleId.syntaxareaScrollUndecorated, xmlEditor );
 
         // Start listening edits
-        xmlEditor.onChange ( new DocumentEventRunnable ()
+        xmlEditor.onChange ( new DocumentEventRunnable<WebSyntaxArea> ()
         {
             private final WebTimer updateTimer = new WebTimer ( updateDelay, new ActionListener ()
             {
@@ -886,7 +914,7 @@ public class StyleEditor extends WebFrame
             } ).setRepeats ( false );
 
             @Override
-            public void run ( final DocumentEvent e )
+            public void run ( final WebSyntaxArea component, final DocumentEvent event )
             {
                 updateTimer.restart ( updateDelay );
             }
@@ -1106,6 +1134,7 @@ public class StyleEditor extends WebFrame
 
     /**
      * Custom tab content separator.
+     * todo This is a temporary thing, it should be replaced with an appropriate styling
      */
     protected class TabContentSeparator extends JComponent
     {
@@ -1114,7 +1143,7 @@ public class StyleEditor extends WebFrame
         {
             g.setColor ( new Color ( 237, 237, 237 ) );
             g.fillRect ( 0, 0, getWidth (), getHeight () - 1 );
-            g.setColor ( StyleConstants.darkBorderColor );
+            g.setColor ( Color.GRAY );
             g.drawLine ( 0, getHeight () - 1, getWidth () - 1, getHeight () - 1 );
         }
 
@@ -1126,9 +1155,9 @@ public class StyleEditor extends WebFrame
     }
 
     /**
-     * StyleEditor main method used to launch editor.
+     * {@link StyleEditor} main launch method.
      *
-     * @param args arguments
+     * @param args editor arguments
      */
     public static void main ( final String[] args )
     {

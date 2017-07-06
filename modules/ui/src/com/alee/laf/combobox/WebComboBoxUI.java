@@ -76,15 +76,13 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     /**
      * Listeners.
      */
-    protected PropertyChangeListener visibilityListener;
-    protected EventListenerList listenerList;
+    protected transient PropertyChangeListener visibilityListener;
+    protected transient EventListenerList listenerList;
 
     /**
      * Runtime variables.
      */
-    protected Insets margin = null;
-    protected Insets padding = null;
-    protected JSeparator separator;
+    protected transient JSeparator separator;
 
     /**
      * Returns an instance of the {@link WebComboBoxUI} for the specified component.
@@ -250,27 +248,25 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( comboBox );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setMargin ( comboBox, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return padding;
+        return PainterSupport.getPadding ( comboBox );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setPadding ( comboBox, padding );
     }
 
     /**

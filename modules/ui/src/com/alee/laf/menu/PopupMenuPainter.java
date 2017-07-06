@@ -50,7 +50,7 @@ public class PopupMenuPainter<E extends JPopupMenu, U extends WPopupMenuUI> exte
     /**
      * Runtime variables.
      */
-    protected PopupMenuType popupMenuType = null;
+    protected transient PopupMenuType popupMenuType = null;
 
     @Override
     protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
@@ -186,9 +186,9 @@ public class PopupMenuPainter<E extends JPopupMenu, U extends WPopupMenuUI> exte
     }
 
     @Override
-    public Insets getBorders ()
+    protected Insets getBorder ()
     {
-        final Insets margin = super.getBorders ();
+        final Insets margin = super.getBorder ();
         margin.top += round;
         margin.bottom += round;
         return margin;
@@ -227,7 +227,7 @@ public class PopupMenuPainter<E extends JPopupMenu, U extends WPopupMenuUI> exte
         {
             // Check that menu item is attached to menu side
             final boolean top = cornerSide == TOP;
-            final boolean stick = top ? getBorders ().top == 0 : getBorders ().bottom == 0;
+            final boolean stick = top ? getBorder ().top == 0 : getBorder ().bottom == 0;
             if ( stick )
             {
                 // todo Implement corner support
@@ -451,7 +451,7 @@ public class PopupMenuPainter<E extends JPopupMenu, U extends WPopupMenuUI> exte
             relativeCorner = 0;
         }
 
-        return p ( x, y );
+        return new Point ( x, y );
     }
 
     @Override

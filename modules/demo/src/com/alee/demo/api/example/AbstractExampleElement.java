@@ -65,6 +65,17 @@ public abstract class AbstractExampleElement implements ExampleElement
     }
 
     /**
+     * Returns complete language key for this example for the specified key part.
+     *
+     * @param key language key part
+     * @return complete language key for this example for the specified key part
+     */
+    protected String getExampleLanguageKey ( final String key )
+    {
+        return getExampleLanguagePrefix () + key;
+    }
+
+    /**
      * Sets parent group reference.
      *
      * @param group parent group

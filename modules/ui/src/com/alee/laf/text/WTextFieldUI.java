@@ -17,7 +17,8 @@
 
 package com.alee.laf.text;
 
-import javax.swing.*;
+import com.alee.laf.IInputPrompt;
+
 import javax.swing.plaf.basic.BasicTextFieldUI;
 
 /**
@@ -26,58 +27,9 @@ import javax.swing.plaf.basic.BasicTextFieldUI;
  * @author Mikle Garin
  */
 
-public abstract class WTextFieldUI extends BasicTextFieldUI
+public abstract class WTextFieldUI extends BasicTextFieldUI implements IInputPrompt, ILeadingComponent, ITrailingComponent
 {
     /**
-     * Returns input prompt text.
-     *
-     * @return input prompt text
+     * Implementation is used completely from {@link BasicTextFieldUI}.
      */
-    public abstract String getInputPrompt ();
-
-    /**
-     * Sets input prompt text.
-     *
-     * @param text input prompt text
-     */
-    public abstract void setInputPrompt ( String text );
-
-
-    /**
-     * Returns field leading component.
-     *
-     * @return field leading component
-     */
-    public abstract JComponent getLeadingComponent ();
-
-    /**
-     * Sets field leading component.
-     *
-     * @param leadingComponent field leading component
-     */
-    public abstract void setLeadingComponent ( JComponent leadingComponent );
-
-    /**
-     * Removes field leading component.
-     */
-    public abstract void removeLeadingComponent ();
-
-    /**
-     * Returns field trailing component.
-     *
-     * @return field trailing component
-     */
-    public abstract JComponent getTrailingComponent ();
-
-    /**
-     * Sets field trailing component.
-     *
-     * @param trailingComponent field trailing component
-     */
-    public abstract void setTrailingComponent ( JComponent trailingComponent );
-
-    /**
-     * Removes field trailing component.
-     */
-    public abstract void removeTrailingComponent ();
 }

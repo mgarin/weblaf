@@ -83,18 +83,6 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
     public Boolean isOpaque ();
 
     /**
-     * Returns borders required for the view provided by this painter.
-     * These borders should not include possible component margin and padding, only borders provided by painter.
-     * These borders are added to component's margin and padding when the final component border is calculated.
-     * These borders should not take component orientation into account, painter will take care of it later.
-     * <p>
-     * You may pass {@code null} in case additional borders aren't needed for this painter.
-     *
-     * @return borders required for the view provided by this painter or {@code null} in case those aren't needed
-     */
-    public Insets getBorders ();
-
-    /**
      * Returns component baseline within the specified bounds, measured from the top of the bounds.
      * A return value less than {@code 0} indicates this component does not have a reasonable baseline.
      * This method is primarily meant for {@code java.awt.LayoutManager}s to align components along their baseline.

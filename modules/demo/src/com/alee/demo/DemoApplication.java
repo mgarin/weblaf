@@ -227,12 +227,15 @@ public final class DemoApplication extends WebFrame
     {
         final WebToolBar toolBar = new WebToolBar ( StyleId.toolbarAttachedNorth );
         toolBar.setFloatable ( false );
+
         toolBar.add ( new SkinChooserTool () );
         toolBar.addSeparator ();
         toolBar.add ( new OrientationChooserTool () );
         toolBar.addSeparator ();
         toolBar.add ( new LanguageChooserTool () );
+
         toolBar.addToEnd ( new MagnifierToggleTool ( DemoApplication.this ) );
+
         add ( toolBar, BorderLayout.NORTH );
     }
 

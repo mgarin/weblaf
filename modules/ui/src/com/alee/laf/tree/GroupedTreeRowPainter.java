@@ -39,42 +39,37 @@ import java.util.List;
 public class GroupedTreeRowPainter<E extends JTree, U extends WTreeUI, D extends IDecoration<E, D>> extends TreeRowPainter<E, U, D>
 {
     @Override
-    protected List<String> modifyStates ( final List<String> states )
+    protected void addNumerationStates ( final List<String> states, final TreePath path )
     {
-        // Ensure row is specified
-        if ( row != null )
+        // Ensure it is not root and that we are working with nodes
+        final Object value = path.getLastPathComponent ();
+        final Object root = component.getModel ().getRoot ();
+        if ( value instanceof DefaultMutableTreeNode && root instanceof DefaultMutableTreeNode && value != root )
         {
-            // Ensure path exists
-            final TreePath pathForRow = component.getPathForRow ( row );
-            if ( pathForRow != null )
+            // Finding out first level node in path
+            final DefaultMutableTreeNode rootNode = ( DefaultMutableTreeNode ) root;
+            DefaultMutableTreeNode firstLevel = ( DefaultMutableTreeNode ) value;
+            DefaultMutableTreeNode parent = ( DefaultMutableTreeNode ) firstLevel.getParent ();
+            while ( parent != rootNode && parent != null )
             {
-                // Ensure it is not root and that we are working with nodes
-                final Object nodeForRow = pathForRow.getLastPathComponent ();
-                final Object root = component.getModel ().getRoot ();
-                if ( nodeForRow instanceof DefaultMutableTreeNode && root instanceof DefaultMutableTreeNode && nodeForRow != root )
-                {
-                    // Finding out first level node in path
-                    final DefaultMutableTreeNode rootNode = ( DefaultMutableTreeNode ) root;
-                    DefaultMutableTreeNode firstLevel = ( DefaultMutableTreeNode ) nodeForRow;
-                    DefaultMutableTreeNode parent = ( DefaultMutableTreeNode ) firstLevel.getParent ();
-                    while ( parent != rootNode && parent != null )
-                    {
-                        firstLevel = parent;
-                        parent = ( DefaultMutableTreeNode ) firstLevel.getParent ();
-                    }
-
-                    // Calculating general even/odd state
-                    final int indexOnFirstLevel = rootNode.getIndex ( firstLevel );
-                    final boolean odd = indexOnFirstLevel % 2 == 0;
-                    states.add ( odd ? DecorationState.odd : DecorationState.even );
-
-                    // Calculating extra even/odd state
-                    final int innerIndex = row - component.getRowForPath ( new TreePath ( firstLevel.getPath () ) );
-                    final boolean innerOdd = innerIndex % 2 == 0;
-                    states.add ( innerOdd ? DecorationState.innerOdd : DecorationState.innerEven );
-                }
+                firstLevel = parent;
+                parent = ( DefaultMutableTreeNode ) firstLevel.getParent ();
             }
+
+            // Calculating general even/odd state
+            final int indexOnFirstLevel = rootNode.getIndex ( firstLevel );
+            final boolean odd = indexOnFirstLevel % 2 == 0;
+            states.add ( odd ? DecorationState.odd : DecorationState.even );
+
+            // Calculating extra even/odd state
+            final int innerIndex = row - component.getRowForPath ( new TreePath ( firstLevel.getPath () ) );
+            final boolean innerOdd = innerIndex % 2 == 0;
+            states.add ( innerOdd ? DecorationState.innerOdd : DecorationState.innerEven );
         }
-        return states;
+        else
+        {
+            // Using default implementation
+            super.addNumerationStates ( states, path );
+        }
     }
 }

@@ -27,5 +27,6 @@ public interface Behavior
 {
     /**
      * This interface doesn't provide any specific methods to implement.
+     * todo 1. Probably add `install()` and `uninstall()` base methods?
      */
 }

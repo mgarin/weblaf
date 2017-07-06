@@ -25,7 +25,7 @@ public interface PaddingSupport
 
     /**
      * Returns current padding.
-     * Might return null which is basically the same as an empty [0,0,0,0] padding.
+     * Might return {@code null} which is basically the same as an empty [0,0,0,0] padding.
      *
      * @return current padding
      */

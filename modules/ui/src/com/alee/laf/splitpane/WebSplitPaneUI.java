@@ -34,7 +34,6 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * Custom UI for {@link JSplitPane} component.
@@ -52,22 +51,11 @@ public class WebSplitPaneUI extends WSplitPaneUI implements ShapeSupport, Margin
     protected ISplitPanePainter painter;
 
     /**
-     * Runtime variables.
-     */
-    protected Insets margin = null;
-    protected Insets padding = null;
-
-    /**
-     * SplitPane listeners.
-     */
-    protected PropertyChangeListener propertyChangeListener;
-
-    /**
-     * Returns an instance of the WebSplitPaneUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebSplitPaneUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebSplitPaneUI
+     * @return instance of the {@link WebSplitPaneUI}
      */
     @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
@@ -75,11 +63,6 @@ public class WebSplitPaneUI extends WSplitPaneUI implements ShapeSupport, Margin
         return new WebSplitPaneUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
@@ -94,11 +77,6 @@ public class WebSplitPaneUI extends WSplitPaneUI implements ShapeSupport, Margin
         splitPane.setDividerSize ( 6 );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
@@ -117,27 +95,25 @@ public class WebSplitPaneUI extends WSplitPaneUI implements ShapeSupport, Margin
     @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( splitPane );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setMargin ( splitPane, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return padding;
+        return PainterSupport.getPadding ( splitPane );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setPadding ( splitPane, padding );
     }
 
     /**

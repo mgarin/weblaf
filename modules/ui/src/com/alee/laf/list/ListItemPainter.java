@@ -17,10 +17,7 @@
 
 package com.alee.laf.list;
 
-import com.alee.painter.decoration.AbstractSectionDecorationPainter;
-import com.alee.painter.decoration.DecorationState;
-import com.alee.painter.decoration.IDecoration;
-import com.alee.painter.decoration.Stateful;
+import com.alee.painter.decoration.*;
 
 import javax.swing.*;
 import java.util.List;
@@ -58,17 +55,11 @@ public class ListItemPainter<E extends JList, U extends WebListUI, D extends IDe
                 states.add ( index % 2 == 0 ? DecorationState.odd : DecorationState.even );
 
                 // Adding common item states
-                if ( component.isSelectedIndex ( index ) )
-                {
-                    states.add ( DecorationState.selected );
-                }
+                states.add ( component.isSelectedIndex ( index ) ? DecorationState.selected : DecorationState.unselected );
 
                 // Adding possible item states
                 final Object value = model.getElementAt ( index );
-                if ( value != null && value instanceof Stateful )
-                {
-                    states.addAll ( ( ( Stateful ) value ).getStates () );
-                }
+                states.addAll ( DecorationUtils.getExtraStates ( value ) );
             }
         }
 

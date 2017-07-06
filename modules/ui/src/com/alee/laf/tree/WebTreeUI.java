@@ -65,14 +65,12 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
     /**
      * Listeners.
      */
-    protected TreePathHoverBehavior hoverNodeTracker;
+    protected transient TreePathHoverBehavior hoverNodeTracker;
 
     /**
      * Runtime variables.
      */
-    protected Insets margin = null;
-    protected Insets padding = null;
-    protected int hoverRow = -1;
+    protected transient int hoverRow = -1;
 
     /**
      * Returns an instance of the {@link WebTreeUI} for the specified component.
@@ -196,27 +194,25 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
     @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( tree );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setMargin ( tree, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return padding;
+        return PainterSupport.getPadding ( tree );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setPadding ( tree, padding );
     }
 
     /**

@@ -28,26 +28,20 @@ public class ComboBoxPainter<E extends JComboBox, U extends WComboBoxUI, D exten
     /**
      * Painting variables.
      */
-    protected CellRendererPane currentValuePane = null;
+    protected transient CellRendererPane currentValuePane = null;
 
     @Override
-    public void install ( final E c, final U ui )
+    protected void installPropertiesAndListeners ()
     {
-        super.install ( c, ui );
-
-        // Combobox listeners
-        ui.addEditabilityListener ( this );
-        ui.addPopupVisibilityListener ( this );
+        super.installPropertiesAndListeners ();
+        installComboBoxListeners ();
     }
 
     @Override
-    public void uninstall ( final E c, final U ui )
+    protected void uninstallPropertiesAndListeners ()
     {
-        // Combobox listeners
-        ui.removePopupVisibilityListener ( this );
-        ui.removeEditabilityListener ( this );
-
-        super.uninstall ( c, ui );
+        uninstallComboBoxListeners ();
+        super.uninstallPropertiesAndListeners ();
     }
 
     @Override
@@ -62,6 +56,24 @@ public class ComboBoxPainter<E extends JComboBox, U extends WComboBoxUI, D exten
         {
             ui.getListBox ().setEnabled ( component.isEnabled () );
         }
+    }
+
+    /**
+     * Installs combobox listeners that update decoration states.
+     */
+    protected void installComboBoxListeners ()
+    {
+        ui.addEditabilityListener ( this );
+        ui.addPopupVisibilityListener ( this );
+    }
+
+    /**
+     * Uninstalls combobox listeners that update decoration states.
+     */
+    protected void uninstallComboBoxListeners ()
+    {
+        ui.removePopupVisibilityListener ( this );
+        ui.removeEditabilityListener ( this );
     }
 
     @Override

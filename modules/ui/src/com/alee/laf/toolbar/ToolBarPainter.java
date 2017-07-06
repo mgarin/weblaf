@@ -1,7 +1,6 @@
 package com.alee.laf.toolbar;
 
 import com.alee.api.data.Orientation;
-import com.alee.extended.layout.ToolbarLayout;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.painter.decoration.AbstractContainerPainter;
 import com.alee.painter.decoration.DecorationState;
@@ -23,45 +22,29 @@ import java.util.List;
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
+ * @author Mikle Garin
  */
 
 public class ToolBarPainter<E extends JToolBar, U extends WebToolBarUI, D extends IDecoration<E, D>>
         extends AbstractContainerPainter<E, U, D> implements IToolBarPainter<E, U>
 {
     /**
-     * Listeners.
+     * Listener used for various updates upon entering floating mode.
      */
-    protected AncestorListener ancestorListener;
+    protected transient AncestorListener ancestorListener;
 
     @Override
-    public void install ( final E c, final U ui )
+    protected void installPropertiesAndListeners ()
     {
-        super.install ( c, ui );
-
-        // Updating initial layout
-        // todo This would cause layout failure upon skin change
-        updateLayout ( true );
-
-        // Ancestor listener for border and layout updates when entering floating mode
-        ancestorListener = new AncestorAdapter ()
-        {
-            @Override
-            public void ancestorAdded ( final AncestorEvent event )
-            {
-                updateLayout ( false );
-                updateDecorationState ();
-            }
-        };
-        component.addAncestorListener ( ancestorListener );
+        super.installPropertiesAndListeners ();
+        installFloatingModeListeners ();
     }
 
     @Override
-    public void uninstall ( final E c, final U ui )
+    protected void uninstallPropertiesAndListeners ()
     {
-        // Removing listeners
-        component.removeAncestorListener ( ancestorListener );
-
-        super.uninstall ( c, ui );
+        uninstallFloatingModeListeners ();
+        super.uninstallPropertiesAndListeners ();
     }
 
     @Override
@@ -71,9 +54,8 @@ public class ToolBarPainter<E extends JToolBar, U extends WebToolBarUI, D extend
         super.propertyChanged ( property, oldValue, newValue );
 
         // Toolbar properties change listener for border and layout updates
-        if ( CompareUtils.equals ( property, WebLookAndFeel.TOOLBAR_FLOATABLE_PROPERTY, WebLookAndFeel.TOOLBAR_ORIENTATION_PROPERTY ) )
+        if ( CompareUtils.equals ( property, WebLookAndFeel.FLOATABLE_PROPERTY, WebLookAndFeel.ORIENTATION_PROPERTY ) )
         {
-            updateLayout ( false );
             updateDecorationState ();
         }
     }
@@ -83,28 +65,33 @@ public class ToolBarPainter<E extends JToolBar, U extends WebToolBarUI, D extend
     {
         final List<String> states = super.getDecorationStates ();
         states.add ( Orientation.get ( component.getOrientation () ).name () );
-        if ( ui.isFloating () )
-        {
-            states.add ( DecorationState.floating );
-        }
+        states.add ( ui.isFloating () ? DecorationState.floating : DecorationState.attached );
         return states;
     }
 
     /**
-     * Updates toolbar layout settings.
-     * This is
-     *
-     * @param install whether or not should install layout if not installed
+     * Installs listeners used for various updates upon entering floating mode.
      */
-    protected void updateLayout ( final boolean install )
+    protected void installFloatingModeListeners ()
     {
-        final boolean installed = component.getLayout () instanceof ToolbarLayout;
-        if ( installed || install )
+        ancestorListener = new AncestorAdapter ()
         {
-            final ToolbarLayout layout = installed ? ( ToolbarLayout ) component.getLayout () : new ToolbarLayout ( 2 );
-            layout.setOrientation ( component.getOrientation () );
-            component.setLayout ( layout );
-        }
+            @Override
+            public void ancestorAdded ( final AncestorEvent event )
+            {
+                updateDecorationState ();
+            }
+        };
+        component.addAncestorListener ( ancestorListener );
+    }
+
+    /**
+     * Uninstalls listeners used for various updates upon entering floating mode.
+     */
+    protected void uninstallFloatingModeListeners ()
+    {
+        component.removeAncestorListener ( ancestorListener );
+        ancestorListener = null;
     }
 
     @Override

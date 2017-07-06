@@ -17,18 +17,21 @@
 
 package com.alee.extended.layout;
 
+import com.alee.utils.CompareUtils;
+import com.alee.utils.TextUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Custom layout used by {@link com.alee.laf.toolbar.WebToolBar} component by default.
+ * Custom {@link LayoutManager}
  *
  * @author Mikle Garin
  */
 
-public class ToolbarLayout extends AbstractLayoutManager implements SwingConstants
+public abstract class AbstractLineLayout extends AbstractLayoutManager implements SwingConstants
 {
     /**
      * Positions component at the leading side of the container.
@@ -51,139 +54,59 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
     public static final String END = "END";
 
     /**
+     * Spacing between layout elements.
+     */
+    protected int spacing;
+
+    /**
+     * Spacing between {@link #START}, {@link #MIDDLE} and {@link #END} layout parts.
+     */
+    protected int partsSpacing;
+
+    /**
      * Saved layout constraints.
      */
-    protected Map<Component, String> constraints = new HashMap<Component, String> ();
+    protected transient Map<Component, String> constraints;
 
     /**
-     * Spacing between components.
+     * Constructs new {@link AbstractLineLayout}.
      */
-    protected int spacing = 2;
-
-    /**
-     * Spacing between left and right (top and bottom) layout parts.
-     */
-    protected int partsSpacing = 20;
-
-    /**
-     * Layout orientation.
-     */
-    protected int orientation = HORIZONTAL;
-
-    /**
-     * Layout margin.
-     */
-    protected Insets margin = null;
-
-    public ToolbarLayout ()
+    public AbstractLineLayout ()
     {
-        super ();
+        this ( 2 );
     }
 
-    public ToolbarLayout ( final int spacing )
+    /**
+     * Constructs new {@link AbstractLineLayout}.
+     *
+     * @param spacing spacing between layout elements
+     */
+    public AbstractLineLayout ( final int spacing )
     {
-        super ();
-        this.spacing = spacing;
+        this ( spacing, 20 );
     }
 
-    public ToolbarLayout ( final int spacing, final int orientation )
-    {
-        super ();
-        this.spacing = spacing;
-        this.orientation = orientation;
-    }
-
-    public ToolbarLayout ( final int spacing, final int partsSpacing, final int orientation )
+    /**
+     * Constructs new {@link AbstractLineLayout}.
+     *
+     * @param spacing      spacing between layout elements
+     * @param partsSpacing spacing between {@link #START}, {@link #MIDDLE} and {@link #END} layout parts
+     */
+    public AbstractLineLayout ( final int spacing, final int partsSpacing )
     {
         super ();
         this.spacing = spacing;
         this.partsSpacing = partsSpacing;
-        this.orientation = orientation;
+        this.constraints = new HashMap<Component, String> ();
     }
-
-    /**
-     * Layout constraints
-     */
-
-    public Map<Component, String> getConstraints ()
-    {
-        return constraints;
-    }
-
-    public void setConstraints ( final Map<Component, String> constraints )
-    {
-        this.constraints = constraints;
-    }
-
-    /**
-     * Layout cells spacing
-     */
-
-    public int getSpacing ()
-    {
-        return spacing;
-    }
-
-    public void setSpacing ( final int spacing )
-    {
-        this.spacing = spacing;
-    }
-
-    /**
-     * Start-end parts spacing This one does not affect layout if there are any components in FILL part
-     */
-
-    public int getPartsSpacing ()
-    {
-        return partsSpacing;
-    }
-
-    public void setPartsSpacing ( final int partsSpacing )
-    {
-        this.partsSpacing = partsSpacing;
-    }
-
-    /**
-     * Layout orientation
-     */
-
-    public int getOrientation ()
-    {
-        return orientation;
-    }
-
-    public void setOrientation ( final int orientation )
-    {
-        this.orientation = orientation;
-    }
-
-    /**
-     * Layout sides margin In case this value is null component border is taken into account instead
-     */
-
-    public Insets getMargin ()
-    {
-        return margin;
-    }
-
-    public void setMargin ( final Insets margin )
-    {
-        this.margin = margin;
-    }
-
-    /**
-     * Standard LayoutManager methods
-     */
 
     @Override
     public void addComponent ( final Component component, final Object constraints )
     {
         final String value = ( String ) constraints;
-        if ( value != null && !value.trim ().equals ( "" ) && !value.equals ( START ) &&
-                !value.equals ( MIDDLE ) && !value.equals ( FILL ) && !value.equals ( END ) )
+        if ( !TextUtils.isBlank ( value ) && !CompareUtils.equals ( value, START, MIDDLE, FILL, END ) )
         {
-            throw new IllegalArgumentException (
-                    "Cannot add to layout: constraint must be null or an empty/'START'/'MIDDLE'/'FILL'/'END' string" );
+            throw new IllegalArgumentException ( "Layout only supports 'null', empty, 'START', 'MIDDLE', 'FILL' or 'END' constraints" );
         }
         this.constraints.put ( component, value == null || value.trim ().equals ( "" ) ? START : value );
     }
@@ -194,10 +117,12 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
         constraints.remove ( component );
     }
 
+
     @Override
     public Dimension preferredLayoutSize ( final Container parent )
     {
-        final Insets insets = getActualInsets ( parent );
+        final int orientation = getOrientation ( parent );
+        final Insets insets = parent.getInsets ();
         final Dimension ps = new Dimension ( insets.left + insets.right, insets.top + insets.bottom );
         final int componentCount = parent.getComponentCount ();
         for ( int i = 0; i < componentCount; i++ )
@@ -240,7 +165,8 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
     @Override
     public void layoutContainer ( final Container parent )
     {
-        final Insets insets = getActualInsets ( parent );
+        final int orientation = getOrientation ( parent );
+        final Insets insets = parent.getInsets ();
         if ( orientation == HORIZONTAL )
         {
             if ( parent.getComponentOrientation ().isLeftToRight () )
@@ -413,25 +339,22 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
         }
     }
 
-    protected boolean hasElement ( final String element )
+    /**
+     * Returns whether or not layout contains element under the specified constraints.
+     *
+     * @param consraints element constraints
+     * @return {@code true} if layout contains element under the specified constraints, {@code false} otherwise
+     */
+    protected boolean hasElement ( final String consraints )
     {
-        return constraints.containsValue ( element );
+        return constraints.containsValue ( consraints );
     }
 
-    protected Insets getActualInsets ( final Container container )
-    {
-        if ( margin != null )
-        {
-            final Insets insets = container.getInsets ();
-            insets.top += margin.top;
-            insets.left += margin.left;
-            insets.bottom += margin.bottom;
-            insets.right += margin.right;
-            return insets;
-        }
-        else
-        {
-            return container.getInsets ();
-        }
-    }
+    /**
+     * Returns either {@link #HORIZONTAL} or {@link #VERTICAL} orientation for {@link Container}.
+     *
+     * @param container {@link Container} to retrieve orientation for
+     * @return either {@link #HORIZONTAL} or {@link #VERTICAL} orientation for {@link Container}
+     */
+    public abstract int getOrientation ( Container container );
 }

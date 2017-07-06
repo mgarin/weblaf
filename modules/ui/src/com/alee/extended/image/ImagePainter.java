@@ -43,41 +43,29 @@ public class ImagePainter<E extends WebImage, U extends WImageUI, D extends IDec
         implements IImagePainter<E, U>
 {
     /**
-     * Disabled image version cached for performance reasons.
-     * This is a disabled version of full image, not its preview.
-     */
-    protected BufferedImage disabledImage;
-
-    /**
      * Last cached image size.
      * This is used to determine when image component was resized since last paint call.
      */
-    protected Dimension lastDimension = null;
+    protected transient Dimension lastDimension = null;
+
+    /**
+     * Disabled image version cached for performance reasons.
+     * This is a disabled version of full image, not its preview.
+     */
+    protected transient BufferedImage disabledImage;
 
     /**
      * Last cached image preview.
      * This variable is used when actual painted image is smaller than source image.
      * In that case source image is getting scaled and saved into this variable.
      */
-    protected BufferedImage lastPreviewImage = null;
+    protected transient BufferedImage lastPreviewImage = null;
 
     @Override
-    public void install ( final E c, final U ui )
+    protected void uninstallPropertiesAndListeners ()
     {
-        super.install ( c, ui );
-
-        // Initializing image caches
-    }
-
-    @Override
-    public void uninstall ( final E c, final U ui )
-    {
-        // Cleaning up image caches
-        disabledImage = null;
-        lastDimension = null;
-        lastPreviewImage = null;
-
-        super.uninstall ( c, ui );
+        uninstallRuntimeVariables ();
+        super.uninstallPropertiesAndListeners ();
     }
 
     @Override
@@ -117,6 +105,16 @@ public class ImagePainter<E extends WebImage, U extends WImageUI, D extends IDec
         {
             repaint ();
         }
+    }
+
+    /**
+     * Performs runtime variables cleanup.
+     */
+    protected void uninstallRuntimeVariables ()
+    {
+        lastPreviewImage = null;
+        disabledImage = null;
+        lastDimension = null;
     }
 
     /**

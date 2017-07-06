@@ -70,29 +70,23 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
     protected IDockableFramePainter painter;
 
     /**
-     * Additional components used be the UI.
-     */
-    protected SidebarButton sidebarButton;
-    protected WebPanel titlePanel;
-    protected WebStyledLabel titleLabel;
-    protected WebPanel buttonsPanel;
-    protected WebButton dockButton;
-    protected WebButton minimizeButton;
-    protected WebButton floatButton;
-    protected WebButton maximizeButton;
-    protected WebButton closeButton;
-
-    /**
      * Listeners.
      */
-    protected DefaultFocusTracker focusTracker;
-    protected ComponentMoveBehavior dialogMoveBehavior;
+    protected transient DefaultFocusTracker focusTracker;
+    protected transient ComponentMoveBehavior dialogMoveBehavior;
 
     /**
-     * Runtime variables.
+     * Additional components used be the UI.
      */
-    protected Insets margin = null;
-    protected Insets padding = null;
+    protected transient SidebarButton sidebarButton;
+    protected transient WebPanel titlePanel;
+    protected transient WebStyledLabel titleLabel;
+    protected transient WebPanel buttonsPanel;
+    protected transient WebButton dockButton;
+    protected transient WebButton minimizeButton;
+    protected transient WebButton floatButton;
+    protected transient WebButton maximizeButton;
+    protected transient WebButton closeButton;
 
     /**
      * Returns an instance of the {@link WebDockableFrameUI} for the specified component.
@@ -519,27 +513,25 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
     @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( frame );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setMargin ( frame, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return padding;
+        return PainterSupport.getPadding ( frame );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setPadding ( frame, padding );
     }
 
     /**

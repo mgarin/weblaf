@@ -80,6 +80,7 @@ public final class DemoIcons
     public static final LazyIcon phone16 = new LazyIcon ( "phone16" );
     public static final LazyIcon hourglass16 = new LazyIcon ( "hourglass16" );
     public static final LazyIcon magnifier16 = new LazyIcon ( "magnifier16" );
+    public static final LazyIcon cursor16 = new LazyIcon ( "cursor16" );
     public static final LazyIcon enabled16 = new LazyIcon ( "enabled16" );
     public static final LazyIcon disabled16 = new LazyIcon ( "disabled16" );
     public static final LazyIcon ltr16 = new LazyIcon ( "ltr16" );
@@ -95,4 +96,12 @@ public final class DemoIcons
     public static final LazyIcon pinterest16 = new LazyIcon ( "pinterest16" );
     public static final LazyIcon youtube16 = new LazyIcon ( "youtube16" );
     public static final LazyIcon vimeo16 = new LazyIcon ( "vimeo16" );
+
+    /**
+     * Sample 16x16 icons.
+     */
+    public static final LazyIcon win16 = new LazyIcon ( "win16" );
+    public static final LazyIcon mac16 = new LazyIcon ( "mac16" );
+    public static final LazyIcon unix16 = new LazyIcon ( "unix16" );
+    public static final LazyIcon solaris16 = new LazyIcon ( "solaris16" );
 }

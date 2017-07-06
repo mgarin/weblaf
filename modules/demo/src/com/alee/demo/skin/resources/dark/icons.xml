@@ -79,6 +79,9 @@
     <SvgIcon id="magnifier16" path="general/magnifier.svg" size="16,16">
         <SvgFill selector="svg" color="240,240,240" />
     </SvgIcon>
+    <SvgIcon id="cursor16" path="general/cursor.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
     <SvgIcon id="enabled16" path="general/enabled.svg" size="16,16">
         <SvgFill selector="svg" color="240,240,240" />
     </SvgIcon>
@@ -114,6 +117,20 @@
     </SvgIcon>
     <SvgIcon id="vimeo16" path="social/vimeo.svg" size="16,16">
         <SvgFill selector="svg" color="0,173,239" />
+    </SvgIcon>
+
+    <!-- Sample icons -->
+    <SvgIcon id="win16" path="sample/win.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="mac16" path="sample/mac.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="unix16" path="sample/unix.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="solaris16" path="sample/solaris.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
     </SvgIcon>
 
 </IconSet>

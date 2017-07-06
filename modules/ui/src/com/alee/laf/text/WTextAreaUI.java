@@ -17,8 +17,9 @@
 
 package com.alee.laf.text;
 
+import com.alee.laf.IInputPrompt;
+
 import javax.swing.plaf.basic.BasicTextAreaUI;
-import javax.swing.plaf.basic.BasicTextPaneUI;
 
 /**
  * Pluggable look and feel interface for {@link WebTextArea} component.
@@ -26,19 +27,9 @@ import javax.swing.plaf.basic.BasicTextPaneUI;
  * @author Mikle Garin
  */
 
-public abstract class WTextAreaUI extends BasicTextAreaUI
+public abstract class WTextAreaUI extends BasicTextAreaUI implements IInputPrompt
 {
     /**
-     * Returns input prompt text.
-     *
-     * @return input prompt text
+     * Implementation is used completely from {@link BasicTextAreaUI}.
      */
-    public abstract String getInputPrompt ();
-
-    /**
-     * Sets input prompt text.
-     *
-     * @param text input prompt text
-     */
-    public abstract void setInputPrompt ( String text );
 }

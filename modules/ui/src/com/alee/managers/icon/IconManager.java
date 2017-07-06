@@ -88,10 +88,10 @@ public final class IconManager
     }
 
     /**
-     * Returns icon set with the specified ID.
+     * Returns icon set with the specified identifier.
      *
-     * @param id icon set ID
-     * @return icon set with the specified ID
+     * @param id icon set identifier
+     * @return icon set with the specified identifier
      */
     public static IconSet getIconSet ( final String id )
     {
@@ -112,7 +112,7 @@ public final class IconManager
      */
     public static void addIconSet ( final IconSet iconSet )
     {
-        // Removing existing set with the same ID
+        // Removing existing set with the same identifier
         removeIconSet ( iconSet.getId () );
 
         // Adding new set
@@ -122,7 +122,7 @@ public final class IconManager
     /**
      * Removes icon set.
      *
-     * @param id icon set ID
+     * @param id icon set identifier
      */
     public static void removeIconSet ( final String id )
     {
@@ -161,37 +161,40 @@ public final class IconManager
     }
 
     /**
-     * Returns icon for the specified ID.
+     * Returns whether or not icon for the specified identifier exists.
      *
-     * @param id icon ID
-     * @return icon for the specified ID
+     * @param id icon identifier
+     * @return icon for the specified identifier
+     */
+    public static boolean hasIcon ( final String id )
+    {
+        return getIconImpl ( id ) != null;
+    }
+
+    /**
+     * Returns {@link Icon} for the specified identifier.
+     *
+     * @param id {@link Icon} identifier
+     * @return {@link Icon} for the specified identifier
+     * @throws IconException if {@link Icon} cannot be found for the specified identifier
      */
     public static <I extends Icon> I getIcon ( final String id )
     {
         if ( iconSets.size () > 0 )
         {
-            // Checking cached icon
-            final WeakReference<Icon> reference = cache.get ( id );
-            Icon icon = reference != null ? reference.get () : null;
+            // Looking for an icon
+            final I icon = getIconImpl ( id );
             if ( icon != null )
             {
-                return ( I ) icon;
+                // Returning icon we found
+                return icon;
             }
-
-            // Checking icon sets
-            final ListIterator<IconSet> iter = iconSets.listIterator ( iconSets.size () );
-            while ( iter.hasPrevious () )
+            else
             {
-                icon = iter.previous ().getIcon ( id );
-                if ( icon != null )
-                {
-                    return ( I ) icon;
-                }
+                // No icon found
+                final String msg = "Could not find Icon for identifier: %s";
+                throw new IconException ( String.format ( msg, id ) );
             }
-
-            // No icon found
-            final String msg = "Could not find Icon for ID: %s";
-            throw new IconException ( String.format ( msg, id ) );
         }
         else
         {
@@ -199,5 +202,33 @@ public final class IconManager
             final String msg = "There are no icon sets added";
             throw new IconException ( msg );
         }
+    }
+
+    /**
+     * Returns icon for the specified identifier.
+     *
+     * @param id icon identifier
+     * @return icon for the specified identifier
+     */
+    private static <I extends Icon> I getIconImpl ( final String id )
+    {
+        // Checking cached icon
+        final WeakReference<Icon> reference = cache.get ( id );
+        I icon = reference != null ? ( I ) reference.get () : null;
+        if ( icon == null )
+        {
+            // Checking icon sets from the end
+            final ListIterator<IconSet> iter = iconSets.listIterator ( iconSets.size () );
+            while ( iter.hasPrevious () )
+            {
+                // Stop looking for an icon as soon as we found one with the specified identifier
+                icon = ( I ) iter.previous ().getIcon ( id );
+                if ( icon != null )
+                {
+                    break;
+                }
+            }
+        }
+        return icon;
     }
 }

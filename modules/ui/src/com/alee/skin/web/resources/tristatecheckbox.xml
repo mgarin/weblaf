@@ -43,6 +43,7 @@
                     <decoration states="disabled">
                         <WebShadow type="outer" opacity="0" />
                         <LineBorder color="lightGray" />
+                        <ColorBackground color="240,240,240" />
                     </decoration>
                     <decoration states="disabled,checked">
                         <CheckIcon bounds="margin" color="gray" />

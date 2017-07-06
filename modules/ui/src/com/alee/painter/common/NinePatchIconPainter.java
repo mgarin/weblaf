@@ -144,31 +144,43 @@ public class NinePatchIconPainter<E extends JComponent, U extends ComponentUI> e
     }
 
     @Override
-    public void install ( final E c, final U ui )
+    protected void installPropertiesAndListeners ()
     {
-        super.install ( c, ui );
+        super.installPropertiesAndListeners ();
+        installIconComponent ();
+    }
 
-        // Attaching component
+    @Override
+    protected void uninstallPropertiesAndListeners ()
+    {
+        uninstallIconComponent ();
+        super.uninstallPropertiesAndListeners ();
+    }
+
+    /**
+     * Attaches {@link NinePatchIcon} to {@link JComponent} used by this UI.
+     */
+    protected void installIconComponent ()
+    {
         if ( icon != null )
         {
-            icon.setComponent ( c );
+            icon.setComponent ( component );
+        }
+    }
+
+    /**
+     * Detaches {@link NinePatchIcon} from {@link JComponent} used by this UI.
+     */
+    protected void uninstallIconComponent ()
+    {
+        if ( icon != null )
+        {
+            icon.setComponent ( null );
         }
     }
 
     @Override
-    public void uninstall ( final E c, final U ui )
-    {
-        // Detaching component
-        if ( icon != null )
-        {
-            icon.setComponent ( c );
-        }
-
-        super.uninstall ( c, ui );
-    }
-
-    @Override
-    public Insets getBorders ()
+    protected Insets getBorder ()
     {
         return icon != null ? icon.getMargin () : null;
     }

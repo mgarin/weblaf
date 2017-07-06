@@ -19,8 +19,8 @@ package com.alee.laf.tree;
 
 import com.alee.painter.decoration.AbstractSectionDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
+import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.painter.decoration.Stateful;
 
 import javax.swing.*;
 import javax.swing.tree.TreePath;
@@ -47,16 +47,17 @@ public class TreeRowPainter<E extends JTree, U extends WTreeUI, D extends IDecor
     @Override
     protected List<String> getDecorationStates ()
     {
-        return modifyStates ( super.getDecorationStates () );
+        final List<String> states = super.getDecorationStates ();
+        addRowStates ( states );
+        return states;
     }
 
     /**
-     * Modifies list of states provided by this painter.
+     * Adds states provided by this painter.
      *
-     * @param states previously added states
-     * @return modified list of states
+     * @param states list to add states to
      */
-    protected List<String> modifyStates ( final List<String> states )
+    protected void addRowStates ( final List<String> states )
     {
         // Ensure row is specified
         if ( row != null )
@@ -65,28 +66,39 @@ public class TreeRowPainter<E extends JTree, U extends WTreeUI, D extends IDecor
             final TreePath path = component.getPathForRow ( row );
             if ( path != null )
             {
-                // Adding row type
-                states.add ( row % 2 == 0 ? DecorationState.odd : DecorationState.even );
-
-                // Adding common node states
-                if ( component.isRowSelected ( row ) )
-                {
-                    states.add ( DecorationState.selected );
-                }
-                if ( component.isExpanded ( row ) )
-                {
-                    states.add ( DecorationState.expanded );
-                }
-
-                // Adding possible extra node states
-                final Object pathComponent = path.getLastPathComponent ();
-                if ( pathComponent != null && pathComponent instanceof Stateful )
-                {
-                    states.addAll ( ( ( Stateful ) pathComponent ).getStates () );
-                }
+                addPathStates ( states, path );
             }
         }
-        return states;
+    }
+
+    /**
+     * Adds states provided by specified {@link TreePath}.
+     *
+     * @param states list to add states to
+     * @param path   {@link TreePath} to provide states for
+     */
+    protected void addPathStates ( final List<String> states, final TreePath path )
+    {
+        // Adding row type
+        addNumerationStates ( states, path );
+
+        // Adding common node states
+        states.add ( component.isExpanded ( row ) ? DecorationState.expanded : DecorationState.collapsed );
+        states.add ( component.isRowSelected ( row ) ? DecorationState.selected : DecorationState.unselected );
+
+        // Adding possible extra node states
+        states.addAll ( DecorationUtils.getExtraStates ( path.getLastPathComponent () ) );
+    }
+
+    /**
+     * Adds numeration states for the specified {@link TreePath}.
+     *
+     * @param states list to add states to
+     * @param path   {@link TreePath} to provide numeration states for
+     */
+    protected void addNumerationStates ( final List<String> states, final TreePath path )
+    {
+        states.add ( row % 2 == 0 ? DecorationState.odd : DecorationState.even );
     }
 
     @Override

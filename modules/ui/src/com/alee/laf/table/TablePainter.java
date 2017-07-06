@@ -73,31 +73,59 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
     /**
      * Listeners.
      */
-    protected MouseAdapter mouseAdapter;
+    protected transient MouseAdapter mouseAdapter;
 
     /**
      * Runtime variables.
      */
-    protected Point rolloverCell;
+    protected transient Point rolloverCell;
 
     /**
      * Painting variables.
      */
-    protected CellRendererPane rendererPane = null;
+    protected transient CellRendererPane rendererPane = null;
 
     @Override
-    public void install ( final E c, final U ui )
+    protected void installSectionPainters ()
     {
-        super.install ( c, ui );
+        super.installSectionPainters ();
+        this.rowPainter = PainterSupport.installSectionPainter ( this, rowPainter, null, component, ui );
+        this.columnPainter = PainterSupport.installSectionPainter ( this, columnPainter, null, component, ui );
+        this.cellPainter = PainterSupport.installSectionPainter ( this, cellPainter, null, component, ui );
+        this.selectionPainter = PainterSupport.installSectionPainter ( this, selectionPainter, null, component, ui );
+        this.draggedColumnPainter = PainterSupport.installSectionPainter ( this, draggedColumnPainter, null, component, ui );
+    }
 
-        // Properly installing section painters
-        this.rowPainter = PainterSupport.installSectionPainter ( this, rowPainter, null, c, ui );
-        this.columnPainter = PainterSupport.installSectionPainter ( this, columnPainter, null, c, ui );
-        this.cellPainter = PainterSupport.installSectionPainter ( this, cellPainter, null, c, ui );
-        this.selectionPainter = PainterSupport.installSectionPainter ( this, selectionPainter, null, c, ui );
-        this.draggedColumnPainter = PainterSupport.installSectionPainter ( this, draggedColumnPainter, null, c, ui );
+    @Override
+    protected void uninstallSectionPainters ()
+    {
+        this.draggedColumnPainter = PainterSupport.uninstallSectionPainter ( draggedColumnPainter, component, ui );
+        this.selectionPainter = PainterSupport.uninstallSectionPainter ( selectionPainter, component, ui );
+        this.cellPainter = PainterSupport.uninstallSectionPainter ( cellPainter, component, ui );
+        this.columnPainter = PainterSupport.uninstallSectionPainter ( columnPainter, component, ui );
+        this.rowPainter = PainterSupport.uninstallSectionPainter ( rowPainter, component, ui );
+        super.uninstallSectionPainters ();
+    }
 
-        // Rollover listener
+    @Override
+    protected void installPropertiesAndListeners ()
+    {
+        super.installPropertiesAndListeners ();
+        installTableMouseListeners ();
+    }
+
+    @Override
+    protected void uninstallPropertiesAndListeners ()
+    {
+        uninstallTableMouseListeners ();
+        super.uninstallPropertiesAndListeners ();
+    }
+
+    /**
+     * Installs table mouse listeners.
+     */
+    protected void installTableMouseListeners ()
+    {
         mouseAdapter = new MouseAdapter ()
         {
             @Override
@@ -141,7 +169,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
             private void updateMouseover ( final MouseEvent e )
             {
                 final Point point = e.getPoint ();
-                final Point cell = p ( component.columnAtPoint ( point ), component.rowAtPoint ( point ) );
+                final Point cell = new Point ( component.columnAtPoint ( point ), component.rowAtPoint ( point ) );
                 if ( cell.x != -1 && cell.y != -1 )
                 {
                     if ( !CompareUtils.equals ( rolloverCell, cell ) )
@@ -193,22 +221,14 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
         component.addMouseMotionListener ( mouseAdapter );
     }
 
-    @Override
-    public void uninstall ( final E c, final U ui )
+    /**
+     * Uninstalls table mouse listeners.
+     */
+    protected void uninstallTableMouseListeners ()
     {
-        // Removing listeners
         component.removeMouseListener ( mouseAdapter );
         component.removeMouseMotionListener ( mouseAdapter );
         mouseAdapter = null;
-
-        // Properly uninstalling section painters
-        this.draggedColumnPainter = PainterSupport.uninstallSectionPainter ( draggedColumnPainter, c, ui );
-        this.selectionPainter = PainterSupport.uninstallSectionPainter ( selectionPainter, c, ui );
-        this.cellPainter = PainterSupport.uninstallSectionPainter ( cellPainter, c, ui );
-        this.columnPainter = PainterSupport.uninstallSectionPainter ( columnPainter, c, ui );
-        this.rowPainter = PainterSupport.uninstallSectionPainter ( rowPainter, c, ui );
-
-        super.uninstall ( c, ui );
     }
 
     @Override
@@ -242,7 +262,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
             upperLeft.x++;
         }
 
-        final Point lowerRight = p ( clip.x + clip.width - ( ltr ? 1 : 0 ), clip.y + clip.height );
+        final Point lowerRight = new Point ( clip.x + clip.width - ( ltr ? 1 : 0 ), clip.y + clip.height );
 
         int rMin = component.rowAtPoint ( upperLeft );
         int rMax = component.rowAtPoint ( lowerRight );
@@ -445,7 +465,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
         if ( selectionPainter != null )
         {
             final JTableHeader header = component.getTableHeader ();
-            final TableColumn draggedColumn = ( header == null ) ? null : header.getDraggedColumn ();
+            final TableColumn draggedColumn = header == null ? null : header.getDraggedColumn ();
             final int draggedIndex = component.convertColumnIndexToView ( draggedColumn != null ? draggedColumn.getModelIndex () : -1 );
 
             final int[] rows = component.getSelectedRows ();
@@ -508,7 +528,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
     protected void paintContent ( final Graphics2D g2d, final int rMin, final int rMax, final int cMin, final int cMax )
     {
         final JTableHeader header = component.getTableHeader ();
-        final TableColumn draggedColumn = ( header == null ) ? null : header.getDraggedColumn ();
+        final TableColumn draggedColumn = header == null ? null : header.getDraggedColumn ();
         final TableColumnModel cm = component.getColumnModel ();
         final int columnMargin = cm.getColumnMargin ();
 
@@ -611,8 +631,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
     protected void paintCell ( final Graphics2D g2d, final Rectangle bounds, final int row, final int column )
     {
         // Placing cell editor or painting cell renderer
-        if ( component.isEditing () && component.getEditingRow () == row &&
-                component.getEditingColumn () == column )
+        if ( component.isEditing () && component.getEditingRow () == row && component.getEditingColumn () == column )
         {
             // Correctly place cell editor
             final Component editor = component.getEditorComponent ();

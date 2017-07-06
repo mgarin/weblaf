@@ -18,7 +18,7 @@
 package com.alee.laf.filechooser;
 
 import com.alee.extended.filechooser.*;
-import com.alee.extended.layout.ToolbarLayout;
+import com.alee.extended.layout.LineLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.list.FileElement;
 import com.alee.extended.list.WebFileList;
@@ -1011,7 +1011,8 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected Component createControls ()
     {
-        controlsPanel = new WebPanel ( StyleId.filechooserSouthPanel.at ( this ), new ToolbarLayout ( 4 ) );
+        final LineLayout layout = new LineLayout ( SwingConstants.HORIZONTAL, 4 );
+        controlsPanel = new WebPanel ( StyleId.filechooserSouthPanel.at ( this ), layout );
         add ( controlsPanel, BorderLayout.SOUTH );
 
         controlsPanel.add ( new WebLabel ( StyleId.filechooserSelectedLabel.at ( controlsPanel ), "weblaf.filechooser.files.selected" ) );
@@ -1041,7 +1042,7 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        controlsPanel.add ( chooserType == FileChooserType.save ? selectedFilesTextField : selectedFilesViewField, ToolbarLayout.FILL );
+        controlsPanel.add ( chooserType == FileChooserType.save ? selectedFilesTextField : selectedFilesViewField, LineLayout.FILL );
 
         fileFilters = new WebComboBox ();
         fileFilters.addActionListener ( new ActionListener ()
@@ -1055,7 +1056,7 @@ public class WebFileChooserPanel extends WebPanel
                 fireFileFilterChanged ( oldFilter, newFilter );
             }
         } );
-        controlsPanel.add ( fileFilters, ToolbarLayout.END );
+        controlsPanel.add ( fileFilters, LineLayout.END );
 
         acceptButton = new WebButton ( StyleId.filechooserAcceptButton.at ( controlsPanel ), Icons.accept );
         acceptButton.addHotkey ( WebFileChooserPanel.this, Hotkey.CTRL_ENTER, TooltipWay.up );
@@ -1549,7 +1550,7 @@ public class WebFileChooserPanel extends WebPanel
     protected void updateSelectedFilesFieldPanel ()
     {
         controlsPanel.remove ( selectedFilesTextField, selectedFilesViewField );
-        controlsPanel.add ( chooserType == FileChooserType.save ? selectedFilesTextField : selectedFilesViewField, ToolbarLayout.FILL );
+        controlsPanel.add ( chooserType == FileChooserType.save ? selectedFilesTextField : selectedFilesViewField, LineLayout.FILL );
         controlsPanel.revalidate ();
     }
 
@@ -2037,8 +2038,8 @@ public class WebFileChooserPanel extends WebPanel
         controlsPanel.remove ( acceptButton, cancelButton );
         if ( showControlButtons )
         {
-            controlsPanel.add ( acceptButton, ToolbarLayout.END );
-            controlsPanel.add ( cancelButton, ToolbarLayout.END );
+            controlsPanel.add ( acceptButton, LineLayout.END );
+            controlsPanel.add ( cancelButton, LineLayout.END );
         }
         controlsPanel.revalidate ();
     }

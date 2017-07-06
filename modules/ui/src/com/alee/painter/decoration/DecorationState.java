@@ -65,6 +65,7 @@ public interface DecorationState
     public static final String hover = "hover";
     public static final String pressed = "pressed";
     public static final String selected = "selected";
+    public static final String unselected = "unselected";
     public static final String empty = "empty";
     public static final String collapsed = "collapsed";
     public static final String expanded = "expanded";
@@ -82,6 +83,13 @@ public interface DecorationState
      * @see com.alee.laf.combobox.ComboBoxPainter#getDecorationStates()
      */
     public static final String editable = "editable";
+
+    /**
+     * Used to provide toolbar attached state for toolbar painter.
+     *
+     * @see com.alee.laf.toolbar.ToolBarPainter#getDecorationStates()
+     */
+    public static final String attached = "attached";
 
     /**
      * Used to provide toolbar floating state for toolbar painter.
@@ -290,4 +298,20 @@ public interface DecorationState
      * @see com.alee.laf.rootpane.RootPanePainter#getDecorationStates()
      */
     public static final String warningDialog = "warning-dialog";
+
+    /**
+     * Visible renderer checkbox.
+     * Set for {@link com.alee.extended.tree.WebCheckBoxTreeCellRenderer} that renders visible checkbox.
+     *
+     * @see com.alee.extended.tree.WebCheckBoxTreeCellRenderer#getStates()
+     */
+    public static final String checkVisible = "check-visible";
+
+    /**
+     * Hidden renderer checkbox.
+     * Set for {@link com.alee.extended.tree.WebCheckBoxTreeCellRenderer} that doesn't render checkbox.
+     *
+     * @see com.alee.extended.tree.WebCheckBoxTreeCellRenderer#getStates()
+     */
+    public static final String checkHidden = "check-hidden";
 }

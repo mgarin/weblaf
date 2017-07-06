@@ -17,7 +17,7 @@
 
 package com.alee.extended.filechooser;
 
-import com.alee.extended.layout.ToolbarLayout;
+import com.alee.extended.layout.LineLayout;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.pathfield.WebPathField;
 import com.alee.extended.tree.FileTreeNode;
@@ -27,6 +27,7 @@ import com.alee.laf.button.WebButton;
 import com.alee.laf.optionpane.WebOptionPane;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollPane;
+import com.alee.laf.toolbar.ToolbarLayout;
 import com.alee.laf.toolbar.WebToolBar;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyCondition;
@@ -117,13 +118,13 @@ public class WebDirectoryChooserPanel extends WebPanel
      */
     public WebDirectoryChooserPanel ( final StyleId id )
     {
-        super ( id, new ToolbarLayout ( 0, 0, ToolbarLayout.VERTICAL ) );
+        super ( id, new LineLayout ( SwingConstants.VERTICAL, 0, 0 ) );
 
         // Panel content
         add ( createToolBar () );
         add ( createPathField () );
-        add ( createFileTree (), ToolbarLayout.FILL );
-        add ( createControlsPanel (), ToolbarLayout.END );
+        add ( createFileTree (), LineLayout.FILL );
+        add ( createControlsPanel (), LineLayout.END );
 
         // Updating selected directory
         updateSelectedDirectory ( null, true, true );

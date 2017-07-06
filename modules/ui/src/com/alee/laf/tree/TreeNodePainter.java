@@ -17,10 +17,7 @@
 
 package com.alee.laf.tree;
 
-import com.alee.painter.decoration.AbstractSectionDecorationPainter;
-import com.alee.painter.decoration.DecorationState;
-import com.alee.painter.decoration.IDecoration;
-import com.alee.painter.decoration.Stateful;
+import com.alee.painter.decoration.*;
 
 import javax.swing.*;
 import javax.swing.tree.TreePath;
@@ -59,21 +56,12 @@ public class TreeNodePainter<E extends JTree, U extends WTreeUI, D extends IDeco
                 states.add ( row % 2 == 0 ? DecorationState.odd : DecorationState.even );
 
                 // Adding common node states
-                if ( component.isRowSelected ( row ) )
-                {
-                    states.add ( DecorationState.selected );
-                }
-                if ( component.isExpanded ( row ) )
-                {
-                    states.add ( DecorationState.expanded );
-                }
+                states.add ( component.isRowSelected ( row ) ? DecorationState.selected : DecorationState.unselected );
+                states.add ( component.isExpanded ( row ) ? DecorationState.expanded : DecorationState.collapsed );
 
                 // Adding possible node states
-                final Object pathComponent = path.getLastPathComponent ();
-                if ( pathComponent != null && pathComponent instanceof Stateful )
-                {
-                    states.addAll ( ( ( Stateful ) pathComponent ).getStates () );
-                }
+                final Object value = path.getLastPathComponent ();
+                states.addAll ( DecorationUtils.getExtraStates ( value ) );
             }
         }
 

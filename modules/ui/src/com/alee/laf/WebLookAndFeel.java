@@ -75,6 +75,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     public static final String LOOK_AND_FEEL_PROPERTY = "lookAndFeel";
     public static final String UI_PROPERTY = "UI";
+    public static final String LAF_MARGIN_PROPERTY = "lafMargin";
+    public static final String LAF_PADDING_PROPERTY = "lafPadding";
     public static final String COMPONENT_ORIENTATION_PROPERTY = "componentOrientation";
     public static final String MARGIN_PROPERTY = "margin";
     public static final String ENABLED_PROPERTY = "enabled";
@@ -85,12 +87,11 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String VERTICAL_SCROLLBAR_PROPERTY = "verticalScrollBar";
     public static final String HORIZONTAL_SCROLLBAR_PROPERTY = "horizontalScrollBar";
     public static final String TABLE_HEADER_PROPERTY = "tableHeader";
-    public static final String TOOLBAR_FLOATABLE_PROPERTY = "floatable";
-    public static final String TOOLBAR_ORIENTATION_PROPERTY = "orientation";
+    public static final String FLOATABLE_PROPERTY = "floatable";
     public static final String WINDOW_DECORATION_STYLE_PROPERTY = "windowDecorationStyle";
-    public static final String WINDOW_RESIZABLE_PROPERTY = "resizable";
-    public static final String WINDOW_ICON_PROPERTY = "iconImage";
-    public static final String WINDOW_TITLE_PROPERTY = "title";
+    public static final String RESIZABLE_PROPERTY = "resizable";
+    public static final String ICON_IMAGE_PROPERTY = "iconImage";
+    public static final String TITLE_PROPERTY = "title";
     public static final String VISIBLE_PROPERTY = "visible";
     public static final String DOCUMENT_PROPERTY = "document";
     public static final String OPAQUE_PROPERTY = "opaque";
@@ -109,6 +110,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String ORIENTATION_PROPERTY = "orientation";
     public static final String HORIZONTAL_ALIGNMENT_PROPERTY = "horizontalAlignment";
     public static final String VERTICAL_ALIGNMENT_PROPERTY = "verticalAlignment";
+    public static final String LEADING_COMPONENT_PROPERTY = "leadingComponent";
+    public static final String TRAILING_COMPONENT_PROPERTY = "trailingComponent";
+    public static final String TABBED_PANE_STYLE_PROPERTY = "tabbedPaneStyle";
 
     /**
      * Whether or not library should force Event Dispatch Thread usage for all UI-related operations.
@@ -157,10 +161,13 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
     /**
      * Reassignable LookAndFeel fonts.
+     * @see NativeFonts
      */
 
-    // Text components fonts
-    public static Font globalControlFont = WebFonts.getSystemControlFont ();
+    /**
+     * @see ControlType#CONTROL
+     */
+    public static Font globalControlFont = NativeFonts.get ( ControlType.CONTROL );
     public static Font canvasFont;
     public static Font imageFont;
     public static Font buttonFont;
@@ -169,7 +176,13 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static Font checkBoxFont;
     public static Font tristateCheckBoxFont;
     public static Font radioButtonFont;
+    public static Font comboBoxFont;
+    public static Font spinnerFont;
+    public static Font textFieldFont;
+    public static Font formattedTextFieldFont;
+    public static Font passwordFieldFont;
     public static Font colorChooserFont;
+    public static Font fileChooserFont;
     public static Font labelFont;
     public static Font styledLabelFont;
     public static Font linkFont;
@@ -184,47 +197,54 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static Font tableFont;
     public static Font tableHeaderFont;
     public static Font titledBorderFont;
-    public static Font toolBarFont;
     public static Font treeFont;
 
-    // Tooltip font
-    public static Font globalTooltipFont = WebFonts.getSystemTooltipFont ();
+    /**
+     * @see ControlType#TEXT
+     */
+    public static Font globalTextFont = NativeFonts.get ( ControlType.TEXT );
+    public static Font textAreaFont;
+    public static Font textPaneFont;
+    public static Font editorPaneFont;
+
+    /**
+     * @see ControlType#TOOLTIP
+     */
+    public static Font globalTooltipFont = NativeFonts.get ( ControlType.TOOLTIP );
     public static Font toolTipFont;
 
-    // Option pane font
-    public static Font globalAlertFont = WebFonts.getSystemAlertFont ();
-    public static Font optionPaneFont;
-
-    // Menu font
-    public static Font globalMenuFont = WebFonts.getSystemMenuFont ();
+    /**
+     * @see ControlType#MENU
+     */
+    public static Font globalMenuFont = NativeFonts.get ( ControlType.MENU );
     public static Font menuBarFont;
     public static Font menuFont;
     public static Font menuItemFont;
     public static Font radioButtonMenuItemFont;
     public static Font checkBoxMenuItemFont;
     public static Font popupMenuFont;
+    public static Font toolBarFont;
 
-    // Component's accelerators fonts
-    public static Font globalAcceleratorFont = WebFonts.getSystemAcceleratorFont ();
+    /**
+     * @see ControlType#MENU_SMALL
+     */
+    public static Font globalMenuSmallFont = NativeFonts.get ( ControlType.MENU_SMALL );
+    public static Font menuAcceleratorFont;
     public static Font menuItemAcceleratorFont;
     public static Font radioButtonMenuItemAcceleratorFont;
     public static Font checkBoxMenuItemAcceleratorFont;
-    public static Font menuAcceleratorFont;
 
-    // Title components fonts
-    public static Font globalTitleFont = WebFonts.getSystemTitleFont ();
+    /**
+     * @see ControlType#WINDOW
+     */
+    public static Font globalWindowFont = NativeFonts.get ( ControlType.WINDOW );
     public static Font internalFrameFont;
 
-    // Editor components fonts
-    public static Font globalTextFont = WebFonts.getSystemTextFont ();
-    public static Font comboBoxFont;
-    public static Font spinnerFont;
-    public static Font textFieldFont;
-    public static Font formattedTextFieldFont;
-    public static Font passwordFieldFont;
-    public static Font textAreaFont;
-    public static Font textPaneFont;
-    public static Font editorPaneFont;
+    /**
+     * @see ControlType#MESSAGE
+     */
+    public static Font globalMessageFont = NativeFonts.get ( ControlType.MESSAGE );
+    public static Font optionPaneFont;
 
     /**
      * Returns {@link WebLookAndFeel} name.
@@ -699,6 +719,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     protected static void initializeFonts ( final UIDefaults table )
     {
+        /**
+         * @see ControlType#CONTROL
+         */
         initializeFont ( table, "Canvas.font", canvasFont, globalControlFont );
         initializeFont ( table, "Image.font", imageFont, globalControlFont );
         initializeFont ( table, "Button.font", buttonFont, globalControlFont );
@@ -707,44 +730,69 @@ public class WebLookAndFeel extends BasicLookAndFeel
         initializeFont ( table, "CheckBox.font", checkBoxFont, globalControlFont );
         initializeFont ( table, "TristateCheckBox.font", tristateCheckBoxFont, globalControlFont );
         initializeFont ( table, "RadioButton.font", radioButtonFont, globalControlFont );
+        initializeFont ( table, "ComboBox.font", comboBoxFont, globalControlFont );
+        initializeFont ( table, "Spinner.font", spinnerFont, globalControlFont );
+        initializeFont ( table, "TextField.font", textFieldFont, globalControlFont );
+        initializeFont ( table, "FormattedTextField.font", formattedTextFieldFont, globalControlFont );
+        initializeFont ( table, "PasswordField.font", passwordFieldFont, globalControlFont );
         initializeFont ( table, "ColorChooser.font", colorChooserFont, globalControlFont );
-        initializeFont ( table, "ComboBox.font", comboBoxFont, globalTextFont );
-        initializeFont ( table, "InternalFrame.titleFont", internalFrameFont, globalTitleFont );
+        initializeFont ( table, "FileChooser.font", fileChooserFont, globalControlFont );
         initializeFont ( table, "Label.font", labelFont, globalControlFont );
         initializeFont ( table, "StyledLabel.font", styledLabelFont, globalControlFont );
         initializeFont ( table, "Link.font", linkFont, globalControlFont );
         initializeFont ( table, "List.font", listFont, globalControlFont );
-        initializeFont ( table, "MenuBar.font", menuBarFont, globalMenuFont );
-        initializeFont ( table, "MenuItem.font", menuItemFont, globalMenuFont );
-        initializeFont ( table, "MenuItem.acceleratorFont", menuItemAcceleratorFont, globalAcceleratorFont );
-        initializeFont ( table, "RadioButtonMenuItem.font", radioButtonMenuItemFont, globalMenuFont );
-        initializeFont ( table, "RadioButtonMenuItem.acceleratorFont", radioButtonMenuItemAcceleratorFont, globalAcceleratorFont );
-        initializeFont ( table, "CheckBoxMenuItem.font", checkBoxMenuItemFont, globalMenuFont );
-        initializeFont ( table, "CheckBoxMenuItem.acceleratorFont", checkBoxMenuItemAcceleratorFont, globalAcceleratorFont );
-        initializeFont ( table, "Menu.font", menuFont, globalMenuFont );
-        initializeFont ( table, "Menu.acceleratorFont", menuAcceleratorFont, globalAcceleratorFont );
-        initializeFont ( table, "PopupMenu.font", popupMenuFont, globalMenuFont );
-        initializeFont ( table, "OptionPane.font", optionPaneFont, globalAlertFont );
         initializeFont ( table, "Panel.font", panelFont, globalControlFont );
         initializeFont ( table, "Popup.font", popupFont, globalControlFont );
         initializeFont ( table, "ProgressBar.font", progressBarFont, globalControlFont );
         initializeFont ( table, "ScrollPane.font", scrollPaneFont, globalControlFont );
         initializeFont ( table, "Viewport.font", viewportFont, globalControlFont );
         initializeFont ( table, "Slider.font", sliderFont, globalControlFont );
-        initializeFont ( table, "Spinner.font", spinnerFont, globalTextFont );
         initializeFont ( table, "TabbedPane.font", tabbedPaneFont, globalControlFont );
         initializeFont ( table, "Table.font", tableFont, globalControlFont );
         initializeFont ( table, "TableHeader.font", tableHeaderFont, globalControlFont );
-        initializeFont ( table, "TextField.font", textFieldFont, globalTextFont );
-        initializeFont ( table, "FormattedTextField.font", formattedTextFieldFont, globalTextFont );
-        initializeFont ( table, "PasswordField.font", passwordFieldFont, globalTextFont );
+        initializeFont ( table, "TitledBorder.font", titledBorderFont, globalControlFont );
+        initializeFont ( table, "Tree.font", treeFont, globalControlFont );
+
+        /**
+         * @see ControlType#TEXT
+         */
         initializeFont ( table, "TextArea.font", textAreaFont, globalTextFont );
         initializeFont ( table, "TextPane.font", textPaneFont, globalTextFont );
         initializeFont ( table, "EditorPane.font", editorPaneFont, globalTextFont );
-        initializeFont ( table, "TitledBorder.font", titledBorderFont, globalControlFont );
-        initializeFont ( table, "ToolBar.font", toolBarFont, globalControlFont );
+
+        /**
+         * @see ControlType#TOOLTIP
+         */
         initializeFont ( table, "ToolTip.font", toolTipFont, globalTooltipFont );
-        initializeFont ( table, "Tree.font", treeFont, globalControlFont );
+
+        /**
+         * @see ControlType#MENU
+         */
+        initializeFont ( table, "PopupMenu.font", popupMenuFont, globalMenuFont );
+        initializeFont ( table, "MenuBar.font", menuBarFont, globalMenuFont );
+        initializeFont ( table, "Menu.font", menuFont, globalMenuFont );
+        initializeFont ( table, "MenuItem.font", menuItemFont, globalMenuFont );
+        initializeFont ( table, "RadioButtonMenuItem.font", radioButtonMenuItemFont, globalMenuFont );
+        initializeFont ( table, "CheckBoxMenuItem.font", checkBoxMenuItemFont, globalMenuFont );
+        initializeFont ( table, "ToolBar.font", toolBarFont, globalMenuFont );
+
+        /**
+         * @see ControlType#MENU_SMALL
+         */
+        initializeFont ( table, "Menu.acceleratorFont", menuAcceleratorFont, globalMenuSmallFont );
+        initializeFont ( table, "MenuItem.acceleratorFont", menuItemAcceleratorFont, globalMenuSmallFont );
+        initializeFont ( table, "RadioButtonMenuItem.acceleratorFont", radioButtonMenuItemAcceleratorFont, globalMenuSmallFont );
+        initializeFont ( table, "CheckBoxMenuItem.acceleratorFont", checkBoxMenuItemAcceleratorFont, globalMenuSmallFont );
+
+        /**
+         * @see ControlType#WINDOW
+         */
+        initializeFont ( table, "InternalFrame.titleFont", internalFrameFont, globalWindowFont );
+
+        /**
+         * @see ControlType#MESSAGE
+         */
+        initializeFont ( table, "OptionPane.font", optionPaneFont, globalMessageFont );
     }
 
     /**

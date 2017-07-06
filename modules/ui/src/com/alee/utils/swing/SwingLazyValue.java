@@ -25,9 +25,9 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 
 /**
- * SwingLazyValue is a copy of ProxyLazyValue that does not snapshot the AccessControlContext or use a doPrivileged to resolve the class
- * name. It's intended for use in places in Swing where we need ProxyLazyValue, this should never be used in a place where the developer
- * could supply the arguments.
+ * {@link SwingLazyValue} is a copy of {@link javax.swing.UIDefaults.ProxyLazyValue} that does not snapshot the
+ * {@link java.security.AccessControlContext} or use doPrivileged to resolve the class name. It's intended for use in places in Swing where
+ * we need {@link javax.swing.UIDefaults.ProxyLazyValue} and should never be used in a place where the developer could supply the arguments.
  *
  * @author Mikle Garin
  */

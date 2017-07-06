@@ -43,12 +43,6 @@ public class WebCheckBoxUI<C extends JCheckBox> extends WCheckBoxUI<C> implement
     protected ICheckBoxPainter painter;
 
     /**
-     * Runtime variables.
-     */
-    protected Insets margin = null;
-    protected Insets padding = null;
-
-    /**
      * Returns an instance of the {@link WebCheckBoxUI} for the specified component.
      * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
@@ -90,27 +84,25 @@ public class WebCheckBoxUI<C extends JCheckBox> extends WCheckBoxUI<C> implement
     @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( button );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setMargin ( button, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return padding;
+        return PainterSupport.getPadding ( button );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setPadding ( button, padding );
     }
 
     /**

@@ -14,12 +14,13 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * Abstract painter for state button components.
+ * Abstract painter for stateful {@link AbstractButton} implementations.
  *
  * @param <E> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
+ * @author Mikle Garin
  */
 
 public abstract class AbstractStateButtonPainter<E extends AbstractButton, U extends ButtonUI, D extends IDecoration<E, D>>
@@ -34,30 +35,34 @@ public abstract class AbstractStateButtonPainter<E extends AbstractButton, U ext
     /**
      * Runtime icon bounds.
      */
-    protected Rectangle iconBounds;
+    protected transient Rectangle iconBounds;
 
     @Override
-    public void install ( final E c, final U ui )
+    protected void installSectionPainters ()
     {
-        super.install ( c, ui );
+        super.installSectionPainters ();
+        checkStatePainter = PainterSupport.installSectionPainter ( this, checkStatePainter, null, component, ui );
+    }
 
-        // Properly installing section painters
-        this.checkStatePainter = PainterSupport.installSectionPainter ( this, checkStatePainter, null, c, ui );
+    @Override
+    protected void uninstallSectionPainters ()
+    {
+        checkStatePainter = PainterSupport.uninstallSectionPainter ( checkStatePainter, component, ui );
+        super.uninstallSectionPainters ();
+    }
 
-        // State icon that uses {@code checkStatePainter}
+    @Override
+    protected void installPropertiesAndListeners ()
+    {
+        super.installPropertiesAndListeners ();
         component.setIcon ( createIcon () );
     }
 
     @Override
-    public void uninstall ( final E c, final U ui )
+    protected void uninstallPropertiesAndListeners ()
     {
-        // Removing custom icon
         component.setIcon ( null );
-
-        // Properly uninstalling section painters
-        this.checkStatePainter = PainterSupport.uninstallSectionPainter ( checkStatePainter, c, ui );
-
-        super.uninstall ( c, ui );
+        super.uninstallPropertiesAndListeners ();
     }
 
     @Override

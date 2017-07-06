@@ -17,6 +17,8 @@
 
 package com.alee.laf.text;
 
+import com.alee.laf.IInputPrompt;
+
 import javax.swing.plaf.basic.BasicTextPaneUI;
 
 /**
@@ -25,19 +27,9 @@ import javax.swing.plaf.basic.BasicTextPaneUI;
  * @author Mikle Garin
  */
 
-public abstract class WTextPaneUI extends BasicTextPaneUI
+public abstract class WTextPaneUI extends BasicTextPaneUI implements IInputPrompt
 {
     /**
-     * Returns input prompt text.
-     *
-     * @return input prompt text
+     * Implementation is used completely from {@link BasicTextPaneUI}.
      */
-    public abstract String getInputPrompt ();
-
-    /**
-     * Sets input prompt text.
-     *
-     * @param text input prompt text
-     */
-    public abstract void setInputPrompt ( String text );
 }

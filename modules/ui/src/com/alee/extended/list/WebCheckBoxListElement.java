@@ -17,8 +17,11 @@
 
 package com.alee.extended.list;
 
-import com.alee.managers.style.StyleId;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.checkbox.WebCheckBox;
+import com.alee.managers.style.StyleId;
+import com.alee.painter.decoration.AbstractDecorationPainter;
+import com.alee.utils.CompareUtils;
 
 import java.awt.*;
 
@@ -42,131 +45,133 @@ public class WebCheckBoxListElement extends WebCheckBox
         setName ( "List.cellRenderer" );
     }
 
-    /**
-     * Overridden for performance reasons.
-     */
     @Override
     public void validate ()
     {
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
-    /**
-     * Overridden for performance reasons.
-     */
     @Override
     public void invalidate ()
     {
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
-    /**
-     * Overridden for performance reasons.
-     */
     @Override
     public void repaint ()
     {
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
-    /**
-     * Overridden for performance reasons.
-     */
     @Override
     public void revalidate ()
     {
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
-    /**
-     * Overridden for performance reasons.
-     */
     @Override
     public void repaint ( final long tm, final int x, final int y, final int width, final int height )
     {
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
-    /**
-     * Overridden for performance reasons.
-     */
     @Override
     public void repaint ( final Rectangle r )
     {
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
-    /**
-     * Overridden for performance reasons.
-     */
     @Override
-    protected void firePropertyChange ( final String propertyName, final Object oldValue, final Object newValue )
+    protected void firePropertyChange ( final String pn, final Object oldValue, final Object newValue )
     {
-        // Strings get interned
-        // noinspection StringEquality
-        if ( propertyName == "text" || ( ( propertyName == "font" || propertyName == "foreground" ) && oldValue != newValue &&
-                getClientProperty ( javax.swing.plaf.basic.BasicHTML.propertyKey ) != null ) )
+        /**
+         * Overridden for performance reasons.
+         */
+        if ( CompareUtils.equals ( pn, StyleId.STYLE_PROPERTY, StyleId.PARENT_STYLE_PROPERTY, WebLookAndFeel.TEXT_PROPERTY,
+                AbstractDecorationPainter.DECORATION_STATES_PROPERTY ) )
         {
-
-            super.firePropertyChange ( propertyName, oldValue, newValue );
+            super.firePropertyChange ( pn, oldValue, newValue );
+        }
+        else if ( CompareUtils.equals ( pn, WebLookAndFeel.FONT_PROPERTY, WebLookAndFeel.FOREGROUND_PROPERTY ) &&
+                oldValue != newValue && getClientProperty ( javax.swing.plaf.basic.BasicHTML.propertyKey ) != null )
+        {
+            super.firePropertyChange ( pn, oldValue, newValue );
         }
     }
 
-    /**
-     * Overridden for performance reasons.
-     */
     @Override
     public void firePropertyChange ( final String propertyName, final byte oldValue, final byte newValue )
     {
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
-    /**
-     * Overridden for performance reasons.
-     */
     @Override
     public void firePropertyChange ( final String propertyName, final char oldValue, final char newValue )
     {
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
-    /**
-     * Overridden for performance reasons.
-     */
     @Override
     public void firePropertyChange ( final String propertyName, final short oldValue, final short newValue )
     {
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
-    /**
-     * Overridden for performance reasons.
-     */
     @Override
     public void firePropertyChange ( final String propertyName, final int oldValue, final int newValue )
     {
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
-    /**
-     * Overridden for performance reasons.
-     */
     @Override
     public void firePropertyChange ( final String propertyName, final long oldValue, final long newValue )
     {
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
-    /**
-     * Overridden for performance reasons.
-     */
     @Override
     public void firePropertyChange ( final String propertyName, final float oldValue, final float newValue )
     {
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
-    /**
-     * Overridden for performance reasons.
-     */
     @Override
     public void firePropertyChange ( final String propertyName, final double oldValue, final double newValue )
     {
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
-    /**
-     * Overridden for performance reasons.
-     */
     @Override
     public void firePropertyChange ( final String propertyName, final boolean oldValue, final boolean newValue )
     {
+        /**
+         * Overridden for performance reasons.
+         */
     }
 }

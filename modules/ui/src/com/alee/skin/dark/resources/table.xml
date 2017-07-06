@@ -112,13 +112,46 @@
         </style>
 
         <!-- File table cell editor -->
-        <style type="textfield" id="editor" extends="undecorated" />
+        <style type="textfield" id="editor" extends="non-opaque">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <LineBorder color="20,20,20" />
+                    </decoration>
+                    <decoration states="focused">
+                        <LineBorder color="black" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
 
         <!-- Generic cell editor -->
-        <style type="textfield" id="editor-generic" extends="undecorated" />
+        <style type="textfield" id="editor-generic" extends="non-opaque">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <LineBorder color="20,20,20" />
+                    </decoration>
+                    <decoration states="focused">
+                        <LineBorder color="black" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
 
         <!-- Date table cell editor -->
-        <style type="datefield" id="editor-date" extends="undecorated" />
+        <style type="datefield" id="editor-date" extends="non-opaque">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <LineBorder color="20,20,20" />
+                    </decoration>
+                    <decoration states="focused">
+                        <LineBorder color="black" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
 
         <!-- Boolean table cell editor -->
         <style type="checkbox" id="editor-boolean">

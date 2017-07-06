@@ -20,9 +20,7 @@ package com.alee.painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.Bounds;
 import com.alee.utils.CompareUtils;
-import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.laf.WebBorder;
 
 import javax.swing.*;
@@ -41,7 +39,8 @@ import java.util.List;
  * @param <E> component type
  * @param <U> component UI type
  * @author Mikle Garin
- * @see com.alee.painter.Painter
+ * @author Alexandr Zernov
+ * @see Painter
  */
 
 public abstract class AbstractPainter<E extends JComponent, U extends ComponentUI> implements Painter<E, U>
@@ -49,7 +48,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     /**
      * Painter listeners.
      */
-    protected transient List<PainterListener> listeners;
+    protected transient final List<PainterListener> listeners;
 
     /**
      * Listeners.
@@ -76,6 +75,15 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      */
     protected transient boolean ltr;
 
+    /**
+     * Constructs new {@link AbstractPainter}.
+     */
+    public AbstractPainter ()
+    {
+        super ();
+        listeners = new ArrayList<PainterListener> ( 1 );
+    }
+
     @Override
     public void install ( final E c, final U ui )
     {
@@ -86,22 +94,28 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         this.component = c;
         this.ui = ui;
 
+        // Installing section painters
+        installSectionPainters ();
+
+        // Installing properties and listeners
+        installPropertiesAndListeners ();
+
         // Updating orientation
         updateOrientation ();
         saveOrientation ();
 
         // Updating border
         updateBorder ();
-
-        // Installing listeners
-        installPropertyChangeListener ();
     }
 
     @Override
     public void uninstall ( final E c, final U ui )
     {
-        // Uninstalling listeners
-        uninstallPropertyChangeListener ();
+        // Uninstalling properties and listeners
+        uninstallPropertiesAndListeners ();
+
+        // Uninstalling section painters
+        uninstallSectionPainters ();
 
         // Cleaning up references
         this.component = null;
@@ -119,12 +133,6 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
 
     @Override
     public Boolean isOpaque ()
-    {
-        return null;
-    }
-
-    @Override
-    public Insets getBorders ()
     {
         return null;
     }
@@ -154,6 +162,42 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     }
 
     /**
+     * Installs {@link SectionPainter}s used by this {@link Painter}.
+     * Override this method instead of {@link #install(JComponent, ComponentUI)} to install additional {@link SectionPainter}s.
+     */
+    protected void installSectionPainters ()
+    {
+        // No section painters by default
+    }
+
+    /**
+     * Uninstalls {@link SectionPainter}s used by this {@link Painter}.
+     * Override this method instead of {@link #install(JComponent, ComponentUI)} to uninstall additional {@link SectionPainter}s.
+     */
+    protected void uninstallSectionPainters ()
+    {
+        // No section painters by default
+    }
+
+    /**
+     * Installs properties and listeners used by this {@link Painter} implementation.
+     * Override this method instead of {@link #install(JComponent, ComponentUI)} to install additional properties and listeners.
+     */
+    protected void installPropertiesAndListeners ()
+    {
+        installPropertyChangeListener ();
+    }
+
+    /**
+     * Uninstalls properties and listeners used by this {@link Painter} implementation.
+     * Override this method instead of {@link #uninstall(JComponent, ComponentUI)} to uninstall additional properties and listeners.
+     */
+    protected void uninstallPropertiesAndListeners ()
+    {
+        uninstallPropertyChangeListener ();
+    }
+
+    /**
      * Installs listener that will inform about component property changes.
      */
     protected void installPropertyChangeListener ()
@@ -180,7 +224,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     }
 
     /**
-     * Informs about property change.
+     * Informs about {@link #component} property change.
      *
      * @param property modified property
      * @param oldValue old property value
@@ -198,6 +242,12 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         if ( CompareUtils.equals ( property, WebLookAndFeel.BORDER_PROPERTY ) )
         {
             borderChange ( ( Border ) newValue );
+        }
+
+        // Tracking component margin and padding changes
+        if ( CompareUtils.equals ( property, WebLookAndFeel.LAF_MARGIN_PROPERTY, WebLookAndFeel.LAF_PADDING_PROPERTY ) )
+        {
+            updateBorder ();
         }
     }
 
@@ -225,6 +275,25 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     }
 
     /**
+     * Saves current component orientation state.
+     */
+    protected void saveOrientation ()
+    {
+        ltr = component.getComponentOrientation ().isLeftToRight ();
+    }
+
+    /**
+     * Updates component orientation based on global orientation.
+     */
+    protected void updateOrientation ()
+    {
+        if ( isSettingsUpdateAllowed () )
+        {
+            SwingUtils.setOrientation ( component );
+        }
+    }
+
+    /**
      * Performs various border-related operations.
      *
      * @param border new border
@@ -241,21 +310,109 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     }
 
     /**
-     * Saves current component orientation state.
+     * Returns {@link Painter} border according to component's margin, padding and {@link Painter}'s borders.
+     * It is used to update component's border within {@link #updateBorder()} and to calculated default preferred size.
+     *
+     * @return {@link Painter} border according to component's margin, padding and {@link Painter}'s borders
      */
-    protected void saveOrientation ()
+    protected Insets getCompleteBorder ()
     {
-        ltr = component.getComponentOrientation ().isLeftToRight ();
+        final Insets border;
+        if ( component != null && !SwingUtils.isPreserveBorders ( component ) )
+        {
+            // Initializing empty border
+            border = new Insets ( 0, 0, 0, 0 );
+
+            // Adding margin size
+            if ( !isSectionPainter () )
+            {
+                final Insets margin = PainterSupport.getMargin ( component );
+                if ( margin != null )
+                {
+                    border.top += margin.top;
+                    border.left += ltr ? margin.left : margin.right;
+                    border.bottom += margin.bottom;
+                    border.right += ltr ? margin.right : margin.left;
+                }
+            }
+
+            // Adding painter border size
+            final Insets borders = getBorder ();
+            if ( borders != null )
+            {
+                border.top += borders.top;
+                border.left += ltr ? borders.left : borders.right;
+                border.bottom += borders.bottom;
+                border.right += ltr ? borders.right : borders.left;
+            }
+
+            // Adding padding size
+            if ( !isSectionPainter () )
+            {
+                final Insets padding = PainterSupport.getPadding ( component );
+                if ( padding != null )
+                {
+                    border.top += padding.top;
+                    border.left += ltr ? padding.left : padding.right;
+                    border.bottom += padding.bottom;
+                    border.right += ltr ? padding.right : padding.left;
+                }
+            }
+        }
+        else
+        {
+            // Null border to prevent updates
+            border = null;
+        }
+        return border;
     }
 
     /**
-     * Updates component orientation based on global orientation.
+     * Returns border required for the view provided by this {@link Painter} or {@code null} in case it is not needed.     *
+     * This border should not include possible component margin and padding, but only border provided by painter.
+     * This border is added to component's margin and padding in {@link #getCompleteBorder()} calculations.
+     * This border should not take component orientation into account, painter will take care of it later.
+     *
+     * @return border required for the view provided by this {@link Painter} or {@code null} in case it is not needed
      */
-    public void updateOrientation ()
+    protected Insets getBorder ()
     {
-        if ( isSettingsUpdateAllowed () )
+        return null;
+    }
+
+    @Override
+    public int getBaseline ( final E c, final U ui, final Bounds bounds )
+    {
+        return -1;
+    }
+
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final E c, final U ui )
+    {
+        return Component.BaselineResizeBehavior.OTHER;
+    }
+
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        return SwingUtils.increase ( new Dimension ( 0, 0 ), getCompleteBorder () );
+    }
+
+    @Override
+    public void addPainterListener ( final PainterListener listener )
+    {
+        synchronized ( listeners )
         {
-            SwingUtils.setOrientation ( component );
+            listeners.add ( listener );
+        }
+    }
+
+    @Override
+    public void removePainterListener ( final PainterListener listener )
+    {
+        synchronized ( listeners )
+        {
+            listeners.remove ( listener );
         }
     }
 
@@ -263,7 +420,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      * Updates component with complete border.
      * This border takes painter borders and component margin and padding into account.
      */
-    public void updateBorder ()
+    protected void updateBorder ()
     {
         if ( isSettingsUpdateAllowed () )
         {
@@ -280,86 +437,11 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     }
 
     /**
-     * Returns component painter border according to component's margin, padding and painter's borders.
-     *
-     * @return component painter border according to component's margin, padding and painter's borders
+     * Should be called when whole painter visual representation changes.
      */
-    public Insets getCompleteBorder ()
+    protected void repaint ()
     {
-        if ( component != null && !SwingUtils.isPreserveBorders ( component ) )
-        {
-            final Insets border = i ( 0, 0, 0, 0 );
-
-            // Calculating margin borders
-            if ( !isSectionPainter () )
-            {
-                final Insets margin = LafUtils.getMargin ( component );
-                if ( margin != null )
-                {
-                    border.top += margin.top;
-                    border.left += ltr ? margin.left : margin.right;
-                    border.bottom += margin.bottom;
-                    border.right += ltr ? margin.right : margin.left;
-                }
-            }
-
-            // Painter borders
-            final Insets borders = getBorders ();
-            if ( borders != null )
-            {
-                border.top += borders.top;
-                border.left += ltr ? borders.left : borders.right;
-                border.bottom += borders.bottom;
-                border.right += ltr ? borders.right : borders.left;
-            }
-
-            // Calculating padding borders
-            if ( !isSectionPainter () )
-            {
-                final Insets padding = LafUtils.getPadding ( component );
-                if ( padding != null )
-                {
-                    border.top += padding.top;
-                    border.left += ltr ? padding.left : padding.right;
-                    border.bottom += padding.bottom;
-                    border.right += ltr ? padding.right : padding.left;
-                }
-            }
-
-            // Return final border
-            return border;
-        }
-        else
-        {
-            // Return {@code null} to prevent border updates
-            return null;
-        }
-    }
-
-    @Override
-    public int getBaseline ( final E c, final U ui, final Bounds bounds )
-    {
-        return -1;
-    }
-
-    @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final E c, final U ui )
-    {
-        return Component.BaselineResizeBehavior.OTHER;
-    }
-
-    /**
-     * Should be called when painter visual representation changes.
-     */
-    public void repaint ()
-    {
-        if ( isSettingsUpdateAllowed () && component != null && component.isShowing () )
-        {
-            for ( final PainterListener listener : getPainterListeners () )
-            {
-                listener.repaint ();
-            }
-        }
+        repaint ( 0, 0, component.getWidth (), component.getHeight () );
     }
 
     /**
@@ -367,7 +449,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      *
      * @param bounds part bounds
      */
-    public void repaint ( final Rectangle bounds )
+    protected void repaint ( final Rectangle bounds )
     {
         repaint ( bounds.x, bounds.y, bounds.width, bounds.height );
     }
@@ -380,13 +462,16 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      * @param width  part bounds width
      * @param height part bounds height
      */
-    public void repaint ( final int x, final int y, final int width, final int height )
+    protected void repaint ( final int x, final int y, final int width, final int height )
     {
         if ( isSettingsUpdateAllowed () && component.isShowing () )
         {
-            for ( final PainterListener listener : getPainterListeners () )
+            synchronized ( listeners )
             {
-                listener.repaint ( x, y, width, height );
+                for ( final PainterListener listener : listeners )
+                {
+                    listener.repaint ( x, y, width, height );
+                }
             }
         }
     }
@@ -394,7 +479,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     /**
      * Should be called when painter size or border changes.
      */
-    public void revalidate ()
+    protected void revalidate ()
     {
         if ( isSettingsUpdateAllowed () )
         {
@@ -402,156 +487,55 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
             updateBorder ();
 
             // Revalidating layout
-            for ( final PainterListener listener : getPainterListeners () )
+            synchronized ( listeners )
             {
-                listener.revalidate ();
+                for ( final PainterListener listener : listeners )
+                {
+                    listener.revalidate ();
+                }
             }
         }
     }
 
     /**
      * Should be called when painter opacity changes.
+     * todo Use this instead of the outer border updates?
      */
-    public void updateOpacity ()
+    protected void updateOpacity ()
     {
         if ( isSettingsUpdateAllowed () )
         {
-            for ( final PainterListener listener : getPainterListeners () )
+            synchronized ( listeners )
             {
-                listener.updateOpacity ();
+                for ( final PainterListener listener : listeners )
+                {
+                    listener.updateOpacity ();
+                }
             }
         }
     }
 
     /**
      * Should be called when painter size, border and visual representation changes.
-     * Calls both revalidate and update listener methods.
+     * Makes sure that everything in the component view is up to date.
      */
-    public void updateAll ()
+    protected void updateAll ()
     {
         if ( isSettingsUpdateAllowed () )
         {
             updateBorder ();
-            for ( final PainterListener listener : getPainterListeners () )
+            synchronized ( listeners )
             {
-                listener.updateOpacity ();
-                listener.revalidate ();
-                if ( component.isShowing () )
+                for ( final PainterListener listener : listeners )
                 {
-                    listener.repaint ();
+                    listener.updateOpacity ();
+                    listener.revalidate ();
+                    if ( component.isShowing () )
+                    {
+                        listener.repaint ();
+                    }
                 }
             }
         }
-    }
-
-    @Override
-    public Dimension getPreferredSize ()
-    {
-        return SwingUtils.increase ( new Dimension ( 0, 0 ), getCompleteBorder () );
-    }
-
-    @Override
-    public void addPainterListener ( final PainterListener listener )
-    {
-        createPainterListenersList ();
-        listeners.add ( listener );
-    }
-
-    @Override
-    public void removePainterListener ( final PainterListener listener )
-    {
-        if ( listeners != null )
-        {
-            listeners.remove ( listener );
-        }
-    }
-
-    /**
-     * Creates list for {@link PainterListener}s.
-     */
-    protected void createPainterListenersList ()
-    {
-        if ( listeners == null )
-        {
-            listeners = new ArrayList<PainterListener> ( 1 );
-        }
-    }
-
-    /**
-     * Returns {@link ImmutableList} of {@link PainterListener}s.
-     *
-     * @return {@link ImmutableList} of {@link PainterListener}s
-     */
-    protected List<PainterListener> getPainterListeners ()
-    {
-        createPainterListenersList ();
-        return new ImmutableList<PainterListener> ( listeners );
-    }
-
-    /**
-     * Returns point for the specified coordinates.
-     *
-     * @param x X coordinate
-     * @param y Y coordinate
-     * @return point for the specified coordinates
-     */
-    protected Point p ( final int x, final int y )
-    {
-        return new Point ( x, y );
-    }
-
-    /**
-     * Returns insets with the specified settings.
-     *
-     * @param top    the inset from the top
-     * @param left   the inset from the left
-     * @param bottom the inset from the bottom
-     * @param right  the inset from the right
-     * @return insets with the specified settings
-     */
-    protected Insets i ( final int top, final int left, final int bottom, final int right )
-    {
-        return new Insets ( top, left, bottom, right );
-    }
-
-    /**
-     * Returns combined insets with the specified settings.
-     *
-     * @param insets base insets
-     * @param top    the inset from the top
-     * @param left   the inset from the left
-     * @param bottom the inset from the bottom
-     * @param right  the inset from the right
-     * @return combined insets with the specified settings
-     */
-    protected Insets i ( final Insets insets, final int top, final int left, final int bottom, final int right )
-    {
-        return insets != null ? new Insets ( insets.top + top, insets.left + left, insets.bottom + bottom, insets.right + right ) :
-                new Insets ( top, left, bottom, right );
-    }
-
-    /**
-     * Returns combined insets.
-     *
-     * @param i1 first insets
-     * @param i2 second insets
-     * @return combined insets
-     */
-    protected Insets i ( final Insets i1, final Insets i2 )
-    {
-        return i1 != null && i2 != null ? new Insets ( i1.top + i2.top, i1.left + i2.left, i1.bottom + i2.bottom, i1.right + i2.right ) :
-                i1 != null ? i1 : i2;
-    }
-
-    /**
-     * Returns bounds reduced by specified insets.
-     *
-     * @param bounds bounds to reduce
-     * @param limit  limiting insets
-     * @return bounds reduced by specified insets
-     */
-    protected Rectangle b ( final Rectangle bounds, final Insets limit )
-    {
-        return SwingUtils.shrink ( bounds, limit );
     }
 }

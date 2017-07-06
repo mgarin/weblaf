@@ -34,9 +34,9 @@ public class SelectablePanelPainter extends AbstractPainter<WebSelectablePanel, 
     }
 
     @Override
-    public Insets getBorders ()
+    protected Insets getBorder ()
     {
-        return i ( 0, GRIPPER_SIZE, 0, 0 );
+        return new Insets ( 0, GRIPPER_SIZE, 0, 0 );
     }
 
     @Override

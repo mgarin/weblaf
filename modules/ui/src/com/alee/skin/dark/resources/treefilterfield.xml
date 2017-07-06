@@ -14,8 +14,11 @@
 
     </style>
 
-    <!-- Inline tree filter field -->
-    <style type="textfield" id="treefilterfield-inline" extends="treefilterfield">
+    <!-- Non-opaque tree filter field -->
+    <style type="textfield" id="treefilterfield-non-opaque" extends="treefilterfield">
+        <component>
+            <opaque>false</opaque>
+        </component>
         <painter>
             <decorations overwrite="true">
                 <decoration>
@@ -27,7 +30,7 @@
     </style>
 
     <!-- Transparent tree filter field -->
-    <style type="textfield" id="treefilterfield-transparent" extends="treefilterfield">
+    <style type="textfield" id="treefilterfield-transparent" extends="treefilterfield-non-opaque">
         <painter>
             <decorations overwrite="true" />
         </painter>

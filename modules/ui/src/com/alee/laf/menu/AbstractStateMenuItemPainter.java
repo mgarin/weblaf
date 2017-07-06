@@ -26,38 +26,35 @@ import javax.swing.plaf.MenuItemUI;
 import java.util.List;
 
 /**
- * Abstract painter for state menu item components.
+ * Abstract painter for stateful {@link JMenuItem} implementations.
  *
  * @param <E> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
+ * @author Mikle Garin
  */
 
 public abstract class AbstractStateMenuItemPainter<E extends JMenuItem, U extends MenuItemUI, D extends IDecoration<E, D>>
         extends AbstractStateButtonPainter<E, U, D> implements IAbstractMenuItemPainter<E, U>
 {
     /**
-     * Button model change listener.
+     * Menu item change listener.
      */
-    protected MenuItemChangeListener buttonModelChangeListener;
+    protected transient MenuItemChangeListener menuItemChangeListener;
 
     @Override
-    public void install ( final E c, final U ui )
+    protected void installPropertiesAndListeners ()
     {
-        super.install ( c, ui );
-
-        // Installing corner updater
-        buttonModelChangeListener = MenuItemChangeListener.install ( component );
+        super.installPropertiesAndListeners ();
+        installMenuItemChangeListener ();
     }
 
     @Override
-    public void uninstall ( final E c, final U ui )
+    protected void uninstallPropertiesAndListeners ()
     {
-        // Uninstalling corner updater
-        buttonModelChangeListener = MenuItemChangeListener.uninstall ( buttonModelChangeListener, component );
-
-        super.uninstall ( c, ui );
+        uninstallMenuItemChangeListener ();
+        super.uninstallPropertiesAndListeners ();
     }
 
     @Override
@@ -75,5 +72,21 @@ public abstract class AbstractStateMenuItemPainter<E extends JMenuItem, U extend
     protected boolean isSelected ()
     {
         return component.isEnabled () && component.getModel ().isArmed ();
+    }
+
+    /**
+     * Installs {@link MenuItemChangeListener} into {@link JMenuItem}.
+     */
+    protected void installMenuItemChangeListener ()
+    {
+        menuItemChangeListener = MenuItemChangeListener.install ( component );
+    }
+
+    /**
+     * Uninstalls {@link MenuItemChangeListener} from {@link JMenuItem}.
+     */
+    protected void uninstallMenuItemChangeListener ()
+    {
+        menuItemChangeListener = MenuItemChangeListener.uninstall ( menuItemChangeListener, component );
     }
 }

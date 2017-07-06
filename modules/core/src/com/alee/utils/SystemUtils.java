@@ -19,6 +19,7 @@ package com.alee.utils;
 
 import com.alee.managers.log.Log;
 import com.alee.utils.system.JavaVersion;
+import com.alee.utils.system.SystemType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,34 +35,13 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * This class provides a set of utilities to retrieve various operating system information.
- * Further on operating system called shortly - OS.
+ * This class provides a set of utilities to retrieve various operating system (shortly OS) information.
  *
  * @author Mikle Garin
  */
 
 public final class SystemUtils
 {
-    /**
-     * Windows short name.
-     */
-    public static final String WINDOWS = "win";
-
-    /**
-     * Mac OS short name.
-     */
-    public static final String MAC = "mac";
-
-    /**
-     * Unix short name.
-     */
-    public static final String UNIX = "unix";
-
-    /**
-     * Solaris short name.
-     */
-    public static final String SOLARIS = "solaris";
-
     /**
      * Java version application is running on.
      */
@@ -73,15 +53,16 @@ public final class SystemUtils
     private static final String osName;
 
     /**
-     * Cached short OS name.
+     * Cached OS type.
      */
-    private static final String shortOsName;
+    private static final SystemType osType;
 
     /**
      * Cached OS variables initialization.
      */
     static
     {
+        // Retrieving OS name
         osName = AccessController.doPrivileged ( new PrivilegedAction<String> ()
         {
             @Override
@@ -90,26 +71,28 @@ public final class SystemUtils
                 return System.getProperty ( "os.name" );
             }
         } );
+
+        // Resolving OS type based on name
         final String lc = osName.toLowerCase ( Locale.ROOT );
         if ( lc.contains ( "win" ) )
         {
-            shortOsName = WINDOWS;
+            osType = SystemType.WINDOWS;
         }
         else if ( lc.contains ( "mac" ) || lc.contains ( "darwin" ) )
         {
-            shortOsName = MAC;
+            osType = SystemType.MAC;
         }
         else if ( lc.contains ( "nix" ) || lc.contains ( "nux" ) )
         {
-            shortOsName = UNIX;
+            osType = SystemType.UNIX;
         }
         else if ( lc.contains ( "sunos" ) )
         {
-            shortOsName = SOLARIS;
+            osType = SystemType.SOLARIS;
         }
         else
         {
-            shortOsName = null;
+            osType = SystemType.UNKNOWN;
         }
     }
 
@@ -262,16 +245,6 @@ public final class SystemUtils
     }
 
     /**
-     * Returns short OS name.
-     *
-     * @return short OS name
-     */
-    public static String getShortOsName ()
-    {
-        return shortOsName;
-    }
-
-    /**
      * Returns OS icon.
      *
      * @return OS icon
@@ -322,14 +295,23 @@ public final class SystemUtils
     }
 
     /**
+     * Returns OS type.
+     *
+     * @return OS type
+     */
+    public static SystemType getOsType ()
+    {
+        return osType;
+    }
+
+    /**
      * Returns whether current OS is windows or not.
      *
      * @return true if current OS is windows, false otherwise
      */
-    @SuppressWarnings ( "StringEquality" )
     public static boolean isWindows ()
     {
-        return shortOsName == WINDOWS;
+        return osType == SystemType.WINDOWS;
     }
 
     /**
@@ -337,10 +319,9 @@ public final class SystemUtils
      *
      * @return true if current OS is mac, false otherwise
      */
-    @SuppressWarnings ("StringEquality")
     public static boolean isMac ()
     {
-        return shortOsName == MAC;
+        return osType == SystemType.MAC;
     }
 
     /**
@@ -348,10 +329,9 @@ public final class SystemUtils
      *
      * @return true if current OS is unix, false otherwise
      */
-    @SuppressWarnings ("StringEquality")
     public static boolean isUnix ()
     {
-        return shortOsName == UNIX;
+        return osType == SystemType.UNIX;
     }
 
     /**
@@ -359,10 +339,9 @@ public final class SystemUtils
      *
      * @return true if current OS is solaris, false otherwise
      */
-    @SuppressWarnings ("StringEquality")
     public static boolean isSolaris ()
     {
-        return shortOsName == SOLARIS;
+        return osType == SystemType.SOLARIS;
     }
 
     /**
@@ -383,6 +362,16 @@ public final class SystemUtils
     public static String getOsName ()
     {
         return osName;
+    }
+
+    /**
+     * Returns short OS name.
+     *
+     * @return short OS name
+     */
+    public static String getShortOsName ()
+    {
+        return osType.shortName ();
     }
 
     /**

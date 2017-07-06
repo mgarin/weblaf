@@ -279,9 +279,10 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
     private void paintAreas ( final Graphics2D g2d )
     {
         final Rectangle bounds = new Rectangle ( 0, sizeTipHeight, component.getWidth (), getHeight () - sizeTipHeight );
-        if ( LafUtils.hasUI ( component ) )
+        if ( component instanceof JComponent && LafUtils.hasWebLafUI ( ( JComponent ) component ) )
         {
-            final ComponentUI ui = LafUtils.getUI ( component );
+            // todo A better way to check WebLaF styling?
+            final ComponentUI ui = LafUtils.getUI ( ( JComponent ) component );
             if ( ui != null )
             {
                 // todo Probably request these settings through other means?

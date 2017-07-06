@@ -17,10 +17,7 @@
 
 package com.alee.laf.table;
 
-import com.alee.painter.decoration.AbstractSectionDecorationPainter;
-import com.alee.painter.decoration.DecorationState;
-import com.alee.painter.decoration.IDecoration;
-import com.alee.painter.decoration.Stateful;
+import com.alee.painter.decoration.*;
 
 import javax.swing.*;
 import java.util.List;
@@ -62,17 +59,12 @@ public class TableCellPainter<E extends JTable, U extends WebTableUI, D extends 
         if ( row != null && column != null && component.getModel () != null )
         {
             // Selected state
-            if ( component.getColumnSelectionAllowed () && component.getRowSelectionAllowed () && component.isCellSelected ( row, column ) )
-            {
-                states.add ( DecorationState.selected );
-            }
+            states.add ( component.getColumnSelectionAllowed () && component.getRowSelectionAllowed () &&
+                    component.isCellSelected ( row, column ) ? DecorationState.selected : DecorationState.unselected );
 
             // Adding possible cell value states
             final Object value = component.getValueAt ( row, column );
-            if ( value != null && value instanceof Stateful )
-            {
-                states.addAll ( ( ( Stateful ) value ).getStates () );
-            }
+            states.addAll ( DecorationUtils.getExtraStates ( value ) );
         }
 
         return states;

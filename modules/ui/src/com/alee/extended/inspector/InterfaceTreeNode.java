@@ -162,29 +162,33 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
 
             // Additional listeners for components using WebLaF-based UI
             // This is checked instead of styling support to avoid issues when WebLaF is not installed as L&F
-            if ( LafUtils.hasWebLafUI ( component ) )
+            if ( component instanceof JComponent )
             {
-                styleListener = new StyleListener ()
+                final JComponent jComponent = ( JComponent ) component;
+                if ( LafUtils.hasWebLafUI ( jComponent ) )
                 {
-                    @Override
-                    public void skinChanged ( final JComponent component, final Skin oldSkin, final Skin newSkin )
+                    styleListener = new StyleListener ()
                     {
-                        // We don't need to react to visual updates
-                    }
+                        @Override
+                        public void skinChanged ( final JComponent component, final Skin oldSkin, final Skin newSkin )
+                        {
+                            // We don't need to react to visual updates
+                        }
 
-                    @Override
-                    public void styleChanged ( final JComponent component, final StyleId oldStyleId, final StyleId newStyleId )
-                    {
-                        // We don't need to react to visual updates
-                    }
+                        @Override
+                        public void styleChanged ( final JComponent component, final StyleId oldStyleId, final StyleId newStyleId )
+                        {
+                            // We don't need to react to visual updates
+                        }
 
-                    @Override
-                    public void skinUpdated ( final JComponent component, final StyleId styleId )
-                    {
-                        tree.updateNode ( InterfaceTreeNode.this );
-                    }
-                };
-                StyleManager.addStyleListener ( ( JComponent ) component, styleListener );
+                        @Override
+                        public void skinUpdated ( final JComponent component, final StyleId styleId )
+                        {
+                            tree.updateNode ( InterfaceTreeNode.this );
+                        }
+                    };
+                    StyleManager.addStyleListener ( jComponent, styleListener );
+                }
             }
         }
     }
@@ -256,13 +260,16 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
      */
     protected ComponentInfo getInfo ( final Component component )
     {
-        if ( StyleManager.isSupported ( component ) )
+        if ( component instanceof JComponent )
         {
-            return wComponentInfo;
-        }
-        else if ( component instanceof JComponent )
-        {
-            return jComponentInfo;
+            if ( StyleManager.isSupported ( ( JComponent ) component ) )
+            {
+                return wComponentInfo;
+            }
+            else
+            {
+                return jComponentInfo;
+            }
         }
         else
         {

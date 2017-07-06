@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.painter.common;
+package com.alee.painter.decoration.background;
 
 import com.alee.utils.ImageUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -23,10 +23,10 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import java.awt.image.BufferedImage;
 
 /**
- * This enumeration contains list of exising predefined textures for TexturePainter class.
+ * This enumeration contains list of predefined textures.
  *
  * @author Mikle Garin
- * @see com.alee.painter.common.TexturePainter
+ * @see com.alee.painter.decoration.background.PresetTextureBackground
  */
 
 @XStreamAlias ( "TextureType" )
@@ -111,9 +111,10 @@ public enum TextureType
     blueGrid;
 
     /**
-     * Returns texture image.
+     * Returns texture {@link BufferedImage}.
+     * Note that returned {@link BufferedImage} is not cached and will be re-read from the file on every request.
      *
-     * @return texture image
+     * @return texture {@link BufferedImage}
      */
     public BufferedImage getTexture ()
     {

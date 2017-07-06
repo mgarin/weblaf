@@ -106,6 +106,17 @@ public abstract class AbstractPreview implements Preview
         return "demo.example." + getExample ().getGroupId () + "." + getExample ().getId () + "." + getId () + ".";
     }
 
+    /**
+     * Returns complete language key for this preview for the specified key part.
+     *
+     * @param key language key part
+     * @return complete language key for this preview for the specified key part
+     */
+    protected String getPreviewLanguageKey ( final String key )
+    {
+        return getPreviewLanguagePrefix () + key;
+    }
+
     @Override
     public JComponent getPreview ( final List<Preview> previews, final int index )
     {

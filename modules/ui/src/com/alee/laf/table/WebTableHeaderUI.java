@@ -44,17 +44,11 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeSupport
     protected ITableHeaderPainter painter;
 
     /**
-     * Runtime variables.
-     */
-    protected Insets margin = null;
-    protected Insets padding = null;
-
-    /**
-     * Returns an instance of the WebTableHeaderUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebTableHeaderUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebTableHeaderUI
+     * @return instance of the {@link WebTableHeaderUI}
      */
     @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
@@ -92,27 +86,25 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeSupport
     @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( header );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setMargin ( header, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return padding;
+        return PainterSupport.getPadding ( header );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setPadding ( header, padding );
     }
 
     /**

@@ -59,10 +59,8 @@ public class TableColumnPainter<E extends JTable, U extends WebTableUI, D extend
             states.add ( column % 2 == 0 ? DecorationState.odd : DecorationState.even );
 
             // Selected state
-            if ( !component.getRowSelectionAllowed () && component.getColumnSelectionAllowed () && component.isColumnSelected ( column ) )
-            {
-                states.add ( DecorationState.selected );
-            }
+            states.add ( !component.getRowSelectionAllowed () && component.getColumnSelectionAllowed () &&
+                    component.isColumnSelected ( column ) ? DecorationState.selected : DecorationState.unselected );
         }
 
         return states;

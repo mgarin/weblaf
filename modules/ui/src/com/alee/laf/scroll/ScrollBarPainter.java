@@ -69,26 +69,26 @@ public class ScrollBarPainter<E extends JScrollBar, U extends WScrollBarUI> exte
     /**
      * Listeners.
      */
-    protected MouseAdapter mouseAdapter;
+    protected transient MouseAdapter mouseAdapter;
 
     /**
      * Runtime variables.
      */
-    protected boolean animated;
-    protected WebTimer rolloverAnimator;
-    protected float rolloverState;
-    protected boolean rollover;
-    protected boolean pressed;
-    protected boolean dragged;
+    protected transient boolean animated;
+    protected transient WebTimer rolloverAnimator;
+    protected transient float rolloverState;
+    protected transient boolean rollover;
+    protected transient boolean pressed;
+    protected transient boolean dragged;
 
     /**
      * Painting variables.
      */
-    protected Rectangle trackBounds;
-    protected Rectangle thumbBounds;
-    protected Insets thumbMarginR;
-    protected Insets thumbMarginHL;
-    protected Insets thumbMarginHR;
+    protected transient Rectangle trackBounds;
+    protected transient Rectangle thumbBounds;
+    protected transient Insets thumbMarginR;
+    protected transient Insets thumbMarginHL;
+    protected transient Insets thumbMarginHR;
 
     @Override
     public void install ( final E c, final U ui )
@@ -258,19 +258,22 @@ public class ScrollBarPainter<E extends JScrollBar, U extends WScrollBarUI> exte
     }
 
     @Override
-    public Insets getBorders ()
+    protected Insets getBorder ()
     {
+        final Insets border;
         if ( ui.isDisplayTrack () )
         {
             // Additional 1px border at scroll bar side
             // Orientation will be taken into account by the UI itself
             final boolean hor = component.getOrientation () == Adjustable.HORIZONTAL;
-            return i ( hor ? 1 : 0, hor ? 0 : 1, 0, 0 );
+            border = new Insets ( hor ? 1 : 0, hor ? 0 : 1, 0, 0 );
         }
         else
         {
-            return super.getBorders ();
+            // Using default border
+            border = super.getBorder ();
         }
+        return border;
     }
 
     @Override
@@ -361,6 +364,7 @@ public class ScrollBarPainter<E extends JScrollBar, U extends WScrollBarUI> exte
      */
     protected Insets getCurrentThumbMargin ( final E scrollbar )
     {
+        final Insets margin;
         if ( thumbMargin != null )
         {
             if ( thumbMarginR == null )
@@ -368,12 +372,13 @@ public class ScrollBarPainter<E extends JScrollBar, U extends WScrollBarUI> exte
                 updateThumbMargins ();
             }
             final boolean ver = scrollbar.getOrientation () == Adjustable.VERTICAL;
-            return ver ? ltr ? thumbMargin : thumbMarginR : ltr ? thumbMarginHL : thumbMarginHR;
+            margin = ver ? ltr ? thumbMargin : thumbMarginR : ltr ? thumbMarginHL : thumbMarginHR;
         }
         else
         {
-            return i ( 0, 0, 0, 0 );
+            margin = new Insets ( 0, 0, 0, 0 );
         }
+        return margin;
     }
 
     /**
@@ -381,9 +386,9 @@ public class ScrollBarPainter<E extends JScrollBar, U extends WScrollBarUI> exte
      */
     protected void updateThumbMargins ()
     {
-        this.thumbMarginR = i ( thumbMargin.top, thumbMargin.right, thumbMargin.bottom, thumbMargin.left );
-        this.thumbMarginHL = i ( thumbMargin.left, thumbMargin.bottom, thumbMargin.right, thumbMargin.top );
-        this.thumbMarginHR = i ( thumbMargin.right, thumbMargin.top, thumbMargin.left, thumbMargin.bottom );
+        thumbMarginR = new Insets ( thumbMargin.top, thumbMargin.right, thumbMargin.bottom, thumbMargin.left );
+        thumbMarginHL = new Insets ( thumbMargin.left, thumbMargin.bottom, thumbMargin.right, thumbMargin.top );
+        thumbMarginHR = new Insets ( thumbMargin.right, thumbMargin.top, thumbMargin.left, thumbMargin.bottom );
     }
 
     /**

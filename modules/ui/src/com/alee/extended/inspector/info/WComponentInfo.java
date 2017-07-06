@@ -20,6 +20,7 @@ package com.alee.extended.inspector.info;
 import com.alee.managers.style.ComponentDescriptor;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
+import com.alee.painter.PainterSupport;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
@@ -59,10 +60,10 @@ public class WComponentInfo<T extends JComponent> extends AbstractComponentInfo<
         final boolean wlui = LafUtils.hasWebLafUI ( component );
         final String style = wlui ? " {[ " + StyleId.get ( component ).getCompleteId () + " ]:b;c(" + styleIdColor + ")}" : "";
 
-        final Insets margin = LafUtils.getMargin ( component );
+        final Insets margin = PainterSupport.getMargin ( component );
         final String mtext = renderInsets ( margin, marginColor );
 
-        final Insets padding = LafUtils.getPadding ( component );
+        final Insets padding = PainterSupport.getPadding ( component );
         final String ptext = renderInsets ( padding, paddingColor );
 
         return title + style + mtext + ptext;

@@ -482,18 +482,22 @@ public class MagnifierGlass extends JComponent
             }
 
             // Filling-in image content
-            // todo Use alpha background instead of Color.WHITE?
             final Point mp = CoreSwingUtils.getMouseLocation ();
             final Rectangle gb = SwingUtils.getBoundsOnScreen ( zoomProvider );
             if ( gb.contains ( mp ) )
             {
-                // Rendering UI snapshot
+                // Configuring graphics
                 final Graphics2D g2d = buffer.createGraphics ();
                 g2d.setBackground ( Color.WHITE );
                 g2d.clearRect ( 0, 0, bs.width, bs.height );
+                g2d.setClip ( 0, 0, bs.width, bs.height );
+
+                // Translating graphics to the magnifier position on the UI
                 final int x = mp.x - gb.x - bs.width / 2;
                 final int y = mp.y - gb.y - bs.height / 2;
                 g2d.translate ( -x, -y );
+
+                // Rendering UI snapshot
                 time = System.currentTimeMillis ();
                 zoomProvider.paintAll ( g2d );
                 time = System.currentTimeMillis () - time;

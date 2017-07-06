@@ -18,6 +18,6 @@ public class MenuItemPainter<E extends JMenuItem, U extends WebMenuItemUI, D ext
         extends AbstractMenuItemPainter<E, U, D> implements IMenuItemPainter<E, U>
 {
     /**
-     * Implementation is used completely from {@link com.alee.laf.menu.AbstractMenuItemPainter}.
+     * Implementation is used completely from {@link AbstractMenuItemPainter}.
      */
 }

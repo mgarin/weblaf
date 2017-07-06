@@ -32,6 +32,10 @@ import java.awt.dnd.DragSourceEvent;
 import java.awt.event.*;
 
 /**
+ * Custom {@link Behavior} that allows you to track component mouse hover.
+ * You need to specify {@link JComponent} which mouse hover state will be tracked.
+ * Use {@link #install()} and {@link #uninstall()} methods to setup and remove this behavior.
+ *
  * @author Mikle Garin
  */
 
@@ -58,7 +62,7 @@ public abstract class AbstractHoverBehavior<C extends JComponent> extends MouseA
     protected boolean hover;
 
     /**
-     * Constructs behavior for the specified component.
+     * Constructs new {@link AbstractHoverBehavior} for the specified component.
      *
      * @param component component into which this behavior is installed
      */
@@ -68,7 +72,7 @@ public abstract class AbstractHoverBehavior<C extends JComponent> extends MouseA
     }
 
     /**
-     * Constructs behavior for the specified component.
+     * Constructs new {@link AbstractHoverBehavior} for the specified component.
      *
      * @param component   component into which this behavior is installed
      * @param enabledOnly whether or not behavior should only track hover state events when component is enabled

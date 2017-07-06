@@ -29,10 +29,10 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 /**
- * This behavior allows you to easily move window/component.
- * Simply install this behavior onto any component to make it move the window when dragged.
+ * Custom {@link Behavior} that allows you to easily move window/component.
+ * Install this behavior onto any component to make it move the window when dragged.
  * You can specify moved window/component or simply let the behavior detect it.
- * You can use {@link #install(java.awt.Component)} and {@link #uninstall(java.awt.Component)} methods for quick install and uninstall.
+ * Use {@link #install(java.awt.Component)} and {@link #uninstall(java.awt.Component)} methods to setup and remove this behavior.
  *
  * @author Mikle Garin
  */

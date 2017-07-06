@@ -17,11 +17,11 @@
 
 package com.alee.extended.syntax;
 
+import com.alee.extended.behavior.DocumentChangeBehavior;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.extensions.*;
-import com.alee.utils.general.Pair;
 import com.alee.utils.swing.*;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.RUndoManager;
@@ -30,7 +30,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
-import java.beans.PropertyChangeListener;
 import java.util.List;
 
 /**
@@ -42,7 +41,7 @@ import java.util.List;
  * @see com.alee.extended.syntax.SyntaxTheme
  */
 
-public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMethods, EventMethods
+public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMethods<WebSyntaxArea>, EventMethods
 {
     /**
      * Document history manager.
@@ -267,7 +266,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
     }
 
     @Override
-    public Pair<DocumentChangeListener, PropertyChangeListener> onChange ( final DocumentEventRunnable runnable )
+    public DocumentChangeBehavior<WebSyntaxArea> onChange ( final DocumentEventRunnable<WebSyntaxArea> runnable )
     {
         return DocumentEventMethodsImpl.onChange ( this, runnable );
     }

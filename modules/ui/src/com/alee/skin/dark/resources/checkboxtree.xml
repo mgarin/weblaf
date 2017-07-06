@@ -6,7 +6,12 @@
     <style type="tree" id="checkboxtree">
 
         <!-- Tristate checkbox cell renderer -->
-        <style type="tristatecheckbox" id="renderer" padding="0,4,0,0" />
+        <style type="panel" id="renderer" extends="transparent">
+
+            <!-- Cell renderer check box -->
+            <style type="tristatecheckbox" id="check" padding="0,4,0,0" />
+
+        </style>
 
     </style>
 

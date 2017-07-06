@@ -17,6 +17,8 @@
 
 package com.alee.laf.text;
 
+import com.alee.extended.behavior.DocumentChangeBehavior;
+import com.alee.laf.IInputPrompt;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
@@ -28,8 +30,6 @@ import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.general.Pair;
-import com.alee.utils.swing.DocumentChangeListener;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
 
@@ -39,13 +39,12 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
-import java.beans.PropertyChangeListener;
 import java.util.Map;
 
 /**
  * {@link JTextPane} extension class.
  * It contains various useful methods to simplify core component usage.
- * <p/>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -56,8 +55,8 @@ import java.util.Map;
  */
 
 public class WebTextPane extends JTextPane
-        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, DocumentEventMethods, EventMethods, LanguageMethods,
-        SettingsMethods, FontMethods<WebTextPane>, SizeMethods<WebTextPane>
+        implements IInputPrompt, Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, DocumentEventMethods<WebTextPane>,
+        EventMethods, LanguageMethods, SettingsMethods, FontMethods<WebTextPane>, SizeMethods<WebTextPane>
 {
     /**
      * Constructs new text pane.
@@ -108,21 +107,13 @@ public class WebTextPane extends JTextPane
         setText ( "" );
     }
 
-    /**
-     * Returns input prompt text.
-     *
-     * @return input prompt text
-     */
+    @Override
     public String getInputPrompt ()
     {
         return getUI ().getInputPrompt ();
     }
 
-    /**
-     * Sets input prompt text.
-     *
-     * @param text input prompt text
-     */
+    @Override
     public void setInputPrompt ( final String text )
     {
         getUI ().setInputPrompt ( text );
@@ -312,7 +303,7 @@ public class WebTextPane extends JTextPane
     }
 
     @Override
-    public Pair<DocumentChangeListener, PropertyChangeListener> onChange ( final DocumentEventRunnable runnable )
+    public DocumentChangeBehavior<WebTextPane> onChange ( final DocumentEventRunnable<WebTextPane> runnable )
     {
         return DocumentEventMethodsImpl.onChange ( this, runnable );
     }

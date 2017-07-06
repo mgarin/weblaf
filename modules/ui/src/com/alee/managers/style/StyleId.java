@@ -328,28 +328,32 @@ public final class StyleId
      * {@link com.alee.laf.text.WebTextField} style IDs.
      */
     public static final StyleId textfield = StyleId.of ( "textfield" );
-    public static final StyleId textfieldUndecorated = StyleId.of ( "undecorated" );
+    public static final StyleId textfieldNonOpaque = StyleId.of ( "non-opaque" );
+    public static final StyleId textfieldTransparent = StyleId.of ( "transparent" );
     public static final StyleId textfieldNoFocus = StyleId.of ( "nofocus" );
 
     /**
      * {@link com.alee.laf.text.WebPasswordField} style IDs.
      */
     public static final StyleId passwordfield = StyleId.of ( "passwordfield" );
-    public static final StyleId passwordfieldUndecorated = StyleId.of ( "undecorated" );
+    public static final StyleId passwordfieldNonOpaque = StyleId.of ( "non-opaque" );
+    public static final StyleId passwordfieldTransparent = StyleId.of ( "transparent" );
     public static final StyleId passwordfieldNoFocus = StyleId.of ( "nofocus" );
 
     /**
      * {@link com.alee.laf.text.WebFormattedTextField} style IDs.
      */
     public static final StyleId formattedtextfield = StyleId.of ( "formattedtextfield" );
-    public static final StyleId formattedtextfieldUndecorated = StyleId.of ( "undecorated" );
+    public static final StyleId formattedtextfieldNonOpaque = StyleId.of ( "non-opaque" );
+    public static final StyleId formattedtextfieldTransparent = StyleId.of ( "transparent" );
     public static final StyleId formattedtextfieldNoFocus = StyleId.of ( "nofocus" );
 
     /**
      * {@link com.alee.extended.pathfield.WebPathField} style IDs.
      */
     public static final StyleId pathfield = StyleId.of ( "pathfield" );
-    public static final StyleId pathfieldUndecorated = StyleId.of ( "pathfield-undecorated" );
+    public static final StyleId pathfieldNonOpaque = StyleId.of ( "pathfield-non-opaque" );
+    public static final StyleId pathfieldTransparent = StyleId.of ( "pathfield-transparent" );
     public static final ChildStyleId pathfieldContentPanel = ChildStyleId.of ( "content" );
     public static final ChildStyleId pathfieldPathField = ChildStyleId.of ( "path-field" );
     public static final ChildStyleId pathfieldPopupScroll = ChildStyleId.of ( "scroll" );
@@ -509,6 +513,7 @@ public final class StyleId
     public static final StyleId checkboxtreeNonOpaque = StyleId.of ( "checkboxtree-non-opaque" );
     public static final StyleId checkboxtreeTransparent = StyleId.of ( "checkboxtree-transparent" );
     public static final ChildStyleId checkboxtreeCellRenderer = ChildStyleId.of ( "renderer" );
+    public static final ChildStyleId checkboxtreeCheckBox = ChildStyleId.of ( "check" );
 
     /**
      * {@link com.alee.extended.tree.WebExCheckBoxTree} style IDs.
@@ -670,7 +675,7 @@ public final class StyleId
      * {@link com.alee.extended.tree.WebTreeFilterField} style IDs.
      */
     public static final StyleId treefilterfield = StyleId.of ( "treefilterfield" );
-    public static final StyleId treefilterfieldInline = StyleId.of ( "treefilterfield-inline" );
+    public static final StyleId treefilterfieldNonOpaque = StyleId.of ( "treefilterfield-non-opaque" );
     public static final StyleId treefilterfieldTransparent = StyleId.of ( "treefilterfield-transparent" );
     public static final ChildStyleId treefilterfieldSettings = ChildStyleId.of ( "settings" );
 
@@ -771,6 +776,9 @@ public final class StyleId
      * {@link com.alee.extended.date.WebDateField} style IDs.
      */
     public static final StyleId datefield = StyleId.of ( "datefield" );
+    public static final StyleId datefieldNonOpaque = StyleId.of ( "non-opaque" );
+    public static final StyleId datefieldTransparent = StyleId.of ( "transparent" );
+    public static final StyleId datefieldNoFocus = StyleId.of ( "nofocus" );
     public static final ChildStyleId datefieldField = ChildStyleId.of ( "field" );
     public static final ChildStyleId datefieldButton = ChildStyleId.of ( "button" );
     public static final ChildStyleId datefieldPopup = ChildStyleId.of ( "popup" );

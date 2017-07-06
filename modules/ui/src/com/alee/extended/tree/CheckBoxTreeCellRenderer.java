@@ -30,13 +30,6 @@ import javax.swing.tree.TreeCellRenderer;
 public interface CheckBoxTreeCellRenderer extends TreeCellRenderer
 {
     /**
-     * Returns checkbox part width in this cell renderer.
-     *
-     * @return checkbox part width in this cell renderer
-     */
-    public int getCheckBoxWidth ();
-
-    /**
      * Returns checkbox used for rendering.
      *
      * @return checkbox used for rendering

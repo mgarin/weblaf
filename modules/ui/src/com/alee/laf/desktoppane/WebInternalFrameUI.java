@@ -47,13 +47,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSup
     /**
      * Listeners.
      */
-    private PropertyChangeListener rootPaneTracker;
-
-    /**
-     * Runtime variables.
-     */
-    protected Insets margin = null;
-    protected Insets padding = null;
+    protected transient PropertyChangeListener rootPaneTracker;
 
     /**
      * Returns an instance of the {@link WebInternalFrameUI} for the specified component.
@@ -139,27 +133,25 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSup
     @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( frame );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setMargin ( frame, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return padding;
+        return PainterSupport.getPadding ( frame );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setPadding ( frame, padding );
     }
 
     /**

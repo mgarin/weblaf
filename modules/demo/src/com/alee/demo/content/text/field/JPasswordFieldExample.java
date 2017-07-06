@@ -60,7 +60,7 @@ public class JPasswordFieldExample extends AbstractStylePreviewExample
     protected List<Preview> createPreviews ()
     {
         final BasicField e1 = new BasicField ( "basic", StyleId.passwordfield );
-        final BasicField e2 = new BasicField ( "undecorated", StyleId.passwordfieldUndecorated );
+        final BasicField e2 = new BasicField ( "transparent", StyleId.passwordfieldTransparent );
         final BasicField e3 = new BasicField ( "nofocus", StyleId.passwordfieldNoFocus );
         return CollectionUtils.<Preview>asList ( e1, e2, e3 );
     }

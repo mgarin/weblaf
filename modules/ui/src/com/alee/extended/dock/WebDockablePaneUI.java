@@ -69,15 +69,13 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
     /**
      * Listeners.
      */
-    protected ComponentVisibilityBehavior visibilityBehavior;
-    protected DockableFrameListener proxyListener;
+    protected transient ComponentVisibilityBehavior visibilityBehavior;
+    protected transient DockableFrameListener proxyListener;
 
     /**
      * Runtime variables.
      */
-    protected Insets margin = null;
-    protected Insets padding = null;
-    protected JComponent emptyContent;
+    protected transient JComponent emptyContent;
 
     /**
      * Returns an instance of the {@link WebDockablePaneUI} for the specified component.
@@ -670,27 +668,25 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
     @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( pane );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setMargin ( pane, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return padding;
+        return PainterSupport.getPadding ( pane );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setPadding ( pane, padding );
     }
 
     /**

@@ -48,10 +48,10 @@ import java.util.Map;
 public final class LafUtils
 {
     /**
-     * Returns whether window in which specified component located is decorated by L&amp;F or not.
+     * Returns whether {@link Window} in which specified {@link Component} located is decorated by L&amp;F or not.
      *
-     * @param component component used to determine window decoration state
-     * @return true if window in which specified component located is decorated by L&amp;F, false otherwise
+     * @param component {@link Component} used to determine {@link Window} decoration state
+     * @return true if {@link Window} in which specified {@link Component} located is decorated by L&amp;F, false otherwise
      */
     public static boolean isInDecoratedWindow ( final Component component )
     {
@@ -68,86 +68,24 @@ public final class LafUtils
     }
 
     /**
-     * Returns current component margin if it is supported.
-     * Might return null which is basically the same as an empty [0,0,0,0] margin.
+     * Returns whether or not specified {@link JComponent} uses {@link ComponentUI}.
      *
-     * @param component component to retrieve margin from
-     * @return current component margin if it is supported
+     * @param component {@link JComponent} to check {@link ComponentUI} usage in
+     * @return {@code true} if specified {@link JComponent} uses {@link ComponentUI}, {@code false} otherwise
      */
-    public static Insets getMargin ( final Component component )
+    public static boolean hasUI ( final JComponent component )
     {
-        if ( component instanceof MarginSupport )
-        {
-            return ( ( MarginSupport ) component ).getMargin ();
-        }
-        else
-        {
-            final ComponentUI ui = getUI ( component );
-            if ( ui instanceof MarginSupport )
-            {
-                return ( ( MarginSupport ) ui ).getMargin ();
-            }
-            else
-            {
-                return null;
-            }
-        }
+        return ReflectUtils.hasMethod ( component, "getUI" );
     }
 
     /**
-     * Returns current component padding if it is supported.
-     * Might return null which is basically the same as an empty [0,0,0,0] padding.
+     * Returns {@link ComponentUI} or {@code null} if UI cannot be retrieved.
      *
-     * @param component component to retrieve padding from
-     * @return current component padding if it is supported
+     * @param component {@link JComponent} to retrieve UI from
+     * @param <T>       {@link ComponentUI} class type
+     * @return {@link ComponentUI} or {@code null} if UI cannot be retrieved
      */
-    public static Insets getPadding ( final Component component )
-    {
-        if ( component instanceof PaddingSupport )
-        {
-            return ( ( PaddingSupport ) component ).getPadding ();
-        }
-        else
-        {
-            final ComponentUI ui = getUI ( component );
-            if ( ui instanceof PaddingSupport )
-            {
-                return ( ( PaddingSupport ) ui ).getPadding ();
-            }
-            else
-            {
-                return null;
-            }
-        }
-    }
-
-    /**
-     * Returns current component border insets if it is supported.
-     * Might return null which is basically the same as an empty [0,0,0,0] border insets.
-     *
-     * @param component component to retrieve border insets from
-     * @return current component border insets if it is supported
-     */
-    public static Insets getInsets ( final Component component )
-    {
-        if ( component instanceof JComponent )
-        {
-            return ( ( JComponent ) component ).getInsets ();
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    /**
-     * Returns component UI or null if UI cannot be retrieved.
-     *
-     * @param component component to retrieve UI from
-     * @param <T>       UI class type
-     * @return component UI or null if UI cannot be retrieved
-     */
-    public static <T extends ComponentUI> T getUI ( final Component component )
+    public static <T extends ComponentUI> T getUI ( final JComponent component )
     {
         try
         {
@@ -160,12 +98,12 @@ public final class LafUtils
     }
 
     /**
-     * Setup provided UI into specified component.
+     * Setup provided {@link ComponentUI} into specified {@link JComponent}.
      *
-     * @param component component to setup UI for
-     * @param ui        component UI
+     * @param component {@link JComponent} to setup {@link ComponentUI} for
+     * @param ui        {@link ComponentUI}
      */
-    public static void setUI ( final Component component, final ComponentUI ui )
+    public static void setUI ( final JComponent component, final ComponentUI ui )
     {
         try
         {
@@ -178,31 +116,20 @@ public final class LafUtils
     }
 
     /**
-     * Returns whether or not specified component uses UI.
+     * Returns whether or not specified {@link JComponent} uses WebLaF {@link ComponentUI}.
      *
-     * @param component component to check UI usage in
-     * @return {@code true} if specified component uses UI, {@code false} otherwise
+     * @param component {@link JComponent} to check WebLaF {@link ComponentUI} usage in
+     * @return {@code true} if specified {@link JComponent} uses WebLaF {@link ComponentUI}, {@code false} otherwise
      */
-    public static boolean hasUI ( final Component component )
-    {
-        return ReflectUtils.hasMethod ( component, "getUI" );
-    }
-
-    /**
-     * Returns whether or not specified component uses WebLaF UI.
-     *
-     * @param component component to check WebLaF UI usage in
-     * @return {@code true} if specified component uses WebLaF UI, {@code false} otherwise
-     */
-    public static boolean hasWebLafUI ( final Component component )
+    public static boolean hasWebLafUI ( final JComponent component )
     {
         final boolean webUI;
         if ( StyleManager.isSupported ( component ) )
         {
             // Checking that currently installed UI is compatible with base UI class for this component
             // For instance base UI class for JButton is WButtonUI, so WebButtonUI would be compatible and MetalButtonUI won't be
-            final ComponentUI ui = LafUtils.getUI ( component );
-            final ComponentDescriptor descriptor = StyleManager.getDescriptor ( ( JComponent ) component );
+            final ComponentUI ui = getUI ( component );
+            final ComponentDescriptor descriptor = StyleManager.getDescriptor ( component );
             webUI = ui != null && descriptor.getBaseUIClass ().isAssignableFrom ( ui.getClass () );
         }
         else
@@ -852,6 +779,7 @@ public final class LafUtils
      * @param component component to process
      * @return shape provider for the specified component or null if shape provider is not supported
      */
+    @Deprecated
     public static Shape getShape ( final Component component )
     {
         if ( component instanceof ShapeSupport )
@@ -860,10 +788,13 @@ public final class LafUtils
         }
         else
         {
-            final ComponentUI ui = getUI ( component );
-            if ( ui != null && ui instanceof ShapeSupport )
+            if ( component instanceof JComponent )
             {
-                return ( ( ShapeSupport ) ui ).getShape ();
+                final ComponentUI ui = getUI ( ( JComponent ) component );
+                if ( ui != null && ui instanceof ShapeSupport )
+                {
+                    return ( ( ShapeSupport ) ui ).getShape ();
+                }
             }
         }
         return BoundsType.margin.bounds ( component );

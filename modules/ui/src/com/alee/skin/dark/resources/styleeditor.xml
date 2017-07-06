@@ -145,7 +145,11 @@
             <style type="label" id="label" padding="4" />
 
             <!-- Delay field -->
-            <style type="textfield" id="delay" />
+            <style type="textfield" id="delay">
+                <component>
+                    <horizontalAlignment>0</horizontalAlignment>
+                </component>
+            </style>
 
             <!-- Status bar buttons -->
             <style type="togglebutton" id="toggle" extends="icon-hover">

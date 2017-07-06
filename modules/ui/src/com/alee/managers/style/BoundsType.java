@@ -17,8 +17,8 @@
 
 package com.alee.managers.style;
 
+import com.alee.painter.PainterSupport;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -82,18 +82,18 @@ public enum BoundsType
             }
             case margin:
             {
-                return LafUtils.getMargin ( component );
+                return PainterSupport.getMargin ( component );
             }
             case border:
             {
-                final Insets insets = LafUtils.getInsets ( component );
-                SwingUtils.decrease ( insets, LafUtils.getMargin ( component ) );
-                SwingUtils.decrease ( insets, LafUtils.getPadding ( component ) );
+                final Insets insets = PainterSupport.getInsets ( component );
+                SwingUtils.decrease ( insets, PainterSupport.getMargin ( component ) );
+                SwingUtils.decrease ( insets, PainterSupport.getPadding ( component ) );
                 return insets;
             }
             case padding:
             {
-                return LafUtils.getPadding ( component );
+                return PainterSupport.getPadding ( component );
             }
             default:
             {
@@ -115,18 +115,18 @@ public enum BoundsType
         {
             case padding:
             {
-                SwingUtils.increase ( i, LafUtils.getInsets ( component ) );
+                SwingUtils.increase ( i, PainterSupport.getInsets ( component ) );
                 break;
             }
             case border:
             {
-                SwingUtils.increase ( i, LafUtils.getInsets ( component ) );
-                SwingUtils.decrease ( i, LafUtils.getPadding ( component ) );
+                SwingUtils.increase ( i, PainterSupport.getInsets ( component ) );
+                SwingUtils.decrease ( i, PainterSupport.getPadding ( component ) );
                 break;
             }
             case margin:
             {
-                SwingUtils.increase ( i, LafUtils.getMargin ( component ) );
+                SwingUtils.increase ( i, PainterSupport.getMargin ( component ) );
                 break;
             }
         }

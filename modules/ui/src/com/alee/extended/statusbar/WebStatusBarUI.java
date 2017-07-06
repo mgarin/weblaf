@@ -43,12 +43,6 @@ public class WebStatusBarUI<C extends WebStatusBar> extends WStatusBarUI<C> impl
     protected IStatusBarPainter painter;
 
     /**
-     * Runtime variables.
-     */
-    protected Insets margin = null;
-    protected Insets padding = null;
-
-    /**
      * Returns an instance of the {@link WebStatusBarUI} for the specified component.
      * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
@@ -90,27 +84,25 @@ public class WebStatusBarUI<C extends WebStatusBar> extends WStatusBarUI<C> impl
     @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( statusBar );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setMargin ( statusBar, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return padding;
+        return PainterSupport.getPadding ( statusBar );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setPadding ( statusBar, padding );
     }
 
     /**

@@ -42,7 +42,7 @@ public abstract class AbstractSectionDecorationPainter<E extends JComponent, U e
      * It is mainly used to provide origin decoration state duplication behavior.
      * It is kept within weak reference to avoid memory leaks as section painters might be easily replaced.
      */
-    protected WeakReference<Painter<E, U>> origin;
+    protected transient WeakReference<Painter<E, U>> origin;
 
     /**
      * Returns origin painter.

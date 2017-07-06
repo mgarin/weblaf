@@ -25,21 +25,17 @@ public abstract class AbstractButtonPainter<E extends AbstractButton, U extends 
         extends AbstractDecorationPainter<E, U, D> implements IAbstractButtonPainter<E, U>, ChangeListener
 {
     @Override
-    public void install ( final E c, final U ui )
+    protected void installPropertiesAndListeners ()
     {
-        super.install ( c, ui );
-
-        // Adding listeners
-        component.getModel ().addChangeListener ( this );
+        super.installPropertiesAndListeners ();
+        installModelChangeListener ();
     }
 
     @Override
-    public void uninstall ( final E c, final U ui )
+    protected void uninstallPropertiesAndListeners ()
     {
-        // Removing listeners
-        component.getModel ().removeChangeListener ( this );
-
-        super.uninstall ( c, ui );
+        uninstallModelChangeListener ();
+        super.uninstallPropertiesAndListeners ();
     }
 
     @Override
@@ -48,7 +44,7 @@ public abstract class AbstractButtonPainter<E extends AbstractButton, U extends 
         // Perform basic actions on property changes
         super.propertyChanged ( property, oldValue, newValue );
 
-        // Switching model change listener to new model
+        // Switching model change listener on button model change
         if ( CompareUtils.equals ( property, WebLookAndFeel.MODEL_PROPERTY ) )
         {
             ( ( ButtonModel ) oldValue ).removeChangeListener ( this );
@@ -64,6 +60,33 @@ public abstract class AbstractButtonPainter<E extends AbstractButton, U extends 
     }
 
     @Override
+    protected List<String> getDecorationStates ()
+    {
+        final List<String> states = super.getDecorationStates ();
+        if ( isPressed () )
+        {
+            states.add ( DecorationState.pressed );
+        }
+        states.add ( isSelected () ? DecorationState.selected : DecorationState.unselected );
+        return states;
+    }
+
+    @Override
+    protected boolean usesHoverView ()
+    {
+        // Additional case of hover state usage for buttons exclusively
+        return component.isRolloverEnabled () || super.usesHoverView ();
+    }
+
+    /**
+     * Installs {@link ChangeListener} into {@link ButtonModel} implementation.
+     */
+    protected void installModelChangeListener ()
+    {
+        component.getModel ().addChangeListener ( this );
+    }
+
+    @Override
     public void stateChanged ( final ChangeEvent e )
     {
         // Ensure component is still available
@@ -75,26 +98,12 @@ public abstract class AbstractButtonPainter<E extends AbstractButton, U extends 
         }
     }
 
-    @Override
-    protected List<String> getDecorationStates ()
+    /**
+     * Uninstalls {@link ChangeListener} from {@link ButtonModel} implementation.
+     */
+    protected void uninstallModelChangeListener ()
     {
-        final List<String> states = super.getDecorationStates ();
-        if ( isPressed () )
-        {
-            states.add ( DecorationState.pressed );
-        }
-        if ( isSelected () )
-        {
-            states.add ( DecorationState.selected );
-        }
-        return states;
-    }
-
-    @Override
-    protected boolean usesHoverView ()
-    {
-        // Additional case of hover state usage for buttons exclusively
-        return component.isRolloverEnabled () || super.usesHoverView ();
+        component.getModel ().removeChangeListener ( this );
     }
 
     /**

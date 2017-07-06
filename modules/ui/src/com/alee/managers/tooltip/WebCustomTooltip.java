@@ -269,7 +269,7 @@ public class WebCustomTooltip extends JComponent implements ShapeMethods
 
         // Tooltip hotkey preview component
         hotkey = new WebLabel ( StyleId.customtooltipHotkeyLabel );
-        hotkey.setFont ( WebLookAndFeel.globalAcceleratorFont );
+        hotkey.setFont ( WebLookAndFeel.globalMenuSmallFont );
 
         // Components placement on tooltip
         setLayout ( new BorderLayout ( 6, 6 ) );

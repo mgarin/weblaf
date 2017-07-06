@@ -17,7 +17,6 @@
 
 package com.alee.laf.toolbar;
 
-import com.alee.extended.layout.ToolbarLayout;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -34,7 +33,7 @@ import java.util.Map;
 /**
  * {@link JToolBar} extension class.
  * It contains various useful methods to simplify core component usage.
- * <p>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -131,54 +130,118 @@ public class WebToolBar extends JToolBar
         setStyleId ( id );
     }
 
+    /**
+     * Adds specified {@link Component} under {@link ToolbarLayout#MIDDLE} constraints.
+     *
+     * @param component {@link Component} to add
+     */
     public void addToMiddle ( final Component component )
     {
         add ( component, ToolbarLayout.MIDDLE );
     }
 
+    /**
+     * Adds specified {@link Component} under {@link ToolbarLayout#FILL} constraints.
+     *
+     * @param component {@link Component} to add
+     */
     public void addFill ( final Component component )
     {
         add ( component, ToolbarLayout.FILL );
     }
 
+    /**
+     * Adds specified {@link Component} under {@link ToolbarLayout#END} constraints.
+     *
+     * @param component {@link Component} to add
+     */
     public void addToEnd ( final Component component )
     {
         add ( component, ToolbarLayout.END );
     }
 
+    /**
+     * Adds new {@link WebToolBarSeparator} under {@link ToolbarLayout#START} constraints.
+     */
     @Override
     public void addSeparator ()
     {
         addSeparator ( ToolbarLayout.START );
     }
 
+    /**
+     * Adds new {@link WebToolBarSeparator} under {@link ToolbarLayout#MIDDLE} constraints.
+     *
+     * @return added {@link WebToolBarSeparator}
+     */
+    public WebToolBarSeparator addSeparatorToMiddle ()
+    {
+        return addSeparator ( ToolbarLayout.MIDDLE );
+    }
+
+    /**
+     * Adds new {@link WebToolBarSeparator} under {@link ToolbarLayout#END} constraints.
+     *
+     * @return added {@link WebToolBarSeparator}
+     */
     public WebToolBarSeparator addSeparatorToEnd ()
     {
         return addSeparator ( ToolbarLayout.END );
     }
 
-    public WebToolBarSeparator addSeparator ( final String constrain )
+    /**
+     * Adds new {@link WebToolBarSeparator} under specified constraints.
+     *
+     * @param constraints constraints for {@link WebToolBarSeparator}
+     * @return added {@link WebToolBarSeparator}
+     */
+    public WebToolBarSeparator addSeparator ( final String constraints )
     {
-        return addSeparator ( constrain, StyleId.toolbarseparator );
+        return addSeparator ( constraints, StyleId.toolbarseparator );
     }
 
+    /**
+     * Adds new {@link WebToolBarSeparator} with the specified {@link StyleId} under {@link ToolbarLayout#START} constraints.
+     *
+     * @param id {@link StyleId} for {@link WebToolBarSeparator}
+     * @return added {@link WebToolBarSeparator}
+     */
     public WebToolBarSeparator addSeparator ( final StyleId id )
     {
         return addSeparator ( ToolbarLayout.START, id );
     }
 
+    /**
+     * Adds new {@link WebToolBarSeparator} with the specified {@link StyleId} under {@link ToolbarLayout#END} constraints.
+     *
+     * @param id {@link StyleId} for {@link WebToolBarSeparator}
+     * @return added {@link WebToolBarSeparator}
+     */
     public WebToolBarSeparator addSeparatorToEnd ( final StyleId id )
     {
         return addSeparator ( ToolbarLayout.END, id );
     }
 
-    public WebToolBarSeparator addSeparator ( final String constrain, final StyleId id )
+    /**
+     * Adds new {@link WebToolBarSeparator} with the specified {@link StyleId} under the specified constraints.
+     *
+     * @param constraints constraints for {@link WebToolBarSeparator}
+     * @param id          {@link StyleId} for {@link WebToolBarSeparator}
+     * @return added {@link WebToolBarSeparator}
+     */
+    public WebToolBarSeparator addSeparator ( final String constraints, final StyleId id )
     {
         final WebToolBarSeparator separator = new WebToolBarSeparator ( id );
-        add ( separator, constrain );
+        add ( separator, constraints );
         return separator;
     }
 
+    /**
+     * Adds {@link List} of {@link Component}s under the specified constraints.
+     *
+     * @param components  {@link List} of {@link Component}s to add
+     * @param constraints constraints to add {@link Component}s under
+     */
     public void add ( final List<? extends Component> components, final String constraints )
     {
         if ( components != null )
@@ -190,6 +253,12 @@ public class WebToolBar extends JToolBar
         }
     }
 
+    /**
+     * Adds {@link Component}s at the specified Z-index.
+     *
+     * @param index      Z-index to add {@link Component}s at
+     * @param components {@link Component}s to add
+     */
     public void add ( final int index, final Component... components )
     {
         if ( components != null && components.length > 0 )
@@ -201,6 +270,12 @@ public class WebToolBar extends JToolBar
         }
     }
 
+    /**
+     * Adds {@link Component}s under the specified constraints.
+     *
+     * @param constraints constraints to add {@link Component}s under
+     * @param components  {@link Component}s to add
+     */
     public void add ( final String constraints, final Component... components )
     {
         if ( components != null && components.length > 0 )

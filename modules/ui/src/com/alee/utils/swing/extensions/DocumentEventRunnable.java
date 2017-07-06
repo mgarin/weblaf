@@ -18,19 +18,23 @@
 package com.alee.utils.swing.extensions;
 
 import javax.swing.event.DocumentEvent;
+import javax.swing.text.Document;
+import javax.swing.text.JTextComponent;
 
 /**
  * Custom runnable that provides DocumentEvent.
  *
+ * @param <C> {@link JTextComponent} type
  * @author Mikle Garin
  */
 
-public interface DocumentEventRunnable
+public interface DocumentEventRunnable<C extends JTextComponent>
 {
     /**
      * Performs action according to document event.
      *
-     * @param e occured document event
+     * @param component {@link JTextComponent} containing changed document
+     * @param event     occured document event, {@code null} if the whole {@link Document} was replaced
      */
-    public void run ( DocumentEvent e );
+    public void run ( C component, DocumentEvent event );
 }

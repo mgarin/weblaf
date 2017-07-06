@@ -15,36 +15,63 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.utils.swing;
-
-import javax.swing.event.DocumentEvent;
+package com.alee.utils.system;
 
 /**
- * DocumentChangeListener extension that informs about integer value changes.
+ * Operation system (shortly OS) type enumeration.
  *
  * @author Mikle Garin
  */
 
-public abstract class IntDocumentChangeListener extends DocumentChangeListener
+public enum SystemType
 {
-    @Override
-    public void documentChanged ( final DocumentEvent e )
+    /**
+     * Windows OS.
+     */
+    WINDOWS ( "win" ),
+
+    /**
+     * Mac OS.
+     */
+    MAC ( "mac" ),
+
+    /**
+     * Unix OS.
+     */
+    UNIX ( "unix" ),
+
+    /**
+     * Solaris OS.
+     */
+    SOLARIS ( "solaris" ),
+
+    /**
+     * Unknown OS type.
+     */
+    UNKNOWN ( "unknown" );
+
+    /**
+     * OS short name.
+     */
+    private final String shortName;
+
+    /**
+     * Constructs new {@link SystemType}.
+     *
+     * @param shortName OS short name
+     */
+    private SystemType ( final String shortName )
     {
-        try
-        {
-            documentChanged ( Integer.parseInt ( getText ( e ) ), e );
-        }
-        catch ( final Throwable ex )
-        {
-            documentChanged ( null, e );
-        }
+        this.shortName = shortName;
     }
 
     /**
-     * Informs that integer value contained in the document has changed in some way.
+     * Returns OS short name.
      *
-     * @param newValue new integer value or null if value cannot be parsed
-     * @param e        document event
+     * @return OS short name
      */
-    public abstract void documentChanged ( Integer newValue, DocumentEvent e );
+    public String shortName ()
+    {
+        return shortName;
+    }
 }

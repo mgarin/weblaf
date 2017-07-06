@@ -27,7 +27,7 @@
             </painter>
 
             <!-- Path field -->
-            <style type="textfield" id="path-field" extends="undecorated">
+            <style type="textfield" id="path-field" extends="transparent">
 
                 <!-- Autocomplete popup list scroll -->
                 <style type="scrollpane" id="scroll">
@@ -82,12 +82,25 @@
 
     </style>
 
-    <!-- Undecorated path field -->
-    <style type="panel" id="pathfield-undecorated" extends="pathfield" >
+    <!-- Non-opaque path field -->
+    <style type="panel" id="pathfield-non-opaque" extends="pathfield">
+        <component>
+            <opaque>false</opaque>
+        </component>
         <painter>
-            <decorations>
-                <decoration visible="false" />
+            <decorations overwrite="true">
+                <decoration>
+                    <BoundsShape />
+                    <ColorBackground color="106,110,112" />
+                </decoration>
             </decorations>
+        </painter>
+    </style>
+
+    <!-- Transparent path field -->
+    <style type="panel" id="pathfield-transparent" extends="pathfield-non-opaque">
+        <painter>
+            <decorations overwrite="true" />
         </painter>
     </style>
 

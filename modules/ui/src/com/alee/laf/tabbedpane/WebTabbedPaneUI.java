@@ -18,11 +18,13 @@
 package com.alee.laf.tabbedpane;
 
 import com.alee.api.clone.Clone;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.SectionPainter;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -43,12 +45,6 @@ import java.util.Vector;
 public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( TabbedPanePainter.class )
-    protected ITabbedPanePainter painter;
-
-    /**
      * Style settings.
      */
     protected int tabRunIndent = WebTabbedPaneStyle.tabRunIndent;
@@ -60,20 +56,24 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
     protected boolean rotateTabInsets = WebTabbedPaneStyle.rotateTabInsets;
 
     /**
-     * Runtime variables.
+     * Component painter.
      */
-    protected final Map<Integer, SectionPainter> backgroundPainterAt = new HashMap<Integer, SectionPainter> ();
-    protected Insets margin = null;
-    protected Insets padding = null;
+    @DefaultPainter ( TabbedPanePainter.class )
+    protected ITabbedPanePainter painter;
 
     /**
-     * Returns an instance of the WebTabbedPaneUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Runtime variables.
+     */
+    protected transient final Map<Integer, SectionPainter> backgroundPainterAt = new HashMap<Integer, SectionPainter> ();
+
+    /**
+     * Returns an instance of the {@link WebTabbedPaneUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebTabbedPaneUI
+     * @return instance of the {@link WebTabbedPaneUI}
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTabbedPaneUI ();
@@ -142,8 +142,9 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
     @Override
     public void setTabbedPaneStyle ( final TabbedPaneStyle tabbedPaneStyle )
     {
+        final TabbedPaneStyle old = this.tabbedPaneStyle;
         this.tabbedPaneStyle = tabbedPaneStyle;
-        PainterSupport.updateBorder ( painter );
+        SwingUtils.firePropertyChanged ( tabPane, WebLookAndFeel.TABBED_PANE_STYLE_PROPERTY, old, tabbedPaneStyle );
     }
 
     @Override
@@ -317,27 +318,25 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
     @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( tabPane );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setMargin ( tabPane, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return padding;
+        return PainterSupport.getPadding ( tabPane );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setPadding ( tabPane, padding );
     }
 
     //    protected void setRolloverTab ( int index )

@@ -60,7 +60,7 @@ public class JTextFieldExample extends AbstractStylePreviewExample
     protected List<Preview> createPreviews ()
     {
         final BasicField e1 = new BasicField ( "basic", StyleId.textfield );
-        final BasicField e2 = new BasicField ( "undecorated", StyleId.textfieldUndecorated );
+        final BasicField e2 = new BasicField ( "transparent", StyleId.textfieldTransparent );
         final BasicField e3 = new BasicField ( "nofocus", StyleId.textfieldNoFocus );
         return CollectionUtils.<Preview>asList ( e1, e2, e3 );
     }

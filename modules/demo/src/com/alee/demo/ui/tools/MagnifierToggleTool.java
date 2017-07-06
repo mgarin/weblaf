@@ -20,8 +20,11 @@ package com.alee.demo.ui.tools;
 import com.alee.demo.DemoApplication;
 import com.alee.demo.skin.DemoIcons;
 import com.alee.demo.skin.DemoStyles;
+import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.magnifier.MagnifierGlass;
 import com.alee.laf.button.WebToggleButton;
+import com.alee.laf.panel.WebPanel;
+import com.alee.managers.style.StyleId;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,12 +33,12 @@ import java.awt.event.ActionListener;
  * @author Mikle Garin
  */
 
-public final class MagnifierToggleTool extends WebToggleButton
+public final class MagnifierToggleTool extends WebPanel
 {
     /**
      * Magnifier glass instance.
      */
-    private final MagnifierGlass magnifier = new MagnifierGlass ();
+    private final MagnifierGlass magnifier;
 
     /**
      * Constructs new magnifier toggle tool.
@@ -44,8 +47,15 @@ public final class MagnifierToggleTool extends WebToggleButton
      */
     public MagnifierToggleTool ( final DemoApplication application )
     {
-        super ( DemoStyles.toolButton, "demo.tool.magnifier", DemoIcons.magnifier16 );
-        addActionListener ( new ActionListener ()
+        super ( StyleId.panelTransparent, new HorizontalFlowLayout ( 0, false ) );
+
+        // Magnifier glass
+        magnifier = new MagnifierGlass ();
+
+        // Magnifier glass switcher button
+        final WebToggleButton magnifierButton = new WebToggleButton ( DemoStyles.toolButton, "demo.tool.magnifier", DemoIcons.magnifier16 );
+        magnifierButton.setSelected ( magnifier.isDisplayed () );
+        magnifierButton.addActionListener ( new ActionListener ()
         {
             @Override
             public void actionPerformed ( final ActionEvent e )
@@ -53,5 +63,19 @@ public final class MagnifierToggleTool extends WebToggleButton
                 magnifier.displayOrDispose ( application );
             }
         } );
+        add ( magnifierButton );
+
+        // Dummy cursor display switcher button
+        final WebToggleButton dummyCursorButton = new WebToggleButton ( DemoStyles.toolIconButton, DemoIcons.cursor16 );
+        dummyCursorButton.setSelected ( magnifier.isDisplayDummyCursor () );
+        dummyCursorButton.addActionListener ( new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                magnifier.setDisplayDummyCursor ( !magnifier.isDisplayDummyCursor () );
+            }
+        } );
+        add ( dummyCursorButton );
     }
 }

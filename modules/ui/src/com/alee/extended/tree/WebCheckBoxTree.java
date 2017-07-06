@@ -332,7 +332,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     protected WebCheckBoxTreeCellRenderer createCheckBoxTreeCellRenderer ()
     {
-        return new WebCheckBoxTreeCellRenderer ( WebCheckBoxTree.this );
+        return new WebCheckBoxTreeCellRenderer ();
     }
 
     /**
@@ -679,6 +679,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
 
     /**
      * Returns checkbox bounds for the specified tree path.
+     * todo This should also take cell renderer margin/padding into account
      *
      * @param treePath tree path to process
      * @return checkbox bounds for the specified tree path
@@ -687,16 +688,16 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     {
         if ( checkBoxCellRenderer != null )
         {
-            final int checkBoxWidth = checkBoxCellRenderer.getCheckBoxWidth ();
             final Rectangle pathBounds = getPathBounds ( treePath );
+            final Dimension cbSize = checkBoxCellRenderer.getCheckBox ().getPreferredSize ();
             if ( getComponentOrientation ().isLeftToRight () )
             {
-                pathBounds.width = checkBoxWidth;
+                pathBounds.width = cbSize.width;
             }
             else
             {
-                pathBounds.x += pathBounds.width - checkBoxWidth;
-                pathBounds.width = checkBoxWidth;
+                pathBounds.x += pathBounds.width - cbSize.width;
+                pathBounds.width = cbSize.width;
             }
             return pathBounds;
         }

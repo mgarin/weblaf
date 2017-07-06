@@ -19,11 +19,13 @@ package com.alee.painter.decoration;
 
 import com.alee.painter.decoration.background.GradientColor;
 import com.alee.painter.decoration.background.GradientType;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.MathUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -118,6 +120,28 @@ public final class DecorationUtils
     public static String toString ( final boolean top, final boolean left, final boolean bottom, final boolean right )
     {
         return ( top ? 1 : 0 ) + "," + ( left ? 1 : 0 ) + "," + ( bottom ? 1 : 0 ) + "," + ( right ? 1 : 0 );
+    }
+
+    /**
+     * Returns {@link List} of extra decoration states from {@link Object} based on its {@link Stateful} implementation.
+     * It performs all necessary checks and always returns non-{@code null} {@link List} of states, though it might be empty.
+     *
+     * @param object {@link Object} to retrieve {@link List} of extra decoration states from
+     * @return {@link List} of extra decoration states from {@link Object} based on its {@link Stateful} implementation
+     */
+    public static List<String> getExtraStates ( final Object object )
+    {
+        final List<String> states;
+        if ( object instanceof Stateful )
+        {
+            final List<String> extra = ( ( Stateful ) object ).getStates ();
+            states = CollectionUtils.notEmpty ( extra ) ? extra : Collections.<String>emptyList ();
+        }
+        else
+        {
+            states = Collections.emptyList ();
+        }
+        return states;
     }
 
     /**

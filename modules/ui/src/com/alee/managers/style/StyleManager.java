@@ -82,7 +82,6 @@ import com.alee.laf.viewport.ViewportDescriptor;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.painter.Painter;
-import com.alee.painter.common.TextureType;
 import com.alee.painter.decoration.AbstractDecoration;
 import com.alee.painter.decoration.Decorations;
 import com.alee.painter.decoration.NinePatchDecoration;
@@ -111,9 +110,7 @@ import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
-import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 /**
  * This manager handles all default Swing and custom WebLaF component styles.
@@ -646,8 +643,6 @@ public final class StyleManager
     /**
      * Returns whether or not styling is supported for the component with the specified identifier.
      *
-     * todo 1. Add support for JFrame/JDialog/JWindow and other similar components
-     *
      * @param id identifier of the component to check styling support for
      * @return {@code true} if styling is supported for the component with the specified identifier, {@code false} otherwise
      */
@@ -657,28 +652,14 @@ public final class StyleManager
     }
 
     /**
-     * Returns whether or not specified component styling is supported.
-     *
-     * todo 1. Add support for JFrame/JDialog/JWindow and other similar components
+     * Returns whether or not styling of the specified {@link JComponent} is supported.
      *
      * @param component component to check styling support for
-     * @return {@code true} if specified component styling is supported, {@code false} otherwise
+     * @return {@code true} if styling of the specified {@link JComponent} is supported, {@code false} otherwise
      */
-    public static boolean isSupported ( final Component component )
+    public static boolean isSupported ( final JComponent component )
     {
-        final boolean supported;
-        if ( component instanceof JComponent )
-        {
-            // Checking descriptor existance
-            final JComponent jComponent = ( JComponent ) component;
-            supported = getDescriptorImpl ( jComponent.getClass () ) != null;
-        }
-        else
-        {
-            // Only instances of JComponent are supported
-            supported = false;
-        }
-        return supported;
+        return getDescriptorImpl ( component.getClass () ) != null;
     }
 
 

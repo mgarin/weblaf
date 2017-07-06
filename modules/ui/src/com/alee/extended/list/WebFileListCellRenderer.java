@@ -34,8 +34,8 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 
 /**
- * Custom list cell renderer for WebFileList component.
- * This renderer is also able to generate image thumbnails for image file elements.
+ * Custom list cell renderer for {@link WebFileList} component.
+ * This renderer is also able to generate thumbnails for file elements representing images.
  *
  * @author Mikle Garin
  */
@@ -43,8 +43,8 @@ import java.io.File;
 public class WebFileListCellRenderer extends WebPanel implements ListCellRenderer
 {
     /**
-     * todo 1. Move thumbnail generation into `WebImage` component as a feature
-     * todo 2. Replace icon label with `WebImage`
+     * todo 1. Move thumbnail generation into `WebImage` component as a feature?
+     * todo 2. Replace icon label with `WebImage` for usage convenience
      * todo 3. In next updates replace this all with single component and IContent acting as parts
      */
 

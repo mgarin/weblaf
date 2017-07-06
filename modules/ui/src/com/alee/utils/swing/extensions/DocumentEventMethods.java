@@ -17,20 +17,21 @@
 
 package com.alee.utils.swing.extensions;
 
-import com.alee.utils.general.Pair;
-import com.alee.utils.swing.DocumentChangeListener;
+import com.alee.extended.behavior.DocumentChangeBehavior;
 
-import java.beans.PropertyChangeListener;
+import javax.swing.text.JTextComponent;
 
 /**
  * This interface provides a set of methods that should be added into text components that supports custom WebLaF events.
  *
+ * @param <C> {@link JTextComponent} type
  * @author Mikle Garin
  * @see MethodExtension
+ * @see DocumentChangeBehavior
  * @see com.alee.utils.swing.extensions.DocumentEventMethodsImpl
  */
 
-public interface DocumentEventMethods extends MethodExtension
+public interface DocumentEventMethods<C extends JTextComponent> extends MethodExtension
 {
     /**
      * Shortcut method for document change event.
@@ -38,5 +39,5 @@ public interface DocumentEventMethods extends MethodExtension
      * @param runnable document event runnable
      * @return used document change and property change listeners
      */
-    public Pair<DocumentChangeListener, PropertyChangeListener> onChange ( DocumentEventRunnable runnable );
+    public DocumentChangeBehavior<C> onChange ( DocumentEventRunnable<C> runnable );
 }

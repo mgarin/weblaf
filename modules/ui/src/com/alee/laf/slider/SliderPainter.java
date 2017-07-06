@@ -30,6 +30,10 @@ import java.util.Enumeration;
 
 public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends AbstractPainter<E, U> implements ISliderPainter<E, U>
 {
+    /**
+     * todo 1. Split into proper AbstractDecorationPainter & AbstractSectionDecorationPainter implementations
+     */
+
     public static final int MAX_DARKNESS = 5;
 
     /**
@@ -61,30 +65,30 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
     /**
      * Listeners.
      */
-    protected MouseWheelListener mouseWheelListener;
-    protected ChangeListener changeListener;
-    protected MouseAdapter mouseAdapter;
+    protected transient MouseWheelListener mouseWheelListener;
+    protected transient ChangeListener changeListener;
+    protected transient MouseAdapter mouseAdapter;
 
     /**
      * Runtime variables.
      */
-    protected boolean rollover = false;
-    protected int rolloverDarkness = 0;
-    protected WebTimer rolloverTimer;
+    protected transient boolean rollover = false;
+    protected transient int rolloverDarkness = 0;
+    protected transient WebTimer rolloverTimer;
 
     /**
      * Painting variables.
      */
-    protected int trackBuffer = 0;  // The distance that the track is from the side of the control
-    protected Insets insetCache = null;
-    protected Rectangle focusRect = null;
-    protected Rectangle contentRect = null;
-    protected Rectangle labelRect = null;
-    protected Rectangle tickRect = null;
-    protected Rectangle trackRect = null;
-    protected Rectangle thumbRect = null;
-    protected boolean leftToRightCache = true;
-    protected boolean dragging = false;
+    protected transient int trackBuffer = 0;  // The distance that the track is from the side of the control
+    protected transient Insets insetCache = null;
+    protected transient Rectangle focusRect = null;
+    protected transient Rectangle contentRect = null;
+    protected transient Rectangle labelRect = null;
+    protected transient Rectangle tickRect = null;
+    protected transient Rectangle trackRect = null;
+    protected transient Rectangle thumbRect = null;
+    protected transient boolean leftToRightCache = true;
+    protected transient boolean dragging = false;
 
     @Override
     public void install ( final E c, final U ui )

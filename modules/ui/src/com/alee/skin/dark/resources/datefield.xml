@@ -26,7 +26,7 @@
         </painter>
 
         <!-- Date text field -->
-        <style type="formattedtextfield" id="field" padding="2" extends="undecorated" />
+        <style type="formattedtextfield" id="field" padding="2" extends="transparent" />
 
         <!-- Choose button -->
         <style type="button" id="button" extends="icon-hover">
@@ -63,12 +63,25 @@
 
     </style>
 
-    <!-- Date field undecorated -->
-    <style type="datefield" id="undecorated">
+    <!-- Non-opaque date field -->
+    <style type="datefield" id="non-opaque">
+        <component>
+            <opaque>false</opaque>
+        </component>
         <painter>
-            <decorations>
-                <decoration visible="false" />
+            <decorations overwrite="true">
+                <decoration>
+                    <BoundsShape />
+                    <ColorBackground color="106,110,112" />
+                </decoration>
             </decorations>
+        </painter>
+    </style>
+
+    <!-- Transparent date field -->
+    <style type="datefield" id="transparent" extends="non-opaque">
+        <painter>
+            <decorations overwrite="true" />
         </painter>
     </style>
 

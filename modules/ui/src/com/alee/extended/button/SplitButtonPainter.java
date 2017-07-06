@@ -39,19 +39,33 @@ public class SplitButtonPainter<E extends WebSplitButton, U extends WSplitButton
     /**
      * Listeners.
      */
-    protected MouseAdapter splitButtonTracker;
+    protected transient MouseAdapter splitButtonTracker;
 
     /**
      * Runtime variables.
      */
-    protected boolean onSplit = false;
+    protected transient boolean onSplit;
 
     @Override
-    public void install ( final E c, final U ui )
+    protected void installPropertiesAndListeners ()
     {
-        super.install ( c, ui );
+        super.installPropertiesAndListeners ();
+        installSplitButtonListeners ();
+    }
 
-        // Adding split button mouseover tracker
+    @Override
+    protected void uninstallPropertiesAndListeners ()
+    {
+        uninstallSplitButtonListeners ();
+        super.uninstallPropertiesAndListeners ();
+    }
+
+    /**
+     * Installs split button mouseover listener.
+     */
+    protected void installSplitButtonListeners ()
+    {
+        onSplit = false;
         splitButtonTracker = new MouseAdapter ()
         {
             @Override
@@ -90,16 +104,15 @@ public class SplitButtonPainter<E extends WebSplitButton, U extends WSplitButton
         component.addMouseMotionListener ( splitButtonTracker );
     }
 
-    @Override
-    public void uninstall ( final E c, final U ui )
+    /**
+     * Uninstalls split button mouseover listener.
+     */
+    protected void uninstallSplitButtonListeners ()
     {
-        // Removing split button mouseover tracker
         component.removeMouseMotionListener ( splitButtonTracker );
         component.removeMouseListener ( splitButtonTracker );
         splitButtonTracker = null;
         onSplit = false;
-
-        super.uninstall ( c, ui );
     }
 
     @Override
@@ -162,12 +175,28 @@ public class SplitButtonPainter<E extends WebSplitButton, U extends WSplitButton
     }
 
     @Override
-    public Insets getBorders ()
+    protected Insets getBorder ()
     {
-        final Insets borders = super.getBorders ();
+        final Insets border = super.getBorder ();
         final Icon splitIcon = component.getSplitIcon ();
-        return splitIcon != null ? i ( borders, 0, 0, 0, contentGap + 1 + splitIconGap + splitIcon.getIconWidth () + splitIconGap ) :
-                borders;
+        final Insets result;
+        if ( splitIcon != null )
+        {
+            final int right = contentGap + 1 + splitIconGap + splitIcon.getIconWidth () + splitIconGap;
+            if ( border != null )
+            {
+                result = new Insets ( border.top, border.left, border.bottom, border.right + right );
+            }
+            else
+            {
+                result = new Insets ( 0, 0, 0, right );
+            }
+        }
+        else
+        {
+            result = border;
+        }
+        return result;
     }
 
     @Override

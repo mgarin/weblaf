@@ -55,9 +55,9 @@ public class GroupPaneExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final MixedGrouping e1 = new MixedGrouping ( FeatureState.release, StyleId.grouppane );
-        final GridGrouping e2 = new GridGrouping ( FeatureState.release, StyleId.grouppane );
-        final ButtonsGrouping e3 = new ButtonsGrouping ( FeatureState.release, StyleId.grouppane );
+        final ButtonsGrouping e1 = new ButtonsGrouping ( FeatureState.release, StyleId.grouppane );
+        final MixedGrouping e2 = new MixedGrouping ( FeatureState.release, StyleId.grouppane );
+        final GridGrouping e3 = new GridGrouping ( FeatureState.release, StyleId.grouppane );
         return CollectionUtils.<Preview>asList ( e1, e2, e3 );
     }
 

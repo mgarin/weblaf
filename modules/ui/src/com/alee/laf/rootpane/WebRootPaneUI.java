@@ -88,29 +88,31 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     protected IRootPanePainter painter;
 
     /**
+     * Listeners.
+     */
+    protected transient PropertyChangeListener resizableChangeListener;
+    protected transient PropertyChangeListener windowTitleListener;
+
+    /**
      * Additional components used be the UI.
      */
-    protected JComponent titleComponent;
-    protected WebImage titleIcon;
-    protected WebLabel titleLabel;
-    protected GroupPane buttonsPanel;
-    protected WebButton minimizeButton;
-    protected WebButton maximizeButton;
-    protected WebButton closeButton;
+    protected transient JComponent titleComponent;
+    protected transient WebImage titleIcon;
+    protected transient WebLabel titleLabel;
+    protected transient GroupPane buttonsPanel;
+    protected transient WebButton minimizeButton;
+    protected transient WebButton maximizeButton;
+    protected transient WebButton closeButton;
 
     /**
      * Runtime variables
      */
-    protected Insets margin = null;
-    protected Insets padding = null;
-    protected JRootPane root;
-    protected Window window;
-    protected Frame frame;
-    protected Dialog dialog;
-    protected LayoutManager previousLayoutManager;
-    protected LayoutManager layoutManager;
-    protected PropertyChangeListener resizableChangeListener;
-    protected PropertyChangeListener windowTitleListener;
+    protected transient JRootPane root;
+    protected transient Window window;
+    protected transient Frame frame;
+    protected transient Dialog dialog;
+    protected transient LayoutManager previousLayoutManager;
+    protected transient LayoutManager layoutManager;
 
     /**
      * Returns an instance of the {@link WebRootPaneUI} for the specified component.
@@ -141,9 +143,13 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
         // In that case we would also need to track root pane contents for layered pane changes which is excessive
         // Content pane is usually not changed or provided by the root pane override and this style will be applied then
         final Container contentPane = root.getContentPane ();
-        if ( LafUtils.hasWebLafUI ( contentPane ) )
+        if ( contentPane instanceof JComponent )
         {
-            StyleId.rootpaneContent.at ( root ).set ( ( JComponent ) contentPane );
+            final JComponent jContentPane = ( JComponent ) contentPane;
+            if ( LafUtils.hasWebLafUI ( jContentPane ) )
+            {
+                StyleId.rootpaneContent.at ( root ).set ( jContentPane );
+            }
         }
     }
 
@@ -168,27 +174,25 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( root );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setMargin ( root, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return padding;
+        return PainterSupport.getPadding ( root );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setPadding ( root, padding );
     }
 
     /**
@@ -397,7 +401,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
                 updateButtons ();
             }
         };
-        window.addPropertyChangeListener ( WebLookAndFeel.WINDOW_RESIZABLE_PROPERTY, resizableChangeListener );
+        window.addPropertyChangeListener ( WebLookAndFeel.RESIZABLE_PROPERTY, resizableChangeListener );
 
         // Window resize behavior
         // todo Should this be tied to painter instead?
@@ -471,7 +475,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     protected void uninstallListeners ()
     {
         ComponentResizeBehavior.uninstall ( root );
-        window.removePropertyChangeListener ( WebLookAndFeel.WINDOW_RESIZABLE_PROPERTY, resizableChangeListener );
+        window.removePropertyChangeListener ( WebLookAndFeel.RESIZABLE_PROPERTY, resizableChangeListener );
     }
 
     /**
@@ -555,7 +559,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
 
         // Window title
         titleLabel = new WebLabel ( StyleId.rootpaneTitleLabel.at ( titleComponent ), getWindowTitle () );
-        titleLabel.setFont ( WebLookAndFeel.globalTitleFont );
+        titleLabel.setFont ( WebLookAndFeel.globalWindowFont );
         titleLabel.setFontSize ( 13 );
         titleLabel.addComponentListener ( new ComponentAdapter ()
         {
@@ -583,11 +587,11 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
             public void propertyChange ( final PropertyChangeEvent evt )
             {
                 final String property = evt.getPropertyName ();
-                if ( CompareUtils.equals ( property, WebLookAndFeel.WINDOW_ICON_PROPERTY ) )
+                if ( CompareUtils.equals ( property, WebLookAndFeel.ICON_IMAGE_PROPERTY ) )
                 {
                     titleIcon.setImage ( getWindowImage () );
                 }
-                else if ( CompareUtils.equals ( property, WebLookAndFeel.WINDOW_TITLE_PROPERTY ) )
+                else if ( CompareUtils.equals ( property, WebLookAndFeel.TITLE_PROPERTY ) )
                 {
                     titleLabel.setText ( getWindowTitle () );
                 }

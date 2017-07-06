@@ -40,6 +40,7 @@
                     <decoration states="disabled">
                         <WebShadow type="outer" opacity="0" />
                         <LineBorder color="lightGray" />
+                        <ColorBackground color="223,223,223" />
                     </decoration>
                     <decoration states="disabled,checked">
                         <RadioIcon padding="2" leftColor="gray" rightColor="lightGray" />

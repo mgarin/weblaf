@@ -18,6 +18,6 @@ public class RadioButtonMenuItemPainter<E extends JRadioButtonMenuItem, U extend
         extends AbstractStateMenuItemPainter<E, U, D> implements IRadioButtonMenuItemPainter<E, U>
 {
     /**
-     * Implementation is used completely from {@link com.alee.laf.menu.AbstractStateMenuItemPainter}.
+     * Implementation is used completely from {@link AbstractStateMenuItemPainter}.
      */
 }

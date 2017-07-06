@@ -43,12 +43,6 @@ public class WebImageUI<C extends WebImage> extends WImageUI<C> implements Shape
     protected IImagePainter painter;
 
     /**
-     * Runtime variables.
-     */
-    protected Insets margin = null;
-    protected Insets padding = null;
-
-    /**
      * Returns an instance of the {@link WebImageUI} for the specified component.
      * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
@@ -88,27 +82,25 @@ public class WebImageUI<C extends WebImage> extends WImageUI<C> implements Shape
     @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( image );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setMargin ( image, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return padding;
+        return PainterSupport.getPadding ( image );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setPadding ( image, padding );
     }
 
     /**

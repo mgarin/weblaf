@@ -19,8 +19,8 @@ package com.alee.laf.colorchooser;
 
 import com.alee.extended.colorchooser.DoubleColorField;
 import com.alee.extended.colorchooser.DoubleColorFieldListener;
+import com.alee.extended.layout.LineLayout;
 import com.alee.extended.layout.TableLayout;
-import com.alee.extended.layout.ToolbarLayout;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.laf.label.WebLabel;
@@ -309,8 +309,8 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
 
     private WebPanel createButtonsPanel ()
     {
-        final StyleId controlsStyleId = StyleId.colorchooserControlsPanel.at ( this );
-        final WebPanel controlsPanel = new WebPanel ( controlsStyleId, new ToolbarLayout ( 2, ToolbarLayout.HORIZONTAL ) );
+        final LineLayout layout = new LineLayout ( SwingConstants.HORIZONTAL, 2 );
+        final WebPanel controlsPanel = new WebPanel ( StyleId.colorchooserControlsPanel.at ( this ), layout );
 
         final StyleId webonlyStyleId = StyleId.colorchooserWebonlyCheck.at ( controlsPanel );
         final WebCheckBox webOnly = new WebCheckBox ( webonlyStyleId, "weblaf.colorchooser.webonly", isWebOnlyColors () );
@@ -347,7 +347,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
                 }
             }
         } );
-        controlsPanel.add ( ok, ToolbarLayout.END );
+        controlsPanel.add ( ok, LineLayout.END );
 
         final StyleId resetId = StyleId.colorchooserResetButton.at ( controlsPanel );
         final WebButton reset = new WebButton ( resetId, "weblaf.colorchooser.reset" );
@@ -361,7 +361,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
                 fireResetPressed ( e );
             }
         } );
-        controlsPanel.add ( reset, ToolbarLayout.END );
+        controlsPanel.add ( reset, LineLayout.END );
 
         final StyleId cancelId = StyleId.colorchooserCancelButton.at ( controlsPanel );
         final WebButton cancel = new WebButton ( cancelId, "weblaf.colorchooser.cancel" );
@@ -376,7 +376,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
                 fireCancelPressed ( e );
             }
         } );
-        controlsPanel.add ( cancel, ToolbarLayout.END );
+        controlsPanel.add ( cancel, LineLayout.END );
 
         final List<String> properties = new ImmutableList<String> ( AbstractButton.TEXT_CHANGED_PROPERTY );
         SwingUtils.equalizeComponentsWidth ( properties, ok, reset, cancel );

@@ -44,10 +44,9 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeSupport, Margin
     protected IMenuBarPainter painter;
 
     /**
-     * Runtime variables.
+     * Preserved old layout.
      */
-    protected Insets margin = null;
-    protected Insets padding = null;
+    protected transient LayoutManager oldLayout;
 
     /**
      * Returns an instance of the {@link WebMenuBarUI} for the specified component.
@@ -62,34 +61,58 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeSupport, Margin
         return new WebMenuBarUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
         // Installing UI
         super.installUI ( c );
 
+        // Installing custom layout
+        installLayout ();
+
         // Applying skin
         StyleManager.installSkin ( menuBar );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( menuBar );
 
+        // Uninstalling custom layout
+        uninstallLayout ();
+
         // Uninstalling UI
         super.uninstallUI ( c );
+    }
+
+    /**
+     * Installs custom {@link LayoutManager} into {@link JMenuBar}.
+     */
+    protected void installLayout ()
+    {
+        oldLayout = menuBar.getLayout ();
+        menuBar.setLayout ( createLayout () );
+    }
+
+    /**
+     * Uninstalls custom {@link LayoutManager} from {@link JMenuBar}.
+     */
+    protected void uninstallLayout ()
+    {
+        menuBar.setLayout ( oldLayout );
+        oldLayout = null;
+    }
+
+    /**
+     * Returns custom {@link LayoutManager} for the menubar.
+     *
+     * @return custom {@link LayoutManager} for the menubar
+     */
+    protected LayoutManager createLayout ()
+    {
+        return new MenuBarLayout ();
     }
 
     @Override
@@ -101,27 +124,25 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeSupport, Margin
     @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( menuBar );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setMargin ( menuBar, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return padding;
+        return PainterSupport.getPadding ( menuBar );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setPadding ( menuBar, padding );
     }
 
     /**

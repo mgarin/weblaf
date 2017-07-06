@@ -33,6 +33,6 @@ public abstract class AbstractContainerPainter<E extends JComponent, U extends C
         extends AbstractDecorationPainter<E, U, D>
 {
     /**
-     * Implementation is used completely from {@link com.alee.painter.decoration.AbstractDecorationPainter}.
+     * Implementation is used completely from {@link AbstractDecorationPainter}.
      */
 }

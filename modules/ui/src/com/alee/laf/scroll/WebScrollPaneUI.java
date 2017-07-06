@@ -59,22 +59,20 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
     /**
      * Listeners.
      */
-    protected PropertyChangeListener propertyChangeListener;
-    protected ContainerAdapter viewListener;
+    protected transient PropertyChangeListener propertyChangeListener;
+    protected transient ContainerAdapter viewListener;
 
     /**
      * Runtime variables.
      */
-    protected Insets margin = null;
-    protected Insets padding = null;
-    protected Map<Corner, JComponent> cornersCache = new HashMap<Corner, JComponent> ( 4 );
+    protected transient Map<Corner, JComponent> cornersCache = new HashMap<Corner, JComponent> ( 4 );
 
     /**
-     * Returns an instance of the WebScrollPaneUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebScrollPaneUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebScrollPaneUI
+     * @return instance of the {@link WebScrollPaneUI}
      */
     @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
@@ -82,11 +80,6 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
         return new WebScrollPaneUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
@@ -183,11 +176,6 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
         StyleManager.installSkin ( scrollpane );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
@@ -498,27 +486,25 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
     @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( scrollpane );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setMargin ( scrollpane, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return padding;
+        return PainterSupport.getPadding ( scrollpane );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setPadding ( scrollpane, padding );
     }
 
     /**
@@ -596,9 +582,9 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
             {
                 scp = ( ScrollPaneCornerProvider ) view;
             }
-            else
+            else if ( view instanceof JComponent )
             {
-                final ComponentUI ui = LafUtils.getUI ( view );
+                final ComponentUI ui = LafUtils.getUI ( ( JComponent ) view );
                 if ( ui != null && ui instanceof ScrollPaneCornerProvider )
                 {
                     scp = ( ScrollPaneCornerProvider ) ui;

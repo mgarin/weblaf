@@ -49,7 +49,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
         implements PainterShapeProvider<E>, SwingConstants
 {
     /**
-     * todo Replace with a decoration paainter and custom shape implementation for popups
+     * todo 1. Replace with a decoration paainter and custom shape implementation for popups
      */
 
     /**
@@ -75,19 +75,24 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
     /**
      * Runtime variables.
      */
-    protected boolean shaped = true;
-    protected int cornerSide = TOP;
-    protected int relativeCorner = 0;
-    protected int cornerAlignment = -1;
-    protected NinePatchIcon shade = null;
+    protected transient boolean shaped = true;
+    protected transient int cornerSide = TOP;
+    protected transient int relativeCorner = 0;
+    protected transient int cornerAlignment = -1;
+    protected transient NinePatchIcon shade = null;
 
     @Override
-    public void install ( final E c, final U ui )
+    protected void installPropertiesAndListeners ()
     {
-        super.install ( c, ui );
-
-        // Initializing transparency availability mark
+        super.installPropertiesAndListeners ();
         shaped = ProprietaryUtils.isWindowTransparencyAllowed () || ProprietaryUtils.isWindowShapeAllowed ();
+    }
+
+    @Override
+    protected void uninstallPropertiesAndListeners ()
+    {
+        shaped = false;
+        super.uninstallPropertiesAndListeners ();
     }
 
     /**
@@ -107,14 +112,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      */
     public void setPopupStyle ( final PopupStyle style )
     {
-        if ( this.popupStyle != style )
-        {
-            this.popupStyle = style;
-            if ( shaped )
-            {
-                updateAll ();
-            }
-        }
+        this.popupStyle = style;
     }
 
     /**
@@ -134,14 +132,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      */
     public void setBorderColor ( final Color color )
     {
-        if ( this.borderColor != color )
-        {
-            this.borderColor = color;
-            if ( shaped )
-            {
-                repaint ();
-            }
-        }
+        this.borderColor = color;
     }
 
     /**
@@ -161,14 +152,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      */
     public void setRound ( final int round )
     {
-        if ( this.round != round )
-        {
-            this.round = round;
-            if ( shaped )
-            {
-                repaint ();
-            }
-        }
+        this.round = round;
     }
 
     /**
@@ -188,14 +172,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      */
     public void setShadeWidth ( final int width )
     {
-        if ( this.shadeWidth != width )
-        {
-            this.shadeWidth = width;
-            if ( shaped )
-            {
-                updateAll ();
-            }
-        }
+        this.shadeWidth = width;
     }
 
     /**
@@ -215,14 +192,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      */
     public void setShadeOpacity ( final float opacity )
     {
-        if ( this.shadeOpacity != opacity )
-        {
-            this.shadeOpacity = opacity;
-            if ( shaped )
-            {
-                repaint ();
-            }
-        }
+        this.shadeOpacity = opacity;
     }
 
     /**
@@ -242,14 +212,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      */
     public void setCornerWidth ( final int width )
     {
-        if ( this.cornerWidth != width )
-        {
-            this.cornerWidth = width;
-            if ( shaped )
-            {
-                updateAll ();
-            }
-        }
+        this.cornerWidth = width;
     }
 
     /**
@@ -269,14 +232,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      */
     public void setOpacity ( final float opacity )
     {
-        if ( this.opacity != opacity )
-        {
-            this.opacity = opacity;
-            if ( shaped )
-            {
-                repaint ();
-            }
-        }
+        this.opacity = opacity;
     }
 
     /**
@@ -296,14 +252,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      */
     public void setCornerSide ( final int cornerSide )
     {
-        if ( this.cornerSide != cornerSide )
-        {
-            this.cornerSide = cornerSide;
-            if ( shaped )
-            {
-                repaint ();
-            }
-        }
+        this.cornerSide = cornerSide;
     }
 
     /**
@@ -323,14 +272,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      */
     public void setRelativeCorner ( final int relativeCorner )
     {
-        if ( this.relativeCorner != relativeCorner )
-        {
-            this.relativeCorner = relativeCorner;
-            if ( shaped )
-            {
-                repaint ();
-            }
-        }
+        this.relativeCorner = relativeCorner;
     }
 
     /**
@@ -350,14 +292,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      */
     public void setCornerAlignment ( final int cornerAlignment )
     {
-        if ( this.cornerAlignment != cornerAlignment )
-        {
-            this.cornerAlignment = cornerAlignment;
-            if ( shaped )
-            {
-                repaint ();
-            }
-        }
+        this.cornerAlignment = cornerAlignment;
     }
 
     @Override
@@ -373,17 +308,19 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
     }
 
     @Override
-    public Insets getBorders ()
+    protected Insets getBorder ()
     {
+        final Insets border;
         if ( shaped )
         {
             final int sideWidth = getSideWidth ();
-            return i ( sideWidth + 1, sideWidth + 1, sideWidth + 1, sideWidth + 1 );
+            border = new Insets ( sideWidth + 1, sideWidth + 1, sideWidth + 1, sideWidth + 1 );
         }
         else
         {
-            return i ( 1, 1, 1, 1 );
+            border = new Insets ( 1, 1, 1, 1 );
         }
+        return border;
     }
 
     @Override

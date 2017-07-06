@@ -43,17 +43,11 @@ public class WebRadioButtonMenuItemUI extends BasicRadioButtonMenuItemUI impleme
     protected IRadioButtonMenuItemPainter painter;
 
     /**
-     * Runtime variables.
-     */
-    protected Insets margin = null;
-    protected Insets padding = null;
-
-    /**
-     * Returns an instance of the WebRadioButtonMenuItemUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebRadioButtonMenuItemUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebRadioButtonMenuItemUI
+     * @return instance of the {@link WebRadioButtonMenuItemUI}
      */
     @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
@@ -61,25 +55,16 @@ public class WebRadioButtonMenuItemUI extends BasicRadioButtonMenuItemUI impleme
         return new WebRadioButtonMenuItemUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
+        // Installing UI
         super.installUI ( c );
 
         // Applying skin
         StyleManager.installSkin ( menuItem );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
@@ -99,27 +84,25 @@ public class WebRadioButtonMenuItemUI extends BasicRadioButtonMenuItemUI impleme
     @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( menuItem );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setMargin ( menuItem, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return padding;
+        return PainterSupport.getPadding ( menuItem );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setPadding ( menuItem, padding );
     }
 
     /**

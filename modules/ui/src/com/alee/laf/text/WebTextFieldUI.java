@@ -30,9 +30,6 @@ import com.alee.utils.swing.DataRunnable;
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.beans.PropertyChangeEvent;
 
 /**
  * Custom UI for {@link JTextField} component.
@@ -44,36 +41,29 @@ import java.beans.PropertyChangeEvent;
 public class WebTextFieldUI extends WTextFieldUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
+     * Input prompt text.
+     */
+    protected String inputPrompt;
+
+    /**
      * Component painter.
      */
     @DefaultPainter ( TextFieldPainter.class )
     protected ITextFieldPainter painter;
 
     /**
-     * Input prompt text.
-     */
-    protected String inputPrompt;
-
-    /**
      * Runtime variables.
      */
-    protected JTextField field = null;
-    protected Insets margin = null;
-    protected Insets padding = null;
-    protected JComponent leadingComponent = null;
-    protected JComponent trailingComponent = null;
+    protected transient JTextField field = null;
+    protected transient JComponent leadingComponent = null;
+    protected transient JComponent trailingComponent = null;
 
     /**
-     * Listeners.
-     */
-    protected ComponentAdapter componentResizeListener;
-
-    /**
-     * Returns an instance of the WebTextFieldUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebTextFieldUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebTextFieldUI
+     * @return instance of the {@link WebTextFieldUI}
      */
     @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
@@ -81,38 +71,19 @@ public class WebTextFieldUI extends WTextFieldUI implements ShapeSupport, Margin
         return new WebTextFieldUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
-        super.installUI ( c );
-
         // Saving text field reference
+        // This have to be set before calling super to make sure field reference is available
         this.field = ( JTextField ) c;
 
-        // Custom listener for leading/trailing components
-        componentResizeListener = new ComponentAdapter ()
-        {
-            @Override
-            public void componentResized ( final ComponentEvent e )
-            {
-                PainterSupport.updateBorder ( getPainter () );
-            }
-        };
+        super.installUI ( c );
 
         // Applying skin
         StyleManager.installSkin ( field );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
@@ -120,15 +91,13 @@ public class WebTextFieldUI extends WTextFieldUI implements ShapeSupport, Margin
         StyleManager.uninstallSkin ( field );
 
         // Removing internal components
-        field.putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, null );
         removeLeadingComponent ();
         removeTrailingComponent ();
-        field.setLayout ( null );
+
+        super.uninstallUI ( c );
 
         // Removing field reference
         field = null;
-
-        super.uninstallUI ( c );
     }
 
     @Override
@@ -140,27 +109,25 @@ public class WebTextFieldUI extends WTextFieldUI implements ShapeSupport, Margin
     @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( field );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setMargin ( field, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return padding;
+        return PainterSupport.getPadding ( field );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setPadding ( field, padding );
     }
 
     /**
@@ -192,18 +159,6 @@ public class WebTextFieldUI extends WTextFieldUI implements ShapeSupport, Margin
     }
 
     @Override
-    protected void propertyChange ( final PropertyChangeEvent evt )
-    {
-        super.propertyChange ( evt );
-
-        if ( evt.getPropertyName ().equals ( WebLookAndFeel.ENABLED_PROPERTY ) )
-        {
-            SwingUtils.setEnabledRecursively ( leadingComponent, field.isEnabled () );
-            SwingUtils.setEnabledRecursively ( trailingComponent, field.isEnabled () );
-        }
-    }
-
-    @Override
     public String getInputPrompt ()
     {
         return inputPrompt;
@@ -226,44 +181,42 @@ public class WebTextFieldUI extends WTextFieldUI implements ShapeSupport, Margin
     }
 
     @Override
-    public void setLeadingComponent ( final JComponent leadingComponent )
+    public JComponent setLeadingComponent ( final JComponent leadingComponent )
     {
+        // Component haven't changed
         if ( this.leadingComponent == leadingComponent )
         {
-            return;
+            return null;
         }
 
         // Removing old leading component
-        removeLeadingComponent ();
+        final JComponent old = this.leadingComponent;
+        if ( this.leadingComponent != null )
+        {
+            field.remove ( this.leadingComponent );
+            this.leadingComponent = null;
+        }
 
         // New leading component
         if ( leadingComponent != null )
         {
             this.leadingComponent = leadingComponent;
-
-            // Registering resize listener
-            this.leadingComponent.addComponentListener ( componentResizeListener );
-
-            // Adding component
             field.add ( leadingComponent );
         }
+
+        // Informing about leading component change
+        SwingUtils.firePropertyChanged ( field, WebLookAndFeel.LEADING_COMPONENT_PROPERTY, old, leadingComponent );
 
         // Updating layout
         field.revalidate ();
 
-        // Updating border
-        PainterSupport.updateBorder ( getPainter () );
+        return old;
     }
 
     @Override
-    public void removeLeadingComponent ()
+    public JComponent removeLeadingComponent ()
     {
-        if ( this.leadingComponent != null )
-        {
-            this.leadingComponent.removeComponentListener ( componentResizeListener );
-            field.remove ( this.leadingComponent );
-            this.leadingComponent = null;
-        }
+        return setLeadingComponent ( null );
     }
 
     @Override
@@ -273,44 +226,42 @@ public class WebTextFieldUI extends WTextFieldUI implements ShapeSupport, Margin
     }
 
     @Override
-    public void setTrailingComponent ( final JComponent trailingComponent )
+    public JComponent setTrailingComponent ( final JComponent trailingComponent )
     {
+        // Component haven't changed
         if ( this.trailingComponent == trailingComponent )
         {
-            return;
+            return null;
         }
 
         // Removing old trailing component
-        removeTrailingComponent ();
+        final JComponent old = this.trailingComponent;
+        if ( this.trailingComponent != null )
+        {
+            field.remove ( this.trailingComponent );
+            this.trailingComponent = null;
+        }
 
         // New trailing component
         if ( trailingComponent != null )
         {
             this.trailingComponent = trailingComponent;
-
-            // Registering resize listener
-            this.trailingComponent.addComponentListener ( componentResizeListener );
-
-            // Adding component
             field.add ( trailingComponent );
         }
+
+        // Informing about trailing component change
+        SwingUtils.firePropertyChanged ( field, WebLookAndFeel.LEADING_COMPONENT_PROPERTY, old, trailingComponent );
 
         // Updating layout
         field.revalidate ();
 
-        // Updating border
-        PainterSupport.updateBorder ( getPainter () );
+        return old;
     }
 
     @Override
-    public void removeTrailingComponent ()
+    public JComponent removeTrailingComponent ()
     {
-        if ( this.trailingComponent != null )
-        {
-            this.trailingComponent.removeComponentListener ( componentResizeListener );
-            field.remove ( this.trailingComponent );
-            this.trailingComponent = null;
-        }
+        return setTrailingComponent ( null );
     }
 
     @Override

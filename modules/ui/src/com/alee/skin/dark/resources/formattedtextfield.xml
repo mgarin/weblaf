@@ -35,12 +35,25 @@
         </painter>
     </style>
 
-    <!-- Formatted text field undecorated -->
-    <style type="formattedtextfield" id="undecorated">
+    <!-- Non-opaque formatted text field -->
+    <style type="formattedtextfield" id="non-opaque">
+        <component>
+            <opaque>false</opaque>
+        </component>
         <painter>
-            <decorations>
-                <decoration visible="false" />
+            <decorations overwrite="true">
+                <decoration>
+                    <BoundsShape />
+                    <ColorBackground color="106,110,112" />
+                </decoration>
             </decorations>
+        </painter>
+    </style>
+
+    <!-- Transparent formatted text field -->
+    <style type="formattedtextfield" id="transparent" extends="non-opaque">
+        <painter>
+            <decorations overwrite="true" />
         </painter>
     </style>
 

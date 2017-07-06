@@ -22,7 +22,7 @@ public interface MarginSupport
 
     /**
      * Returns current margin.
-     * Might return null which is basically the same as an empty [0,0,0,0] margin.
+     * Might return {@code null} which is basically the same as an empty [0,0,0,0] margin.
      *
      * @return current margin
      */

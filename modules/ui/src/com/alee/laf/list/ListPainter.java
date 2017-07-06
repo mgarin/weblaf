@@ -45,32 +45,58 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
     /**
      * Listeners.
      */
-    protected ListSelectionListener listSelectionListener;
+    protected transient ListSelectionListener listSelectionListener;
 
     /**
      * Painting variables.
      */
-    protected Integer layoutOrientation;
-    protected CellRendererPane rendererPane;
-    protected Integer listHeight = -1;
-    protected Integer listWidth = -1;
-    protected Integer columnCount;
-    protected Integer preferredHeight;
-    protected Integer rowsPerColumn;
-    protected int cellWidth = -1;
-    protected int cellHeight = -1;
-    protected int[] cellHeights = null;
+    protected transient Integer layoutOrientation;
+    protected transient CellRendererPane rendererPane;
+    protected transient Integer listHeight = -1;
+    protected transient Integer listWidth = -1;
+    protected transient Integer columnCount;
+    protected transient Integer preferredHeight;
+    protected transient Integer rowsPerColumn;
+    protected transient int cellWidth = -1;
+    protected transient int cellHeight = -1;
+    protected transient int[] cellHeights = null;
 
     @Override
-    public void install ( final E c, final U ui )
+    protected void installSectionPainters ()
     {
-        super.install ( c, ui );
+        super.installSectionPainters ();
+        hoverPainter = PainterSupport.installSectionPainter ( this, hoverPainter, null, component, ui );
+        selectionPainter = PainterSupport.installSectionPainter ( this, selectionPainter, null, component, ui );
+    }
 
-        // Properly installing section painters
-        this.hoverPainter = PainterSupport.installSectionPainter ( this, hoverPainter, null, c, ui );
-        this.selectionPainter = PainterSupport.installSectionPainter ( this, selectionPainter, null, c, ui );
+    @Override
+    protected void uninstallSectionPainters ()
+    {
+        selectionPainter = PainterSupport.uninstallSectionPainter ( selectionPainter, component, ui );
+        hoverPainter = PainterSupport.uninstallSectionPainter ( hoverPainter, component, ui );
+        super.uninstallSectionPainters ();
+    }
 
-        // Selection listener
+    @Override
+    protected void installPropertiesAndListeners ()
+    {
+        super.installPropertiesAndListeners ();
+        installListSelectionListeners ();
+    }
+
+    @Override
+    protected void uninstallPropertiesAndListeners ()
+    {
+        uninstallListSelectionListeners ();
+        uninstallRuntimeVariables ();
+        super.uninstallPropertiesAndListeners ();
+    }
+
+    /**
+     * Installs list selection listeners.
+     */
+    protected void installListSelectionListeners ()
+    {
         listSelectionListener = new ListSelectionListener ()
         {
             @Override
@@ -88,21 +114,21 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
         component.addListSelectionListener ( listSelectionListener );
     }
 
-    @Override
-    public void uninstall ( final E c, final U ui )
+    /**
+     * Uninstalls list selection listeners.
+     */
+    protected void uninstallListSelectionListeners ()
     {
-        // Removing listeners
         component.removeListSelectionListener ( listSelectionListener );
         listSelectionListener = null;
+    }
 
-        // Clearing painting variables
+    /**
+     * Performs runtime variables cleanup.
+     */
+    protected void uninstallRuntimeVariables ()
+    {
         cellHeights = null;
-
-        // Properly uninstalling section painters
-        this.selectionPainter = PainterSupport.uninstallSectionPainter ( selectionPainter, c, ui );
-        this.hoverPainter = PainterSupport.uninstallSectionPainter ( hoverPainter, c, ui );
-
-        super.uninstall ( c, ui );
     }
 
     @Override
@@ -178,7 +204,7 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
             }
             final int maxY = paintBounds.y + paintBounds.height;
             final int leadIndex = adjustIndex ( component.getLeadSelectionIndex (), component );
-            final int rowIncrement = ( layoutOrientation == JList.HORIZONTAL_WRAP ) ? columnCount : 1;
+            final int rowIncrement = layoutOrientation == JList.HORIZONTAL_WRAP ? columnCount : 1;
 
             final ListSelectionModel selModel = component.getSelectionModel ();
             for ( int colCounter = startColumn; colCounter <= endColumn; colCounter++ )
@@ -236,7 +262,7 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
         {
             return -1;
         }
-        return ( cellHeights == null ) ? cellHeight : row < cellHeights.length ? cellHeights[ row ] : -1;
+        return cellHeights == null ? cellHeight : row < cellHeights.length ? cellHeights[ row ] : -1;
     }
 
     /**
@@ -272,7 +298,7 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
         {
             return -1;
         }
-        if ( layoutOrientation == JList.VERTICAL || ( column == 0 && columnCount == 1 ) )
+        if ( layoutOrientation == JList.VERTICAL || column == 0 && columnCount == 1 )
         {
             return component.getModel ().getSize ();
         }
@@ -282,7 +308,7 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
         }
         if ( layoutOrientation == JList.VERTICAL_WRAP )
         {
-            if ( column < ( columnCount - 1 ) )
+            if ( column < columnCount - 1 )
             {
                 return rowsPerColumn;
             }
@@ -344,7 +370,7 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
         final Insets insets = component.getInsets ();
         if ( cellHeights == null )
         {
-            int row = ( cellHeight == 0 ) ? 0 : ( ( y0 - insets.top ) / cellHeight );
+            int row = cellHeight == 0 ? 0 : ( y0 - insets.top ) / cellHeight;
             if ( closest )
             {
                 if ( row < 0 )
@@ -374,7 +400,7 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
             int i;
             for ( i = 0; i < size; i++ )
             {
-                if ( ( y0 >= y ) && ( y0 < y + cellHeights[ i ] ) )
+                if ( y0 >= y && y0 < y + cellHeights[ i ] )
                 {
                     return row;
                 }
@@ -682,7 +708,7 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
     {
         final Object value = dataModel.getElementAt ( index );
         final boolean isSelected = selModel.isSelectedIndex ( index );
-        final boolean cellHasFocus = component.hasFocus () && ( index == leadIndex );
+        final boolean cellHasFocus = component.hasFocus () && index == leadIndex;
         final Component renderer = cellRenderer.getListCellRendererComponent ( component, value, index, isSelected, cellHasFocus );
         rendererPane.paintComponent ( g2d, renderer, component, rowBounds.x, rowBounds.y, rowBounds.width, rowBounds.height, true );
     }

@@ -95,19 +95,19 @@ public class TitledBorderPainter<E extends JComponent, U extends ComponentUI> ex
     /**
      * Runtime variables.
      */
-    protected int w;
-    protected int h;
-    protected int sw;
-    protected boolean emptyTitle;
-    protected FontMetrics fontMetrics;
-    protected int titleAreaHeight;
-    protected int titleWidth;
-    protected int titleX;
-    protected int titleY;
-    protected double borderCenter;
-    protected double borderPosition;
-    protected Shape borderShape;
-    protected boolean doClip;
+    protected transient int w;
+    protected transient int h;
+    protected transient int sw;
+    protected transient boolean emptyTitle;
+    protected transient FontMetrics fontMetrics;
+    protected transient int titleAreaHeight;
+    protected transient int titleWidth;
+    protected transient int titleX;
+    protected transient int titleY;
+    protected transient double borderCenter;
+    protected transient double borderPosition;
+    protected transient Shape borderShape;
+    protected transient boolean doClip;
 
     public TitledBorderPainter ()
     {
@@ -232,9 +232,9 @@ public class TitledBorderPainter<E extends JComponent, U extends ComponentUI> ex
     }
 
     @Override
-    public Insets getBorders ()
+    protected Insets getBorder ()
     {
-        final Insets m = super.getBorders ();
+        final Insets m = super.getBorder ();
         if ( !isEmptyTitle () )
         {
             switch ( titleSide )

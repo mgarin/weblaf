@@ -104,7 +104,7 @@ public class WebInternalFrameTitlePane extends WebPanel implements SwingConstant
         add ( titleIcon, BorderLayout.LINE_START );
 
         titleLabel = new WebLabel ( StyleId.internalframeTitleLabel.at ( this ), frame.getTitle () );
-        titleLabel.setFont ( WebLookAndFeel.globalTitleFont );
+        titleLabel.setFont ( WebLookAndFeel.globalWindowFont );
         titleLabel.setFontSize ( 13 );
         titleLabel.addComponentListener ( new ComponentAdapter ()
         {

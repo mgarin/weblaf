@@ -28,6 +28,7 @@
             </decorations>
         </painter>
     </style>
+    <style type="togglebutton" id="tool-icon" extends="tool" padding="2,2,2,2" />
     <style type="combobox" id="tool" extends="hover">
         <component>
             <focusable>false</focusable>
@@ -43,7 +44,7 @@
     </style>
 
     <!-- Filter fields -->
-    <style type="textfield" id="filter" extends="treefilterfield-inline" padding="6">
+    <style type="textfield" id="filter" extends="treefilterfield-non-opaque" padding="6">
 
         <!-- Settings menu button -->
         <style type="button" id="settings" padding="0,2,0,6" />

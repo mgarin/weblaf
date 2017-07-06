@@ -126,7 +126,7 @@ public class BreadcrumbButtonPainter<E extends WebBreadcrumbButton, U extends We
     }
 
     @Override
-    public Insets getBorders ()
+    protected Insets getBorder ()
     {
         return BreadcrumbUtils.getElementMargin ( component );
     }

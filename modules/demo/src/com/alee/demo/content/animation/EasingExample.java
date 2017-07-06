@@ -154,10 +154,10 @@ public class EasingExample extends AbstractPreviewExample
                     }
                 }
             };
-            durationChooser.onChange ( new DocumentEventRunnable ()
+            durationChooser.onChange ( new DocumentEventRunnable<WebTextField> ()
             {
                 @Override
-                public void run ( final DocumentEvent e )
+                public void run ( final WebTextField component, final DocumentEvent event )
                 {
                     easingUpdater.run ();
                 }

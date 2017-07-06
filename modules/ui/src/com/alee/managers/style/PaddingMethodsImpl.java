@@ -34,7 +34,7 @@ public final class PaddingMethodsImpl
 {
     /**
      * Returns current padding.
-     * Might return null which is basically the same as an empty [0,0,0,0] padding.
+     * Might return {@code null} which is basically the same as an empty [0,0,0,0] padding.
      *
      * @param component component to retrieve padding from
      * @return current padding
@@ -42,7 +42,7 @@ public final class PaddingMethodsImpl
     public static Insets getPadding ( final JComponent component )
     {
         final PaddingSupport support = getPaddingSupportUI ( component );
-        return support != null ? support.getPadding () : null;
+        return support != null ? support.getPadding () : PaddingSupport.EMPTY;
     }
 
     /**

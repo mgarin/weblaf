@@ -62,13 +62,13 @@ public class WebTableDoubleCellRenderer extends WebTableNumberCellRenderer
     }
 
     /**
-     * A subclass of {@link com.alee.laf.table.renderers.WebTableDoubleCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
+     * A subclass of {@link WebTableDoubleCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
      */
     public static class UIResource extends WebTableDoubleCellRenderer implements javax.swing.plaf.UIResource
     {
         /**
-         * Implementation is used completely from {@link com.alee.laf.table.renderers.WebTableDoubleCellRenderer}.
+         * Implementation is used completely from {@link WebTableDoubleCellRenderer}.
          */
     }
 }

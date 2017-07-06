@@ -56,9 +56,7 @@ public class WebProgressBarUI<C extends JProgressBar> extends WProgressBarUI<C> 
     /**
      * Runtime variables.
      */
-    protected Insets margin = null;
-    protected Insets padding = null;
-    protected EventsHandler eventsHandler;
+    protected transient EventsHandler eventsHandler;
 
     /**
      * Returns an instance of the {@link WebProgressBarUI} for the specified component.
@@ -126,27 +124,25 @@ public class WebProgressBarUI<C extends JProgressBar> extends WProgressBarUI<C> 
     @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( progressBar );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setMargin ( progressBar, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return padding;
+        return PainterSupport.getPadding ( progressBar );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setPadding ( progressBar, padding );
     }
 
     /**

@@ -18,6 +18,6 @@ public class CheckBoxMenuItemPainter<E extends JCheckBoxMenuItem, U extends WebC
         extends AbstractStateMenuItemPainter<E, U, D> implements ICheckBoxMenuItemPainter<E, U>
 {
     /**
-     * Implementation is used completely from {@link com.alee.laf.menu.AbstractStateMenuItemPainter}.
+     * Implementation is used completely from {@link AbstractStateMenuItemPainter}.
      */
 }

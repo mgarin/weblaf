@@ -62,13 +62,13 @@ public class WebTableDateCellRenderer extends WebTableCellRenderer
     }
 
     /**
-     * A subclass of {@link com.alee.laf.table.renderers.WebTableDateCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
+     * A subclass of {@link WebTableDateCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
      */
     public static class UIResource extends WebTableDateCellRenderer implements javax.swing.plaf.UIResource
     {
         /**
-         * Implementation is used completely from {@link com.alee.laf.table.renderers.WebTableDateCellRenderer}.
+         * Implementation is used completely from {@link WebTableDateCellRenderer}.
          */
     }
 }

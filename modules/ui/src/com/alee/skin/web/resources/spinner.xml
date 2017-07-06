@@ -29,7 +29,7 @@
         <style type="panel" id="editor-container" extends="transparent" />
 
         <!-- Editor field -->
-        <style type="formattedtextfield" id="editor" extends="undecorated" />
+        <style type="formattedtextfield" id="editor" extends="transparent" />
 
         <!-- Buttons -->
         <style type="button" id="button" extends="icon">

@@ -20,6 +20,8 @@ package com.alee.demo.frames.examples;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.extended.tree.WebExTree;
 import com.alee.laf.tree.TreeSelectionStyle;
+import com.alee.managers.language.LanguageAdapter;
+import com.alee.managers.language.LanguageManager;
 
 /**
  * @author Mikle Garin
@@ -43,5 +45,15 @@ public final class ExamplesTree extends WebExTree<ExamplesTreeNode>
 
         // Data provider
         setDataProvider ( new ExamplesTreeDataProvider () );
+
+        // Updates on language change
+        LanguageManager.addLanguageListener ( new LanguageAdapter ()
+        {
+            @Override
+            public void languageChanged ( final String oldLang, final String newLang )
+            {
+                updateVisibleNodes ();
+            }
+        } );
     }
 }

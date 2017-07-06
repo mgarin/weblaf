@@ -33,8 +33,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public abstract class AdaptivePainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>
-        implements SpecificPainter<E, U>
+public abstract class AdaptivePainter<E extends JComponent, U extends ComponentUI> implements SpecificPainter<E, U>
 {
     /**
      * Adapted painter.
@@ -75,27 +74,27 @@ public abstract class AdaptivePainter<E extends JComponent, U extends ComponentU
     }
 
     @Override
+    public boolean isInstalled ()
+    {
+        return painter.isInstalled ();
+    }
+
+    @Override
     public Boolean isOpaque ()
     {
         return painter.isOpaque ();
     }
 
     @Override
-    public Insets getBorders ()
+    public int getBaseline ( final E c, final U ui, final Bounds bounds )
     {
-        return painter.getBorders ();
+        return painter.getBaseline ( c, ui, bounds );
     }
 
     @Override
-    public void addPainterListener ( final PainterListener listener )
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final E c, final U ui )
     {
-        painter.addPainterListener ( listener );
-    }
-
-    @Override
-    public void removePainterListener ( final PainterListener listener )
-    {
-        painter.removePainterListener ( listener );
+        return painter.getBaselineResizeBehavior ( c, ui );
     }
 
     @Override
@@ -108,5 +107,17 @@ public abstract class AdaptivePainter<E extends JComponent, U extends ComponentU
     public Dimension getPreferredSize ()
     {
         return painter.getPreferredSize ();
+    }
+
+    @Override
+    public void addPainterListener ( final PainterListener listener )
+    {
+        painter.addPainterListener ( listener );
+    }
+
+    @Override
+    public void removePainterListener ( final PainterListener listener )
+    {
+        painter.removePainterListener ( listener );
     }
 }

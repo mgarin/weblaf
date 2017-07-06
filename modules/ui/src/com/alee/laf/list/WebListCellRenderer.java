@@ -45,7 +45,7 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
     /**
      * Additional renderer decoration states.
      */
-    protected final List<String> states = new ArrayList<String> ( 3 );
+    protected final List<String> states;
 
     /**
      * Constructs default list cell renderer.
@@ -54,6 +54,7 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
     {
         super ();
         setName ( "List.cellRenderer" );
+        states = new ArrayList<String> ( 3 );
     }
 
     @Override
@@ -75,18 +76,16 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
     protected void updateStates ( final JList list, final Object value, final int index, final boolean isSelected, final boolean hasFocus )
     {
         states.clear ();
-        if ( isSelected )
-        {
-            states.add ( DecorationState.selected );
-        }
+
+        // Basic states
+        states.add ( isSelected ? DecorationState.selected : DecorationState.unselected );
         if ( hasFocus )
         {
             states.add ( DecorationState.focused );
         }
-        if ( value instanceof Stateful )
-        {
-            states.addAll ( ( ( Stateful ) value ).getStates () );
-        }
+
+        // Extra states provided by value
+        states.addAll ( DecorationUtils.getExtraStates ( value ) );
     }
 
     /**
@@ -256,43 +255,57 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
     @Override
     public void validate ()
     {
-        // Overridden for performance reasons
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
     @Override
     public void invalidate ()
     {
-        // Overridden for performance reasons
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
     @Override
     public void revalidate ()
     {
-        // Overridden for performance reasons
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
     @Override
     public void repaint ( final long tm, final int x, final int y, final int width, final int height )
     {
-        // Overridden for performance reasons
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
     @Override
     public void repaint ( final Rectangle r )
     {
-        // Overridden for performance reasons
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
     @Override
     public void repaint ()
     {
-        // Overridden for performance reasons
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
     @Override
     protected void firePropertyChange ( final String pn, final Object oldValue, final Object newValue )
     {
-        // Overridden for performance reasons
+        /**
+         * Overridden for performance reasons.
+         */
         if ( CompareUtils.equals ( pn, StyleId.STYLE_PROPERTY, StyleId.PARENT_STYLE_PROPERTY, WebLookAndFeel.TEXT_PROPERTY,
                 AbstractDecorationPainter.DECORATION_STATES_PROPERTY, WebStyledLabel.STYLE_RANGES_PROPERTY ) )
         {
@@ -308,49 +321,65 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
     @Override
     public void firePropertyChange ( final String propertyName, final byte oldValue, final byte newValue )
     {
-        // Overridden for performance reasons
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
     @Override
     public void firePropertyChange ( final String propertyName, final char oldValue, final char newValue )
     {
-        // Overridden for performance reasons
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
     @Override
     public void firePropertyChange ( final String propertyName, final short oldValue, final short newValue )
     {
-        // Overridden for performance reasons
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
     @Override
     public void firePropertyChange ( final String propertyName, final int oldValue, final int newValue )
     {
-        // Overridden for performance reasons
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
     @Override
     public void firePropertyChange ( final String propertyName, final long oldValue, final long newValue )
     {
-        // Overridden for performance reasons
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
     @Override
     public void firePropertyChange ( final String propertyName, final float oldValue, final float newValue )
     {
-        // Overridden for performance reasons
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
     @Override
     public void firePropertyChange ( final String propertyName, final double oldValue, final double newValue )
     {
-        // Overridden for performance reasons
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
     @Override
     public void firePropertyChange ( final String propertyName, final boolean oldValue, final boolean newValue )
     {
-        // Overridden for performance reasons
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
     /**

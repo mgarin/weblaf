@@ -36,7 +36,7 @@ public class TableHeaderPainter<E extends JTableHeader, U extends WebTableHeader
     /**
      * Painting variables.
      */
-    protected CellRendererPane rendererPane = null;
+    protected transient CellRendererPane rendererPane = null;
 
     @Override
     public void prepareToPaint ( final CellRendererPane rendererPane )
@@ -65,7 +65,7 @@ public class TableHeaderPainter<E extends JTableHeader, U extends WebTableHeader
             // Variables
             final Rectangle clip = g2d.getClipBounds ();
             final Point left = clip.getLocation ();
-            final Point right = p ( clip.x + clip.width - 1, clip.y );
+            final Point right = new Point ( clip.x + clip.width - 1, clip.y );
             final TableColumnModel cm = component.getColumnModel ();
             int cMin = component.columnAtPoint ( ltr ? left : right );
             int cMax = component.columnAtPoint ( ltr ? right : left );
@@ -162,7 +162,7 @@ public class TableHeaderPainter<E extends JTableHeader, U extends WebTableHeader
         // It can be painted for middle columns, dragged column or when table is smaller than viewport
         final JScrollPane scrollPane = SwingUtils.getScrollPane ( table );
         final boolean paintTrailingBorder = scrollPane != null && ( column == draggedColumn ||
-                ( table.getAutoResizeMode () == JTable.AUTO_RESIZE_OFF && scrollPane.getViewport ().getWidth () > table.getWidth () ) ||
+                table.getAutoResizeMode () == JTable.AUTO_RESIZE_OFF && scrollPane.getViewport ().getWidth () > table.getWidth () ||
                 ( ltr ? columnIndex != columnModel.getColumnCount () - 1 : columnIndex != 0 ) );
 
         // Left side border

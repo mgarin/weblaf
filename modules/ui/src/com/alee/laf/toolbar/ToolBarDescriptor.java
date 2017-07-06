@@ -37,4 +37,14 @@ public final class ToolBarDescriptor extends AbstractComponentDescriptor<JToolBa
     {
         super ( "toolbar", JToolBar.class, "ToolBarUI", WebToolBarUI.class, WebToolBarUI.class, StyleId.toolbar );
     }
+
+    @Override
+    public void updateUI ( final JToolBar component )
+    {
+        // Updating component UI
+        super.updateUI ( component );
+
+        // Invalidating component
+        component.invalidate ();
+    }
 }

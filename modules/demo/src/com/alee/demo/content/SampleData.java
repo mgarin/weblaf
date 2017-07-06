@@ -17,10 +17,17 @@
 
 package com.alee.demo.content;
 
+import com.alee.api.TitleSupport;
+import com.alee.managers.language.LanguageManager;
+import com.alee.utils.CollectionUtils;
+
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import java.util.List;
 
 /**
+ * This utility class provides various sample data for {@link com.alee.demo.DemoApplication}.
+ *
  * @author Mikle Garin
  */
 
@@ -78,5 +85,48 @@ public final class SampleData
                 return col == 3 ? Integer.class : col == 4 ? Boolean.class : String.class;
             }
         };
+    }
+
+    /**
+     * Returns {@link List} of sample data.
+     *
+     * @return {@link List} of sample data
+     */
+    public static List<ListItem> createSampleListData ()
+    {
+        return CollectionUtils.asList (
+                new ListItem ( "item1" ),
+                new ListItem ( "item2" ),
+                new ListItem ( "item3" )
+        );
+    }
+
+    /**
+     * Sample list item object.
+     * It supports translation based on the provided language key in combination with example key.
+     */
+    private static class ListItem implements TitleSupport
+    {
+        /**
+         * Item language key.
+         */
+        private final String language;
+
+        /**
+         * Constructs new {@link ListItem}.
+         *
+         * @param language item language key
+         */
+        public ListItem ( final String language )
+        {
+            super ();
+            this.language = language;
+        }
+
+        @Override
+        public String getTitle ()
+        {
+            return LanguageManager.get ( "demo.sample.list." + language );
+        }
     }
 }

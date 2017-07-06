@@ -17,32 +17,30 @@
 
 package com.alee.painter.decoration.background;
 
-import com.alee.painter.common.TextureType;
 import com.alee.painter.decoration.IDecoration;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
- * Texure background.
- * Fills component shape with a texture based on the specified preset.
+ * Preset texure background.
+ * Fills component shape with a texture based on the specified {@link #preset}.
  *
  * @param <E> component type
  * @param <D> decoration type
  * @param <I> background type
  * @author Mikle Garin
+ * @see AbstractImageTextureBackground
  */
 
 @XStreamAlias ( "PresetTextureBackground" )
 public class PresetTextureBackground<E extends JComponent, D extends IDecoration<E, D>, I extends PresetTextureBackground<E, D, I>>
-        extends AbstractTextureBackground<E, D, I>
+        extends AbstractImageTextureBackground<E, D, I>
 {
     /**
      * Texture preset type.
-     * todo Move presets into separate library part?
      */
     @XStreamAsAttribute
     protected TextureType preset;
@@ -54,10 +52,9 @@ public class PresetTextureBackground<E extends JComponent, D extends IDecoration
     }
 
     @Override
-    protected TexturePaint getTexturePaint ( final Rectangle bounds )
+    protected BufferedImage getTextureImage ()
     {
-        final BufferedImage image = preset.getTexture ();
-        return new TexturePaint ( image, new Rectangle ( bounds.x, bounds.y, image.getWidth (), image.getHeight () ) );
+        return preset.getTexture ();
     }
 
     @Override

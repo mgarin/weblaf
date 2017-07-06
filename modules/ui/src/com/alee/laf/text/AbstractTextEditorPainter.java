@@ -17,16 +17,13 @@
 
 package com.alee.laf.text;
 
+import com.alee.extended.behavior.DocumentChangeBehavior;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LM;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.*;
-import com.alee.utils.general.Pair;
-import com.alee.utils.swing.DocumentChangeListener;
-import com.alee.utils.swing.extensions.DocumentEventMethodsImpl;
-import com.alee.utils.swing.extensions.DocumentEventRunnable;
 import com.alee.utils.xml.FontConverter;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
@@ -38,7 +35,6 @@ import javax.swing.text.DefaultCaret;
 import javax.swing.text.Highlighter;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Map;
 
@@ -69,7 +65,7 @@ public abstract class AbstractTextEditorPainter<E extends JTextComponent, U exte
     /**
      * Input prompt text font.
      */
-    @XStreamConverter (FontConverter.class)
+    @XStreamConverter ( FontConverter.class )
     protected Font inputPromptFont = null;
 
     /**
@@ -90,33 +86,20 @@ public abstract class AbstractTextEditorPainter<E extends JTextComponent, U exte
     /**
      * Listeners.
      */
-    protected transient Pair<DocumentChangeListener, PropertyChangeListener> documentChangeListeners;
+    protected transient DocumentChangeBehavior<E> documentChangeBehavior;
 
     @Override
-    public void install ( final E c, final U ui )
+    protected void installPropertiesAndListeners ()
     {
-        super.install ( c, ui );
-
-        // Proper document change listener
-        // This is required to update emptiness state
-        documentChangeListeners = DocumentEventMethodsImpl.onChange ( component, new DocumentEventRunnable ()
-        {
-            @Override
-            public void run ( final DocumentEvent e )
-            {
-                updateDecorationState ();
-            }
-        } );
+        super.installPropertiesAndListeners ();
+        installDocumentChangeListener ();
     }
 
     @Override
-    public void uninstall ( final E c, final U ui )
+    protected void uninstallPropertiesAndListeners ()
     {
-        // Uninstalling listeners
-        component.removePropertyChangeListener ( WebLookAndFeel.DOCUMENT_PROPERTY, documentChangeListeners.getValue () );
-        component.getDocument ().removeDocumentListener ( documentChangeListeners.getKey () );
-
-        super.uninstall ( c, ui );
+        uninstallDocumentChangeListener ();
+        super.uninstallPropertiesAndListeners ();
     }
 
     @Override
@@ -145,6 +128,30 @@ public abstract class AbstractTextEditorPainter<E extends JTextComponent, U exte
             states.add ( DecorationState.empty );
         }
         return states;
+    }
+
+    /**
+     * Installs {@link DocumentChangeBehavior} required to update emptiness state.
+     */
+    protected void installDocumentChangeListener ()
+    {
+        documentChangeBehavior = new DocumentChangeBehavior<E> ( component )
+        {
+            @Override
+            public void documentChanged ( final E component, final DocumentEvent event )
+            {
+                updateDecorationState ();
+            }
+        }.install ();
+    }
+
+    /**
+     * Uninstalls {@link DocumentChangeBehavior}.
+     */
+    protected void uninstallDocumentChangeListener ()
+    {
+        documentChangeBehavior.uninstall ();
+        documentChangeBehavior = null;
     }
 
     @Override

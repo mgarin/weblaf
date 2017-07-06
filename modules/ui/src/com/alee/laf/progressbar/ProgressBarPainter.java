@@ -55,31 +55,64 @@ public class ProgressBarPainter<E extends JProgressBar, U extends WProgressBarUI
     protected transient int value;
 
     @Override
-    public void install ( final E c, final U ui )
+    protected void installSectionPainters ()
     {
-        super.install ( c, ui );
-
-        // Properly installing section painters
-        this.progressPainter = PainterSupport.installSectionPainter ( this, progressPainter, null, c, ui );
-        this.progressTextPainter = PainterSupport.installSectionPainter ( this, progressTextPainter, null, c, ui );
-
-        // Value listener
-        value = c.getValue ();
-        c.addChangeListener ( this );
+        super.installSectionPainters ();
+        progressPainter = PainterSupport.installSectionPainter ( this, progressPainter, null, component, ui );
+        progressTextPainter = PainterSupport.installSectionPainter ( this, progressTextPainter, null, component, ui );
     }
 
     @Override
-    public void uninstall ( final E c, final U ui )
+    protected void uninstallSectionPainters ()
     {
-        // Value listener
-        c.removeChangeListener ( this );
+        progressTextPainter = PainterSupport.uninstallSectionPainter ( progressTextPainter, component, ui );
+        progressPainter = PainterSupport.uninstallSectionPainter ( progressPainter, component, ui );
+        super.uninstallSectionPainters ();
+    }
+
+    @Override
+    protected void installPropertiesAndListeners ()
+    {
+        super.installPropertiesAndListeners ();
+        installProgressBarValueListeners ();
+    }
+
+    @Override
+    protected void uninstallPropertiesAndListeners ()
+    {
+        uninstallProgressBarValueListeners ();
+        super.uninstallPropertiesAndListeners ();
+    }
+
+    @Override
+    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
+    {
+        // Perform basic actions on property changes
+        super.propertyChanged ( property, oldValue, newValue );
+
+        // Update animator on progress state changes
+        if ( CompareUtils.equals ( property, WebLookAndFeel.INDETERMINATE_PROPERTY, WebLookAndFeel.ORIENTATION_PROPERTY ) )
+        {
+            updateDecorationState ();
+        }
+    }
+
+    /**
+     * Installs custom {@link JProgressBar} value listeners which will perform decoration state updates when needed.
+     */
+    protected void installProgressBarValueListeners ()
+    {
+        value = component.getValue ();
+        component.addChangeListener ( this );
+    }
+
+    /**
+     * Uninstalls custom {@link JProgressBar} value listeners.
+     */
+    protected void uninstallProgressBarValueListeners ()
+    {
+        component.removeChangeListener ( this );
         value = -1;
-
-        // Properly uninstalling section painters
-        this.progressTextPainter = PainterSupport.uninstallSectionPainter ( progressTextPainter, c, ui );
-        this.progressPainter = PainterSupport.uninstallSectionPainter ( progressPainter, c, ui );
-
-        super.uninstall ( c, ui );
     }
 
     @Override
@@ -108,19 +141,6 @@ public class ProgressBarPainter<E extends JProgressBar, U extends WProgressBarUI
                 // Save current value
                 value = newValue;
             }
-        }
-    }
-
-    @Override
-    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
-    {
-        // Perform basic actions on property changes
-        super.propertyChanged ( property, oldValue, newValue );
-
-        // Update animator on progress state changes
-        if ( CompareUtils.equals ( property, WebLookAndFeel.INDETERMINATE_PROPERTY, WebLookAndFeel.ORIENTATION_PROPERTY ) )
-        {
-            updateDecorationState ();
         }
     }
 

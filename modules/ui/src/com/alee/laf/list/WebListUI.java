@@ -50,29 +50,27 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
     protected ListSelectionStyle selectionStyle;
 
     /**
-     * Listeners.
-     */
-    protected ListItemHoverBehavior hoverCellTracker;
-
-    /**
      * Component painter.
      */
     @DefaultPainter ( ListPainter.class )
     protected IListPainter painter;
 
     /**
-     * Runtime variables.
+     * Listeners.
      */
-    protected Insets margin = null;
-    protected Insets padding = null;
-    protected int hoverIndex = -1;
+    protected transient ListItemHoverBehavior hoverCellTracker;
 
     /**
-     * Returns an instance of the WebListUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Runtime variables.
+     */
+    protected transient int hoverIndex = -1;
+
+    /**
+     * Returns an instance of the {@link WebListUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebListUI
+     * @return instance of the {@link WebListUI}
      */
     @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
@@ -80,11 +78,6 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
         return new WebListUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
@@ -147,11 +140,6 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
         StyleManager.installSkin ( list );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
@@ -175,27 +163,25 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
     @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( list );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setMargin ( list, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return padding;
+        return PainterSupport.getPadding ( list );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setPadding ( list, padding );
     }
 
     /**

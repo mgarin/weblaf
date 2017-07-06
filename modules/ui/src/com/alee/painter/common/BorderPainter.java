@@ -35,7 +35,7 @@ import java.awt.geom.RoundRectangle2D;
  * @param <E> component type
  * @param <U> component UI type
  * @author Mikle Garin
- * @see com.alee.painter.AbstractPainter
+ * @see AbstractPainter
  * @see com.alee.painter.Painter
  */
 
@@ -144,17 +144,17 @@ public class BorderPainter<E extends JComponent, U extends ComponentUI> extends 
      *
      * @return stroke width
      */
-    public int getStrokeWidth ()
+    protected int getStrokeWidth ()
     {
         final Stroke stroke = getStroke ();
         return stroke != null && stroke instanceof BasicStroke ? Math.round ( ( ( BasicStroke ) stroke ).getLineWidth () ) : 0;
     }
 
     @Override
-    public Insets getBorders ()
+    protected Insets getBorder ()
     {
         final int width = getStrokeWidth ();
-        return i ( width, width, width, width );
+        return new Insets ( width, width, width, width );
     }
 
     @Override

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xs:schema targetNamespace="http://weblookandfeel.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 
-    <!-- com.alee.painter.common.TextureType -->
+    <!-- com.alee.painter.decoration.background.TextureType -->
     <xs:simpleType name="TextureType">
         <xs:restriction base="xs:string">
 

@@ -43,12 +43,6 @@ public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements Sh
     protected ICanvasPainter painter;
 
     /**
-     * Runtime variables.
-     */
-    protected Insets margin = null;
-    protected Insets padding = null;
-
-    /**
      * Returns an instance of the {@link WebCanvasUI} for the specified component.
      * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
@@ -90,27 +84,25 @@ public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements Sh
     @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( canvas );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setMargin ( canvas, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return padding;
+        return PainterSupport.getPadding ( canvas );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setPadding ( canvas, padding );
     }
 
     /**

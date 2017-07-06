@@ -34,7 +34,7 @@ public final class MarginMethodsImpl
 {
     /**
      * Returns current margin.
-     * Might return null which is basically the same as an empty [0,0,0,0] margin.
+     * Might return {@code null} which is basically the same as an empty [0,0,0,0] margin.
      *
      * @param component component to retrieve margin from
      * @return current margin
@@ -42,7 +42,7 @@ public final class MarginMethodsImpl
     public static Insets getMargin ( final JComponent component )
     {
         final MarginSupport support = getMarginSupportUI ( component );
-        return support != null ? support.getMargin () : null;
+        return support != null ? support.getMargin () : MarginSupport.EMPTY;
     }
 
     /**

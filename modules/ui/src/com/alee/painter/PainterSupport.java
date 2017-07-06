@@ -34,6 +34,7 @@ import javax.swing.border.Border;
 import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -52,9 +53,29 @@ public final class PainterSupport
 {
     /**
      * Installed painters map.
+     *
+     * @see #installPainter(JComponent, Painter)
+     * @see #uninstallPainter(JComponent, Painter)
+     * @deprecated Ther should only be one {@link Painter} per component
      */
+    @Deprecated
     private static final Map<JComponent, Map<Painter, PainterListener>> installedPainters =
-            new WeakHashMap<JComponent, Map<Painter, PainterListener>> ();
+            new WeakHashMap<JComponent, Map<Painter, PainterListener>> ( 100 );
+
+    /**
+     * Margins saved per-component instance.
+     * todo These settings should be completely moved into {@link AbstractPainter} upon multiple painters elimination
+     *
+     * @see #getMargin(Component)
+     * @see #setMargin(JComponent, Insets)
+     */
+    private static final Map<JComponent, Insets> margins = new HashMap<JComponent, Insets> ( 100 );
+
+    /**
+     * Paddings saved per-component instance.
+     * todo These settings should be completely moved into {@link AbstractPainter} upon multiple painters elimination
+     */
+    private static final Map<JComponent, Insets> paddings = new HashMap<JComponent, Insets> ( 100 );
 
     /**
      * Returns either the specified painter if it is not an adapted painter or the adapted painter.
@@ -358,16 +379,94 @@ public final class PainterSupport
     }
 
     /**
-     * Force painter to update border of the component it is attached to.
+     * Returns component border insets or {@code null} if component doesn't have borders.
+     * {@code null} is basically the same as an empty [0,0,0,0] border insets.
      *
-     * @param painter painter to ask for border update
+     * @param component component to retrieve border insets from
+     * @return component border insets or {@code null} if component doesn't have borders
      */
-    public static void updateBorder ( final Painter painter )
+    public static Insets getInsets ( final Component component )
     {
-        if ( painter instanceof AbstractPainter )
+        if ( component instanceof JComponent )
         {
-            ( ( AbstractPainter ) painter ).updateBorder ();
+            return ( ( JComponent ) component ).getInsets ();
         }
+        else
+        {
+            return null;
+        }
+    }
+
+    /**
+     * Returns current component margin.
+     * Might return {@code null} which is basically the same as an empty [0,0,0,0] margin.
+     *
+     * @param component component to retrieve margin from
+     * @return current component margin
+     */
+    public static Insets getMargin ( final Component component )
+    {
+        /*if ( component instanceof MarginSupport )
+        {
+            return ( ( MarginSupport ) component ).getMargin ();
+        }
+        else
+        {
+            final ComponentUI ui = LafUtils.getUI ( component );
+            if ( ui instanceof MarginSupport )
+            {
+                return ( ( MarginSupport ) ui ).getMargin ();
+            }
+            else
+            {
+                return null;
+            }
+        }*/
+        return margins.get ( component );
+    }
+
+    /**
+     * Sets new component margin.
+     * {@code null} can be provided to set an empty [0,0,0,0] margin.
+     *
+     * @param component component to set margin for
+     * @param margin    new margin
+     */
+    public static void setMargin ( final JComponent component, final Insets margin )
+    {
+        // Updating margin cache
+        final Insets oldMargin = margins.put ( component, margin );
+
+        // Notifying everyone about component margin changes
+        SwingUtils.firePropertyChanged ( component, WebLookAndFeel.LAF_MARGIN_PROPERTY, oldMargin, margin );
+    }
+
+    /**
+     * Returns current component padding.
+     * Might return {@code null} which is basically the same as an empty [0,0,0,0] padding.
+     *
+     * @param component component to retrieve padding from
+     * @return current component padding
+     */
+    public static Insets getPadding ( final Component component )
+    {
+        return paddings.get ( component );
+    }
+
+    /**
+     * Sets new padding.
+     * {@code null} can be provided to set an empty [0,0,0,0] padding.
+     *
+     * @param component component to set padding for
+     * @param padding   new padding
+     */
+    public static void setPadding ( final JComponent component, final Insets padding )
+    {
+        // Updating padding cache
+        final Insets oldPadding = paddings.put ( component, padding );
+
+        // Notifying everyone about component padding changes
+        SwingUtils.firePropertyChanged ( component, WebLookAndFeel.LAF_PADDING_PROPERTY, oldPadding, padding );
     }
 
     /**

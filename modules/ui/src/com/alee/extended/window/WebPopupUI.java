@@ -43,12 +43,6 @@ public class WebPopupUI<C extends WebPopup> extends WPopupUI<C> implements Shape
     protected IPopupPainter painter;
 
     /**
-     * Runtime variables.
-     */
-    protected Insets margin = null;
-    protected Insets padding = null;
-
-    /**
      * Returns an instance of the {@link WebPopupUI} for the specified component.
      * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
@@ -90,27 +84,25 @@ public class WebPopupUI<C extends WebPopup> extends WPopupUI<C> implements Shape
     @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( popup );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setMargin ( popup, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return padding;
+        return PainterSupport.getPadding ( popup );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setPadding ( popup, padding );
     }
 
     /**

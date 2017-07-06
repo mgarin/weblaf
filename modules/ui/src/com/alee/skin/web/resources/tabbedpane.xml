@@ -4,6 +4,9 @@
 
     <!-- Tabbed pane -->
     <style type="tabbedpane">
+        <component>
+            <background>237,237,237</background>
+        </component>
         <ui>
             <tabbedPaneStyle>standalone</tabbedPaneStyle>
         </ui>
@@ -16,7 +19,6 @@
             <bottomBg>208,208,208</bottomBg>
             <tabBorderColor>gray</tabBorderColor>
             <contentBorderColor>gray</contentBorderColor>
-            <backgroundColor>237,237,237</backgroundColor>
             <paintBorderOnlyOnSelectedTab>false</paintBorderOnlyOnSelectedTab>
             <forceUseSelectedTabBgColors>false</forceUseSelectedTabBgColors>
             <paintOnlyTopBorder>false</paintOnlyTopBorder>

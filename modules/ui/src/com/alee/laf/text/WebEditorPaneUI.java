@@ -39,22 +39,20 @@ import java.awt.*;
 public class WebEditorPaneUI extends WEditorPaneUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
+     * Input prompt text.
+     */
+    protected String inputPrompt;
+
+    /**
      * Component painter.
      */
     @DefaultPainter ( EditorPanePainter.class )
     protected IEditorPanePainter painter;
 
     /**
-     * Input prompt text.
-     */
-    protected String inputPrompt;
-
-    /**
      * Runtime variables.
      */
-    protected JEditorPane editorPane = null;
-    protected Insets margin = null;
-    protected Insets padding = null;
+    protected transient JEditorPane editorPane = null;
 
     /**
      * Returns an instance of the {@link WebEditorPaneUI} for the specified component.
@@ -72,10 +70,10 @@ public class WebEditorPaneUI extends WEditorPaneUI implements ShapeSupport, Marg
     @Override
     public void installUI ( final JComponent c )
     {
-        super.installUI ( c );
-
         // Saving editor pane reference
         editorPane = ( JEditorPane ) c;
+
+        super.installUI ( c );
 
         // Applying skin
         StyleManager.installSkin ( editorPane );
@@ -87,10 +85,10 @@ public class WebEditorPaneUI extends WEditorPaneUI implements ShapeSupport, Marg
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( editorPane );
 
+        super.uninstallUI ( c );
+
         // Removing editor pane reference
         editorPane = null;
-
-        super.uninstallUI ( c );
     }
 
     @Override
@@ -102,27 +100,25 @@ public class WebEditorPaneUI extends WEditorPaneUI implements ShapeSupport, Marg
     @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( editorPane );
     }
 
     @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setMargin ( editorPane, margin );
     }
 
     @Override
     public Insets getPadding ()
     {
-        return padding;
+        return PainterSupport.getPadding ( editorPane );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        PainterSupport.setPadding ( editorPane, padding );
     }
 
     /**

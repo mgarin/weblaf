@@ -17,6 +17,8 @@
 
 package com.alee.laf.text;
 
+import com.alee.extended.behavior.DocumentChangeBehavior;
+import com.alee.laf.IInputPrompt;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
@@ -32,8 +34,6 @@ import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.general.Pair;
-import com.alee.utils.swing.DocumentChangeListener;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
 
@@ -43,14 +43,13 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
-import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Map;
 
 /**
  * {@link JTextField} extension class.
  * It contains various useful methods to simplify core component usage.
- * <p/>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -61,8 +60,9 @@ import java.util.Map;
  */
 
 public class WebTextField extends JTextField
-        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, DocumentEventMethods, EventMethods, ToolTipMethods,
-        LanguageMethods, SettingsMethods, FontMethods<WebTextField>, SizeMethods<WebTextField>
+        implements IInputPrompt, ILeadingComponent, ITrailingComponent, Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods,
+        DocumentEventMethods<WebTextField>, EventMethods, ToolTipMethods, LanguageMethods, SettingsMethods, FontMethods<WebTextField>,
+        SizeMethods<WebTextField>
 {
     /**
      * Constructs new text field.
@@ -181,80 +181,52 @@ public class WebTextField extends JTextField
         setText ( "" );
     }
 
-    /**
-     * Returns input prompt text.
-     *
-     * @return input prompt text
-     */
+    @Override
     public String getInputPrompt ()
     {
         return getUI ().getInputPrompt ();
     }
 
-    /**
-     * Sets input prompt text.
-     *
-     * @param text input prompt text
-     */
+    @Override
     public void setInputPrompt ( final String text )
     {
         getUI ().setInputPrompt ( text );
     }
 
-    /**
-     * Returns field leading component.
-     *
-     * @return field leading component
-     */
+    @Override
     public JComponent getLeadingComponent ()
     {
         return getUI ().getLeadingComponent ();
     }
 
-    /**
-     * Sets field leading component.
-     *
-     * @param leadingComponent field leading component
-     */
-    public void setLeadingComponent ( final JComponent leadingComponent )
+    @Override
+    public JComponent setLeadingComponent ( final JComponent leadingComponent )
     {
-        getUI ().setLeadingComponent ( leadingComponent );
+        return getUI ().setLeadingComponent ( leadingComponent );
     }
 
-    /**
-     * Removes field leading component.
-     */
-    public void removeLeadingComponent ()
+    @Override
+    public JComponent removeLeadingComponent ()
     {
-        getUI ().removeLeadingComponent ();
+        return getUI ().removeLeadingComponent ();
     }
 
-    /**
-     * Returns field trailing component.
-     *
-     * @return field trailing component
-     */
+    @Override
     public JComponent getTrailingComponent ()
     {
         return getUI ().getTrailingComponent ();
     }
 
-    /**
-     * Sets field trailing component.
-     *
-     * @param trailingComponent field trailing component
-     */
-    public void setTrailingComponent ( final JComponent trailingComponent )
+    @Override
+    public JComponent setTrailingComponent ( final JComponent trailingComponent )
     {
-        getUI ().setTrailingComponent ( trailingComponent );
+        return getUI ().setTrailingComponent ( trailingComponent );
     }
 
-    /**
-     * Removes field trailing component.
-     */
-    public void removeTrailingComponent ()
+    @Override
+    public JComponent removeTrailingComponent ()
     {
-        getUI ().removeTrailingComponent ();
+        return getUI ().removeTrailingComponent ();
     }
 
     @Override
@@ -441,7 +413,7 @@ public class WebTextField extends JTextField
     }
 
     @Override
-    public Pair<DocumentChangeListener, PropertyChangeListener> onChange ( final DocumentEventRunnable runnable )
+    public DocumentChangeBehavior<WebTextField> onChange ( final DocumentEventRunnable<WebTextField> runnable )
     {
         return DocumentEventMethodsImpl.onChange ( this, runnable );
     }

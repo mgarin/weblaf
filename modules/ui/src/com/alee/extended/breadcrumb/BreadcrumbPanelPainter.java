@@ -122,7 +122,7 @@ public class BreadcrumbPanelPainter<E extends WebBreadcrumbPanel, U extends WebP
     }
 
     @Override
-    public Insets getBorders ()
+    protected Insets getBorder ()
     {
         return BreadcrumbUtils.getElementMargin ( component );
     }

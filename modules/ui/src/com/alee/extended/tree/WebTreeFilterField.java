@@ -17,7 +17,6 @@
 
 package com.alee.extended.tree;
 
-import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.menu.WebCheckBoxMenuItem;
 import com.alee.laf.menu.WebPopupMenu;
@@ -29,16 +28,15 @@ import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.icon.Icons;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.compare.Filter;
-import com.alee.utils.swing.DocumentTextChangeListener;
+import com.alee.utils.swing.extensions.DocumentEventRunnable;
+import com.alee.utils.swing.extensions.KeyEventRunnable;
 import com.alee.utils.text.TextProvider;
 
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -67,11 +65,6 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
      * Currently listened field document.
      */
     protected Document document;
-
-    /**
-     * Special document listener that notifies about filter changes.
-     */
-    protected DocumentListener documentListener;
 
     /**
      * Data provider change listener.
@@ -284,39 +277,24 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
      */
     protected void initListeners ()
     {
-        // Field changes listener
-        documentListener = new DocumentTextChangeListener ()
+        // Updating filtering on text change
+        onChange ( new DocumentEventRunnable<WebTextField> ()
         {
             @Override
-            public void documentChanged ( final DocumentEvent e, final String text )
+            public void run ( final WebTextField component, final DocumentEvent event )
             {
-                filter.setSearchText ( text );
+                filter.setSearchText ( component.getText () );
                 updateFiltering ();
-            }
-        };
-        updateDocumentListener ();
-
-        // Field document change listener
-        addPropertyChangeListener ( WebLookAndFeel.DOCUMENT_PROPERTY, new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent e )
-            {
-                updateDocumentListener ();
             }
         } );
 
-        // Field clear listener
-        addKeyListener ( new KeyAdapter ()
+        // Clearing filter field on ESCAPE press
+        onKeyPress ( Hotkey.ESCAPE, new KeyEventRunnable ()
         {
             @Override
-            public void keyPressed ( final KeyEvent e )
+            public void run ( final KeyEvent e )
             {
-                if ( Hotkey.ESCAPE.isTriggered ( e ) )
-                {
-                    // Clearing filter field on ESCAPE press
-                    clear ();
-                }
+                clear ();
             }
         } );
 
@@ -343,22 +321,6 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
             }
         };
         getTree ().addPropertyChangeListener ( WebTree.TREE_FILTER_PROPERTY, dataProviderChangeListener );
-    }
-
-    /**
-     * Updates field document listener.
-     */
-    protected void updateDocumentListener ()
-    {
-        // Removing listener from old document
-        if ( document != null )
-        {
-            document.removeDocumentListener ( documentListener );
-        }
-
-        // Adding listener to new document
-        document = getDocument ();
-        document.addDocumentListener ( documentListener );
     }
 
     /**

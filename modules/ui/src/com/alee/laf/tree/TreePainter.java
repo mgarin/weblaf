@@ -7,7 +7,10 @@ import com.alee.painter.PainterSupport;
 import com.alee.painter.SectionPainter;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.*;
+import com.alee.utils.CollectionUtils;
+import com.alee.utils.CompareUtils;
+import com.alee.utils.GeometryUtils;
+import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
@@ -81,45 +84,76 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
     /**
      * Listeners.
      */
-    protected TreeSelectionListener treeSelectionListener;
-    protected TreeExpansionListener treeExpansionListener;
-    protected MouseAdapter mouseAdapter;
+    protected transient TreeSelectionListener treeSelectionListener;
+    protected transient TreeExpansionListener treeExpansionListener;
+    protected transient MouseAdapter mouseAdapter;
 
     /**
      * Runtime variables.
      */
-    protected List<Integer> initialSelection = new ArrayList<Integer> ();
-    protected Point selectionStart = null;
-    protected Point selectionEnd = null;
-    protected TreePath draggablePath = null;
+    protected transient List<Integer> initialSelection = new ArrayList<Integer> ();
+    protected transient Point selectionStart = null;
+    protected transient Point selectionEnd = null;
+    protected transient TreePath draggablePath = null;
 
     /**
      * Painting variables.
      */
-    protected int totalChildIndent;
-    protected int depthOffset;
-    protected TreeModel treeModel;
-    protected AbstractLayoutCache treeLayoutCache;
-    protected Hashtable<TreePath, Boolean> paintingCache;
-    protected CellRendererPane rendererPane;
-    protected TreeCellRenderer currentCellRenderer;
-    protected int editingRow = -1;
-    protected int lastSelectionRow = -1;
+    protected transient int totalChildIndent;
+    protected transient int depthOffset;
+    protected transient TreeModel treeModel;
+    protected transient AbstractLayoutCache treeLayoutCache;
+    protected transient Hashtable<TreePath, Boolean> paintingCache;
+    protected transient CellRendererPane rendererPane;
+    protected transient TreeCellRenderer currentCellRenderer;
+    protected transient int editingRow = -1;
+    protected transient int lastSelectionRow = -1;
 
     @Override
-    public void install ( final E c, final U ui )
+    protected void installSectionPainters ()
     {
-        super.install ( c, ui );
+        super.installSectionPainters ();
+        rowPainter = PainterSupport.installSectionPainter ( this, rowPainter, null, component, ui );
+        hoverPainter = PainterSupport.installSectionPainter ( this, hoverPainter, null, component, ui );
+        selectionPainter = PainterSupport.installSectionPainter ( this, selectionPainter, null, component, ui );
+        dropLocationPainter = PainterSupport.installSectionPainter ( this, dropLocationPainter, null, component, ui );
+        selectorPainter = PainterSupport.installSectionPainter ( this, selectorPainter, null, component, ui );
+    }
 
-        // Properly installing section painters
-        this.rowPainter = PainterSupport.installSectionPainter ( this, rowPainter, null, c, ui );
-        this.hoverPainter = PainterSupport.installSectionPainter ( this, hoverPainter, null, c, ui );
-        this.selectionPainter = PainterSupport.installSectionPainter ( this, selectionPainter, null, c, ui );
-        this.dropLocationPainter = PainterSupport.installSectionPainter ( this, dropLocationPainter, null, c, ui );
-        this.selectorPainter = PainterSupport.installSectionPainter ( this, selectorPainter, null, c, ui );
+    @Override
+    protected void uninstallSectionPainters ()
+    {
+        selectorPainter = PainterSupport.uninstallSectionPainter ( selectorPainter, component, ui );
+        dropLocationPainter = PainterSupport.uninstallSectionPainter ( dropLocationPainter, component, ui );
+        selectionPainter = PainterSupport.uninstallSectionPainter ( selectionPainter, component, ui );
+        hoverPainter = PainterSupport.uninstallSectionPainter ( hoverPainter, component, ui );
+        rowPainter = PainterSupport.uninstallSectionPainter ( rowPainter, component, ui );
+        super.uninstallSectionPainters ();
+    }
 
-        // Selection listener
-        // Required for proper update of complex selection
+    @Override
+    protected void installPropertiesAndListeners ()
+    {
+        super.installPropertiesAndListeners ();
+        installTreeSelectionListeners ();
+        installTreeExpansionListeners ();
+        installTreeMouseListeners ();
+    }
+
+    @Override
+    protected void uninstallPropertiesAndListeners ()
+    {
+        uninstallTreeMouseListeners ();
+        uninstallTreeExpansionListeners ();
+        uninstallTreeSelectionListeners ();
+        super.uninstallPropertiesAndListeners ();
+    }
+
+    /**
+     * Installs custom {@link TreeSelectionListener} for complex selections update.
+     */
+    protected void installTreeSelectionListeners ()
+    {
         treeSelectionListener = new TreeSelectionListener ()
         {
             @Override
@@ -135,9 +169,22 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
             }
         };
         component.addTreeSelectionListener ( treeSelectionListener );
+    }
 
-        // Expansion listener
-        // Required for proper update of complex selection
+    /**
+     * Uninstalls custom {@link TreeSelectionListener}.
+     */
+    protected void uninstallTreeSelectionListeners ()
+    {
+        component.removeTreeSelectionListener ( treeSelectionListener );
+        treeSelectionListener = null;
+    }
+
+    /**
+     * Installs custom {@link TreeExpansionListener} for complex selections update.
+     */
+    protected void installTreeExpansionListeners ()
+    {
         treeExpansionListener = new TreeExpansionListener ()
         {
             @Override
@@ -163,8 +210,22 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
             }
         };
         component.addTreeExpansionListener ( treeExpansionListener );
+    }
 
-        // Mouse events adapter
+    /**
+     * Uninstalls custom {@link TreeExpansionListener}.
+     */
+    protected void uninstallTreeExpansionListeners ()
+    {
+        component.removeTreeExpansionListener ( treeExpansionListener );
+        treeExpansionListener = null;
+    }
+
+    /**
+     * Installs custom {@link MouseAdapter}.
+     */
+    protected void installTreeMouseListeners ()
+    {
         mouseAdapter = new MouseAdapter ()
         {
             @Override
@@ -327,10 +388,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
                             newSelection.add ( row );
                         }
                     }
-                    for ( final int row : initialSelection )
-                    {
-                        newSelection.add ( row );
-                    }
+                    newSelection.addAll ( initialSelection );
                 }
                 else if ( SwingUtils.isCtrl ( e ) )
                 {
@@ -414,26 +472,14 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
         component.addMouseMotionListener ( mouseAdapter );
     }
 
-    @Override
-    public void uninstall ( final E c, final U ui )
+    /**
+     * Uninstalls custom {@link MouseAdapter}.
+     */
+    protected void uninstallTreeMouseListeners ()
     {
-        // Removing listeners
-        component.removeTreeSelectionListener ( treeSelectionListener );
-        treeSelectionListener = null;
-        component.removeTreeExpansionListener ( treeExpansionListener );
-        treeExpansionListener = null;
-        component.removeMouseListener ( mouseAdapter );
         component.removeMouseMotionListener ( mouseAdapter );
+        component.removeMouseListener ( mouseAdapter );
         mouseAdapter = null;
-
-        // Properly uninstalling section painters
-        this.selectorPainter = PainterSupport.uninstallSectionPainter ( selectorPainter, c, ui );
-        this.dropLocationPainter = PainterSupport.uninstallSectionPainter ( dropLocationPainter, c, ui );
-        this.selectionPainter = PainterSupport.uninstallSectionPainter ( selectionPainter, c, ui );
-        this.hoverPainter = PainterSupport.uninstallSectionPainter ( hoverPainter, c, ui );
-        this.rowPainter = PainterSupport.uninstallSectionPainter ( rowPainter, c, ui );
-
-        super.uninstall ( c, ui );
     }
 
     @Override
@@ -553,7 +599,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
                         final Rectangle rowBounds = ui.getRowBounds ( row, true );
                         if ( rowBounds != null )
                         {
-                            final Insets padding = LafUtils.getPadding ( component );
+                            final Insets padding = PainterSupport.getPadding ( component );
                             if ( padding != null )
                             {
                                 // Increasing background by the padding sizes at left and right sides
@@ -567,7 +613,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
                             PainterSupport.paintSection ( rowPainter, g2d, component, ui, rowBounds );
                         }
 
-                        if ( ( bounds.y + bounds.height ) >= endY )
+                        if ( bounds.y + bounds.height >= endY )
                         {
                             break;
                         }
@@ -614,7 +660,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
      */
     protected int findCenteredX ( final int x, final int iconWidth )
     {
-        return ltr ? ( x - ( int ) Math.ceil ( iconWidth / 2.0 ) ) : ( x - ( int ) Math.floor ( iconWidth / 2.0 ) );
+        return ltr ? x - ( int ) Math.ceil ( iconWidth / 2.0 ) : x - ( int ) Math.floor ( iconWidth / 2.0 );
     }
 
     @Override
@@ -841,7 +887,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
                         paintExpandControl ( g2d, paintBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf );
                     }
                     paintRow ( g2d, paintBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf );
-                    if ( ( bounds.y + bounds.height ) >= endY )
+                    if ( bounds.y + bounds.height >= endY )
                     {
                         break;
                     }
@@ -883,7 +929,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
 
             boxLeftX = findCenteredX ( boxLeftX, boxWidth );
 
-            return mouseX >= boxLeftX && mouseX < ( boxLeftX + boxWidth );
+            return mouseX >= boxLeftX && mouseX < boxLeftX + boxWidth;
         }
         return false;
     }
@@ -922,7 +968,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
             {
                 middleXOfKnob = bounds.x + bounds.width + ui.getRightChildIndent () - 1;
             }
-            final int middleYOfKnob = bounds.y + ( bounds.height / 2 );
+            final int middleYOfKnob = bounds.y + bounds.height / 2;
 
             if ( isExpanded )
             {
@@ -999,7 +1045,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
         }
 
         final int depth = path.getPathCount () - 1;
-        return !( ( depth == 0 || ( depth == 1 && !isRootVisible () ) ) && !getShowsRootHandles () );
+        return !( ( depth == 0 || depth == 1 && !isRootVisible () ) && !getShowsRootHandles () );
     }
 
     /**
@@ -1047,7 +1093,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
 
         // Don't paint the legs for the root node if the
         final int depth = path.getPathCount () - 1;
-        if ( ( depth == 0 || ( depth == 1 && !isRootVisible () ) ) && !getShowsRootHandles () )
+        if ( ( depth == 0 || depth == 1 && !isRootVisible () ) && !getShowsRootHandles () )
         {
             return;
         }
@@ -1124,7 +1170,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
             lineX = component.getWidth () - lineX - insets.right + ui.getRightChildIndent () - 1;
         }
         final int clipLeft = clipBounds.x;
-        final int clipRight = clipBounds.x + ( clipBounds.width - 1 );
+        final int clipRight = clipBounds.x + clipBounds.width - 1;
 
         if ( lineX >= clipLeft && lineX <= clipRight )
         {
@@ -1170,7 +1216,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
                 }
             }
 
-            final int bottom = Math.min ( lastChildBounds.y + ( lastChildBounds.height / 2 ), clipBottom );
+            final int bottom = Math.min ( lastChildBounds.y + lastChildBounds.height / 2, clipBottom );
 
             if ( top <= bottom )
             {
@@ -1294,7 +1340,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
      * @param depth Depth of the row
      * @return amount to indent the given row.
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ( "unused" )
     protected int getRowX ( final int row, final int depth )
     {
         return totalChildIndent * ( depth + depthOffset );
