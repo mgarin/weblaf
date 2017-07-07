@@ -20,7 +20,6 @@ package com.alee.extended.syntax;
 import com.alee.laf.scroll.WebScrollBar;
 import com.alee.laf.scroll.WebScrollPaneBar;
 import com.alee.laf.scroll.WebScrollPaneUI;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -28,7 +27,6 @@ import com.alee.utils.swing.extensions.SizeMethods;
 import com.alee.utils.swing.extensions.SizeMethodsImpl;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
 
@@ -321,25 +319,37 @@ public class WebSyntaxScrollPane extends RTextScrollPane
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WebScrollPaneUI} object that renders this component
+     */
+    @Override
+    public WebScrollPaneUI getUI ()
+    {
+        return ( WebScrollPaneUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WebScrollPaneUI}
+     */
+    public void setUI ( final WebScrollPaneUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebScrollPaneUI ) )
-        {
-            try
-            {
-                setUI ( ( WebScrollPaneUI ) UIManager.getUI ( this ) );
-            }
-            catch ( final Exception e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebScrollPaneUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 
     @Override

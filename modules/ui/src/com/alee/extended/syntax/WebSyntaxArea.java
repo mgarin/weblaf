@@ -33,8 +33,8 @@ import java.awt.event.MouseAdapter;
 import java.util.List;
 
 /**
- * Easily customizable RSyntaxTextArea extension.
- * This class is basically the same as RSyntaxTextArea but additionally accepts SyntaxPresets for fast configuration.
+ * Easily customizable {@link RSyntaxTextArea} extension.
+ * This class is basically the same as RSyntaxTextArea but additionally accepts {@link SyntaxPreset}s for fast configuration.
  *
  * @author Mikle Garin
  * @see com.alee.extended.syntax.SyntaxPreset
