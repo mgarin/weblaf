@@ -370,7 +370,7 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C>
                 return null;
             }
         }
-        catch ( final Throwable ex )
+        catch ( final Exception ex )
         {
             return dateField.getDate ();
         }

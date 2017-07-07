@@ -105,7 +105,7 @@ public class FileTreeDataProvider extends AbstractAsyncTreeDataProvider<FileTree
         {
             listener.completed ( parent.getFile () == null ? getRootChildren () : getFileChildren ( parent ) );
         }
-        catch ( final Throwable cause )
+        catch ( final Exception cause )
         {
             listener.failed ( cause );
         }

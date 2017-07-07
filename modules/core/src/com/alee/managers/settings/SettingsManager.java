@@ -1040,7 +1040,7 @@ public final class SettingsManager
                         final String state = readFromBackup ? "restored from backup" : "loaded";
                         Log.info ( SettingsManager.class, "Settings group \"" + group + "\" " + state + " successfully" );
                     }
-                    catch ( final Throwable e )
+                    catch ( final Exception e )
                     {
                         Log.error ( SettingsManager.class, "Unable to load settings group \"" + group +
                                 "\" due to unexpected exception", e );
@@ -1159,7 +1159,7 @@ public final class SettingsManager
                     throw new SettingsException ( String.format ( msg, dir.getAbsolutePath () ) );
                 }
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 Log.error ( SettingsManager.class, "Unable to save settings group \"" + settingsGroup.getName () +
                         "\" due to unexpected exception:", e );
@@ -1322,7 +1322,7 @@ public final class SettingsManager
                     value = defaultValue != null ? defaultValue.get () : null;
                 }
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 Log.error ( SettingsManager.class, "Unable to load settings file \"" + fileName +
                         "\" due to unexpected exception", e );

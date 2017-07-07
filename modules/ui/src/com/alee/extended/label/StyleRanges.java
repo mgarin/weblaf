@@ -192,7 +192,7 @@ public class StyleRanges implements IStyleRanges
                 }
             }
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             // Ignoring any exceptions in style parsing
         }

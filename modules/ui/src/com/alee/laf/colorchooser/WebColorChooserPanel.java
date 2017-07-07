@@ -193,7 +193,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
                         color = new HSBColor ( h, s, b ).getColor ();
                         updateColors ( color, UpdateSource.hsbField );
                     }
-                    catch ( final Throwable ex )
+                    catch ( final Exception ex )
                     {
                         //
                     }
@@ -234,7 +234,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
                         color = new Color ( r, g, b );
                         updateColors ( color, UpdateSource.rgbField );
                     }
-                    catch ( final Throwable ex )
+                    catch ( final Exception ex )
                     {
                         //
                     }
@@ -267,7 +267,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
                         color = ColorUtils.parseHexColor ( hexColor.getText () );
                         updateColors ( color, UpdateSource.hexField );
                     }
-                    catch ( final Throwable ex )
+                    catch ( final Exception ex )
                     {
                         //
                     }

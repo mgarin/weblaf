@@ -104,7 +104,7 @@ public final class WebUtils
             final URI uri = new URI ( u.getProtocol (), u.getHost (), u.getPath (), u.getQuery (), null );
             return uri.toASCIIString ();
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             return url;
         }
@@ -129,6 +129,35 @@ public final class WebUtils
     }
 
     /**
+     * Opens site in default system web-browser
+     *
+     * @param address the address to open
+     * @throws URISyntaxException if URI cannot be created for the given address
+     * @throws IOException        if browser application is not found or fails to launch
+     */
+    public static void browseSite ( final String address ) throws URISyntaxException, IOException
+    {
+        Desktop.getDesktop ().browse ( new URI ( address ) );
+    }
+
+    /**
+     * Opens site in default system web-browser safely
+     *
+     * @param address the address to open
+     */
+    public static void browseSiteSafely ( final String address )
+    {
+        try
+        {
+            browseSite ( address );
+        }
+        catch ( final Exception e )
+        {
+            //
+        }
+    }
+
+    /**
      * Opens system default web-browser with Twitter share page.
      *
      * @param address the address to share
@@ -140,14 +169,7 @@ public final class WebUtils
             @Override
             public void run ()
             {
-                try
-                {
-                    browseSite ( "http://twitter.com/intent/tweet?text=" + address );
-                }
-                catch ( final Throwable ex )
-                {
-                    //
-                }
+                browseSiteSafely ( "http://twitter.com/intent/tweet?text=" + address );
             }
         } ).start ();
     }
@@ -164,14 +186,7 @@ public final class WebUtils
             @Override
             public void run ()
             {
-                try
-                {
-                    browseSite ( "http://vkontakte.ru/share.php?url=" + address );
-                }
-                catch ( final Throwable ex )
-                {
-                    //
-                }
+                browseSiteSafely ( "http://vkontakte.ru/share.php?url=" + address );
             }
         } ).start ();
     }
@@ -188,43 +203,20 @@ public final class WebUtils
             @Override
             public void run ()
             {
-                try
-                {
-                    browseSite ( "http://www.facebook.com/sharer.php?u=" + address );
-                }
-                catch ( final Throwable ex )
-                {
-                    //
-                }
+                browseSiteSafely ( "http://www.facebook.com/sharer.php?u=" + address );
             }
         } ).start ();
     }
 
     /**
-     * Opens site in default system web-browser safely
+     * Opens file in appropriate system application
      *
-     * @param address the address to open
+     * @param file the file to open
+     * @throws IOException if the specified file has no associated application or the associated application fails to be launched
      */
-    public static void browseSiteSafely ( final String address )
+    public static void openFile ( final File file ) throws IOException
     {
-        try
-        {
-            browseSite ( address );
-        }
-        catch ( final Throwable e )
-        {
-            //
-        }
-    }
-
-    /**
-     * Opens site in default system web-browser
-     *
-     * @param address the address to open
-     */
-    public static void browseSite ( final String address ) throws URISyntaxException, IOException
-    {
-        Desktop.getDesktop ().browse ( new URI ( address ) );
+        Desktop.getDesktop ().open ( file );
     }
 
     /**
@@ -238,34 +230,7 @@ public final class WebUtils
         {
             openFile ( file );
         }
-        catch ( final Throwable e )
-        {
-            //
-        }
-    }
-
-    /**
-     * Opens file in appropriate system application
-     *
-     * @param file the file to open
-     */
-    public static void openFile ( final File file ) throws IOException
-    {
-        Desktop.getDesktop ().open ( file );
-    }
-
-    /**
-     * Opens system mail agent to compose a new letter safely
-     *
-     * @param email the destination email address
-     */
-    public static void writeEmailSafely ( final String email )
-    {
-        try
-        {
-            writeEmail ( email );
-        }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             //
         }
@@ -275,6 +240,8 @@ public final class WebUtils
      * Opens system mail agent to compose a new letter
      *
      * @param email the destination email address
+     * @throws URISyntaxException if mailing URI cannot be created
+     * @throws IOException        if used mail client cannot be found
      */
     public static void writeEmail ( final String email ) throws URISyntaxException, IOException
     {
@@ -282,30 +249,13 @@ public final class WebUtils
     }
 
     /**
-     * Opens system mail agent to compose a new letter safely
-     *
-     * @param email   the destination email address
-     * @param subject letter subject
-     * @param body    letter text
-     */
-    public static void writeEmailSafely ( final String email, final String subject, final String body )
-    {
-        try
-        {
-            writeEmail ( email, subject, body );
-        }
-        catch ( final Throwable e )
-        {
-            //
-        }
-    }
-
-    /**
      * Opens system mail agent to compose a new letter
      *
      * @param email   the destination email address
      * @param subject letter subject
      * @param body    letter text
+     * @throws URISyntaxException if mailing URI cannot be created
+     * @throws IOException        if used mail client cannot be found
      */
     public static void writeEmail ( String email, String subject, String body ) throws URISyntaxException, IOException
     {
@@ -325,5 +275,41 @@ public final class WebUtils
             uri = new URI ( email );
         }
         Desktop.getDesktop ().mail ( uri );
+    }
+
+    /**
+     * Opens system mail agent to compose a new letter safely
+     *
+     * @param email the destination email address
+     */
+    public static void writeEmailSafely ( final String email )
+    {
+        try
+        {
+            writeEmail ( email );
+        }
+        catch ( final Exception e )
+        {
+            //
+        }
+    }
+
+    /**
+     * Opens system mail agent to compose a new letter safely
+     *
+     * @param email   the destination email address
+     * @param subject letter subject
+     * @param body    letter text
+     */
+    public static void writeEmailSafely ( final String email, final String subject, final String body )
+    {
+        try
+        {
+            writeEmail ( email, subject, body );
+        }
+        catch ( final Exception e )
+        {
+            //
+        }
     }
 }

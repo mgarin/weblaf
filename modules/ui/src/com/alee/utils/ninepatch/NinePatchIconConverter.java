@@ -104,7 +104,7 @@ public class NinePatchIconConverter extends ReflectionConverter
                 // Read and return new 9-patch icon
                 return new NinePatchIcon ( nearClass.getResource ( iconPath ) );
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 // Icon cannot be read
                 final String msg = "Unable to read 9-patch icon '%s' at path '%s' near class '%s'";

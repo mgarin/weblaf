@@ -155,7 +155,7 @@ public class DictionariesTransferHandler extends TransferHandler
             }
             return false;
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             return false;
         }
@@ -271,7 +271,7 @@ public class DictionariesTransferHandler extends TransferHandler
                 return false;
             }
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             return false;
         }

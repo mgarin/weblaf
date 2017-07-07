@@ -2107,7 +2107,7 @@ public final class SwingUtils extends CoreSwingUtils
                 checkContent ( text, ( Container ) component, components );
             }
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             //
         }

@@ -194,7 +194,7 @@ public final class ColorUtils
     public static Color parseHexColor ( String hex )
     {
         hex = hex.replaceAll ( " ", "" );
-        return Color.decode ( hex.startsWith ( "#" ) ? hex : ( "#" + hex ) );
+        return Color.decode ( hex.startsWith ( "#" ) ? hex : "#" + hex );
     }
 
     /**

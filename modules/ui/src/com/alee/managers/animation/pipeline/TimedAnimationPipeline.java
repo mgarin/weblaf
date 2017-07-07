@@ -158,7 +158,7 @@ public final class TimedAnimationPipeline extends AbstractAnimationPipeline impl
             // Reset animator
             reset ();
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             Log.get ().error ( "Unable to play transition: " + transition, e );
         }
@@ -178,7 +178,7 @@ public final class TimedAnimationPipeline extends AbstractAnimationPipeline impl
             // Reset animator
             reset ();
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             Log.get ().error ( "Unable to stop transition: " + transition, e );
         }
@@ -199,7 +199,7 @@ public final class TimedAnimationPipeline extends AbstractAnimationPipeline impl
                 animator.interrupt ();
             }
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             Log.get ().error ( "Unable to shutdown pipeline", e );
         }

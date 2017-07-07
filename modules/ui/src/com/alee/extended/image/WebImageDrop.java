@@ -119,7 +119,7 @@ public class WebImageDrop extends JComponent
                         setImage ( ImageUtils.getBufferedImage ( image ) );
                         return true;
                     }
-                    catch ( final Throwable e )
+                    catch ( final Exception e )
                     {
                         //
                     }

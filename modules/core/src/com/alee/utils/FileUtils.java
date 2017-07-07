@@ -339,7 +339,7 @@ public final class FileUtils
         {
             return file.setExecutable ( true, false );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             Log.error ( FileUtils.class, e );
             return false;
@@ -545,7 +545,7 @@ public final class FileUtils
             final BigInteger bigInt = new BigInteger ( 1, md5sum );
             return bigInt.toString ( 16 );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             return null;
         }
@@ -555,7 +555,7 @@ public final class FileUtils
             {
                 bis.close ();
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 //
             }
@@ -1032,7 +1032,7 @@ public final class FileUtils
                 index = Integer.parseInt ( nameStart.substring ( ob + 1, cb ) );
                 index++;
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 //
             }
@@ -1511,7 +1511,7 @@ public final class FileUtils
         {
             return readToString ( nearClass.getResourceAsStream ( resource ), encoding );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             return null;
         }
@@ -1541,7 +1541,7 @@ public final class FileUtils
         {
             return readToString ( url.openStream (), encoding );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             return null;
         }
@@ -1578,7 +1578,7 @@ public final class FileUtils
                 return null;
             }
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             return null;
         }
@@ -1615,7 +1615,7 @@ public final class FileUtils
                 return null;
             }
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             return null;
         }
@@ -1655,7 +1655,7 @@ public final class FileUtils
             }
             return sb.toString ();
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             return "";
         }
@@ -1960,7 +1960,7 @@ public final class FileUtils
             }
             return dstFile;
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             // Informing about failed download
             if ( listener != null )
@@ -2001,7 +2001,7 @@ public final class FileUtils
         {
             return getFileSize ( new URL ( url ) );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             Log.error ( FileUtils.class, e );
             return -1;
@@ -2025,7 +2025,7 @@ public final class FileUtils
             // Retrieving file size
             return uc.getContentLength ();
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             Log.error ( FileUtils.class, e );
             return -1;

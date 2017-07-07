@@ -111,7 +111,7 @@ public abstract class AbstractIconSet implements IconSet
                     icon = iconData.getIcon ();
                     cache.put ( id, icon );
                 }
-                catch ( final Throwable e )
+                catch ( final Exception e )
                 {
                     throw new IconException ( "Unable to load icon: " + id, e );
                 }

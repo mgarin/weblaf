@@ -54,7 +54,7 @@ public abstract class DefaultLanguageUpdater<E extends JComponent> implements La
                 return ( Class ) ( ( TypeVariable ) type ).getBounds ()[ 0 ];
             }
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             return null;
         }

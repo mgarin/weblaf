@@ -679,7 +679,7 @@ public class TestFrame extends WebFrame
         {
             libVersion = "[ " + VersionManager.getLibraryVersion ().toString () + " ] ";
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             // Cannot load version now
         }

@@ -312,9 +312,9 @@ public class WebImageGallery extends JComponent
             descriptions.add ( index, image.getIconWidth () + " x " + image.getIconHeight () + " px" );
             reflections.add ( index, reflection );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
-            // todo Handle out of memory
+            // todo Handle out of memory?
         }
 
         recalculateMaxSizes ();

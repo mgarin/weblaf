@@ -188,7 +188,7 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
                     illegalArgument ();
                 }
             }
-            catch ( final Throwable ex )
+            catch ( final Exception ex )
             {
                 illegalArgument ();
             }

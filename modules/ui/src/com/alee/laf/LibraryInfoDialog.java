@@ -343,7 +343,7 @@ public class LibraryInfoDialog extends WebFrame
             scrollPane.setPreferredHeight ( 0 );
             return scrollPane;
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             Log.error ( this, e );
             return createErrorLibrariesTab ();

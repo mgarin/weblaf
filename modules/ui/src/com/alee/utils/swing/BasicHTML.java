@@ -29,12 +29,11 @@ import java.net.URL;
  * Support for providing HTML views for the swing components. This translates a simple HTML string to a {@link javax.swing.text.View}
  * implementation that can render the HTML and provide the necessary layout semantics.
  *
- * This class is a copy-paste of {@link javax.swing.plaf.basic.BasicHTML} which has some unwanted settings like foreground hardcoded so
- * this class acts as a replacement for all WebLaF components that could contain HTML in their text.
+ * This class is a copy-paste of {@link javax.swing.plaf.basic.BasicHTML} which has some unwanted settings like foreground hardcoded.
+ * So this class acts as a replacement for all WebLaF components that could contain HTML in their text.
  *
  * @author Timothy Prinzing
- * @version %I% %G%
- * @since 1.3
+ * @author Mikle Garin
  */
 
 public final class BasicHTML
@@ -57,7 +56,7 @@ public final class BasicHTML
         final Boolean disabled = ( Boolean ) c.getClientProperty ( htmlDisable );
         if ( disabled != Boolean.TRUE )
         {
-            if ( text != null && ( text.length () >= 6 ) && ( text.charAt ( 0 ) == '<' ) && ( text.charAt ( 5 ) == '>' ) )
+            if ( text != null && text.length () >= 6 && text.charAt ( 0 ) == '<' && text.charAt ( 5 ) == '>' )
             {
                 final String tag = text.substring ( 1, 5 );
                 return tag.equalsIgnoreCase ( javax.swing.plaf.basic.BasicHTML.propertyKey );
@@ -89,7 +88,7 @@ public final class BasicHTML
         {
             kit.read ( r, doc, 0 );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             // Ignored
         }
@@ -273,6 +272,7 @@ public final class BasicHTML
         /**
          * Overriden to return our own slimmed down style sheet.
          */
+        @Override
         public StyleSheet getStyleSheet ()
         {
             if ( defaultStyles == null )
@@ -283,7 +283,7 @@ public final class BasicHTML
                 {
                     defaultStyles.loadRules ( r, null );
                 }
-                catch ( final Throwable e )
+                catch ( final Exception e )
                 {
                     // don't want to die in static initialization...
                     // just display things wrong.
@@ -313,6 +313,7 @@ public final class BasicHTML
          * Returns the ViewFactory that is used to make sure the Views don't
          * load in the background.
          */
+        @Override
         public ViewFactory getViewFactory ()
         {
             return basicHTMLViewFactory;
@@ -325,6 +326,7 @@ public final class BasicHTML
      */
     private static class BasicHTMLViewFactory extends HTMLEditorKit.HTMLFactory
     {
+        @Override
         public View create ( final Element elem )
         {
             final View view = super.create ( elem );
@@ -368,7 +370,7 @@ public final class BasicHTML
 
         private String displayPropertiesToCSS ( final Font font, final Color fg )
         {
-            final StringBuffer rule = new StringBuffer ( "body {" );
+            final StringBuilder rule = new StringBuilder ( "body {" );
             if ( font != null )
             {
                 rule.append ( " font-family: " );
@@ -436,6 +438,7 @@ public final class BasicHTML
          * level there are no attributes.  If an attribute is resolved
          * up the view hierarchy this is the end of the line.
          */
+        @Override
         public AttributeSet getAttributes ()
         {
             return null;
@@ -450,6 +453,7 @@ public final class BasicHTML
          * that is returned, although there is no guarantee.
          * The parent may choose to resize or break the view.
          */
+        @Override
         public float getPreferredSpan ( final int axis )
         {
             if ( axis == X_AXIS )
@@ -469,6 +473,7 @@ public final class BasicHTML
          * that is returned, although there is no guarantee.
          * The parent may choose to resize or break the view.
          */
+        @Override
         public float getMinimumSpan ( final int axis )
         {
             return view.getMinimumSpan ( axis );
@@ -483,6 +488,7 @@ public final class BasicHTML
          * that is returned, although there is no guarantee.
          * The parent may choose to resize or break the view.
          */
+        @Override
         public float getMaximumSpan ( final int axis )
         {
             return Integer.MAX_VALUE;
@@ -506,6 +512,7 @@ public final class BasicHTML
          * @param width  true if the width preference has changed
          * @param height true if the height preference has changed
          */
+        @Override
         public void preferenceChanged ( final View child, final boolean width, final boolean height )
         {
             //
@@ -518,6 +525,7 @@ public final class BasicHTML
          * @return the desired alignment, where 0.0 indicates the origin
          * and 1.0 the full span away from the origin
          */
+        @Override
         public float getAlignment ( final int axis )
         {
             return view.getAlignment ( axis );
@@ -529,6 +537,7 @@ public final class BasicHTML
          * @param g          the graphics context
          * @param allocation the region to render into
          */
+        @Override
         public void paint ( final Graphics g, final Shape allocation )
         {
             final Rectangle alloc = allocation.getBounds ();
@@ -541,6 +550,7 @@ public final class BasicHTML
          *
          * @param parent the parent view
          */
+        @Override
         public void setParent ( final View parent )
         {
             throw new Error ( "Can't set parent on root view" );
@@ -554,6 +564,7 @@ public final class BasicHTML
          * @return the number of views
          * @see #getView
          */
+        @Override
         public int getViewCount ()
         {
             return 1;
@@ -565,6 +576,7 @@ public final class BasicHTML
          * @param n the number of the view to get
          * @return the view
          */
+        @Override
         public View getView ( final int n )
         {
             return view;
@@ -578,6 +590,7 @@ public final class BasicHTML
          * @param a   the allocated region to render into
          * @return the bounding box of the given position
          */
+        @Override
         public Shape modelToView ( final int pos, final Shape a, final Position.Bias b ) throws BadLocationException
         {
             return view.modelToView ( pos, a, b );
@@ -602,6 +615,7 @@ public final class BasicHTML
          * @throws IllegalArgumentException for an invalid bias argument
          * @see View#viewToModel
          */
+        @Override
         public Shape modelToView ( final int p0, final Position.Bias b0, final int p1,
                                    final Position.Bias b1, final Shape a ) throws BadLocationException
         {
@@ -618,6 +632,7 @@ public final class BasicHTML
          * @return the location within the model that best represents the
          * given point in the view
          */
+        @Override
         public int viewToModel ( final float x, final float y, final Shape a, final Position.Bias[] bias )
         {
             return view.viewToModel ( x, y, a, bias );
@@ -628,6 +643,7 @@ public final class BasicHTML
          *
          * @return the model
          */
+        @Override
         public Document getDocument ()
         {
             return view.getDocument ();
@@ -638,6 +654,7 @@ public final class BasicHTML
          *
          * @return the starting offset
          */
+        @Override
         public int getStartOffset ()
         {
             return view.getStartOffset ();
@@ -648,6 +665,7 @@ public final class BasicHTML
          *
          * @return the ending offset
          */
+        @Override
         public int getEndOffset ()
         {
             return view.getEndOffset ();
@@ -658,6 +676,7 @@ public final class BasicHTML
          *
          * @return the view
          */
+        @Override
         public Element getElement ()
         {
             return view.getElement ();
@@ -669,6 +688,7 @@ public final class BasicHTML
          * @param width  the width
          * @param height the height
          */
+        @Override
         public void setSize ( final float width, final float height )
         {
             this.width = ( int ) width;
@@ -683,6 +703,7 @@ public final class BasicHTML
          *
          * @return the container
          */
+        @Override
         public Container getContainer ()
         {
             return null;
@@ -698,6 +719,7 @@ public final class BasicHTML
          *
          * @return the factory
          */
+        @Override
         public ViewFactory getViewFactory ()
         {
             return factory;

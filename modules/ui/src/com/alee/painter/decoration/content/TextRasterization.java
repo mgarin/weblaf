@@ -102,7 +102,7 @@ public enum TextRasterization
                     }
                 } );
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 // Fallback to default rendering hints
                 setupHints ( getDefaultHints () );

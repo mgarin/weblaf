@@ -141,7 +141,7 @@ public abstract class AbstractUnits
             }
             return summ;
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             throw new UnitsParsingException ( "Unable to parse user-friendly unit-based text", e );
         }

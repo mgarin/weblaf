@@ -169,7 +169,7 @@ public class DocumentTransferHandler extends TransferHandler
                 return false;
             }
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             Log.error ( this, e );
             return false;
@@ -245,7 +245,7 @@ public class DocumentTransferHandler extends TransferHandler
             }
             return true;
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             Log.error ( this, e );
             return false;

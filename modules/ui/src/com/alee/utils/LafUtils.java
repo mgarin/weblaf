@@ -91,7 +91,7 @@ public final class LafUtils
         {
             return ReflectUtils.callMethod ( component, "getUI" );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             throw new StyleException ( "Unable to retrieve component UI: " + component, e );
         }
@@ -109,7 +109,7 @@ public final class LafUtils
         {
             ReflectUtils.callMethod ( component, "setUI", ui );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             throw new StyleException ( "Unable to setup component UI: " + component, e );
         }
@@ -824,7 +824,7 @@ public final class LafUtils
             UIManager.setLookAndFeel ( className );
             return true;
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             Log.get ().error ( "Unable to initialize L&F for class name: " + className, e );
             return false;

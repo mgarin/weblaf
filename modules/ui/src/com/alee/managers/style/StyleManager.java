@@ -824,7 +824,7 @@ public final class StyleManager
             final Skin skin = ReflectUtils.createInstance ( skinClass );
             return setSkin ( skin );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             final String msg = "Unable to instantiate skin for class: %s";
             throw new StyleException ( String.format ( msg, skinClass ), e );

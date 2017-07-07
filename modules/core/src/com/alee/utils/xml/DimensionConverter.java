@@ -17,14 +17,14 @@
 
 package com.alee.utils.xml;
 
-import com.alee.managers.log.Log;
+import com.alee.utils.XmlException;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 import java.awt.*;
 import java.util.StringTokenizer;
 
 /**
- * Custom {@link java.awt.Dimension} object converter.
+ * Custom XStream converter for {@link Dimension}.
  *
  * @author Mikle Garin
  */
@@ -43,15 +43,26 @@ public class DimensionConverter extends AbstractSingleValueConverter
     }
 
     @Override
+    public String toString ( final Object object )
+    {
+        return dimensionToString ( ( Dimension ) object );
+    }
+
+    @Override
     public Object fromString ( final String dimension )
     {
         return dimensionFromString ( dimension );
     }
 
-    @Override
-    public String toString ( final Object object )
+    /**
+     * Returns dimension converted into string.
+     *
+     * @param dimension dimension to convert
+     * @return dimension converted into string
+     */
+    public static String dimensionToString ( final Dimension dimension )
     {
-        return dimensionToString ( ( Dimension ) object );
+        return dimension.width + SEPARATOR + dimension.height;
     }
 
     /**
@@ -77,21 +88,9 @@ public class DimensionConverter extends AbstractSingleValueConverter
                 return new Dimension ( width, width );
             }
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
-            Log.get ().error ( "Unable to parse Dimension: " + dimension, e );
-            return new Dimension ( 0, 0 );
+            throw new XmlException ( "Unable to parse Dimension: " + dimension, e );
         }
-    }
-
-    /**
-     * Returns dimension converted into string.
-     *
-     * @param dimension dimension to convert
-     * @return dimension converted into string
-     */
-    public static String dimensionToString ( final Dimension dimension )
-    {
-        return dimension.width + SEPARATOR + dimension.height;
     }
 }

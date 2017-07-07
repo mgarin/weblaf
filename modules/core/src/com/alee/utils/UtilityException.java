@@ -15,53 +15,51 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.style;
+package com.alee.utils;
 
 /**
- * Special exception class used to display various style problems.
+ * Special exception class used to display various problems occuring in utility classes.
  *
  * @author Mikle Garin
- * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
- * @see com.alee.managers.style.StyleManager
  */
 
-public final class StyleException extends RuntimeException
+public final class UtilityException extends RuntimeException
 {
     /**
-     * Constructs a new {@link StyleException} with {@code null} as its detail message.
+     * Constructs a new {@link UtilityException} with {@code null} as its detail message.
      */
-    public StyleException ()
+    public UtilityException ()
     {
         super ();
     }
 
     /**
-     * Constructs a new {@link StyleException} with the specified detail message.
+     * Constructs a new {@link UtilityException} with the specified detail message.
      *
      * @param message exception message
      */
-    public StyleException ( final String message )
+    public UtilityException ( final String message )
     {
         super ( message );
     }
 
     /**
-     * Constructs a new {@link StyleException} with the specified detail message and cause.
+     * Constructs a new {@link UtilityException} with the specified detail message and cause.
      *
      * @param message exception message
      * @param cause   exception cause
      */
-    public StyleException ( final String message, final Throwable cause )
+    public UtilityException ( final String message, final Throwable cause )
     {
         super ( message, cause );
     }
 
     /**
-     * Constructs a new {@link StyleException} with the specified cause.
+     * Constructs a new {@link UtilityException} with the specified cause.
      *
      * @param cause exception cause
      */
-    public StyleException ( final Throwable cause )
+    public UtilityException ( final Throwable cause )
     {
         super ( cause );
     }

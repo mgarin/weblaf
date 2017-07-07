@@ -124,7 +124,7 @@ public final class ReflectionMergeBehavior implements GlobalMergeBehavior<Object
                     // Saving merged value
                     field.set ( object, mergeResult );
                 }
-                catch ( final Throwable e )
+                catch ( final Exception e )
                 {
                     // Throwing merge exception
                     final String message = "Unable to merge field {%s} values for objects {%s} and {%s}";

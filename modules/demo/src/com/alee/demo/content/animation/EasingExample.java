@@ -148,7 +148,7 @@ public class EasingExample extends AbstractPreviewExample
                         final Easing easing = ( Easing ) easingChooser.getSelectedValue ();
                         easingGraph.preview ( easing, duration > 100L ? duration : 100L );
                     }
-                    catch ( final Throwable e )
+                    catch ( final Exception e )
                     {
                         // Ignored
                     }

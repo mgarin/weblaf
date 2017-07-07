@@ -17,13 +17,13 @@
 
 package com.alee.painter.decoration.border;
 
-import com.alee.managers.log.Log;
+import com.alee.utils.XmlException;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 import java.util.StringTokenizer;
 
 /**
- * Custom {@link com.alee.painter.decoration.border.BorderWidth} object converter.
+ * Custom XStream converter for {@link BorderWidth}.
  *
  * @author Mikle Garin
  */
@@ -42,22 +42,48 @@ public final class BorderWidthConverter extends AbstractSingleValueConverter
     }
 
     @Override
-    public Object fromString ( final String borderWidth )
-    {
-        return borderWidthFromString ( borderWidth );
-    }
-
-    @Override
     public String toString ( final Object object )
     {
         return borderWidthToString ( ( BorderWidth ) object );
     }
 
+    @Override
+    public Object fromString ( final String borderWidth )
+    {
+        return borderWidthFromString ( borderWidth );
+    }
+
     /**
-     * Returns border width read from string.
+     * Returns {@link BorderWidth} converted into string.
      *
-     * @param borderWidth border width string
-     * @return border width read from string
+     * @param borderWidth {@link BorderWidth} to convert
+     * @return {@link BorderWidth} converted into string
+     */
+    public static String borderWidthToString ( final BorderWidth borderWidth )
+    {
+        if ( borderWidth.top == borderWidth.right && borderWidth.right == borderWidth.bottom && borderWidth.bottom == borderWidth.left )
+        {
+            return Integer.toString ( borderWidth.top );
+        }
+        else if ( borderWidth.top == borderWidth.bottom && borderWidth.right == borderWidth.left )
+        {
+            return borderWidth.top + separator + borderWidth.right;
+        }
+        else if ( borderWidth.right == borderWidth.left )
+        {
+            return borderWidth.top + separator + borderWidth.right + separator + borderWidth.bottom;
+        }
+        else
+        {
+            return borderWidth.top + separator + borderWidth.right + separator + borderWidth.bottom + separator + borderWidth.left;
+        }
+    }
+
+    /**
+     * Returns {@link BorderWidth} read from string.
+     *
+     * @param borderWidth {@link BorderWidth} string
+     * @return {@link BorderWidth} read from string
      */
     public static BorderWidth borderWidthFromString ( final String borderWidth )
     {
@@ -98,36 +124,9 @@ public final class BorderWidthConverter extends AbstractSingleValueConverter
                 return new BorderWidth ();
             }
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
-            Log.get ().error ( "Unable to parse BorderWidth: " + borderWidth, e );
-            return new BorderWidth ();
-        }
-    }
-
-    /**
-     * Returns border width converted into string.
-     *
-     * @param borderWidth border width to convert
-     * @return border width converted into string
-     */
-    public static String borderWidthToString ( final BorderWidth borderWidth )
-    {
-        if ( borderWidth.top == borderWidth.right && borderWidth.right == borderWidth.bottom && borderWidth.bottom == borderWidth.left )
-        {
-            return Integer.toString ( borderWidth.top );
-        }
-        else if ( borderWidth.top == borderWidth.bottom && borderWidth.right == borderWidth.left )
-        {
-            return borderWidth.top + separator + borderWidth.right;
-        }
-        else if ( borderWidth.right == borderWidth.left )
-        {
-            return borderWidth.top + separator + borderWidth.right + separator + borderWidth.bottom;
-        }
-        else
-        {
-            return borderWidth.top + separator + borderWidth.right + separator + borderWidth.bottom + separator + borderWidth.left;
+            throw new XmlException ( "Unable to parse BorderWidth: " + borderWidth, e );
         }
     }
 }

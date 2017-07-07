@@ -130,7 +130,7 @@ public final class ZipUtils
             zipFile.close ();
             return true;
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             Log.error ( ZipUtils.class, e );
             return false;

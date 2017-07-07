@@ -83,7 +83,7 @@ public class Clone implements Serializable
                 }
                 clone = object;
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 throw new CloneException ( "Unable to instantiate array: " + object.getClass (), e );
             }
@@ -103,7 +103,7 @@ public class Clone implements Serializable
                 }
                 clone = ( T ) map;
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 throw new CloneException ( "Unable to instantiate map: " + object.getClass (), e );
             }
@@ -123,7 +123,7 @@ public class Clone implements Serializable
                 }
                 clone = ( T ) collection;
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 throw new CloneException ( "Unable to instantiate collection: " + object.getClass (), e );
             }
@@ -135,7 +135,7 @@ public class Clone implements Serializable
                 // Trying to directly clone an object
                 clone = ReflectUtils.callMethod ( object, "clone" );
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 throw new CloneException ( "Unable to clone object: " + object, e );
             }
@@ -206,7 +206,7 @@ public class Clone implements Serializable
         {
             return cloneByFields ( object, arguments );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             Log.warn ( "Unable to clone object by its fields: " + object, e );
             return null;

@@ -18,13 +18,14 @@
 package com.alee.utils.xml;
 
 import com.alee.utils.ColorUtils;
+import com.alee.utils.XmlException;
 import com.alee.utils.collection.ValuesTable;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 import java.awt.*;
 
 /**
- * Custom {@link java.awt.Color} object converter.
+ * Custom XStream converter for {@link Color}.
  *
  * @author Mikle Garin
  */
@@ -32,9 +33,13 @@ import java.awt.*;
 public class ColorConverter extends AbstractSingleValueConverter
 {
     /**
-     * Null color constant.
+     * Constant for {@code null} color.
      */
     public static final String NULL_COLOR = "null";
+
+    /**
+     * Another constant for {@code null} color.
+     */
     public static final String NONE_COLOR = "none";
 
     /**
@@ -92,27 +97,60 @@ public class ColorConverter extends AbstractSingleValueConverter
     }
 
     /**
-     * Convert specified color into string form.
+     * Convert specified {@link Color} into string form.
      *
-     * @param color color to convert
-     * @return string color representation.
+     * @param color {@link Color} to convert
+     * @return string {@link Color} representation.
      */
     public static String colorToString ( final Color color )
     {
-        return defaultColors.containsValue ( color ) ? defaultColors.getKey ( color ) :
-                color.getRed () + "," + color.getGreen () + "," + color.getBlue () +
-                        ( color.getAlpha () < 255 ? "," + color.getAlpha () : "" );
+        if ( defaultColors.containsValue ( color ) )
+        {
+            return defaultColors.getKey ( color );
+        }
+        else
+        {
+            final StringBuilder string = new StringBuilder ( 15 );
+            string.append ( color.getRed () ).append ( "," );
+            string.append ( color.getGreen () ).append ( "," );
+            string.append ( color.getBlue () );
+            if ( color.getAlpha () < 255 )
+            {
+                string.append ( "," ).append ( color.getAlpha () );
+            }
+            return string.toString ();
+        }
     }
 
     /**
-     * Parses Color from its string form.
+     * Parses {@link Color} from its string form.
      *
-     * @param color string form to parse
-     * @return parsed color
+     * @param color string {@link Color} form to parse
+     * @return parsed {@link Color}
      */
     public static Color colorFromString ( final String color )
     {
-        return defaultColors.containsKey ( color ) ? defaultColors.get ( color ) :
-                color.contains ( "#" ) ? ColorUtils.parseHexColor ( color ) : ColorUtils.parseRgbColor ( color );
+        try
+        {
+            if ( defaultColors.containsKey ( color ) )
+            {
+                return defaultColors.get ( color );
+            }
+            else
+            {
+                if ( color.contains ( "#" ) )
+                {
+                    return ColorUtils.parseHexColor ( color );
+                }
+                else
+                {
+                    return ColorUtils.parseRgbColor ( color );
+                }
+            }
+        }
+        catch ( final Exception e )
+        {
+            throw new XmlException ( "Unable to parse Color: " + color, e );
+        }
     }
 }

@@ -556,7 +556,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
                 scrollPathToVisible ( path );
             }
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             Log.error ( this, e );
         }

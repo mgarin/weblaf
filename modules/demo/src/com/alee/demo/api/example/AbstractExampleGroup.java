@@ -79,7 +79,7 @@ public abstract class AbstractExampleGroup extends AbstractExampleElement implem
                     }
                     groups.add ( group );
                 }
-                catch ( final Throwable e )
+                catch ( final Exception e )
                 {
                     Log.get ().error ( "Unable to initialize group: " + groupClass, e );
                 }
@@ -116,7 +116,7 @@ public abstract class AbstractExampleGroup extends AbstractExampleElement implem
                     }
                     examples.add ( example );
                 }
-                catch ( final Throwable e )
+                catch ( final Exception e )
                 {
                     Log.get ().error ( "Unable to initialize example: " + exampleClass, e );
                 }

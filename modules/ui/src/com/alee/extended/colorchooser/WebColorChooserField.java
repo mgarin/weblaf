@@ -270,7 +270,7 @@ public class WebColorChooserField extends WebTextField
                     updateViewFromColor ();
                 }
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 // Restore old value
                 updateViewFromColor ();

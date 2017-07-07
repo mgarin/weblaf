@@ -17,14 +17,14 @@
 
 package com.alee.utils.xml;
 
-import com.alee.managers.log.Log;
+import com.alee.utils.XmlException;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 import java.awt.*;
 import java.util.StringTokenizer;
 
 /**
- * Custom {@link java.awt.Rectangle} object converter.
+ * Custom XStream converter for {@link Rectangle}.
  *
  * @author Mikle Garin
  */
@@ -43,49 +43,48 @@ public class RectangleConverter extends AbstractSingleValueConverter
     }
 
     @Override
-    public Object fromString ( final String insets )
-    {
-        return rectangleFromString ( insets );
-    }
-
-    @Override
     public String toString ( final Object object )
     {
         return rectangleToString ( ( Rectangle ) object );
     }
 
+    @Override
+    public Object fromString ( final String insets )
+    {
+        return rectangleFromString ( insets );
+    }
+
     /**
-     * Returns insets read from string.
+     * Returns {@link Rectangle} converted into string.
      *
-     * @param insets insets string
-     * @return insets read from string
+     * @param rectangle {@link Rectangle} to convert
+     * @return {@link Rectangle} converted into string
      */
-    public static Rectangle rectangleFromString ( final String insets )
+    public static String rectangleToString ( final Rectangle rectangle )
+    {
+        return rectangle.x + separator + rectangle.y + separator + rectangle.width + separator + rectangle.height;
+    }
+
+    /**
+     * Returns {@link Rectangle} read from string.
+     *
+     * @param rectangle {@link Rectangle} string
+     * @return {@link Rectangle} read from string
+     */
+    public static Rectangle rectangleFromString ( final String rectangle )
     {
         try
         {
-            final StringTokenizer tokenizer = new StringTokenizer ( insets, separator, false );
+            final StringTokenizer tokenizer = new StringTokenizer ( rectangle, separator, false );
             final int x = Integer.parseInt ( tokenizer.nextToken ().trim () );
             final int y = Integer.parseInt ( tokenizer.nextToken ().trim () );
             final int width = Integer.parseInt ( tokenizer.nextToken ().trim () );
             final int height = Integer.parseInt ( tokenizer.nextToken ().trim () );
             return new Rectangle ( x, y, width, height );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
-            Log.get ().error ( "Unable to parse Rectangle: " + insets, e );
-            return new Rectangle ();
+            throw new XmlException ( "Unable to parse Rectangle: " + rectangle, e );
         }
-    }
-
-    /**
-     * Returns insets converted into string.
-     *
-     * @param r insets to convert
-     * @return insets converted into string
-     */
-    public static String rectangleToString ( final Rectangle r )
-    {
-        return r.x + separator + r.y + separator + r.width + separator + r.height;
     }
 }

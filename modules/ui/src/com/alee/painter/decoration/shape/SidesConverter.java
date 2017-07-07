@@ -17,9 +17,9 @@
 
 package com.alee.painter.decoration.shape;
 
-import com.alee.managers.log.Log;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.TextUtils;
+import com.alee.utils.XmlException;
 import com.thoughtworks.xstream.converters.ConversionException;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
@@ -30,7 +30,7 @@ import java.util.StringTokenizer;
 import static com.alee.painter.decoration.shape.Sides.*;
 
 /**
- * Custom {@link Sides} object converter.
+ * Custom XStream converter for {@link Sides}.
  *
  * @author Mikle Garin
  * @see Sides
@@ -50,22 +50,50 @@ public final class SidesConverter extends AbstractSingleValueConverter
     }
 
     @Override
-    public Object fromString ( final String sides )
-    {
-        return sidesFromString ( sides );
-    }
-
-    @Override
     public String toString ( final Object object )
     {
         return sidesToString ( ( Sides ) object );
     }
 
+    @Override
+    public Object fromString ( final String sides )
+    {
+        return sidesFromString ( sides );
+    }
+
     /**
-     * Returns sides read from string.
+     * Returns {@link Sides} converted into string.
      *
-     * @param sides sides string
-     * @return sides read from string
+     * @param sides {@link Sides} to convert
+     * @return {@link Sides} converted into string
+     */
+    public static String sidesToString ( final Sides sides )
+    {
+        final List<String> list = new ArrayList<String> ( 4 );
+        if ( sides.top )
+        {
+            list.add ( TOP );
+        }
+        if ( sides.left )
+        {
+            list.add ( LEFT );
+        }
+        if ( sides.bottom )
+        {
+            list.add ( BOTTOM );
+        }
+        if ( sides.right )
+        {
+            list.add ( RIGHT );
+        }
+        return TextUtils.listToString ( list, separator );
+    }
+
+    /**
+     * Returns {@link Sides} read from string.
+     *
+     * @param sides {@link Sides} string
+     * @return {@link Sides} read from string
      */
     public static Sides sidesFromString ( final String sides )
     {
@@ -158,38 +186,9 @@ public final class SidesConverter extends AbstractSingleValueConverter
                 return new Sides ( false );
             }
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
-            Log.get ().error ( "Unable to parse Sides: " + sides, e );
-            return new Sides ();
+            throw new XmlException ( "Unable to parse Sides: " + sides, e );
         }
-    }
-
-    /**
-     * Returns sides converted into string.
-     *
-     * @param sides sides to convert
-     * @return sides converted into string
-     */
-    public static String sidesToString ( final Sides sides )
-    {
-        final List<String> list = new ArrayList<String> ( 4 );
-        if ( sides.top )
-        {
-            list.add ( TOP );
-        }
-        if ( sides.left )
-        {
-            list.add ( LEFT );
-        }
-        if ( sides.bottom )
-        {
-            list.add ( BOTTOM );
-        }
-        if ( sides.right )
-        {
-            list.add ( RIGHT );
-        }
-        return TextUtils.listToString ( list, separator );
     }
 }

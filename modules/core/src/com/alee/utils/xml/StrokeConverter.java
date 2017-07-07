@@ -69,6 +69,20 @@ public class StrokeConverter extends AbstractSingleValueConverter
     }
 
     @Override
+    public String toString ( final Object stroke )
+    {
+        final Class<?> type = stroke.getClass ();
+        for ( final StrokeConverterSupport supportedStroke : supported )
+        {
+            if ( supportedStroke.getType () == type )
+            {
+                return supportedStroke.toString ( ( Stroke ) stroke );
+            }
+        }
+        throw new RuntimeException ( "Unsupported stroke provided: " + type );
+    }
+
+    @Override
     public Object fromString ( final String stroke )
     {
         final int idEnd = stroke.indexOf ( separator );
@@ -81,19 +95,5 @@ public class StrokeConverter extends AbstractSingleValueConverter
             }
         }
         throw new RuntimeException ( "Unsupported stroke ID provided: " + id );
-    }
-
-    @Override
-    public String toString ( final Object stroke )
-    {
-        final Class<?> type = stroke.getClass ();
-        for ( final StrokeConverterSupport supportedStroke : supported )
-        {
-            if ( supportedStroke.getType () == type )
-            {
-                return supportedStroke.toString ( ( Stroke ) stroke );
-            }
-        }
-        throw new RuntimeException ( "Unsupported stroke provided: " + type );
     }
 }

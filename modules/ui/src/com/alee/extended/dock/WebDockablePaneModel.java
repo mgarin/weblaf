@@ -342,7 +342,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
             // No information
             return null;
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             throw new RuntimeException ( "Unknown frame drop exception occured", e );
         }

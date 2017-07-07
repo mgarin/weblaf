@@ -160,9 +160,10 @@ public final class XmlUtils
             xStream.processAnnotations ( ValuesTable.class );
             xStream.processAnnotations ( Pair.class );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
-            Log.get ().error ( "Unable to initialize XStream instance", e );
+            // It is a pretty fatal for library if something goes wrong here
+            throw new UtilityException ( "Unable to initialize XStream instance", e );
         }
     }
 
@@ -478,7 +479,7 @@ public final class XmlUtils
                                 is.close ();
                             }
                         }
-                        catch ( final Throwable e )
+                        catch ( final Exception e )
                         {
                             // Ignore this exception
                         }
@@ -490,7 +491,7 @@ public final class XmlUtils
                 }
             }
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             throw new RuntimeException ( "Unable to deserialize object from XML", e );
         }

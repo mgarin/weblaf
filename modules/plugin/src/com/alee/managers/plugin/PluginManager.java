@@ -709,7 +709,7 @@ public abstract class PluginManager<T extends Plugin>
 
                 recentlyDetected = sorted;
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 Log.warn ( this, "Unable to perform proper dependencies sorting", e );
             }

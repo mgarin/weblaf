@@ -142,7 +142,7 @@ public final class DragManager
                                     break;
                                 }
                             }
-                            catch ( final Throwable e )
+                            catch ( final Exception e )
                             {
                                 Log.error ( DragManager.class, e );
                             }

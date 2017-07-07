@@ -93,7 +93,7 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
             {
                 load ();
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 if ( SettingsManager.isLoggingEnabled () )
                 {
@@ -108,7 +108,7 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
         {
             doInit ( getComponent () );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             if ( SettingsManager.isLoggingEnabled () )
             {

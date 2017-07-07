@@ -152,7 +152,7 @@ public class FilesTransferable implements Transferable
                 return textURIListToFileList ( ( String ) transferable.getTransferData ( getUriListDataFlavor () ) );
             }
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             //
         }
@@ -170,7 +170,7 @@ public class FilesTransferable implements Transferable
                 return CollectionUtils.asList ( file );
             }
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             //
         }
@@ -184,7 +184,7 @@ public class FilesTransferable implements Transferable
                 return ( List<File> ) transferable.getTransferData ( DataFlavor.javaFileListFlavor );
             }
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             //
         }
@@ -213,7 +213,7 @@ public class FilesTransferable implements Transferable
             {
                 list.add ( new File ( new URI ( s ) ) );
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 //
             }
@@ -287,7 +287,7 @@ public class FilesTransferable implements Transferable
             {
                 uriListFlavor = new DataFlavor ( URI_LIST_MIME_TYPE );
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 Log.error ( FilesTransferHandler.class, e );
             }

@@ -196,7 +196,7 @@ public class ProxySettings implements Serializable, Cloneable
         {
             return Integer.parseInt ( proxyPort );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             return 80;
         }

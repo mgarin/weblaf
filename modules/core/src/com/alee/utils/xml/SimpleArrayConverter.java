@@ -31,7 +31,6 @@ import java.util.List;
 
 /**
  * Custom converter for arrays with simple values.
- * It can only handle arrays with
  *
  * @author Mikle Garin
  */
@@ -63,7 +62,7 @@ public class SimpleArrayConverter extends AbstractCollectionConverter
     public void marshal ( final Object object, final HierarchicalStreamWriter writer, final MarshallingContext context )
     {
         final int length = Array.getLength ( object );
-        String value = "";
+        final StringBuilder value = new StringBuilder ();
         for ( int i = 0; i < length; i++ )
         {
             final Object item = Array.get ( object, i );
@@ -74,15 +73,15 @@ public class SimpleArrayConverter extends AbstractCollectionConverter
             else if ( item.getClass ().isPrimitive () || item instanceof Integer || item instanceof Character || item instanceof Byte ||
                     item instanceof Short || item instanceof Long || item instanceof Float || item instanceof Double )
             {
-                value += item.toString ();
+                value.append ( item.toString () );
             }
             else if ( item instanceof Color )
             {
-                value += ColorConverter.colorToString ( ( Color ) item );
+                value.append ( ColorConverter.colorToString ( ( Color ) item ) );
             }
             else if ( item instanceof Insets )
             {
-                value += InsetsConverter.insetsToString ( ( Insets ) item );
+                value.append ( InsetsConverter.insetsToString ( ( Insets ) item ) );
             }
             else
             {
@@ -90,10 +89,10 @@ public class SimpleArrayConverter extends AbstractCollectionConverter
             }
             if ( i < length - 1 )
             {
-                value += separator;
+                value.append ( separator );
             }
         }
-        writer.setValue ( value );
+        writer.setValue ( value.toString () );
     }
 
     @Override

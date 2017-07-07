@@ -20,9 +20,9 @@ package com.alee.utils.swing.menu;
 import com.alee.laf.menu.*;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LM;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.TextUtils;
+import com.alee.utils.UtilityException;
 import com.alee.utils.swing.UnselectableButtonGroup;
 
 import javax.swing.*;
@@ -1435,10 +1435,9 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
                         return new ImageIcon ( new File ( getPath (), icon + getExtension () ).getAbsolutePath () );
                     }
                 }
-                catch ( final Throwable e )
+                catch ( final Exception e )
                 {
-                    Log.warn ( "Unable to find menu icon for path: " + getPath () + icon + getExtension (), e );
-                    return null;
+                    throw new UtilityException ( "Unable to find menu icon for path: " + getPath () + icon + getExtension (), e );
                 }
             }
             else if ( icon instanceof Icon )
@@ -1459,8 +1458,7 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
             }
             else
             {
-                Log.warn ( "Unknown icon object type provided: " + icon );
-                return null;
+                throw new UtilityException ( "Unknown icon object type provided: " + icon );
             }
         }
         else

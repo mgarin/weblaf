@@ -139,7 +139,7 @@ public final class ProprietaryUtils
                 return false;
             }
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             return SystemUtils.isWindows () || SystemUtils.isMac () || SystemUtils.isSolaris () ||
                     SystemUtils.isUnix () && allowLinuxTransparency;
@@ -181,7 +181,7 @@ public final class ProprietaryUtils
                 return false;
             }
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             return windowShapeAllowed;
         }
@@ -246,7 +246,7 @@ public final class ProprietaryUtils
                     rootPane.repaint ();
                 }
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 // Ignore any exceptions this native feature might cause
                 // Still, should inform that such actions cause an exception on the underlying system
@@ -296,7 +296,7 @@ public final class ProprietaryUtils
                 }
                 return isOpaque != null ? isOpaque : true;
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 // Ignore any exceptions this native feature might cause
                 // Still, should inform that such actions cause an exception on the underlying system
@@ -329,7 +329,7 @@ public final class ProprietaryUtils
                     ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "setWindowOpacity", window, opacity );
                 }
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 // Ignore any exceptions this native feature might cause
                 // Still, should inform that such actions cause an exception on the underlying system
@@ -363,7 +363,7 @@ public final class ProprietaryUtils
                 }
                 return opacity != null ? opacity : 1f;
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 // Ignore any exceptions this native feature might cause
                 // Still, should inform that such actions cause an exception on the underlying system
@@ -396,7 +396,7 @@ public final class ProprietaryUtils
                     ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "setWindowShape", window, shape );
                 }
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 // Ignore any exceptions this native feature might cause
                 // Still, should inform that such actions cause an exception on the underlying system
@@ -430,7 +430,7 @@ public final class ProprietaryUtils
                 }
                 return shape;
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 // Ignore any exceptions this native feature might cause
                 // Still, should inform that such actions cause an exception on the underlying system
@@ -463,12 +463,12 @@ public final class ProprietaryUtils
                     ReflectUtils.callStaticMethod ( toolkit, "checkAndSetPolicy", window, true );
                 }
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 Log.error ( ProprietaryUtils.class, "Unable to check and set window policy", e );
             }
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             Log.error ( ProprietaryUtils.class, "Unable to find toolkit: " + toolkitClass, e );
         }

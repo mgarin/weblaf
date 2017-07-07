@@ -380,7 +380,7 @@ public final class ComponentStyle implements Serializable, Cloneable
 
             return true;
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             Log.error ( this, e );
             return false;
@@ -511,7 +511,7 @@ public final class ComponentStyle implements Serializable, Cloneable
             }
             return true;
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             Log.error ( this, e );
             return false;
@@ -545,7 +545,7 @@ public final class ComponentStyle implements Serializable, Cloneable
         {
             usable = Clone.clone ( value );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             final String msg = "Unable to clone value: %s";
             throw new StyleException ( String.format ( msg, value ), e );
@@ -565,7 +565,7 @@ public final class ComponentStyle implements Serializable, Cloneable
                 // Applying field value directly
                 ReflectUtils.setFieldValue ( object, field, usable );
             }
-            catch ( final Throwable fe )
+            catch ( final Exception fe )
             {
                 final String msg = "Unable to set `%s` object `%s` field value to: %s";
                 throw new StyleException ( String.format ( msg, object, field, usable ), fe );
@@ -907,7 +907,7 @@ public final class ComponentStyle implements Serializable, Cloneable
                 // Saving merge result
                 properties.put ( key, result );
             }
-            catch ( final Throwable ex )
+            catch ( final Exception ex )
             {
                 final String msg = "Unable to merge property '%s' values: '%s' and '%s'";
                 Log.get ().error ( String.format ( msg, key, e, m ), ex );

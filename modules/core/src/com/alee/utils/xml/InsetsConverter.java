@@ -17,14 +17,14 @@
 
 package com.alee.utils.xml;
 
-import com.alee.managers.log.Log;
+import com.alee.utils.XmlException;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 import java.awt.*;
 import java.util.StringTokenizer;
 
 /**
- * Custom {@link java.awt.Insets} object converter.
+ * Custom XStream converter for {@link Insets}.
  *
  * @author Mikle Garin
  */
@@ -43,22 +43,40 @@ public class InsetsConverter extends AbstractSingleValueConverter
     }
 
     @Override
-    public Object fromString ( final String insets )
-    {
-        return insetsFromString ( insets );
-    }
-
-    @Override
     public String toString ( final Object object )
     {
         return insetsToString ( ( Insets ) object );
     }
 
+    @Override
+    public Object fromString ( final String insets )
+    {
+        return insetsFromString ( insets );
+    }
+
     /**
-     * Returns insets read from string.
+     * Returns {@link Insets} converted into string.
      *
-     * @param insets insets string
-     * @return insets read from string
+     * @param insets {@link Insets} to convert
+     * @return v converted into string
+     */
+    public static String insetsToString ( final Insets insets )
+    {
+        if ( insets.top == insets.left && insets.left == insets.bottom && insets.bottom == insets.right )
+        {
+            return Integer.toString ( insets.top );
+        }
+        else
+        {
+            return insets.top + separator + insets.left + separator + insets.bottom + separator + insets.right;
+        }
+    }
+
+    /**
+     * Returns {@link Insets} read from string.
+     *
+     * @param insets {@link Insets} string
+     * @return {@link Insets} read from string
      */
     public static Insets insetsFromString ( final String insets )
     {
@@ -92,28 +110,9 @@ public class InsetsConverter extends AbstractSingleValueConverter
                 return new Insets ( 0, 0, 0, 0 );
             }
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
-            Log.get ().error ( "Unable to parse Insets: " + insets, e );
-            return new Insets ( 0, 0, 0, 0 );
-        }
-    }
-
-    /**
-     * Returns insets converted into string.
-     *
-     * @param insets insets to convert
-     * @return insets converted into string
-     */
-    public static String insetsToString ( final Insets insets )
-    {
-        if ( insets.top == insets.left && insets.left == insets.bottom && insets.bottom == insets.right )
-        {
-            return Integer.toString ( insets.top );
-        }
-        else
-        {
-            return insets.top + separator + insets.left + separator + insets.bottom + separator + insets.right;
+            throw new XmlException ( "Unable to parse Insets: " + insets, e );
         }
     }
 }

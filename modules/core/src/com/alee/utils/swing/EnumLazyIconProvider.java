@@ -99,7 +99,7 @@ public class EnumLazyIconProvider
                 imageIcon = new ImageIcon ( enumeration.getClass ().getResource ( path ) );
                 stateIcons.put ( state, imageIcon );
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 final String cn = enumeration.getClass ().getCanonicalName ();
                 Log.error ( EnumLazyIconProvider.class, "Unable to find icon \"" + path + "\" near class: " + cn );

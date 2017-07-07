@@ -164,7 +164,7 @@ public abstract class AbstractComponentDescriptor<C extends JComponent> implemen
                 componentIcons.put ( key, icon );
                 return icon;
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 throw new StyleException ( "Unable to find component icon: " + key, e );
             }
@@ -210,7 +210,7 @@ public abstract class AbstractComponentDescriptor<C extends JComponent> implemen
                 // Installing UI into component
                 LafUtils.setUI ( component, uiInstance );
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 // We were unable to install new component UI
                 throw new StyleException ( "Unable to setup component UI: " + component, e );
@@ -242,7 +242,7 @@ public abstract class AbstractComponentDescriptor<C extends JComponent> implemen
                 // Creating UI through common static method
                 ui = ReflectUtils.callStaticMethod ( uiClass, "createUI", component );
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 // We were unable to create new component UI
                 throw new StyleException ( "Unable to instantiate UI instance: " + uiClass, e );

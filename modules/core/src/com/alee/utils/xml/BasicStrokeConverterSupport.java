@@ -57,82 +57,6 @@ public class BasicStrokeConverterSupport implements StrokeConverterSupport<Basic
     }
 
     @Override
-    public BasicStroke fromString ( final String stroke )
-    {
-        final List<String> settings = TextUtils.stringToList ( stroke, StrokeConverter.separator );
-        final Float width = settings.size () > 1 ? Float.valueOf ( settings.get ( 1 ) ) : 1f;
-        final int cap = settings.size () > 2 ? unmarshalCap ( settings.get ( 2 ) ) : BasicStroke.CAP_SQUARE;
-        final int join = settings.size () > 3 ? unmarshalJoin ( settings.get ( 3 ) ) : BasicStroke.JOIN_MITER;
-        final Float miterlimit = settings.size () > 4 ? Float.valueOf ( settings.get ( 4 ) ) : 10f;
-        final float[] dash = settings.size () > 5 ? unmarshalDash ( settings.get ( 5 ) ) : null;
-        final Float phase = settings.size () > 6 ? Float.valueOf ( settings.get ( 6 ) ) : 0f;
-        return new BasicStroke ( width, cap, join, miterlimit, dash, phase );
-    }
-
-    /**
-     * Returns unmarshalled basic stroke cap.
-     *
-     * @param value value to unmarshal
-     * @return unmarshalled basic stroke cap
-     */
-    private int unmarshalCap ( final String value )
-    {
-        if ( value.equals ( cap_butt ) )
-        {
-            return BasicStroke.CAP_BUTT;
-        }
-        else if ( value.equals ( cap_round ) )
-        {
-            return BasicStroke.CAP_ROUND;
-        }
-        else if ( value.equals ( cap_square ) )
-        {
-            return BasicStroke.CAP_SQUARE;
-        }
-        throw new IllegalArgumentException ( "Unknown stroke cap type specified: " + value );
-    }
-
-    /**
-     * Returns unmarshalled basic stroke join.
-     *
-     * @param value value to unmarshal
-     * @return unmarshalled basic stroke join
-     */
-    protected int unmarshalJoin ( final String value )
-    {
-        if ( value.equals ( join_miter ) )
-        {
-            return BasicStroke.JOIN_MITER;
-        }
-        else if ( value.equals ( join_round ) )
-        {
-            return BasicStroke.JOIN_ROUND;
-        }
-        else if ( value.equals ( join_bevel ) )
-        {
-            return BasicStroke.JOIN_BEVEL;
-        }
-        throw new IllegalArgumentException ( "Unknown stroke join type specified: " + value );
-    }
-
-    /**
-     * Returns unmarshalled basic stroke dash.
-     *
-     * @param value value to unmarshal
-     * @return unmarshalled basic stroke dash
-     */
-    protected float[] unmarshalDash ( final String value )
-    {
-        final List<Float> values = TextUtils.stringToFloatList ( value, StrokeConverter.subSeparator );
-        final float[] dash = new float[ values.size () ];
-        for ( int i = 0; i < values.size (); i++ )
-        {
-            dash[ i ] = values.get ( i );
-        }
-        return dash;
-    }
-
-    @Override
     public String toString ( final BasicStroke stroke )
     {
         final String s = StrokeConverter.separator;
@@ -147,10 +71,10 @@ public class BasicStrokeConverterSupport implements StrokeConverterSupport<Basic
     }
 
     /**
-     * Returns marshalled basic stroke cap.
+     * Returns marshalled {@link BasicStroke} cap.
      *
-     * @param stroke basic stroke
-     * @return marshalled basic stroke cap
+     * @param stroke {@link BasicStroke}
+     * @return marshalled {@link BasicStroke} cap
      */
     protected String marshalCap ( final BasicStroke stroke )
     {
@@ -171,10 +95,10 @@ public class BasicStrokeConverterSupport implements StrokeConverterSupport<Basic
     }
 
     /**
-     * Returns marshalled basic stroke join.
+     * Returns marshalled {@link BasicStroke} join.
      *
-     * @param stroke basic stroke
-     * @return marshalled basic stroke join
+     * @param stroke {@link BasicStroke}
+     * @return marshalled {@link BasicStroke} join
      */
     protected String marshalJoin ( final BasicStroke stroke )
     {
@@ -195,10 +119,10 @@ public class BasicStrokeConverterSupport implements StrokeConverterSupport<Basic
     }
 
     /**
-     * Returns marshalled basic stroke dash.
+     * Returns marshalled {@link BasicStroke} dash.
      *
-     * @param stroke basic stroke
-     * @return marshalled basic stroke dash
+     * @param stroke {@link BasicStroke}
+     * @return marshalled {@link BasicStroke} dash
      */
     protected String marshalDash ( final BasicStroke stroke )
     {
@@ -214,5 +138,81 @@ public class BasicStrokeConverterSupport implements StrokeConverterSupport<Basic
             }
             b.append ( StrokeConverter.subSeparator );
         }
+    }
+
+    @Override
+    public BasicStroke fromString ( final String stroke )
+    {
+        final List<String> settings = TextUtils.stringToList ( stroke, StrokeConverter.separator );
+        final Float width = settings.size () > 1 ? Float.valueOf ( settings.get ( 1 ) ) : 1f;
+        final int cap = settings.size () > 2 ? unmarshalCap ( settings.get ( 2 ) ) : BasicStroke.CAP_SQUARE;
+        final int join = settings.size () > 3 ? unmarshalJoin ( settings.get ( 3 ) ) : BasicStroke.JOIN_MITER;
+        final Float miterlimit = settings.size () > 4 ? Float.valueOf ( settings.get ( 4 ) ) : 10f;
+        final float[] dash = settings.size () > 5 ? unmarshalDash ( settings.get ( 5 ) ) : null;
+        final Float phase = settings.size () > 6 ? Float.valueOf ( settings.get ( 6 ) ) : 0f;
+        return new BasicStroke ( width, cap, join, miterlimit, dash, phase );
+    }
+
+    /**
+     * Returns unmarshalled {@link BasicStroke} cap.
+     *
+     * @param value value to unmarshal
+     * @return unmarshalled {@link BasicStroke} cap
+     */
+    private int unmarshalCap ( final String value )
+    {
+        if ( value.equals ( cap_butt ) )
+        {
+            return BasicStroke.CAP_BUTT;
+        }
+        else if ( value.equals ( cap_round ) )
+        {
+            return BasicStroke.CAP_ROUND;
+        }
+        else if ( value.equals ( cap_square ) )
+        {
+            return BasicStroke.CAP_SQUARE;
+        }
+        throw new IllegalArgumentException ( "Unknown stroke cap type specified: " + value );
+    }
+
+    /**
+     * Returns unmarshalled {@link BasicStroke} join.
+     *
+     * @param value value to unmarshal
+     * @return unmarshalled {@link BasicStroke} join
+     */
+    protected int unmarshalJoin ( final String value )
+    {
+        if ( value.equals ( join_miter ) )
+        {
+            return BasicStroke.JOIN_MITER;
+        }
+        else if ( value.equals ( join_round ) )
+        {
+            return BasicStroke.JOIN_ROUND;
+        }
+        else if ( value.equals ( join_bevel ) )
+        {
+            return BasicStroke.JOIN_BEVEL;
+        }
+        throw new IllegalArgumentException ( "Unknown stroke join type specified: " + value );
+    }
+
+    /**
+     * Returns unmarshalled {@link BasicStroke} dash.
+     *
+     * @param value value to unmarshal
+     * @return unmarshalled {@link BasicStroke} dash
+     */
+    protected float[] unmarshalDash ( final String value )
+    {
+        final List<Float> values = TextUtils.stringToFloatList ( value, StrokeConverter.subSeparator );
+        final float[] dash = new float[ values.size () ];
+        for ( int i = 0; i < values.size (); i++ )
+        {
+            dash[ i ] = values.get ( i );
+        }
+        return dash;
     }
 }

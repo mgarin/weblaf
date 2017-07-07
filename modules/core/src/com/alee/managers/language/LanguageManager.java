@@ -890,7 +890,7 @@ public class LanguageManager implements LanguageConstants
                 final URL res = LanguageManager.class.getResource ( "icons/lang/" + language + ".png" );
                 icon = new ImageIcon ( res );
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 icon = other;
             }

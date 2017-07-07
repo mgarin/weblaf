@@ -118,7 +118,7 @@ public final class StyleConverterUtils
                     // Reading property using field type
                     properties.put ( propertyName, context.convertAnother ( properties, fieldClass ) );
                 }
-                catch ( final Throwable e )
+                catch ( final Exception e )
                 {
                     final String msg = "Component property '%s' value from style '%s' cannot be read";
                     throw new StyleException ( String.format ( msg, propertyName, styleId ), e );
@@ -136,7 +136,7 @@ public final class StyleConverterUtils
                         final Class<?> rClass = getter.getReturnType ();
                         properties.put ( propertyName, context.convertAnother ( properties, rClass ) );
                     }
-                    catch ( final Throwable e )
+                    catch ( final Exception e )
                     {
                         final String msg = "Component property '%s' value from style '%s' cannot be read";
                         throw new StyleException ( String.format ( msg, propertyName, styleId ), e );

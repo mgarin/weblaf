@@ -461,7 +461,7 @@ public final class ImageUtils
         {
             return ImageIO.read ( file );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             return null;
         }
@@ -483,7 +483,7 @@ public final class ImageUtils
             //            return imageIcon;
             return new ImageIcon ( url );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             return null;
         }
@@ -499,7 +499,7 @@ public final class ImageUtils
         {
             return new ImageIcon ( nearClass.getResource ( src ) );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             return null;
         }
@@ -515,7 +515,7 @@ public final class ImageUtils
         {
             return new ImageIcon ( ImageIO.read ( inputStream ) );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             return null;
         }
@@ -966,7 +966,7 @@ public final class ImageUtils
             {
                 return new ImageIcon ( ImageIO.read ( new File ( src ) ) );
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 return new ImageIcon ();
             }

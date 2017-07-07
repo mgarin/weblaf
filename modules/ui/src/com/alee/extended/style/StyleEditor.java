@@ -998,7 +998,7 @@ public class StyleEditor extends WebFrame
             // Adding tooltip with detailed message
             lastException = ex;
         }
-        catch ( final Throwable ex )
+        catch ( final Exception ex )
         {
             // Full stack trace for unknown exceptions
             if ( completeStackTrace )

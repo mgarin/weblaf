@@ -168,7 +168,7 @@ public class SettingsConverter extends ReflectionConverter
                         settings.put ( key, context.convertAnother ( settings, type ) );
                     }
                 }
-                catch ( final Throwable e )
+                catch ( final Exception e )
                 {
                     if ( SettingsManager.isLoggingEnabled () )
                     {

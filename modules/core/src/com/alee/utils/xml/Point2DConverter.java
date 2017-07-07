@@ -17,15 +17,15 @@
 
 package com.alee.utils.xml;
 
-import com.alee.managers.log.Log;
 import com.alee.utils.TextUtils;
+import com.alee.utils.XmlException;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 import java.awt.geom.Point2D;
 import java.util.List;
 
 /**
- * Custom {@link java.awt.geom.Point2D} object converter.
+ * Custom XStream converter for {@link Point2D}.
  *
  * @author Mikle Garin
  */
@@ -39,22 +39,33 @@ public class Point2DConverter extends AbstractSingleValueConverter
     }
 
     @Override
-    public Object fromString ( final String str )
-    {
-        return pointFromString ( str );
-    }
-
-    @Override
     public String toString ( final Object obj )
     {
         return pointToString ( ( Point2D ) obj );
     }
 
+    @Override
+    public Object fromString ( final String str )
+    {
+        return pointFromString ( str );
+    }
+
     /**
-     * Returns point read from string.
+     * Returns {@link Point2D} converted into string.
      *
-     * @param point point string
-     * @return point read from string
+     * @param point {@link Point2D} to convert
+     * @return {@link Point2D} converted into string
+     */
+    public static String pointToString ( final Point2D point )
+    {
+        return point.getX () + "," + point.getY ();
+    }
+
+    /**
+     * Returns {@link Point2D} read from string.
+     *
+     * @param point {@link Point2D} string
+     * @return {@link Point2D} read from string
      */
     public static Point2D.Float pointFromString ( final String point )
     {
@@ -65,21 +76,9 @@ public class Point2DConverter extends AbstractSingleValueConverter
             final float y = Float.parseFloat ( points.get ( 1 ) );
             return new Point2D.Float ( x, y );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
-            Log.get ().error ( "Unable to parse Point2D: " + point, e );
-            return new Point2D.Float ();
+            throw new XmlException ( "Unable to parse Point2D: " + point, e );
         }
-    }
-
-    /**
-     * Returns point converted into string.
-     *
-     * @param point point to convert
-     * @return point converted into string
-     */
-    public static String pointToString ( final Point2D point )
-    {
-        return point.getX () + "," + point.getY ();
     }
 }

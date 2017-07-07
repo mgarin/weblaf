@@ -194,7 +194,7 @@ public final class ComponentSettingsManager
             {
                 return ReflectUtils.createInstance ( settingsProcessorClass, data );
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 if ( throwExceptions )
                 {

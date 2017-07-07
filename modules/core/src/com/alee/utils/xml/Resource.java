@@ -35,13 +35,17 @@ import java.io.Serializable;
 public class Resource implements Serializable
 {
     /**
+     * todo 1. Probably replace with customized URIs for various cases
+     */
+
+    /**
      * Resource location.
      */
     @XStreamAsAttribute
     private ResourceLocation location;
 
     /**
-     * Name of the class relative to which file is located.
+     * Name of the class relative to which resource is located.
      * Specified only in case {@link #location} is set to {@link com.alee.utils.xml.ResourceLocation#nearClass} value.
      */
     @XStreamAsAttribute
@@ -110,31 +114,61 @@ public class Resource implements Serializable
         setClassName ( className );
     }
 
+    /**
+     * Returns resource location.
+     *
+     * @return resource location
+     */
     public ResourceLocation getLocation ()
     {
         return location;
     }
 
+    /**
+     * Sets resource location.
+     *
+     * @param location resource location
+     */
     public void setLocation ( final ResourceLocation location )
     {
         this.location = location;
     }
 
+    /**
+     * Returns name of the class relative to which resource is located.
+     *
+     * @return name of the class relative to which resource is located
+     */
     public String getClassName ()
     {
         return className;
     }
 
-    public void setClassName ( final String className )
+    /**
+     * Sets name of the class relative to which resource is located.
+     *
+     * @param name name of the class relative to which resource is located
+     */
+    public void setClassName ( final String name )
     {
-        this.className = className;
+        this.className = name;
     }
 
+    /**
+     * Returns resource path.
+     *
+     * @return resource path
+     */
     public String getPath ()
     {
         return path;
     }
 
+    /**
+     * Sets resource path.
+     *
+     * @param path resource path
+     */
     public void setPath ( final String path )
     {
         this.path = path;

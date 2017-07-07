@@ -42,18 +42,18 @@ public interface StrokeConverterSupport<T extends Stroke>
     public Class<T> getType ();
 
     /**
-     * Returns stroke read from string.
-     *
-     * @param stroke stroke string
-     * @return stroke read from string
-     */
-    public T fromString ( String stroke );
-
-    /**
      * Returns stroke converted into string.
      *
      * @param stroke stroke to convert
      * @return stroke converted into string
      */
     public String toString ( T stroke );
+
+    /**
+     * Returns stroke read from string.
+     *
+     * @param stroke stroke string
+     * @return stroke read from string
+     */
+    public T fromString ( String stroke );
 }

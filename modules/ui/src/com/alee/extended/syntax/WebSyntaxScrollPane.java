@@ -330,7 +330,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
             {
                 setUI ( ( WebScrollPaneUI ) UIManager.getUI ( this ) );
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 Log.error ( this, e );
                 setUI ( new WebScrollPaneUI () );

@@ -308,7 +308,7 @@ public class DockablePaneGlassLayer extends JComponent
                 final FrameDragData data = ( FrameDragData ) transferable.getTransferData ( FrameTransferable.dataFlavor );
                 return dockablePane.getFrame ( data.getId () ) != null;
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 //
             }

@@ -113,7 +113,7 @@ public final class SystemUtils
             final Clipboard clipboard = Toolkit.getDefaultToolkit ().getSystemClipboard ();
             clipboard.setContents ( new StringSelection ( text ), null );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             Log.error ( SystemUtils.class, e );
         }

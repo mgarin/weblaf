@@ -676,7 +676,7 @@ public class NinePatchEditorPanel extends WebPanel
             // Inform about changes
             fireStateChanged ();
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             //
         }

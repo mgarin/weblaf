@@ -21,7 +21,7 @@ import com.alee.utils.XmlUtils;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 /**
- * Simple class field value converter.
+ * Custom XStream converter for {@link Class}.
  *
  * @author Mikle Garin
  */

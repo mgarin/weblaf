@@ -63,7 +63,7 @@ public class NodesDropHandler<N extends UniqueNode, T extends WebTree<N>, M exte
             final JTree.DropLocation dl = ( JTree.DropLocation ) support.getDropLocation ();
             return canDrop ( support, tree, model, destination, dl.getChildIndex (), nodes );
         }
-        catch ( final Throwable ufe )
+        catch ( final Exception ufe )
         {
             // Simply ignore any issues here
             // We are only checking possibility to drop, anything could go wrong
@@ -102,7 +102,7 @@ public class NodesDropHandler<N extends UniqueNode, T extends WebTree<N>, M exte
             final JTree.DropLocation dl = ( JTree.DropLocation ) support.getDropLocation ();
             return prepareDrop ( support, tree, model, destination, dl.getChildIndex (), nodes );
         }
-        catch ( final Throwable ufe )
+        catch ( final Exception ufe )
         {
             // Simply ignore any issues here
             // We are only checking possibility to drop, anything could go wrong
@@ -140,7 +140,7 @@ public class NodesDropHandler<N extends UniqueNode, T extends WebTree<N>, M exte
             callback.dropped ( nodes );
             callback.completed ();
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             // Inform about drop issues
             callback.failed ( e );

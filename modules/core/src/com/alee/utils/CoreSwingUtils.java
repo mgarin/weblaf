@@ -364,7 +364,7 @@ public class CoreSwingUtils
         {
             invokeAndWait ( runnable );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             //
         }

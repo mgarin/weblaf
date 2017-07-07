@@ -284,7 +284,7 @@ public final class SkinInfoConverter extends ReflectionConverter
         {
             return ReflectUtils.createInstance ( className );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             final String msg = "Unable to load icon set '%s'";
             throw new StyleException ( String.format ( msg, className ), e );
@@ -322,7 +322,7 @@ public final class SkinInfoConverter extends ReflectionConverter
                 return XmlUtils.fromXML ( resource, context );
             }
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             final String msg = "Included skin file '%s' cannot be read";
             throw new StyleException ( String.format ( msg, resource.getPath () ), e );

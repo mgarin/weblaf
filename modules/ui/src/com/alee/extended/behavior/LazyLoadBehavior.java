@@ -143,7 +143,7 @@ public class LazyLoadBehavior implements Behavior
                                 }
                             } );
                         }
-                        catch ( final Throwable e )
+                        catch ( final Exception e )
                         {
                             SwingUtils.invokeLater ( new Runnable ()
                             {

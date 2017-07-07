@@ -151,7 +151,7 @@ public final class LazyActionMap extends ActionMapUIResource
                 // Trying to load actions
                 ReflectUtils.callStaticMethod ( clazz, "loadActionMap", LazyActionMap.this );
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 throw new LookAndFeelException ( "LazyActionMap unable to load actions", e );
             }

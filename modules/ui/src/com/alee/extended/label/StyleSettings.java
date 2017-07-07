@@ -185,7 +185,7 @@ public class StyleSettings implements IStyleSettings
                 final String colorString = statement.substring ( i1 + 1, i2 );
                 return ColorConverter.colorFromString ( colorString );
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 return null;
             }

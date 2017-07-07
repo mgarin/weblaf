@@ -85,7 +85,7 @@ public final class ReflectUtils
         {
             return getClass ( canonicalName );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             if ( safeMethodsLoggingEnabled )
             {
@@ -135,7 +135,7 @@ public final class ReflectUtils
         {
             return getInnerClass ( fromClassName, innerClassName );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             if ( safeMethodsLoggingEnabled )
             {
@@ -206,7 +206,7 @@ public final class ReflectUtils
             // We add additional 3 levels of depth due to reflection calls here
             return callStaticMethod ( "sun.reflect.Reflection", "getCallerClass", depth + 3 );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             try
             {
@@ -472,7 +472,7 @@ public final class ReflectUtils
             setFieldValue ( object, field, value );
             return true;
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             if ( safeMethodsLoggingEnabled )
             {
@@ -514,7 +514,7 @@ public final class ReflectUtils
             setStaticFieldValue ( classType, field, value );
             return true;
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             if ( safeMethodsLoggingEnabled )
             {
@@ -587,7 +587,7 @@ public final class ReflectUtils
         {
             return getFieldValue ( object, fieldName );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             if ( safeMethodsLoggingEnabled )
             {
@@ -628,7 +628,7 @@ public final class ReflectUtils
         {
             return getStaticFieldValue ( classType, fieldName );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             if ( safeMethodsLoggingEnabled )
             {
@@ -770,7 +770,7 @@ public final class ReflectUtils
         {
             return createInstance ( canonicalClassName, arguments );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             if ( safeMethodsLoggingEnabled )
             {
@@ -811,7 +811,7 @@ public final class ReflectUtils
         {
             return createInstance ( theClass, arguments );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             if ( safeMethodsLoggingEnabled )
             {
@@ -924,7 +924,7 @@ public final class ReflectUtils
         {
             return callStaticMethod ( canonicalClassName, methodName, arguments );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             if ( safeMethodsLoggingEnabled )
             {
@@ -968,7 +968,7 @@ public final class ReflectUtils
         {
             return callStaticMethod ( theClass, methodName, arguments );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             if ( safeMethodsLoggingEnabled )
             {
@@ -1011,7 +1011,7 @@ public final class ReflectUtils
         {
             return callMethods ( objects, methodName, arguments );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             if ( safeMethodsLoggingEnabled )
             {
@@ -1057,7 +1057,7 @@ public final class ReflectUtils
         {
             return callMethods ( objects, methodName, arguments );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             if ( safeMethodsLoggingEnabled )
             {
@@ -1103,7 +1103,7 @@ public final class ReflectUtils
         {
             return callMethod ( object, methodName, arguments );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             if ( safeMethodsLoggingEnabled )
             {
@@ -1233,7 +1233,7 @@ public final class ReflectUtils
         {
             return getMethod ( aClass, methodName, arguments ) != null;
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             return false;
         }
@@ -1269,7 +1269,7 @@ public final class ReflectUtils
         {
             return getMethod ( aClass, methodName, arguments );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             if ( safeMethodsLoggingEnabled )
             {
