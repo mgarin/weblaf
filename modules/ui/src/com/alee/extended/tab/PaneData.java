@@ -101,7 +101,14 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
             @Override
             public void run ( final KeyEvent e )
             {
-                closeSelected ();
+                if ( documentPane.isClosable () )
+                {
+                    final T selected = getSelected ();
+                    if ( selected.isClosable () )
+                    {
+                        close ( selected );
+                    }
+                }
             }
         } );
 
