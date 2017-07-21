@@ -195,8 +195,10 @@ public abstract class AbstractComponentDescriptor<C extends JComponent> implemen
     public void updateUI ( final C component )
     {
         // Check whether or not we need to create new UI instance
+        // It will be created and applied if component doesn't have its own UI instance yet
+        // It will also be created and applied if component UI instance class is not assignable to the base UI class
         final ComponentUI existingUI = LafUtils.getUI ( component );
-        if ( existingUI == null || existingUI.getClass () != getUIClass () )
+        if ( existingUI == null || !getBaseUIClass ().isAssignableFrom ( existingUI.getClass () ) )
         {
             try
             {
@@ -225,7 +227,7 @@ public abstract class AbstractComponentDescriptor<C extends JComponent> implemen
 
     /**
      * Returns {@code ComponentUI} implementation instance for the specified component.
-     * Note that whether it is a new instance or reused existing one depends completely on {@link ComponentUI} implementation.
+     * Note that whether it is a new instance or reused existing one depends on the {@link ComponentUI} implementation.
      * This method simply invokes static {@code ComponentUI.createUI(component)} method to retrieve the instance.
      *
      * @param component {@code JComponent} to return {@code ComponentUI} implementation instance for

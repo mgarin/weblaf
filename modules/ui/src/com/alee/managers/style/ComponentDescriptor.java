@@ -34,9 +34,9 @@ import javax.swing.plaf.ComponentUI;
 public interface ComponentDescriptor<C extends JComponent> extends Identifiable, IconSupport, TitleSupport
 {
     /**
-     * Returns component class.
+     * Returns {@link JComponent} class.
      *
-     * @return component class
+     * @return {@link JComponent} class
      */
     public Class<C> getComponentClass ();
 
@@ -48,8 +48,8 @@ public interface ComponentDescriptor<C extends JComponent> extends Identifiable,
     public String getUIClassId ();
 
     /**
-     * Returns base UI class applicable to this component.
-     * This class is required to limit and properly check UIs that can be applied to the component.
+     * Returns base UI class applicable to this {@link JComponent}.
+     * This class is required to limit and properly check UIs that can be applied to specific {@link JComponent} implementations.
      *
      * @return base UI class applicable to this component
      */
@@ -104,8 +104,9 @@ public interface ComponentDescriptor<C extends JComponent> extends Identifiable,
     public String getTitle ();
 
     /**
-     * Asks descriptor to reset component UI to one currently provided by L&F.
-     * Some of the components might customize that behavior to update used sub-component UIs.
+     * Asks descriptor to update {@link ComponentUI} instance for the specified {@link JComponent}.
+     * It is up to implementation whether {@link ComponentUI} instance will be preserved or changed to the one currently provided by L&F.
+     * Various {@link ComponentDescriptor} implementations might customize this behavior to update used sub-component UIs.
      *
      * @param component component instance
      */
