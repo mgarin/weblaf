@@ -148,10 +148,16 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C>
         dateField.revalidate ();
         dateField.repaint ();
 
-        calendar.resetStyleId ();
-        calendar = null;
-        popup.resetStyleId ();
-        popup = null;
+        if ( calendar != null )
+        {
+            calendar.resetStyleId ();
+            calendar = null;
+        }
+        if ( popup != null )
+        {
+            popup.resetStyleId ();
+            popup = null;
+        }
         button.resetStyleId ();
         button = null;
         field.resetStyleId ();
