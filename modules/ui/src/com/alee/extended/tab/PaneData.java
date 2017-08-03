@@ -101,7 +101,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
             @Override
             public void run ( final KeyEvent e )
             {
-                if ( documentPane.isClosable () )
+                if ( getDocumentPane().isClosable () )
                 {
                     final T selected = getSelected ();
                     if ( selected.isClosable () )
@@ -787,14 +787,13 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      */
     public boolean closeAll ()
     {
+        boolean success = true;
         for ( final T document : CollectionUtils.copy ( data ) )
         {
-            if ( !close ( document ) )
-            {
-                return false;
-            }
+            success &= close ( document );
         }
-        return true;
+
+        return success;
     }
 
     /**
@@ -866,17 +865,15 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      */
     public boolean closeOthers ( final T document )
     {
+        boolean success = true;
         for ( final T doc : CollectionUtils.copy ( data ) )
         {
             if ( doc != document && doc.isClosable () )
             {
-                if ( !close ( doc ) )
-                {
-                    return false;
-                }
+                success &= close ( doc );
             }
         }
-        return true;
+        return success;
     }
 
     /**

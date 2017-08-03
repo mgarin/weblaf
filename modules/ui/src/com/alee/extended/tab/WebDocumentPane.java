@@ -1197,14 +1197,12 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      */
     public boolean closeAll ()
     {
+        boolean success = true;
         for ( final PaneData<T> paneData : getAllPanes () )
         {
-            if ( !paneData.closeAll () )
-            {
-                return false;
-            }
+            success &= paneData.closeAll ();
         }
-        return true;
+        return success;
     }
 
     /**
