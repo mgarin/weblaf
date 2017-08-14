@@ -305,16 +305,16 @@ public class WebFileChooser extends JFileChooser
     */
     public void setSelectedFile ( final File file )
     {
-    	if ( file == null || file.exists() )
+    	if ( file == null || file.exists () )
     	{
     		super.setSelectedFile ( file );
     	}
     	else
     	{
     		this.getFileChooserPanel ().getSelectedFilesTextField ().setText ( file.getName () );
-    		if ( file.getParent() != null && new File ( file.getParent () ).exists () ) 
+    		if ( file.getParent () != null && new File ( file.getParent () ).exists () ) 
     		{
-    			this.setCurrentDirectory( file.getParent () );
+    			this.setCurrentDirectory ( file.getParent () );
     		}
     	}
     }
