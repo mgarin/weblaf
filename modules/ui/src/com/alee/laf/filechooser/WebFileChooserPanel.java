@@ -80,9 +80,9 @@ public class WebFileChooserPanel extends WebPanel
      * todo 1. When setting "show hidden files" to false - move out from hidden directories
      * todo 2. Proper hotkeys usage within window
      * todo 3. Context menu for file selection components
-     */    
+     */
 
-	/**
+    /**
      * File name provider.
      */
     public static final FileNameProvider quotedFileNameProvider = new FileNameProvider ()
@@ -1120,15 +1120,6 @@ public class WebFileChooserPanel extends WebPanel
         }
     }
 
-    /**
-     * Returns the Selected Files TextField.
-     *
-     * @return Selected Files TextField
-     */
-    public WebTextField getSelectedFilesTextField() {
-		return selectedFilesTextField;
-	}
-    
     /**
      * Returns file tree.
      *
