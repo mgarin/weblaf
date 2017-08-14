@@ -17,10 +17,35 @@
 
 package com.alee.laf.filechooser;
 
+import java.awt.Component;
+import java.awt.HeadlessException;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.Shape;
+import java.awt.Window;
+import java.io.File;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileSystemView;
+
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
-import com.alee.managers.style.*;
+import com.alee.managers.style.MarginMethods;
+import com.alee.managers.style.MarginMethodsImpl;
+import com.alee.managers.style.PaddingMethods;
+import com.alee.managers.style.PaddingMethodsImpl;
+import com.alee.managers.style.ShapeMethods;
+import com.alee.managers.style.ShapeMethodsImpl;
+import com.alee.managers.style.Skin;
+import com.alee.managers.style.StyleId;
+import com.alee.managers.style.StyleListener;
+import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.Styleable;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
 import com.alee.utils.CollectionUtils;
@@ -28,13 +53,6 @@ import com.alee.utils.FileUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.Customizer;
-
-import javax.swing.*;
-import javax.swing.filechooser.FileSystemView;
-import java.awt.*;
-import java.io.File;
-import java.util.List;
-import java.util.Map;
 
 /**
  * {@link JFileChooser} extension class.
@@ -295,7 +313,28 @@ public class WebFileChooser extends JFileChooser
      */
     public void setSelectedFile ( final String path )
     {
-        setSelectedFile ( path != null ? new File ( path ) : null );
+    	setSelectedFile ( path != null ? new File ( path ) : null ); 
+    }
+    
+    /**
+     * Sets currently selected file.
+     *
+     * @param the file to select
+     */
+    public void setSelectedFile ( final File file )
+    {
+    	if ( file == null || file.exists() )
+    	{
+    		super.setSelectedFile ( file );
+    	}
+    	else
+    	{
+    		this.getFileChooserPanel ().getSelectedFilesTextField ().setText ( file.getName() );
+    		if ( file.getParent() != null && new File ( file.getParent() ).exists() ) 
+    		{
+    			this.setCurrentDirectory( file.getParent() );
+    		}
+    	}
     }
 
     /**
