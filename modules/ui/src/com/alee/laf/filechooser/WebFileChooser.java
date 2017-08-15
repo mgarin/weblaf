@@ -311,6 +311,7 @@ public class WebFileChooser extends JFileChooser
     	}
     	else
     	{
+    		this.getFileChooserPanel ().getSelectedFilesViewField ().setSelectedFile( file );;
     		this.getFileChooserPanel ().getSelectedFilesTextField ().setText ( file.getName () );
     		if ( file.getParent () != null && new File ( file.getParent () ).exists () ) 
     		{

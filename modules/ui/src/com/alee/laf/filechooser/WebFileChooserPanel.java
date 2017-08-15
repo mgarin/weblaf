@@ -1128,7 +1128,17 @@ public class WebFileChooserPanel extends WebPanel
     public WebTextField getSelectedFilesTextField () 
     {
     	return selectedFilesTextField;
-    }       
+    }  
+    
+    /**
+     * Returns the Selected Files ViewField.
+     *
+     * @return Selected Files ViewField
+     */
+    public WebFileChooserField getSelectedFilesViewField () 
+    {
+    	return selectedFilesViewField;
+    }  
     
     /**
      * Returns file tree.
