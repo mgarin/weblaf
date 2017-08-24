@@ -23,6 +23,7 @@ import com.alee.laf.tree.WebTree;
 import com.alee.laf.tree.WebTreeCellEditor;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.compare.Filter;
 import com.alee.utils.swing.CellEditorAdapter;
 
@@ -362,10 +363,6 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
                 @Override
                 public void editingStopped ( final ChangeEvent e )
                 {
-                    // Updating tree sorting and filtering for parent of the edited node
-                    final E node = ( E ) cellEditor.getCellEditorValue ();
-                    updateSortingAndFiltering ( ( E ) node.getParent () );
-
                     //                    // Performing data update in a proper separate thread as it might take some time
                     //                    if ( dataUpdater != null )
                     //                    {
@@ -385,6 +382,19 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
                     //                            }
                     //                        } );
                     //                    }
+
+                    // Must update sorting later to avoid interfering with editing
+                    // This is important as sorting might cause consequent editing stop event
+                    SwingUtils.invokeLater ( new Runnable ()
+                    {
+                        @Override
+                        public void run ()
+                        {
+                            // Updating tree sorting and filtering for parent of the edited node
+                            final E node = ( E ) cellEditor.getCellEditorValue ();
+                            updateSortingAndFiltering ( ( E ) node.getParent () );
+                        }
+                    } );
                 }
             };
             cellEditor.addCellEditorListener ( cellEditorAdapter );
