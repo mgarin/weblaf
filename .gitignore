@@ -1,22 +1,22 @@
 # Build artifacts
-artifacts
-target
+/artifacts/
+target/
 
 # IntelliJ IDEA project & module files
-.idea
+/.idea
 *.iml
 
-out/
-gif/
-modules/test/
-uml/
+/out/
+/gif/
+/modules/test/
+/uml/
 
-presentation.txt
-style-readme.txt
-widget.html
-todo-npe.txt
-todo-old.txt
-todo.txt
-download.html
-done.txt
-jdk8migration.txt
+/presentation.txt
+/style-readme.txt
+/widget.html
+/todo-npe.txt
+/todo-old.txt
+/todo.txt
+/download.html
+/done.txt
+/jdk8migration.txt

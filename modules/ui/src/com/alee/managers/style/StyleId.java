@@ -440,6 +440,7 @@ public final class StyleId
      * {@link com.alee.laf.slider.WebSlider} style IDs.
      */
     public static final StyleId slider = StyleId.of ( "slider" );
+    public static final ChildStyleId sliderTickLabel = ChildStyleId.of ( "tick" );
 
     /**
      * {@link com.alee.laf.spinner.WebSpinner} style IDs.

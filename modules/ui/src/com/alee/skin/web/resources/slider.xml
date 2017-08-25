@@ -32,6 +32,14 @@
             <rolloverDarkBorderOnly>false</rolloverDarkBorderOnly>
             <animated>true</animated>
         </painter>
+
+        <!-- Default labels -->
+        <style type="label" id="tick">
+            <component>
+                <horizontalAlignment>0</horizontalAlignment>
+            </component>
+        </style>
+
     </style>
 
 </skin>
