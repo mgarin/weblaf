@@ -80,14 +80,12 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
      * Painting variables.
      */
     protected transient int trackBuffer = 0;  // The distance that the track is from the side of the control
-    protected transient Insets insetCache = null;
     protected transient Rectangle focusRect = null;
     protected transient Rectangle contentRect = null;
     protected transient Rectangle labelRect = null;
     protected transient Rectangle tickRect = null;
     protected transient Rectangle trackRect = null;
     protected transient Rectangle thumbRect = null;
-    protected transient boolean leftToRightCache = true;
     protected transient boolean dragging = false;
 
     @Override
@@ -96,8 +94,6 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
         super.install ( c, ui );
 
         // Initializing caches
-        insetCache = c.getInsets ();
-        leftToRightCache = c.getComponentOrientation ().isLeftToRight ();
         focusRect = new Rectangle ();
         contentRect = new Rectangle ();
         labelRect = new Rectangle ();
@@ -220,8 +216,6 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
         mouseAdapter = null;
 
         // Cleaning up caches
-        insetCache = null;
-        leftToRightCache = true;
         focusRect = null;
         contentRect = null;
         labelRect = null;
@@ -235,14 +229,9 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
     @Override
     public void paint ( final Graphics2D g2d, final E c, final U ui, final Bounds bounds )
     {
-        recalculateIfInsetsChanged ();
-        recalculateIfOrientationChanged ();
-        final Rectangle clip = g2d.getClipBounds ();
+        calculateGeometry ();
 
-        if ( component.getPaintTrack () && !clip.intersects ( trackRect ) )
-        {
-            calculateGeometry ();
-        }
+        final Rectangle clip = g2d.getClipBounds ();
         if ( component.getPaintTrack () && clip.intersects ( trackRect ) )
         {
             paintTrack ( g2d );
@@ -255,31 +244,9 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
         {
             paintLabels ( g2d );
         }
-        //        if ( component.hasFocus() && clip.intersects( focusRect ) ) {
-        //            paintFocus( g2d );
-        //        }
         if ( clip.intersects ( thumbRect ) )
         {
             paintThumb ( g2d );
-        }
-    }
-
-    protected void recalculateIfInsetsChanged ()
-    {
-        final Insets newInsets = component.getInsets ();
-        if ( !newInsets.equals ( insetCache ) )
-        {
-            insetCache = newInsets;
-            calculateGeometry ();
-        }
-    }
-
-    protected void recalculateIfOrientationChanged ()
-    {
-        if ( ltr != leftToRightCache )
-        {
-            leftToRightCache = ltr;
-            calculateGeometry ();
         }
     }
 
@@ -297,10 +264,11 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
 
     protected void calculateFocusRect ()
     {
-        focusRect.x = insetCache.left;
-        focusRect.y = insetCache.top;
-        focusRect.width = component.getWidth () - ( insetCache.left + insetCache.right );
-        focusRect.height = component.getHeight () - ( insetCache.top + insetCache.bottom );
+        final Insets insets = component.getInsets ();
+        focusRect.x = insets.left;
+        focusRect.y = insets.top;
+        focusRect.width = component.getWidth () - ( insets.left + insets.right );
+        focusRect.height = component.getHeight () - ( insets.top + insets.bottom );
     }
 
     protected void calculateThumbSize ()
@@ -343,7 +311,7 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
                 {
                     final float temp = ( float ) ( sliderValue - component.getMinimum () ) / ( float ) tickSpacing;
                     final int whichTick = Math.round ( temp );
-                    snappedValue = component.getMinimum () + ( whichTick * tickSpacing );
+                    snappedValue = component.getMinimum () + whichTick * tickSpacing;
                 }
 
                 if ( snappedValue != sliderValue )
@@ -357,7 +325,7 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
         {
             final int valuePosition = xPositionForValue ( component.getValue () );
 
-            thumbRect.x = valuePosition - ( thumbRect.width / 2 );
+            thumbRect.x = valuePosition - thumbRect.width / 2;
             thumbRect.y = trackRect.y;
         }
         else
@@ -365,7 +333,7 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
             final int valuePosition = yPositionForValue ( component.getValue () );
 
             thumbRect.x = trackRect.x;
-            thumbRect.y = valuePosition - ( thumbRect.height / 2 );
+            thumbRect.y = valuePosition - thumbRect.height / 2;
         }
     }
 
@@ -416,7 +384,7 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
             }
             trackRect.x = contentRect.x + trackBuffer;
             trackRect.y = contentRect.y + ( contentRect.height - centerSpacing - 1 ) / 2;
-            trackRect.width = contentRect.width - ( trackBuffer * 2 );
+            trackRect.width = contentRect.width - trackBuffer * 2;
             trackRect.height = thumbRect.height;
         }
         else
@@ -447,7 +415,7 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
             trackRect.x = contentRect.x + ( contentRect.width - centerSpacing - 1 ) / 2;
             trackRect.y = contentRect.y + trackBuffer;
             trackRect.width = thumbRect.width;
-            trackRect.height = contentRect.height - ( trackBuffer * 2 );
+            trackRect.height = contentRect.height - trackBuffer * 2;
         }
     }
 
@@ -469,11 +437,11 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
             tickRect.x = trackRect.x;
             tickRect.y = trackRect.y + trackRect.height;
             tickRect.width = trackRect.width;
-            tickRect.height = ( component.getPaintTicks () ) ? getTickLength () : 0;
+            tickRect.height = component.getPaintTicks () ? getTickLength () : 0;
         }
         else
         {
-            tickRect.width = ( component.getPaintTicks () ) ? getTickLength () : 0;
+            tickRect.width = component.getPaintTicks () ? getTickLength () : 0;
             if ( ltr )
             {
                 tickRect.x = trackRect.x + trackRect.width;
@@ -495,7 +463,7 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
             {
                 labelRect.x = tickRect.x - trackBuffer;
                 labelRect.y = tickRect.y + tickRect.height;
-                labelRect.width = tickRect.width + ( trackBuffer * 2 );
+                labelRect.width = tickRect.width + trackBuffer * 2;
                 labelRect.height = getHeightOfTallestLabel ();
             }
             else
@@ -511,7 +479,7 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
                     labelRect.x = tickRect.x - labelRect.width;
                 }
                 labelRect.y = tickRect.y - trackBuffer;
-                labelRect.height = tickRect.height + ( trackBuffer * 2 );
+                labelRect.height = tickRect.height + trackBuffer * 2;
             }
         }
         else
@@ -548,7 +516,7 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
         final double valueRange = ( double ) max - ( double ) min;
         final double pixelsPerValue = ( double ) trackLength / valueRange;
         final int trackLeft = trackRect.x;
-        final int trackRight = trackRect.x + ( trackRect.width - 1 );
+        final int trackRight = trackRect.x + trackRect.width - 1;
         int xPosition;
 
         if ( !drawInverted () )
@@ -588,7 +556,7 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
         final int max = component.getMaximum ();
         final double valueRange = ( double ) max - ( double ) min;
         final double pixelsPerValue = ( double ) trackHeight / valueRange;
-        final int trackBottom = trackY + ( trackHeight - 1 );
+        final int trackBottom = trackY + trackHeight - 1;
         int yPosition;
 
         if ( !drawInverted () )
@@ -1206,7 +1174,7 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
     protected void paintHorizontalLabel ( final Graphics g, final int value, final Component label )
     {
         final int labelCenter = xPositionForValue ( value );
-        final int labelLeft = labelCenter - ( label.getPreferredSize ().width / 2 );
+        final int labelLeft = labelCenter - label.getPreferredSize ().width / 2;
         g.translate ( labelLeft, 0 );
         label.paint ( g );
         g.translate ( -labelLeft, 0 );
@@ -1221,7 +1189,7 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
     protected void paintVerticalLabel ( final Graphics g, final int value, final Component label )
     {
         final int labelCenter = yPositionForValue ( value );
-        final int labelTop = labelCenter - ( label.getPreferredSize ().height / 2 );
+        final int labelTop = labelCenter - label.getPreferredSize ().height / 2;
         g.translate ( 0, labelTop );
         label.paint ( g );
         g.translate ( 0, -labelTop );
