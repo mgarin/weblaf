@@ -2643,6 +2643,11 @@ public final class FileUtils
             displayFileNameCache.put ( absolutePath, name );
             return name;
         }
+        else if ( !file.exists () && file.getName () != null )
+        {
+        	displayFileNameCache.put ( absolutePath, file.getName () );
+            return file.getName();
+        }
         else
         {
             return "";
