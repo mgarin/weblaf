@@ -893,6 +893,17 @@ public final class TextUtils
     }
 
     /**
+     * Returns specified text length.
+     *
+     * @param text text to check
+     * @return specified text length
+     */
+    public static int length ( final String text )
+    {
+        return text != null ? text.length () : 0;
+    }
+
+    /**
      * Returns whether or not specified text is {@code null} or empty.
      *
      * @param text text to check
@@ -904,14 +915,36 @@ public final class TextUtils
     }
 
     /**
+     * Returns whether or not specified text is {@code null} or empty.
+     *
+     * @param text text to check
+     * @return {@code true} if specified text is not {@code null} or empty, {@code false} otherwise
+     */
+    public static boolean notEmpty ( final String text )
+    {
+        return !isEmpty ( text );
+    }
+
+    /**
      * Returns whether or not specified text is {@code null} or empty excluding linebreaks and whitespaces.
      *
      * @param text text to check
-     * @return {@code true} if specified text is {@code null} or emptyexcluding linebreaks and whitespaces, {@code false} otherwise
+     * @return {@code true} if specified text is {@code null} or empty excluding linebreaks and whitespaces, {@code false} otherwise
      */
     public static boolean isBlank ( final String text )
     {
         return text == null || text.isEmpty () || removeLineBreaks ( text ).trim ().isEmpty ();
+    }
+
+    /**
+     * Returns whether or not specified text is {@code null} or empty excluding linebreaks and whitespaces.
+     *
+     * @param text text to check
+     * @return {@code true} if specified text is not {@code null} or empty excluding linebreaks and whitespaces, {@code false} otherwise
+     */
+    public static boolean notBlank ( final String text )
+    {
+        return !isBlank ( text );
     }
 
     /**
