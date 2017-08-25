@@ -98,6 +98,10 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String OPACITY_PROPERTY = "opacity";
     public static final String BORDER_PROPERTY = "border";
     public static final String ICON_TEXT_GAP_PROPERTY = "iconTextGap";
+    public static final String MINIMUM_PROPERTY = "minimum";
+    public static final String MAXIMUM_PROPERTY = "maximum";
+    public static final String MINOR_TICK_SPACING_PROPERTY = "minorTickSpacing";
+    public static final String MAJOR_TICK_SPACING_PROPERTY = "majorTickSpacing";
     public static final String PAINTER_PROPERTY = "painter";
     public static final String RENDERER_PROPERTY = "renderer";
     public static final String TEXT_PROPERTY = "text";
