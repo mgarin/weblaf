@@ -39,13 +39,14 @@ import java.awt.event.AWTEventListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Custom extension that makes use of Swing heavy-weight popup.
  * It also provides various methods to manipulate underlying popup window.
- * <p/>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -62,6 +63,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     /**
      * todo 1. Move all action implementations into UI
      * todo 2. Provide property change fire calls on specific settings changes
+     * todo 3. [JDK7+] Provide Window setting `setAutoRequestFocus`
      */
 
     /**
@@ -173,6 +175,11 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     protected Window invokerWindow;
 
     /**
+     * Default focus {@link Component}.
+     */
+    protected WeakReference<Component> defaultFocus;
+
+    /**
      * Custom global mouse listener that closes popup.
      */
     protected AWTEventListener mouseListener;
@@ -186,11 +193,6 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
      * Invoker follow adapter.
      */
     protected WindowFollowBehavior followAdapter;
-
-    /**
-     * Function that provides resize direction based on popup location.
-     */
-    protected Function<Point, CompassDirection> resizeDirectives;
 
     /**
      * Constructs new popup.
@@ -628,6 +630,27 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     }
 
     /**
+     * Returns default focus {@link Component} or {@code null} if none provided.
+     *
+     * @return default focus {@link Component} or {@code null} if none provided
+     */
+    public Component getDefaultFocus ()
+    {
+        return defaultFocus != null ? defaultFocus.get () : null;
+    }
+
+    /**
+     * Sets default focus {@link Component}.
+     * Can be set to {@code null} to enable default focus behavior.
+     *
+     * @param defaultFocus new default focus {@link Component}
+     */
+    public void setDefaultFocus ( final Component defaultFocus )
+    {
+        this.defaultFocus = new WeakReference<Component> ( defaultFocus );
+    }
+
+    /**
      * Shows popup window.
      * Depending on settings it might take a while to animate the show action.
      *
@@ -740,8 +763,24 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
             // Displaying popup
             window.setVisible ( true );
 
-            // Trasferring focus into content
-            transferFocus ();
+            // Transferring focus
+            final Component defaultFocus = getDefaultFocus ();
+            if ( defaultFocus != null && WebPopup.this.isAncestorOf ( defaultFocus ) && defaultFocus.isShowing () )
+            {
+                // Transferring focus into specified component located inside of the popup
+                defaultFocus.requestFocusInWindow ();
+            }
+            else
+            {
+                // Transferring focus into first focusable component
+                final Component nextFocus = SwingUtils.findFocusableComponent ( this );
+                if ( nextFocus != null && nextFocus.isShowing () )
+                {
+                    nextFocus.requestFocusInWindow ();
+                }
+
+                // todo Transfer focus into popup if no focusable elements found?
+            }
 
             // Animating popup display
             if ( animate )
