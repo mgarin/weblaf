@@ -57,6 +57,16 @@ public class SliderLabels extends Hashtable implements PropertyChangeListener
     /**
      * Constructs new {@link SliderLabel}.
      *
+     * @param slider {@link JSlider} this {@link SliderLabel} will be attached to
+     */
+    public SliderLabels ( final JSlider slider )
+    {
+        this ( slider, slider.getMinimum (), slider.getMajorTickSpacing () );
+    }
+
+    /**
+     * Constructs new {@link SliderLabel}.
+     *
      * @param slider   {@link JSlider} this {@link SliderLabel} will be attached to
      * @param start    first value to display label for
      * @param distance distance between displayed values
@@ -160,9 +170,13 @@ public class SliderLabels extends Hashtable implements PropertyChangeListener
      */
     protected void createLabels ()
     {
-        for ( int value = getStart (); value <= getEnd (); value += getDistance () )
+        final int distance = getDistance ();
+        if ( distance > 0 )
         {
-            put ( value, createLabel ( value ) );
+            for ( int value = getStart (); value <= getEnd (); value += distance )
+            {
+                put ( value, createLabel ( value ) );
+            }
         }
     }
 
