@@ -357,6 +357,6 @@ public class WebSplitPaneUI extends WSplitPaneUI implements ShapeSupport, Margin
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        return PainterSupport.getPreferredSize ( c, painter );
     }
 }
