@@ -22,7 +22,7 @@ package com.alee.managers.style;
  * It provides only two methods to allow default component style ID modifications.
  *
  * @author Mikle Garin
- * @see com.alee.managers.style.StyleManager
+ * @see StyleManager
  * @see Skin
  */
 

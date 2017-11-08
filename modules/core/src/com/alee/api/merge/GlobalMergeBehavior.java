@@ -37,20 +37,20 @@ public interface GlobalMergeBehavior<O, M, R> extends Serializable
      * Returns whether or not this behavior supports specified objects merge.
      *
      * @param merge  {@link Merge} algorithm
-     * @param object base object, should never be {@code null}
+     * @param base   base object, should never be {@code null}
      * @param merged object to merge, should never be {@code null}
      * @return {@code true} if this behavior supports specified objects merge, {@code false} otherwise
      */
-    public boolean supports ( Merge merge, Object object, Object merged );
+    public boolean supports ( Merge merge, Object base, Object merged );
 
     /**
      * Performs merge of the two provided objects and returns resulting object.
      * Depending on the case it might be one of the two provided objects or their merge result.
      *
      * @param merge  {@link Merge} algorithm
-     * @param object base object, should never be {@code null}
+     * @param base   base object, should never be {@code null}
      * @param merged object to merge, should never be {@code null}
      * @return merge result
      */
-    public R merge ( Merge merge, O object, M merged );
+    public R merge ( Merge merge, O base, M merged );
 }

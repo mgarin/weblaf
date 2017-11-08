@@ -17,21 +17,27 @@
 
 package com.alee.laf.table;
 
+import com.alee.managers.hotkey.HotkeyData;
+import com.alee.managers.language.DictionaryListener;
+import com.alee.managers.language.LanguageEventMethods;
+import com.alee.managers.language.LanguageListener;
+import com.alee.managers.language.WebLanguageManager;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.extensions.FontMethods;
-import com.alee.utils.swing.extensions.FontMethodsImpl;
-import com.alee.utils.swing.extensions.SizeMethods;
-import com.alee.utils.swing.extensions.SizeMethodsImpl;
+import com.alee.utils.swing.MouseButton;
+import com.alee.utils.swing.extensions.*;
 
 import javax.swing.*;
 import javax.swing.plaf.UIResource;
 import javax.swing.table.*;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.KeyAdapter;
+import java.awt.event.MouseAdapter;
 import java.util.EventObject;
 import java.util.Map;
 import java.util.Vector;
@@ -39,7 +45,7 @@ import java.util.Vector;
 /**
  * {@link JTable} extension class.
  * It contains various useful methods to simplify core component usage.
- * <p/>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -50,7 +56,8 @@ import java.util.Vector;
  */
 
 public class WebTable extends JTable
-        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, FontMethods<WebTable>, SizeMethods<WebTable>
+        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods, LanguageEventMethods,
+        FontMethods<WebTable>, SizeMethods<WebTable>
 {
     /**
      * Whether or not table is editable.
@@ -707,91 +714,160 @@ public class WebTable extends JTable
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
-    /**
-     * Returns the look and feel (L&amp;F) object that renders this component.
-     *
-     * @return the {@link WebTableUI} object that renders this component
-     */
     @Override
-    public WebTableUI getUI ()
+    public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
     {
-        return ( WebTableUI ) super.getUI ();
-    }
-
-    /**
-     * Sets the L&amp;F object that renders this component.
-     *
-     * @param ui {@link WebTableUI}
-     */
-    public void setUI ( final WebTableUI ui )
-    {
-        super.setUI ( ui );
+        return EventMethodsImpl.onMousePress ( this, runnable );
     }
 
     @Override
-    public void updateUI ()
+    public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
-        StyleManager.getDescriptor ( this ).updateUI ( this );
+        return EventMethodsImpl.onMousePress ( this, mouseButton, runnable );
     }
 
     @Override
-    public String getUIClassID ()
+    public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
     {
-        return StyleManager.getDescriptor ( this ).getUIClassId ();
+        return EventMethodsImpl.onMouseEnter ( this, runnable );
     }
 
-    /**
-     * Configures enclosing scroll pane.
-     * todo Make sure this is called when table parent changes?
-     */
-    protected void configureScrollPane ()
+    @Override
+    public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
     {
-        final Container p = getParent ();
-        if ( p instanceof JViewport )
-        {
-            final Container gp = p.getParent ();
-            if ( gp instanceof JScrollPane )
-            {
-                final JScrollPane scrollPane = ( JScrollPane ) gp;
-                // Make certain we are the viewPort's view and not, for
-                // example, the rowHeaderView of the scrollPane -
-                // an implementor of fixed columns might do this.
-                final JViewport viewport = scrollPane.getViewport ();
-                if ( viewport == null || viewport.getView () != this )
-                {
-                    return;
-                }
-                //  scrollPane.getViewport().setBackingStoreEnabled(true);
-                //                Border border = scrollPane.getBorder ();
-                //                if ( border == null || border instanceof UIResource )
-                //                {
-                //                    Border scrollPaneBorder = UIManager.getBorder ( "Table.scrollPaneBorder" );
-                //                    if ( scrollPaneBorder != null )
-                //                    {
-                //                        scrollPane.setBorder ( scrollPaneBorder );
-                //                    }
-                //                }
-                // add JScrollBar corner component if available from LAF and not already set by the user
-                Component corner = scrollPane.getCorner ( JScrollPane.UPPER_TRAILING_CORNER );
-                if ( corner == null || corner instanceof UIResource )
-                {
-                    corner = null;
-                    final Object componentClass = UIManager.get ( "Table.scrollPaneCornerComponent" );
-                    if ( componentClass instanceof Class )
-                    {
-                        try
-                        {
-                            corner = ( Component ) ( ( Class ) componentClass ).newInstance ();
-                        }
-                        catch ( final Exception e )
-                        {
-                            // just ignore and don't set corner
-                        }
-                    }
-                    scrollPane.setCorner ( JScrollPane.UPPER_TRAILING_CORNER, corner );
-                }
-            }
-        }
+        return EventMethodsImpl.onMouseExit ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseDrag ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseDrag ( this, mouseButton, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseClick ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseClick ( this, mouseButton, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDoubleClick ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMenuTrigger ( this, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyType ( this, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyType ( this, hotkey, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyPress ( this, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyPress ( this, hotkey, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyRelease ( this, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyRelease ( this, hotkey, runnable );
+    }
+
+    @Override
+    public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
+    {
+        return EventMethodsImpl.onFocusGain ( this, runnable );
+    }
+
+    @Override
+    public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
+    {
+        return EventMethodsImpl.onFocusLoss ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDragStart ( final int shift, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDragStart ( this, shift, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDragStart ( final int shift, final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDragStart ( this, shift, mouseButton, runnable );
+    }
+
+    @Override
+    public void addLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.addLanguageListener ( this, listener );
+    }
+
+    @Override
+    public void removeLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.removeLanguageListener ( this, listener );
+    }
+
+    @Override
+    public void removeLanguageListeners ()
+    {
+        WebLanguageManager.removeLanguageListeners ( this );
+    }
+
+    @Override
+    public void addDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.addDictionaryListener ( this, listener );
+    }
+
+    @Override
+    public void removeDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.removeDictionaryListener ( this, listener );
+    }
+
+    @Override
+    public void removeDictionaryListeners ()
+    {
+        WebLanguageManager.removeDictionaryListeners ( this );
     }
 
     @Override
@@ -990,5 +1066,92 @@ public class WebTable extends JTable
     public WebTable setPreferredSize ( final int width, final int height )
     {
         return SizeMethodsImpl.setPreferredSize ( this, width, height );
+    }
+
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WebTableUI} object that renders this component
+     */
+    @Override
+    public WebTableUI getUI ()
+    {
+        return ( WebTableUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WebTableUI}
+     */
+    public void setUI ( final WebTableUI ui )
+    {
+        super.setUI ( ui );
+    }
+
+    @Override
+    public void updateUI ()
+    {
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
+    }
+
+    /**
+     * Configures enclosing scroll pane.
+     * todo Make sure this is called when table parent changes?
+     */
+    protected void configureScrollPane ()
+    {
+        final Container p = getParent ();
+        if ( p instanceof JViewport )
+        {
+            final Container gp = p.getParent ();
+            if ( gp instanceof JScrollPane )
+            {
+                final JScrollPane scrollPane = ( JScrollPane ) gp;
+                // Make certain we are the viewPort's view and not, for
+                // example, the rowHeaderView of the scrollPane -
+                // an implementor of fixed columns might do this.
+                final JViewport viewport = scrollPane.getViewport ();
+                if ( viewport == null || viewport.getView () != this )
+                {
+                    return;
+                }
+                //  scrollPane.getViewport().setBackingStoreEnabled(true);
+                //                Border border = scrollPane.getBorder ();
+                //                if ( border == null || border instanceof UIResource )
+                //                {
+                //                    Border scrollPaneBorder = UIManager.getBorder ( "Table.scrollPaneBorder" );
+                //                    if ( scrollPaneBorder != null )
+                //                    {
+                //                        scrollPane.setBorder ( scrollPaneBorder );
+                //                    }
+                //                }
+                // add JScrollBar corner component if available from LAF and not already set by the user
+                Component corner = scrollPane.getCorner ( JScrollPane.UPPER_TRAILING_CORNER );
+                if ( corner == null || corner instanceof UIResource )
+                {
+                    corner = null;
+                    final Object componentClass = UIManager.get ( "Table.scrollPaneCornerComponent" );
+                    if ( componentClass instanceof Class )
+                    {
+                        try
+                        {
+                            corner = ( Component ) ( ( Class ) componentClass ).newInstance ();
+                        }
+                        catch ( final Exception e )
+                        {
+                            // just ignore and don't set corner
+                        }
+                    }
+                    scrollPane.setCorner ( JScrollPane.UPPER_TRAILING_CORNER, corner );
+                }
+            }
+        }
     }
 }

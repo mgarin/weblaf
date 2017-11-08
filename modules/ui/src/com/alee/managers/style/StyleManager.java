@@ -30,6 +30,7 @@ import com.alee.extended.label.AbstractStyledTextContent;
 import com.alee.extended.label.HotkeyLabelBackground;
 import com.alee.extended.label.StyledLabelDescriptor;
 import com.alee.extended.label.StyledLabelText;
+import com.alee.extended.language.LanguageItemLocale;
 import com.alee.extended.link.LinkDescriptor;
 import com.alee.extended.panel.SelectablePanelPainter;
 import com.alee.extended.statusbar.MemoryBarBackground;
@@ -101,10 +102,7 @@ import com.alee.painter.decoration.shape.BoundsShape;
 import com.alee.painter.decoration.shape.EllipseShape;
 import com.alee.painter.decoration.shape.WebShape;
 import com.alee.skin.web.WebSkin;
-import com.alee.utils.MapUtils;
-import com.alee.utils.ReflectUtils;
-import com.alee.utils.TextUtils;
-import com.alee.utils.XmlUtils;
+import com.alee.utils.*;
 import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
@@ -293,10 +291,12 @@ public final class StyleManager
         XmlUtils.processAnnotations ( LabelText.class );
         XmlUtils.processAnnotations ( StyledLabelText.class );
         XmlUtils.processAnnotations ( MenuItemLayout.class );
+        XmlUtils.processAnnotations ( SimpleMenuItemLayout.class );
         XmlUtils.processAnnotations ( AcceleratorText.class );
         XmlUtils.processAnnotations ( ProgressBarText.class );
         XmlUtils.processAnnotations ( HotkeyLabelBackground.class );
         XmlUtils.processAnnotations ( MemoryBarBackground.class );
+        XmlUtils.processAnnotations ( LanguageItemLocale.class );
 
         // Painter aliases
         XmlUtils.processAnnotations ( PopOverPainter.class );
@@ -454,13 +454,15 @@ public final class StyleManager
     }
 
     /**
-     * Throws runtime exception if manager was not initialized yet.
+     * Throws {@link StyleException} if manager is not yet initialized.
+     *
+     * @throws StyleException if manager is not yet initialized
      */
-    private static void checkInitialization ()
+    private static void mustBeInitialized () throws StyleException
     {
         if ( !initialized )
         {
-            throw new StyleException ( "StyleManager must be initialized" );
+            throw new StyleException ( "StyleManager must be initialized first" );
         }
     }
 
@@ -492,7 +494,7 @@ public final class StyleManager
     public static int getDescriptorsCount ()
     {
         // Checking manager initialization
-        checkInitialization ();
+        mustBeInitialized ();
 
         // Synchronized by descriptors
         synchronized ( descriptors )
@@ -510,7 +512,7 @@ public final class StyleManager
     public static List<ComponentDescriptor> getDescriptors ()
     {
         // Checking manager initialization
-        checkInitialization ();
+        mustBeInitialized ();
 
         // Synchronized by descriptors
         synchronized ( descriptors )
@@ -530,7 +532,7 @@ public final class StyleManager
     public static <C extends JComponent> ComponentDescriptor<C> getDescriptor ( final String id )
     {
         // Checking manager initialization
-        checkInitialization ();
+        mustBeInitialized ();
 
         // Synchronized by descriptors
         synchronized ( descriptors )
@@ -571,7 +573,7 @@ public final class StyleManager
     public static <C extends JComponent> ComponentDescriptor<C> getDescriptor ( final Class<? extends JComponent> componentClass )
     {
         // Checking manager initialization
-        checkInitialization ();
+        mustBeInitialized ();
 
         // Synchronized by descriptors
         synchronized ( descriptors )
@@ -844,7 +846,7 @@ public final class StyleManager
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Checking manager initialization
-        checkInitialization ();
+        mustBeInitialized ();
 
         // Synchronized by skin lock
         synchronized ( skinLock )
@@ -1026,6 +1028,7 @@ public final class StyleManager
      */
     public static Skin uninstallSkin ( final JComponent component )
     {
+        // todo Remove cached component data upon uninstallation
         return getData ( component ).removeSkin ();
     }
 
@@ -1229,7 +1232,7 @@ public final class StyleManager
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Checking manager initialization
-        checkInitialization ();
+        mustBeInitialized ();
 
         // Checking component support
         if ( !isSupported ( component ) )
@@ -1238,11 +1241,29 @@ public final class StyleManager
             throw new StyleException ( String.format ( msg, component ) );
         }
 
+        // Ensure that component has correct UI first, fix for #376
+        // This should never happen if WebLaF is installed before creating any Swing components
+        // Component might be missing UI here because it's style identifier was applied from upper level component
+        if ( !LafUtils.hasWebLafUI ( component ) )
+        {
+            // Trying to make component use WebLaF UI by forcefully updating it, but we do not force any specific UI
+            // Also note that calling this might create new StyleData instance, so we have to be careful with that
+            component.updateUI ();
+
+            // Checking that proper UI was installed
+            if ( !LafUtils.hasWebLafUI ( component ) )
+            {
+                // Our attempt to apply WebLaF UI has failed, throwing appropriate exception
+                final String msg = "Component '%s' doesn't use WebLaF UI";
+                throw new StyleException ( String.format ( msg, component.getClass () ) );
+            }
+        }
+
         // Retrieving component style data
         StyleData data = styleData.get ( component );
         if ( data == null )
         {
-            // Creating new component style data if it doesn't exist yet
+            // Creating and caching new component style data
             data = new StyleData ( component );
             styleData.put ( component, data );
         }

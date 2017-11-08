@@ -45,7 +45,7 @@ import java.util.Map;
 /**
  * This component is basically a special container for customizable documents described by DocumentData class.
  * You can also override DocumentData class and for example include your own data into the document itself.
- * <p>
+ *
  * This component uses either single or multiply tabbed panes and allow tabs reorder, drag, split and closeability.
  * All those features are of course configurable within the WebDocumentPane instance.
  *
@@ -1116,9 +1116,21 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      */
     public void openDocument ( final String documentId )
     {
+        openDocument ( documentId, true );
+    }
+
+    /**
+     * Opens document with the specified ID in this document pane.
+     * This method won't work in case you didn't set custom DocumentDataProvider.
+     *
+     * @param documentId ID of the document to open
+     * @param select     whether or not document tab should be selected
+     */
+    public void openDocument ( final String documentId, final boolean select )
+    {
         if ( documentsProvider != null )
         {
-            openDocument ( documentsProvider.provide ( documentId ) );
+            openDocument ( documentsProvider.provide ( documentId ), select );
         }
     }
 
@@ -1129,16 +1141,37 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      */
     public void openDocument ( final T document )
     {
+        openDocument ( document, true );
+    }
+
+    /**
+     * Opens document in this document pane.
+     *
+     * @param document document to open
+     * @param select   whether or not document tab should be selected
+     */
+    public void openDocument ( final T document, final boolean select )
+    {
         if ( document != null )
         {
             if ( isDocumentOpened ( document ) )
             {
-                setSelected ( document );
+                if ( select )
+                {
+                    setSelected ( document );
+                }
             }
             else if ( activePane != null )
             {
                 activePane.open ( document );
-                activePane.setSelected ( document );
+                if ( select )
+                {
+                    activePane.setSelected ( document );
+                }
+            }
+            else
+            {
+                throw new NullPointerException ( "Something went wrong, active pane is not available" );
             }
         }
     }

@@ -101,7 +101,38 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
      */
     public WebTreeFilterField ()
     {
-        this ( StyleId.treefilterfield, null, null );
+        this ( StyleId.auto, null, null );
+    }
+
+    /**
+     * Constructs new tree filter field.
+     *
+     * @param tree tree to which this field applies filtering
+     */
+    public WebTreeFilterField ( final WebTree<E> tree )
+    {
+        this ( StyleId.auto, tree, null );
+    }
+
+    /**
+     * Constructs new tree filter field.
+     *
+     * @param textProvider node text provider
+     */
+    public WebTreeFilterField ( final TextProvider<E> textProvider )
+    {
+        this ( StyleId.auto, null, textProvider );
+    }
+
+    /**
+     * Constructs new tree filter field.
+     *
+     * @param tree         tree to which this field applies filtering
+     * @param textProvider node text provider
+     */
+    public WebTreeFilterField ( final WebTree<E> tree, final TextProvider<E> textProvider )
+    {
+        this ( StyleId.auto, tree, textProvider );
     }
 
     /**
@@ -112,16 +143,6 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
     public WebTreeFilterField ( final StyleId id )
     {
         this ( id, null, null );
-    }
-
-    /**
-     * Constructs new tree filter field.
-     *
-     * @param tree tree to which this field applies filtering
-     */
-    public WebTreeFilterField ( final WebTree<E> tree )
-    {
-        this ( StyleId.treefilterfield, tree, null );
     }
 
     /**
@@ -138,33 +159,12 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
     /**
      * Constructs new tree filter field.
      *
-     * @param textProvider node text provider
-     */
-    public WebTreeFilterField ( final TextProvider<E> textProvider )
-    {
-        this ( StyleId.treefilterfield, null, textProvider );
-    }
-
-    /**
-     * Constructs new tree filter field.
-     *
      * @param id           style ID
      * @param textProvider node text provider
      */
     public WebTreeFilterField ( final StyleId id, final TextProvider<E> textProvider )
     {
         this ( id, null, textProvider );
-    }
-
-    /**
-     * Constructs new tree filter field.
-     *
-     * @param tree         tree to which this field applies filtering
-     * @param textProvider node text provider
-     */
-    public WebTreeFilterField ( final WebTree<E> tree, final TextProvider<E> textProvider )
-    {
-        this ( StyleId.treefilterfield, tree, textProvider );
     }
 
     /**
@@ -184,6 +184,12 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
         initFilterIcon ();
         initSettingsMenu ();
         initListeners ();
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.treefilterfield;
     }
 
     /**
@@ -219,7 +225,7 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-                settingsMenu.showBelowMiddle ( filterIcon );
+                settingsMenu.showBelowStart ( filterIcon );
             }
         } );
         setLeadingComponent ( filterIcon );

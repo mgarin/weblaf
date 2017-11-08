@@ -18,10 +18,12 @@
 package com.alee.extended;
 
 import com.alee.managers.hotkey.HotkeyData;
-import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.language.*;
+import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
+import com.alee.managers.tooltip.TooltipWay;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -45,8 +47,8 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public abstract class WebComponent<C extends WebComponent<C, U>, U extends ComponentUI> extends JComponent
-        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, ToolTipMethods, EventMethods, SizeMethods<C>
+public abstract class WebComponent<C extends WebComponent<C, U>, U extends ComponentUI> extends JComponent implements Styleable, Paintable,
+        ShapeMethods, MarginMethods, PaddingMethods, ToolTipMethods, LanguageMethods, EventMethods, LanguageEventMethods, SizeMethods<C>
 {
     @Override
     public StyleId getStyleId ()
@@ -337,6 +339,54 @@ public abstract class WebComponent<C extends WebComponent<C, U>, U extends Compo
     }
 
     @Override
+    public String getLanguage ()
+    {
+        return WebLanguageManager.getComponentKey ( this );
+    }
+
+    @Override
+    public void setLanguage ( final String key, final Object... data )
+    {
+        WebLanguageManager.registerComponent ( this, key, data );
+    }
+
+    @Override
+    public void updateLanguage ( final Object... data )
+    {
+        WebLanguageManager.updateComponent ( this, data );
+    }
+
+    @Override
+    public void updateLanguage ( final String key, final Object... data )
+    {
+        WebLanguageManager.updateComponent ( this, key, data );
+    }
+
+    @Override
+    public void removeLanguage ()
+    {
+        WebLanguageManager.unregisterComponent ( this );
+    }
+
+    @Override
+    public boolean isLanguageSet ()
+    {
+        return WebLanguageManager.isRegisteredComponent ( this );
+    }
+
+    @Override
+    public void setLanguageUpdater ( final LanguageUpdater updater )
+    {
+        WebLanguageManager.registerLanguageUpdater ( this, updater );
+    }
+
+    @Override
+    public void removeLanguageUpdater ()
+    {
+        WebLanguageManager.unregisterLanguageUpdater ( this );
+    }
+
+    @Override
     public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onMousePress ( this, runnable );
@@ -454,6 +504,42 @@ public abstract class WebComponent<C extends WebComponent<C, U>, U extends Compo
     public MouseAdapter onDragStart ( final int shift, final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onDragStart ( this, shift, mouseButton, runnable );
+    }
+
+    @Override
+    public void addLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.addLanguageListener ( this, listener );
+    }
+
+    @Override
+    public void removeLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.removeLanguageListener ( this, listener );
+    }
+
+    @Override
+    public void removeLanguageListeners ()
+    {
+        WebLanguageManager.removeLanguageListeners ( this );
+    }
+
+    @Override
+    public void addDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.addDictionaryListener ( this, listener );
+    }
+
+    @Override
+    public void removeDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.removeDictionaryListener ( this, listener );
+    }
+
+    @Override
+    public void removeDictionaryListeners ()
+    {
+        WebLanguageManager.removeDictionaryListeners ( this );
     }
 
     @Override

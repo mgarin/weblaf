@@ -50,12 +50,12 @@ public class FileSizeUnits extends AbstractUnits
      */
     public FileSizeUnits ()
     {
-        super ( new Unit ( 1125899906842624L, 1024, "pb", "p", "pbyte", "pbytes", "petabyte", "petabytes" ),
-                new Unit ( 1099511627776L, 1024, "tb", "t", "tbyte", "tbytes", "terabyte", "terabytes" ),
-                new Unit ( 1073741824L, 1024, "gb", "g", "gbyte", "gbytes", "gigabyte", "gigabytes" ),
-                new Unit ( 1048576, 1024, "mb", "m", "mbyte", "mbytes", "megabyte", "megabytes" ),
-                new Unit ( 1024, 1024, "kb", "k", "kbyte", "kbytes", "kilobyte", "kilobytes" ),
-                new Unit ( 1, 1024, "b", "byte", "bytes" ) );
+        super ( new Unit ( 1125899906842624L, 1024L, "pb", "p", "pbyte", "pbytes", "petabyte", "petabytes" ),
+                new Unit ( 1099511627776L, 1024L, "tb", "t", "tbyte", "tbytes", "terabyte", "terabytes" ),
+                new Unit ( 1073741824L, 1024L, "gb", "g", "gbyte", "gbytes", "gigabyte", "gigabytes" ),
+                new Unit ( 1048576L, 1024L, "mb", "m", "mbyte", "mbytes", "megabyte", "megabytes" ),
+                new Unit ( 1024L, 1024L, "kb", "k", "kbyte", "kbytes", "kilobyte", "kilobytes" ),
+                new Unit ( 1L, 1024L, "b", "byte", "bytes" ) );
     }
 
     /**

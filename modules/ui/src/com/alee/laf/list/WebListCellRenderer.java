@@ -29,19 +29,25 @@ import com.alee.painter.decoration.Stateful;
 import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
+import javax.swing.plaf.ListUI;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Default {@link ListCellRenderer} implementation based on {@link WebStyledLabel}.
- * Unline common implementations this one contains multiple methods for convenient renderer component customization.
+ * Unlike {@link DefaultListCellRenderer} it contains multiple methods for convenient renderer customization.
+ * Also since it is based on {@link WebStyledLabel} it retains all of its extra features.
  *
  * @author Mikle Garin
  */
 
 public class WebListCellRenderer extends WebStyledLabel implements ListCellRenderer, Stateful
 {
+    /**
+     * todo 1. Add generic type for values
+     */
+
     /**
      * Additional renderer decoration states.
      */
@@ -66,22 +72,36 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
     /**
      * Updates custom renderer states based on render cycle settings.
      *
-     * @param list       tree
+     * @param list       {@link JList}
      * @param value      cell value
      * @param index      cell index
      * @param isSelected whether or not cell is selected
      * @param hasFocus   whether or not cell has focus
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected void updateStates ( final JList list, final Object value, final int index, final boolean isSelected, final boolean hasFocus )
+    protected void updateStates ( final JList list, final Object value, final int index,
+                                  final boolean isSelected, final boolean hasFocus )
     {
+        // Resetting states
         states.clear ();
 
-        // Basic states
+        // Selection state
         states.add ( isSelected ? DecorationState.selected : DecorationState.unselected );
+
+        // Focus state
         if ( hasFocus )
         {
             states.add ( DecorationState.focused );
+        }
+
+        // Hover state
+        final ListUI ui = list.getUI ();
+        if ( ui instanceof WListUI )
+        {
+            if ( ( ( WListUI ) ui ).getHoverIndex () == index )
+            {
+                states.add ( DecorationState.hover );
+            }
         }
 
         // Extra states provided by value
@@ -91,15 +111,15 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
     /**
      * Updates list cell renderer component style ID.
      *
-     * @param list         tree
+     * @param list         {@link JList}
      * @param value        cell value
      * @param index        cell index
      * @param isSelected   whether or not cell is selected
      * @param cellHasFocus whether or not cell has focus
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected void updateStyleId ( final JList list, final Object value, final int index, final boolean isSelected,
-                                   final boolean cellHasFocus )
+    protected void updateStyleId ( final JList list, final Object value, final int index,
+                                   final boolean isSelected, final boolean cellHasFocus )
     {
         StyleId id = null;
         if ( value instanceof ChildStyleSupport )
@@ -128,27 +148,79 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
     /**
      * Updating renderer based on the provided settings.
      *
-     * @param list       tree
+     * @param list       {@link JList}
      * @param value      cell value
      * @param index      cell index
      * @param isSelected whether or not cell is selected
      * @param hasFocus   whether or not cell has focus
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected void updateView ( final JList list, final Object value, final int index, final boolean isSelected, final boolean hasFocus )
+    protected void updateView ( final JList list, final Object value, final int index,
+                                final boolean isSelected, final boolean hasFocus )
     {
-        setEnabled ( list.isEnabled () );
-        setComponentOrientation ( list.getComponentOrientation () );
-        setFont ( list.getFont () );
+        setEnabled ( enabledForValue ( list, value, index, isSelected, hasFocus ) );
+        setComponentOrientation ( orientationForValue ( list, value, index, isSelected, hasFocus ) );
+        setFont ( fontForValue ( list, value, index, isSelected, hasFocus ) );
         setForeground ( foregroundForValue ( list, value, index, isSelected, hasFocus ) );
         setIcon ( iconForValue ( list, value, index, isSelected, hasFocus ) );
         setText ( textForValue ( list, value, index, isSelected, hasFocus ) );
     }
 
     /**
+     * Returns whether or not renderer for the specified cell value should be enabled.
+     *
+     * @param list       {@link JList}
+     * @param value      cell value
+     * @param index      cell index
+     * @param isSelected whether or not cell is selected
+     * @param hasFocus   whether or not cell has focus
+     * @return {@code true} if renderer for the specified cell value should be enabled, {@code false} otherwise
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected boolean enabledForValue ( final JList list, final Object value, final int index,
+                                        final boolean isSelected, final boolean hasFocus )
+    {
+        return list.isEnabled ();
+    }
+
+    /**
+     * Returns renderer {@link ComponentOrientation} for the specified cell value.
+     *
+     * @param list       {@link JList}
+     * @param value      cell value
+     * @param index      cell index
+     * @param isSelected whether or not cell is selected
+     * @param hasFocus   whether or not cell has focus
+     * @return renderer {@link ComponentOrientation} for the specified cell value
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected ComponentOrientation orientationForValue ( final JList list, final Object value, final int index,
+                                                         final boolean isSelected, final boolean hasFocus )
+    {
+        return list.getComponentOrientation ();
+    }
+
+    /**
+     * Returns renderer {@link Font} for the specified cell value.
+     *
+     * @param list       {@link JList}
+     * @param value      cell value
+     * @param index      cell index
+     * @param isSelected whether or not cell is selected
+     * @param hasFocus   whether or not cell has focus
+     * @return renderer {@link Font} for the specified cell value
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected Font fontForValue ( final JList list, final Object value, final int index,
+                                  final boolean isSelected, final boolean hasFocus )
+    {
+        return list.getFont ();
+    }
+
+    /**
      * Returns renderer foreground color for the specified cell value.
      *
-     * @param list       tree
+     * @param list       {@link JList}
      * @param value      cell value
      * @param index      cell index
      * @param isSelected whether or not cell is selected
@@ -156,8 +228,8 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
      * @return renderer foreground color for the specified cell value
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected Color foregroundForValue ( final JList list, final Object value, final int index, final boolean isSelected,
-                                         final boolean hasFocus )
+    protected Color foregroundForValue ( final JList list, final Object value, final int index,
+                                         final boolean isSelected, final boolean hasFocus )
     {
         final Color foreground;
         if ( value instanceof ColorSupport )
@@ -175,7 +247,7 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
     /**
      * Returns renderer icon for the specified cell value.
      *
-     * @param list       tree
+     * @param list       {@link JList}
      * @param value      cell value
      * @param index      cell index
      * @param isSelected whether or not cell is selected
@@ -183,7 +255,8 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
      * @return renderer icon for the specified cell value
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected Icon iconForValue ( final JList list, final Object value, final int index, final boolean isSelected, final boolean hasFocus )
+    protected Icon iconForValue ( final JList list, final Object value, final int index,
+                                  final boolean isSelected, final boolean hasFocus )
     {
         final Icon icon;
         if ( value instanceof IconSupport )
@@ -200,7 +273,7 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
     /**
      * Returns renderer text for the specified cell value.
      *
-     * @param list       tree
+     * @param list       {@link JList}
      * @param value      cell value
      * @param index      cell index
      * @param isSelected whether or not cell is selected
@@ -208,8 +281,8 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
      * @return renderer text for the specified cell value
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected String textForValue ( final JList list, final Object value, final int index, final boolean isSelected,
-                                    final boolean hasFocus )
+    protected String textForValue ( final JList list, final Object value, final int index,
+                                    final boolean isSelected, final boolean hasFocus )
     {
         final String text;
         if ( value instanceof TitleSupport )
@@ -218,7 +291,7 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
         }
         else
         {
-            text = value != null ? value instanceof Icon ? "" : value.toString () : "";
+            text = value != null && !( value instanceof Icon ) ? value.toString () : "";
         }
         return text;
     }
@@ -226,7 +299,7 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
     /**
      * Returns list cell renderer component.
      *
-     * @param list       tree
+     * @param list       {@link JList}
      * @param value      cell value
      * @param index      cell index
      * @param isSelected whether or not cell is selected
@@ -234,8 +307,8 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
      * @return list cell renderer component
      */
     @Override
-    public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
-                                                    final boolean hasFocus )
+    public WebListCellRenderer getListCellRendererComponent ( final JList list, final Object value, final int index,
+                                                    final boolean isSelected, final boolean hasFocus )
     {
         // Updating custom states
         updateStates ( list, value, index, isSelected, hasFocus );

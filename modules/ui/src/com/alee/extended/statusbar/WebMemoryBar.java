@@ -19,7 +19,9 @@ package com.alee.extended.statusbar;
 
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
-import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LM;
+import com.alee.managers.language.Language;
+import com.alee.managers.language.LanguageListener;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
@@ -42,6 +44,7 @@ public class WebMemoryBar extends WebButton
      * todo 1. Create memory bar UI
      * todo 2. Cleanup code mess here
      * todo 3. Optimize updaters to just 1 used across all memory bars
+     * todo 4. Add appropriate LanguageUpdater support
      */
 
     /**
@@ -102,6 +105,17 @@ public class WebMemoryBar extends WebButton
                 gc ();
             }
         } );
+
+        // Language update
+        // todo Replace with proper LanguageUpdater
+        addLanguageListener ( new LanguageListener ()
+        {
+            @Override
+            public void languageChanged ( final Language oldLanguage, final Language newLanguage )
+            {
+                updateMemory ();
+            }
+        } );
     }
 
     @Override
@@ -123,6 +137,9 @@ public class WebMemoryBar extends WebButton
 
     protected void updateMemory ()
     {
+        // todo Perform memory request asynchronously?
+        // todo Probably make a queue with requests throttling to avoid excessive updates
+
         // Determining current memory usage state
         final MemoryUsage mu = ManagementFactory.getMemoryMXBean ().getHeapMemoryUsage ();
         usedMemory = mu.getUsed ();
@@ -147,15 +164,15 @@ public class WebMemoryBar extends WebButton
     {
         final long total = showMaximumMemory ? maxMemory : allocatedMemory;
         return FileUtils.getFileSizeString ( usedMemory, getDigits ( usedMemory ) ) + " " +
-                LanguageManager.get ( "weblaf.ex.memorybar.of" ) + " " +
+                LM.get ( "weblaf.ex.memorybar.of" ) + " " +
                 FileUtils.getFileSizeString ( total, getDigits ( total ) );
     }
 
     protected String getMemoryBarTooltipText ()
     {
-        return "<html>" + LanguageManager.get ( "weblaf.ex.memorybar.alloc" ) + " <b>" +
+        return "<html>" + LM.get ( "weblaf.ex.memorybar.alloc" ) + " <b>" +
                 FileUtils.getFileSizeString ( allocatedMemory, getDigits ( allocatedMemory ) ) +
-                "</b> " + LanguageManager.get ( "weblaf.ex.memorybar.used" ) + " <b>" +
+                "</b> " + LM.get ( "weblaf.ex.memorybar.used" ) + " <b>" +
                 FileUtils.getFileSizeString ( usedMemory, getDigits ( usedMemory ) ) +
                 getMaximumText () + "</b></html>";
     }
@@ -164,7 +181,7 @@ public class WebMemoryBar extends WebButton
     {
         if ( showMaximumMemory )
         {
-            return "</b> " + LanguageManager.get ( "weblaf.ex.memorybar.max" ) + " <b>" +
+            return "</b> " + LM.get ( "weblaf.ex.memorybar.max" ) + " <b>" +
                     FileUtils.getFileSizeString ( maxMemory, getDigits ( maxMemory ) );
         }
         else

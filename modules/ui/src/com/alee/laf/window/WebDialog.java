@@ -22,9 +22,7 @@ import com.alee.laf.rootpane.WebRootPane;
 import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
-import com.alee.managers.language.LanguageManager;
-import com.alee.managers.language.LanguageMethods;
-import com.alee.managers.language.LanguageUtils;
+import com.alee.managers.language.*;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
@@ -60,7 +58,8 @@ import java.util.Map;
  */
 
 public class WebDialog<T extends WebDialog<T>> extends JDialog
-        implements Styleable, Paintable, PaddingMethods, WindowEventMethods, LanguageMethods, SettingsMethods, WindowMethods<T>
+        implements Styleable, Paintable, PaddingMethods, WindowEventMethods, LanguageMethods, LanguageEventMethods, SettingsMethods,
+        WindowMethods<T>
 {
     /**
      * Whether should close dialog on focus loss or not.
@@ -598,7 +597,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
     public WebDialog ( final StyleId id, final Window owner, final String title, final ModalityType modalityType,
                        final GraphicsConfiguration gc )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ), modalityType, gc );
+        super ( owner, WebLanguageManager.getInitialText ( title ), modalityType, gc );
         initialize ( owner, id, title );
     }
 
@@ -640,7 +639,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
         // Language updater
         if ( title != null )
         {
-            LanguageUtils.registerInitialLanguage ( this, title );
+            WebLanguageManager.registerInitialLanguage ( this, title );
         }
 
         // Adding focus tracker for this dialog
@@ -976,13 +975,13 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
     @Override
     public void setPadding ( final int padding )
     {
-        PaddingMethodsImpl.setPadding (  getRootPane (), padding );
+        PaddingMethodsImpl.setPadding ( getRootPane (), padding );
     }
 
     @Override
     public void setPadding ( final int top, final int left, final int bottom, final int right )
     {
-        PaddingMethodsImpl.setPadding (  getRootPane (), top, left, bottom, right );
+        PaddingMethodsImpl.setPadding ( getRootPane (), top, left, bottom, right );
     }
 
     @Override
@@ -1026,49 +1025,85 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
     @Override
     public String getLanguage ()
     {
-        return LanguageManager.getComponentKey ( getRootPane () );
+        return WebLanguageManager.getComponentKey ( getRootPane () );
     }
 
     @Override
     public void setLanguage ( final String key, final Object... data )
     {
-        LanguageManager.registerComponent ( getRootPane (), key, data );
+        WebLanguageManager.registerComponent ( getRootPane (), key, data );
     }
 
     @Override
     public void updateLanguage ( final Object... data )
     {
-        LanguageManager.updateComponent ( getRootPane (), data );
+        WebLanguageManager.updateComponent ( getRootPane (), data );
     }
 
     @Override
     public void updateLanguage ( final String key, final Object... data )
     {
-        LanguageManager.updateComponent ( getRootPane (), key, data );
+        WebLanguageManager.updateComponent ( getRootPane (), key, data );
     }
 
     @Override
     public void removeLanguage ()
     {
-        LanguageManager.unregisterComponent ( getRootPane () );
+        WebLanguageManager.unregisterComponent ( getRootPane () );
     }
 
     @Override
     public boolean isLanguageSet ()
     {
-        return LanguageManager.isRegisteredComponent ( getRootPane () );
+        return WebLanguageManager.isRegisteredComponent ( getRootPane () );
     }
 
     @Override
     public void setLanguageUpdater ( final LanguageUpdater updater )
     {
-        LanguageManager.registerLanguageUpdater ( getRootPane (), updater );
+        WebLanguageManager.registerLanguageUpdater ( getRootPane (), updater );
     }
 
     @Override
     public void removeLanguageUpdater ()
     {
-        LanguageManager.unregisterLanguageUpdater ( getRootPane () );
+        WebLanguageManager.unregisterLanguageUpdater ( getRootPane () );
+    }
+
+    @Override
+    public void addLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.addLanguageListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.removeLanguageListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeLanguageListeners ()
+    {
+        WebLanguageManager.removeLanguageListeners ( getRootPane () );
+    }
+
+    @Override
+    public void addDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.addDictionaryListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.removeDictionaryListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeDictionaryListeners ()
+    {
+        WebLanguageManager.removeDictionaryListeners ( getRootPane () );
     }
 
     @Override

@@ -18,6 +18,7 @@
 package com.alee.extended.date;
 
 import com.alee.extended.WebComponent;
+import com.alee.managers.language.LanguageManager;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -56,7 +57,7 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI> imple
     /**
      * Date display format.
      */
-    protected DateFormat dateFormat = new SimpleDateFormat ( "dd.MM.yyyy" );
+    protected DateFormat dateFormat = new SimpleDateFormat ( "dd.MM.yyyy", LanguageManager.getLocale () );
 
     /**
      * Calendar component customizer.

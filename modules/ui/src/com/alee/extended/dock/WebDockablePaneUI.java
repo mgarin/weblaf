@@ -634,6 +634,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
                 }
             }
         } );
+        dialog.setModal ( false );
         dialog.setVisible ( true );
         frame.putClientProperty ( FRAME_DIALOG, dialog );
         frame.requestFocusInWindow ();

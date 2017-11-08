@@ -17,6 +17,10 @@
 
 package com.alee.laf.colorchooser;
 
+import com.alee.managers.language.DictionaryListener;
+import com.alee.managers.language.LanguageEventMethods;
+import com.alee.managers.language.LanguageListener;
+import com.alee.managers.language.WebLanguageManager;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -31,7 +35,7 @@ import java.util.Map;
 /**
  * {@link JColorChooser} extension class.
  * It contains various useful methods to simplify core component usage.
- * <p/>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -42,7 +46,7 @@ import java.util.Map;
  */
 
 public class WebColorChooser extends JColorChooser
-        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, DialogOptions
+        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, LanguageEventMethods, DialogOptions
 {
     /**
      * Constructs new color chooser.
@@ -361,6 +365,42 @@ public class WebColorChooser extends JColorChooser
     public void setPadding ( final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
+    }
+
+    @Override
+    public void addLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.addLanguageListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.removeLanguageListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeLanguageListeners ()
+    {
+        WebLanguageManager.removeLanguageListeners ( getRootPane () );
+    }
+
+    @Override
+    public void addDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.addDictionaryListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.removeDictionaryListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeDictionaryListeners ()
+    {
+        WebLanguageManager.removeDictionaryListeners ( getRootPane () );
     }
 
     /**

@@ -38,13 +38,13 @@ import java.util.Date;
 public final class BasicMergeBehavior implements GlobalMergeBehavior<Object, Object, Object>
 {
     @Override
-    public boolean supports ( final Merge merge, final Object object, final Object merged )
+    public boolean supports ( final Merge merge, final Object base, final Object merged )
     {
-        return isBasic ( object ) || isBasic ( merged );
+        return isBasic ( base ) || isBasic ( merged );
     }
 
     @Override
-    public Object merge ( final Merge merge, final Object object, final Object merged )
+    public Object merge ( final Merge merge, final Object base, final Object merged )
     {
         if ( isSimpleMutable ( merged ) )
         {

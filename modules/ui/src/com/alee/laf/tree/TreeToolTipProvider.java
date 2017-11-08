@@ -17,7 +17,7 @@
 
 package com.alee.laf.tree;
 
-import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.tooltip.TooltipWay;
 import com.alee.managers.tooltip.AbstractToolTipProvider;
 import com.alee.managers.tooltip.WebCustomTooltip;
 

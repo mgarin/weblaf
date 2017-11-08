@@ -18,7 +18,8 @@
 package com.alee.laf.slider;
 
 import com.alee.managers.hotkey.HotkeyData;
-import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.language.*;
+import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -26,6 +27,7 @@ import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
+import com.alee.managers.tooltip.TooltipWay;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -37,13 +39,16 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
+import java.beans.PropertyChangeListener;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
 /**
  * {@link JSlider} extension class.
  * It contains various useful methods to simplify core component usage.
- * <p/>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -53,9 +58,8 @@ import java.util.Map;
  * @see SliderPainter
  */
 
-public class WebSlider extends JSlider
-        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods, ToolTipMethods, SettingsMethods,
-        FontMethods<WebSlider>, SizeMethods<WebSlider>
+public class WebSlider extends JSlider implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods,
+        LanguageEventMethods, ToolTipMethods, LanguageMethods, SettingsMethods, FontMethods<WebSlider>, SizeMethods<WebSlider>
 {
     /**
      * Constructs new slider.
@@ -204,6 +208,31 @@ public class WebSlider extends JSlider
         super ( model );
         setOrientation ( orientation );
         setStyleId ( id );
+    }
+
+    /**
+     * Constructs new standard labels implementation.
+     * It uses {@link SliderLabels} implementation instead of default {@code SmartHashtable} due to issues it has.
+     *
+     * @param distance distance between displayed values
+     * @param start    first value to display label for
+     * @return new standard labels implementation
+     */
+    @Override
+    public Hashtable createStandardLabels ( final int distance, final int start )
+    {
+        // Removing previous labels listener
+        final Dictionary old = getLabelTable ();
+        if ( old != null && old instanceof PropertyChangeListener )
+        {
+            removePropertyChangeListener ( ( PropertyChangeListener ) old );
+        }
+
+        // Creating new labels and adding listener
+        final SliderLabels labels = new SliderLabels ( this, start, distance );
+        addPropertyChangeListener ( labels );
+
+        return labels;
     }
 
     @Override
@@ -356,39 +385,6 @@ public class WebSlider extends JSlider
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
-    /**
-     * Returns the look and feel (L&amp;F) object that renders this component.
-     *
-     * @return the {@link WebSliderUI} object that renders this component
-     */
-    @Override
-    public WebSliderUI getUI ()
-    {
-        return ( WebSliderUI ) super.getUI ();
-    }
-
-    /**
-     * Sets the L&amp;F object that renders this component.
-     *
-     * @param ui {@link WebSliderUI}
-     */
-    public void setUI ( final WebSliderUI ui )
-    {
-        super.setUI ( ui );
-    }
-
-    @Override
-    public void updateUI ()
-    {
-        StyleManager.getDescriptor ( this ).updateUI ( this );
-    }
-
-    @Override
-    public String getUIClassID ()
-    {
-        return StyleManager.getDescriptor ( this ).getUIClassId ();
-    }
-
     @Override
     public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
     {
@@ -507,6 +503,42 @@ public class WebSlider extends JSlider
     public MouseAdapter onDragStart ( final int shift, final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onDragStart ( this, shift, mouseButton, runnable );
+    }
+
+    @Override
+    public void addLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.addLanguageListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.removeLanguageListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeLanguageListeners ()
+    {
+        WebLanguageManager.removeLanguageListeners ( getRootPane () );
+    }
+
+    @Override
+    public void addDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.addDictionaryListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.removeDictionaryListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeDictionaryListeners ()
+    {
+        WebLanguageManager.removeDictionaryListeners ( getRootPane () );
     }
 
     @Override
@@ -651,6 +683,54 @@ public class WebSlider extends JSlider
     public void removeToolTips ( final List<WebCustomTooltip> tooltips )
     {
         TooltipManager.removeTooltips ( this, tooltips );
+    }
+
+    @Override
+    public String getLanguage ()
+    {
+        return WebLanguageManager.getComponentKey ( this );
+    }
+
+    @Override
+    public void setLanguage ( final String key, final Object... data )
+    {
+        WebLanguageManager.registerComponent ( this, key, data );
+    }
+
+    @Override
+    public void updateLanguage ( final Object... data )
+    {
+        WebLanguageManager.updateComponent ( this, data );
+    }
+
+    @Override
+    public void updateLanguage ( final String key, final Object... data )
+    {
+        WebLanguageManager.updateComponent ( this, key, data );
+    }
+
+    @Override
+    public void removeLanguage ()
+    {
+        WebLanguageManager.unregisterComponent ( this );
+    }
+
+    @Override
+    public boolean isLanguageSet ()
+    {
+        return WebLanguageManager.isRegisteredComponent ( this );
+    }
+
+    @Override
+    public void setLanguageUpdater ( final LanguageUpdater updater )
+    {
+        WebLanguageManager.registerLanguageUpdater ( this, updater );
+    }
+
+    @Override
+    public void removeLanguageUpdater ()
+    {
+        WebLanguageManager.unregisterLanguageUpdater ( this );
     }
 
     @Override
@@ -943,5 +1023,38 @@ public class WebSlider extends JSlider
     public WebSlider setPreferredSize ( final int width, final int height )
     {
         return SizeMethodsImpl.setPreferredSize ( this, width, height );
+    }
+
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WebSliderUI} object that renders this component
+     */
+    @Override
+    public WebSliderUI getUI ()
+    {
+        return ( WebSliderUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WebSliderUI}
+     */
+    public void setUI ( final WebSliderUI ui )
+    {
+        super.setUI ( ui );
+    }
+
+    @Override
+    public void updateUI ()
+    {
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

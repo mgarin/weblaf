@@ -32,7 +32,7 @@ import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.laf.tree.TreeNodeEventRunnable;
 import com.alee.managers.hotkey.Hotkey;
-import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.tooltip.TooltipWay;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.utils.swing.MouseButton;

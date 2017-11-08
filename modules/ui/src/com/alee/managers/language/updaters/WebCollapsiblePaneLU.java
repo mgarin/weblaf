@@ -18,21 +18,32 @@
 package com.alee.managers.language.updaters;
 
 import com.alee.extended.panel.WebCollapsiblePane;
-import com.alee.managers.language.data.Value;
+import com.alee.managers.language.Language;
 
 /**
- * This class provides language default updates for WebCollapsiblePane component.
+ * This class provides language updates for {@link WebCollapsiblePane}.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>
+ * @see com.alee.managers.language.LanguageManager
  */
 
-public class WebCollapsiblePaneLU extends DefaultLanguageUpdater<WebCollapsiblePane>
+public class WebCollapsiblePaneLU extends ToolTipLU<WebCollapsiblePane>
 {
     @Override
-    public void update ( final WebCollapsiblePane c, final String key, final Value value, final Object... data )
+    public Class getComponentClass ()
     {
-        // Updating text and mnemonic
-        final String text = getDefaultText ( value, data );
-        c.setTitle ( text != null ? text : null );
+        return WebCollapsiblePane.class;
+    }
+
+    @Override
+    public void update ( final WebCollapsiblePane component, final Language language, final String key, final Object... data )
+    {
+        super.update ( component, language, key, data );
+
+        if ( language.containsText ( key ) )
+        {
+            component.setTitle ( language.get ( key, data ) );
+        }
     }
 }

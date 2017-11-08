@@ -34,6 +34,7 @@ public final class DemoStyles
     public static final StyleId toolButton = StyleId.of ( "tool" );
     public static final StyleId toolIconButton = StyleId.of ( "tool-icon" );
     public static final StyleId toolCombobox = StyleId.of ( "tool" );
+    public static final StyleId toolLangCombobox = StyleId.of ( "tool-lang" );
     public static final StyleId filterfield = StyleId.of ( "filter" );
     public static final StyleId resourceLink = StyleId.of ( "resource" );
     public static final StyleId fieldInner = StyleId.of ( "field-inner" );

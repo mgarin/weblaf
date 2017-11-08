@@ -28,7 +28,7 @@ package com.alee.managers.language;
 public final class LanguageException extends RuntimeException
 {
     /**
-     * Constructs a new LanguageException with {@code null} as its detail message.
+     * Constructs a new {@link LanguageException} with {@code null} as its detail message.
      */
     public LanguageException ()
     {
@@ -36,7 +36,7 @@ public final class LanguageException extends RuntimeException
     }
 
     /**
-     * Constructs a new LanguageException with the specified detail message.
+     * Constructs a new {@link LanguageException} with the specified detail message.
      *
      * @param message exception message
      */
@@ -46,7 +46,7 @@ public final class LanguageException extends RuntimeException
     }
 
     /**
-     * Constructs a new LanguageException with the specified detail message and cause.
+     * Constructs a new {@link LanguageException} with the specified detail message and cause.
      *
      * @param message exception message
      * @param cause   exception cause
@@ -57,7 +57,7 @@ public final class LanguageException extends RuntimeException
     }
 
     /**
-     * Constructs a new LanguageException with the specified cause.
+     * Constructs a new {@link LanguageException} with the specified cause.
      *
      * @param cause exception cause
      */

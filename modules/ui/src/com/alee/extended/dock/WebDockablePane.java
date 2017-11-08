@@ -39,7 +39,7 @@ import java.util.List;
  * Frames can be added to the pane, repositioned within it, minimized, previewed, made floating or closed.
  * Positioning of the frames is handled by the {@link DockablePaneModel}.
  * Resize of the frames and their drop position while drag is handled by the glass layer.
- * <p/>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *

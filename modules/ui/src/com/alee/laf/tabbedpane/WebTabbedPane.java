@@ -17,9 +17,8 @@
 
 package com.alee.laf.tabbedpane;
 
-import com.alee.managers.language.LM;
-import com.alee.managers.language.LanguageManager;
-import com.alee.managers.language.LanguageMethods;
+import com.alee.managers.hotkey.HotkeyData;
+import com.alee.managers.language.*;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
@@ -28,17 +27,20 @@ import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.swing.extensions.FontMethods;
-import com.alee.utils.swing.extensions.FontMethodsImpl;
+import com.alee.utils.swing.MouseButton;
+import com.alee.utils.swing.extensions.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.KeyAdapter;
+import java.awt.event.MouseAdapter;
 import java.util.Map;
 
 /**
  * {@link JTabbedPane} extension class.
  * It contains various useful methods to simplify core component usage.
- * <p/>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -49,8 +51,8 @@ import java.util.Map;
  */
 
 public class WebTabbedPane extends JTabbedPane
-        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, LanguageMethods, SettingsMethods,
-        FontMethods<WebTabbedPane>
+        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods, LanguageMethods, LanguageEventMethods,
+        SettingsMethods, FontMethods<WebTabbedPane>
 {
     /**
      * Constructs new tabbed pane.
@@ -126,6 +128,7 @@ public class WebTabbedPane extends JTabbedPane
     @Override
     public String getTitleAt ( final int index )
     {
+        // todo This looks like something that would cause a lot of problems
         return LM.get ( super.getTitleAt ( index ) );
     }
 
@@ -346,85 +349,208 @@ public class WebTabbedPane extends JTabbedPane
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
-    /**
-     * Returns the look and feel (L&amp;F) object that renders this component.
-     *
-     * @return the {@link WTabbedPaneUI} object that renders this component
-     */
     @Override
-    public WTabbedPaneUI getUI ()
+    public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
     {
-        return ( WTabbedPaneUI ) super.getUI ();
-    }
-
-    /**
-     * Sets the L&amp;F object that renders this component.
-     *
-     * @param ui {@link WTabbedPaneUI}
-     */
-    public void setUI ( final WTabbedPaneUI ui )
-    {
-        super.setUI ( ui );
+        return EventMethodsImpl.onMousePress ( this, runnable );
     }
 
     @Override
-    public void updateUI ()
+    public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
-        StyleManager.getDescriptor ( this ).updateUI ( this );
+        return EventMethodsImpl.onMousePress ( this, mouseButton, runnable );
     }
 
     @Override
-    public String getUIClassID ()
+    public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
     {
-        return StyleManager.getDescriptor ( this ).getUIClassId ();
+        return EventMethodsImpl.onMouseEnter ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseExit ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseDrag ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseDrag ( this, mouseButton, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseClick ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseClick ( this, mouseButton, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDoubleClick ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMenuTrigger ( this, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyType ( this, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyType ( this, hotkey, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyPress ( this, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyPress ( this, hotkey, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyRelease ( this, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyRelease ( this, hotkey, runnable );
+    }
+
+    @Override
+    public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
+    {
+        return EventMethodsImpl.onFocusGain ( this, runnable );
+    }
+
+    @Override
+    public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
+    {
+        return EventMethodsImpl.onFocusLoss ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDragStart ( final int shift, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDragStart ( this, shift, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDragStart ( final int shift, final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDragStart ( this, shift, mouseButton, runnable );
     }
 
     @Override
     public String getLanguage ()
     {
-        return LanguageManager.getComponentKey ( this );
+        return WebLanguageManager.getComponentKey ( this );
     }
 
     @Override
     public void setLanguage ( final String key, final Object... data )
     {
-        LanguageManager.registerComponent ( this, key, data );
+        WebLanguageManager.registerComponent ( this, key, data );
     }
 
     @Override
     public void updateLanguage ( final Object... data )
     {
-        LanguageManager.updateComponent ( this, data );
+        WebLanguageManager.updateComponent ( this, data );
     }
 
     @Override
     public void updateLanguage ( final String key, final Object... data )
     {
-        LanguageManager.updateComponent ( this, key, data );
+        WebLanguageManager.updateComponent ( this, key, data );
     }
 
     @Override
     public void removeLanguage ()
     {
-        LanguageManager.unregisterComponent ( this );
+        WebLanguageManager.unregisterComponent ( this );
     }
 
     @Override
     public boolean isLanguageSet ()
     {
-        return LanguageManager.isRegisteredComponent ( this );
+        return WebLanguageManager.isRegisteredComponent ( this );
     }
 
     @Override
     public void setLanguageUpdater ( final LanguageUpdater updater )
     {
-        LanguageManager.registerLanguageUpdater ( this, updater );
+        WebLanguageManager.registerLanguageUpdater ( this, updater );
     }
 
     @Override
     public void removeLanguageUpdater ()
     {
-        LanguageManager.unregisterLanguageUpdater ( this );
+        WebLanguageManager.unregisterLanguageUpdater ( this );
+    }
+
+    @Override
+    public void addLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.addLanguageListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.removeLanguageListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeLanguageListeners ()
+    {
+        WebLanguageManager.removeLanguageListeners ( getRootPane () );
+    }
+
+    @Override
+    public void addDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.addDictionaryListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.removeDictionaryListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeDictionaryListeners ()
+    {
+        WebLanguageManager.removeDictionaryListeners ( getRootPane () );
     }
 
     @Override
@@ -627,5 +753,38 @@ public class WebTabbedPane extends JTabbedPane
     public String getFontName ()
     {
         return FontMethodsImpl.getFontName ( this );
+    }
+
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WTabbedPaneUI} object that renders this component
+     */
+    @Override
+    public WTabbedPaneUI getUI ()
+    {
+        return ( WTabbedPaneUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WTabbedPaneUI}
+     */
+    public void setUI ( final WTabbedPaneUI ui )
+    {
+        super.setUI ( ui );
+    }
+
+    @Override
+    public void updateUI ()
+    {
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

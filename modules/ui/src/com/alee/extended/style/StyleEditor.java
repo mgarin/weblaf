@@ -71,7 +71,7 @@ import com.alee.managers.animation.transition.*;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
-import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.tooltip.TooltipWay;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.managers.style.data.ComponentStyleConverter;

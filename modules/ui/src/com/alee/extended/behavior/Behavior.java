@@ -18,7 +18,7 @@
 package com.alee.extended.behavior;
 
 /**
- * This interface is an indicator of the fact that this class describes some specific behavior.
+ * This marker interface can be implemented by any classes that describe some specific behavior.
  *
  * @author Mikle Garin
  */
@@ -26,7 +26,7 @@ package com.alee.extended.behavior;
 public interface Behavior
 {
     /**
-     * This interface doesn't provide any specific methods to implement.
+     * This is a marker interface, it doesn't have any methods to implement.
      * todo 1. Probably add `install()` and `uninstall()` base methods?
      */
 }

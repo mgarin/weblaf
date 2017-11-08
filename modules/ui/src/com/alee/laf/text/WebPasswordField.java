@@ -20,9 +20,7 @@ package com.alee.laf.text;
 import com.alee.extended.behavior.DocumentChangeBehavior;
 import com.alee.laf.IInputPrompt;
 import com.alee.managers.hotkey.HotkeyData;
-import com.alee.managers.language.LanguageManager;
-import com.alee.managers.language.LanguageMethods;
-import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.language.*;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
@@ -31,6 +29,7 @@ import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
+import com.alee.managers.tooltip.TooltipWay;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -59,10 +58,9 @@ import java.util.Map;
  * @see PasswordFieldPainter
  */
 
-public class WebPasswordField extends JPasswordField
-        implements IInputPrompt, ILeadingComponent, ITrailingComponent, Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods,
-        DocumentEventMethods<WebPasswordField>, EventMethods, ToolTipMethods, LanguageMethods, SettingsMethods,
-        FontMethods<WebPasswordField>, SizeMethods<WebPasswordField>
+public class WebPasswordField extends JPasswordField implements IInputPrompt, ILeadingComponent, ITrailingComponent, Styleable, Paintable,
+        ShapeMethods, MarginMethods, PaddingMethods, DocumentEventMethods<WebPasswordField>, EventMethods, ToolTipMethods, LanguageMethods,
+        LanguageEventMethods, SettingsMethods, FontMethods<WebPasswordField>, SizeMethods<WebPasswordField>
 {
     /**
      * Constructs new password field.
@@ -379,39 +377,6 @@ public class WebPasswordField extends JPasswordField
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
-    /**
-     * Returns the look and feel (L&amp;F) object that renders this component.
-     *
-     * @return the {@link WPasswordFieldUI} object that renders this component
-     */
-    @Override
-    public WPasswordFieldUI getUI ()
-    {
-        return ( WPasswordFieldUI ) super.getUI ();
-    }
-
-    /**
-     * Sets the L&amp;F object that renders this component.
-     *
-     * @param ui {@link WPasswordFieldUI}
-     */
-    public void setUI ( final WPasswordFieldUI ui )
-    {
-        super.setUI ( ui );
-    }
-
-    @Override
-    public void updateUI ()
-    {
-        StyleManager.getDescriptor ( this ).updateUI ( this );
-    }
-
-    @Override
-    public String getUIClassID ()
-    {
-        return StyleManager.getDescriptor ( this ).getUIClassId ();
-    }
-
     @Override
     public DocumentChangeBehavior<WebPasswordField> onChange ( final DocumentEventRunnable<WebPasswordField> runnable )
     {
@@ -685,49 +650,85 @@ public class WebPasswordField extends JPasswordField
     @Override
     public String getLanguage ()
     {
-        return LanguageManager.getComponentKey ( this );
+        return WebLanguageManager.getComponentKey ( this );
     }
 
     @Override
     public void setLanguage ( final String key, final Object... data )
     {
-        LanguageManager.registerComponent ( this, key, data );
+        WebLanguageManager.registerComponent ( this, key, data );
     }
 
     @Override
     public void updateLanguage ( final Object... data )
     {
-        LanguageManager.updateComponent ( this, data );
+        WebLanguageManager.updateComponent ( this, data );
     }
 
     @Override
     public void updateLanguage ( final String key, final Object... data )
     {
-        LanguageManager.updateComponent ( this, key, data );
+        WebLanguageManager.updateComponent ( this, key, data );
     }
 
     @Override
     public void removeLanguage ()
     {
-        LanguageManager.unregisterComponent ( this );
+        WebLanguageManager.unregisterComponent ( this );
     }
 
     @Override
     public boolean isLanguageSet ()
     {
-        return LanguageManager.isRegisteredComponent ( this );
+        return WebLanguageManager.isRegisteredComponent ( this );
     }
 
     @Override
     public void setLanguageUpdater ( final LanguageUpdater updater )
     {
-        LanguageManager.registerLanguageUpdater ( this, updater );
+        WebLanguageManager.registerLanguageUpdater ( this, updater );
     }
 
     @Override
     public void removeLanguageUpdater ()
     {
-        LanguageManager.unregisterLanguageUpdater ( this );
+        WebLanguageManager.unregisterLanguageUpdater ( this );
+    }
+
+    @Override
+    public void addLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.addLanguageListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.removeLanguageListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeLanguageListeners ()
+    {
+        WebLanguageManager.removeLanguageListeners ( getRootPane () );
+    }
+
+    @Override
+    public void addDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.addDictionaryListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.removeDictionaryListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeDictionaryListeners ()
+    {
+        WebLanguageManager.removeDictionaryListeners ( getRootPane () );
     }
 
     @Override
@@ -1020,5 +1021,38 @@ public class WebPasswordField extends JPasswordField
     public WebPasswordField setPreferredSize ( final int width, final int height )
     {
         return SizeMethodsImpl.setPreferredSize ( this, width, height );
+    }
+
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WPasswordFieldUI} object that renders this component
+     */
+    @Override
+    public WPasswordFieldUI getUI ()
+    {
+        return ( WPasswordFieldUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WPasswordFieldUI}
+     */
+    public void setUI ( final WPasswordFieldUI ui )
+    {
+        super.setUI ( ui );
+    }
+
+    @Override
+    public void updateUI ()
+    {
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

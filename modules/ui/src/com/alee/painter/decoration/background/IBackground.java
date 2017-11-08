@@ -38,7 +38,7 @@ import java.io.Serializable;
  */
 
 public interface IBackground<E extends JComponent, D extends IDecoration<E, D>, I extends IBackground<E, D, I>>
-        extends DecoratonElement<E, D, I>, Identifiable, Overwriting, MergeBehavior<I>, Cloneable, Serializable
+        extends DecoratonElement<E, D, I>, Identifiable, MergeBehavior<I>, Overwriting, Cloneable, Serializable
 {
     /**
      * Fills the specified shape with this background.

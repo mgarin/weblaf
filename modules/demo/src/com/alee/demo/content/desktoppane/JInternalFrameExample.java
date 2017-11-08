@@ -21,7 +21,7 @@ import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.demo.content.SampleData;
-import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.WebLanguageManager;
 import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
@@ -118,7 +118,7 @@ public class JInternalFrameExample extends AbstractPreviewExample
         {
             final JInternalFrame internalFrame = new JInternalFrame ( "", true, true, true, true );
             internalFrame.setFrameIcon ( loadExampleIcon ( "frame16.png" ) );
-            LanguageManager.registerComponent ( internalFrame, getExampleLanguagePrefix () + "frame.title", index );
+            WebLanguageManager.registerComponent ( internalFrame, getExampleLanguagePrefix () + "frame.title", index );
 
             final JTable table = new JTable ( SampleData.createLongTableModel () );
             final JScrollPane scrollPane = new JScrollPane ( table );
@@ -128,7 +128,7 @@ public class JInternalFrameExample extends AbstractPreviewExample
             final JButton internalFrameIcon = new JButton ( "", loadExampleIcon ( "frame32.png" ) );
             internalFrameIcon.setHorizontalTextPosition ( JButton.CENTER );
             internalFrameIcon.setVerticalTextPosition ( JButton.BOTTOM );
-            LanguageManager.registerComponent ( internalFrameIcon, getExampleLanguagePrefix () + "frame.button", index );
+            WebLanguageManager.registerComponent ( internalFrameIcon, getExampleLanguagePrefix () + "frame.button", index );
             internalFrameIcon.addActionListener ( new ActionListener ()
             {
                 @Override

@@ -18,10 +18,12 @@
 package com.alee.laf.panel;
 
 import com.alee.managers.hotkey.HotkeyData;
-import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.language.*;
+import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
+import com.alee.managers.tooltip.TooltipWay;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -39,7 +41,7 @@ import java.util.Map;
 /**
  * {@link JPanel} extension class.
  * It contains various useful methods to simplify core component usage.
- * <p/>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -49,9 +51,8 @@ import java.util.Map;
  * @see PanelPainter
  */
 
-public class WebPanel extends JPanel
-        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, ContainerMethods<WebPanel>, EventMethods,
-        ToolTipMethods, SizeMethods<WebPanel>
+public class WebPanel extends JPanel implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods,
+        ContainerMethods<WebPanel>, EventMethods, LanguageEventMethods, ToolTipMethods, LanguageMethods, SizeMethods<WebPanel>
 {
     /**
      * Constructs new panel.
@@ -268,39 +269,6 @@ public class WebPanel extends JPanel
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
-    /**
-     * Returns the look and feel (L&amp;F) object that renders this component.
-     *
-     * @return the {@link WPanelUI} object that renders this component
-     */
-    @Override
-    public WPanelUI getUI ()
-    {
-        return ( WPanelUI ) ui;
-    }
-
-    /**
-     * Sets the L&amp;F object that renders this component.
-     *
-     * @param ui {@link WPanelUI}
-     */
-    public void setUI ( final WPanelUI ui )
-    {
-        super.setUI ( ui );
-    }
-
-    @Override
-    public void updateUI ()
-    {
-        StyleManager.getDescriptor ( this ).updateUI ( this );
-    }
-
-    @Override
-    public String getUIClassID ()
-    {
-        return StyleManager.getDescriptor ( this ).getUIClassId ();
-    }
-
     @Override
     public boolean contains ( final Component component )
     {
@@ -506,6 +474,42 @@ public class WebPanel extends JPanel
     }
 
     @Override
+    public void addLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.addLanguageListener ( this, listener );
+    }
+
+    @Override
+    public void removeLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.removeLanguageListener ( this, listener );
+    }
+
+    @Override
+    public void removeLanguageListeners ()
+    {
+        WebLanguageManager.removeLanguageListeners ( this );
+    }
+
+    @Override
+    public void addDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.addDictionaryListener ( this, listener );
+    }
+
+    @Override
+    public void removeDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.removeDictionaryListener ( this, listener );
+    }
+
+    @Override
+    public void removeDictionaryListeners ()
+    {
+        WebLanguageManager.removeDictionaryListeners ( this );
+    }
+
+    @Override
     public WebCustomTooltip setToolTip ( final String tooltip )
     {
         return TooltipManager.setTooltip ( this, tooltip );
@@ -650,6 +654,54 @@ public class WebPanel extends JPanel
     }
 
     @Override
+    public String getLanguage ()
+    {
+        return WebLanguageManager.getComponentKey ( this );
+    }
+
+    @Override
+    public void setLanguage ( final String key, final Object... data )
+    {
+        WebLanguageManager.registerComponent ( this, key, data );
+    }
+
+    @Override
+    public void updateLanguage ( final Object... data )
+    {
+        WebLanguageManager.updateComponent ( this, data );
+    }
+
+    @Override
+    public void updateLanguage ( final String key, final Object... data )
+    {
+        WebLanguageManager.updateComponent ( this, key, data );
+    }
+
+    @Override
+    public void removeLanguage ()
+    {
+        WebLanguageManager.unregisterComponent ( this );
+    }
+
+    @Override
+    public boolean isLanguageSet ()
+    {
+        return WebLanguageManager.isRegisteredComponent ( this );
+    }
+
+    @Override
+    public void setLanguageUpdater ( final LanguageUpdater updater )
+    {
+        WebLanguageManager.registerLanguageUpdater ( this, updater );
+    }
+
+    @Override
+    public void removeLanguageUpdater ()
+    {
+        WebLanguageManager.unregisterLanguageUpdater ( this );
+    }
+
+    @Override
     public int getPreferredWidth ()
     {
         return SizeMethodsImpl.getPreferredWidth ( this );
@@ -737,5 +789,38 @@ public class WebPanel extends JPanel
     public WebPanel setPreferredSize ( final int width, final int height )
     {
         return SizeMethodsImpl.setPreferredSize ( this, width, height );
+    }
+
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WPanelUI} object that renders this component
+     */
+    @Override
+    public WPanelUI getUI ()
+    {
+        return ( WPanelUI ) ui;
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WPanelUI}
+     */
+    public void setUI ( final WPanelUI ui )
+    {
+        super.setUI ( ui );
+    }
+
+    @Override
+    public void updateUI ()
+    {
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

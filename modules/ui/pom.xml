@@ -51,7 +51,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.alee.laf.LibraryInfoDialog</mainClass>
+                            <mainClass>com.alee.laf.information.LibraryInfoDialog</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

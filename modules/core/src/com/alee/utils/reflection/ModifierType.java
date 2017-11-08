@@ -184,6 +184,17 @@ public enum ModifierType
     public abstract boolean is ( int modifiers );
 
     /**
+     * Returns whether or not modifiers do not contain this specific modifier.
+     *
+     * @param modifiers modifiers to check
+     * @return {@code true} if modifiers do not contain this specific modifier, {@code false} otherwise
+     */
+    public boolean not ( final int modifiers )
+    {
+        return !is ( modifiers );
+    }
+
+    /**
      * Returns whether or not class has this specific modifier.
      *
      * @param clazz class to check
@@ -192,6 +203,17 @@ public enum ModifierType
     public boolean is ( final Class clazz )
     {
         return is ( clazz.getModifiers () );
+    }
+
+    /**
+     * Returns whether or not class doesn't have this specific modifier.
+     *
+     * @param clazz class to check
+     * @return {@code true} if class doesn't have this specific modifier, {@code false} otherwise
+     */
+    public boolean not ( final Class clazz )
+    {
+        return !is ( clazz );
     }
 
     /**
@@ -206,6 +228,17 @@ public enum ModifierType
     }
 
     /**
+     * Returns whether or not field doesn't have this specific modifier.
+     *
+     * @param field field to check
+     * @return {@code true} if field doesn't have this specific modifier, {@code false} otherwise
+     */
+    public boolean not ( final Field field )
+    {
+        return !is ( field );
+    }
+
+    /**
      * Returns whether or not method has this specific modifier.
      *
      * @param method method to check
@@ -214,6 +247,17 @@ public enum ModifierType
     public boolean is ( final Method method )
     {
         return is ( method.getModifiers () );
+    }
+
+    /**
+     * Returns whether or not method doesn't have this specific modifier.
+     *
+     * @param method method to check
+     * @return {@code true} if method doesn't have this specific modifier, {@code false} otherwise
+     */
+    public boolean not ( final Method method )
+    {
+        return !is ( method );
     }
 
     /**

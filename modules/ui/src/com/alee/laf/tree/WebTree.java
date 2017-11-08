@@ -22,6 +22,10 @@ import com.alee.laf.tree.behavior.TreeHoverSelectionBehavior;
 import com.alee.laf.tree.behavior.TreeSelectionExpandBehavior;
 import com.alee.laf.tree.behavior.TreeSingleChildExpandBehavior;
 import com.alee.managers.hotkey.HotkeyData;
+import com.alee.managers.language.DictionaryListener;
+import com.alee.managers.language.LanguageEventMethods;
+import com.alee.managers.language.LanguageListener;
+import com.alee.managers.language.WebLanguageManager;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -52,7 +56,7 @@ import java.util.List;
 /**
  * {@link JTree} extension class.
  * It contains various useful methods to simplify core component usage.
- * <p>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -64,8 +68,8 @@ import java.util.List;
  */
 
 public class WebTree<E extends DefaultMutableTreeNode> extends JTree
-        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, TreeEventMethods<E>, EventMethods, SettingsMethods,
-        FontMethods<WebTree<E>>, SizeMethods<WebTree<E>>
+        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, TreeEventMethods<E>, EventMethods,
+        LanguageEventMethods, SettingsMethods, FontMethods<WebTree<E>>, SizeMethods<WebTree<E>>
 {
     /**
      * Bound property name for tree data provider.
@@ -118,16 +122,6 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      * Custom WebLaF tooltip provider.
      */
     protected ToolTipProvider<? extends WebTree> toolTipProvider = null;
-
-    /**
-     *
-     */
-    protected boolean expandSelected;
-
-    /**
-     *
-     */
-    protected boolean selectOnHover;
 
     /**
      * Constructs tree with default sample model.
@@ -1149,7 +1143,8 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     }
 
     /**
-     * Updates all visible nodes.
+     * Updates all nodes visible in the tree.
+     * This includes nodes which are off screen (hidden behind the scroll).
      * This can be used to update nodes sizes/view if renderer has changed.
      */
     public void updateVisibleNodes ()
@@ -1595,39 +1590,6 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     }
 
     /**
-     * Returns the look and feel (L&amp;F) object that renders this component.
-     *
-     * @return the {@link WTreeUI} object that renders this component
-     */
-    @Override
-    public WTreeUI getUI ()
-    {
-        return ( WTreeUI ) super.getUI ();
-    }
-
-    /**
-     * Sets the L&amp;F object that renders this component.
-     *
-     * @param ui {@link WTreeUI}
-     */
-    public void setUI ( final WTreeUI ui )
-    {
-        super.setUI ( ui );
-    }
-
-    @Override
-    public void updateUI ()
-    {
-        StyleManager.getDescriptor ( this ).updateUI ( this );
-    }
-
-    @Override
-    public String getUIClassID ()
-    {
-        return StyleManager.getDescriptor ( this ).getUIClassId ();
-    }
-
-    /**
      * Repaints specified tree row.
      *
      * @param row row index
@@ -1823,6 +1785,42 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     public MouseAdapter onDragStart ( final int shift, final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onDragStart ( this, shift, mouseButton, runnable );
+    }
+
+    @Override
+    public void addLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.addLanguageListener ( this, listener );
+    }
+
+    @Override
+    public void removeLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.removeLanguageListener ( this, listener );
+    }
+
+    @Override
+    public void removeLanguageListeners ()
+    {
+        WebLanguageManager.removeLanguageListeners ( this );
+    }
+
+    @Override
+    public void addDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.addDictionaryListener ( this, listener );
+    }
+
+    @Override
+    public void removeDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.removeDictionaryListener ( this, listener );
+    }
+
+    @Override
+    public void removeDictionaryListeners ()
+    {
+        WebLanguageManager.removeDictionaryListeners ( this );
     }
 
     @Override
@@ -2115,6 +2113,39 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     public WebTree<E> setPreferredSize ( final int width, final int height )
     {
         return SizeMethodsImpl.setPreferredSize ( this, width, height );
+    }
+
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WTreeUI} object that renders this component
+     */
+    @Override
+    public WTreeUI getUI ()
+    {
+        return ( WTreeUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WTreeUI}
+     */
+    public void setUI ( final WTreeUI ui )
+    {
+        super.setUI ( ui );
+    }
+
+    @Override
+    public void updateUI ()
+    {
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 
     /**

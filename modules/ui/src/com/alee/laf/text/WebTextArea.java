@@ -20,8 +20,7 @@ package com.alee.laf.text;
 import com.alee.extended.behavior.DocumentChangeBehavior;
 import com.alee.laf.IInputPrompt;
 import com.alee.managers.hotkey.HotkeyData;
-import com.alee.managers.language.LanguageManager;
-import com.alee.managers.language.LanguageMethods;
+import com.alee.managers.language.*;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
@@ -54,9 +53,9 @@ import java.util.Map;
  * @see TextAreaPainter
  */
 
-public class WebTextArea extends JTextArea
-        implements IInputPrompt, Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, DocumentEventMethods<WebTextArea>,
-        EventMethods, LanguageMethods, SettingsMethods, FontMethods<WebTextArea>, SizeMethods<WebTextArea>
+public class WebTextArea extends JTextArea implements IInputPrompt, Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods,
+        DocumentEventMethods<WebTextArea>, EventMethods, LanguageMethods, LanguageEventMethods, SettingsMethods, FontMethods<WebTextArea>,
+        SizeMethods<WebTextArea>
 {
     /**
      * Constructs new text area.
@@ -364,39 +363,6 @@ public class WebTextArea extends JTextArea
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
-    /**
-     * Returns the look and feel (L&amp;F) object that renders this component.
-     *
-     * @return the {@link WTextAreaUI} object that renders this component
-     */
-    @Override
-    public WTextAreaUI getUI ()
-    {
-        return ( WTextAreaUI ) super.getUI ();
-    }
-
-    /**
-     * Sets the L&amp;F object that renders this component.
-     *
-     * @param ui {@link WTextAreaUI}
-     */
-    public void setUI ( final WTextAreaUI ui )
-    {
-        super.setUI ( ui );
-    }
-
-    @Override
-    public void updateUI ()
-    {
-        StyleManager.getDescriptor ( this ).updateUI ( this );
-    }
-
-    @Override
-    public String getUIClassID ()
-    {
-        return StyleManager.getDescriptor ( this ).getUIClassId ();
-    }
-
     @Override
     public DocumentChangeBehavior<WebTextArea> onChange ( final DocumentEventRunnable<WebTextArea> runnable )
     {
@@ -526,49 +492,85 @@ public class WebTextArea extends JTextArea
     @Override
     public String getLanguage ()
     {
-        return LanguageManager.getComponentKey ( this );
+        return WebLanguageManager.getComponentKey ( this );
     }
 
     @Override
     public void setLanguage ( final String key, final Object... data )
     {
-        LanguageManager.registerComponent ( this, key, data );
+        WebLanguageManager.registerComponent ( this, key, data );
     }
 
     @Override
     public void updateLanguage ( final Object... data )
     {
-        LanguageManager.updateComponent ( this, data );
+        WebLanguageManager.updateComponent ( this, data );
     }
 
     @Override
     public void updateLanguage ( final String key, final Object... data )
     {
-        LanguageManager.updateComponent ( this, key, data );
+        WebLanguageManager.updateComponent ( this, key, data );
     }
 
     @Override
     public void removeLanguage ()
     {
-        LanguageManager.unregisterComponent ( this );
+        WebLanguageManager.unregisterComponent ( this );
     }
 
     @Override
     public boolean isLanguageSet ()
     {
-        return LanguageManager.isRegisteredComponent ( this );
+        return WebLanguageManager.isRegisteredComponent ( this );
     }
 
     @Override
     public void setLanguageUpdater ( final LanguageUpdater updater )
     {
-        LanguageManager.registerLanguageUpdater ( this, updater );
+        WebLanguageManager.registerLanguageUpdater ( this, updater );
     }
 
     @Override
     public void removeLanguageUpdater ()
     {
-        LanguageManager.unregisterLanguageUpdater ( this );
+        WebLanguageManager.unregisterLanguageUpdater ( this );
+    }
+
+    @Override
+    public void addLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.addLanguageListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.removeLanguageListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeLanguageListeners ()
+    {
+        WebLanguageManager.removeLanguageListeners ( getRootPane () );
+    }
+
+    @Override
+    public void addDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.addDictionaryListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.removeDictionaryListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeDictionaryListeners ()
+    {
+        WebLanguageManager.removeDictionaryListeners ( getRootPane () );
     }
 
     @Override
@@ -861,5 +863,38 @@ public class WebTextArea extends JTextArea
     public WebTextArea setPreferredSize ( final int width, final int height )
     {
         return SizeMethodsImpl.setPreferredSize ( this, width, height );
+    }
+
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WTextAreaUI} object that renders this component
+     */
+    @Override
+    public WTextAreaUI getUI ()
+    {
+        return ( WTextAreaUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WTextAreaUI}
+     */
+    public void setUI ( final WTextAreaUI ui )
+    {
+        super.setUI ( ui );
+    }
+
+    @Override
+    public void updateUI ()
+    {
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

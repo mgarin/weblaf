@@ -18,7 +18,7 @@
 package com.alee.demo.api.example;
 
 import com.alee.api.TitleSupport;
-import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LM;
 
 /**
  * Enumeration that represents feature development state.
@@ -61,7 +61,7 @@ public enum FeatureState implements TitleSupport
     @Override
     public String getTitle ()
     {
-        return LanguageManager.get ( "demo.state." + this );
+        return LM.get ( "demo.state." + this );
     }
 
     /**
@@ -71,6 +71,6 @@ public enum FeatureState implements TitleSupport
      */
     public String geDescription ()
     {
-        return LanguageManager.get ( "demo.state." + this + ".description" );
+        return LM.get ( "demo.state." + this + ".description" );
     }
 }

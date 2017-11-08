@@ -30,7 +30,6 @@ import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
 import com.alee.utils.CompareUtils;
-import com.alee.utils.ReflectUtils;
 import com.alee.utils.swing.DataRunnable;
 import com.alee.utils.swing.EditabilityListener;
 import com.alee.utils.swing.VisibilityListener;
@@ -56,6 +55,11 @@ import java.util.List;
 
 public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
+    /**
+     * Client property key for referencing {@link JComboBox} within its popup {@link JList}.
+     */
+    protected static final Object COMBOBOX_INSTANCE = "combobox.instance";
+
     /**
      * Default combobox renderer.
      */
@@ -288,8 +292,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     public void setPainter ( final Painter painter )
     {
         comboBox.hidePopup ();
-        isMinimumSizeDirty = true;
-        ReflectUtils.setFieldValueSafely ( this, "isDisplaySizeDirty", true );
+        resetRendererSize ();
         PainterSupport.setPainter ( comboBox, new DataRunnable<IComboBoxPainter> ()
         {
             @Override
@@ -299,7 +302,6 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
             }
         }, this.painter, painter, IComboBoxPainter.class, AdaptiveComboBoxPainter.class );
     }
-
 
     @Override
     protected ListCellRenderer createRenderer ()
@@ -359,6 +361,9 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
             {
                 //noinspection UnnecessaryLocalVariable
                 final JList list = super.createList ();
+
+                // Adding combobox reference for internal usage
+                list.putClientProperty ( COMBOBOX_INSTANCE, comboBox );
 
                 // todo Handle inside of the popup painter
                 // Custom listener to update popup menu dropdown corner

@@ -102,37 +102,37 @@ public final class ArrayUtils
     /**
      * Returns whether array contains the specified character or not.
      *
-     * @param number character to find
-     * @param array  array to process
+     * @param character character to find
+     * @param array     array to process
      * @return {@code true} if array contains the specified character, {@code false} otherwise
      */
-    public static boolean contains ( final char number, final char[] array )
+    public static boolean contains ( final char character, final char[] array )
     {
-        return indexOf ( number, array ) != -1;
+        return indexOf ( character, array ) != -1;
     }
 
     /**
      * Returns whether array contains the specified byte or not.
      *
-     * @param number byte to find
+     * @param data byte to find
      * @param array  array to process
      * @return {@code true} if array contains the specified byte, {@code false} otherwise
      */
-    public static boolean contains ( final byte number, final byte[] array )
+    public static boolean contains ( final byte data, final byte[] array )
     {
-        return indexOf ( number, array ) != -1;
+        return indexOf ( data, array ) != -1;
     }
 
     /**
      * Returns whether array contains the specified text or not.
      *
-     * @param number text to find
+     * @param text text to find
      * @param array  array to process
      * @return {@code true} if array contains the specified text, {@code false} otherwise
      */
-    public static boolean contains ( final String number, final String[] array )
+    public static boolean contains ( final String text, final String[] array )
     {
-        return indexOf ( number, array ) != -1;
+        return indexOf ( text, array ) != -1;
     }
 
     /**
@@ -226,15 +226,15 @@ public final class ArrayUtils
     /**
      * Returns index of specified character in array.
      *
-     * @param object character to find
-     * @param array  array to process
+     * @param character character to find
+     * @param array     array to process
      * @return index of specified character in array
      */
-    public static int indexOf ( final char object, final char[] array )
+    public static int indexOf ( final char character, final char[] array )
     {
         for ( int i = 0; i < array.length; i++ )
         {
-            if ( array[ i ] == object )
+            if ( array[ i ] == character )
             {
                 return i;
             }
@@ -245,15 +245,15 @@ public final class ArrayUtils
     /**
      * Returns index of specified byte in array.
      *
-     * @param object byte to find
-     * @param array  array to process
+     * @param data  byte to find
+     * @param array array to process
      * @return index of specified byte in array
      */
-    public static int indexOf ( final byte object, final byte[] array )
+    public static int indexOf ( final byte data, final byte[] array )
     {
         for ( int i = 0; i < array.length; i++ )
         {
-            if ( array[ i ] == object )
+            if ( array[ i ] == data )
             {
                 return i;
             }
@@ -340,7 +340,7 @@ public final class ArrayUtils
      *
      * @param array  array to process
      * @param object object to remove
-     * @param <T>    component type
+     * @param <T>    data type
      * @return new array with the specified object removed
      */
     public static <T> T[] remove ( final T[] array, final T object )
@@ -516,7 +516,7 @@ public final class ArrayUtils
      *
      * @param array array to process
      * @param index index of object to remove
-     * @param <T>   component type
+     * @param <T>   data type
      * @return new array with the object under specified index removed
      */
     public static <T> T[] remove ( final T[] array, final int index )
@@ -687,7 +687,7 @@ public final class ArrayUtils
      * @param array  array to process
      * @param index  insert index
      * @param object object to insert
-     * @param <T>    component type
+     * @param <T>    data type
      * @return new array with object inserted at the specified index
      */
     public static <T> T[] insert ( final T[] array, final int index, final T object )
@@ -711,7 +711,7 @@ public final class ArrayUtils
      *
      * @param array  array to retrieve class type from
      * @param length array length
-     * @param <T>    component type
+     * @param <T>    data type
      * @return new array with the component class type from the specified array
      */
     public static <T> T[] createArray ( final T[] array, final int length )
@@ -724,11 +724,252 @@ public final class ArrayUtils
      *
      * @param classType component class type
      * @param length    array length
-     * @param <T>       component type
+     * @param <T>       data type
      * @return new array with the specified component class type
      */
     public static <T> T[] createArray ( final Class<T> classType, final int length )
     {
         return ( T[] ) Array.newInstance ( classType, length );
+    }
+
+    /**
+     * Returns whether arrays are equal or not.
+     *
+     * @param array1 first array
+     * @param array2 second array
+     * @return {@code true} if arrays are equal, {@code false} otherwise
+     */
+    public static boolean equals ( final int[] array1, final int[] array2 )
+    {
+        if ( array1 == null && array2 == null )
+        {
+            return true;
+        }
+        else if ( array1 == null || array2 == null || array1.length != array2.length )
+        {
+            return false;
+        }
+        else
+        {
+            for ( final int number : array1 )
+            {
+                if ( !contains ( number, array2 ) )
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    /**
+     * Returns whether arrays are equal or not.
+     *
+     * @param array1 first array
+     * @param array2 second array
+     * @return {@code true} if arrays are equal, {@code false} otherwise
+     */
+    public static boolean equals ( final long[] array1, final long[] array2 )
+    {
+        if ( array1 == null && array2 == null )
+        {
+            return true;
+        }
+        else if ( array1 == null || array2 == null || array1.length != array2.length )
+        {
+            return false;
+        }
+        else
+        {
+            for ( final long number : array1 )
+            {
+                if ( !contains ( number, array2 ) )
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    /**
+     * Returns whether arrays are equal or not.
+     *
+     * @param array1 first array
+     * @param array2 second array
+     * @return {@code true} if arrays are equal, {@code false} otherwise
+     */
+    public static boolean equals ( final float[] array1, final float[] array2 )
+    {
+        if ( array1 == null && array2 == null )
+        {
+            return true;
+        }
+        else if ( array1 == null || array2 == null || array1.length != array2.length )
+        {
+            return false;
+        }
+        else
+        {
+            for ( final float number : array1 )
+            {
+                if ( !contains ( number, array2 ) )
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    /**
+     * Returns whether arrays are equal or not.
+     *
+     * @param array1 first array
+     * @param array2 second array
+     * @return {@code true} if arrays are equal, {@code false} otherwise
+     */
+    public static boolean equals ( final double[] array1, final double[] array2 )
+    {
+        if ( array1 == null && array2 == null )
+        {
+            return true;
+        }
+        else if ( array1 == null || array2 == null || array1.length != array2.length )
+        {
+            return false;
+        }
+        else
+        {
+            for ( final double number : array1 )
+            {
+                if ( !contains ( number, array2 ) )
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    /**
+     * Returns whether arrays are equal or not.
+     *
+     * @param array1 first array
+     * @param array2 second array
+     * @return {@code true} if arrays are equal, {@code false} otherwise
+     */
+    public static boolean equals ( final char[] array1, final char[] array2 )
+    {
+        if ( array1 == null && array2 == null )
+        {
+            return true;
+        }
+        else if ( array1 == null || array2 == null || array1.length != array2.length )
+        {
+            return false;
+        }
+        else
+        {
+            for ( final char character : array1 )
+            {
+                if ( !contains ( character, array2 ) )
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    /**
+     * Returns whether arrays are equal or not.
+     *
+     * @param array1 first array
+     * @param array2 second array
+     * @return {@code true} if arrays are equal, {@code false} otherwise
+     */
+    public static boolean equals ( final byte[] array1, final byte[] array2 )
+    {
+        if ( array1 == null && array2 == null )
+        {
+            return true;
+        }
+        else if ( array1 == null || array2 == null || array1.length != array2.length )
+        {
+            return false;
+        }
+        else
+        {
+            for ( final byte data : array1 )
+            {
+                if ( !contains ( data, array2 ) )
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    /**
+     * Returns whether arrays are equal or not.
+     *
+     * @param array1 first array
+     * @param array2 second array
+     * @return {@code true} if arrays are equal, {@code false} otherwise
+     */
+    public static boolean equals ( final String[] array1, final String[] array2 )
+    {
+        if ( array1 == null && array2 == null )
+        {
+            return true;
+        }
+        else if ( array1 == null || array2 == null || array1.length != array2.length )
+        {
+            return false;
+        }
+        else
+        {
+            for ( final String text : array1 )
+            {
+                if ( !contains ( text, array2 ) )
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    /**
+     * Returns whether arrays are equal or not.
+     *
+     * @param array1 first array
+     * @param array2 second array
+     * @param <T>    data type
+     * @return {@code true} if arrays are equal, {@code false} otherwise
+     */
+    public static <T> boolean equals ( final T[] array1, final T[] array2 )
+    {
+        if ( array1 == null && array2 == null )
+        {
+            return true;
+        }
+        else if ( array1 == null || array2 == null || array1.length != array2.length )
+        {
+            return false;
+        }
+        else
+        {
+            for ( final Object object : array1 )
+            {
+                if ( !contains ( object, array2 ) )
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

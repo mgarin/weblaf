@@ -19,9 +19,7 @@ package com.alee.extended.hotkey;
 
 import com.alee.laf.text.WebTextField;
 import com.alee.managers.hotkey.HotkeyData;
-import com.alee.managers.language.LanguageKeyListener;
-import com.alee.managers.language.LanguageManager;
-import com.alee.managers.language.data.Value;
+import com.alee.managers.language.LM;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -41,6 +39,7 @@ public class WebHotkeyField extends WebTextField
 {
     /**
      * todo 1. Requires rework into a proper standalone component
+     * todo 2. Add LanguageUpdater support
      */
 
     private static final String EMPTY_HOTKEY_TEXT_KEY = "weblaf.ex.hotkeyfield.press";
@@ -109,23 +108,11 @@ public class WebHotkeyField extends WebTextField
                 }
             }
         } );
-
-        LanguageManager.addLanguageKeyListener ( EMPTY_HOTKEY_TEXT_KEY, new LanguageKeyListener ()
-        {
-            @Override
-            public void languageKeyUpdated ( final String key, final Value value )
-            {
-                if ( isEmpty () )
-                {
-                    updateFieldText ();
-                }
-            }
-        } );
     }
 
     public void updateFieldText ()
     {
-        setText ( isEmpty () ? LanguageManager.get ( EMPTY_HOTKEY_TEXT_KEY ) : getHotkeyData ().toString () );
+        setText ( isEmpty () ? LM.get ( EMPTY_HOTKEY_TEXT_KEY ) : getHotkeyData ().toString () );
     }
 
     public boolean isEmpty ()

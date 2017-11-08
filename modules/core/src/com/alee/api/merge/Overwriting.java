@@ -18,13 +18,16 @@
 package com.alee.api.merge;
 
 /**
- * This interface is an indicator of the fact that this class instances can fully overwrite each other upon {@link Merge}.
- * Whether or not it should actually happen depends on the value returned by {@link #isOverwrite()} method.
+ * This marker interface can be implemented by classes which instances can fully overwrite each other upon {@link Merge}.
+ * Whether or not it should actually happen depends on the value returned by {@link #isOverwrite()} method within merge operation.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
+ * @see Merge
+ * @see Mergeable
  */
 
-public interface Overwriting
+public interface Overwriting extends Mergeable
 {
     /**
      * Returns whether or not this object should overwrite another one upon merge.

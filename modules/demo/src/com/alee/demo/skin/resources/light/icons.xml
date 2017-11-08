@@ -76,6 +76,9 @@
     <SvgIcon id="hourglass16" path="general/hourglass.svg" size="16,16">
         <SvgFill selector="svg" color="100,100,100" />
     </SvgIcon>
+    <SvgIcon id="fire16" path="general/fire.svg" size="16,16">
+        <SvgFill selector="svg" color="100,100,100" />
+    </SvgIcon>
     <SvgIcon id="magnifier16" path="general/magnifier.svg" size="16,16">
         <SvgFill selector="svg" color="100,100,100" />
     </SvgIcon>

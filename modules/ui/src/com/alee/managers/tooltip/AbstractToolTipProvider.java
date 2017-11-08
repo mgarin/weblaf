@@ -17,7 +17,6 @@
 
 package com.alee.managers.tooltip;
 
-import com.alee.managers.language.data.TooltipWay;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;

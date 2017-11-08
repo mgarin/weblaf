@@ -36,13 +36,18 @@ import java.util.List;
 
 /**
  * Default {@link TableCellRenderer} implementation based on {@link WebStyledLabel}.
- * Unline common implementations this one contains multiple methods for convenient renderer component customization.
+ * Unlike {@link javax.swing.table.DefaultTableCellRenderer} it contains multiple methods for convenient renderer customization.
+ * Also since it is based on {@link WebStyledLabel} it retains all of its extra features.
  *
  * @author Mikle Garin
  */
 
 public class WebTableCellRenderer extends WebStyledLabel implements TableCellRenderer, Stateful
 {
+    /**
+     * todo 1. Add generic type for values
+     */
+
     /**
      * Additional renderer decoration states.
      */
@@ -75,17 +80,23 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
      * @param column     cell column number
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected void updateStates ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row,
-                                  final int column )
+    protected void updateStates ( final JTable table, final Object value, final boolean isSelected,
+                                  final boolean hasFocus, final int row, final int column )
     {
+        // Resetting states
         states.clear ();
 
-        // Basic states
+        // Selection state
         states.add ( isSelected ? DecorationState.selected : DecorationState.unselected );
+
+        // Focus state
         if ( hasFocus )
         {
             states.add ( DecorationState.focused );
         }
+
+        // todo Add hover state when WTableUI is available
+        // states.add ( DecorationState.hover );
 
         // Extra states provided by value
         states.addAll ( DecorationUtils.getExtraStates ( value ) );
@@ -102,8 +113,8 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
      * @param column     cell column number
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected void updateStyleId ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row,
-                                   final int column )
+    protected void updateStyleId ( final JTable table, final Object value, final boolean isSelected,
+                                   final boolean hasFocus, final int row, final int column )
     {
         StyleId id = null;
         if ( value instanceof ChildStyleSupport )
@@ -140,16 +151,70 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
      * @param column     cell column number
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected void updateView ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row,
-                                final int column )
+    protected void updateView ( final JTable table, final Object value, final boolean isSelected,
+                                final boolean hasFocus, final int row, final int column )
     {
         // Updating renderer visual settings
-        setEnabled ( table.isEnabled () );
-        setComponentOrientation ( table.getComponentOrientation () );
-        setFont ( table.getFont () );
+        setEnabled ( enabledForValue ( table, value, isSelected, hasFocus, row, column ) );
+        setComponentOrientation ( orientationForValue ( table, value, isSelected, hasFocus, row, column ) );
+        setFont ( fontForValue ( table, value, isSelected, hasFocus, row, column ) );
         setForeground ( foregroundForValue ( table, value, isSelected, hasFocus, row, column ) );
         setIcon ( iconForValue ( table, value, isSelected, hasFocus, row, column ) );
         setText ( textForValue ( table, value, isSelected, hasFocus, row, column ) );
+    }
+
+    /**
+     * Returns whether or not renderer for the specified cell value should be enabled.
+     *
+     * @param table      table
+     * @param value      cell value
+     * @param isSelected whether or not cell is selected
+     * @param hasFocus   whether or not cell has focus
+     * @param row        cell row number
+     * @param column     cell column number
+     * @return {@code true} if renderer for the specified cell value should be enabled, {@code false} otherwise
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected boolean enabledForValue ( final JTable table, final Object value, final boolean isSelected,
+                                        final boolean hasFocus, final int row, final int column )
+    {
+        return table.isEnabled ();
+    }
+
+    /**
+     * Returns renderer {@link ComponentOrientation} for the specified cell value.
+     *
+     * @param table      table
+     * @param value      cell value
+     * @param isSelected whether or not cell is selected
+     * @param hasFocus   whether or not cell has focus
+     * @param row        cell row number
+     * @param column     cell column number
+     * @return renderer {@link ComponentOrientation} for the specified cell value
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected ComponentOrientation orientationForValue ( final JTable table, final Object value, final boolean isSelected,
+                                                         final boolean hasFocus, final int row, final int column )
+    {
+        return table.getComponentOrientation ();
+    }
+
+    /**
+     * Returns renderer {@link Font} for the specified cell value.
+     *
+     * @param table      table
+     * @param value      cell value
+     * @param isSelected whether or not cell is selected
+     * @param hasFocus   whether or not cell has focus
+     * @param row        cell row number
+     * @param column     cell column number
+     * @return renderer {@link Font} for the specified cell value
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected Font fontForValue ( final JTable table, final Object value, final boolean isSelected,
+                                  final boolean hasFocus, final int row, final int column )
+    {
+        return table.getFont ();
     }
 
     /**
@@ -164,8 +229,8 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
      * @return renderer foreground color for the specified cell value
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected Color foregroundForValue ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus,
-                                         final int row, final int column )
+    protected Color foregroundForValue ( final JTable table, final Object value, final boolean isSelected,
+                                         final boolean hasFocus, final int row, final int column )
     {
         final Color foreground;
         if ( value instanceof ColorSupport )
@@ -192,8 +257,8 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
      * @return renderer icon for the specified cell value
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected Icon iconForValue ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row,
-                                  final int column )
+    protected Icon iconForValue ( final JTable table, final Object value, final boolean isSelected,
+                                  final boolean hasFocus, final int row, final int column )
     {
         final Icon icon;
         if ( value instanceof IconSupport )
@@ -219,8 +284,8 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
      * @return renderer text for the specified cell value
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected String textForValue ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row,
-                                    final int column )
+    protected String textForValue ( final JTable table, final Object value, final boolean isSelected,
+                                    final boolean hasFocus, final int row, final int column )
     {
         final String text;
         if ( value instanceof TitleSupport )
@@ -229,7 +294,7 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
         }
         else
         {
-            text = value != null ? value instanceof Icon ? "" : value.toString () : "";
+            text = value != null && !( value instanceof Icon ) ? value.toString () : "";
         }
         return text;
     }

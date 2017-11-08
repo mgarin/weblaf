@@ -19,12 +19,12 @@ package com.alee.api.clone;
 
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.reflection.ModifierType;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -168,24 +168,18 @@ public class Clone implements Serializable
         final List<Field> fields = ReflectUtils.getFields ( object );
         for ( final Field field : fields )
         {
-            // Making field accessible
-            // Otherwise final or non-public fields won't allow any operations on them
-            field.setAccessible ( true );
-
-            // Skip transient fields
-            if ( Modifier.isTransient ( field.getModifiers () ) )
+            // Only clone non-transient fields
+            if ( ReflectUtils.hasNoneOfModifiers ( field, ModifierType.TRANSIENT ) )
             {
-                continue;
+                // Retrieving original object field value
+                final Object value = field.get ( object );
+
+                // Creating value clone if possible
+                final Object clone = Clone.clone ( value );
+
+                // Updating field
+                ReflectUtils.setFieldValue ( copy, field, clone );
             }
-
-            // Retrieving original object field value
-            final Object value = field.get ( object );
-
-            // Creating value clone if possible
-            final Object clone = Clone.clone ( value );
-
-            // Updating field
-            field.set ( copy, clone );
         }
         return copy;
     }

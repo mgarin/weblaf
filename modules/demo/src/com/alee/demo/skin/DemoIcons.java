@@ -79,6 +79,7 @@ public final class DemoIcons
     public static final LazyIcon dollar16 = new LazyIcon ( "dollar16" );
     public static final LazyIcon phone16 = new LazyIcon ( "phone16" );
     public static final LazyIcon hourglass16 = new LazyIcon ( "hourglass16" );
+    public static final LazyIcon fire16 = new LazyIcon ( "fire16" );
     public static final LazyIcon magnifier16 = new LazyIcon ( "magnifier16" );
     public static final LazyIcon cursor16 = new LazyIcon ( "cursor16" );
     public static final LazyIcon enabled16 = new LazyIcon ( "enabled16" );

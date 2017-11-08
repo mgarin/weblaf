@@ -18,19 +18,32 @@
 package com.alee.managers.language.updaters;
 
 import com.alee.extended.filechooser.WebFileDrop;
-import com.alee.managers.language.data.Value;
+import com.alee.managers.language.Language;
 
 /**
- * This class provides language default updates for WebFileDrop component.
+ * Custom {@link LanguageUpdater} for {@link WebFileDrop}.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>
+ * @see com.alee.managers.language.LanguageManager
  */
 
-public class WebFileDropLU extends DefaultLanguageUpdater<WebFileDrop>
+public class WebFileDropLU extends ToolTipLU<WebFileDrop>
 {
     @Override
-    public void update ( final WebFileDrop c, final String key, final Value value, final Object... data )
+    public Class getComponentClass ()
     {
-        c.setDropText ( getDefaultText ( DROP_TEXT, true, value, data ) );
+        return WebFileDrop.class ;
+    }
+
+    @Override
+    public void update ( final WebFileDrop component, final Language language, final String key, final Object... data )
+    {
+        super.update ( component, language, key, data );
+
+        if ( language.containsText ( key, DROP_TEXT ) )
+        {
+            component.setDropText ( language.getState ( key, DROP_TEXT, data ) );
+        }
     }
 }

@@ -18,10 +18,12 @@
 package com.alee.laf.spinner;
 
 import com.alee.managers.hotkey.HotkeyData;
-import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.language.*;
+import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
+import com.alee.managers.tooltip.TooltipWay;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -39,7 +41,7 @@ import java.util.Map;
 /**
  * {@link JSpinner} extension class.
  * It contains various useful methods to simplify core component usage.
- * <p/>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -49,8 +51,8 @@ import java.util.Map;
  * @see SpinnerPainter
  */
 
-public class WebSpinner extends JSpinner
-        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods, ToolTipMethods, FontMethods<WebSpinner>
+public class WebSpinner extends JSpinner implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods,
+        LanguageEventMethods, ToolTipMethods, LanguageMethods, FontMethods<WebSpinner>
 {
     /**
      * Constructs a spinner with an {@link javax.swing.SpinnerNumberModel} with initial value 0 and no minimum or maximum limits.
@@ -242,39 +244,6 @@ public class WebSpinner extends JSpinner
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
-    /**
-     * Returns the look and feel (L&amp;F) object that renders this component.
-     *
-     * @return the {@link WebSpinnerUI} object that renders this component
-     */
-    @Override
-    public WebSpinnerUI getUI ()
-    {
-        return ( WebSpinnerUI ) super.getUI ();
-    }
-
-    /**
-     * Sets the L&amp;F object that renders this component.
-     *
-     * @param ui {@link WebSpinnerUI}
-     */
-    public void setUI ( final WebSpinnerUI ui )
-    {
-        super.setUI ( ui );
-    }
-
-    @Override
-    public void updateUI ()
-    {
-        StyleManager.getDescriptor ( this ).updateUI ( this );
-    }
-
-    @Override
-    public String getUIClassID ()
-    {
-        return StyleManager.getDescriptor ( this ).getUIClassId ();
-    }
-
     @Override
     public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
     {
@@ -393,6 +362,42 @@ public class WebSpinner extends JSpinner
     public MouseAdapter onDragStart ( final int shift, final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onDragStart ( this, shift, mouseButton, runnable );
+    }
+
+    @Override
+    public void addLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.addLanguageListener ( this, listener );
+    }
+
+    @Override
+    public void removeLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.removeLanguageListener ( this, listener );
+    }
+
+    @Override
+    public void removeLanguageListeners ()
+    {
+        WebLanguageManager.removeLanguageListeners ( this );
+    }
+
+    @Override
+    public void addDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.addDictionaryListener ( this, listener );
+    }
+
+    @Override
+    public void removeDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.removeDictionaryListener ( this, listener );
+    }
+
+    @Override
+    public void removeDictionaryListeners ()
+    {
+        WebLanguageManager.removeDictionaryListeners ( this );
     }
 
     @Override
@@ -540,6 +545,54 @@ public class WebSpinner extends JSpinner
     }
 
     @Override
+    public String getLanguage ()
+    {
+        return WebLanguageManager.getComponentKey ( this );
+    }
+
+    @Override
+    public void setLanguage ( final String key, final Object... data )
+    {
+        WebLanguageManager.registerComponent ( this, key, data );
+    }
+
+    @Override
+    public void updateLanguage ( final Object... data )
+    {
+        WebLanguageManager.updateComponent ( this, data );
+    }
+
+    @Override
+    public void updateLanguage ( final String key, final Object... data )
+    {
+        WebLanguageManager.updateComponent ( this, key, data );
+    }
+
+    @Override
+    public void removeLanguage ()
+    {
+        WebLanguageManager.unregisterComponent ( this );
+    }
+
+    @Override
+    public boolean isLanguageSet ()
+    {
+        return WebLanguageManager.isRegisteredComponent ( this );
+    }
+
+    @Override
+    public void setLanguageUpdater ( final LanguageUpdater updater )
+    {
+        WebLanguageManager.registerLanguageUpdater ( this, updater );
+    }
+
+    @Override
+    public void removeLanguageUpdater ()
+    {
+        WebLanguageManager.unregisterLanguageUpdater ( this );
+    }
+
+    @Override
     public WebSpinner setPlainFont ()
     {
         return FontMethodsImpl.setPlainFont ( this );
@@ -645,5 +698,38 @@ public class WebSpinner extends JSpinner
     public String getFontName ()
     {
         return FontMethodsImpl.getFontName ( this );
+    }
+
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WebSpinnerUI} object that renders this component
+     */
+    @Override
+    public WebSpinnerUI getUI ()
+    {
+        return ( WebSpinnerUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WebSpinnerUI}
+     */
+    public void setUI ( final WebSpinnerUI ui )
+    {
+        super.setUI ( ui );
+    }
+
+    @Override
+    public void updateUI ()
+    {
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

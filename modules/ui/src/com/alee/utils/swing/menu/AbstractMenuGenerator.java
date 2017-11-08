@@ -56,13 +56,7 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
     protected static final Object defaultIcon = null;
     protected static final HotkeyData defaultHotkey = null;
     protected static final boolean defaultEnabled = true;
-    protected static final boolean defaultSelected = false;
     protected static final ActionListener defaultAction = null;
-
-    /**
-     * Default menu icons format.
-     */
-    protected static final String defaultIconFormat = ".png";
 
     /**
      * Class near which menu icons are placed.
@@ -225,7 +219,7 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
         if ( prefix != null )
         {
             final String key = prefix + "." + text;
-            return LM.contains ( key ) ? key : text;
+            return LM.containsText ( key ) ? key : text;
         }
         else
         {

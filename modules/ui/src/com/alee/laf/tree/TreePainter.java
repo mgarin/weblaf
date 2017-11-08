@@ -1,6 +1,10 @@
 package com.alee.laf.tree;
 
+import com.alee.api.jdk.Predicate;
+import com.alee.extended.tree.WebAsyncTree;
+import com.alee.extended.tree.WebExTree;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.language.*;
 import com.alee.managers.style.BoundsType;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.PainterSupport;
@@ -17,6 +21,7 @@ import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.plaf.TreeUI;
 import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -87,6 +92,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
     protected transient TreeSelectionListener treeSelectionListener;
     protected transient TreeExpansionListener treeExpansionListener;
     protected transient MouseAdapter mouseAdapter;
+    protected transient LanguageListener languageSensitive;
 
     /**
      * Runtime variables.
@@ -138,11 +144,13 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
         installTreeSelectionListeners ();
         installTreeExpansionListeners ();
         installTreeMouseListeners ();
+        installLanguageListeners ();
     }
 
     @Override
     protected void uninstallPropertiesAndListeners ()
     {
+        uninstallLanguageListeners ();
         uninstallTreeMouseListeners ();
         uninstallTreeExpansionListeners ();
         uninstallTreeSelectionListeners ();
@@ -482,6 +490,78 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
         mouseAdapter = null;
     }
 
+    /**
+     * Installs language listeners.
+     */
+    protected void installLanguageListeners ()
+    {
+        languageSensitive = new LanguageListener ()
+        {
+            @Override
+            public void languageChanged ( final Language oldLanguage, final Language newLanguage )
+            {
+                if ( isLanguageSensitive () )
+                {
+                    // Forcing node sizes update within tree
+                    final TreeUI ui = component.getUI ();
+                    if ( ui instanceof WTreeUI )
+                    {
+                        // Asking UI to update node sizes
+                        ( ( WTreeUI ) ui ).updateNodeSizes ();
+                    }
+                    else
+                    {
+                        // Simply repainting tree when we don't have tools to update it properly
+                        component.repaint ();
+                    }
+                }
+            }
+        };
+        WebLanguageManager.addLanguageListener ( component, languageSensitive );
+    }
+
+    /**
+     * Returns whether or not tree is language-sensitive.
+     *
+     * @return {@code true} if tree is language-sensitive, {@code false} otherwise
+     */
+    @SuppressWarnings ( "SimplifiableIfStatement" )
+    protected boolean isLanguageSensitive ()
+    {
+        final boolean sensitive;
+        if ( component instanceof LanguageSensitive ||
+                component.getCellRenderer () instanceof LanguageSensitive ||
+                component.getModel () instanceof LanguageSensitive ||
+                component instanceof WebExTree && ( ( WebExTree ) component ).getDataProvider () instanceof LanguageSensitive ||
+                component instanceof WebAsyncTree && ( ( WebAsyncTree ) component ).getDataProvider () instanceof LanguageSensitive )
+        {
+            // Either tree, its renderer, model or data provider is language-sensitive
+            sensitive = true;
+        }
+        else
+        {
+            // Checking existing model nodes for being language-sensitive
+            sensitive = TreeUtils.getTreeWalker ( component ).anyMatch ( new Predicate<TreeNode> ()
+            {
+                @Override
+                public boolean test ( final TreeNode treeNode )
+                {
+                    return treeNode instanceof LanguageSensitive;
+                }
+            } );
+        }
+        return sensitive;
+    }
+
+    /**
+     * Uninstalls language listeners.
+     */
+    protected void uninstallLanguageListeners ()
+    {
+        WebLanguageManager.removeLanguageListener ( component, languageSensitive );
+        languageSensitive = null;
+    }
+
     @Override
     protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
     {
@@ -516,44 +596,44 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
     @Override
     protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
-        // Checking tree state
+        // Updating tree layout cache
         treeLayoutCache = ui.getTreeLayoutCache ();
-        if ( treeLayoutCache == null )
+
+        // Paint tree content only if cache exists
+        if ( treeLayoutCache != null )
         {
-            return;
+            // Preparing to paint tree
+            treeModel = component.getModel ();
+            totalChildIndent = ui.getLeftChildIndent () + ui.getRightChildIndent ();
+            rendererPane = ui.getCellRendererPane ();
+            lastSelectionRow = component.getLeadSelectionRow ();
+            final TreePath editingPath = component.getEditingPath ();
+            editingRow = editingPath != null ? component.getRowForPath ( editingPath ) : -1;
+            updateDepthOffset ();
+
+            // Painting tree background
+            paintBackground ( g2d );
+
+            // Painting hover node background
+            paintHoverNodeBackground ( g2d );
+
+            // Painting selected nodes background
+            paintSelectedNodesBackground ( g2d );
+
+            // Painting tree
+            paintTree ( g2d );
+
+            // Painting drop location
+            paintDropLocation ( g2d );
+
+            // Multiselector
+            paintMultiselector ( g2d );
+
+            treeModel = null;
+            treeLayoutCache = null;
+            paintingCache = null;
+            rendererPane = null;
         }
-
-        // Preparing to paint tree
-        treeModel = component.getModel ();
-        totalChildIndent = ui.getLeftChildIndent () + ui.getRightChildIndent ();
-        rendererPane = ui.getCellRendererPane ();
-        lastSelectionRow = component.getLeadSelectionRow ();
-        final TreePath editingPath = component.getEditingPath ();
-        editingRow = editingPath != null ? component.getRowForPath ( editingPath ) : -1;
-        updateDepthOffset ();
-
-        // Painting tree background
-        paintBackground ( g2d );
-
-        // Painting hover node background
-        paintHoverNodeBackground ( g2d );
-
-        // Painting selected nodes background
-        paintSelectedNodesBackground ( g2d );
-
-        // Painting tree
-        paintTree ( g2d );
-
-        // Painting drop location
-        paintDropLocation ( g2d );
-
-        // Multiselector
-        paintMultiselector ( g2d );
-
-        treeModel = null;
-        treeLayoutCache = null;
-        paintingCache = null;
-        rendererPane = null;
     }
 
     /**

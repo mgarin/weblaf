@@ -28,11 +28,11 @@ import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.separator.WebSeparator;
+import com.alee.managers.language.Language;
+import com.alee.managers.language.LanguageListener;
+import com.alee.managers.language.LanguageManager;
 import com.alee.managers.style.StyleId;
-import com.alee.utils.CollectionUtils;
-import com.alee.utils.CompareUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.TimeUtils;
+import com.alee.utils.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,6 +40,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
@@ -51,7 +52,7 @@ import java.util.List;
  * @see com.alee.extended.date.WebDateField
  */
 
-public class WebCalendar extends WebPanel
+public class WebCalendar extends WebPanel implements LanguageListener
 {
     /**
      * todo 1. Create WebCalendarUI with all ui data there
@@ -75,7 +76,10 @@ public class WebCalendar extends WebPanel
      * Calendar title format.
      * Usually displays currently visible month and year.
      */
-    protected SimpleDateFormat titleFormat = new SimpleDateFormat ( "MMMM yyyy" );
+    protected DateFormat titleFormat = new SimpleDateFormat (
+            SystemUtils.isJava8orAbove () ? "LLLL yyyy" : "MMMM yyyy",
+            LanguageManager.getLocale ()
+    );
 
     /**
      * Whether sunday should be the first day of week or not.
@@ -266,12 +270,26 @@ public class WebCalendar extends WebPanel
             }
         } );
         centerPanel.add ( monthDaysTransition, BorderLayout.CENTER );
+
+        // Language listener
+        LanguageManager.addLanguageListener ( this );
     }
 
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.calendar;
+    }
+
+    @Override
+    public void languageChanged ( final Language oldLanguage, final Language newLanguage )
+    {
+        if ( titleFormat instanceof SimpleDateFormat )
+        {
+            final String pattern = ( ( SimpleDateFormat ) titleFormat ).toPattern ();
+            titleFormat = new SimpleDateFormat ( pattern, newLanguage.getLocale () );
+            updateTitleLabel ();
+        }
     }
 
     /**
@@ -727,7 +745,7 @@ public class WebCalendar extends WebPanel
      *
      * @return title format
      */
-    public SimpleDateFormat getTitleFormat ()
+    public DateFormat getTitleFormat ()
     {
         return titleFormat;
     }
@@ -737,7 +755,7 @@ public class WebCalendar extends WebPanel
      *
      * @param titleFormat title format
      */
-    public void setTitleFormat ( final SimpleDateFormat titleFormat )
+    public void setTitleFormat ( final DateFormat titleFormat )
     {
         this.titleFormat = titleFormat;
         updateTitleLabel ();

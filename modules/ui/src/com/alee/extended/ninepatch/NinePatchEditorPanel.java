@@ -37,7 +37,7 @@ import com.alee.laf.text.WebTextField;
 import com.alee.laf.toolbar.WebToolBar;
 import com.alee.managers.drag.transfer.FilesTransferHandler;
 import com.alee.managers.hotkey.Hotkey;
-import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LM;
 import com.alee.managers.log.Log;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.style.BoundsType;
@@ -686,8 +686,8 @@ public class NinePatchEditorPanel extends WebPanel
     {
         if ( ninePatchEditor.isChanged () )
         {
-            final String message = LanguageManager.get ( "weblaf.ex.npeditor.saveChanges.text" );
-            final String title = LanguageManager.get ( "weblaf.ex.npeditor.saveChanges.title" );
+            final String message = LM.get ( "weblaf.ex.npeditor.saveChanges.text" );
+            final String title = LM.get ( "weblaf.ex.npeditor.saveChanges.title" );
             final int option = WebOptionPane.YES_NO_CANCEL_OPTION;
             final int messageType = WebOptionPane.QUESTION_MESSAGE;
             final int confirm = WebOptionPane.showConfirmDialog ( this, message, title, option, messageType );
@@ -727,7 +727,7 @@ public class NinePatchEditorPanel extends WebPanel
         final Color foreground = SettingsManager.get ( "NinePatchEditor", "preview.foregroundColor", Color.WHITE );
         final boolean da = SettingsManager.get ( "NinePatchEditor", "preview.transparentBackground", true );
         previewColor = SettingsManager.get ( "NinePatchEditor", "preview.backgroundColor", Color.WHITE );
-        final String defaultPreviewText = LanguageManager.get ( "weblaf.ex.npeditor.preview.text" );
+        final String defaultPreviewText = LM.get ( "weblaf.ex.npeditor.preview.text" );
         final String previewText = SettingsManager.get ( "NinePatchEditor", "preview.text", defaultPreviewText );
 
         // Preview panel

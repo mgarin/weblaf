@@ -17,7 +17,7 @@
 
 package com.alee.managers.hotkey;
 
-import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.tooltip.TooltipWay;
 import com.alee.utils.TextUtils;
 
 import javax.swing.*;

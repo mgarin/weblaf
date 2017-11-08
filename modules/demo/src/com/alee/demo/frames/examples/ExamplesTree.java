@@ -20,14 +20,13 @@ package com.alee.demo.frames.examples;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.extended.tree.WebExTree;
 import com.alee.laf.tree.TreeSelectionStyle;
-import com.alee.managers.language.LanguageAdapter;
-import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LanguageSensitive;
 
 /**
  * @author Mikle Garin
  */
 
-public final class ExamplesTree extends WebExTree<ExamplesTreeNode>
+public final class ExamplesTree extends WebExTree<ExamplesTreeNode> implements LanguageSensitive
 {
     /**
      * Constructs new examples tree.
@@ -45,15 +44,5 @@ public final class ExamplesTree extends WebExTree<ExamplesTreeNode>
 
         // Data provider
         setDataProvider ( new ExamplesTreeDataProvider () );
-
-        // Updates on language change
-        LanguageManager.addLanguageListener ( new LanguageAdapter ()
-        {
-            @Override
-            public void languageChanged ( final String oldLang, final String newLang )
-            {
-                updateVisibleNodes ();
-            }
-        } );
     }
 }

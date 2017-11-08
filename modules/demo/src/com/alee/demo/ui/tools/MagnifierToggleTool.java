@@ -30,20 +30,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
+ * {@link com.alee.demo.DemoApplication} magnifier glass.
+ *
  * @author Mikle Garin
  */
 
 public final class MagnifierToggleTool extends WebPanel
 {
     /**
-     * Magnifier glass instance.
+     * {@link MagnifierGlass} instance.
      */
     private final MagnifierGlass magnifier;
 
     /**
-     * Constructs new magnifier toggle tool.
+     * Constructs new {@link MagnifierToggleTool}.
      *
-     * @param application demo application
+     * @param application {@link DemoApplication}
      */
     public MagnifierToggleTool ( final DemoApplication application )
     {
@@ -53,7 +55,8 @@ public final class MagnifierToggleTool extends WebPanel
         magnifier = new MagnifierGlass ();
 
         // Magnifier glass switcher button
-        final WebToggleButton magnifierButton = new WebToggleButton ( DemoStyles.toolButton, "demo.tool.magnifier", DemoIcons.magnifier16 );
+        final WebToggleButton magnifierButton = new WebToggleButton ( DemoStyles.toolButton, DemoIcons.magnifier16 );
+        magnifierButton.setLanguage ( "demo.tool.magnifier" );
         magnifierButton.setSelected ( magnifier.isDisplayed () );
         magnifierButton.addActionListener ( new ActionListener ()
         {
@@ -67,6 +70,7 @@ public final class MagnifierToggleTool extends WebPanel
 
         // Dummy cursor display switcher button
         final WebToggleButton dummyCursorButton = new WebToggleButton ( DemoStyles.toolIconButton, DemoIcons.cursor16 );
+        dummyCursorButton.setLanguage ( "demo.tool.magnifier.cursor" );
         dummyCursorButton.setSelected ( magnifier.isDisplayDummyCursor () );
         dummyCursorButton.addActionListener ( new ActionListener ()
         {

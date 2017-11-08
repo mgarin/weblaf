@@ -18,7 +18,7 @@
 package com.alee.laf.filechooser;
 
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LM;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
@@ -383,7 +383,7 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
     public String getDialogTitle ( final JFileChooser fc )
     {
         final String dialogTitle = fc.getDialogTitle ();
-        return dialogTitle != null ? dialogTitle : LanguageManager.get ( "weblaf.filechooser.title" );
+        return dialogTitle != null ? dialogTitle : LM.get ( "weblaf.filechooser.title" );
     }
 
     @Override

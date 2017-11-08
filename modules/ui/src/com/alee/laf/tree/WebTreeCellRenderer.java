@@ -31,6 +31,7 @@ import com.alee.utils.ImageUtils;
 import com.alee.utils.TextUtils;
 
 import javax.swing.*;
+import javax.swing.plaf.TreeUI;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
 import java.util.ArrayList;
@@ -38,7 +39,8 @@ import java.util.List;
 
 /**
  * Default {@link TreeCellRenderer} implementation based on {@link WebStyledLabel}.
- * Unline common implementations this one contains multiple methods for convenient renderer component customization.
+ * Unlike {@link javax.swing.tree.DefaultTreeCellRenderer} it contains multiple methods for convenient renderer customization.
+ * Also since it is based on {@link WebStyledLabel} it retains all of its extra features.
  *
  * @author Mikle Garin
  */
@@ -47,6 +49,7 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
 {
     /**
      * todo 1. Get rid of the hardcoded icons within renderer
+     * todo 2. Add generic type for values
      */
 
     /**
@@ -208,21 +211,38 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
      * @param hasFocus   whether or not cell has focus
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected void updateStates ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded,
-                                  final boolean leaf, final int row, final boolean hasFocus )
+    protected void updateStates ( final JTree tree, final Object value, final boolean isSelected,
+                                  final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
+        // Resetting states
         states.clear ();
 
-        // Basic states
+        // Selection state
         states.add ( isSelected ? DecorationState.selected : DecorationState.unselected );
+
+        // Expansion state
         states.add ( expanded ? DecorationState.expanded : DecorationState.collapsed );
+
+        // Focus state
         if ( hasFocus )
         {
             states.add ( DecorationState.focused );
         }
+
+        // Leaf state
         if ( leaf )
         {
             states.add ( DecorationState.leaf );
+        }
+
+        // Hover state
+        final TreeUI ui = tree.getUI ();
+        if ( ui instanceof WTreeUI )
+        {
+            if ( ( ( WTreeUI ) ui ).getHoverRow () == row )
+            {
+                states.add ( DecorationState.hover );
+            }
         }
 
         // Extra states provided by value
@@ -241,8 +261,8 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
      * @param hasFocus   whether or not cell has focus
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected void updateStyleId ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded,
-                                   final boolean leaf, final int row, final boolean hasFocus )
+    protected void updateStyleId ( final JTree tree, final Object value, final boolean isSelected,
+                                   final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         StyleId id = null;
         if ( value instanceof ChildStyleSupport )
@@ -280,15 +300,72 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
      * @param hasFocus   whether or not cell has focus
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected void updateView ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded, final boolean leaf,
-                                final int row, final boolean hasFocus )
+    protected void updateView ( final JTree tree, final Object value, final boolean isSelected,
+                                final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
-        setEnabled ( tree.isEnabled () );
-        setComponentOrientation ( tree.getComponentOrientation () );
-        setFont ( tree.getFont () );
+        setEnabled ( enabledForValue ( tree, value, isSelected, expanded, leaf, row, hasFocus ) );
+        setComponentOrientation ( orientationForValue ( tree, value, isSelected, expanded, leaf, row, hasFocus ) );
+        setFont ( fontForValue ( tree, value, isSelected, expanded, leaf, row, hasFocus ) );
         setForeground ( foregroundForValue ( tree, value, isSelected, expanded, leaf, row, hasFocus ) );
         setIcon ( iconForValue ( tree, value, isSelected, expanded, leaf, row, hasFocus ) );
         setText ( textForValue ( tree, value, isSelected, expanded, leaf, row, hasFocus ) );
+    }
+
+    /**
+     * Returns whether or not renderer for the specified cell value should be enabled.
+     *
+     * @param tree       tree
+     * @param value      cell value
+     * @param isSelected whether or not cell is selected
+     * @param expanded   whether or not cell is expanded
+     * @param leaf       whether or not cell is leaf
+     * @param row        cell row number
+     * @param hasFocus   whether or not cell has focus
+     * @return {@code true} if renderer for the specified cell value should be enabled, {@code false} otherwise
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected boolean enabledForValue ( final JTree tree, final Object value, final boolean isSelected,
+                                        final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
+    {
+        return tree.isEnabled ();
+    }
+
+    /**
+     * Returns renderer {@link ComponentOrientation} for the specified cell value.
+     *
+     * @param tree       tree
+     * @param value      cell value
+     * @param isSelected whether or not cell is selected
+     * @param expanded   whether or not cell is expanded
+     * @param leaf       whether or not cell is leaf
+     * @param row        cell row number
+     * @param hasFocus   whether or not cell has focus
+     * @return renderer {@link ComponentOrientation} for the specified cell value
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    private ComponentOrientation orientationForValue ( final JTree tree, final Object value, final boolean isSelected,
+                                                       final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
+    {
+        return tree.getComponentOrientation ();
+    }
+
+    /**
+     * Returns renderer {@link Font} for the specified cell value.
+     *
+     * @param tree       tree
+     * @param value      cell value
+     * @param isSelected whether or not cell is selected
+     * @param expanded   whether or not cell is expanded
+     * @param leaf       whether or not cell is leaf
+     * @param row        cell row number
+     * @param hasFocus   whether or not cell has focus
+     * @return renderer {@link Font} for the specified cell value
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected Font fontForValue ( final JTree tree, final Object value, final boolean isSelected,
+                                  final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
+    {
+        return tree.getFont ();
     }
 
     /**
@@ -304,8 +381,8 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
      * @return renderer foreground color for the specified cell value
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected Color foregroundForValue ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded,
-                                         final boolean leaf, final int row, final boolean hasFocus )
+    protected Color foregroundForValue ( final JTree tree, final Object value, final boolean isSelected,
+                                         final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         final Color foreground;
         if ( value instanceof ColorSupport )
@@ -333,8 +410,8 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
      * @return renderer icon for the specified cell value
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected Icon iconForValue ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded,
-                                  final boolean leaf, final int row, final boolean hasFocus )
+    protected Icon iconForValue ( final JTree tree, final Object value, final boolean isSelected,
+                                  final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         Icon icon;
         if ( value instanceof IconSupport )
@@ -371,8 +448,8 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
      * @return renderer text for the specified cell value
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected String textForValue ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded,
-                                    final boolean leaf, final int row, final boolean hasFocus )
+    protected String textForValue ( final JTree tree, final Object value, final boolean isSelected,
+                                    final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         final String text;
         if ( value instanceof TitleSupport )

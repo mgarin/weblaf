@@ -910,4 +910,28 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
         }
         return fstyle;
     }
+
+    @Override
+    public String toString ()
+    {
+        final String text;
+        final String title = getTitle ();
+        if ( title != null )
+        {
+            text = title;
+        }
+        else
+        {
+            final String id = getId ();
+            if ( id != null )
+            {
+                text = id;
+            }
+            else
+            {
+                text = "Unnamed skin";
+            }
+        }
+        return text;
+    }
 }

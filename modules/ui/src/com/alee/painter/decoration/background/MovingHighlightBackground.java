@@ -82,75 +82,33 @@ public class MovingHighlightBackground<E extends JComponent, D extends IDecorati
     /**
      * Visibility behavior that handles animation.
      */
-    protected transient ComponentVisibilityBehavior visibilityBehavior;
+    protected transient ComponentVisibilityBehavior<E> visibilityBehavior;
 
     /**
      * Highlight position.
      */
     protected transient float position;
 
+    /**
+     * Transition used for background animations.
+     */
+    protected transient QueueTransition transitionsQueue;
+
     @Override
     public void activate ( final E c, final D d )
     {
-        visibilityBehavior = new ComponentVisibilityBehavior ( c, true )
+        visibilityBehavior = new ComponentVisibilityBehavior<E> ( c, true )
         {
-            /**
-             * Transition used for background animations.
-             */
-            protected transient QueueTransition transitionsQueue;
-
             @Override
             public void displayed ()
             {
-                // Resetting position
-                position = 0f;
-
-                // Custom transition for background animations
-                transitionsQueue = new QueueTransition ( true );
-
-                // Adding delay if required
-                // Delay is added first to avoid repetitive animation
-                final long del = DurationUnits.get ().fromString ( delay );
-                if ( del > 0 )
-                {
-                    transitionsQueue.add ( new IdleTransition ( passes % 2 == 0 ? 0f : 1f, del ) );
-                }
-
-                // Adding passes
-                final long dur = DurationUnits.get ().fromString ( duration );
-                for ( int i = 0; i < passes; i++ )
-                {
-                    final float from = i % 2 == 0 ? 0f : 1f;
-                    final float to = i % 2 == 0 ? 1f : 0f;
-                    transitionsQueue.add ( new TimedTransition<Float> ( from, to, dur ) );
-                }
-
-                // Value update listener
-                transitionsQueue.addListener ( new TransitionAdapter<Float> ()
-                {
-                    @Override
-                    public void adjusted ( final Transition transition, final Float value )
-                    {
-                        position = value;
-                        getComponent ().repaint ();
-                    }
-                } );
-
-                // Playing transition
-                transitionsQueue.play ();
+                playAnimation ( getComponent () );
             }
 
             @Override
             public void hidden ()
             {
-                // Stopping transition
-                transitionsQueue.stop ();
-
-                // Cleaning up resources
-                transitionsQueue = null;
-
-                // Resetting position
-                position = 0f;
+                stopAnimation ( getComponent () );
             }
         };
         visibilityBehavior.install ();
@@ -161,6 +119,75 @@ public class MovingHighlightBackground<E extends JComponent, D extends IDecorati
     {
         visibilityBehavior.uninstall ();
         visibilityBehavior = null;
+        stopAnimation ( c );
+    }
+
+    /**
+     * Starts background animation.
+     *
+     * @param c painted component
+     */
+    protected void playAnimation ( final E c )
+    {
+        if ( transitionsQueue == null )
+        {
+            // Resetting position
+            position = 0f;
+
+            // Custom transition for background animations
+            transitionsQueue = new QueueTransition ( true );
+
+            // Adding delay if required
+            // Delay is added first to avoid repetitive animation
+            final long del = DurationUnits.get ().fromString ( delay );
+            if ( del > 0 )
+            {
+                transitionsQueue.add ( new IdleTransition ( passes % 2 == 0 ? 0f : 1f, del ) );
+            }
+
+            // Adding passes
+            final long dur = DurationUnits.get ().fromString ( duration );
+            for ( int i = 0; i < passes; i++ )
+            {
+                final float from = i % 2 == 0 ? 0f : 1f;
+                final float to = i % 2 == 0 ? 1f : 0f;
+                transitionsQueue.add ( new TimedTransition<Float> ( from, to, dur ) );
+            }
+
+            // Value update listener
+            transitionsQueue.addListener ( new TransitionAdapter<Float> ()
+            {
+                @Override
+                public void adjusted ( final Transition transition, final Float value )
+                {
+                    position = value;
+                    c.repaint ();
+                }
+            } );
+
+            // Playing transition
+            transitionsQueue.play ();
+        }
+    }
+
+    /**
+     * Stops background animation.
+     *
+     * @param c painted component
+     */
+    protected void stopAnimation ( final E c )
+    {
+        if ( transitionsQueue != null )
+        {
+            // Stopping transition
+            transitionsQueue.stop ();
+
+            // Cleaning up resources
+            transitionsQueue = null;
+
+            // Resetting position
+            position = 0f;
+        }
     }
 
     @Override

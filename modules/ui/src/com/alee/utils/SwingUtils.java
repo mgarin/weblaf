@@ -634,9 +634,9 @@ public final class SwingUtils extends CoreSwingUtils
     /**
      * Updates component orientation for all existing components.
      */
-    public static void updateGlobalOrientations ()
+    public static void updateGlobalOrientation ()
     {
-        updateGlobalOrientations ( WebLookAndFeel.getOrientation () );
+        updateGlobalOrientation ( WebLookAndFeel.getOrientation () );
     }
 
     /**
@@ -644,7 +644,7 @@ public final class SwingUtils extends CoreSwingUtils
      *
      * @param orientation component orientation to set
      */
-    public static void updateGlobalOrientations ( final ComponentOrientation orientation )
+    public static void updateGlobalOrientation ( final ComponentOrientation orientation )
     {
         for ( final Window window : Window.getWindows () )
         {

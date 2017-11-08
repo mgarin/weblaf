@@ -17,7 +17,7 @@
 
 package com.alee.utils.filefilter;
 
-import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LM;
 import com.alee.utils.FileUtils;
 import com.alee.utils.ImageUtils;
 
@@ -47,7 +47,7 @@ public class ImageFilesFilter extends AbstractFileFilter
     @Override
     public String getDescription ()
     {
-        return LanguageManager.get ( "weblaf.file.filter.images" );
+        return LM.get ( "weblaf.file.filter.images" );
     }
 
     @Override

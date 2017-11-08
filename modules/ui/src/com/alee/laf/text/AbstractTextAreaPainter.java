@@ -7,7 +7,7 @@ import javax.swing.plaf.basic.BasicTextUI;
 import javax.swing.text.JTextComponent;
 
 /**
- * Abstract painter base for all text area components.
+ * Abstract painter for {@link JTextComponent}-based text area implementations.
  *
  * @param <E> component type
  * @param <U> component UI type

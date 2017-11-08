@@ -50,7 +50,7 @@ public final class CollectionUtils
      */
     public static boolean notEmpty ( final Collection collection )
     {
-        return collection != null && !collection.isEmpty ();
+        return !isEmpty ( collection );
     }
 
     /**
@@ -77,6 +77,33 @@ public final class CollectionUtils
     public static <T> List<T> limit ( final List<T> list, final int limit )
     {
         return list.size () <= limit ? list : copySubList ( list, 0, limit );
+    }
+
+    /**
+     * Returns maximum element of the {@link Collection} according to {@link Comparator}.
+     * This methid is slightly more optimal and safe unlike {@link Collections#max(Collection, Comparator)}.
+     *
+     * @param collection {@link Collection}
+     * @param comparator {@link Comparator}
+     * @param <T>        collection element type
+     * @return maximum element of the {@link Collection} according to {@link Comparator}
+     */
+    public static <T> T max ( final Collection<T> collection, final Comparator<T> comparator )
+    {
+        final T result;
+        if ( CollectionUtils.isEmpty ( collection ) )
+        {
+            result = null;
+        }
+        else if ( collection.size () == 1 )
+        {
+            result = collection.iterator ().next ();
+        }
+        else
+        {
+            result = Collections.max ( collection, comparator );
+        }
+        return result;
     }
 
     /**
@@ -465,27 +492,20 @@ public final class CollectionUtils
         {
             return true;
         }
-        else if ( ( list1 == null || list2 == null ) && list1 != list2 )
+        else if ( list1 == null || list2 == null || list1.size () != list2.size () )
         {
             return false;
         }
         else
         {
-            if ( list1.size () != list2.size () )
+            for ( final Object object : list1 )
             {
-                return false;
-            }
-            else
-            {
-                for ( final Object object : list1 )
+                if ( !list2.contains ( object ) )
                 {
-                    if ( !list2.contains ( object ) )
-                    {
-                        return false;
-                    }
+                    return false;
                 }
-                return true;
             }
+            return true;
         }
     }
 

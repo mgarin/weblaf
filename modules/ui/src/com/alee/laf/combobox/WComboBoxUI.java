@@ -17,6 +17,7 @@
 
 package com.alee.laf.combobox;
 
+import com.alee.utils.ReflectUtils;
 import com.alee.utils.swing.EditabilityListener;
 import com.alee.utils.swing.VisibilityListener;
 
@@ -87,4 +88,24 @@ public abstract class WComboBoxUI extends BasicComboBoxUI
      * @param listener combobox popup visibility listener to remove
      */
     public abstract void removePopupVisibilityListener ( VisibilityListener listener );
+
+    /**
+     * Forces UI to update renderer size.
+     * This will reset size cache and perform combobox visual update.
+     */
+    public void updateRendererSize ()
+    {
+        resetRendererSize ();
+        comboBox.revalidate ();
+        comboBox.repaint ();
+    }
+
+    /**
+     * Resets cached renderer size.
+     */
+    protected void resetRendererSize ()
+    {
+        isMinimumSizeDirty = true;
+        ReflectUtils.setFieldValueSafely ( this, "isDisplaySizeDirty", true );
+    }
 }

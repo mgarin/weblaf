@@ -1,5 +1,6 @@
 package com.alee.laf.table;
 
+import com.alee.managers.language.*;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.AbstractPainter;
 import com.alee.utils.CompareUtils;
@@ -26,7 +27,13 @@ public class TableHeaderPainter<E extends JTableHeader, U extends WebTableHeader
         implements ITableHeaderPainter<E, U>
 {
     /**
+     * Listeners.
+     */
+    protected transient LanguageListener languageSensitive;
+
+    /**
      * Style settings.
+     * todo Replace with single background painter per cell?
      */
     protected Integer headerHeight;
     protected Color topBgColor;
@@ -37,6 +44,90 @@ public class TableHeaderPainter<E extends JTableHeader, U extends WebTableHeader
      * Painting variables.
      */
     protected transient CellRendererPane rendererPane = null;
+
+    @Override
+    protected void installPropertiesAndListeners ()
+    {
+        super.installPropertiesAndListeners ();
+        installLanguageListeners ();
+    }
+
+    @Override
+    protected void uninstallPropertiesAndListeners ()
+    {
+        uninstallLanguageListeners ();
+        super.uninstallPropertiesAndListeners ();
+    }
+
+    /**
+     * Installs language listeners.
+     */
+    protected void installLanguageListeners ()
+    {
+        languageSensitive = new LanguageListener ()
+        {
+            @Override
+            public void languageChanged ( final Language oldLanguage, final Language newLanguage )
+            {
+                if ( isLanguageSensitive () )
+                {
+                    // Simply repainting table header
+                    component.repaint ();
+                }
+            }
+        };
+        WebLanguageManager.addLanguageListener ( component, languageSensitive );
+    }
+
+    /**
+     * Returns whether or not table is language-sensitive.
+     *
+     * @return {@code true} if table is language-sensitive, {@code false} otherwise
+     */
+    protected boolean isLanguageSensitive ()
+    {
+        boolean sensitive = false;
+        if ( component instanceof LanguageSensitive ||
+                component.getDefaultRenderer () instanceof LanguageSensitive )
+        {
+            // Either table header or its default renderer is language-sensitive
+            sensitive = true;
+        }
+        else
+        {
+            // Checking whether or not one of table header column renderers is language-sensitive
+            final TableColumnModel columnModel = component.getColumnModel ();
+            for ( int i = 0; i < columnModel.getColumnCount (); i++ )
+            {
+                if ( columnModel.getColumn ( i ).getCellRenderer () instanceof LanguageSensitive )
+                {
+                    sensitive = true;
+                    break;
+                }
+            }
+            if ( !sensitive )
+            {
+                // Checking whether or not one of table header values is language-sensitive
+                for ( int i = 0; i < columnModel.getColumnCount (); i++ )
+                {
+                    if (columnModel.getColumn ( i ).getHeaderValue () instanceof LanguageSensitive   ) {
+                        sensitive = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return sensitive;
+    }
+
+    /**
+     * Uninstalls language listeners.
+     */
+    protected void uninstallLanguageListeners ()
+    {
+        WebLanguageManager.removeLanguageListener ( component, languageSensitive );
+        languageSensitive = null;
+    }
 
     @Override
     public void prepareToPaint ( final CellRendererPane rendererPane )

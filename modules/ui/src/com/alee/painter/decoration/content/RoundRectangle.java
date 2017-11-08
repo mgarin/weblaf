@@ -119,7 +119,7 @@ public class RoundRectangle<E extends JComponent, D extends IDecoration<E, D>, I
         final int phor = padding != null ? padding.left + padding.right : 0;
         final int pver = padding != null ? padding.top + padding.bottom : 0;
         final int w = Math.max ( phor, round * 2 );
-        final int h = Math.max ( phor, round * 2 );
+        final int h = Math.max ( pver, round * 2 );
         return new Dimension ( w, h );
     }
 

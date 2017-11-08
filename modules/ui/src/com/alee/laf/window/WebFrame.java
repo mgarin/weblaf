@@ -22,9 +22,7 @@ import com.alee.laf.rootpane.WebRootPane;
 import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
-import com.alee.managers.language.LanguageManager;
-import com.alee.managers.language.LanguageMethods;
-import com.alee.managers.language.LanguageUtils;
+import com.alee.managers.language.*;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
@@ -59,7 +57,8 @@ import java.util.Map;
  */
 
 public class WebFrame<T extends WebFrame<T>> extends JFrame
-        implements Styleable, Paintable, PaddingMethods, WindowEventMethods, LanguageMethods, SettingsMethods, WindowMethods<T>
+        implements Styleable, Paintable, PaddingMethods, WindowEventMethods, LanguageMethods, LanguageEventMethods, SettingsMethods,
+        WindowMethods<T>
 {
     /**
      * Whether should close frame on focus loss or not.
@@ -163,7 +162,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
      */
     public WebFrame ( final StyleId id, final String title, final GraphicsConfiguration gc )
     {
-        super ( LanguageUtils.getInitialText ( title ), gc );
+        super ( WebLanguageManager.getInitialText ( title ), gc );
         initialize ( id, title );
     }
 
@@ -197,7 +196,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
         // Language updater
         if ( title != null )
         {
-            LanguageUtils.registerInitialLanguage ( this, title );
+            WebLanguageManager.registerInitialLanguage ( this, title );
         }
 
         // Adding focus tracker for this frame
@@ -539,13 +538,13 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
     @Override
     public void setPadding ( final int top, final int left, final int bottom, final int right )
     {
-        PaddingMethodsImpl.setPadding (  getRootPane (), top, left, bottom, right );
+        PaddingMethodsImpl.setPadding ( getRootPane (), top, left, bottom, right );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        PaddingMethodsImpl.setPadding (  getRootPane (), padding );
+        PaddingMethodsImpl.setPadding ( getRootPane (), padding );
     }
 
     /**
@@ -583,49 +582,85 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
     @Override
     public String getLanguage ()
     {
-        return LanguageManager.getComponentKey ( getRootPane () );
+        return WebLanguageManager.getComponentKey ( getRootPane () );
     }
 
     @Override
     public void setLanguage ( final String key, final Object... data )
     {
-        LanguageManager.registerComponent ( getRootPane (), key, data );
+        WebLanguageManager.registerComponent ( getRootPane (), key, data );
     }
 
     @Override
     public void updateLanguage ( final Object... data )
     {
-        LanguageManager.updateComponent ( getRootPane (), data );
+        WebLanguageManager.updateComponent ( getRootPane (), data );
     }
 
     @Override
     public void updateLanguage ( final String key, final Object... data )
     {
-        LanguageManager.updateComponent ( getRootPane (), key, data );
+        WebLanguageManager.updateComponent ( getRootPane (), key, data );
     }
 
     @Override
     public void removeLanguage ()
     {
-        LanguageManager.unregisterComponent ( getRootPane () );
+        WebLanguageManager.unregisterComponent ( getRootPane () );
     }
 
     @Override
     public boolean isLanguageSet ()
     {
-        return LanguageManager.isRegisteredComponent ( getRootPane () );
+        return WebLanguageManager.isRegisteredComponent ( getRootPane () );
     }
 
     @Override
     public void setLanguageUpdater ( final LanguageUpdater updater )
     {
-        LanguageManager.registerLanguageUpdater ( getRootPane (), updater );
+        WebLanguageManager.registerLanguageUpdater ( getRootPane (), updater );
     }
 
     @Override
     public void removeLanguageUpdater ()
     {
-        LanguageManager.unregisterLanguageUpdater ( getRootPane () );
+        WebLanguageManager.unregisterLanguageUpdater ( getRootPane () );
+    }
+
+    @Override
+    public void addLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.addLanguageListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.removeLanguageListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeLanguageListeners ()
+    {
+        WebLanguageManager.removeLanguageListeners ( getRootPane () );
+    }
+
+    @Override
+    public void addDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.addDictionaryListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.removeDictionaryListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeDictionaryListeners ()
+    {
+        WebLanguageManager.removeDictionaryListeners ( getRootPane () );
     }
 
     @Override

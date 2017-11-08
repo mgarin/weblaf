@@ -50,12 +50,12 @@ public class DurationUnits extends AbstractUnits
      */
     public DurationUnits ()
     {
-        super ( new Unit ( 604800000, 0, "w", "week", "weeks" ),
-                new Unit ( 86400000, 7, "d", "day", "days" ),
-                new Unit ( 3600000, 24, "h", "hr", "hour", "hrs", "hours" ),
-                new Unit ( 60000, 60, "m", "min", "minute", "mins", "minutes" ),
-                new Unit ( 1000, 60, "s", "sec", "second", "seconds" ),
-                new Unit ( 1, 1000, "ms", "millisecond", "milliseconds" ) );
+        super ( new Unit ( 604800000L, 0L, "w", "week", "weeks" ),
+                new Unit ( 86400000L, 7L, "d", "day", "days" ),
+                new Unit ( 3600000L, 24L, "h", "hr", "hour", "hrs", "hours" ),
+                new Unit ( 60000L, 60L, "m", "min", "minute", "mins", "minutes" ),
+                new Unit ( 1000L, 60L, "s", "sec", "second", "seconds" ),
+                new Unit ( 1L, 1000L, "ms", "millisecond", "milliseconds" ) );
     }
 
     /**

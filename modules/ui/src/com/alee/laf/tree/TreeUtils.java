@@ -17,7 +17,13 @@
 
 package com.alee.laf.tree;
 
+import com.alee.extended.tree.AsyncTreeModel;
+import com.alee.extended.tree.walker.AsyncTreeWalker;
+import com.alee.laf.tree.walker.SimpleTreeWalker;
+import com.alee.laf.tree.walker.TreeWalker;
+
 import javax.swing.*;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 /**
@@ -30,7 +36,7 @@ import javax.swing.tree.TreePath;
 public final class TreeUtils
 {
     /**
-     * todo 1. Change this static utility class into {@link TreeState}-related class 
+     * todo 1. Change this static utility class into {@link TreeState}-related class
      * todo 2. Proper state restoration for {@link com.alee.extended.tree.WebAsyncTree}
      */
 
@@ -212,5 +218,26 @@ public final class TreeUtils
                 tree.removeSelectionPath ( path );
             }
         }
+    }
+
+    /**
+     * Returns appropriate {@link TreeWalker} implementation for the specified {@link JTree}.
+     *
+     * @param tree {@link JTree} to return appropriate {@link TreeWalker} implementation for
+     * @param <E>  tree node type
+     * @return appropriate {@link TreeWalker} implementation for the specified {@link JTree}
+     */
+    public static <E extends TreeNode> TreeWalker<E> getTreeWalker ( final JTree tree )
+    {
+        final TreeWalker treeWalker;
+        if ( tree.getModel () instanceof AsyncTreeModel )
+        {
+            treeWalker = new AsyncTreeWalker ( tree );
+        }
+        else
+        {
+            treeWalker = new SimpleTreeWalker ( tree );
+        }
+        return ( TreeWalker<E> ) treeWalker;
     }
 }

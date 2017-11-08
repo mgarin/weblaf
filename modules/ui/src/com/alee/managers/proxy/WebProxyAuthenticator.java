@@ -29,7 +29,7 @@ import com.alee.laf.text.WebTextField;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
-import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LM;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.AncestorAdapter;
 
@@ -170,7 +170,7 @@ public class WebProxyAuthenticator extends Authenticator
          */
         public AuthDialog ( final ProxySettings proxySettings )
         {
-            super ( SwingUtils.getActiveWindow (), null, null, LanguageManager.get ( "weblaf.proxy.auth.title" ),
+            super ( SwingUtils.getActiveWindow (), null, null, LM.get ( "weblaf.proxy.auth.title" ),
                     WebOptionPane.OK_CANCEL_OPTION, WebOptionPane.PLAIN_MESSAGE );
 
 

@@ -18,7 +18,7 @@
 package com.alee.demo.content;
 
 import com.alee.api.TitleSupport;
-import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LM;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.table.DefaultTableModel;
@@ -126,7 +126,7 @@ public final class SampleData
         @Override
         public String getTitle ()
         {
-            return LanguageManager.get ( "demo.sample.list." + language );
+            return LM.get ( "demo.sample.list." + language );
         }
     }
 }

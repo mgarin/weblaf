@@ -19,12 +19,10 @@ package com.alee.extended.ninepatch;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.window.WebFrame;
-import com.alee.managers.language.LanguageKeyListener;
-import com.alee.managers.language.LanguageManager;
-import com.alee.managers.language.data.Value;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.processors.data.WindowSettings;
 import com.alee.utils.ImageUtils;
+import com.alee.utils.swing.DataProvider;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -44,11 +42,6 @@ import java.io.File;
 
 public class NinePatchEditorDialog extends WebFrame
 {
-    /**
-     * Dialog title language key.
-     */
-    private static final String DIALOG_TITLE_KEY = "weblaf.ex.npeditor.title";
-
     private NinePatchEditorPanel ninePatchEditorPanel = null;
 
     public NinePatchEditorDialog ()
@@ -60,14 +53,13 @@ public class NinePatchEditorDialog extends WebFrame
     {
         super ();
         setIconImages ( WebLookAndFeel.getImages () );
-
-        updateTitle ();
-        LanguageManager.addLanguageKeyListener ( DIALOG_TITLE_KEY, new LanguageKeyListener ()
+        setLanguage ( "weblaf.ex.npeditor.title", new DataProvider<String> ()
         {
             @Override
-            public void languageKeyUpdated ( final String key, final Value value )
+            public String provide ()
             {
-                updateTitle ();
+                final String imageSrc = ninePatchEditorPanel != null ? ninePatchEditorPanel.getImageSrc () : null;
+                return imageSrc != null ? " - [" + imageSrc + "]" : "";
             }
         } );
 
@@ -80,7 +72,7 @@ public class NinePatchEditorDialog extends WebFrame
             @Override
             public void stateChanged ( final ChangeEvent e )
             {
-                updateTitle ();
+                NinePatchEditorDialog.this.updateLanguage ();
             }
         } );
         getContentPane ().add ( ninePatchEditorPanel );
@@ -133,12 +125,6 @@ public class NinePatchEditorDialog extends WebFrame
     {
         ninePatchEditorPanel
                 .setNinePatchImage ( ImageUtils.getBufferedImage ( NinePatchEditorDialog.class.getResource ( "icons/example.png" ) ) );
-    }
-
-    private void updateTitle ()
-    {
-        final String imageSrc = ninePatchEditorPanel != null ? ninePatchEditorPanel.getImageSrc () : null;
-        setTitle ( LanguageManager.get ( DIALOG_TITLE_KEY ) + ( imageSrc != null ? " - [" + imageSrc + "]" : "" ) );
     }
 
     public NinePatchEditorPanel getNinePatchEditorPanel ()

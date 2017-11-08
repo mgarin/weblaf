@@ -42,7 +42,7 @@ import java.util.zip.ZipFile;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
- * @see com.alee.managers.plugin.Plugin
+ * @see Plugin
  */
 
 public abstract class PluginManager<T extends Plugin>
@@ -821,7 +821,7 @@ public abstract class PluginManager<T extends Plugin>
                             }
                             else
                             {
-                                // Checking dependency existance
+                                // Checking dependency existence
                                 if ( dependencyLoaded || dependencyDetected )
                                 {
                                     // Required dependency is not loaded when its not in available list

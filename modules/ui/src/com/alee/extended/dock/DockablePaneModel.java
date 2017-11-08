@@ -25,6 +25,7 @@ import com.alee.laf.window.WebDialog;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * Model used by {@link com.alee.extended.dock.WebDockablePane} component.
@@ -35,7 +36,7 @@ import java.awt.*;
  * @see com.alee.extended.dock.WebDockablePaneModel
  */
 
-public interface DockablePaneModel extends LayoutManager
+public interface DockablePaneModel extends LayoutManager, Serializable
 {
     /**
      * Returns root structure container element.

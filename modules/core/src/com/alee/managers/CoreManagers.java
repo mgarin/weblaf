@@ -34,7 +34,7 @@ import com.alee.managers.settings.SettingsManager;
  * @see com.alee.managers.proxy.ProxyManager
  */
 
-public class CoreManagers
+public final class CoreManagers
 {
     /**
      * Initializes L&F core managers.

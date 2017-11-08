@@ -18,7 +18,7 @@
 package com.alee.api.merge;
 
 /**
- * This interface is an indicator of the fact that instances of this interface implementators can be merged with each other.
+ * This marker interface can be implemented by any objects that can be merged with each other.
  *
  * Easiest way to merge two object instances is to use {@link Merge} to perform merge operation.
  * Result can vary a lot depending on object implementation and provided {@link Merge} settings.
@@ -35,6 +35,6 @@ package com.alee.api.merge;
 public interface Mergeable
 {
     /**
-     * This is an indicator interface, it doesn't have any methods to implement.
+     * This is a marker interface, it doesn't have any methods to implement.
      */
 }

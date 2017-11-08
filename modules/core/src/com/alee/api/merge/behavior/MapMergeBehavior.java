@@ -40,22 +40,22 @@ public final class MapMergeBehavior<T extends Map> implements GlobalMergeBehavio
      */
 
     @Override
-    public boolean supports ( final Merge merge, final Object object, final Object merged )
+    public boolean supports ( final Merge merge, final Object base, final Object merged )
     {
-        return object instanceof Map && merged instanceof Map;
+        return base instanceof Map && merged instanceof Map;
     }
 
     @Override
-    public T merge ( final Merge merge, final T object, final T merged )
+    public T merge ( final Merge merge, final T base, final T merged )
     {
         for ( final Object e : merged.entrySet () )
         {
             final Map.Entry entry = ( Map.Entry ) e;
             final Object key = entry.getKey ();
             final Object value = entry.getValue ();
-            final Object baseValue = object.get ( key );
-            object.put ( key, merge.merge ( baseValue, value ) );
+            final Object baseValue = base.get ( key );
+            base.put ( key, merge.merge ( baseValue, value ) );
         }
-        return ( T ) object;
+        return ( T ) base;
     }
 }

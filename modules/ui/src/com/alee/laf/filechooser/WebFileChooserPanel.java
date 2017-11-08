@@ -43,8 +43,8 @@ import com.alee.managers.drag.transfer.FilesTransferHandler;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.icon.Icons;
-import com.alee.managers.language.LanguageManager;
-import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.language.LM;
+import com.alee.managers.tooltip.TooltipWay;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.*;
 import com.alee.utils.collection.ImmutableList;
@@ -426,7 +426,7 @@ public class WebFileChooserPanel extends WebPanel
                         if ( file == null )
                         {
                             setIcon ( Icons.computer );
-                            setText ( LanguageManager.get ( "weblaf.filechooser.root" ) );
+                            setText ( LM.get ( "weblaf.filechooser.root" ) );
                         }
                         else
                         {
@@ -522,7 +522,7 @@ public class WebFileChooserPanel extends WebPanel
             {
                 if ( hotkeysAllowed.provide () && currentFolder != null )
                 {
-                    final String defaultName = LanguageManager.get ( "weblaf.filechooser.newfolder.name" );
+                    final String defaultName = LM.get ( "weblaf.filechooser.newfolder.name" );
                     final String freeName = FileUtils.getAvailableName ( currentFolder, defaultName );
                     final File file = new File ( currentFolder, freeName );
                     if ( file.mkdir () )
@@ -537,8 +537,8 @@ public class WebFileChooserPanel extends WebPanel
                     }
                     else
                     {
-                        final String message = LanguageManager.get ( "weblaf.filechooser.newfolder.error.text" );
-                        final String title = LanguageManager.get ( "weblaf.filechooser.newfolder.error.title" );
+                        final String message = LM.get ( "weblaf.filechooser.newfolder.error.text" );
+                        final String title = LM.get ( "weblaf.filechooser.newfolder.error.title" );
                         WebOptionPane.showMessageDialog ( WebFileChooserPanel.this, message, title, WebOptionPane.ERROR_MESSAGE );
                     }
                 }
@@ -1768,7 +1768,7 @@ public class WebFileChooserPanel extends WebPanel
         }
 
         final WebPanel all = new WebPanel ( new BorderLayout ( 0, 5 ) );
-        all.add ( new WebLabel ( LanguageManager.get ( "weblaf.filechooser.delete.confirm.text" ) ), BorderLayout.NORTH );
+        all.add ( new WebLabel ( "weblaf.filechooser.delete.confirm.text" ), BorderLayout.NORTH );
 
         final VerticalFlowLayout removalListLayout = new VerticalFlowLayout ( VerticalFlowLayout.TOP, 0, 5, true, false );
         final WebPanel deleteFilesPanel = new WebPanel ( StyleId.filechooserRemovalListPanel.at ( this ), removalListLayout );
@@ -1796,9 +1796,9 @@ public class WebFileChooserPanel extends WebPanel
         };
         all.add ( scroll, BorderLayout.CENTER );
 
-        final String title = LanguageManager.get ( "weblaf.filechooser.delete.confirm.title" );
-        final int confirm = WebOptionPane
-                .showConfirmDialog ( WebFileChooserPanel.this, all, title, WebOptionPane.YES_NO_OPTION, WebOptionPane.QUESTION_MESSAGE );
+        final int confirm = WebOptionPane.showConfirmDialog ( WebFileChooserPanel.this,
+                all, LM.get ( "weblaf.filechooser.delete.confirm.title" ),
+                WebOptionPane.YES_NO_OPTION, WebOptionPane.QUESTION_MESSAGE );
 
         if ( confirm == WebOptionPane.YES_OPTION )
         {

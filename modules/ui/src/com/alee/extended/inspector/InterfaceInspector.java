@@ -29,6 +29,7 @@ import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.laf.window.WebDialog;
 import com.alee.laf.window.WebFrame;
+import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.icon.Icons;
 import com.alee.managers.style.StyleId;
 
@@ -107,6 +108,7 @@ public class InterfaceInspector extends WebPanel
         inspectToggle.setRolloverIcon ( Icons.targetHover );
         inspectToggle.setSelectedIcon ( Icons.targetSelected );
         inspectToggle.setCursor ( Cursor.getDefaultCursor () );
+        inspectToggle.addHotkey ( Hotkey.CTRL_I );
         inspectToggle.addActionListener ( new ActionListener ()
         {
             @Override

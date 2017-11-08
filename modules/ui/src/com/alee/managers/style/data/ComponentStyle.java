@@ -165,10 +165,28 @@ public final class ComponentStyle implements Serializable, Cloneable
      * Returns complete style ID.
      *
      * @return complete style ID
+     * @see StyleId#getCompleteId()
      */
     public String getCompleteId ()
     {
-        return getParent () != null ? getParent ().getCompleteId () + StyleId.styleSeparator + getId () : getId ();
+        final ComponentStyle parentStyle = getParent ();
+        return parentStyle != null ? parentStyle.getPathId () + StyleId.styleSeparator + getId () : getId ();
+    }
+
+    /**
+     * Returns path for complete style ID.
+     *
+     * @return path for complete style ID
+     * @see StyleId#getPathId(JComponent)
+     */
+    private String getPathId ()
+    {
+        // Full identifier for this part of the path
+        final String fullId = getType () + ":" + getId ();
+
+        // Combined identifiers path
+        final ComponentStyle parentStyle = getParent ();
+        return parentStyle != null ? parentStyle.getPathId () + StyleId.styleSeparator + fullId : fullId;
     }
 
     /**
@@ -558,7 +576,7 @@ public final class ComponentStyle implements Serializable, Cloneable
             final String setterMethod = ReflectUtils.getSetterMethodName ( field );
             ReflectUtils.callMethod ( object, setterMethod, usable );
         }
-         catch ( final NoSuchMethodException e )
+        catch ( final NoSuchMethodException e )
         {
             try
             {
@@ -967,6 +985,6 @@ public final class ComponentStyle implements Serializable, Cloneable
     @Override
     public String toString ()
     {
-        return getType () + ":" + getCompleteId ();
+        return "ComponentStyle [ id: " + getCompleteId () + " ]";
     }
 }

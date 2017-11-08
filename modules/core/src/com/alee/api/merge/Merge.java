@@ -17,6 +17,7 @@
 
 package com.alee.api.merge;
 
+import com.alee.api.matcher.IdentifiableMatcher;
 import com.alee.api.merge.behavior.*;
 import com.alee.api.merge.nullresolver.SkippingNullResolver;
 import com.alee.api.merge.type.ExactTypeMergePolicy;
@@ -53,7 +54,7 @@ public final class Merge implements Serializable
             new MergeableMergeBehavior (),
             new IndexArrayMergeBehavior (),
             new MapMergeBehavior (),
-            new ListMergeBehavior ()
+            new ListMergeBehavior ( new IdentifiableMatcher () )
     );
 
     /**
@@ -76,7 +77,7 @@ public final class Merge implements Serializable
             new MergeableMergeBehavior (),
             new IndexArrayMergeBehavior (),
             new MapMergeBehavior (),
-            new ListMergeBehavior (),
+            new ListMergeBehavior ( new IdentifiableMatcher () ),
             new ReflectionMergeBehavior ( ModifierType.STATIC, ModifierType.TRANSIENT )
     );
 

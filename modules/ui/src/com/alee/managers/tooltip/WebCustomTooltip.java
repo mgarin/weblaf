@@ -21,7 +21,6 @@ import com.alee.extended.label.WebStyledLabel;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.hotkey.HotkeyManager;
-import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.style.ShapeMethods;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;

@@ -1,0 +1,90 @@
+<skin xmlns="http://weblookandfeel.com">
+
+    <!-- com.alee.extended.language.LanguageChooser -->
+
+    <!-- Language chooser combobox -->
+    <style type="combobox" id="languagechooser">
+
+        <!-- Popup list scrollpane -->
+        <style type="scrollpane" id="popup">
+
+            <!-- Popup list -->
+            <style type="list" id="popup">
+
+                <!-- Selected value renderer label -->
+                <style type="styledlabel" id="box-renderer" padding="2,4,2,4">
+                    <painter>
+                        <decorations overwrite="true">
+                            <decoration>
+                                <SimpleMenuItemLayout textAcceleratorGap="4">
+                                    <LabelIcon constraints="icon" />
+                                    <LabelText constraints="text" color="245,245,245" />
+                                    <LanguageItemLocale constraints="accelerator" padding="0,2,0,2" color="225,225,225" />
+                                </SimpleMenuItemLayout>
+                            </decoration>
+                        </decorations>
+                    </painter>
+                </style>
+
+                <!-- Popup list cell renderer label -->
+                <style type="styledlabel" id="list-renderer" padding="4,6,4,6">
+                    <painter>
+                        <decorations overwrite="true">
+                            <decoration>
+                                <SimpleMenuItemLayout textAcceleratorGap="4">
+                                    <LabelIcon constraints="icon" />
+                                    <LabelText constraints="text" color="245,245,245" />
+                                    <RoundRectangle constraints="accelerator" color="80,80,80" round="4" opacity="0" />
+                                    <LanguageItemLocale constraints="accelerator" padding="0,4,0,4" color="225,225,225" />
+                                </SimpleMenuItemLayout>
+                            </decoration>
+                            <decoration states="selected">
+                                <SimpleMenuItemLayout>
+                                    <RoundRectangle opacity="1" />
+                                </SimpleMenuItemLayout>
+                            </decoration>
+                        </decorations>
+                    </painter>
+                </style>
+
+            </style>
+
+        </style>
+
+    </style>
+
+    <!-- Hover-decorated-only combobox -->
+    <style type="combobox" id="languagechooser-hover" extends="languagechooser">
+        <painter>
+            <decorations>
+                <decoration opacity="0" />
+                <decoration states="focused">
+                    <LineBorder color="20,20,20" />
+                </decoration>
+                <decoration states="enabled,hover" opacity="1" />
+                <decoration states="enabled,pressed" opacity="1" />
+                <decoration states="enabled,expanded" opacity="1" />
+            </decorations>
+        </painter>
+
+        <!-- Separator -->
+        <style type="separator" id="separator" extends="vertical">
+            <painter>
+                <decorations overwrite="true">
+                    <decoration visible="false" />
+                </decorations>
+            </painter>
+        </style>
+
+    </style>
+
+    <!-- Undecorated combobox -->
+    <style type="combobox" id="languagechooser-undecorated" extends="languagechooser">
+        <painter>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

@@ -18,14 +18,13 @@
 package com.alee.laf.label;
 
 import com.alee.managers.hotkey.HotkeyData;
-import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
-import com.alee.managers.language.LanguageUtils;
-import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.language.WebLanguageManager;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
+import com.alee.managers.tooltip.TooltipWay;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -53,9 +52,8 @@ import java.util.Map;
  * @see LabelPainter
  */
 
-public class WebLabel extends JLabel
-        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods, ToolTipMethods, LanguageMethods,
-        FontMethods<WebLabel>, SizeMethods<WebLabel>
+public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods,
+        ToolTipMethods, LanguageMethods, FontMethods<WebLabel>, SizeMethods<WebLabel>
 {
     /**
      * Constructs empty label.
@@ -233,8 +231,8 @@ public class WebLabel extends JLabel
      */
     public WebLabel ( final StyleId id, final String text, final Icon icon, final int horizontalAlignment, final Object... data )
     {
-        super ( LanguageUtils.getInitialText ( text, data ), icon, horizontalAlignment );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
+        super ( WebLanguageManager.getInitialText ( text, data ), icon, horizontalAlignment );
+        WebLanguageManager.registerInitialLanguage ( this, text, data );
         setStyleId ( id );
     }
 
@@ -688,49 +686,49 @@ public class WebLabel extends JLabel
     @Override
     public String getLanguage ()
     {
-        return LanguageManager.getComponentKey ( this );
+        return WebLanguageManager.getComponentKey ( this );
     }
 
     @Override
     public void setLanguage ( final String key, final Object... data )
     {
-        LanguageManager.registerComponent ( this, key, data );
+        WebLanguageManager.registerComponent ( this, key, data );
     }
 
     @Override
     public void updateLanguage ( final Object... data )
     {
-        LanguageManager.updateComponent ( this, data );
+        WebLanguageManager.updateComponent ( this, data );
     }
 
     @Override
     public void updateLanguage ( final String key, final Object... data )
     {
-        LanguageManager.updateComponent ( this, key, data );
+        WebLanguageManager.updateComponent ( this, key, data );
     }
 
     @Override
     public void removeLanguage ()
     {
-        LanguageManager.unregisterComponent ( this );
+        WebLanguageManager.unregisterComponent ( this );
     }
 
     @Override
     public boolean isLanguageSet ()
     {
-        return LanguageManager.isRegisteredComponent ( this );
+        return WebLanguageManager.isRegisteredComponent ( this );
     }
 
     @Override
     public void setLanguageUpdater ( final LanguageUpdater updater )
     {
-        LanguageManager.registerLanguageUpdater ( this, updater );
+        WebLanguageManager.registerLanguageUpdater ( this, updater );
     }
 
     @Override
     public void removeLanguageUpdater ()
     {
-        LanguageManager.unregisterLanguageUpdater ( this );
+        WebLanguageManager.unregisterLanguageUpdater ( this );
     }
 
     @Override

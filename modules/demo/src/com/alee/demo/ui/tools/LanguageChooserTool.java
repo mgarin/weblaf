@@ -18,20 +18,14 @@
 package com.alee.demo.ui.tools;
 
 import com.alee.demo.skin.DemoStyles;
-import com.alee.laf.combobox.WebComboBox;
-import com.alee.laf.combobox.WebComboBoxRenderer;
+import com.alee.extended.language.LanguageChooser;
 import com.alee.laf.panel.WebPanel;
-import com.alee.managers.language.LanguageManager;
 import com.alee.managers.style.StyleId;
-import com.alee.utils.SwingUtils;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
- * Demo application language chooser.
+ * {@link com.alee.demo.DemoApplication} language chooser.
  *
  * @author Mikle Garin
  */
@@ -39,48 +33,15 @@ import java.awt.event.ActionListener;
 public final class LanguageChooserTool extends WebPanel
 {
     /**
-     * Constructs new orientation chooser tool.
+     * Constructs new {@link LanguageChooserTool}.
      */
     public LanguageChooserTool ()
     {
         super ( StyleId.panelTransparent, new BorderLayout ( 0, 0 ) );
 
         // Orientation chooser combobox
-        final WebComboBox language = new WebComboBox ( DemoStyles.toolCombobox, LanguageManager.getSupportedLanguages () );
-        language.setToolTip ( "demo.tool.language" );
-        language.setSelectedItem ( LanguageManager.getLanguage () );
-        language.setRenderer ( new WebComboBoxRenderer ()
-        {
-            @Override
-            protected Icon iconForValue ( final JList list, final Object value, final int index, final boolean isSelected,
-                                          final boolean hasFocus )
-            {
-                return LanguageManager.getLanguageIcon ( ( String ) value );
-            }
-
-            @Override
-            protected String textForValue ( final JList list, final Object value, final int index, final boolean isSelected,
-                                            final boolean hasFocus )
-            {
-                return LanguageManager.getLanguageTitle ( ( String ) value );
-            }
-        } );
-        language.addActionListener ( new ActionListener ()
-        {
-            @Override
-            public void actionPerformed ( final ActionEvent e )
-            {
-                // Executing later to avoid any possible interferences
-                SwingUtils.invokeLater ( new Runnable ()
-                {
-                    @Override
-                    public void run ()
-                    {
-                        LanguageManager.setLanguage ( ( String ) language.getSelectedItem () );
-                    }
-                } );
-            }
-        } );
+        final LanguageChooser language = new LanguageChooser ( DemoStyles.toolLangCombobox );
+        language.setLanguage ( "demo.tool.language" );
         add ( language, BorderLayout.CENTER );
     }
 }

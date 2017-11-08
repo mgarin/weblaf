@@ -17,7 +17,7 @@
 
 package com.alee.managers.notification;
 
-import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LM;
 
 /**
  * This enumeration represents available predefined question notification option types.
@@ -142,6 +142,6 @@ public enum NotificationOption
      */
     public String getText ()
     {
-        return LanguageManager.get ( getLanguageKey () );
+        return LM.get ( getLanguageKey () );
     }
 }

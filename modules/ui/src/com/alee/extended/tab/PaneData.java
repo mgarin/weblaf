@@ -182,6 +182,14 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                             close ( get ( index ) );
                         }
                     } );
+                    pmg.addItem ( "closeAll", "closeAll", close, new ActionListener ()
+                    {
+                        @Override
+                        public void actionPerformed ( final ActionEvent e )
+                        {
+                            closeAll ();
+                        }
+                    } );
                     pmg.addItem ( "closeOthers", "closeOthers", closeOthers, new ActionListener ()
                     {
                         @Override

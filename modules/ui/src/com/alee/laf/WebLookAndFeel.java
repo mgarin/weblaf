@@ -1053,7 +1053,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
             icons = new ArrayList<ImageIcon> ( sizes.length );
             for ( final int size : sizes )
             {
-                icons.add ( new ImageIcon ( WebLookAndFeel.class.getResource ( "icons/icon/icon" + size + ".png" ) ) );
+                icons.add ( new ImageIcon ( WebLookAndFeel.class.getResource ( "icons/icon" + size + ".png" ) ) );
             }
         }
     }
@@ -1202,7 +1202,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static void setOrientation ( final ComponentOrientation orientation )
     {
         WebLookAndFeel.orientation = orientation;
-        SwingUtils.updateGlobalOrientations ();
+        SwingUtils.updateGlobalOrientation ();
     }
 
     /**

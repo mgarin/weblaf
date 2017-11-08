@@ -17,8 +17,7 @@
 
 package com.alee.laf.filechooser;
 
-import com.alee.managers.language.LanguageManager;
-import com.alee.managers.language.LanguageMethods;
+import com.alee.managers.language.*;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
@@ -39,7 +38,7 @@ import java.util.Map;
 /**
  * {@link JFileChooser} extension class.
  * It contains various useful methods to simplify core component usage.
- * <p/>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -50,7 +49,7 @@ import java.util.Map;
  */
 
 public class WebFileChooser extends JFileChooser
-        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, LanguageMethods
+        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, LanguageMethods, LanguageEventMethods
 {
     /**
      * Custom icons for file chooser dialog.
@@ -480,6 +479,90 @@ public class WebFileChooser extends JFileChooser
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    @Override
+    public String getLanguage ()
+    {
+        return WebLanguageManager.getComponentKey ( this );
+    }
+
+    @Override
+    public void setLanguage ( final String key, final Object... data )
+    {
+        WebLanguageManager.registerComponent ( this, key, data );
+    }
+
+    @Override
+    public void updateLanguage ( final Object... data )
+    {
+        WebLanguageManager.updateComponent ( this, data );
+    }
+
+    @Override
+    public void updateLanguage ( final String key, final Object... data )
+    {
+        WebLanguageManager.updateComponent ( this, key, data );
+    }
+
+    @Override
+    public void removeLanguage ()
+    {
+        WebLanguageManager.unregisterComponent ( this );
+    }
+
+    @Override
+    public boolean isLanguageSet ()
+    {
+        return WebLanguageManager.isRegisteredComponent ( this );
+    }
+
+    @Override
+    public void setLanguageUpdater ( final LanguageUpdater updater )
+    {
+        WebLanguageManager.registerLanguageUpdater ( this, updater );
+    }
+
+    @Override
+    public void removeLanguageUpdater ()
+    {
+        WebLanguageManager.unregisterLanguageUpdater ( this );
+    }
+
+    @Override
+    public void addLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.addLanguageListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.removeLanguageListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeLanguageListeners ()
+    {
+        WebLanguageManager.removeLanguageListeners ( getRootPane () );
+    }
+
+    @Override
+    public void addDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.addDictionaryListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.removeDictionaryListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeDictionaryListeners ()
+    {
+        WebLanguageManager.removeDictionaryListeners ( getRootPane () );
+    }
+
     /**
      * Returns the look and feel (L&amp;F) object that renders this component.
      *
@@ -511,54 +594,6 @@ public class WebFileChooser extends JFileChooser
     public String getUIClassID ()
     {
         return StyleManager.getDescriptor ( this ).getUIClassId ();
-    }
-
-    @Override
-    public String getLanguage ()
-    {
-        return LanguageManager.getComponentKey ( this );
-    }
-
-    @Override
-    public void setLanguage ( final String key, final Object... data )
-    {
-        LanguageManager.registerComponent ( this, key, data );
-    }
-
-    @Override
-    public void updateLanguage ( final Object... data )
-    {
-        LanguageManager.updateComponent ( this, data );
-    }
-
-    @Override
-    public void updateLanguage ( final String key, final Object... data )
-    {
-        LanguageManager.updateComponent ( this, key, data );
-    }
-
-    @Override
-    public void removeLanguage ()
-    {
-        LanguageManager.unregisterComponent ( this );
-    }
-
-    @Override
-    public boolean isLanguageSet ()
-    {
-        return LanguageManager.isRegisteredComponent ( this );
-    }
-
-    @Override
-    public void setLanguageUpdater ( final LanguageUpdater updater )
-    {
-        LanguageManager.registerLanguageUpdater ( this, updater );
-    }
-
-    @Override
-    public void removeLanguageUpdater ()
-    {
-        LanguageManager.unregisterLanguageUpdater ( this );
     }
 
     /**

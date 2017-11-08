@@ -1,5 +1,6 @@
 package com.alee.laf.table;
 
+import com.alee.managers.language.*;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.PainterSupport;
@@ -9,18 +10,17 @@ import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.GeometryUtils;
+import com.alee.utils.ReflectUtils;
 import com.alee.utils.general.Pair;
 
 import javax.swing.*;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
+import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -74,6 +74,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
      * Listeners.
      */
     protected transient MouseAdapter mouseAdapter;
+    protected transient LanguageListener languageSensitive;
 
     /**
      * Runtime variables.
@@ -112,11 +113,13 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
     {
         super.installPropertiesAndListeners ();
         installTableMouseListeners ();
+        installLanguageListeners ();
     }
 
     @Override
     protected void uninstallPropertiesAndListeners ()
     {
+        uninstallLanguageListeners ();
         uninstallTableMouseListeners ();
         super.uninstallPropertiesAndListeners ();
     }
@@ -229,6 +232,110 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
         component.removeMouseListener ( mouseAdapter );
         component.removeMouseMotionListener ( mouseAdapter );
         mouseAdapter = null;
+    }
+
+    /**
+     * Installs language listeners.
+     */
+    protected void installLanguageListeners ()
+    {
+        languageSensitive = new LanguageListener ()
+        {
+            @Override
+            public void languageChanged ( final Language oldLanguage, final Language newLanguage )
+            {
+                if ( isLanguageSensitive () )
+                {
+                    final TableModel model = component.getModel ();
+                    if ( model instanceof AbstractTableModel )
+                    {
+                        // Calling public model methods when possible
+                        ( ( AbstractTableModel ) model ).fireTableRowsUpdated ( 0, model.getRowCount () - 1 );
+                    }
+                    else
+                    {
+                        // Simply repainting table when we don't have tools to update it properly
+                        component.repaint ();
+                    }
+                }
+            }
+        };
+        WebLanguageManager.addLanguageListener ( component, languageSensitive );
+    }
+
+    /**
+     * Returns whether or not table is language-sensitive.
+     *
+     * @return {@code true} if table is language-sensitive, {@code false} otherwise
+     */
+    protected boolean isLanguageSensitive ()
+    {
+        boolean sensitive = false;
+        if ( component instanceof LanguageSensitive ||
+                component.getModel () instanceof LanguageSensitive )
+        {
+            // Either table or its model is language-sensitive
+            sensitive = true;
+        }
+        else
+        {
+            // Checking whether or not one of table column renderers is language-sensitive
+            final TableColumnModel columnModel = component.getColumnModel ();
+            for ( int i = 0; i < columnModel.getColumnCount (); i++ )
+            {
+                if ( columnModel.getColumn ( i ).getCellRenderer () instanceof LanguageSensitive )
+                {
+                    sensitive = true;
+                    break;
+                }
+            }
+            if ( !sensitive )
+            {
+                // Checking whether or not one of table default renderers is language-sensitive
+                final Hashtable defaultRenderers = ReflectUtils.getFieldValueSafely ( component, "defaultRenderersByColumnClass" );
+                if ( defaultRenderers != null )
+                {
+                    for ( final Object renderer : defaultRenderers.values () )
+                    {
+                        if ( renderer instanceof LanguageSensitive )
+                        {
+                            sensitive = true;
+                            break;
+                        }
+                    }
+                }
+                if ( !sensitive )
+                {
+                    // Checking whether or not table data is language-sensitive
+                    final TableModel model = component.getModel ();
+                    for ( int row = 0; row < model.getRowCount (); row++ )
+                    {
+                        for ( int col = 0; col < model.getColumnCount (); col++ )
+                        {
+                            if ( model.getValueAt ( row, col ) instanceof LanguageSensitive )
+                            {
+                                sensitive = true;
+                                break;
+                            }
+                        }
+                        if ( sensitive )
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return sensitive;
+    }
+
+    /**
+     * Uninstalls language listeners.
+     */
+    protected void uninstallLanguageListeners ()
+    {
+        WebLanguageManager.removeLanguageListener ( component, languageSensitive );
+        languageSensitive = null;
     }
 
     @Override

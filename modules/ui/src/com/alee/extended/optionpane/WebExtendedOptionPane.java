@@ -27,7 +27,7 @@ import com.alee.laf.optionpane.WebOptionPane;
 import com.alee.laf.optionpane.WebOptionPaneUI;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.window.WebDialog;
-import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LM;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.collection.ImmutableList;
@@ -358,7 +358,7 @@ public class WebExtendedOptionPane extends WebDialog
 
     public static WebExtendedOptionPane showConfirmDialog ( final Component parentComponent, final Object message, final Object special )
     {
-        return showConfirmDialog ( parentComponent, message, special, LanguageManager.get ( "weblaf.optionpane.title" ) );
+        return showConfirmDialog ( parentComponent, message, special, LM.get ( "weblaf.optionpane.title" ) );
     }
 
     public static WebExtendedOptionPane showConfirmDialog ( final Component parentComponent, final Object message, final Object special,

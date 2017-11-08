@@ -19,42 +19,69 @@ package com.alee.laf.combobox;
 
 import com.alee.laf.list.WebListCellRenderer;
 import com.alee.managers.style.StyleId;
+import com.alee.painter.decoration.DecorationState;
 import com.alee.utils.TextUtils;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * Default combobox renderer.
+ * Default {@link ListCellRenderer} implementation based on {@link com.alee.extended.label.WebStyledLabel}.
+ * Unlike {@link javax.swing.plaf.basic.BasicComboBoxRenderer} it contains multiple methods for convenient renderer customization.
+ * Also since it is based on {@link com.alee.extended.label.WebStyledLabel} it retains all of its extra features.
  *
  * @author Mikle Garin
  */
 
 public class WebComboBoxRenderer extends WebListCellRenderer
 {
+    /**
+     * todo 1. Add generic type for values
+     */
+
     @Override
-    protected void updateStyleId ( final JList list, final Object value, final int index, final boolean isSelected,
-                                   final boolean cellHasFocus )
+    protected void updateStates ( final JList list, final Object value, final int index,
+                                  final boolean isSelected, final boolean hasFocus )
+    {
+        // Adding base states
+        super.updateStates ( list, value, index, isSelected, hasFocus );
+
+        // Adding press and expansion states
+        final JComboBox comboBox = getComboBox ( list );
+        if ( comboBox != null )
+        {
+            if ( comboBox.isPopupVisible () )
+            {
+                states.add ( DecorationState.pressed );
+                states.add ( DecorationState.expanded );
+            }
+            else
+            {
+                states.add ( DecorationState.collapsed );
+            }
+        }
+    }
+
+    @Override
+    protected void updateStyleId ( final JList list, final Object value, final int index,
+                                   final boolean isSelected, final boolean cellHasFocus )
     {
         setStyleId ( index == -1 ? StyleId.comboboxBoxRenderer.at ( list ) : StyleId.comboboxListRenderer.at ( list ) );
     }
 
-    /**
-     * Returns corrected preferred size in case text and icon were not specified.
-     * This will generally prevent combobox and popup list from being shrinked when it contains empty label.
-     * <p>
-     * This is not really performance-efficient so it is recommended to provide at least space as text when customizing renderer value.
-     * Otherwise this mechanism will start working with those values in unefficient way to prevent visual issues.
-     *
-     * @return corrected preferred size in case text and icon were not specified
-     */
     @Override
     public Dimension getPreferredSize ()
     {
         final Dimension size;
-        if ( TextUtils.isEmpty ( getText () ) && getIcon () == null )
+        if ( isEmptyData () )
         {
-            // todo Optimize this somehow?
+            /**
+             * Returns corrected preferred size in case text and icon were not specified.
+             * This will generally prevent combobox and popup list from being shrinked when it contains empty label.
+             * This is not really efficient so it is recommended to provide at least space as text when customizing renderer value.
+             * Otherwise this mechanism will start working with those values in unefficient way to prevent visual issues.
+             * This is simply a copy of {@link javax.swing.plaf.basic.BasicComboBoxRenderer#getPreferredSize()} workaround.
+             */
             setText ( " " );
             size = super.getPreferredSize ();
             setText ( "" );
@@ -67,13 +94,34 @@ public class WebComboBoxRenderer extends WebListCellRenderer
     }
 
     /**
-     * A subclass of WebComboBoxCellRenderer that implements UIResource.
+     * Returns whether or not renderer has completely empty data.
+     *
+     * @return {@code true} if renderer has completely empty data, {@code false} otherwise
+     */
+    protected boolean isEmptyData ()
+    {
+        return TextUtils.isEmpty ( getText () ) && getIcon () == null;
+    }
+
+    /**
+     * Returns {@link JComboBox} for which specified {@link JList} is used in popup.
+     *
+     * @param list {@link JList} to retrieve {@link JComboBox} for
+     * @return {@link JComboBox} for which specified {@link JList} is used in popup
+     */
+    protected JComboBox getComboBox ( final JList list )
+    {
+        return ( JComboBox ) list.getClientProperty ( WebComboBoxUI.COMBOBOX_INSTANCE );
+    }
+
+    /**
+     * A subclass of {@link WebComboBoxRenderer} that implements {@link javax.swing.plaf.UIResource}.
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
      */
     public static final class UIResource extends WebComboBoxRenderer implements javax.swing.plaf.UIResource
     {
         /**
-         * Implementation is used completely from {@link com.alee.laf.combobox.WebComboBoxRenderer}.
+         * Implementation is used completely from {@link WebComboBoxRenderer}.
          */
     }
 }

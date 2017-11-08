@@ -42,6 +42,19 @@
             </decorations>
         </painter>
     </style>
+    <style type="combobox" id="tool-lang" extends="languagechooser-hover">
+        <component>
+            <focusable>false</focusable>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="0" />
+                    <WebShadow type="outer" opacity="0" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
 
     <!-- Filter fields -->
     <style type="textfield" id="filter" extends="treefilterfield-non-opaque" padding="6">

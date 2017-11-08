@@ -505,7 +505,7 @@ public class WebListModel<T> extends AbstractListModel
      */
     public void removeAllAfter ( final int index )
     {
-        final int lastIndex = size () - 1;
+        final int lastIndex = getSize () - 1;
         for ( int i = lastIndex; i > index; i-- )
         {
             delegate.removeElementAt ( i );
@@ -577,7 +577,7 @@ public class WebListModel<T> extends AbstractListModel
      */
     public void add ( final T element )
     {
-        add ( size (), element );
+        add ( getSize (), element );
     }
 
     /**

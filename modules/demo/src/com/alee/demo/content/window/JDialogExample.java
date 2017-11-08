@@ -25,6 +25,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.WebLanguageManager;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
@@ -102,7 +103,7 @@ public class JDialogExample extends AbstractStylePreviewExample
                     final Window parent = SwingUtils.getWindowAncestor ( button );
                     final String title = getExampleLanguagePrefix () + "content";
                     final JDialog dialog = new JDialog ( parent );
-                    LanguageManager.registerComponent ( dialog.getRootPane (), title );
+                    WebLanguageManager.registerComponent ( dialog.getRootPane (), title );
                     dialog.getRootPane ().putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
                     dialog.setIconImages ( WebLookAndFeel.getImages () );
                     dialog.add ( new WebLabel ( title, WebLabel.CENTER ) );

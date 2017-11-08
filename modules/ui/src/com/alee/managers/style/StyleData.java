@@ -21,7 +21,6 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.painter.Painter;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
-import com.alee.utils.LafUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -90,30 +89,12 @@ public final class StyleData implements PropertyChangeListener
      *
      * @param component component this style data is referencing
      */
-    public StyleData ( final JComponent component )
+    protected StyleData ( final JComponent component )
     {
         super ();
 
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
-
-        // Ensure that component has correct UI first, fix for #376
-        // This should never happen if WebLaF is installed before creating any Swing components
-        // Component might be missing UI here because it's style identifier was applied from upper level component
-        if ( !LafUtils.hasWebLafUI ( component ) )
-        {
-            // Trying to make component use WebLaF UI by forcefully updating it
-            // Thought we do not force any specific UI on the component here
-            component.updateUI ();
-
-            // Checking that proper UI was installed
-            if ( !LafUtils.hasWebLafUI ( component ) )
-            {
-                // Our attempt to apply WebLaF UI has failed, throwing appropriate exception
-                final String msg = "Component '%s' doesn't use WebLaF UI";
-                throw new StyleException ( String.format ( msg, component.getClass () ) );
-            }
-        }
 
         // Saving component weak reference
         this.component = new WeakReference<JComponent> ( component );
@@ -127,6 +108,7 @@ public final class StyleData implements PropertyChangeListener
         this.listeners = null;
 
         // Adding style identifier listener
+        // todo Move to install skin and remove upon skin uninstall
         component.addPropertyChangeListener ( StyleId.STYLE_PROPERTY, this );
         component.addPropertyChangeListener ( StyleId.PARENT_STYLE_PROPERTY, this );
     }
@@ -199,7 +181,7 @@ public final class StyleData implements PropertyChangeListener
      *
      * @return component this style data is referencing
      */
-    public JComponent getComponent ()
+    protected JComponent getComponent ()
     {
         final JComponent component = this.component.get ();
         if ( component == null )
@@ -215,7 +197,7 @@ public final class StyleData implements PropertyChangeListener
      *
      * @return currently applied skin
      */
-    public Skin getSkin ()
+    protected Skin getSkin ()
     {
         return skin;
     }
@@ -226,7 +208,7 @@ public final class StyleData implements PropertyChangeListener
      *
      * @return true if skin was pinned, false otherwise
      */
-    public boolean isPinnedSkin ()
+    protected boolean isPinnedSkin ()
     {
         return pinnedSkin;
     }
@@ -236,7 +218,7 @@ public final class StyleData implements PropertyChangeListener
      *
      * @param pinnedSkin whether or not skin was pinned
      */
-    public void setPinnedSkin ( final boolean pinnedSkin )
+    protected void setPinnedSkin ( final boolean pinnedSkin )
     {
         this.pinnedSkin = pinnedSkin;
     }
@@ -249,7 +231,7 @@ public final class StyleData implements PropertyChangeListener
      * @param children whether or not should apply the same skin to style children
      * @return previously applied skin
      */
-    public Skin applySkin ( final Skin skin, final boolean children )
+    protected Skin applySkin ( final Skin skin, final boolean children )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -322,7 +304,7 @@ public final class StyleData implements PropertyChangeListener
      * @param recursively whether or not should apply skin to child components
      * @return previously applied skin
      */
-    public Skin applyCustomSkin ( final Skin skin, final boolean recursively )
+    protected Skin applyCustomSkin ( final Skin skin, final boolean recursively )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -360,7 +342,7 @@ public final class StyleData implements PropertyChangeListener
      *
      * @param children whether or not should apply the same skin to style children
      */
-    public void updateSkin ( final boolean children )
+    protected void updateSkin ( final boolean children )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -395,7 +377,7 @@ public final class StyleData implements PropertyChangeListener
      *
      * @return skin applied to the component after reset
      */
-    public Skin resetSkin ()
+    protected Skin resetSkin ()
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -420,10 +402,12 @@ public final class StyleData implements PropertyChangeListener
      *
      * @return previously applied skin
      */
-    public Skin removeSkin ()
+    protected Skin removeSkin ()
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
+
+        // todo Remove listeners styleId/parent listeners
 
         // Checking previous skin existence
         final Skin oldSkin = this.skin;
@@ -444,7 +428,7 @@ public final class StyleData implements PropertyChangeListener
      *
      * @return currently used style identifier
      */
-    public StyleId getStyleId ()
+    protected StyleId getStyleId ()
     {
         return styleId != null ? styleId : StyleId.getDefault ( getComponent () );
     }
@@ -455,7 +439,7 @@ public final class StyleData implements PropertyChangeListener
      * @param id new style identifier
      * @return previously used style identifier
      */
-    public StyleId setStyleId ( final StyleId id )
+    protected StyleId setStyleId ( final StyleId id )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -526,7 +510,7 @@ public final class StyleData implements PropertyChangeListener
      * @param recursively whether or not child styles should also be reset
      * @return previously used style identifier
      */
-    public StyleId resetStyleId ( final boolean recursively )
+    protected StyleId resetStyleId ( final boolean recursively )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -556,7 +540,7 @@ public final class StyleData implements PropertyChangeListener
      * @return custom painters
      */
     @Deprecated
-    public Map<String, Painter> getPainters ()
+    protected Map<String, Painter> getPainters ()
     {
         return painters;
     }
@@ -567,7 +551,7 @@ public final class StyleData implements PropertyChangeListener
      * @param painters custom painters
      */
     @Deprecated
-    public void setPainters ( final Map<String, Painter> painters )
+    protected void setPainters ( final Map<String, Painter> painters )
     {
         this.painters = painters;
     }
@@ -577,7 +561,7 @@ public final class StyleData implements PropertyChangeListener
      *
      * @param child related style child
      */
-    public void addChild ( final JComponent child )
+    protected void addChild ( final JComponent child )
     {
         if ( children == null )
         {
@@ -591,7 +575,7 @@ public final class StyleData implements PropertyChangeListener
      *
      * @param child related style child
      */
-    public void removeChild ( final JComponent child )
+    protected void removeChild ( final JComponent child )
     {
         final Iterator<WeakReference<JComponent>> iterator = children.iterator ();
         while ( iterator.hasNext () )
@@ -609,7 +593,7 @@ public final class StyleData implements PropertyChangeListener
      *
      * @param listener style change listener to add
      */
-    public void addStyleListener ( final StyleListener listener )
+    protected void addStyleListener ( final StyleListener listener )
     {
         if ( listeners == null )
         {
@@ -623,7 +607,7 @@ public final class StyleData implements PropertyChangeListener
      *
      * @param listener style change listener to remove
      */
-    public void removeStyleListener ( final StyleListener listener )
+    protected void removeStyleListener ( final StyleListener listener )
     {
         if ( listeners != null )
         {

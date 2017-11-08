@@ -26,7 +26,7 @@ import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.text.WebTextField;
-import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LM;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
@@ -109,7 +109,7 @@ public class WebPopupExample extends AbstractStylePreviewExample
                     final WebLabel label = new WebLabel ( getExampleLanguagePrefix () + "label", WebLabel.CENTER );
                     container.add ( label, BorderLayout.NORTH );
 
-                    final String text = LanguageManager.get ( getExampleLanguagePrefix () + "text" );
+                    final String text = LM.get ( getExampleLanguagePrefix () + "text" );
                     final WebTextField field = new WebTextField ( text, 20 );
                     field.setHorizontalAlignment ( WebTextField.CENTER );
                     container.add ( field, BorderLayout.CENTER );

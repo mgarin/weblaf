@@ -135,6 +135,23 @@ public final class MathUtils
      * @param max   range maximum
      * @return value limited by the specified range
      */
+    public static long limit ( final long min, final long value, final long max )
+    {
+        if ( min > max )
+        {
+            throw new RuntimeException ( "Minimum value cannot be greated than maximum value" );
+        }
+        return Math.max ( min, Math.min ( value, max ) );
+    }
+
+    /**
+     * Returns value limited by the specified range.
+     *
+     * @param min   range minimum
+     * @param value value to limit
+     * @param max   range maximum
+     * @return value limited by the specified range
+     */
     public static float limit ( final float min, final float value, final float max )
     {
         if ( min > max )

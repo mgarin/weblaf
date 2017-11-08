@@ -18,7 +18,9 @@
 package com.alee.utils;
 
 import com.alee.managers.log.Log;
+import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.reflection.ModifierType;
+import com.alee.utils.reflection.ReflectionException;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -33,6 +35,7 @@ public final class ReflectUtils
 {
     /**
      * todo 1. Rework this utility class into an object that is only instantiated when needed
+     * todo 2. Add implemenetation for vararg search
      */
 
     /**
@@ -221,54 +224,378 @@ public final class ReflectUtils
     }
 
     /**
-     * Returns all non-static fields declared in the specified class and all of its superclasses.
+     * Returns all fields in the specified object class and all of its superclasses.
      *
-     * @param object object or class to find declared non-static fields for
-     * @return all non-static fields declared in the specified class and all of its superclasses
+     * @param object object to find fields for
+     * @return all fields in the specified object class and all of its superclasses
      */
     public static List<Field> getFields ( final Object object )
     {
-        return getFields ( object, new ArrayList<String> () );
+        return getFields ( object.getClass () );
     }
 
     /**
-     * Returns all non-static fields declared in the specified class and all of its superclasses.
+     * Returns all fields in the specified class and all of its superclasses.
      *
-     * @param object object or class to find declared non-static fields for
-     * @param found  found field names
-     * @return all non-static fields declared in the specified class and all of its superclasses
+     * @param clazz class to find fields for
+     * @return all fields in the specified class and all of its superclasses
      */
-    public static List<Field> getFields ( final Object object, final List<String> found )
+    public static List<Field> getFields ( final Class clazz )
     {
-        if ( object instanceof Class )
+        return getFields ( clazz, ModifierType.STATIC );
+    }
+
+    /**
+     * Returns all fields in the specified object class and all of its superclasses.
+     *
+     * @param object           object to find fields for
+     * @param ignoredModifiers modifiers of fields to ignore
+     * @return all fields in the specified object class and all of its superclasses
+     */
+    public static List<Field> getFields ( final Object object, final ModifierType... ignoredModifiers )
+    {
+        return getFields ( object.getClass (), ignoredModifiers );
+    }
+
+    /**
+     * Returns all fields in the specified class and all of its superclasses.
+     *
+     * @param clazz            class to find fields for
+     * @param ignoredModifiers modifiers of fields to ignore
+     * @return all fields in the specified class and all of its superclasses
+     */
+    public static List<Field> getFields ( final Class clazz, final ModifierType... ignoredModifiers )
+    {
+        return getFields ( clazz, new HashSet<String> (), ignoredModifiers );
+    }
+
+    /**
+     * Returns all fields in the specified class and all of its superclasses.
+     *
+     * @param clazz            class to find fields for
+     * @param found            found field names
+     * @param ignoredModifiers modifiers of fields to ignore
+     * @return all fields in the specified class and all of its superclasses
+     */
+    private static List<Field> getFields ( final Class clazz, final Set<String> found, final ModifierType... ignoredModifiers )
+    {
+        // Find all current-level fields
+        final Field[] declared = clazz.getDeclaredFields ();
+        final List<Field> fields = new ArrayList<Field> ( declared.length );
+        for ( final Field field : declared )
         {
-            // Find all current-level fields
-            final Class clazz = ( Class ) object;
-            final Field[] fields = clazz.getDeclaredFields ();
-            final List<Field> filtered = new ArrayList<Field> ( fields.length );
-            for ( final Field field : fields )
+            // Adding fields with unique name that haven't been found yet (on higher hierarchy levels)
+            // and that do not contain any modifiers from the ignore list passed into this methos
+            if ( !found.contains ( field.getName () ) && ReflectUtils.hasNoneOfModifiers ( field, ignoredModifiers ) )
             {
-                final int modifiers = field.getModifiers ();
-                if ( !found.contains ( field.getName () ) && !Modifier.isStatic ( modifiers ) )
+                // Making field accessible for usage convenience
+                field.setAccessible ( true );
+
+                // Collecting field
+                fields.add ( field );
+
+                // Marking unique field name as used
+                // This is important to avoid overwriting fields with ones from parent classes (with the same name)
+                found.add ( field.getName () );
+            }
+        }
+
+        // Find all superclass fields
+        final Class superclass = clazz.getSuperclass ();
+        if ( superclass != null )
+        {
+            fields.addAll ( getFields ( superclass, found, ignoredModifiers ) );
+        }
+
+        return fields;
+    }
+
+    /**
+     * Returns whether or not {@link Class} has any of the specified modifiers.
+     *
+     * @param clazz     {@link Class} to check modifiers for
+     * @param modifiers modifiers to look for
+     * @return {@code true} if {@link Class} has any of the specified modifiers, {@code false} otherwise
+     */
+    public static boolean hasAnyOfModifiers ( final Class clazz, final ModifierType... modifiers )
+    {
+        return hasAnyOfModifiers ( clazz, new ImmutableList<ModifierType> ( modifiers ) );
+    }
+
+    /**
+     * Returns whether or not {@link Class} has any of the specified modifiers.
+     *
+     * @param clazz     {@link Class} to check modifiers for
+     * @param modifiers modifiers to look for
+     * @return {@code true} if {@link Class} has any of the specified modifiers, {@code false} otherwise
+     */
+    public static boolean hasAnyOfModifiers ( final Class clazz, final Collection<ModifierType> modifiers )
+    {
+        boolean contains = false;
+        if ( CollectionUtils.notEmpty ( modifiers ) )
+        {
+            for ( final ModifierType modifier : modifiers )
+            {
+                if ( modifier.is ( clazz ) )
                 {
-                    filtered.add ( field );
-                    found.add ( field.getName () );
+                    contains = true;
+                    break;
                 }
             }
-
-            // Find all superclass fields
-            final Class superclass = clazz.getSuperclass ();
-            if ( superclass != null )
-            {
-                filtered.addAll ( getFields ( superclass, found ) );
-            }
-
-            return filtered;
         }
-        else
+        return contains;
+    }
+
+    /**
+     * Returns whether or not {@link Class} has all of the specified modifiers.
+     *
+     * @param clazz     {@link Class} to check modifiers for
+     * @param modifiers modifiers to look for
+     * @return {@code true} if {@link Class} has all of the specified modifiers, {@code false} otherwise
+     */
+    public static boolean hasAllOfModifiers ( final Class clazz, final ModifierType... modifiers )
+    {
+        return hasAllOfModifiers ( clazz, new ImmutableList<ModifierType> ( modifiers ) );
+    }
+
+    /**
+     * Returns whether or not {@link Class} has all of the specified modifiers.
+     *
+     * @param clazz     {@link Class} to check modifiers for
+     * @param modifiers modifiers to look for
+     * @return {@code true} if {@link Class} has all of the specified modifiers, {@code false} otherwise
+     */
+    public static boolean hasAllOfModifiers ( final Class clazz, final Collection<ModifierType> modifiers )
+    {
+        boolean contains = true;
+        if ( ArrayUtils.notEmpty ( modifiers ) )
         {
-            return getFields ( object.getClass (), found );
+            for ( final ModifierType modifier : modifiers )
+            {
+                if ( modifier.not ( clazz ) )
+                {
+                    contains = false;
+                    break;
+                }
+            }
         }
+        return contains;
+    }
+
+    /**
+     * Returns whether or not {@link Class} has none of the specified modifiers.
+     *
+     * @param clazz     {@link Class} to check modifiers for
+     * @param modifiers modifiers to look for
+     * @return {@code true} if {@link Class} has none of the specified modifiers, {@code false} otherwise
+     */
+    public static boolean hasNoneOfModifiers ( final Class clazz, final ModifierType... modifiers )
+    {
+        return hasNoneOfModifiers ( clazz, new ImmutableList<ModifierType> ( modifiers ) );
+    }
+
+    /**
+     * Returns whether or not {@link Class} has none of the specified modifiers.
+     *
+     * @param clazz     {@link Class} to check modifiers for
+     * @param modifiers modifiers to look for
+     * @return {@code true} if {@link Class} has none of the specified modifiers, {@code false} otherwise
+     */
+    public static boolean hasNoneOfModifiers ( final Class clazz, final Collection<ModifierType> modifiers )
+    {
+        return !hasAnyOfModifiers ( clazz, modifiers );
+    }
+
+    /**
+     * Returns whether or not {@link Method} has any of the specified modifiers.
+     *
+     * @param method    {@link Method} to check modifiers for
+     * @param modifiers modifiers to look for
+     * @return {@code true} if {@link Method} has any of the specified modifiers, {@code false} otherwise
+     */
+    public static boolean hasAnyOfModifiers ( final Method method, final ModifierType... modifiers )
+    {
+        return hasAnyOfModifiers ( method, new ImmutableList<ModifierType> ( modifiers ) );
+    }
+
+    /**
+     * Returns whether or not {@link Method} has any of the specified modifiers.
+     *
+     * @param method    {@link Method} to check modifiers for
+     * @param modifiers modifiers to look for
+     * @return {@code true} if {@link Method} has any of the specified modifiers, {@code false} otherwise
+     */
+    public static boolean hasAnyOfModifiers ( final Method method, final Collection<ModifierType> modifiers )
+    {
+        boolean contains = false;
+        if ( CollectionUtils.notEmpty ( modifiers ) )
+        {
+            for ( final ModifierType modifier : modifiers )
+            {
+                if ( modifier.is ( method ) )
+                {
+                    contains = true;
+                    break;
+                }
+            }
+        }
+        return contains;
+    }
+
+    /**
+     * Returns whether or not {@link Method} has all of the specified modifiers.
+     *
+     * @param method    {@link Method} to check modifiers for
+     * @param modifiers modifiers to look for
+     * @return {@code true} if {@link Method} has all of the specified modifiers, {@code false} otherwise
+     */
+    public static boolean hasAllOfModifiers ( final Method method, final ModifierType... modifiers )
+    {
+        return hasAllOfModifiers ( method, new ImmutableList<ModifierType> ( modifiers ) );
+    }
+
+    /**
+     * Returns whether or not {@link Method} has all of the specified modifiers.
+     *
+     * @param method    {@link Method} to check modifiers for
+     * @param modifiers modifiers to look for
+     * @return {@code true} if {@link Method} has all of the specified modifiers, {@code false} otherwise
+     */
+    public static boolean hasAllOfModifiers ( final Method method, final Collection<ModifierType> modifiers )
+    {
+        boolean contains = true;
+        if ( ArrayUtils.notEmpty ( modifiers ) )
+        {
+            for ( final ModifierType modifier : modifiers )
+            {
+                if ( modifier.not ( method ) )
+                {
+                    contains = false;
+                    break;
+                }
+            }
+        }
+        return contains;
+    }
+
+    /**
+     * Returns whether or not {@link Method} has none of the specified modifiers.
+     *
+     * @param method    {@link Method} to check modifiers for
+     * @param modifiers modifiers to look for
+     * @return {@code true} if {@link Method} has none of the specified modifiers, {@code false} otherwise
+     */
+    public static boolean hasNoneOfModifiers ( final Method method, final ModifierType... modifiers )
+    {
+        return hasNoneOfModifiers ( method, new ImmutableList<ModifierType> ( modifiers ) );
+    }
+
+    /**
+     * Returns whether or not {@link Method} has none of the specified modifiers.
+     *
+     * @param method    {@link Method} to check modifiers for
+     * @param modifiers modifiers to look for
+     * @return {@code true} if {@link Method} has none of the specified modifiers, {@code false} otherwise
+     */
+    public static boolean hasNoneOfModifiers ( final Method method, final Collection<ModifierType> modifiers )
+    {
+        return !hasAnyOfModifiers ( method, modifiers );
+    }
+
+    /**
+     * Returns whether or not {@link Field} has any of the specified modifiers.
+     *
+     * @param field     {@link Field} to check modifiers for
+     * @param modifiers modifiers to look for
+     * @return {@code true} if {@link Field} has any of the specified modifiers, {@code false} otherwise
+     */
+    public static boolean hasAnyOfModifiers ( final Field field, final ModifierType... modifiers )
+    {
+        return hasAnyOfModifiers ( field, new ImmutableList<ModifierType> ( modifiers ) );
+    }
+
+    /**
+     * Returns whether or not {@link Field} has any of the specified modifiers.
+     *
+     * @param field     {@link Field} to check modifiers for
+     * @param modifiers modifiers to look for
+     * @return {@code true} if {@link Field} has any of the specified modifiers, {@code false} otherwise
+     */
+    public static boolean hasAnyOfModifiers ( final Field field, final Collection<ModifierType> modifiers )
+    {
+        boolean contains = false;
+        if ( CollectionUtils.notEmpty ( modifiers ) )
+        {
+            for ( final ModifierType modifier : modifiers )
+            {
+                if ( modifier.is ( field ) )
+                {
+                    contains = true;
+                    break;
+                }
+            }
+        }
+        return contains;
+    }
+
+    /**
+     * Returns whether or not {@link Field} has all of the specified modifiers.
+     *
+     * @param field     {@link Field} to check modifiers for
+     * @param modifiers modifiers to look for
+     * @return {@code true} if {@link Field} has all of the specified modifiers, {@code false} otherwise
+     */
+    public static boolean hasAllOfModifiers ( final Field field, final ModifierType... modifiers )
+    {
+        return hasAllOfModifiers ( field, new ImmutableList<ModifierType> ( modifiers ) );
+    }
+
+    /**
+     * Returns whether or not {@link Field} has all of the specified modifiers.
+     *
+     * @param field     {@link Field} to check modifiers for
+     * @param modifiers modifiers to look for
+     * @return {@code true} if {@link Field} has all of the specified modifiers, {@code false} otherwise
+     */
+    public static boolean hasAllOfModifiers ( final Field field, final Collection<ModifierType> modifiers )
+    {
+        boolean contains = true;
+        if ( ArrayUtils.notEmpty ( modifiers ) )
+        {
+            for ( final ModifierType modifier : modifiers )
+            {
+                if ( modifier.not ( field ) )
+                {
+                    contains = false;
+                    break;
+                }
+            }
+        }
+        return contains;
+    }
+
+    /**
+     * Returns whether or not {@link Field} has none of the specified modifiers.
+     *
+     * @param field     {@link Field} to check modifiers for
+     * @param modifiers modifiers to look for
+     * @return {@code true} if {@link Field} has none of the specified modifiers, {@code false} otherwise
+     */
+    public static boolean hasNoneOfModifiers ( final Field field, final ModifierType... modifiers )
+    {
+        return hasNoneOfModifiers ( field, new ImmutableList<ModifierType> ( modifiers ) );
+    }
+
+    /**
+     * Returns whether or not {@link Field} has none of the specified modifiers.
+     *
+     * @param field     {@link Field} to check modifiers for
+     * @param modifiers modifiers to look for
+     * @return {@code true} if {@link Field} has none of the specified modifiers, {@code false} otherwise
+     */
+    public static boolean hasNoneOfModifiers ( final Field field, final Collection<ModifierType> modifiers )
+    {
+        return !hasAnyOfModifiers ( field, modifiers );
     }
 
     /**
@@ -463,7 +790,7 @@ public final class ReflectUtils
      * @param object object instance
      * @param field  object field
      * @param value  field value
-     * @return true if value was applied successfully, false otherwise
+     * @return {@code true} if value was applied successfully, {@code false} otherwise
      */
     public static boolean setFieldValueSafely ( final Object object, final String field, final Object value )
     {
@@ -495,7 +822,11 @@ public final class ReflectUtils
     public static void setFieldValue ( final Object object, final String fieldName, final Object value )
             throws NoSuchFieldException, IllegalAccessException
     {
-        setFieldValue ( object.getClass (), object, fieldName, value );
+        // Retrieving actual field
+        final Field actualField = getField ( object.getClass (), fieldName );
+
+        // Applying field value
+        setFieldValue ( object, actualField, value );
     }
 
     /**
@@ -505,7 +836,7 @@ public final class ReflectUtils
      * @param classType type of the class where static field can be located
      * @param field     object field
      * @param value     field value
-     * @return true if value was applied successfully, false otherwise
+     * @return {@code true} if value was applied successfully, {@code false} otherwise
      */
     public static boolean setStaticFieldValueSafely ( final Class classType, final String field, final Object value )
     {
@@ -537,38 +868,92 @@ public final class ReflectUtils
     public static void setStaticFieldValue ( final Class classType, final String fieldName, final Object value )
             throws NoSuchFieldException, IllegalAccessException
     {
-        setFieldValue ( classType, null, fieldName, value );
+        // Retrieving actual field
+        final Field actualField = getField ( classType, fieldName );
+
+        // Applying field value
+        setFieldValue ( null, actualField, value );
     }
 
     /**
      * Applies specified value to object field.
      * This method allows to access and modify even private object fields.
      *
-     * @param classType type of the class where field can be located
-     * @param object    object instance
-     * @param fieldName object field name
-     * @param value     field value
-     * @throws NoSuchFieldException   if field was not found
+     * @param object object instance
+     * @param field  object field
+     * @param value  field value
+     * @return {@code true} if value was applied successfully, {@code false} otherwise
+     */
+    public static boolean setFieldValueSafely ( final Object object, final Field field, final Object value )
+    {
+        try
+        {
+            setFieldValue ( object, field, value );
+            return true;
+        }
+        catch ( final Exception e )
+        {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: setFieldValueSafely", e );
+            }
+            return false;
+        }
+    }
+
+    /**
+     * Applies specified value to object field.
+     * This method allows to access and modify even private object fields.
+     *
+     * @param object object instance
+     * @param field  object field
+     * @param value  field value
      * @throws IllegalAccessException if field is inaccessible
      */
-    private static void setFieldValue ( final Class classType, final Object object, final String fieldName, final Object value )
-            throws NoSuchFieldException, IllegalAccessException
+    public static void setFieldValue ( final Object object, final Field field, final Object value )
+            throws IllegalAccessException
     {
-        final Field actualField = getField ( classType, fieldName );
-
-        final int oldModifiers = actualField.getModifiers ();
-        if ( ModifierType.FINAL.is ( oldModifiers ) )
+        // Making field accessible
+        if ( !field.isAccessible () )
         {
-            final Field modifiers = getField ( Field.class, "modifiers" );
-            modifiers.set ( actualField, oldModifiers & ~Modifier.FINAL );
+            field.setAccessible ( true );
         }
 
-        actualField.set ( object, value );
-
+        // Removing final modifier if needed
+        final int oldModifiers = field.getModifiers ();
         if ( ModifierType.FINAL.is ( oldModifiers ) )
         {
-            final Field modifiers = getField ( Field.class, "modifiers" );
-            modifiers.set ( actualField, oldModifiers );
+            setFieldModifiers ( field, oldModifiers & ~Modifier.FINAL );
+        }
+
+        // Updating field value
+        field.set ( object, value );
+
+        // Restoring final modifier if it was removed
+        if ( ModifierType.FINAL.is ( oldModifiers ) )
+        {
+            setFieldModifiers ( field, oldModifiers );
+        }
+    }
+
+    /**
+     * Changes {@link Field} modifiers.
+     * Be aware that this is not supported JDK feature and only used in some hacky cases.
+     *
+     * @param field     {@link Field}
+     * @param modifiers new {@link Field} modifiers
+     * @throws IllegalAccessException if field is inaccessible
+     */
+    private static void setFieldModifiers ( final Field field, final int modifiers ) throws IllegalAccessException
+    {
+        try
+        {
+            final Field mods = getField ( Field.class, "modifiers" );
+            mods.set ( field, modifiers );
+        }
+        catch ( final NoSuchFieldException e )
+        {
+            throw new ReflectionException ( "Unable to update field modifiers: " + field + " -> " + modifiers );
         }
     }
 

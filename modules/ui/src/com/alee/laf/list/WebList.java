@@ -23,6 +23,10 @@ import com.alee.laf.list.editor.DefaultListCellEditor;
 import com.alee.laf.list.editor.ListCellEditor;
 import com.alee.laf.list.editor.ListEditListener;
 import com.alee.managers.hotkey.HotkeyData;
+import com.alee.managers.language.DictionaryListener;
+import com.alee.managers.language.LanguageEventMethods;
+import com.alee.managers.language.LanguageListener;
+import com.alee.managers.language.WebLanguageManager;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.Paintable;
@@ -44,7 +48,7 @@ import java.util.List;
 /**
  * {@link JList} extension class.
  * It contains various useful methods to simplify core component usage.
- * <p/>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -55,8 +59,8 @@ import java.util.List;
  */
 
 public class WebList extends JList
-        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods, FontMethods<WebList>,
-        SizeMethods<WebList>
+        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods, LanguageEventMethods,
+        FontMethods<WebList>, SizeMethods<WebList>
 {
     /**
      * todo 1. Generics usage when migrated to JDK8+
@@ -782,39 +786,6 @@ public class WebList extends JList
     }
 
     /**
-     * Returns the look and feel (L&amp;F) object that renders this component.
-     *
-     * @return the {@link WListUI} object that renders this component
-     */
-    @Override
-    public WListUI getUI ()
-    {
-        return ( WListUI ) super.getUI ();
-    }
-
-    /**
-     * Sets the L&amp;F object that renders this component.
-     *
-     * @param ui {@link WListUI}
-     */
-    public void setUI ( final WListUI ui )
-    {
-        super.setUI ( ui );
-    }
-
-    @Override
-    public void updateUI ()
-    {
-        StyleManager.getDescriptor ( this ).updateUI ( this );
-    }
-
-    @Override
-    public String getUIClassID ()
-    {
-        return StyleManager.getDescriptor ( this ).getUIClassId ();
-    }
-
-    /**
      * Repaints list cell for the specified value.
      *
      * @param value cell value
@@ -1059,6 +1030,42 @@ public class WebList extends JList
     }
 
     @Override
+    public void addLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.addLanguageListener ( this, listener );
+    }
+
+    @Override
+    public void removeLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.removeLanguageListener ( this, listener );
+    }
+
+    @Override
+    public void removeLanguageListeners ()
+    {
+        WebLanguageManager.removeLanguageListeners ( this );
+    }
+
+    @Override
+    public void addDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.addDictionaryListener ( this, listener );
+    }
+
+    @Override
+    public void removeDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.removeDictionaryListener ( this, listener );
+    }
+
+    @Override
+    public void removeDictionaryListeners ()
+    {
+        WebLanguageManager.removeDictionaryListeners ( this );
+    }
+
+    @Override
     public WebList setPlainFont ()
     {
         return FontMethodsImpl.setPlainFont ( this );
@@ -1254,5 +1261,38 @@ public class WebList extends JList
     public WebList setPreferredSize ( final int width, final int height )
     {
         return SizeMethodsImpl.setPreferredSize ( this, width, height );
+    }
+
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WListUI} object that renders this component
+     */
+    @Override
+    public WListUI getUI ()
+    {
+        return ( WListUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WListUI}
+     */
+    public void setUI ( final WListUI ui )
+    {
+        super.setUI ( ui );
+    }
+
+    @Override
+    public void updateUI ()
+    {
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

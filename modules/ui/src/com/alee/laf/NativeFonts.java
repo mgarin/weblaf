@@ -368,7 +368,7 @@ public final class NativeFonts
             try
             {
                 /**
-                 * We won't retreive native font size separately as it is commonly already included in the native {@link Font} itself.
+                 * We won't retrieve native font size separately as it is commonly already included in the native {@link Font} itself.
                  * This is how it could be done though: {@code Toolkit.getDefaultToolkit ().getDesktopProperty ( fontKey + ".height" )}
                  */
                 final Object nativeFont = Toolkit.getDefaultToolkit ().getDesktopProperty ( fontKey );

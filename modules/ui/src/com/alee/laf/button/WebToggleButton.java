@@ -20,11 +20,9 @@ package com.alee.laf.button;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyInfo;
 import com.alee.managers.hotkey.HotkeyManager;
-import com.alee.managers.language.LanguageManager;
-import com.alee.managers.language.LanguageMethods;
-import com.alee.managers.language.LanguageUtils;
-import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.language.*;
 import com.alee.managers.language.updaters.LanguageUpdater;
+import com.alee.managers.tooltip.TooltipWay;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -50,7 +48,7 @@ import java.util.Map;
 /**
  * {@link JToggleButton} extension class.
  * It contains various useful methods to simplify core component usage.
- * <p/>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -62,7 +60,7 @@ import java.util.Map;
 
 public class WebToggleButton extends JToggleButton
         implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods, ToolTipMethods, LanguageMethods,
-        SettingsMethods, FontMethods<WebToggleButton>, SizeMethods<WebToggleButton>
+        LanguageEventMethods, SettingsMethods, FontMethods<WebToggleButton>, SizeMethods<WebToggleButton>
 {
     /**
      * Constructs new toggle button
@@ -417,8 +415,8 @@ public class WebToggleButton extends JToggleButton
     @Override
     protected void init ( final String text, final Icon icon )
     {
-        super.init ( LanguageUtils.getInitialText ( text ), icon );
-        LanguageUtils.registerInitialLanguage ( this, text );
+        super.init ( WebLanguageManager.getInitialText ( text ), icon );
+        WebLanguageManager.registerInitialLanguage ( this, text );
     }
 
     /**
@@ -628,39 +626,6 @@ public class WebToggleButton extends JToggleButton
     public void setPadding ( final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
-    }
-
-    /**
-     * Returns the look and feel (L&amp;F) object that renders this component.
-     *
-     * @return the {@link WToggleButtonUI} object that renders this component
-     */
-    @Override
-    public WToggleButtonUI getUI ()
-    {
-        return ( WToggleButtonUI ) ui;
-    }
-
-    /**
-     * Sets the L&amp;F object that renders this component.
-     *
-     * @param ui {@link WToggleButtonUI}
-     */
-    public void setUI ( final WToggleButtonUI ui )
-    {
-        super.setUI ( ui );
-    }
-
-    @Override
-    public void updateUI ()
-    {
-        StyleManager.getDescriptor ( this ).updateUI ( this );
-    }
-
-    @Override
-    public String getUIClassID ()
-    {
-        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 
     @Override
@@ -930,49 +895,85 @@ public class WebToggleButton extends JToggleButton
     @Override
     public String getLanguage ()
     {
-        return LanguageManager.getComponentKey ( this );
+        return WebLanguageManager.getComponentKey ( this );
     }
 
     @Override
     public void setLanguage ( final String key, final Object... data )
     {
-        LanguageManager.registerComponent ( this, key, data );
+        WebLanguageManager.registerComponent ( this, key, data );
     }
 
     @Override
     public void updateLanguage ( final Object... data )
     {
-        LanguageManager.updateComponent ( this, data );
+        WebLanguageManager.updateComponent ( this, data );
     }
 
     @Override
     public void updateLanguage ( final String key, final Object... data )
     {
-        LanguageManager.updateComponent ( this, key, data );
+        WebLanguageManager.updateComponent ( this, key, data );
     }
 
     @Override
     public void removeLanguage ()
     {
-        LanguageManager.unregisterComponent ( this );
+        WebLanguageManager.unregisterComponent ( this );
     }
 
     @Override
     public boolean isLanguageSet ()
     {
-        return LanguageManager.isRegisteredComponent ( this );
+        return WebLanguageManager.isRegisteredComponent ( this );
     }
 
     @Override
     public void setLanguageUpdater ( final LanguageUpdater updater )
     {
-        LanguageManager.registerLanguageUpdater ( this, updater );
+        WebLanguageManager.registerLanguageUpdater ( this, updater );
     }
 
     @Override
     public void removeLanguageUpdater ()
     {
-        LanguageManager.unregisterLanguageUpdater ( this );
+        WebLanguageManager.unregisterLanguageUpdater ( this );
+    }
+
+    @Override
+    public void addLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.addLanguageListener ( this, listener );
+    }
+
+    @Override
+    public void removeLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.removeLanguageListener ( this, listener );
+    }
+
+    @Override
+    public void removeLanguageListeners ()
+    {
+        WebLanguageManager.removeLanguageListeners ( this );
+    }
+
+    @Override
+    public void addDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.addDictionaryListener ( this, listener );
+    }
+
+    @Override
+    public void removeDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.removeDictionaryListener ( this, listener );
+    }
+
+    @Override
+    public void removeDictionaryListeners ()
+    {
+        WebLanguageManager.removeDictionaryListeners ( this );
     }
 
     @Override
@@ -1265,5 +1266,38 @@ public class WebToggleButton extends JToggleButton
     public WebToggleButton setPreferredSize ( final int width, final int height )
     {
         return SizeMethodsImpl.setPreferredSize ( this, width, height );
+    }
+
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WToggleButtonUI} object that renders this component
+     */
+    @Override
+    public WToggleButtonUI getUI ()
+    {
+        return ( WToggleButtonUI ) ui;
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WToggleButtonUI}
+     */
+    public void setUI ( final WToggleButtonUI ui )
+    {
+        super.setUI ( ui );
+    }
+
+    @Override
+    public void updateUI ()
+    {
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

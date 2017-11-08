@@ -19,7 +19,7 @@ package com.alee.utils.swing;
 
 /**
  * This interface provides a single method for data request of any type.
- * <p>
+ *
  * It is used within the WebLaF library for many purposes, for example:
  * - Providing popup location and bounds
  * - Providing data for language string formatters
@@ -28,7 +28,10 @@ package com.alee.utils.swing;
  *
  * @param <T> provided data type
  * @author Mikle Garin
+ * @deprecated Must be replaced with {@link com.alee.api.jdk.Supplier}
  */
+
+@Deprecated
 public interface DataProvider<T>
 {
     /**

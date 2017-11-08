@@ -13,7 +13,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 /**
- * Abstract painter base for {@link JTextComponent} implementations.
+ * Abstract painter for {@link JTextComponent}-based text field implementations.
  *
  * @param <E> component type
  * @param <U> component UI type

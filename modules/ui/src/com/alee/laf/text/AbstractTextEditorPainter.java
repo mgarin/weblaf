@@ -19,7 +19,6 @@ package com.alee.laf.text;
 
 import com.alee.extended.behavior.DocumentChangeBehavior;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.language.LM;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
@@ -39,7 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Abstract painter base for all text editing components.
+ * Abstract painter for {@link JTextComponent} implementations.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -208,7 +207,7 @@ public abstract class AbstractTextEditorPainter<E extends JTextComponent, U exte
             g2d.setFont ( inputPromptFont != null ? inputPromptFont : component.getFont () );
             g2d.setPaint ( inputPromptForeground != null ? inputPromptForeground : component.getForeground () );
 
-            final String text = LM.get ( getInputPrompt () );
+            final String text = getInputPrompt ();
             final FontMetrics fm = g2d.getFontMetrics ();
             final int x;
             if ( inputPromptHorizontalPosition == CENTER )
@@ -263,7 +262,7 @@ public abstract class AbstractTextEditorPainter<E extends JTextComponent, U exte
     @Override
     public boolean isInputPromptVisible ()
     {
-        final String inputPrompt = LM.get ( getInputPrompt () );
+        final String inputPrompt = getInputPrompt ();
         return inputPrompt != null && !inputPrompt.isEmpty () && TextUtils.isEmpty ( component.getText () ) &&
                 ( !inputPromptOnlyWhenEditable || component.isEditable () && component.isEnabled () ) &&
                 ( !hideInputPromptOnFocus || !isFocused () );

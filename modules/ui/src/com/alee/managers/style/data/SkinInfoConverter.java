@@ -17,8 +17,10 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.api.merge.Merge;
 import com.alee.managers.icon.set.IconSet;
 import com.alee.managers.style.StyleException;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.XmlUtils;
 import com.alee.utils.xml.Resource;
@@ -137,7 +139,7 @@ public final class SkinInfoConverter extends ReflectionConverter
             final boolean metaDataOnly = mdo != null && ( Boolean ) mdo;
 
             // Creating component style
-            final List<IconSet> iconSets = new ArrayList<IconSet> ( 1 );
+            List<IconSet> iconSets = new ArrayList<IconSet> ( 1 );
             final List<ComponentStyle> styles = new ArrayList<ComponentStyle> ( 10 );
             while ( reader.hasMoreChildren () )
             {
@@ -205,26 +207,32 @@ public final class SkinInfoConverter extends ReflectionConverter
                     // Reading included icon set
                     final String className = reader.getValue ();
                     final Class realClass = mapper.realClass ( className );
-                    iconSets.add ( readIconSet ( realClass ) );
+                    final IconSet iconSet = readIconSet ( realClass );
+
+                    // Merging icon sets to avoid duplicates
+                    iconSets = Merge.COMMON.merge ( iconSets, CollectionUtils.asList ( iconSet ) );
                 }
                 else if ( nodeName.equals ( STYLE_NODE ) && !metaDataOnly )
                 {
-                    // Reading component style
-                    styles.add ( ( ComponentStyle ) context.convertAnother ( styles, ComponentStyle.class ) );
+                    // Reading separate style
+                    final ComponentStyle style = ( ComponentStyle ) context.convertAnother ( styles, ComponentStyle.class );
+
+                    // Simply adding additional style to the end
+                    styles.add ( style );
                 }
                 else if ( nodeName.equals ( INCLUDE_NODE ) && !metaDataOnly )
                 {
-                    // Reading included skin file styles
+                    // Reading included skin
                     final String nearClass = reader.getAttribute ( NEAR_CLASS_ATTRIBUTE );
                     final String realClass = nearClass != null ? mapper.realClass ( nearClass ).getCanonicalName () : null;
                     final String file = reader.getValue ();
                     final Resource resource = new Resource ( realClass, file );
                     final SkinInfo include = readInclude ( skinInfo, resource );
 
-                    // Adding included skin icon set
-                    iconSets.addAll ( include.getIconSets () );
+                    // Merging icon sets to avoid duplicates
+                    iconSets = Merge.COMMON.merge ( iconSets, include.getIconSets () );
 
-                    // Adding included skin styles
+                    // Simply adding additional styles to the end
                     styles.addAll ( include.getStyles () );
                 }
                 reader.moveUp ();
@@ -237,6 +245,7 @@ public final class SkinInfoConverter extends ReflectionConverter
             // At this point there might be more than one style with the same ID
             skinInfo.setStyles ( styles );
 
+            // Returning complete skin information
             return skinInfo;
         }
         finally

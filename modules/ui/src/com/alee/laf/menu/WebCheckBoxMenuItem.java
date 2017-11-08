@@ -18,9 +18,7 @@
 package com.alee.laf.menu;
 
 import com.alee.managers.hotkey.HotkeyData;
-import com.alee.managers.language.LanguageManager;
-import com.alee.managers.language.LanguageMethods;
-import com.alee.managers.language.LanguageUtils;
+import com.alee.managers.language.*;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
@@ -40,7 +38,7 @@ import java.util.Map;
 /**
  * {@link JCheckBoxMenuItem} extension class.
  * It contains various useful methods to simplify core component usage.
- * <p/>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -50,9 +48,8 @@ import java.util.Map;
  * @see CheckBoxMenuItemPainter
  */
 
-public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
-        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, LanguageMethods, SettingsMethods,
-        FontMethods<WebCheckBoxMenuItem>
+public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods,
+        LanguageMethods, LanguageEventMethods, SettingsMethods, FontMethods<WebCheckBoxMenuItem>
 {
     /**
      * Constructs new checkbox menu item.
@@ -363,8 +360,8 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
     @Override
     protected void init ( final String text, final Icon icon )
     {
-        super.init ( LanguageUtils.getInitialText ( text ), icon );
-        LanguageUtils.registerInitialLanguage ( this, text );
+        super.init ( WebLanguageManager.getInitialText ( text ), icon );
+        WebLanguageManager.registerInitialLanguage ( this, text );
     }
 
     /**
@@ -527,85 +524,88 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
-    /**
-     * Returns the look and feel (L&amp;F) object that renders this component.
-     *
-     * @return the {@link WebCheckBoxMenuItemUI} object that renders this component
-     */
-    @Override
-    public WebCheckBoxMenuItemUI getUI ()
-    {
-        return ( WebCheckBoxMenuItemUI ) super.getUI ();
-    }
-
-    /**
-     * Sets the L&amp;F object that renders this component.
-     *
-     * @param ui {@link WebCheckBoxMenuItemUI}
-     */
-    public void setUI ( final WebCheckBoxMenuItemUI ui )
-    {
-        super.setUI ( ui );
-    }
-
-    @Override
-    public void updateUI ()
-    {
-        StyleManager.getDescriptor ( this ).updateUI ( this );
-    }
-
-    @Override
-    public String getUIClassID ()
-    {
-        return StyleManager.getDescriptor ( this ).getUIClassId ();
-    }
-
     @Override
     public String getLanguage ()
     {
-        return LanguageManager.getComponentKey ( this );
+        return WebLanguageManager.getComponentKey ( this );
     }
 
     @Override
     public void setLanguage ( final String key, final Object... data )
     {
-        LanguageManager.registerComponent ( this, key, data );
+        WebLanguageManager.registerComponent ( this, key, data );
     }
 
     @Override
     public void updateLanguage ( final Object... data )
     {
-        LanguageManager.updateComponent ( this, data );
+        WebLanguageManager.updateComponent ( this, data );
     }
 
     @Override
     public void updateLanguage ( final String key, final Object... data )
     {
-        LanguageManager.updateComponent ( this, key, data );
+        WebLanguageManager.updateComponent ( this, key, data );
     }
 
     @Override
     public void removeLanguage ()
     {
-        LanguageManager.unregisterComponent ( this );
+        WebLanguageManager.unregisterComponent ( this );
     }
 
     @Override
     public boolean isLanguageSet ()
     {
-        return LanguageManager.isRegisteredComponent ( this );
+        return WebLanguageManager.isRegisteredComponent ( this );
     }
 
     @Override
     public void setLanguageUpdater ( final LanguageUpdater updater )
     {
-        LanguageManager.registerLanguageUpdater ( this, updater );
+        WebLanguageManager.registerLanguageUpdater ( this, updater );
     }
 
     @Override
     public void removeLanguageUpdater ()
     {
-        LanguageManager.unregisterLanguageUpdater ( this );
+        WebLanguageManager.unregisterLanguageUpdater ( this );
+    }
+
+    @Override
+    public void addLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.addLanguageListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.removeLanguageListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeLanguageListeners ()
+    {
+        WebLanguageManager.removeLanguageListeners ( getRootPane () );
+    }
+
+    @Override
+    public void addDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.addDictionaryListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.removeDictionaryListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeDictionaryListeners ()
+    {
+        WebLanguageManager.removeDictionaryListeners ( getRootPane () );
     }
 
     @Override
@@ -808,5 +808,38 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
     public String getFontName ()
     {
         return FontMethodsImpl.getFontName ( this );
+    }
+
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WebCheckBoxMenuItemUI} object that renders this component
+     */
+    @Override
+    public WebCheckBoxMenuItemUI getUI ()
+    {
+        return ( WebCheckBoxMenuItemUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WebCheckBoxMenuItemUI}
+     */
+    public void setUI ( final WebCheckBoxMenuItemUI ui )
+    {
+        super.setUI ( ui );
+    }
+
+    @Override
+    public void updateUI ()
+    {
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

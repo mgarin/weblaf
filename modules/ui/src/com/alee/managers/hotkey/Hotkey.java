@@ -27,6 +27,7 @@ import java.awt.event.KeyEvent;
  * @author Mikle Garin
  */
 
+@SuppressWarnings ( "unused" )
 public final class Hotkey
 {
     /**

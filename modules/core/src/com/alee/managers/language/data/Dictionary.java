@@ -17,392 +17,1036 @@
 
 package com.alee.managers.language.data;
 
+import com.alee.api.Identifiable;
+import com.alee.api.merge.Mergeable;
+import com.alee.managers.language.LanguageUtils;
+import com.alee.utils.CollectionUtils;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.TextUtils;
+import com.alee.utils.XmlUtils;
+import com.alee.utils.collection.ImmutableList;
+import com.alee.utils.collection.ImmutableSet;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
+import java.io.File;
+import java.io.InputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.net.URL;
+import java.util.*;
 
 /**
+ * {@link Dictionary} can store multiple language {@link Record}s and {@link Dictionary}s.
+ * {@link Dictionary} is a main component used within {@link com.alee.managers.language.LanguageManager} to access actual translations.
+ *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>
+ * @see com.alee.managers.language.LanguageManager
+ * @see com.alee.managers.language.Language
+ * @see Record
+ * @see TranslationInformation
  */
 
 @XStreamAlias ( "Dictionary" )
-public final class Dictionary implements Serializable
+public final class Dictionary implements Identifiable, Mergeable, Cloneable, Serializable
 {
+    /**
+     * {@link Dictionary} identifier prefix.
+     */
     private static final String ID_PREFIX = "DIC";
 
-    @XStreamAsAttribute
-    private String id;
+    /**
+     * Unique {@link Dictionary} identifier.
+     * It is used to distinct {@link Dictionary} instances in runtime.
+     */
+    private final transient String id;
 
+    /**
+     * {@link Dictionary} name.
+     * This is optional infromation that can be missing.
+     */
     @XStreamAsAttribute
     private String name;
 
+    /**
+     * {@link Dictionary} key prefix.
+     * Prefix is optional and will simply be ignored if {@code null} or blank.
+     * If prefix is specified it will be added in the final language key to all {@link Record}s and sub-{@link Dictionary}s.
+     */
     @XStreamAsAttribute
     private String prefix;
 
-    @XStreamAsAttribute
-    private String author;
-
-    @XStreamAsAttribute
-    private String creationDate;
-
-    @XStreamAsAttribute
-    private String notes;
-
+    /**
+     * {@link List} of {@link Record}s available in this {@link Dictionary}.
+     * These are the main translation containers and provide all necessary information.
+     * Though this {@link List} can be empty if this {@link Dictionary} only contains sub-{@link Dictionary}s.
+     */
     @XStreamImplicit ( itemFieldName = "record" )
     private List<Record> records;
 
+    /**
+     * {@link List} of sub-{@link Dictionary}s available in this {@link Dictionary}.
+     * Sub-{@link Dictionary}s can be provided to group nested {@link Record}s or simply for convenience.
+     */
     @XStreamImplicit ( itemFieldName = "Dictionary" )
-    private List<Dictionary> subdictionaries;
+    private List<Dictionary> dictionaries;
 
-    @XStreamAlias ( "LanguageInfo" )
-    private List<LanguageInfo> languageInfos;
+    /**
+     * {@link List} of {@link TranslationInformation}s about translations available in this {@link Dictionary}.
+     * This is optional infromation and it can be missing if not provided explicitely for this {@link Dictionary}.
+     */
+    @XStreamAlias ( "Translations" )
+    private List<TranslationInformation> translations;
 
+    /**
+     * Cached {@link List} of all {@link Locale}s presented by this {@link Dictionary}.
+     */
+    private transient List<Locale> allLocales;
+
+    /**
+     * Cached {@link List} of all {@link Locale}s supported by this {@link Dictionary}.
+     * {@link Locale} is supported only if all {@link Record}s within this {@link Dictionary} support it.
+     */
+    private transient List<Locale> supportedLocales;
+
+    /**
+     * {@link Map} containing {@link Record}s cached by their key.
+     */
+    private transient Map<String, Record> recordsCache;
+
+    /**
+     * {@link Map} containing {@link Dictionary}s cached by {@link Record} keys.
+     */
+    private transient Map<String, Dictionary> dictionariesCache;
+
+    /**
+     * Constructs new {@link Dictionary}.
+     */
     public Dictionary ()
     {
-        super ();
-        setId ();
+        this ( ( String ) null, null );
     }
 
+    /**
+     * Constructs new {@link Dictionary}.
+     *
+     * @param prefix {@link Dictionary} key prefix
+     */
     public Dictionary ( final String prefix )
     {
-        super ();
-        setId ();
-        setPrefix ( prefix );
+        this ( prefix, null );
     }
 
+    /**
+     * Constructs new {@link Dictionary}.
+     *
+     * @param prefix {@link Dictionary} key prefix
+     * @param name   {@link Dictionary} name
+     */
     public Dictionary ( final String prefix, final String name )
     {
         super ();
-        setId ();
-        setPrefix ( prefix );
-        setName ( name );
+        this.id = TextUtils.generateId ( ID_PREFIX );
+        this.prefix = prefix;
+        this.name = name;
     }
 
-    public Dictionary ( final String prefix, final String name, final String author )
+    /**
+     * Loads {@link Dictionary} from the specified resource.
+     *
+     * @param nearClass {@link Class} used to locale resource
+     * @param resource  resource to load {@link Dictionary} from
+     */
+    public Dictionary ( final Class nearClass, final String resource )
     {
         super ();
-        setId ();
-        setPrefix ( prefix );
-        setName ( name );
-        setAuthor ( author );
+        this.id = TextUtils.generateId ( ID_PREFIX );
+        XmlUtils.getXStream ().fromXML ( nearClass.getResourceAsStream ( resource ), this );
     }
 
-    public Dictionary ( final String prefix, final String name, final String author, final String creationDate )
+    /**
+     * Loads {@link Dictionary} from the specified {@link URL}.
+     *
+     * @param url {@link URL} to load {@link Dictionary} from
+     */
+    public Dictionary ( final URL url )
     {
         super ();
-        setId ();
-        setPrefix ( prefix );
-        setName ( name );
-        setAuthor ( author );
-        setCreationDate ( creationDate );
+        this.id = TextUtils.generateId ( ID_PREFIX );
+        XmlUtils.getXStream ().fromXML ( url, this );
     }
 
-    public Dictionary ( final String prefix, final String name, final String author, final String creationDate, final String notes )
+    /**
+     * Loads {@link Dictionary} from the specified {@link File}.
+     *
+     * @param file {@link File} to load {@link Dictionary} from
+     */
+    public Dictionary ( final File file )
     {
         super ();
-        setId ();
-        setPrefix ( prefix );
-        setName ( name );
-        setAuthor ( author );
-        setCreationDate ( creationDate );
-        setNotes ( notes );
+        this.id = TextUtils.generateId ( ID_PREFIX );
+        XmlUtils.getXStream ().fromXML ( file, this );
     }
 
+    /**
+     * Loads {@link Dictionary} from the specified {@link InputStream}.
+     *
+     * @param inputStream {@link InputStream} to load {@link Dictionary} from
+     */
+    public Dictionary ( final InputStream inputStream )
+    {
+        super ();
+        this.id = TextUtils.generateId ( ID_PREFIX );
+        XmlUtils.getXStream ().fromXML ( inputStream, this );
+    }
+
+    @Override
     public String getId ()
     {
-        if ( id == null )
-        {
-            setId ();
-        }
         return id;
     }
 
-    public void setId ()
-    {
-        this.id = TextUtils.generateId ( ID_PREFIX );
-    }
-
-    public void setId ( final String id )
-    {
-        this.id = id;
-    }
-
+    /**
+     * Returns {@link Dictionary} name.
+     *
+     * @return {@link Dictionary} name
+     */
     public String getName ()
     {
         return name;
     }
 
-    public void setName ( final String name )
+    /**
+     * Sets {@link Dictionary} name.
+     *
+     * @param name new {@link Dictionary} name
+     */
+    public synchronized void setName ( final String name )
     {
         this.name = name;
     }
 
+    /**
+     * Returns {@link Dictionary} prefix.
+     *
+     * @return {@link Dictionary} prefix
+     */
     public String getPrefix ()
     {
         return prefix;
     }
 
-    public void setPrefix ( final String prefix )
+    /**
+     * Sets {@link Dictionary} prefix.
+     *
+     * @param prefix new {@link Dictionary} prefix
+     */
+    public synchronized void setPrefix ( final String prefix )
     {
         this.prefix = prefix;
     }
 
-    public String getAuthor ()
+    /**
+     * Returns amount of {@link Record}s in this {@link Dictionary}.
+     * Note that this method doesn't count {@link Record}s from sub-{@link Dictionary}s.
+     *
+     * @return amount of {@link Record}s in this {@link Dictionary}
+     */
+    public synchronized int recordsCount ()
     {
-        return author;
+        return records != null ? records.size () : 0;
     }
 
-    public void setAuthor ( final String author )
+    /**
+     * Returns total amount of {@link Record}s in this {@link Dictionary} and all sub-{@link Dictionary}s.
+     *
+     * @return total amount of {@link Record}s in this {@link Dictionary} and all sub-{@link Dictionary}s
+     */
+    public synchronized int totalRecordsCount ()
     {
-        this.author = author;
+        int count = records != null ? records.size () : 0;
+        if ( CollectionUtils.notEmpty ( dictionaries ) )
+        {
+            for ( final Dictionary dictionary : dictionaries )
+            {
+                count += dictionary.totalRecordsCount ();
+            }
+        }
+        return count;
     }
 
-    public String getCreationDate ()
+    /**
+     * Returns {@link List} of {@link Record}s this {@link Dictionary} contains.
+     *
+     * @return {@link List} of {@link Record}s this {@link Dictionary} contains
+     */
+    public synchronized List<Record> getRecords ()
     {
-        return creationDate;
+        return records != null ? new ImmutableList<Record> ( records ) : new ImmutableList<Record> ();
     }
 
-    public void setCreationDate ( final String creationDate )
-    {
-        this.creationDate = creationDate;
-    }
-
-    public String getNotes ()
-    {
-        return notes;
-    }
-
-    public void setNotes ( final String notes )
-    {
-        this.notes = notes;
-    }
-
-    public List<Record> getRecords ()
-    {
-        return records;
-    }
-
-    public void setRecords ( final List<Record> records )
+    /**
+     * Sets {@link List} of {@link Record}s for this {@link Dictionary}.
+     *
+     * @param records new {@link List} of {@link Record}s for this {@link Dictionary}
+     */
+    public synchronized void setRecords ( final List<Record> records )
     {
         this.records = records;
     }
 
-    public List<Dictionary> getSubdictionaries ()
+    /**
+     * Returns {@link Record} for the specified language key.
+     * Search will be perfomed in this {@link Dictionary} and all sub-{@link Dictionary}s.
+     *
+     * @param key    {@link Record} language key
+     * @param locale {@link Locale}
+     * @return {@link Record} for the specified language key
+     */
+    public synchronized Record getRecord ( final String key, final Locale locale )
     {
-        return subdictionaries;
-    }
-
-    public void setSubdictionaries ( final List<Dictionary> subdictionaries )
-    {
-        this.subdictionaries = subdictionaries;
-    }
-
-    public List<LanguageInfo> getLanguageInfos ()
-    {
-        return languageInfos;
-    }
-
-    public void setLanguageInfos ( final List<LanguageInfo> languageInfos )
-    {
-        this.languageInfos = languageInfos;
-    }
-
-    public LanguageInfo getLanguageInfo ( final String language )
-    {
-        if ( languageInfos != null )
+        final Record result;
+        final String cacheKey = key + "." + LanguageUtils.toString ( locale );
+        if ( recordsCache != null && recordsCache.containsKey ( cacheKey ) )
         {
-            for ( final LanguageInfo languageInfo : languageInfos )
+            // Cached record in this dictionary
+            result = recordsCache.get ( cacheKey );
+        }
+        else
+        {
+            final String dicPrefix = usablePrefix ();
+            final String subKey = key.startsWith ( dicPrefix ) ? key.substring ( dicPrefix.length () ) : null;
+            if ( dictionariesCache != null && dictionariesCache.containsKey ( cacheKey ) )
             {
-                if ( languageInfo.getLang ().equals ( language ) )
+                // Cached dictionary that contains record
+                result = dictionariesCache.get ( cacheKey ).getRecord ( subKey, locale );
+            }
+            else if ( subKey != null )
+            {
+                Record record = null;
+                Dictionary source = this;
+
+                final Comparator<Record> comparator = new RecordCountryComparator ( locale );
+
+                // Resolving most fitting record within this dictionary
+                if ( CollectionUtils.notEmpty ( records ) )
                 {
-                    return languageInfo;
+                    // Collecting records for the key
+                    final List<Record> fitting = collectLocalRecords ( subKey, new ArrayList<Record> ( 3 ) );
+
+                    // Resolving most fitting one
+                    record = CollectionUtils.max ( fitting, comparator );
+                }
+
+                // Resolving most fitting record within this dictionary and all sub-dictionaries
+                if ( CollectionUtils.notEmpty ( dictionaries ) )
+                {
+                    for ( final Dictionary dictionary : dictionaries )
+                    {
+                        // Resolving most fitting one from sub-dictionary
+                        final Record subRecord = dictionary.getRecord ( subKey, locale );
+
+                        // Resolving most fitting one
+                        if ( subRecord != null && ( record == null || comparator.compare ( record, subRecord ) > 0 ) )
+                        {
+                            record = subRecord;
+                            source = dictionary;
+                        }
+                    }
+                }
+                result = record;
+
+                // Caching result
+                if ( source == this )
+                {
+                    if ( recordsCache == null )
+                    {
+                        recordsCache = new HashMap<String, Record> ( recordsCount () );
+                    }
+                    recordsCache.put ( cacheKey, result );
+                }
+                else
+                {
+                    if ( dictionariesCache == null )
+                    {
+                        dictionariesCache = new HashMap<String, Dictionary> ( dictionariesCount () * 5 );
+                    }
+                    dictionariesCache.put ( cacheKey, source );
+                }
+            }
+            else
+            {
+                // Key doesn't start with dictionary prefix
+                result = null;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Returns {@link List} of {@link Record}s for the specified language key.
+     * Without specific {@link Locale} multiple {@link Record}s might be returned if translations for the same key are spreaded.
+     *
+     * @param key {@link Record} language key
+     * @return {@link List} of {@link Record}s for the specified language key
+     */
+    private synchronized List<Record> getRecords ( final String key )
+    {
+        return getRecords ( key, new ArrayList<Record> () );
+    }
+
+    /**
+     * Returns {@link List} of {@link Record}s for the specified language key.
+     * This method doesn't ask for {@link Locale}, so multiple {@link Record}s can be returned as a result.
+     *
+     * @param key     {@link Record} language key
+     * @param results {@link List} to collect {@link Record}s into
+     * @return {@link List} of {@link Record}s for the specified language key
+     */
+    private synchronized List<Record> getRecords ( final String key, final List<Record> results )
+    {
+        final String dicPrefix = usablePrefix ();
+        final String subKey = key.startsWith ( dicPrefix ) ? key.substring ( dicPrefix.length () ) : null;
+        if ( subKey != null )
+        {
+            collectLocalRecords ( subKey, results );
+            if ( CollectionUtils.notEmpty ( dictionaries ) )
+            {
+                for ( final Dictionary dictionary : dictionaries )
+                {
+                    dictionary.getRecords ( subKey, results );
                 }
             }
         }
-        return null;
+        return results;
     }
 
-    public void addLanguageInfo ( final LanguageInfo info )
+    /**
+     * Returns {@link List} of {@link Record}s from this {@link Dictionary} only for the specified language key.
+     * This method doesn't ask for {@link Locale}, so multiple {@link Record}s can be returned as a result.
+     *
+     * @param key     {@link Record} language key
+     * @param results {@link List} to collect {@link Record}s into
+     * @return {@link List} of {@link Record}s from this {@link Dictionary} only for the specified language key
+     */
+    private synchronized List<Record> collectLocalRecords ( final String key, final List<Record> results )
     {
-        if ( languageInfos == null )
+        if ( CollectionUtils.notEmpty ( records ) )
         {
-            languageInfos = new ArrayList<LanguageInfo> ( 1 );
-        }
-        final Iterator<LanguageInfo> iterator = languageInfos.iterator ();
-        while ( iterator.hasNext () )
-        {
-            final LanguageInfo next = iterator.next ();
-            if ( next.getLang ().equals ( info.getLang () ) )
+            for ( final Record record : records )
             {
-                iterator.remove ();
-                break;
+                if ( CompareUtils.equals ( record.getKey (), key ) )
+                {
+                    results.add ( record );
+                }
             }
         }
-        languageInfos.add ( info );
+        return results;
     }
 
-    private void checkRecords ()
+    /**
+     * Adds new {@link Record} into this {@link Dictionary} and returns it.
+     *
+     * @param record {@link Record} to add
+     * @return added {@link Record}
+     */
+    public synchronized Record addRecord ( final Record record )
     {
         if ( records == null )
         {
             records = new ArrayList<Record> ( 1 );
         }
-    }
 
-    public Record addRecord ( final String key, final String language, final String text )
-    {
-        return addRecord ( key, new Value ( language, text ) );
-    }
+        // Adding record
+        records.add ( record );
 
-    public Record addRecord ( final String key, final String language, final Character mnemonic, final String text )
-    {
-        return addRecord ( key, new Value ( language, mnemonic, text ) );
-    }
+        // Destroying caches
+        destroyRecordCaches ( record );
 
-    public Record addRecord ( final String key, final Value... values )
-    {
-        return addRecord ( new Record ( key, values ) );
-    }
-
-    public Record addRecord ( final String key, final List<Value> values )
-    {
-        return addRecord ( new Record ( key, values ) );
-    }
-
-    public Record addRecord ( final Record record )
-    {
-        checkRecords ();
-
-        // Records merge used within global dictionary
-        for ( final Record r : records )
-        {
-            if ( r.getKey ().equals ( record.getKey () ) )
-            {
-                if ( record.getHotkey () == null )
-                {
-                    record.setHotkey ( r.getHotkey () );
-                }
-                for ( final Value value : r.getValues () )
-                {
-                    if ( !record.hasValue ( value.getLang () ) )
-                    {
-                        record.addValue ( value );
-                    }
-                }
-                return r;
-            }
-        }
-
-        this.records.add ( record );
         return record;
     }
 
-    public void removeRecord ( final Record record )
+    /**
+     * Removes {@link Record} from this {@link Dictionary}.
+     *
+     * @param record {@link Record} to remove
+     */
+    public synchronized void removeRecord ( final Record record )
     {
         if ( records != null )
         {
-            this.records.remove ( record );
+            // Removing record
+            records.remove ( record );
+
+            // Destroying caches
+            destroyRecordCaches ( record );
         }
     }
 
-    public void removeRecord ( final String key )
+    /**
+     * Removes {@link Record} with the specified key from this {@link Dictionary}.
+     *
+     * @param key key of {@link Record} to remove
+     */
+    public synchronized void removeRecord ( final String key )
     {
-        if ( records != null )
+        if ( CollectionUtils.notEmpty ( records ) )
         {
-            for ( int i = 0; i < records.size (); i++ )
+            final Iterator<Record> iterator = records.iterator ();
+            while ( iterator.hasNext () )
             {
-                if ( records.get ( i ).getKey ().equals ( key ) )
+                final Record record = iterator.next ();
+                if ( record.getKey ().equals ( key ) )
                 {
-                    records.remove ( i );
+                    // Removing record
+                    iterator.remove ();
+
+                    // Destroying caches
+                    destroyRecordCaches ( record );
+
                     break;
                 }
             }
         }
     }
 
-    public void removeLanguage ( final String language )
+    /**
+     * Destroys caches for the specified {@link Dictionary}.
+     *
+     * @param record {@link Dictionary} to destroy caches for
+     */
+    private void destroyRecordCaches ( final Record record )
+    {
+        // Clearing
+        clearLocaleCaches ();
+        if ( recordsCache != null || dictionariesCache != null )
+        {
+            final Set<String> keys = new ImmutableSet<String> ( record.getKey () );
+            if ( recordsCache != null )
+            {
+                destroyKeys ( recordsCache.keySet ().iterator (), keys );
+            }
+            if ( dictionariesCache != null )
+            {
+                destroyKeys ( dictionariesCache.keySet ().iterator (), keys );
+            }
+        }
+    }
+
+    /**
+     * Removes all {@link Record}s from this {@link Dictionary}.
+     */
+    public synchronized void clearRecords ()
     {
         if ( records != null )
         {
-            for ( int i = records.size () - 1; i >= 0; i-- )
+            // Removing all records
+            records.clear ();
+            records = null;
+
+            // Destroying caches
+            destroyRecordCaches ();
+        }
+    }
+
+    /**
+     * Destroys caches all {@link Record} caches.
+     */
+    private void destroyRecordCaches ()
+    {
+        clearLocaleCaches ();
+        if ( recordsCache != null )
+        {
+            recordsCache.clear ();
+            recordsCache = null;
+        }
+    }
+
+    /**
+     * Returns {@link Set} of all {@link Record} keys for this {@link Dictionary}.
+     * This will include all keys for {@link Record}s in sub-{@link Dictionary}s.
+     *
+     * @return {@link Set} of all {@link Record} keys for this {@link Dictionary}
+     */
+    public synchronized Set<String> getKeys ()
+    {
+        return getKeys ( "" );
+    }
+
+    /**
+     * Returns {@link Set} of all {@link Record} keys for this {@link Dictionary}.
+     * This will include all keys for {@link Record}s in sub-{@link Dictionary}s.
+     *
+     * @param prefix hierarchy prefix
+     * @return {@link Set} of all {@link Record} keys for this {@link Dictionary}
+     */
+    private Set<String> getKeys ( final String prefix )
+    {
+        return collectKeys ( prefix, new HashSet<String> ( totalRecordsCount () ) );
+    }
+
+    /**
+     * Returns {@link Set} of all {@link Record} keys for this {@link Dictionary}.
+     * This will include all keys for {@link Record}s in sub-{@link Dictionary}s.
+     *
+     * @param prefix hierarchy prefix
+     * @param keys   {@link Set} to collect {@link Record} keys into
+     * @return {@link Set} of all {@link Record} keys for this {@link Dictionary}
+     */
+    private Set<String> collectKeys ( final String prefix, final Set<String> keys )
+    {
+        final String p = prefix + usablePrefix ();
+        if ( records != null )
+        {
+            for ( final Record record : records )
             {
-                records.get ( i ).removeValue ( language );
-                if ( records.get ( i ).size () == 0 )
+                keys.add ( p + record.getKey () );
+            }
+        }
+        if ( dictionaries != null )
+        {
+            for ( final Dictionary dictionary : dictionaries )
+            {
+                dictionary.collectKeys ( p, keys );
+            }
+        }
+        return keys;
+    }
+
+    /**
+     * Returns amount of sub-{@link Dictionary}s in this {@link Dictionary}.
+     *
+     * @return amount of sub-{@link Dictionary}s in this {@link Dictionary}
+     */
+    public synchronized int dictionariesCount ()
+    {
+        return dictionaries != null ? dictionaries.size () : 0;
+    }
+
+    /**
+     * Returns {@link List} of {@link Dictionary}s this {@link Dictionary} contains.
+     *
+     * @return {@link List} of {@link Dictionary}s this {@link Dictionary} contains
+     */
+    public synchronized List<Dictionary> getDictionaries ()
+    {
+        return dictionaries != null ? new ImmutableList<Dictionary> ( dictionaries ) : new ImmutableList<Dictionary> ();
+    }
+
+    /**
+     * Sets {@link List} of {@link Dictionary}s for this {@link Dictionary}.
+     *
+     * @param dictionaries new {@link List} of {@link Dictionary}s for this {@link Dictionary}
+     */
+    public synchronized void setDictionaries ( final List<Dictionary> dictionaries )
+    {
+        this.dictionaries = dictionaries;
+    }
+
+    /**
+     * Adds new child {@link Dictionary}.
+     *
+     * @param dictionary child {@link Dictionary} to add
+     */
+    public synchronized void addDictionary ( final Dictionary dictionary )
+    {
+        // Ensuring dictionaries list exists
+        if ( dictionaries == null )
+        {
+            dictionaries = new ArrayList<Dictionary> ();
+        }
+
+        // Adding dictionary
+        dictionaries.add ( dictionary );
+
+        // Destroying caches
+        destroyDictionaryCaches ( dictionary );
+    }
+
+    /**
+     * Removes child {@link Dictionary}.
+     *
+     * @param dictionary child {@link Dictionary} to remove
+     */
+    public synchronized void removeDictionary ( final Dictionary dictionary )
+    {
+        if ( dictionaries != null )
+        {
+            // Removing dictionary
+            dictionaries.remove ( dictionary );
+
+            // Destroying caches
+            destroyDictionaryCaches ( dictionary );
+        }
+    }
+
+    /**
+     * Destroys caches for the specified {@link Dictionary}.
+     *
+     * @param dictionary {@link Dictionary} to destroy caches for
+     */
+    private void destroyDictionaryCaches ( final Dictionary dictionary )
+    {
+        clearLocaleCaches ();
+        if ( recordsCache != null || dictionariesCache != null )
+        {
+            final Set<String> keys = dictionary.getKeys ( usablePrefix () );
+            if ( recordsCache != null )
+            {
+                destroyKeys ( recordsCache.keySet ().iterator (), keys );
+            }
+            if ( dictionariesCache != null )
+            {
+                destroyKeys ( dictionariesCache.keySet ().iterator (), keys );
+            }
+        }
+    }
+
+    /**
+     * Clears all locale caches.
+     */
+    private void clearLocaleCaches ()
+    {
+        if ( allLocales != null )
+        {
+            allLocales.clear ();
+            allLocales = null;
+        }
+        if ( supportedLocales != null )
+        {
+            supportedLocales.clear ();
+            supportedLocales = null;
+        }
+    }
+
+    /**
+     * Destroys caches for the specified keys.
+     *
+     * @param cachedKeys cached keys
+     * @param keys       keys to remove from cache
+     */
+    private void destroyKeys ( final Iterator<String> cachedKeys, final Set<String> keys )
+    {
+        while ( cachedKeys.hasNext () )
+        {
+            final String cachedKey = cachedKeys.next ();
+            for ( final String key : keys )
+            {
+                if ( cachedKey.startsWith ( key ) )
                 {
-                    records.remove ( i );
+                    cachedKeys.remove ();
+                    break;
                 }
             }
         }
     }
 
-    public void clear ()
+    /**
+     * Removes all child {@link Dictionary}s.
+     */
+    public synchronized void clearDictionaries ()
     {
-        if ( records != null )
+        if ( dictionaries != null )
         {
-            records.clear ();
+            // Removing all dictionaries
+            dictionaries.clear ();
+            dictionaries = null;
+
+            // Destroying caches
+            destroyDictionaryCaches ();
         }
     }
 
-    public int size ()
+    /**
+     * Destroys caches all {@link Dictionary} caches.
+     */
+    private void destroyDictionaryCaches ()
     {
-        return records != null ? records.size () : 0;
-    }
-
-    public void addSubDictionary ( final Dictionary dictionary )
-    {
-        checkSubdictionaries ();
-        this.subdictionaries.add ( dictionary );
-    }
-
-    private void checkSubdictionaries ()
-    {
-        if ( subdictionaries == null )
+        if ( dictionariesCache != null )
         {
-            subdictionaries = new ArrayList<Dictionary> ();
+            dictionariesCache.clear ();
+            dictionariesCache = null;
         }
     }
 
-    public void removeSubDictionary ( final Dictionary dictionary )
+    /**
+     * Returns {@link List} of {@link TranslationInformation}s contained in this dictionary.
+     *
+     * @return {@link List} of {@link TranslationInformation}s contained in this dictionary
+     */
+    public synchronized List<TranslationInformation> getTranslations ()
     {
-        if ( subdictionaries != null )
+        return translations != null ? new ImmutableList<TranslationInformation> ( translations ) :
+                new ImmutableList<TranslationInformation> ();
+    }
+
+    /**
+     * Sets {@link List} of {@link TranslationInformation}s for this dictionary.
+     *
+     * @param translations new {@link List} of {@link TranslationInformation}s for this dictionary
+     */
+    public synchronized void setTranslations ( final List<TranslationInformation> translations )
+    {
+        this.translations = translations;
+    }
+
+    /**
+     * Returns {@link TranslationInformation} for the specified {@link Locale}.
+     *
+     * @param locale {@link Locale}
+     * @return {@link TranslationInformation} for the specified {@link Locale}
+     */
+    public synchronized TranslationInformation getTranslation ( final Locale locale )
+    {
+        final List<TranslationInformation> translations = new ArrayList<TranslationInformation> ( 1 + dictionariesCount () );
+
+        // Collecting existing information on provided translations
+        collectLanguages ( locale, translations );
+
+        // Creating auto-generated information if none provided
+        // This can be useful when information is not provided explicitely in any of the dictionaries
+        if ( CollectionUtils.isEmpty ( translations ) )
         {
-            this.subdictionaries.remove ( dictionary );
+            final ArrayList<Locale> locales = new ArrayList<Locale> ();
+
+            // Collecting supported locales
+            collectLocales ( locales );
+
+            // Creating auto-generated information on each locale
+            for ( final Locale lc : locales )
+            {
+                translations.add ( new TranslationInformation ( lc, lc.getDisplayLanguage (), "WebLaF" ) );
+            }
+        }
+
+        // Choosing most fitting one
+        final TranslationInformation info;
+        if ( translations.size () > 1 )
+        {
+            // Choosing most fitting translation according to comparator
+            info = Collections.max ( translations, new TranslationInformationComparator ( locale ) );
+        }
+        else if ( translations.size () == 1 )
+        {
+            // There is only one existing translation fitting the specified locale
+            info = translations.get ( 0 );
+        }
+        else
+        {
+            // No fitting translations present in this dictionary for the specified locale
+            info = null;
+        }
+
+        return info;
+    }
+
+    /**
+     * Colects {@link TranslationInformation}s related to specified {@link Locale} into provided {@link List}.
+     *
+     * @param locale       {@link Locale} to collect {@link TranslationInformation}s for
+     * @param translations {@link List} to collect {@link TranslationInformation}s into
+     */
+    private void collectLanguages ( final Locale locale, final List<TranslationInformation> translations )
+    {
+        if ( CollectionUtils.notEmpty ( this.translations ) )
+        {
+            for ( final TranslationInformation language : this.translations )
+            {
+                if ( language.getLocale ().getLanguage ().equals ( locale.getLanguage () ) )
+                {
+                    translations.add ( language );
+                }
+            }
+        }
+        if ( CollectionUtils.notEmpty ( dictionaries ) )
+        {
+            for ( final Dictionary subdictionary : dictionaries )
+            {
+                subdictionary.collectLanguages ( locale, translations );
+            }
         }
     }
 
-    public int subdictionaries ()
+    /**
+     * Colects supported {@link Locale}s into provided {@link List}.
+     *
+     * {@link Locale}s will be taken from the first {@link Record} that has {@link Value}s. This works on assumption every or at least first
+     * {@link Record} in dictionary supports all {@link Locale}s used across all other {@link Record}s.
+     *
+     * @param locales {@link List} to collect supported {@link Locale}s into
+     */
+    private void collectLocales ( final List<Locale> locales )
     {
-        return subdictionaries != null ? subdictionaries.size () : 0;
-    }
-
-    public List<String> getSupportedLanguages ()
-    {
-        return getSupportedLanguages ( new ArrayList<String> () );
-    }
-
-    public List<String> getSupportedLanguages ( final List<String> languages )
-    {
-        if ( records != null )
+        if ( CollectionUtils.notEmpty ( records ) )
         {
             for ( final Record record : records )
             {
-                record.getSupportedLanguages ( languages );
+                // Collect all locales from first record we encounter
+                for ( final Value value : record.getValues () )
+                {
+                    locales.add ( value.getLocale () );
+                }
+
+                // We only need a single set of locales
+                if ( CollectionUtils.notEmpty ( locales ) )
+                {
+                    break;
+                }
             }
         }
-        if ( subdictionaries != null )
+        if ( CollectionUtils.isEmpty ( locales ) && CollectionUtils.notEmpty ( dictionaries ) )
         {
-            for ( final Dictionary dictionary : subdictionaries )
+            for ( final Dictionary subdictionary : dictionaries )
             {
-                dictionary.getSupportedLanguages ( languages );
+                // Trying to collect locales from subdictionaries
+                subdictionary.collectLocales ( locales );
+
+                // We only need a single set of locales
+                if ( CollectionUtils.notEmpty ( locales ) )
+                {
+                    break;
+                }
             }
         }
-        return languages;
+    }
+
+    /**
+     * Adds {@link TranslationInformation} for this {@link Dictionary}.
+     *
+     * @param translation {@link TranslationInformation} to add
+     */
+    public synchronized void addTranslation ( final TranslationInformation translation )
+    {
+        if ( translations == null )
+        {
+            translations = new ArrayList<TranslationInformation> ( 1 );
+        }
+        translations.add ( translation );
+    }
+
+    /**
+     * Returns {@link List} of all {@link Locale} from this {@link Dictionary}.
+     *
+     * @return {@link List} of all {@link Locale} from this {@link Dictionary}
+     */
+    public synchronized List<Locale> getAllLocales ()
+    {
+        if ( allLocales == null )
+        {
+            allLocales = new ArrayList<Locale> ();
+            collectAllLocales ( allLocales );
+        }
+        return new ImmutableList<Locale> ( allLocales );
+    }
+
+    /**
+     * Collects all {@link Locale}s from this {@link Dictionary}.
+     *
+     * @param locales {@link List} to put {@link Locale}s into
+     */
+    private void collectAllLocales ( final List<Locale> locales )
+    {
+        if ( CollectionUtils.notEmpty ( records ) )
+        {
+            for ( final Record record : records )
+            {
+                record.collectAllLocales ( locales );
+            }
+        }
+        if ( CollectionUtils.notEmpty ( dictionaries ) )
+        {
+            for ( final Dictionary dictionary : dictionaries )
+            {
+                dictionary.collectAllLocales ( locales );
+            }
+        }
+    }
+
+    /**
+     * Returns {@link List} of {@link Locale} supported by this {@link Dictionary}.
+     * Language codes are used to detect whether or not specific {@link Locale} is supported.
+     * We can't say that for instance "en_US" {@link Locale} is not supported if we have "en" or "en_GB" translation available.
+     * Even though it is not strict "supported" case it is much better than having fully distinct translation for each country.
+     *
+     * @return {@link List} of {@link Locale} supported by this {@link Dictionary}
+     */
+    public synchronized List<Locale> getSupportedLocales ()
+    {
+        if ( supportedLocales == null )
+        {
+            // Collecting all supported locales first
+            supportedLocales = new ArrayList<Locale> ( getAllLocales () );
+
+            // Collecting supported language codes
+            Set<String> supportedCodes = null;
+            final Set<String> keyCodes = new HashSet<String> ( supportedLocales.size () );
+            for ( final String key : getKeys () )
+            {
+                // Collecting unique locales for the key
+                final List<Locale> keyLocales = new ArrayList<Locale> ( 3 );
+                for ( final Record keyRecord : getRecords ( key ) )
+                {
+                    keyRecord.collectAllLocales ( keyLocales );
+                }
+
+                // Collecting unique language codes for this key
+                for ( final Locale keyLocale : keyLocales )
+                {
+                    final String code = keyLocale.getLanguage ();
+                    if ( !keyCodes.contains ( code ) )
+                    {
+                        keyCodes.add ( code );
+                    }
+                }
+
+                // Updating resulting language codes
+                if ( supportedCodes != null )
+                {
+                    // Filtering out language codes uns
+                    final Iterator<String> codesIterator = supportedCodes.iterator ();
+                    while ( codesIterator.hasNext () )
+                    {
+                        final String code = codesIterator.next ();
+                        if ( !keyCodes.contains ( code ) )
+                        {
+                            codesIterator.remove ();
+                        }
+                    }
+                }
+                else
+                {
+                    // Saving language codes from the first key we met as base set
+                    // It doesn't matter if first key we check has more or less locales supported since we are going to narrow it down
+                    supportedCodes = new HashSet<String> ( keyCodes );
+                }
+
+                // Clearing unique language codes for this key
+                keyCodes.clear ();
+            }
+
+            // Filtering out locales with unsupported language codes
+            final Iterator<Locale> localesIterator = supportedLocales.iterator ();
+            while ( localesIterator.hasNext () )
+            {
+                final Locale locale = localesIterator.next ();
+                if ( !supportedCodes.contains ( locale.getLanguage () ) )
+                {
+                    localesIterator.remove ();
+                }
+            }
+        }
+        return new ImmutableList<Locale> ( supportedLocales );
+    }
+
+    /**
+     * Returns usable prefix for this {@link Dictionary}.
+     *
+     * @return usable prefix for this {@link Dictionary}
+     */
+    private String usablePrefix ()
+    {
+        return TextUtils.notEmpty ( prefix ) ? prefix + "." : "";
     }
 
     @Override
@@ -414,8 +1058,8 @@ public final class Dictionary implements Serializable
     @Override
     public String toString ()
     {
-        return ( name != null ? name + " " : "" ) +
-                ( size () > 0 ? " (records: " + size () + ")" : "" ) +
-                ( subdictionaries () > 0 ? " (subdictionaries: " + subdictionaries () + ")" : "" );
+        return ( name != null ? name + " " : "" ) + ( getPrefix () != null ? " [" + getPrefix () + "]" : "" ) +
+                ( recordsCount () > 0 ? " [R:" + recordsCount () + "]" : "" ) +
+                ( dictionariesCount () > 0 ? " [D:" + dictionariesCount () + "]" : "" );
     }
 }

@@ -973,6 +973,8 @@ public class WebTimer
                     if ( shouldContinue ( cycleCount, id ) )
                     {
                         // Merge all events into single call to event dispatch thread
+                        // This approach is handy when you need to fire all timer listeners at once
+                        // Thought it might diminish UI responsiveness when fires take a lot of processing time
                         CoreSwingUtils.invokeAndWaitSafely ( new Runnable ()
                         {
                             @Override
@@ -989,6 +991,8 @@ public class WebTimer
                 else
                 {
                     // Make separate event calls to event dispatch thread
+                    // This approach is handy when all timer listeners don't need to be fired all at once
+                    // It will spread workload on EDT allowing UI to be responsive between the separate fires
                     for ( final ActionListener listener : listenerList )
                     {
                         // Check execution stop

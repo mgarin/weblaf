@@ -291,6 +291,14 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C>
                     popup.setVisible ( false );
                 }
             } );
+            calendar.registerKeyboardAction ( new ActionListener ()
+            {
+                @Override
+                public void actionPerformed ( final ActionEvent e )
+                {
+                    popup.setVisible ( false );
+                }
+            }, Hotkey.ESCAPE.getKeyStroke (), JComponent.WHEN_IN_FOCUSED_WINDOW );
             popup.add ( calendar );
 
             customizeCalendar ();

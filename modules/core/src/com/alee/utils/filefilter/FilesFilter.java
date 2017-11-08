@@ -17,7 +17,7 @@
 
 package com.alee.utils.filefilter;
 
-import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LM;
 
 import javax.swing.*;
 import java.io.File;
@@ -44,7 +44,7 @@ public class FilesFilter extends AbstractFileFilter
     @Override
     public String getDescription ()
     {
-        return LanguageManager.get ( "weblaf.file.filter.files" );
+        return LM.get ( "weblaf.file.filter.files" );
     }
 
     @Override

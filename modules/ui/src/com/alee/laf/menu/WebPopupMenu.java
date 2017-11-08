@@ -17,6 +17,8 @@
 
 package com.alee.laf.menu;
 
+import com.alee.managers.language.*;
+import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -30,7 +32,7 @@ import java.util.Map;
 /**
  * {@link JPopupMenu} extension class.
  * It contains various useful methods to simplify core component usage.
- * <p/>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -40,8 +42,8 @@ import java.util.Map;
  * @see PopupMenuPainter
  */
 
-public class WebPopupMenu extends JPopupMenu
-        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, SizeMethods<WebPopupMenu>
+public class WebPopupMenu extends JPopupMenu implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods,
+        LanguageMethods, LanguageEventMethods, SizeMethods<WebPopupMenu>
 {
     /**
      * Constructs new popup menu.
@@ -350,37 +352,88 @@ public class WebPopupMenu extends JPopupMenu
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
-    /**
-     * Returns the look and feel (L&amp;F) object that renders this component.
-     *
-     * @return the {@link WPopupMenuUI} object that renders this component
-     */
     @Override
-    public WPopupMenuUI getUI ()
+    public String getLanguage ()
     {
-        return ( WPopupMenuUI ) super.getUI ();
-    }
-
-    /**
-     * Sets the L&amp;F object that renders this component.
-     *
-     * @param ui {@link WPopupMenuUI}
-     */
-    public void setUI ( final WPopupMenuUI ui )
-    {
-        super.setUI ( ui );
+        return WebLanguageManager.getComponentKey ( this );
     }
 
     @Override
-    public void updateUI ()
+    public void setLanguage ( final String key, final Object... data )
     {
-        StyleManager.getDescriptor ( this ).updateUI ( this );
+        WebLanguageManager.registerComponent ( this, key, data );
     }
 
     @Override
-    public String getUIClassID ()
+    public void updateLanguage ( final Object... data )
     {
-        return StyleManager.getDescriptor ( this ).getUIClassId ();
+        WebLanguageManager.updateComponent ( this, data );
+    }
+
+    @Override
+    public void updateLanguage ( final String key, final Object... data )
+    {
+        WebLanguageManager.updateComponent ( this, key, data );
+    }
+
+    @Override
+    public void removeLanguage ()
+    {
+        WebLanguageManager.unregisterComponent ( this );
+    }
+
+    @Override
+    public boolean isLanguageSet ()
+    {
+        return WebLanguageManager.isRegisteredComponent ( this );
+    }
+
+    @Override
+    public void setLanguageUpdater ( final LanguageUpdater updater )
+    {
+        WebLanguageManager.registerLanguageUpdater ( this, updater );
+    }
+
+    @Override
+    public void removeLanguageUpdater ()
+    {
+        WebLanguageManager.unregisterLanguageUpdater ( this );
+    }
+
+    @Override
+    public void addLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.addLanguageListener ( this, listener );
+    }
+
+    @Override
+    public void removeLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.removeLanguageListener ( this, listener );
+    }
+
+    @Override
+    public void removeLanguageListeners ()
+    {
+        WebLanguageManager.removeLanguageListeners ( this );
+    }
+
+    @Override
+    public void addDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.addDictionaryListener ( this, listener );
+    }
+
+    @Override
+    public void removeDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.removeDictionaryListener ( this, listener );
+    }
+
+    @Override
+    public void removeDictionaryListeners ()
+    {
+        WebLanguageManager.removeDictionaryListeners ( this );
     }
 
     @Override
@@ -471,5 +524,38 @@ public class WebPopupMenu extends JPopupMenu
     public WebPopupMenu setPreferredSize ( final int width, final int height )
     {
         return SizeMethodsImpl.setPreferredSize ( this, width, height );
+    }
+
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link WPopupMenuUI} object that renders this component
+     */
+    @Override
+    public WPopupMenuUI getUI ()
+    {
+        return ( WPopupMenuUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link WPopupMenuUI}
+     */
+    public void setUI ( final WPopupMenuUI ui )
+    {
+        super.setUI ( ui );
+    }
+
+    @Override
+    public void updateUI ()
+    {
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

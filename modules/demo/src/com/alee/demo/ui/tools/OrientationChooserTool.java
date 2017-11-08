@@ -23,9 +23,10 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.combobox.WebComboBoxRenderer;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.language.LM;
+import com.alee.managers.language.Language;
 import com.alee.managers.language.LanguageListener;
 import com.alee.managers.language.LanguageManager;
-import com.alee.managers.language.data.Dictionary;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
@@ -47,7 +48,7 @@ import static java.awt.ComponentOrientation.RIGHT_TO_LEFT;
 public final class OrientationChooserTool extends WebPanel
 {
     /**
-     * Constructs new orientation chooser tool.
+     * Constructs new {@link OrientationChooserTool}.
      */
     public OrientationChooserTool ()
     {
@@ -55,7 +56,7 @@ public final class OrientationChooserTool extends WebPanel
 
         // Orientation chooser combobox
         final WebComboBox orientation = new WebComboBox ( DemoStyles.toolCombobox, new OrientationModel () );
-        orientation.setToolTip ( "demo.tool.orientation" );
+        orientation.setLanguage ( "demo.tool.orientation" );
         orientation.setSelectedItem ( WebLookAndFeel.getOrientation () );
         orientation.setRenderer ( new WebComboBoxRenderer ()
         {
@@ -70,7 +71,7 @@ public final class OrientationChooserTool extends WebPanel
             protected String textForValue ( final JList list, final Object value, final int index, final boolean isSelected,
                                             final boolean hasFocus )
             {
-                return LanguageManager.get ( "demo.tool.orientation." + ( value == LEFT_TO_RIGHT ? "ltr" : "rtl" ) );
+                return LM.get ( "demo.tool.orientation." + ( value == LEFT_TO_RIGHT ? "ltr" : "rtl" ) );
             }
         } );
         orientation.addActionListener ( new ActionListener ()
@@ -108,33 +109,7 @@ public final class OrientationChooserTool extends WebPanel
         }
 
         @Override
-        public void languageChanged ( final String oldLang, final String newLang )
-        {
-            fireContentsChanged ();
-        }
-
-        @Override
-        public void dictionaryAdded ( final Dictionary dictionary )
-        {
-            fireContentsChanged ();
-        }
-
-        @Override
-        public void dictionaryRemoved ( final Dictionary dictionary )
-        {
-            fireContentsChanged ();
-        }
-
-        @Override
-        public void dictionariesCleared ()
-        {
-            fireContentsChanged ();
-        }
-
-        /**
-         * Informs about model change.
-         */
-        protected void fireContentsChanged ()
+        public void languageChanged ( final Language oldLanguage, final Language newLanguage )
         {
             super.fireContentsChanged ( this, 0, getSize () );
         }

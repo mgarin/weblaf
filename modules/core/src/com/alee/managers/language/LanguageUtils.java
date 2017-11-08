@@ -17,167 +17,91 @@
 
 package com.alee.managers.language;
 
-import com.alee.managers.language.data.Dictionary;
-import com.alee.managers.language.data.LanguageInfo;
-import com.alee.managers.language.data.Record;
+import com.alee.utils.TextUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 /**
- * This class provides a set of utilities to work with LanguageManager.
+ * A set of utility methods for {@link LanguageManager} and related classes.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>
+ * @see LanguageManager
  */
 
-public class LanguageUtils
+public final class LanguageUtils
 {
     /**
-     * Returns proper initial component text.
-     *
-     * @param text text provided into component constructor
-     * @param data language data, may not be passed
-     * @return proper initial component text
+     * Map with cached {@link Locale} instances.
+     * todo With JDK8 it can be replaced with appropriate {@link Locale} methods usage
      */
-    public static String getInitialText ( final String text, final Object... data )
-    {
-        return LanguageManager.isCheckComponentsTextForTranslations () ?
-                LanguageManager.contains ( text ) ? LanguageManager.get ( text, data ) : text : text;
-    }
+    private static final Map<String, Locale> localesCache = new HashMap<String, Locale> ( 5 );
 
     /**
-     * Registers proper initial component language key.
-     *
-     * @param component translated component
-     * @param text      text provided into component constructor
-     * @param data      language data, may not be passed
+     * Locale country separator.
      */
-    public static void registerInitialLanguage ( final LanguageMethods component, final String text, final Object... data )
+    private static final String COUNTRY_SEPARATOR = "-";
+
+    /**
+     * Returns {@link String} representation of {@link Locale}.
+     *
+     * @param locale {@link Locale} to convert into {@link String}
+     * @return {@link String} representation of {@link Locale}
+     */
+    public static String toString ( final Locale locale )
     {
-        if ( LanguageManager.isCheckComponentsTextForTranslations () && LanguageManager.contains ( text ) )
+        if ( locale != null )
         {
-            component.setLanguage ( text, data );
+            final String lang = ( locale.getLanguage () != null ? locale.getLanguage () : "" ).toLowerCase ( Locale.ROOT );
+            final String country = ( locale.getCountry () != null ? locale.getCountry () : "" ).toUpperCase ( Locale.ROOT );
+            return lang + ( TextUtils.notEmpty ( country ) ? COUNTRY_SEPARATOR + country : "" );
+        }
+        else
+        {
+            throw new LanguageException ( "Locale was not specified" );
         }
     }
 
     /**
-     * Returns all dictionary keys.
-     * This method returns complete keys for each record, not just record keys.
+     * Returns {@link Locale} parsed from its {@link String} representation.
      *
-     * @param dictionary dictionary to gather keys for
-     * @return all dictionary keys
+     * @param locale {@link String} to parse into {@link Locale}
+     * @return {@link Locale} parsed from its {@link String} representation
      */
-    public static List<String> gatherKeys ( final Dictionary dictionary )
+    public static Locale fromString ( final String locale )
     {
-        final List<String> keys = new ArrayList<String> ();
-        gatherKeys ( dictionary.getPrefix (), dictionary, keys );
-        return keys;
-    }
-
-    /**
-     * Returns all dictionary keys.
-     * This method returns complete keys for each record, not just record keys.
-     *
-     * @param prefix     key prefix
-     * @param dictionary dictionary to gather keys for
-     * @param keys       list to gather keys into
-     */
-    private static void gatherKeys ( String prefix, final Dictionary dictionary, final List<String> keys )
-    {
-        // Determining prefix
-        prefix = fixKeyPrefix ( prefix );
-
-        // Gathering keys
-        if ( dictionary.getRecords () != null )
+        if ( locale != null )
         {
-            for ( final Record record : dictionary.getRecords () )
+            final int s = locale.indexOf ( COUNTRY_SEPARATOR );
+            final String lang = ( s != -1 ? locale.substring ( 0, s ) : locale ).toLowerCase ( Locale.ROOT );
+            final String country = ( s != -1 ? locale.substring ( s + COUNTRY_SEPARATOR.length () ) : "" ).toUpperCase ( Locale.ROOT );
+            final String key = lang + ( TextUtils.notEmpty ( country ) ? COUNTRY_SEPARATOR + country : "" );
+            if ( !localesCache.containsKey ( key ) )
             {
-                keys.add ( prefix + record.getKey () );
+                localesCache.put ( key, new Locale ( lang, country ) );
             }
+            return localesCache.get ( key );
         }
-        if ( dictionary.getSubdictionaries () != null )
+        else
         {
-            for ( final Dictionary subDictionary : dictionary.getSubdictionaries () )
-            {
-                gatherKeys ( combineKeyPrefix ( prefix, subDictionary ), subDictionary, keys );
-            }
+            throw new LanguageException ( "Locale was not specified" );
         }
     }
 
     /**
-     * Merges specified dictionary with the global dictionary.
+     * Returns system {@link Locale}.
+     * Note that this is not purely "system" locale, but the one JVM receive at startup, it can also be preconfigured.
+     * Also it is not tied to {@link Locale#getDefault()} so it will still return {@link Locale} based on system properties.
      *
-     * @param mergeInto  dictionary to merge into
-     * @param dictionary dictionary to merge
+     * @return system {@link Locale}
      */
-    public static void mergeDictionary ( final Dictionary mergeInto, final Dictionary dictionary )
+    public static Locale getSystemLocale ()
     {
-        mergeDictionary ( dictionary.getPrefix (), mergeInto, dictionary );
-    }
-
-    /**
-     * Merges specified dictionary with the global dictionary.
-     *
-     * @param prefix     dictionary prefix
-     * @param mergeInto  dictionary to merge into
-     * @param dictionary dictionary to merge
-     */
-    private static void mergeDictionary ( String prefix, final Dictionary mergeInto, final Dictionary dictionary )
-    {
-        // Determining prefix
-        prefix = fixKeyPrefix ( prefix );
-
-        // Merging current level records
-        if ( dictionary.getRecords () != null )
-        {
-            for ( final Record record : dictionary.getRecords () )
-            {
-                final Record clone = record.clone ();
-                clone.setKey ( prefix + clone.getKey () );
-                mergeInto.addRecord ( clone );
-            }
-        }
-
-        // Merging language information data
-        if ( dictionary.getLanguageInfos () != null )
-        {
-            for ( final LanguageInfo info : dictionary.getLanguageInfos () )
-            {
-                mergeInto.addLanguageInfo ( info );
-            }
-        }
-
-        // Parsing sub-dictionaries
-        if ( dictionary.getSubdictionaries () != null )
-        {
-            for ( final Dictionary subDictionary : dictionary.getSubdictionaries () )
-            {
-                mergeDictionary ( combineKeyPrefix ( prefix, subDictionary ), mergeInto, subDictionary );
-            }
-        }
-    }
-
-    /**
-     * Returns fixed key prefix.
-     *
-     * @param prefix key prefix
-     * @return fixed key prefix
-     */
-    private static String fixKeyPrefix ( final String prefix )
-    {
-        return prefix != null && !prefix.equals ( "" ) && !prefix.endsWith ( "." ) ? prefix + "." : "";
-    }
-
-    /**
-     * Combines key prefix with dictionary prefix.
-     *
-     * @param prefix     key prefix
-     * @param dictionary dictionary
-     * @return key prefix combined with dictionary prefix
-     */
-    private static String combineKeyPrefix ( final String prefix, final Dictionary dictionary )
-    {
-        final String sp = dictionary.getPrefix ();
-        return prefix + ( sp != null && !sp.equals ( "" ) ? sp : "" );
+        final String language = System.getProperty ( "user.language" );
+        final String country = System.getProperty ( "user.country" );
+        final String variant = System.getProperty ( "user.variant" );
+        return new Locale ( language, country, variant );
     }
 }

@@ -33,7 +33,8 @@ import java.io.File;
 public class WebFileTableCellRenderer extends WebTableCellRenderer
 {
     @Override
-    protected void updateView ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row, final int column )
+    protected void updateView ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row,
+                                final int column )
     {
         // Preserving super settings
         super.updateView ( table, value, isSelected, hasFocus, row, column );

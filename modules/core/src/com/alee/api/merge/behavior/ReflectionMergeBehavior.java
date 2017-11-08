@@ -41,6 +41,10 @@ import java.util.List;
 public final class ReflectionMergeBehavior implements GlobalMergeBehavior<Object, Object, Object>
 {
     /**
+     * todo 1. Make result of merging objects with related (but not equal) classes configurable?
+     */
+
+    /**
      * Modifiers of fields to ignore.
      */
     private final List<ModifierType> ignoredModifiers;
@@ -57,88 +61,75 @@ public final class ReflectionMergeBehavior implements GlobalMergeBehavior<Object
     }
 
     @Override
-    public boolean supports ( final Merge merge, final Object object, final Object merged )
+    public boolean supports ( final Merge merge, final Object base, final Object merged )
     {
-        return ClassRelationType.of ( object, merged ).isRelated ();
+        return ClassRelationType.of ( base, merged ).isRelated ();
     }
 
     @Override
-    public Object merge ( final Merge merge, final Object object, final Object merged )
+    public Object merge ( final Merge merge, final Object base, final Object merged )
     {
         // Resolving object classes relation
-        final ClassRelationType relation = ClassRelationType.of ( object, merged );
+        final ClassRelationType relation = ClassRelationType.of ( base, merged );
 
-        // Resolving fields that should be merged
-        // This is required to avoid modifying inexistant object fields
-        final Class<?> fieldsClass = relation.isAncestor () ? object.getClass () : merged.getClass ();
-        final List<Field> fields = ReflectUtils.getFields ( fieldsClass );
-
-        // Continue only if there are any fields to merge
-        if ( CollectionUtils.notEmpty ( fields ) )
+        // Choosing resulting object based on relation
+        final Object result;
+        if ( relation.isDescendant () )
         {
-            // Checking whether values should be overwritten instead of being merged
-            final boolean overwrite = merged instanceof Overwriting && ( ( Overwriting ) merged ).isOverwrite ();
+            // When base object class is parent to merged object class we simply return merged object
+            // We can in theory merge fields that exist in parent object, but that wouldn't be too obvious
+            result = merged;
+        }
+        else
+        {
+            // Using fields from merged object as it either has the same class as base object or parent class
+            final List<Field> fields = ReflectUtils.getFields ( merged.getClass () );
 
-            // Performing merge for each separate field
-            for ( final Field field : fields )
+            // Continue only if there are any fields to merge
+            if ( CollectionUtils.notEmpty ( fields ) )
             {
-                // Ensure that this field should not be ignored
-                if ( CollectionUtils.notEmpty ( ignoredModifiers ) )
+                // Checking whether values should be overwritten instead of being merged
+                final boolean overwrite = merged instanceof Overwriting && ( ( Overwriting ) merged ).isOverwrite ();
+
+                // Performing merge for each separate field
+                for ( final Field field : fields )
                 {
-                    boolean ignore = false;
-                    final List<ModifierType> modifiers = ModifierType.get ( field );
-                    for ( final ModifierType ignoredModifier : ignoredModifiers )
+                    // Ensure that this field should not be ignored
+                    if ( ReflectUtils.hasNoneOfModifiers ( field, ignoredModifiers ) )
                     {
-                        if ( modifiers.contains ( ignoredModifier ) )
+                        try
                         {
-                            ignore = true;
-                            break;
+                            // Resolving merge result
+                            final Object mergeResult;
+                            if ( overwrite )
+                            {
+                                // Overwriting value if requested
+                                mergeResult = field.get ( merged );
+                            }
+                            else
+                            {
+                                // Merging non-primitive values
+                                final Object objectValue = field.get ( base );
+                                final Object mergedValue = field.get ( merged );
+                                mergeResult = mergedValue != null ? merge.merge ( objectValue, mergedValue ) : objectValue;
+                            }
+
+                            // Saving merged value
+                            ReflectUtils.setFieldValue ( base, field, mergeResult );
+                        }
+                        catch ( final Exception e )
+                        {
+                            // Throwing merge exception
+                            final String message = "Unable to merge field {%s} values for objects {%s} and {%s}";
+                            throw new MergeException ( String.format ( message, field, base, merged ), e );
                         }
                     }
-                    if ( ignore )
-                    {
-                        continue;
-                    }
-                }
-
-                try
-                {
-                    // Ensure we can access field value
-                    field.setAccessible ( true );
-
-                    // Resolving merge result
-                    final Object mergeResult;
-                    if ( overwrite )
-                    {
-                        // Overwriting value if requested
-                        mergeResult = field.get ( merged );
-                    }
-                    else
-                    {
-                        // Merging non-primitive values
-                        final Object objectValue = field.get ( object );
-                        final Object mergedValue = field.get ( merged );
-                        mergeResult = mergedValue != null ? merge.merge ( objectValue, mergedValue ) : objectValue;
-                    }
-
-                    // Saving merged value
-                    field.set ( object, mergeResult );
-                }
-                catch ( final Exception e )
-                {
-                    // Throwing merge exception
-                    final String message = "Unable to merge field {%s} values for objects {%s} and {%s}";
-                    throw new MergeException ( String.format ( message, field, object, merged ), e );
                 }
             }
 
             // Return base object where we merged field values
-            return object;
+            result = base;
         }
-        else
-        {
-            // Simply return merged object
-            return merged;
-        }
+        return result;
     }
 }

@@ -1,0 +1,38 @@
+<Dictionary name="WebLaF test dictionary" prefix="weblaf.test">
+
+    <!-- Simple record -->
+    <record key="record">
+        <value lang="en">English</value>
+        <value lang="ru">Русский</value>
+    </record>
+
+    <!-- Dictionary with country-related record -->
+    <Dictionary prefix="country">
+        <record key="record">
+            <value lang="en">English</value>
+            <value lang="en-US">US English</value>
+            <value lang="en-GB">GB English</value>
+            <value lang="ru">Русский</value>
+        </record>
+    </Dictionary>
+
+    <!-- Dictionary with multiple records for same key -->
+    <Dictionary prefix="multi">
+        <record key="record">
+            <value lang="en">English</value>
+        </record>
+        <record key="record">
+            <value lang="en-US">US English</value>
+        </record>
+        <record key="record">
+            <value lang="ru">Русский</value>
+        </record>
+    </Dictionary>
+
+    <!-- Language information -->
+    <Translations>
+        <Translation lang="en" title="English" author="mgarin" />
+        <Translation lang="ru" title="Русский" author="mgarin" />
+    </Translations>
+
+</Dictionary>

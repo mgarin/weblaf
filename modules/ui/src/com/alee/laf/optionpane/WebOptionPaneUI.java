@@ -20,7 +20,6 @@ package com.alee.laf.optionpane;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
-import com.alee.managers.language.LM;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
@@ -395,16 +394,13 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
                     final WebButton aButton;
                     if ( button instanceof Icon )
                     {
-                        aButton = new WebButton ( ( Icon ) button );
+                        final Icon icon = ( Icon ) button;
+                        aButton = new WebButton ( icon );
                     }
                     else
                     {
                         final String text = button.toString ();
                         aButton = new WebButton ( text );
-                        if ( LM.contains ( text ) )
-                        {
-                            aButton.setLanguage ( text );
-                        }
                     }
 
                     aButton.setName ( "OptionPane.button" );

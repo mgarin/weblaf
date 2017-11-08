@@ -20,7 +20,7 @@ package com.alee.managers.proxy;
 import com.alee.extended.optionpane.WebExtendedOptionPane;
 import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.laf.optionpane.WebOptionPane;
-import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LM;
 import com.alee.utils.SwingUtils;
 
 /**
@@ -49,8 +49,8 @@ public class WebSystemProxyConfirmationSupport implements SystemProxyConfirmatio
         alwaysDoTheSame.setFocusable ( false );
 
         // Ask for settings replacement with system ones
-        final String message = LanguageManager.get ( "weblaf.proxy.use.system.text" );
-        final String title = LanguageManager.get ( "weblaf.proxy.use.system.title" );
+        final String message = LM.get ( "weblaf.proxy.use.system.text" );
+        final String title = LM.get ( "weblaf.proxy.use.system.title" );
         final int options = WebExtendedOptionPane.YES_NO_OPTION;
         final int type = WebExtendedOptionPane.QUESTION_MESSAGE;
         final WebExtendedOptionPane dialog =

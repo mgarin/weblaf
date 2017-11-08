@@ -209,6 +209,8 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
 
     /**
      * Returns children count for specified node.
+     * todo Generally speaking children loading shouldn't be invoked by this method as it might be a problem
+     * todo There should be a separate UI for async tree where we would listen for nodes expansion and perform appropriate loading/updates
      *
      * @param parent parent node
      * @return children count

@@ -89,6 +89,7 @@
     <include>resources/hotkeylabel.xml</include>
     <include>resources/customtooltip.xml</include>
     <include>resources/switch.xml</include>
+    <include>resources/languagechooser.xml</include>
     <include>resources/treefilterfield.xml</include>
     <include>resources/checkboxlist.xml</include>
     <include>resources/checkboxtree.xml</include>

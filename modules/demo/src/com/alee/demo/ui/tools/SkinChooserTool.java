@@ -34,7 +34,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Demo application skin chooser.
+ * {@link com.alee.demo.DemoApplication} skin chooser.
  *
  * @author Mikle Garin
  */
@@ -42,7 +42,7 @@ import java.awt.event.ActionListener;
 public final class SkinChooserTool extends WebPanel
 {
     /**
-     * Constructs new skin chooser tool.
+     * Constructs new {@link SkinChooserTool}.
      */
     public SkinChooserTool ()
     {
@@ -50,7 +50,7 @@ public final class SkinChooserTool extends WebPanel
 
         // Skin chooser combobox
         final WebComboBox skin = new WebComboBox ( DemoStyles.toolCombobox, DemoApplication.skins );
-        skin.setToolTip ( "demo.tool.skin" );
+        skin.setLanguage ( "demo.tool.skin" );
         skin.setSelectedItem ( StyleManager.getSkin () );
         skin.setRenderer ( new WebComboBoxRenderer ()
         {

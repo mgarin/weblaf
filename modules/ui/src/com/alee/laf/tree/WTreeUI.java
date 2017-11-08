@@ -113,4 +113,14 @@ public abstract class WTreeUI extends BasicTreeUI
      * @return tree layout cache
      */
     public abstract AbstractLayoutCache getTreeLayoutCache ();
+
+    /**
+     * Forces all nodes to update their sizes.
+     * This will reset sizes cache and perform tree visual update.
+     */
+    public void updateNodeSizes ()
+    {
+        treeState.invalidateSizes ();
+        updateSize ();
+    }
 }

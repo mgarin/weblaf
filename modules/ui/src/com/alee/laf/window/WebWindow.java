@@ -22,6 +22,10 @@ import com.alee.laf.rootpane.WebRootPane;
 import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
+import com.alee.managers.language.DictionaryListener;
+import com.alee.managers.language.LanguageEventMethods;
+import com.alee.managers.language.LanguageListener;
+import com.alee.managers.language.WebLanguageManager;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -54,7 +58,7 @@ import java.util.Map;
  */
 
 public class WebWindow<T extends WebWindow<T>> extends JWindow
-        implements Styleable, Paintable, PaddingMethods, WindowEventMethods, SettingsMethods, WindowMethods<T>
+        implements Styleable, Paintable, PaddingMethods, WindowEventMethods, LanguageEventMethods, SettingsMethods, WindowMethods<T>
 {
     /**
      * Whether should close window on focus loss or not.
@@ -451,13 +455,13 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
     @Override
     public void setPadding ( final int top, final int left, final int bottom, final int right )
     {
-        PaddingMethodsImpl.setPadding (  getRootPane (), top, left, bottom, right );
+        PaddingMethodsImpl.setPadding ( getRootPane (), top, left, bottom, right );
     }
 
     @Override
     public void setPadding ( final Insets padding )
     {
-        PaddingMethodsImpl.setPadding (  getRootPane (), padding );
+        PaddingMethodsImpl.setPadding ( getRootPane (), padding );
     }
 
     /**
@@ -490,6 +494,42 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
     public WindowCloseAdapter onClose ( final ComponentEventRunnable runnable )
     {
         return WindowEventMethodsImpl.onClose ( this, runnable );
+    }
+
+    @Override
+    public void addLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.addLanguageListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeLanguageListener ( final LanguageListener listener )
+    {
+        WebLanguageManager.removeLanguageListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeLanguageListeners ()
+    {
+        WebLanguageManager.removeLanguageListeners ( getRootPane () );
+    }
+
+    @Override
+    public void addDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.addDictionaryListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeDictionaryListener ( final DictionaryListener listener )
+    {
+        WebLanguageManager.removeDictionaryListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeDictionaryListeners ()
+    {
+        WebLanguageManager.removeDictionaryListeners ( getRootPane () );
     }
 
     @Override

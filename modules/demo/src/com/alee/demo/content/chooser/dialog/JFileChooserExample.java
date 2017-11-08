@@ -23,7 +23,7 @@ import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.laf.button.WebButton;
-import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LM;
 import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
@@ -175,23 +175,23 @@ public class JFileChooserExample extends AbstractStylePreviewExample
                 if ( selectedFiles != null && selectedFiles.length > 0 )
                 {
                     final String files = TextUtils.arrayToString ( selectedFiles, FILE_NAME_PROVIDER, ", " );
-                    msg = LanguageManager.get ( languagePrefix + "result.selected" + suffix, files );
+                    msg = LM.get ( languagePrefix + "result.selected" + suffix, files );
                 }
                 else
                 {
-                    msg = LanguageManager.get ( languagePrefix + "result.none" + suffix );
+                    msg = LM.get ( languagePrefix + "result.none" + suffix );
                 }
                 break;
             }
             case JFileChooser.CANCEL_OPTION:
             {
-                msg = LanguageManager.get ( languagePrefix + "result.cancelled" );
+                msg = LM.get ( languagePrefix + "result.cancelled" );
                 break;
             }
             default:
             case JFileChooser.ERROR_OPTION:
             {
-                msg = LanguageManager.get ( languagePrefix + "result.error" );
+                msg = LM.get ( languagePrefix + "result.error" );
                 break;
             }
         }

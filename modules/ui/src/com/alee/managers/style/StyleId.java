@@ -673,6 +673,13 @@ public final class StyleId
     public static final ChildStyleId wswitchDeselectedIconLabel = ChildStyleId.of ( "icon-deselected" );
 
     /**
+     * {@link com.alee.extended.language.LanguageChooser} style IDs.
+     */
+    public static final StyleId languagechooser = StyleId.of ( "languagechooser" );
+    public static final StyleId languagechooserHover = StyleId.of ( "languagechooser-hover" );
+    public static final StyleId languagechooserUndecorated = StyleId.of ( "languagechooser-undecorated" );
+
+    /**
      * {@link com.alee.extended.tree.WebTreeFilterField} style IDs.
      */
     public static final StyleId treefilterfield = StyleId.of ( "treefilterfield" );
@@ -942,10 +949,30 @@ public final class StyleId
      * Returns complete style ID.
      *
      * @return complete style ID
+     * @see com.alee.managers.style.data.ComponentStyle#getCompleteId()
      */
     public String getCompleteId ()
     {
-        return getParent () != null ? get ( getParent () ).getCompleteId () + styleSeparator + getId () : getId ();
+        final JComponent parent = getParent ();
+        return parent != null ? get ( parent ).getPathId ( parent ) + styleSeparator + getId () : getId ();
+    }
+
+    /**
+     * Returns path for complete style ID.
+     *
+     * @param component component for current part of the path
+     * @return path for complete style ID
+     * @see com.alee.managers.style.data.ComponentStyle#getPathId()
+     */
+    private String getPathId ( final JComponent component )
+    {
+        // Full identifier for this part of the path
+        final ComponentDescriptor<JComponent> descriptor = StyleManager.getDescriptor ( component );
+        final String fullId = descriptor.getId () + ":" + getId ();
+
+        // Combined identifiers path
+        final JComponent parent = getParent ();
+        return parent != null ? get ( parent ).getPathId ( parent ) + styleSeparator + fullId : fullId;
     }
 
     /**

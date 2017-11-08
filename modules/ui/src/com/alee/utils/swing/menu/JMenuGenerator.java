@@ -17,7 +17,7 @@
 
 package com.alee.utils.swing.menu;
 
-import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.WebLanguageManager;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
@@ -162,6 +162,6 @@ public class JMenuGenerator extends AbstractMenuGenerator<JMenu>
 
         // Update menu language if any prefix is set
         final String text = getMenu ().getText ();
-        LanguageManager.registerComponent ( getMenu (), getLanguageKey ( text ) );
+        WebLanguageManager.registerComponent ( getMenu (), getLanguageKey ( text ) );
     }
 }

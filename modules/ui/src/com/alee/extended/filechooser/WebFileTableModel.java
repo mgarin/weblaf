@@ -17,7 +17,7 @@
 
 package com.alee.extended.filechooser;
 
-import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LM;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 
@@ -203,7 +203,7 @@ public class WebFileTableModel extends AbstractTableModel implements FileTableCo
     @Override
     public String getColumnName ( final int column )
     {
-        return LanguageManager.get ( columns.get ( column ) );
+        return LM.get ( columns.get ( column ) );
     }
 
     @Override

@@ -18,7 +18,7 @@
 package com.alee.painter.decoration;
 
 /**
- * Special exception class used to display various decoration problems.
+ * Special exception class used to display various {@link IDecoration} problems.
  *
  * @author Mikle Garin
  */
@@ -26,7 +26,7 @@ package com.alee.painter.decoration;
 public final class DecorationException extends RuntimeException
 {
     /**
-     * Constructs a new {@link com.alee.painter.decoration.DecorationException} with {@code null} as its detail message.
+     * Constructs a new {@link DecorationException} with {@code null} as its detail message.
      */
     public DecorationException ()
     {
@@ -34,7 +34,7 @@ public final class DecorationException extends RuntimeException
     }
 
     /**
-     * Constructs a new {@link com.alee.painter.decoration.DecorationException} with the specified detail message.
+     * Constructs a new {@link DecorationException} with the specified detail message.
      *
      * @param message exception message
      */
@@ -44,7 +44,7 @@ public final class DecorationException extends RuntimeException
     }
 
     /**
-     * Constructs a new {@link com.alee.painter.decoration.DecorationException} with the specified detail message and cause.
+     * Constructs a new {@link DecorationException} with the specified detail message and cause.
      *
      * @param message exception message
      * @param cause   exception cause
@@ -55,7 +55,7 @@ public final class DecorationException extends RuntimeException
     }
 
     /**
-     * Constructs a new {@link com.alee.painter.decoration.DecorationException} with the specified cause.
+     * Constructs a new {@link DecorationException} with the specified cause.
      *
      * @param cause exception cause
      */

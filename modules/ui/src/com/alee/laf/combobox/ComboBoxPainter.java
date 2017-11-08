@@ -1,6 +1,10 @@
 package com.alee.laf.combobox;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.language.Language;
+import com.alee.managers.language.LanguageListener;
+import com.alee.managers.language.LanguageSensitive;
+import com.alee.managers.language.WebLanguageManager;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
@@ -26,6 +30,11 @@ public class ComboBoxPainter<E extends JComboBox, U extends WComboBoxUI, D exten
         extends AbstractDecorationPainter<E, U, D> implements IComboBoxPainter<E, U>, EditabilityListener, VisibilityListener
 {
     /**
+     * Listeners.
+     */
+    protected transient LanguageListener languageSensitive;
+
+    /**
      * Painting variables.
      */
     protected transient CellRendererPane currentValuePane = null;
@@ -35,11 +44,13 @@ public class ComboBoxPainter<E extends JComboBox, U extends WComboBoxUI, D exten
     {
         super.installPropertiesAndListeners ();
         installComboBoxListeners ();
+        installLanguageListeners ();
     }
 
     @Override
     protected void uninstallPropertiesAndListeners ()
     {
+        uninstallLanguageListeners ();
         uninstallComboBoxListeners ();
         super.uninstallPropertiesAndListeners ();
     }
@@ -67,15 +78,6 @@ public class ComboBoxPainter<E extends JComboBox, U extends WComboBoxUI, D exten
         ui.addPopupVisibilityListener ( this );
     }
 
-    /**
-     * Uninstalls combobox listeners that update decoration states.
-     */
-    protected void uninstallComboBoxListeners ()
-    {
-        ui.removePopupVisibilityListener ( this );
-        ui.removeEditabilityListener ( this );
-    }
-
     @Override
     public void editabilityChanged ( final boolean editable )
     {
@@ -86,6 +88,74 @@ public class ComboBoxPainter<E extends JComboBox, U extends WComboBoxUI, D exten
     public void visibilityChanged ( final boolean visible )
     {
         updateDecorationState ();
+    }
+
+    /**
+     * Uninstalls combobox listeners that update decoration states.
+     */
+    protected void uninstallComboBoxListeners ()
+    {
+        ui.removePopupVisibilityListener ( this );
+        ui.removeEditabilityListener ( this );
+    }
+
+    /**
+     * Installs language listeners.
+     */
+    protected void installLanguageListeners ()
+    {
+        languageSensitive = new LanguageListener ()
+        {
+            @Override
+            public void languageChanged ( final Language oldLanguage, final Language newLanguage )
+            {
+                if ( isLanguageSensitive () )
+                {
+                    // Updating sizes according to renderer changes
+                    ui.updateRendererSize ();
+                }
+            }
+        };
+        WebLanguageManager.addLanguageListener ( component, languageSensitive );
+    }
+
+    /**
+     * Returns whether or not table is language-sensitive.
+     *
+     * @return {@code true} if table is language-sensitive, {@code false} otherwise
+     */
+    protected boolean isLanguageSensitive ()
+    {
+        boolean sensitive = false;
+        if ( component instanceof LanguageSensitive ||
+                component.getRenderer () instanceof LanguageSensitive )
+        {
+            // Either table header or its default renderer is language-sensitive
+            sensitive = true;
+        }
+        else
+        {
+            // Checking existing combobox items for being language-sensitive
+            final ListModel model = component.getModel ();
+            for ( int i = 0; i < model.getSize (); i++ )
+            {
+                if ( model.getElementAt ( i ) instanceof LanguageSensitive )
+                {
+                    sensitive = true;
+                    break;
+                }
+            }
+        }
+        return sensitive;
+    }
+
+    /**
+     * Uninstalls language listeners.
+     */
+    protected void uninstallLanguageListeners ()
+    {
+        WebLanguageManager.removeLanguageListener ( component, languageSensitive );
+        languageSensitive = null;
     }
 
     @Override
@@ -134,42 +204,23 @@ public class ComboBoxPainter<E extends JComboBox, U extends WComboBoxUI, D exten
     {
         if ( !component.isEditable () )
         {
+            // Retrieving configured renderer
+            final JList list = ui.getListBox ();
+            final Object value = component.getSelectedItem ();
+            final boolean selected = !component.isPopupVisible ();
+            final boolean isFocused = isFocused ();
             final ListCellRenderer renderer = component.getRenderer ();
-            final Component c;
+            final Component c = renderer.getListCellRendererComponent ( list, value, -1, selected, isFocused );
 
-            if ( isFocused () && !component.isPopupVisible () )
-            {
-                c = renderer.getListCellRendererComponent ( ui.getListBox (), component.getSelectedItem (), -1, true, false );
-            }
-            else
-            {
-                c = renderer.getListCellRendererComponent ( ui.getListBox (), component.getSelectedItem (), -1, false, false );
-                c.setBackground ( UIManager.getColor ( "ComboBox.background" ) );
-            }
+            // Updating combobox-related renderer settings
             c.setFont ( component.getFont () );
 
-            if ( component.isEnabled () )
-            {
-                c.setForeground ( component.getForeground () );
-                c.setBackground ( component.getBackground () );
-            }
-            else
-            {
-                c.setForeground ( UIManager.getColor ( "ComboBox.disabledForeground" ) );
-                c.setBackground ( UIManager.getColor ( "ComboBox.disabledBackground" ) );
-            }
-
-            boolean shouldValidate = false;
-            if ( c instanceof JPanel )
-            {
-                shouldValidate = true;
-            }
-
+            // Painting current value
             final int x = bounds.x;
             final int y = bounds.y;
             final int w = bounds.width;
             final int h = bounds.height;
-
+            final boolean shouldValidate = c instanceof JPanel;
             currentValuePane.paintComponent ( g2d, c, component, x, y, w, h, shouldValidate );
         }
     }

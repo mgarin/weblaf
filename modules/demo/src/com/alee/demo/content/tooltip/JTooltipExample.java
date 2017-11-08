@@ -21,7 +21,6 @@ import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.laf.label.WebLabel;
-import com.alee.managers.language.LM;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
@@ -85,7 +84,6 @@ public class JTooltipExample extends AbstractStylePreviewExample
         protected List<? extends JComponent> createPreviewElements ()
         {
             final WebLabel label = new WebLabel ( getPreviewLanguagePrefix () + "text" );
-            label.setToolTipText ( LM.get ( getPreviewLanguagePrefix () + "tip" ) );
             return CollectionUtils.asList ( label );
         }
     }

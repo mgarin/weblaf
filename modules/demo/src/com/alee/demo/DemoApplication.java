@@ -27,10 +27,7 @@ import com.alee.demo.frames.source.SourceFrame;
 import com.alee.demo.frames.style.StyleFrame;
 import com.alee.demo.skin.*;
 import com.alee.demo.skin.decoration.FeatureStateBackground;
-import com.alee.demo.ui.tools.LanguageChooserTool;
-import com.alee.demo.ui.tools.MagnifierToggleTool;
-import com.alee.demo.ui.tools.OrientationChooserTool;
-import com.alee.demo.ui.tools.SkinChooserTool;
+import com.alee.demo.ui.tools.*;
 import com.alee.extended.behavior.ComponentResizeBehavior;
 import com.alee.extended.canvas.WebCanvas;
 import com.alee.extended.dock.SidebarVisibility;
@@ -49,7 +46,9 @@ import com.alee.laf.panel.WebPanel;
 import com.alee.laf.toolbar.WebToolBar;
 import com.alee.laf.window.WebFrame;
 import com.alee.managers.language.LM;
+import com.alee.managers.language.LanguageLocaleUpdater;
 import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.data.Dictionary;
 import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.style.Skin;
@@ -234,6 +233,8 @@ public final class DemoApplication extends WebFrame
         toolBar.addSeparator ();
         toolBar.add ( new LanguageChooserTool () );
 
+        toolBar.addToEnd ( new HeatMapTool ( DemoApplication.this ) );
+        toolBar.addSeparatorToEnd ();
         toolBar.addToEnd ( new MagnifierToggleTool ( DemoApplication.this ) );
 
         add ( toolBar, BorderLayout.NORTH );
@@ -286,7 +287,8 @@ public final class DemoApplication extends WebFrame
     public void updateTitle ()
     {
         final DocumentData doc = examplesPane != null ? examplesPane.getSelectedDocument () : null;
-        setTitle ( VersionManager.getLibraryVersion ().toString () + ( doc != null ? " - " + LM.get ( doc.getTitle () ) : "" ) );
+        final String version = VersionManager.getLibraryVersion ().toString ();
+        setTitle ( version + ( doc != null ? " - " + LM.get ( doc.getTitle () ) : "" ) );
     }
 
     /**
@@ -311,6 +313,8 @@ public final class DemoApplication extends WebFrame
             {
                 initialize ();
                 setVisible ( true );
+
+                //                new HeatMap ().display ( DemoApplication.getInstance () );
             }
         } );
     }
@@ -333,23 +337,23 @@ public final class DemoApplication extends WebFrame
                 SettingsManager.setDefaultSettingsGroup ( "WebLookAndFeelDemo" );
                 SettingsManager.setSaveOnChange ( true );
 
-                // Configurting availale languages
-                LanguageManager.setLanguages ( LanguageManager.ENGLISH, LanguageManager.RUSSIAN );
-
                 // Adding demo data aliases before styles using it are read
                 XmlUtils.processAnnotations ( FeatureStateBackground.class );
 
                 // Installing Look and Feel
                 WebLookAndFeel.setForceSingleEventsThread ( true );
-                WebLookAndFeel.install ( /*DarkSkin.class*/ );
+                WebLookAndFeel.install ();
+
+                // Saving skins for reference
                 skins = CollectionUtils.asList ( StyleManager.getSkin (), new DarkSkin () );
 
                 // Adding demo application skin extensions
                 // They contain all custom styles demo application uses
                 StyleManager.addExtensions ( new AdaptiveExtension (), new LightSkinExtension (), new DarkSkinExtension () );
 
-                // Loading demo dictionary
-                LanguageManager.addDictionary ( DemoApplication.class, "language/language.xml" );
+                // Configurting languages
+                LanguageManager.addDictionary ( new Dictionary ( DemoApplication.class, "language/demo-language.xml" ) );
+                LanguageManager.addLanguageListener ( new LanguageLocaleUpdater () );
 
                 // Initializing demo application managers
                 ExamplesManager.initialize ();

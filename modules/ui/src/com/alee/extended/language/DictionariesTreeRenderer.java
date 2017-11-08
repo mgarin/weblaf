@@ -18,8 +18,11 @@
 package com.alee.extended.language;
 
 import com.alee.extended.label.WebStyledLabel;
-import com.alee.managers.language.LanguageManager;
-import com.alee.managers.language.data.*;
+import com.alee.managers.language.WebLanguageManager;
+import com.alee.managers.language.data.Dictionary;
+import com.alee.managers.language.data.Record;
+import com.alee.managers.language.data.Text;
+import com.alee.managers.language.data.Value;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
@@ -36,12 +39,12 @@ public class DictionariesTreeRenderer extends WebStyledLabel implements TreeCell
 {
     /**
      * Various node icons.
+     * todo Move into {@link com.alee.managers.icon.Icons}
      */
     private static final ImageIcon multidicIcon = new ImageIcon ( DictionariesTreeRenderer.class.getResource ( "icons/multidic.png" ) );
     private static final ImageIcon dicIcon = new ImageIcon ( DictionariesTreeRenderer.class.getResource ( "icons/dic.png" ) );
     private static final ImageIcon recordIcon = new ImageIcon ( DictionariesTreeRenderer.class.getResource ( "icons/record.png" ) );
     private static final ImageIcon textIcon = new ImageIcon ( DictionariesTreeRenderer.class.getResource ( "icons/text.png" ) );
-    private static final ImageIcon tooltipIcon = new ImageIcon ( DictionariesTreeRenderer.class.getResource ( "icons/tooltip.png" ) );
 
     /**
      * Returns custom tree cell renderer component.
@@ -86,27 +89,19 @@ public class DictionariesTreeRenderer extends WebStyledLabel implements TreeCell
         {
             final Record r = ( Record ) val;
             setIcon ( recordIcon );
-            setText ( expanded ? "{" + r.getKey () + ":b}" +
-                    ( r.getHotkey () != null ? " (" + r.getHotkey () + ")" : "" ) : r.toString ( true ) );
+            setText ( expanded ? "{" + r.getKey () + ":b}" : r.toString ( true ) );
         }
         else if ( val instanceof Value )
         {
             final Value v = ( Value ) val;
-            setIcon ( LanguageManager.getLanguageIcon ( v.getLang () ) );
-            setText ( v.getLang () +
-                    ( v.getMnemonic () != null ? " (" + v.getMnemonic () + ")" : "" ) +
-                    ( v.getHotkey () != null ? " (" + v.getHotkey () + ")" : "" ) );
+            setIcon ( WebLanguageManager.getLocaleIcon ( v.getLocale () ) );
+            setText ( v.getLocale ().toString () );
         }
         else if ( val instanceof Text )
         {
             final Text text = ( Text ) val;
             setIcon ( textIcon );
             setText ( text.getState () == null ? text.toString () : "{" + text.getState () + ":b} -> " + text.toString () );
-        }
-        else if ( val instanceof Tooltip )
-        {
-            setIcon ( tooltipIcon );
-            setText ( val.toString () );
         }
 
         return this;

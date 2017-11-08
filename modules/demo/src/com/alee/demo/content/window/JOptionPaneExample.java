@@ -21,7 +21,7 @@ import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.laf.button.WebButton;
-import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LM;
 import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.notification.WebNotification;
 import com.alee.managers.style.StyleId;
@@ -132,10 +132,10 @@ public class JOptionPaneExample extends AbstractStylePreviewExample
 
                     // Display option pane
                     final Window parent = SwingUtils.getWindowAncestor ( button );
-                    final String title = LanguageManager.get ( getPreviewLanguagePrefix () + "title" );
-                    final String message = LanguageManager.get ( getPreviewLanguagePrefix () + "message" );
-                    final String notification = LanguageManager.get ( getPreviewLanguagePrefix () + "notification" );
-                    final String closed = LanguageManager.get ( getExampleLanguagePrefix () + "closed" );
+                    final String title = LM.get ( getPreviewLanguagePrefix () + "title" );
+                    final String message = LM.get ( getPreviewLanguagePrefix () + "message" );
+                    final String notification = LM.get ( getPreviewLanguagePrefix () + "notification" );
+                    final String closed = LM.get ( getExampleLanguagePrefix () + "closed" );
                     final WebNotification ntf;
                     if ( type == Type.input )
                     {

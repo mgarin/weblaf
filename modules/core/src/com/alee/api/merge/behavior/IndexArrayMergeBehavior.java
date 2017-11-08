@@ -41,39 +41,39 @@ public final class IndexArrayMergeBehavior implements GlobalMergeBehavior<Object
      */
 
     @Override
-    public boolean supports ( final Merge merge, final Object object, final Object merged )
+    public boolean supports ( final Merge merge, final Object base, final Object merged )
     {
-        return object.getClass ().isArray () && merged.getClass ().isArray ();
+        return base.getClass ().isArray () && merged.getClass ().isArray ();
     }
 
     @Override
-    public Object merge ( final Merge merge, final Object object, final Object merged )
+    public Object merge ( final Merge merge, final Object base, final Object merged )
     {
         // Calculating resulting array size
-        final int el = Array.getLength ( object );
+        final int el = Array.getLength ( base );
         final int ml = Array.getLength ( merged );
         final int rl = Math.max ( el, ml );
 
         // Determining resulting array type
-        final Class et = object.getClass ().getComponentType ();
+        final Class et = base.getClass ().getComponentType ();
         final Class mt = merged.getClass ().getComponentType ();
         final Class type = et == mt ? et : ReflectUtils.getClosestSuperclass ( et, mt );
 
         // Picking resulting array instance
-        final Object result = et == mt && el >= ml ? object : Array.newInstance ( type, rl );
+        final Object result = et == mt && el >= ml ? base : Array.newInstance ( type, rl );
 
         // Merging two arrays
         for ( int i = 0; i < rl; i++ )
         {
             if ( i < el && i < ml )
             {
-                final Object ev = Array.get ( object, i );
+                final Object ev = Array.get ( base, i );
                 final Object mv = Array.get ( merged, i );
                 Array.set ( result, i, merge.merge ( ev, mv ) );
             }
             else if ( i < el )
             {
-                final Object ev = Array.get ( object, i );
+                final Object ev = Array.get ( base, i );
                 Array.set ( result, i, ev );
             }
             else

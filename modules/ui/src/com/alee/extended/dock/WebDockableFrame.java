@@ -20,9 +20,6 @@ package com.alee.extended.dock;
 import com.alee.api.Identifiable;
 import com.alee.api.data.CompassDirection;
 import com.alee.extended.WebContainer;
-import com.alee.managers.language.LanguageManager;
-import com.alee.managers.language.LanguageMethods;
-import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.decoration.Stateful;
@@ -37,7 +34,7 @@ import java.util.List;
  * Frame element for {@link WebDockablePane}.
  * It can have its own content which can be easily moved within dockable pane or even outside of its bounds.
  * Frame usually take side space within dockable pane and its center area is taken by some custom content.
- * <p/>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -48,7 +45,7 @@ import java.util.List;
  * @see DockablePanePainter
  */
 
-public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFrameUI> implements Identifiable, Stateful, LanguageMethods
+public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFrameUI> implements Identifiable, Stateful
 {
     /**
      * Component properties.
@@ -800,54 +797,6 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
         {
             listener.frameRemoved ( this, dockablePane );
         }
-    }
-
-    @Override
-    public String getLanguage ()
-    {
-        return LanguageManager.getComponentKey ( this );
-    }
-
-    @Override
-    public void setLanguage ( final String key, final Object... data )
-    {
-        LanguageManager.registerComponent ( this, key, data );
-    }
-
-    @Override
-    public void updateLanguage ( final Object... data )
-    {
-        LanguageManager.updateComponent ( this, data );
-    }
-
-    @Override
-    public void updateLanguage ( final String key, final Object... data )
-    {
-        LanguageManager.updateComponent ( this, key, data );
-    }
-
-    @Override
-    public void removeLanguage ()
-    {
-        LanguageManager.unregisterComponent ( this );
-    }
-
-    @Override
-    public boolean isLanguageSet ()
-    {
-        return LanguageManager.isRegisteredComponent ( this );
-    }
-
-    @Override
-    public void setLanguageUpdater ( final LanguageUpdater updater )
-    {
-        LanguageManager.registerLanguageUpdater ( this, updater );
-    }
-
-    @Override
-    public void removeLanguageUpdater ()
-    {
-        LanguageManager.unregisterLanguageUpdater ( this );
     }
 
     @Override

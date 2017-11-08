@@ -33,8 +33,8 @@ import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyCondition;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.icon.Icons;
-import com.alee.managers.language.LanguageManager;
-import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.language.LM;
+import com.alee.managers.tooltip.TooltipWay;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
@@ -292,7 +292,7 @@ public class WebDirectoryChooserPanel extends WebPanel
             {
                 if ( selectedDirectory != null )
                 {
-                    final String defaultName = LanguageManager.get ( "weblaf.ex.dirchooser.newfolder.name" );
+                    final String defaultName = LM.get ( "weblaf.ex.dirchooser.newfolder.name" );
                     final String freeName = FileUtils.getAvailableName ( selectedDirectory, defaultName );
                     final File file = new File ( selectedDirectory, freeName );
                     if ( file.mkdir () )
@@ -305,8 +305,8 @@ public class WebDirectoryChooserPanel extends WebPanel
                     }
                     else
                     {
-                        final String message = LanguageManager.get ( "weblaf.ex.dirchooser.newfolder.error.text" );
-                        final String title = LanguageManager.get ( "weblaf.ex.dirchooser.newfolder.error.title" );
+                        final String message = LM.get ( "weblaf.ex.dirchooser.newfolder.error.text" );
+                        final String title = LM.get ( "weblaf.ex.dirchooser.newfolder.error.title" );
                         WebOptionPane.showMessageDialog ( WebDirectoryChooserPanel.this, message, title, WebOptionPane.ERROR_MESSAGE );
                     }
                 }
@@ -329,11 +329,10 @@ public class WebDirectoryChooserPanel extends WebPanel
                 }
 
                 // Displaying delete confirmation
-                final String message = LanguageManager.get ( "weblaf.ex.dirchooser.delete.confirm.text" );
-                final String title = LanguageManager.get ( "weblaf.ex.dirchooser.delete.confirm.title" );
-                final int confirm = WebOptionPane
-                        .showConfirmDialog ( WebDirectoryChooserPanel.this, message, title, WebOptionPane.YES_NO_OPTION,
-                                WebOptionPane.QUESTION_MESSAGE );
+                final String message = LM.get ( "weblaf.ex.dirchooser.delete.confirm.text" );
+                final String title = LM.get ( "weblaf.ex.dirchooser.delete.confirm.title" );
+                final int confirm = WebOptionPane.showConfirmDialog ( WebDirectoryChooserPanel.this,
+                        message, title, WebOptionPane.YES_NO_OPTION, WebOptionPane.QUESTION_MESSAGE );
 
                 // Proceed if delete was confirmed
                 if ( confirm == WebOptionPane.YES_OPTION )

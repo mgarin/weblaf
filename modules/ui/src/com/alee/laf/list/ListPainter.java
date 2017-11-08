@@ -1,11 +1,14 @@
 package com.alee.laf.list;
 
+import com.alee.managers.language.*;
 import com.alee.painter.DefaultPainter;
+import com.alee.painter.PainterException;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.SectionPainter;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.GeometryUtils;
+import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -46,6 +49,7 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
      * Listeners.
      */
     protected transient ListSelectionListener listSelectionListener;
+    protected transient LanguageListener languageSensitive;
 
     /**
      * Painting variables.
@@ -82,11 +86,13 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
     {
         super.installPropertiesAndListeners ();
         installListSelectionListeners ();
+        installLanguageListeners ();
     }
 
     @Override
     protected void uninstallPropertiesAndListeners ()
     {
+        uninstallLanguageListeners ();
         uninstallListSelectionListeners ();
         uninstallRuntimeVariables ();
         super.uninstallPropertiesAndListeners ();
@@ -121,6 +127,88 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
     {
         component.removeListSelectionListener ( listSelectionListener );
         listSelectionListener = null;
+    }
+
+    /**
+     * Installs language listeners.
+     */
+    protected void installLanguageListeners ()
+    {
+        languageSensitive = new LanguageListener ()
+        {
+            @Override
+            public void languageChanged ( final Language oldLanguage, final Language newLanguage )
+            {
+                if ( isLanguageSensitive () )
+                {
+                    final ListModel model = component.getModel ();
+                    if ( model instanceof WebListModel )
+                    {
+                        // Calling public model methods when possible
+                        ( ( WebListModel ) model ).fireContentsChanged ( ListPainter.this, 0, model.getSize () );
+                    }
+                    else if ( model instanceof AbstractListModel )
+                    {
+                        try
+                        {
+                            // Invoking protected model methods when its based on abstract Swing one
+                            ReflectUtils.callMethod ( model, "fireContentsChanged", ListPainter.this, 0, model.getSize () );
+                        }
+                        catch ( final Exception e )
+                        {
+                            // Something went wrong
+                            throw new PainterException ( "Unable to fire list content changes", e );
+                        }
+                    }
+                    else
+                    {
+                        // Simply repainting list when we don't have tools to update it properly
+                        component.repaint ();
+                    }
+                }
+            }
+        };
+        WebLanguageManager.addLanguageListener ( component, languageSensitive );
+    }
+
+    /**
+     * Returns whether or not list is language-sensitive.
+     *
+     * @return {@code true} if list is language-sensitive, {@code false} otherwise
+     */
+    protected boolean isLanguageSensitive ()
+    {
+        boolean sensitive = false;
+        if ( component instanceof LanguageSensitive ||
+                component.getCellRenderer () instanceof LanguageSensitive ||
+                component.getModel () instanceof LanguageSensitive )
+        {
+            // Either list, its renderer or model is language-sensitive
+            sensitive = true;
+        }
+        else
+        {
+            // Checking existing list items for being language-sensitive
+            final ListModel model = component.getModel ();
+            for ( int i = 0; i < model.getSize (); i++ )
+            {
+                if ( model.getElementAt ( i ) instanceof LanguageSensitive )
+                {
+                    sensitive = true;
+                    break;
+                }
+            }
+        }
+        return sensitive;
+    }
+
+    /**
+     * Uninstalls language listeners.
+     */
+    protected void uninstallLanguageListeners ()
+    {
+        WebLanguageManager.removeLanguageListener ( component, languageSensitive );
+        languageSensitive = null;
     }
 
     /**

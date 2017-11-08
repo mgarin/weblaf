@@ -49,7 +49,7 @@ import com.alee.managers.version.VersionManager;
  * @see com.alee.managers.drag.DragManager
  */
 
-public class UIManagers
+public final class UIManagers
 {
     /**
      * Initializes L&F UI managers.

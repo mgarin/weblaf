@@ -17,7 +17,7 @@
 
 package com.alee.utils;
 
-import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LM;
 import com.alee.managers.log.Log;
 import com.alee.managers.proxy.ProxyManager;
 import com.alee.utils.compare.Filter;
@@ -83,9 +83,14 @@ public final class FileUtils
     public static final long GB = 1024 * MB;
 
     /**
+     * Number of bytes in 1 terabyte.
+     */
+    public static final long TB = 1024 * GB;
+
+    /**
      * Number of bytes in 1 petabyte.
      */
-    public static final long PB = 1024 * GB;
+    public static final long PB = 1024 * TB;
 
     /**
      * Cached file system view.
@@ -115,9 +120,8 @@ public final class FileUtils
     /**
      * All illegal file name characters.
      */
-    private static final char[] ILLEGAL_CHARACTERS =
-            { '/', '\n', '\r', '\t', '\0', '\f', '\"', '`', '!', '?', '*', '\\', '<', '>', '|', ':', ';', '.', ',', '%', '$', '@', '#', '^',
-                    '{', '}', '[', ']', ']' };
+    private static final char[] ILLEGAL_CHARACTERS = { '/', '\n', '\r', '\t', '\0', '\f', '\"', '`', '!', '?', '*', '\\', '<', '>', '|',
+            ':', ';', '.', ',', '%', '$', '@', '#', '^', '{', '}', '[', ']', ']' };
 
     /**
      * Cache for "isDrive" method result.
@@ -1174,7 +1178,7 @@ public final class FileUtils
         }
         else
         {
-            return new IOFileFilterAdapter ( fileFilter, AllFilesFilter.ICON, LanguageManager.get ( "weblaf.file.filter.custom" ) );
+            return new IOFileFilterAdapter ( fileFilter, AllFilesFilter.ICON, LM.get ( "weblaf.file.filter.custom" ) );
         }
     }
 
@@ -1274,7 +1278,7 @@ public final class FileUtils
      */
     public static String getDisplayFileSize ( final File file, final int digits )
     {
-        // todo Cache this value
+        // todo Cache file length value
         return getFileSizeString ( file.length (), digits );
     }
 
@@ -1301,19 +1305,27 @@ public final class FileUtils
         final DecimalFormat df = new DecimalFormat ( digits > 0 ? "#." + TextUtils.createString ( "#", digits ) : "#" );
         if ( size < KB )
         {
-            return df.format ( size ) + " " + LanguageManager.get ( "weblaf.file.size.b" );
+            return df.format ( size ) + " " + LM.get ( "weblaf.file.size.b" );
         }
         else if ( size >= KB && size < MB )
         {
-            return df.format ( ( float ) size / KB ) + " " + LanguageManager.get ( "weblaf.file.size.kb" );
+            return df.format ( ( float ) size / KB ) + " " + LM.get ( "weblaf.file.size.kb" );
         }
         else if ( size >= MB && size < GB )
         {
-            return df.format ( ( float ) size / MB ) + " " + LanguageManager.get ( "weblaf.file.size.mb" );
+            return df.format ( ( float ) size / MB ) + " " + LM.get ( "weblaf.file.size.mb" );
+        }
+        else if ( size >= GB && size < TB )
+        {
+            return df.format ( ( float ) size / GB ) + " " + LM.get ( "weblaf.file.size.gb" );
+        }
+        else if ( size >= TB && size < PB )
+        {
+            return df.format ( ( float ) size / TB ) + " " + LM.get ( "weblaf.file.size.tb" );
         }
         else
         {
-            return df.format ( ( float ) size / GB ) + " " + LanguageManager.get ( "weblaf.file.size.gb" );
+            return df.format ( ( float ) size / PB ) + " " + LM.get ( "weblaf.file.size.pb" );
         }
     }
 
@@ -2363,8 +2375,8 @@ public final class FileUtils
                 {
                     description = file.getName ();
                 }
-                isCdDrive = description.contains ( "cd" ) || description.contains ( "dvd" ) ||
-                        description.contains ( "blu-ray" ) || description.contains ( "bluray" );
+                isCdDrive = description.contains ( "cd" ) || description.contains ( "dvd" ) || description.contains ( "blu-ray" ) ||
+                        description.contains ( "bluray" );
             }
             else
             {
@@ -2591,6 +2603,29 @@ public final class FileUtils
     }
 
     /**
+     * Returns appropriate file name based on provided text.
+     *
+     * @param text text to trim
+     * @return appropriate file name based on provided text
+     */
+    public static String appropriateFileName ( final String text )
+    {
+        return appropriateFileName ( text, "" );
+    }
+
+    /**
+     * Returns appropriate file name based on provided text.
+     *
+     * @param text        text to trim
+     * @param replacement replacement for each invalid symbol
+     * @return appropriate file name based on provided text
+     */
+    public static String appropriateFileName ( final String text, final String replacement )
+    {
+        return text.replaceAll ( "[^ a-zA-Zа-яА-Я0-9.-]", replacement );
+    }
+
+    /**
      * Clears cache for "getDisplayFileName" method.
      */
     public static void clearDisplayFileNameCache ()
@@ -2645,8 +2680,8 @@ public final class FileUtils
         }
         else if ( !file.exists () && file.getName () != null )
         {
-        	displayFileNameCache.put ( absolutePath, file.getName () );
-            return file.getName();
+            displayFileNameCache.put ( absolutePath, file.getName () );
+            return file.getName ();
         }
         else
         {
@@ -3011,8 +3046,8 @@ public final class FileUtils
      */
     public static ImageIcon getStandardFileIcon ( final boolean large, final String extension, final float opacity )
     {
-        return getIconResource ( FileUtils.class, "icons/extensions/" + ( large ? "32" : "16" ) + "/file_extension_" + extension +
-                ".png", opacity );
+        final String path = "icons/extensions/" + ( large ? "32" : "16" ) + "/file_extension_" + extension + ".png";
+        return getIconResource ( FileUtils.class, path, opacity );
     }
 
     /**
