@@ -931,7 +931,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     public static boolean isInstalled ()
     {
-        return WebLookAndFeel.class.isInstance ( UIManager.getLookAndFeel ().getClass () );
+        return WebLookAndFeel.class.isInstance ( UIManager.getLookAndFeel () );
     }
 
     /**
