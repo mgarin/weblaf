@@ -44,6 +44,16 @@
                 </excludes>
             </resource>
         </resources>
+        <testSourceDirectory>${basedir}/test</testSourceDirectory>
+        <testResources>
+            <testResource>
+                <filtering>false</filtering>
+                <directory>${basedir}/test</directory>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </testResource>
+        </testResources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
