@@ -18,7 +18,7 @@
 package com.alee.laf;
 
 /**
- * Special exception class used to display various L&F problems.
+ * Special exception class used to display various LaF problems.
  *
  * @author Mikle Garin
  */

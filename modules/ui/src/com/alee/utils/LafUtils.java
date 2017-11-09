@@ -18,9 +18,9 @@
 package com.alee.utils;
 
 import com.alee.global.StyleConstants;
+import com.alee.laf.LookAndFeelException;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.rootpane.WebRootPaneUI;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.utils.laf.FocusType;
 import com.alee.utils.ninepatch.NinePatchIcon;
@@ -48,10 +48,10 @@ import java.util.Map;
 public final class LafUtils
 {
     /**
-     * Returns whether {@link Window} in which specified {@link Component} located is decorated by L&amp;F or not.
+     * Returns whether {@link Window} in which specified {@link Component} located is decorated by LaF or not.
      *
      * @param component {@link Component} used to determine {@link Window} decoration state
-     * @return true if {@link Window} in which specified {@link Component} located is decorated by L&amp;F, false otherwise
+     * @return true if {@link Window} in which specified {@link Component} located is decorated by LaF, false otherwise
      */
     public static boolean isInDecoratedWindow ( final Component component )
     {
@@ -134,7 +134,7 @@ public final class LafUtils
         }
         else
         {
-            // This might be the case when L&F is not installed and another L&F is used across all common J-components
+            // This might be the case when LaF is not installed and another LaF is used across all common J-components
             // Also it could be the case for complex components like WebScrollPane, look at issue #458 for more details on that case
             webUI = false;
         }
@@ -822,33 +822,31 @@ public final class LafUtils
     }
 
     /**
-     * Installs specified L&amp;F as current application's L&amp;F.
+     * Installs specified LaF as current application's LaF.
      *
-     * @param clazz L&amp;F class
-     * @return true if L&amp;F was installed successfully, false otherwise
+     * @param clazz LaF class
+     * @throws LookAndFeelException when unable to install specified LaF
      */
-    public static boolean setupLookAndFeelSafely ( final Class<? extends LookAndFeel> clazz )
+    public static void setupLookAndFeel ( final Class<? extends LookAndFeel> clazz ) throws LookAndFeelException
     {
-        return setupLookAndFeelSafely ( clazz.getCanonicalName () );
+        setupLookAndFeel ( clazz.getCanonicalName () );
     }
 
     /**
-     * Installs specified L&amp;F as current application's L&amp;F.
+     * Installs specified LaF as current application's LaF.
      *
-     * @param className L&amp;F canonical class name
-     * @return true if L&amp;F was installed successfully, false otherwise
+     * @param className LaF canonical class name
+     * @throws LookAndFeelException when unable to install specified LaF
      */
-    public static boolean setupLookAndFeelSafely ( final String className )
+    public static void setupLookAndFeel ( final String className ) throws LookAndFeelException
     {
         try
         {
             UIManager.setLookAndFeel ( className );
-            return true;
         }
         catch ( final Exception e )
         {
-            Log.get ().error ( "Unable to initialize L&F for class name: " + className, e );
-            return false;
+            throw new RuntimeException ( "Unable to initialize LaF for class name: " + className, e );
         }
     }
 

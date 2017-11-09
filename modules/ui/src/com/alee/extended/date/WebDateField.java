@@ -36,7 +36,7 @@ import java.util.Date;
  * It relies on {@link WebCalendar} component as a main date chooser.
  *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
- * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
  * @see WebComponent
@@ -340,7 +340,7 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI> imple
     }
 
     /**
-     * Returns the L&amp;F object that renders this component.
+     * Returns the LaF object that renders this component.
      *
      * @return LabelUI object
      */
@@ -350,7 +350,7 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI> imple
     }
 
     /**
-     * Sets the L&amp;F object that renders this component.
+     * Sets the LaF object that renders this component.
      *
      * @param ui {@link WDateFieldUI}
      */

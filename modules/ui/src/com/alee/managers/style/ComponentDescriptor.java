@@ -113,7 +113,7 @@ public interface ComponentDescriptor<C extends JComponent> extends Identifiable,
 
     /**
      * Asks descriptor to update {@link ComponentUI} instance for the specified {@link JComponent}.
-     * It is up to implementation whether {@link ComponentUI} instance will be preserved or changed to the one currently provided by L&F.
+     * It is up to implementation whether {@link ComponentUI} instance will be preserved or changed to the one currently provided by LaF.
      * Various {@link ComponentDescriptor} implementations might customize this behavior to update used sub-component UIs.
      *
      * @param component component instance

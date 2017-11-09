@@ -1860,7 +1860,7 @@ public final class SwingUtils extends CoreSwingUtils
 
     /**
      * Returns default label font.
-     * This method might be used as a hack with other L&amp;Fs to retrieve system default font for simple text.
+     * This method might be used as a hack with other LaFs to retrieve system default font for simple text.
      *
      * @return default label font
      */
@@ -1875,7 +1875,7 @@ public final class SwingUtils extends CoreSwingUtils
 
     /**
      * Returns default label font metrics.
-     * This method might be used as a hack with other L&amp;Fs to retrieve system default font metrics for simple text.
+     * This method might be used as a hack with other LaFs to retrieve system default font metrics for simple text.
      *
      * @return default label font metrics
      */

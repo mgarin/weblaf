@@ -52,7 +52,7 @@ import java.util.Vector;
  * It contains various useful methods to simplify core component usage.
  *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
- * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
  * @see JComboBox
@@ -1224,7 +1224,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
     }
 
     /**
-     * Returns the look and feel (L&amp;F) object that renders this component.
+     * Returns the look and feel (LaF) object that renders this component.
      *
      * @return the {@link WComboBoxUI} object that renders this component
      */
@@ -1235,7 +1235,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
     }
 
     /**
-     * Sets the L&amp;F object that renders this component.
+     * Sets the LaF object that renders this component.
      *
      * @param ui {@link WComboBoxUI}
      */

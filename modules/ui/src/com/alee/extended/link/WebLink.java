@@ -33,7 +33,7 @@ import java.util.List;
  * Custom {@link LinkAction} listeners can be used to customize link behavior.
  * <p/>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
- * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLink">How to use WebLink</a>
@@ -354,7 +354,7 @@ public class WebLink extends WebStyledLabel
     }
 
     /**
-     * Returns the look and feel (L&amp;F) object that renders this component.
+     * Returns the look and feel (LaF) object that renders this component.
      *
      * @return the {@link WLinkUI} object that renders this component
      */
@@ -365,7 +365,7 @@ public class WebLink extends WebStyledLabel
     }
 
     /**
-     * Sets the L&amp;F object that renders this component.
+     * Sets the LaF object that renders this component.
      *
      * @param ui {@link WLinkUI}
      */

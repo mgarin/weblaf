@@ -38,7 +38,7 @@ import java.util.List;
  * This tree structure is always fully available and can be navigated through the nodes.
  * <p>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
- * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
  * @see WebCheckBoxTree

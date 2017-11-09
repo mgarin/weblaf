@@ -1947,7 +1947,7 @@ public class NinePatchEditor extends WebPanel
 
     public Dimension getActualPreferredSize ()
     {
-        // todo Should be in L&F for NinePatchEditor
+        // todo Should be in LaF for NinePatchEditor
         final boolean imageExists = ninePatchImage != null;
         final int iw = imageExists ? ( ninePatchImage.getWidth () + 2 ) * zoom : 400;
         final int ih = imageExists ? ( ninePatchImage.getHeight () + 2 ) * zoom : 400;

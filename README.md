@@ -40,7 +40,7 @@ Advantages
 
 Also WebLaF project is...
 
-- A mix of Swing L&F, components and utilities
+- A mix of Swing LaF, components and utilities
 - Fully open-source, without any exceptions
 - Constantly growing and being improved
 - Open for any suggestions
@@ -123,18 +123,18 @@ Here is a full list of usable ANT targets in WebLaF build script:
 
 Example Usage
 ----------
-To install WebLaF you can simply call `WebLookAndFeel.install()` or use one of standard Swing L&F set methods:
+To install WebLaF you can simply call `WebLookAndFeel.install()` or use one of standard Swing LaF set methods:
 ```java
 public class UsageExample
 {
     public static void main ( String[] args )
     {
-        // You should work with UI (including installing L&F) inside Event Dispatch Thread (EDT)
+        // You should work with UI (including installing LaF) inside Event Dispatch Thread (EDT)
         SwingUtilities.invokeLater ( new Runnable ()
         {
             public void run ()
             {
-                // Install WebLaF as application L&F
+                // Install WebLaF as application LaF
                 WebLookAndFeel.install ();
 
                 // You can also do that with one of old-fashioned ways:

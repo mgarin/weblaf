@@ -42,7 +42,7 @@ import java.util.List;
  * This tree structure is almost never fully available and always loaded on demand.
  * <p>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
- * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
  * @param <E> tree nodes type
  * @author Mikle Garin

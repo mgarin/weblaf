@@ -45,7 +45,7 @@ import java.util.List;
  * Structure of this tree can be provided through the same means as in {@link com.alee.laf.tree.WebTree}.
  * <p>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
- * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
  * @param <E> tree nodes type
  * @author Mikle Garin

@@ -393,7 +393,7 @@ public class LibraryInfoDialog extends WebFrame
             @Override
             public void run ()
             {
-                // L&F
+                // LaF
                 WebLookAndFeel.setForceSingleEventsThread ( true );
                 WebLookAndFeel.install ();
 

@@ -37,7 +37,7 @@ import com.alee.managers.settings.SettingsManager;
 public final class CoreManagers
 {
     /**
-     * Initializes L&F core managers.
+     * Initializes LaF core managers.
      * This method can be performed outside of EDT.
      * Initialization order is important and any changes should be performed with care.
      */

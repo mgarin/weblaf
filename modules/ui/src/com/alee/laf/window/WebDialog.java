@@ -48,7 +48,7 @@ import java.util.Map;
  * It contains various useful methods to simplify core component usage.
  * <p/>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
- * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
  * @param <T> dialog type
  * @author Mikle Garin
@@ -991,7 +991,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
     }
 
     /**
-     * Returns the look and feel (L&amp;F) object that renders this component.
+     * Returns the look and feel (LaF) object that renders this component.
      *
      * @return the {@link com.alee.laf.rootpane.WRootPaneUI} object that renders this component
      */
@@ -1001,7 +1001,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
     }
 
     /**
-     * Sets the L&amp;F object that renders this component.
+     * Sets the LaF object that renders this component.
      *
      * @param ui {@link WRootPaneUI}
      */

@@ -402,7 +402,7 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
             if ( vsbNeeded )
             {
                 /**
-                 * This is used primarily for GTK L&F, which needs to extend the vertical scrollbar to fill the upper
+                 * This is used primarily for GTK LaF, which needs to extend the vertical scrollbar to fill the upper
                  * corner near the column header. Note that we skip this step (and use the default behavior) if the
                  * user has set a custom corner component.
                  */
@@ -432,7 +432,7 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
             if ( hsbNeeded )
             {
                 /**
-                 * This is used primarily for GTK L&F, which needs to extend the horizontal scrollbar to fill the lower
+                 * This is used primarily for GTK LaF, which needs to extend the horizontal scrollbar to fill the lower
                  * corner near the row header. Note that we skip this step (and use the default behavior) if the
                  * user has set a custom corner component.
                  */

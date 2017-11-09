@@ -161,7 +161,7 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
             }
 
             // Additional listeners for components using WebLaF-based UI
-            // This is checked instead of styling support to avoid issues when WebLaF is not installed as L&F
+            // This is checked instead of styling support to avoid issues when WebLaF is not installed as LaF
             if ( component instanceof JComponent )
             {
                 final JComponent jComponent = ( JComponent ) component;

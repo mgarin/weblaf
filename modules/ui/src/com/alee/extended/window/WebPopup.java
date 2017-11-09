@@ -48,7 +48,7 @@ import java.util.List;
  * It also provides various methods to manipulate underlying popup window.
  *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
- * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
  * @param <T> popup type
  * @author Mikle Garin
@@ -1260,7 +1260,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     }
 
     /**
-     * Returns the look and feel (L&amp;F) object that renders this component.
+     * Returns the look and feel (LaF) object that renders this component.
      *
      * @return the StatusBarUI object that renders this component
      */
@@ -1270,7 +1270,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     }
 
     /**
-     * Sets the L&amp;F object that renders this component.
+     * Sets the LaF object that renders this component.
      *
      * @param ui {@link WPopupUI}
      */

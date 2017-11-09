@@ -210,7 +210,7 @@ public abstract class AbstractComponentDescriptor<C extends JComponent> implemen
             try
             {
                 // Using default UI class
-                // We don't need to get it from L&F as descriptor value considered to be more important
+                // We don't need to get it from LaF as descriptor value considered to be more important
                 final Class<? extends ComponentUI> uiClass = getUIClass ();
 
                 // Creating UI instance using common Swing way

@@ -33,7 +33,7 @@ import com.alee.managers.version.VersionManager;
 
 /**
  * WebLaF managers simple initialization class.
- * Used by WebLookAndFeel to initialize managers together with or separately from the L&amp;F.
+ * Used by WebLookAndFeel to initialize managers together with or separately from the LaF.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLaF">How to use WebLaF</a>
@@ -52,7 +52,7 @@ import com.alee.managers.version.VersionManager;
 public final class UIManagers
 {
     /**
-     * Initializes L&F UI managers.
+     * Initializes LaF UI managers.
      * This method should be performed on EDT like other Swing UI operations.
      * Initialization order is important and any changes should be performed with care.
      */

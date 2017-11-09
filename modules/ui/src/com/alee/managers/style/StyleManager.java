@@ -938,7 +938,7 @@ public final class StyleManager
                 StyleManager.extensions.add ( extension );
 
                 // Performing additional actions if manager was already initialized
-                // It is allowed to add extensions before L&F initialization to speedup startup
+                // It is allowed to add extensions before LaF initialization to speedup startup
                 if ( initialized )
                 {
                     // Installing extension onto the current skin

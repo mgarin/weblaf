@@ -92,7 +92,7 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
         super.installUI ( c );
 
         // todo Probably completely remove this?
-        // Overwrite indent in case WebLookAndFeel is not installed as L&F
+        // Overwrite indent in case WebLookAndFeel is not installed as LaF
         if ( !WebLookAndFeel.isInstalled () )
         {
             setRightChildIndent ( 12 );
