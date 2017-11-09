@@ -192,6 +192,13 @@ public abstract class AbstractComponentDescriptor<C extends JComponent> implemen
     }
 
     @Override
+    public void updateDefaults ( final UIDefaults table )
+    {
+        // Updating UI class mapping
+        table.put ( getUIClassId (), getUIClass ().getName () );
+    }
+
+    @Override
     public void updateUI ( final C component )
     {
         // Check whether or not we need to create new UI instance

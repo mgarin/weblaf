@@ -696,6 +696,12 @@ public final class StyleManager
             descriptorsByIdentifier.put ( descriptor.getId (), descriptor );
             descriptorsByClass.put ( componentClass, descriptor );
 
+            // Updating UIDefaults
+            if ( WebLookAndFeel.isInstalled () )
+            {
+                descriptor.updateDefaults ( UIManager.getLookAndFeelDefaults () );
+            }
+
             // todo Listeners for these changes?
         }
     }
@@ -730,6 +736,8 @@ public final class StyleManager
                     byClassIterator.remove ();
                 }
             }
+
+            // todo A way to restore default descriptors upon custom ones removal?
         }
     }
 

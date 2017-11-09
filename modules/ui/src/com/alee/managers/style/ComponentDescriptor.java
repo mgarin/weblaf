@@ -104,6 +104,14 @@ public interface ComponentDescriptor<C extends JComponent> extends Identifiable,
     public String getTitle ();
 
     /**
+     * Performs {@link UIDefaults} table updates.
+     * Normally you should put {@link ComponentUI} class mapping here, but other settings can also be updated if needed.
+     *
+     * @param table {@link UIDefaults}
+     */
+    public void updateDefaults ( UIDefaults table );
+
+    /**
      * Asks descriptor to update {@link ComponentUI} instance for the specified {@link JComponent}.
      * It is up to implementation whether {@link ComponentUI} instance will be preserved or changed to the one currently provided by L&F.
      * Various {@link ComponentDescriptor} implementations might customize this behavior to update used sub-component UIs.

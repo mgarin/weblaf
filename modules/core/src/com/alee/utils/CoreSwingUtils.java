@@ -336,7 +336,7 @@ public class CoreSwingUtils
     /**
      * Will invoke the specified action in EDT in case it is called from non-EDT thread.
      *
-     * @param runnable runnable
+     * @param runnable {@link Runnable}
      * @throws InterruptedException      if we're interrupted while waiting for the EDT to finish excecuting {@code doRun.run()}
      * @throws InvocationTargetException if an exception is thrown while running {@code doRun}
      */
@@ -354,9 +354,9 @@ public class CoreSwingUtils
 
     /**
      * Will invoke the specified action in EDT in case it is called from non-EDT thread.
-     * It will also block any exceptions thrown by "invokeAndWait" method.
+     * It will catch any exceptions thrown by {@link #invokeAndWait(Runnable)} method and wrap it within {@link RuntimeException}.
      *
-     * @param runnable runnable
+     * @param runnable {@link Runnable}
      */
     public static void invokeAndWaitSafely ( final Runnable runnable )
     {
@@ -366,7 +366,7 @@ public class CoreSwingUtils
         }
         catch ( final Exception e )
         {
-            //
+            throw new RuntimeException ( e );
         }
     }
 }

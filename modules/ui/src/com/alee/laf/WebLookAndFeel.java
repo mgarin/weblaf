@@ -49,13 +49,14 @@ import java.util.List;
  *
  * @author Mikle Garin
  * @see <a href="http://weblookandfeel.com/">WebLaF site</a>
- * @see <a href="https://github.com/mgarin/weblaf">WebLaF sources</a>
- * @see <a href="https://github.com/mgarin/weblaf/issues">WebLaF issues</a>
- * @see <a href="https://github.com/mgarin/weblaf/wiki">WebLaF wiki</a>
+ * @see <a href="https://github.com/mgarin/weblaf">GitHub project</a>
+ * @see <a href="https://github.com/mgarin/weblaf/issues">Issues tracker</a>
+ * @see <a href="https://github.com/mgarin/weblaf/wiki">Project wiki</a>
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLaF">How to use WebLaF</a>
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-build-WebLaF-from-sources">How to build WebLaF from sources</a>
  */
 
+@SuppressWarnings ( "unused" )
 public class WebLookAndFeel extends BasicLookAndFeel
 {
     /**
@@ -152,6 +153,12 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * Whether to hide component mnemonics by default or not.
      */
     protected static boolean isMnemonicHidden = true;
+
+    /**
+     * Previously installed {@link LookAndFeel}.
+     * Used within {@link #uninstall()} call to restore previous L&F.
+     */
+    protected static Class<? extends LookAndFeel> previousLookAndFeelClass;
 
     /**
      * Globally applied orientation.
@@ -356,8 +363,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
         // Dynamically provided UI classes
         for ( final ComponentDescriptor descriptor : StyleManager.getDescriptors () )
         {
-            // Registering each UI class under its identifier
-            table.put ( descriptor.getUIClassId (), descriptor.getUIClass ().getCanonicalName () );
+            // Asking each descriptor to perform an update
+            descriptor.updateDefaults ( table );
         }
     }
 
@@ -860,7 +867,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     /**
      * Installs look and feel in one simple call.
      *
-     * @return true if look and feel was successfully installed, false otherwise
+     * @return {@code true} if look and feel was successfully installed, {@code false} otherwise
      */
     public static boolean install ()
     {
@@ -870,8 +877,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
     /**
      * Installs look and feel in one simple call.
      *
-     * @param updateUI whether should update visual representation of all existing components or not
-     * @return true if look and feel was successfully installed, false otherwise
+     * @param updateUI whether or not should update visual representation of all existing components
+     * @return {@code true} if look and feel was successfully installed, {@code false} otherwise
      */
     public static boolean install ( final boolean updateUI )
     {
@@ -882,7 +889,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * Installs look and feel in one simple call.
      *
      * @param skin initially installed skin class
-     * @return true if look and feel was successfully installed, false otherwise
+     * @return {@code true} if look and feel was successfully installed, {@code false} otherwise
      */
     public static boolean install ( final Class<? extends Skin> skin )
     {
@@ -893,18 +900,22 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * Installs look and feel in one simple call.
      *
      * @param skin     initially installed skin class
-     * @param updateUI whether should update visual representation of all existing components or not
-     * @return true if look and feel was successfully installed, false otherwise
+     * @param updateUI whether or not should update visual representation of all existing components
+     * @return {@code true} if look and feel was successfully installed, {@code false} otherwise
      */
     public static boolean install ( final Class<? extends Skin> skin, final boolean updateUI )
     {
         // Event Dispatch Thread check
         checkEventDispatchThread ();
 
+        // Saving previous installed L&F class
+        previousLookAndFeelClass = UIManager.getLookAndFeel ().getClass ();
+
         // Preparing initial skin
         StyleManager.setDefaultSkin ( skin );
 
         // Installing LookAndFeel
+        final boolean installed;
         if ( LafUtils.setupLookAndFeelSafely ( WebLookAndFeel.class ) )
         {
             // Updating already created components tree
@@ -913,14 +924,15 @@ public class WebLookAndFeel extends BasicLookAndFeel
                 updateAllComponentUIs ();
             }
 
-            // Installed successfully
-            return true;
+            // Installation succeed
+            installed = true;
         }
         else
         {
             // Installation failed
-            return false;
+            installed = false;
         }
+        return installed;
     }
 
     /**
@@ -930,7 +942,61 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     public static boolean isInstalled ()
     {
-        return UIManager.getLookAndFeel ().getClass ().getCanonicalName ().equals ( WebLookAndFeel.class.getCanonicalName () );
+        return WebLookAndFeel.class.isInstance ( UIManager.getLookAndFeel ().getClass () );
+    }
+
+    /**
+     * Restores previously installed {@link LookAndFeel}.
+     *
+     * @return {@code true} if look and feel was successfully uninstalled, {@code false} otherwise
+     */
+    public static boolean uninstall ()
+    {
+        return uninstall ( false );
+    }
+
+    /**
+     * Restores previously installed {@link LookAndFeel}.
+     *
+     * @param updateUI whether or not should update visual representation of all existing components
+     * @return {@code true} if look and feel was successfully uninstalled, {@code false} otherwise
+     */
+    public static boolean uninstall ( final boolean updateUI )
+    {
+        // Event Dispatch Thread check
+        checkEventDispatchThread ();
+
+        // Trying to perform uninstall
+        final boolean uninstalled;
+        if ( isInstalled () && previousLookAndFeelClass != null )
+        {
+            // Installing previous LookAndFeel
+            if ( LafUtils.setupLookAndFeelSafely ( previousLookAndFeelClass ) )
+            {
+                // Updating already created components tree
+                if ( updateUI )
+                {
+                    updateAllComponentUIs ();
+                }
+
+                // Uninstallation succeed
+                uninstalled = true;
+            }
+            else
+            {
+                // Uninstallation failed
+                uninstalled = false;
+            }
+
+            // Cleaning up previous L&F whatever the result is
+            previousLookAndFeelClass = null;
+        }
+        else
+        {
+            // Uninstallation failed
+            uninstalled = false;
+        }
+        return uninstalled;
     }
 
     /**
