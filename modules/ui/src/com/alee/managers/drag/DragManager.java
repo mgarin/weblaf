@@ -52,14 +52,16 @@ public final class DragManager
     /**
      * Various manager listeners.
      *
-     * @see com.alee.managers.drag.DragListener
+     * @see DragListener
      */
-    private static EventListenerList listeners;
+    private static final EventListenerList listeners = new EventListenerList ();
 
     /**
      * Drag view handlers map.
+     *
+     * @see DragViewHandler
      */
-    private static Map<DataFlavor, List<DragViewHandler>> viewHandlers;
+    private static final Map<DataFlavor, List<DragViewHandler>> viewHandlers = new HashMap<DataFlavor, List<DragViewHandler>> ();
 
     /**
      * Whether or not something is being dragged right now.
@@ -100,12 +102,7 @@ public final class DragManager
             // Remember that initialization happened
             initialized = true;
 
-            // Global drag listeners
-            listeners = new EventListenerList ();
-
-            // View handlers map
-            viewHandlers = new HashMap<DataFlavor, List<DragViewHandler>> ();
-
+            // Global drag listener
             final DragSourceAdapter dsa = new DragSourceAdapter ()
             {
                 /**
@@ -251,8 +248,13 @@ public final class DragManager
                     return new Point ( mp.x + vp.x, mp.y + vp.y );
                 }
             };
-            DragSource.getDefaultDragSource ().addDragSourceListener ( dsa );
-            DragSource.getDefaultDragSource ().addDragSourceMotionListener ( dsa );
+
+            // Listeners could only be registered on non-headless environment
+            if ( !GraphicsEnvironment.isHeadless () )
+            {
+                DragSource.getDefaultDragSource ().addDragSourceListener ( dsa );
+                DragSource.getDefaultDragSource ().addDragSourceMotionListener ( dsa );
+            }
         }
     }
 
