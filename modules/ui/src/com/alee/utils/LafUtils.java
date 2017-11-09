@@ -612,18 +612,54 @@ public final class LafUtils
      * todo Get rid of this stuff and resources for good
      */
 
-    private static final NinePatchIcon conn = new NinePatchIcon ( LafUtils.class.getResource ( "icons/selection/conn.9.png" ) );
-    private static final NinePatchIcon lr_conn = new NinePatchIcon ( LafUtils.class.getResource ( "icons/selection/lr_conn.9.png" ) );
-    private static final NinePatchIcon ud_conn = new NinePatchIcon ( LafUtils.class.getResource ( "icons/selection/ud_conn.9.png" ) );
-    private static final NinePatchIcon corners_conn =
-            new NinePatchIcon ( LafUtils.class.getResource ( "icons/selection/corners_conn.9.png" ) );
-    private static final NinePatchIcon full_conn = new NinePatchIcon ( LafUtils.class.getResource ( "icons/selection/full_conn.9.png" ) );
-    private static final NinePatchIcon lr = new NinePatchIcon ( LafUtils.class.getResource ( "icons/selection/lr.9.png" ) );
-    private static final NinePatchIcon ud = new NinePatchIcon ( LafUtils.class.getResource ( "icons/selection/ud.9.png" ) );
-    private static final NinePatchIcon corners = new NinePatchIcon ( LafUtils.class.getResource ( "icons/selection/corners.9.png" ) );
-    private static final NinePatchIcon full = new NinePatchIcon ( LafUtils.class.getResource ( "icons/selection/full.9.png" ) );
+    private static final Map<String, Icon> selectionIconsCache = new HashMap<String, Icon> ( 10 );
 
-    private static final ImageIcon gripper = new ImageIcon ( LafUtils.class.getResource ( "icons/selection/gripper.png" ) );
+    private static NinePatchIcon getSelectionIcon ( final String name )
+    {
+        final NinePatchIcon icon;
+        if ( selectionIconsCache.containsKey ( name ) )
+        {
+            icon = ( NinePatchIcon ) selectionIconsCache.get ( name );
+        }
+        else
+        {
+            icon = new NinePatchIcon ( LafUtils.class.getResource ( "icons/selection/" + name + ".9.png" ) );
+            selectionIconsCache.put ( name, icon );
+        }
+        return icon;
+    }
+
+    private static ImageIcon getGripperIcon ()
+    {
+        final ImageIcon icon;
+        final String key = "gripper";
+        if ( selectionIconsCache.containsKey ( key ) )
+        {
+            icon = ( ImageIcon ) selectionIconsCache.get ( key );
+        }
+        else
+        {
+            icon = new ImageIcon ( LafUtils.class.getResource ( "icons/selection/" + key + ".png" ) );
+            selectionIconsCache.put ( key, icon );
+        }
+        return icon;
+    }
+
+    private static NinePatchIcon getSelectorIcon ( final int selector )
+    {
+        final NinePatchIcon icon;
+        final String key = Integer.toString ( selector );
+        if ( selectionIconsCache.containsKey ( key ) )
+        {
+            icon = ( NinePatchIcon ) selectionIconsCache.get ( key );
+        }
+        else
+        {
+            icon = new NinePatchIcon ( LafUtils.class.getResource ( "icons/selection/selector" + key + ".9.png" ) );
+            selectionIconsCache.put ( key, icon );
+        }
+        return icon;
+    }
 
     public static void drawWebIconedSelection ( final Graphics2D g2d, final Rectangle selection, final boolean resizableLR,
                                                 final boolean resizableUD, final boolean drawConnectors )
@@ -644,25 +680,25 @@ public final class LafUtils
         {
             if ( !resizableLR && !resizableUD )
             {
-                conn.paintIcon ( g2d, rect );
+                getSelectionIcon ( "conn" ).paintIcon ( g2d, rect );
             }
             else if ( resizableLR && !resizableUD && drawSideControls )
             {
-                lr_conn.paintIcon ( g2d, rect );
+                getSelectionIcon ( "lr_conn" ).paintIcon ( g2d, rect );
             }
             else if ( !resizableLR && resizableUD && drawSideControls )
             {
-                ud_conn.paintIcon ( g2d, rect );
+                getSelectionIcon ( "ud_conn" ).paintIcon ( g2d, rect );
             }
             else if ( resizableLR && resizableUD )
             {
                 if ( drawSideControls )
                 {
-                    full_conn.paintIcon ( g2d, rect );
+                    getSelectionIcon ( "full_conn" ).paintIcon ( g2d, rect );
                 }
                 else
                 {
-                    corners_conn.paintIcon ( g2d, rect );
+                    getSelectionIcon ( "corners_conn" ).paintIcon ( g2d, rect );
                 }
             }
         }
@@ -670,21 +706,21 @@ public final class LafUtils
         {
             if ( resizableLR && !resizableUD && drawSideControls )
             {
-                lr.paintIcon ( g2d, rect );
+                getSelectionIcon ( "lr" ).paintIcon ( g2d, rect );
             }
             else if ( !resizableLR && resizableUD && drawSideControls )
             {
-                ud.paintIcon ( g2d, rect );
+                getSelectionIcon ( "ud" ).paintIcon ( g2d, rect );
             }
             else if ( resizableLR && resizableUD )
             {
                 if ( drawSideControls )
                 {
-                    full.paintIcon ( g2d, rect );
+                    getSelectionIcon ( "full" ).paintIcon ( g2d, rect );
                 }
                 else
                 {
-                    corners.paintIcon ( g2d, rect );
+                    getSelectionIcon ( "corners" ).paintIcon ( g2d, rect );
                 }
             }
         }
@@ -708,6 +744,7 @@ public final class LafUtils
 
     public static void drawWebIconedGripper ( final Graphics2D g2d, final int x, final int y )
     {
+        final ImageIcon gripper = getGripperIcon ();
         g2d.drawImage ( gripper.getImage (), x - gripper.getIconWidth () / 2, y - gripper.getIconHeight () / 2, null );
     }
 
@@ -716,22 +753,6 @@ public final class LafUtils
         // Recalculating coordinates to iconed view
         return new Rectangle ( selection.x - halfButton - shadeWidth, selection.y - halfButton - shadeWidth,
                 selection.width + halfButton * 2 + shadeWidth * 2, selection.height + halfButton * 2 + shadeWidth * 2 );
-    }
-
-    private static final Map<Integer, NinePatchIcon> selectorCache = new HashMap<Integer, NinePatchIcon> ();
-
-    private static NinePatchIcon getSelectorIcon ( final int selector )
-    {
-        if ( selectorCache.containsKey ( selector ) )
-        {
-            return selectorCache.get ( selector );
-        }
-        else
-        {
-            final NinePatchIcon npi = new NinePatchIcon ( LafUtils.class.getResource ( "icons/selection/selector" + selector + ".9.png" ) );
-            selectorCache.put ( selector, npi );
-            return npi;
-        }
     }
 
     /**

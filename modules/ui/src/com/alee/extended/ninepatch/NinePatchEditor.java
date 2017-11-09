@@ -19,13 +19,13 @@ package com.alee.extended.ninepatch;
 
 import com.alee.api.clone.Clone;
 import com.alee.extended.layout.TableLayout;
+import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.*;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.ninepatch.NinePatchInterval;
 import com.alee.utils.swing.MouseEventType;
-import com.alee.utils.swing.extensions.SizeMethods;
 import com.alee.utils.swing.extensions.SizeMethodsImpl;
 
 import javax.swing.*;
@@ -52,7 +52,7 @@ import java.util.Map;
  * @see com.alee.extended.ninepatch.NinePatchEditorPanel
  */
 
-public class NinePatchEditor extends JComponent implements SizeMethods<NinePatchEditor>
+public class NinePatchEditor extends WebPanel
 {
     public static final Color STRETCH_GUIDELINES_COLOR = new Color ( 60, 150, 0 );
     public static final Color STRETCH_COLOR = new Color ( 80, 150, 0, 100 );
@@ -1933,82 +1933,6 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         }
     }
 
-    /**
-     * Size methods.
-     */
-
-    @Override
-    public int getPreferredWidth ()
-    {
-        return SizeMethodsImpl.getPreferredWidth ( this );
-    }
-
-    @Override
-    public NinePatchEditor setPreferredWidth ( final int preferredWidth )
-    {
-        return SizeMethodsImpl.setPreferredWidth ( this, preferredWidth );
-    }
-
-    @Override
-    public int getPreferredHeight ()
-    {
-        return SizeMethodsImpl.getPreferredHeight ( this );
-    }
-
-    @Override
-    public NinePatchEditor setPreferredHeight ( final int preferredHeight )
-    {
-        return SizeMethodsImpl.setPreferredHeight ( this, preferredHeight );
-    }
-
-    @Override
-    public int getMinimumWidth ()
-    {
-        return SizeMethodsImpl.getMinimumWidth ( this );
-    }
-
-    @Override
-    public NinePatchEditor setMinimumWidth ( final int minimumWidth )
-    {
-        return SizeMethodsImpl.setMinimumWidth ( this, minimumWidth );
-    }
-
-    @Override
-    public int getMinimumHeight ()
-    {
-        return SizeMethodsImpl.getMinimumHeight ( this );
-    }
-
-    @Override
-    public NinePatchEditor setMinimumHeight ( final int minimumHeight )
-    {
-        return SizeMethodsImpl.setMinimumHeight ( this, minimumHeight );
-    }
-
-    @Override
-    public int getMaximumWidth ()
-    {
-        return SizeMethodsImpl.getMaximumWidth ( this );
-    }
-
-    @Override
-    public NinePatchEditor setMaximumWidth ( final int maximumWidth )
-    {
-        return SizeMethodsImpl.setMaximumWidth ( this, maximumWidth );
-    }
-
-    @Override
-    public int getMaximumHeight ()
-    {
-        return SizeMethodsImpl.getMaximumHeight ( this );
-    }
-
-    @Override
-    public NinePatchEditor setMaximumHeight ( final int maximumHeight )
-    {
-        return SizeMethodsImpl.setMaximumHeight ( this, maximumHeight );
-    }
-
     @Override
     public Dimension getPreferredSize ()
     {
@@ -2019,12 +1943,6 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
     public Dimension getOriginalPreferredSize ()
     {
         return SizeMethodsImpl.getOriginalPreferredSize ( this, getActualPreferredSize () );
-    }
-
-    @Override
-    public NinePatchEditor setPreferredSize ( final int width, final int height )
-    {
-        return SizeMethodsImpl.setPreferredSize ( this, width, height );
     }
 
     public Dimension getActualPreferredSize ()
