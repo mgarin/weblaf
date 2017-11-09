@@ -34,7 +34,6 @@ import javax.swing.border.Border;
 import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 import java.lang.ref.WeakReference;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -69,13 +68,13 @@ public final class PainterSupport
      * @see #getMargin(Component)
      * @see #setMargin(JComponent, Insets)
      */
-    private static final Map<JComponent, Insets> margins = new HashMap<JComponent, Insets> ( 100 );
+    private static final Map<JComponent, Insets> margins = new WeakHashMap<JComponent, Insets> ( 100 );
 
     /**
      * Paddings saved per-component instance.
      * todo These settings should be completely moved into {@link AbstractPainter} upon multiple painters elimination
      */
-    private static final Map<JComponent, Insets> paddings = new HashMap<JComponent, Insets> ( 100 );
+    private static final Map<JComponent, Insets> paddings = new WeakHashMap<JComponent, Insets> ( 100 );
 
     /**
      * Returns either the specified painter if it is not an adapted painter or the adapted painter.
