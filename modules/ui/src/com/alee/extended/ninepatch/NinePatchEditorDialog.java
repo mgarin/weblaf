@@ -17,12 +17,12 @@
 
 package com.alee.extended.ninepatch;
 
+import com.alee.api.jdk.Supplier;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.window.WebFrame;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.processors.data.WindowSettings;
 import com.alee.utils.ImageUtils;
-import com.alee.utils.swing.DataProvider;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -53,10 +53,10 @@ public class NinePatchEditorDialog extends WebFrame
     {
         super ();
         setIconImages ( WebLookAndFeel.getImages () );
-        setLanguage ( "weblaf.ex.npeditor.title", new DataProvider<String> ()
+        setLanguage ( "weblaf.ex.npeditor.title", new Supplier<String> ()
         {
             @Override
-            public String provide ()
+            public String get ()
             {
                 final String imageSrc = ninePatchEditorPanel != null ? ninePatchEditorPanel.getImageSrc () : null;
                 return imageSrc != null ? " - [" + imageSrc + "]" : "";

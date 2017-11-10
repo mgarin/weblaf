@@ -17,6 +17,7 @@
 
 package com.alee.laf.menu;
 
+import com.alee.api.jdk.Supplier;
 import com.alee.managers.style.Bounds;
 import com.alee.managers.style.BoundsType;
 import com.alee.managers.style.PainterShapeProvider;
@@ -29,7 +30,6 @@ import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.ShapeUtils;
 import com.alee.utils.general.Pair;
 import com.alee.utils.ninepatch.NinePatchIcon;
-import com.alee.utils.swing.DataProvider;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -512,10 +512,10 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
         {
             case simple:
             {
-                return ShapeUtils.getShape ( popup, fill ? SIMPLE_FILL_SHAPE : SIMPLE_BORDER_SHAPE, new DataProvider<Shape> ()
+                return ShapeUtils.getShape ( popup, fill ? SIMPLE_FILL_SHAPE : SIMPLE_BORDER_SHAPE, new Supplier<Shape> ()
                 {
                     @Override
-                    public Shape provide ()
+                    public Shape get ()
                     {
                         return createSimpleShape ( popup, popupSize, fill );
                     }
@@ -523,10 +523,10 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
             }
             case dropdown:
             {
-                return ShapeUtils.getShape ( popup, fill ? DROPDOWN_FILL_SHAPE : DROPDOWN_BORDER_SHAPE, new DataProvider<Shape> ()
+                return ShapeUtils.getShape ( popup, fill ? DROPDOWN_FILL_SHAPE : DROPDOWN_BORDER_SHAPE, new Supplier<Shape> ()
                 {
                     @Override
-                    public Shape provide ()
+                    public Shape get ()
                     {
                         return createDropdownShape ( popup, popupSize, fill );
                     }
@@ -686,10 +686,10 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      */
     protected Shape getDropdownCornerShape ( final E popupMenu, final Dimension menuSize, final boolean fill )
     {
-        return ShapeUtils.getShape ( popupMenu, fill ? "dropdown-corner-fill" : "dropdown-corner-border", new DataProvider<Shape> ()
+        return ShapeUtils.getShape ( popupMenu, fill ? "dropdown-corner-fill" : "dropdown-corner-border", new Supplier<Shape> ()
         {
             @Override
-            public Shape provide ()
+            public Shape get ()
             {
                 return createDropdownCornerShape ( popupMenu, menuSize, fill );
             }

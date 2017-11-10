@@ -22,7 +22,6 @@ import com.alee.api.jdk.Supplier;
 import com.alee.utils.ArrayUtils;
 import com.alee.utils.HtmlUtils;
 import com.alee.utils.TextUtils;
-import com.alee.utils.swing.DataProvider;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -141,11 +140,7 @@ public final class Text implements Serializable, Cloneable
                 final Object object = data[ i ];
                 if ( object != null )
                 {
-                    if ( object instanceof DataProvider )
-                    {
-                        finalData[ i ] = ( ( DataProvider ) object ).provide ();
-                    }
-                    else if ( object instanceof Supplier )
+                    if ( object instanceof Supplier )
                     {
                         finalData[ i ] = ( ( Supplier ) object ).get ();
                     }

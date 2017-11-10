@@ -17,9 +17,9 @@
 
 package com.alee.extended.window;
 
+import com.alee.api.jdk.Supplier;
 import com.alee.laf.rootpane.IRootPanePainter;
 import com.alee.laf.rootpane.WRootPaneUI;
-import com.alee.utils.swing.DataProvider;
 
 import javax.swing.*;
 import java.awt.*;
@@ -58,10 +58,10 @@ public interface IPopOverPainter<E extends JRootPane, U extends WRootPaneUI> ext
      *
      * @param popOver        popover to configure
      * @param invoker        invoker component
-     * @param boundsProvider source area provider
+     * @param boundsSupplier source area provider
      * @param direction      preferred display direction
      * @param alignment      preferred display alignment
      */
-    public void configure ( WebPopOver popOver, Component invoker, DataProvider<Rectangle> boundsProvider,
+    public void configure ( WebPopOver popOver, Component invoker, Supplier<Rectangle> boundsSupplier,
                             PopOverDirection direction, PopOverAlignment alignment );
 }

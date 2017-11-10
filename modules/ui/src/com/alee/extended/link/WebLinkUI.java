@@ -21,7 +21,7 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -125,10 +125,10 @@ public class WebLinkUI<C extends WebLink> extends WLinkUI<C> implements ShapeSup
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( label, new DataRunnable<ILinkPainter> ()
+        PainterSupport.setPainter ( label, new Consumer<ILinkPainter> ()
         {
             @Override
-            public void run ( final ILinkPainter newPainter )
+            public void accept ( final ILinkPainter newPainter )
             {
                 WebLinkUI.this.painter = newPainter;
             }

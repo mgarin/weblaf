@@ -17,11 +17,11 @@
 
 package com.alee.extended.panel;
 
+import com.alee.api.jdk.Supplier;
 import com.alee.extended.layout.OverlayData;
 import com.alee.extended.layout.OverlayLayout;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.style.StyleId;
-import com.alee.utils.swing.DataProvider;
 
 import javax.swing.*;
 import java.awt.*;
@@ -60,9 +60,9 @@ public class WebOverlay extends WebPanel implements SwingConstants
         this ( StyleId.auto, component, overlay, halign, valign );
     }
 
-    public WebOverlay ( final Component component, final Component overlay, final DataProvider<Rectangle> rectangleProvider )
+    public WebOverlay ( final Component component, final Component overlay, final Supplier<Rectangle> boundsSupplier )
     {
-        this ( StyleId.auto, component, overlay, rectangleProvider );
+        this ( StyleId.auto, component, overlay, boundsSupplier );
     }
 
     public WebOverlay ( final StyleId id )
@@ -95,12 +95,12 @@ public class WebOverlay extends WebPanel implements SwingConstants
     }
 
     public WebOverlay ( final StyleId id, final Component component, final Component overlay,
-                        final DataProvider<Rectangle> rectangleProvider )
+                        final Supplier<Rectangle> boundsSupplier )
     {
         super ( id, new OverlayLayout () );
         initialize ();
         setComponent ( component );
-        addOverlay ( overlay, rectangleProvider );
+        addOverlay ( overlay, boundsSupplier );
     }
 
     private void initialize ()
@@ -181,9 +181,9 @@ public class WebOverlay extends WebPanel implements SwingConstants
         add ( overlay, OverlayLayout.OVERLAY, 0 );
     }
 
-    public void addOverlay ( final Component overlay, final DataProvider<Rectangle> rectangleProvider )
+    public void addOverlay ( final Component overlay, final Supplier<Rectangle> boundsSupplier )
     {
-        overlayData.put ( overlay, new OverlayData ( rectangleProvider ) );
+        overlayData.put ( overlay, new OverlayData ( boundsSupplier ) );
         add ( overlay, OverlayLayout.OVERLAY, 0 );
     }
 

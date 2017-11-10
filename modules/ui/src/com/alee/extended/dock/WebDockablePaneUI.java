@@ -30,7 +30,7 @@ import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -708,10 +708,10 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( pane, new DataRunnable<IDockablePanePainter> ()
+        PainterSupport.setPainter ( pane, new Consumer<IDockablePanePainter> ()
         {
             @Override
-            public void run ( final IDockablePanePainter newPainter )
+            public void accept ( final IDockablePanePainter newPainter )
             {
                 WebDockablePaneUI.this.painter = newPainter;
             }

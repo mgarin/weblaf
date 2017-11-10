@@ -27,7 +27,7 @@ import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -525,10 +525,10 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( scrollpane, new DataRunnable<IScrollPanePainter> ()
+        PainterSupport.setPainter ( scrollpane, new Consumer<IScrollPanePainter> ()
         {
             @Override
-            public void run ( final IScrollPanePainter newPainter )
+            public void accept ( final IScrollPanePainter newPainter )
             {
                 WebScrollPaneUI.this.painter = newPainter;
             }

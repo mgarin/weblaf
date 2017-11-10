@@ -23,7 +23,7 @@ import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -139,10 +139,10 @@ public class WebEditorPaneUI extends WEditorPaneUI implements ShapeSupport, Marg
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( editorPane, new DataRunnable<IEditorPanePainter> ()
+        PainterSupport.setPainter ( editorPane, new Consumer<IEditorPanePainter> ()
         {
             @Override
-            public void run ( final IEditorPanePainter newPainter )
+            public void accept ( final IEditorPanePainter newPainter )
             {
                 WebEditorPaneUI.this.painter = newPainter;
             }

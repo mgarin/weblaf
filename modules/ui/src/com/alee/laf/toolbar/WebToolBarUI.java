@@ -26,7 +26,7 @@ import com.alee.painter.PainterSupport;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -244,10 +244,10 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( toolBar, new DataRunnable<IToolBarPainter> ()
+        PainterSupport.setPainter ( toolBar, new Consumer<IToolBarPainter> ()
         {
             @Override
-            public void run ( final IToolBarPainter newPainter )
+            public void accept ( final IToolBarPainter newPainter )
             {
                 WebToolBarUI.this.painter = newPainter;
             }

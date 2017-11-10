@@ -17,11 +17,11 @@
 
 package com.alee.laf.button;
 
+import com.alee.api.jdk.Consumer;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -121,10 +121,10 @@ public class WebButtonUI<C extends JButton> extends WButtonUI<C> implements Shap
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( button, new DataRunnable<IButtonPainter> ()
+        PainterSupport.setPainter ( button, new Consumer<IButtonPainter> ()
         {
             @Override
-            public void run ( final IButtonPainter newPainter )
+            public void accept ( final IButtonPainter newPainter )
             {
                 WebButtonUI.this.painter = newPainter;
             }

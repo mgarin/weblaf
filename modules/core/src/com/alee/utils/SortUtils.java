@@ -18,7 +18,7 @@
 package com.alee.utils;
 
 import com.alee.utils.sort.Edge;
-import com.alee.utils.sort.GraphDataProvider;
+import com.alee.utils.sort.GraphStructureProvider;
 import com.alee.utils.sort.Node;
 
 import java.util.*;
@@ -34,18 +34,18 @@ public final class SortUtils
     /**
      * Performs topological data sort using the graph data provider to build nodes graph and returns sorted data list.
      *
-     * @param graphDataProvider graph data provider
+     * @param graphStructureProvider graph data provider
      * @param <T>               data type
      * @return sorted data list
      */
-    public static <T> List<T> doTopologicalSort ( final GraphDataProvider<T> graphDataProvider )
+    public static <T> List<T> doTopologicalSort ( final GraphStructureProvider<T> graphStructureProvider )
     {
         // Building nodes structure
         final List<Node<T>> nodes = new ArrayList<Node<T>> ();
         final Map<T, Node<T>> nodesCache = new HashMap<T, Node<T>> ();
-        for ( final T root : graphDataProvider.getRoots () )
+        for ( final T root : graphStructureProvider.getRoots () )
         {
-            buildNodeStructure ( root, nodes, nodesCache, graphDataProvider );
+            buildNodeStructure ( root, nodes, nodesCache, graphStructureProvider );
         }
 
         // Performing sorting
@@ -67,12 +67,12 @@ public final class SortUtils
      * @param data              structure root node data
      * @param nodes             existing graph nodes
      * @param nodesCache        existing graph nodes cache
-     * @param graphDataProvider graph data provider
+     * @param graphStructureProvider graph data provider
      * @param <T>               data type
      * @return root structure node
      */
     private static <T> Node<T> buildNodeStructure ( final T data, final List<Node<T>> nodes, final Map<T, Node<T>> nodesCache,
-                                                    final GraphDataProvider<T> graphDataProvider )
+                                                    final GraphStructureProvider<T> graphStructureProvider )
     {
         final Node<T> node;
         if ( nodesCache.containsKey ( data ) )
@@ -88,9 +88,9 @@ public final class SortUtils
             nodesCache.put ( data, node );
 
             // Creating node children
-            for ( final T child : graphDataProvider.getChildren ( data ) )
+            for ( final T child : graphStructureProvider.getChildren ( data ) )
             {
-                node.addEdge ( buildNodeStructure ( child, nodes, nodesCache, graphDataProvider ) );
+                node.addEdge ( buildNodeStructure ( child, nodes, nodesCache, graphStructureProvider ) );
             }
         }
         return node;

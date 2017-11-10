@@ -22,7 +22,7 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -125,10 +125,10 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeSupport
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( header, new DataRunnable<ITableHeaderPainter> ()
+        PainterSupport.setPainter ( header, new Consumer<ITableHeaderPainter> ()
         {
             @Override
-            public void run ( final ITableHeaderPainter newPainter )
+            public void accept ( final ITableHeaderPainter newPainter )
             {
                 WebTableHeaderUI.this.painter = newPainter;
             }

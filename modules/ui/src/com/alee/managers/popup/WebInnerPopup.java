@@ -17,6 +17,7 @@
 
 package com.alee.managers.popup;
 
+import com.alee.api.jdk.Supplier;
 import com.alee.extended.window.Popup;
 import com.alee.extended.window.PopupListener;
 import com.alee.extended.window.PopupMethods;
@@ -331,10 +332,10 @@ public class WebInnerPopup extends WebPanel implements Popup, PopupMethods
 
     public void showAsPopupMenu ( final Component component )
     {
-        showPopup ( component, new DataProvider<Rectangle> ()
+        showPopup ( component, new Supplier<Rectangle> ()
         {
             @Override
-            public Rectangle provide ()
+            public Rectangle get ()
             {
                 // Determining component position inside window
                 final Rectangle cb = SwingUtils.getBoundsInWindow ( component );
@@ -397,10 +398,10 @@ public class WebInnerPopup extends WebPanel implements Popup, PopupMethods
 
     public void showPopup ( final Component component, final int x, final int y )
     {
-        showPopup ( component, new DataProvider<Rectangle> ()
+        showPopup ( component, new Supplier<Rectangle> ()
         {
             @Override
-            public Rectangle provide ()
+            public Rectangle get ()
             {
                 final Dimension ps = WebInnerPopup.this.getPreferredSize ();
                 return new Rectangle ( x, y, ps.width, ps.height );
@@ -408,11 +409,11 @@ public class WebInnerPopup extends WebPanel implements Popup, PopupMethods
         } );
     }
 
-    public void showPopup ( final Component component, final DataProvider<Rectangle> boundsProvider )
+    public void showPopup ( final Component component, final Supplier<Rectangle> boundsSupplier )
     {
-        updatePopupBounds ( component, boundsProvider.provide () );
+        updatePopupBounds ( component, boundsSupplier.get () );
         PopupManager.showPopup ( component, this, requestFocusOnShow );
-        updateLocationListeners ( component, boundsProvider );
+        updateLocationListeners ( component, boundsSupplier );
     }
 
     protected void updatePopupBounds ( final Component component, final Rectangle bounds )
@@ -452,7 +453,7 @@ public class WebInnerPopup extends WebPanel implements Popup, PopupMethods
         }
     }
 
-    protected void updateLocationListeners ( final Component component, final DataProvider<Rectangle> boundsProvider )
+    protected void updateLocationListeners ( final Component component, final Supplier<Rectangle> boundsSupplier )
     {
         clearLocationListeners ();
 
@@ -463,13 +464,13 @@ public class WebInnerPopup extends WebPanel implements Popup, PopupMethods
             @Override
             public void componentResized ( final ComponentEvent e )
             {
-                updatePopupBounds ( component, boundsProvider.provide () );
+                updatePopupBounds ( component, boundsSupplier.get () );
             }
 
             @Override
             public void componentMoved ( final ComponentEvent e )
             {
-                updatePopupBounds ( component, boundsProvider.provide () );
+                updatePopupBounds ( component, boundsSupplier.get () );
             }
         };
         lastComponent.addComponentListener ( lastComponentListener );
@@ -481,7 +482,7 @@ public class WebInnerPopup extends WebPanel implements Popup, PopupMethods
                 @Override
                 public void ancestorMoved ( final AncestorEvent event )
                 {
-                    updatePopupBounds ( component, boundsProvider.provide () );
+                    updatePopupBounds ( component, boundsSupplier.get () );
                 }
             };
             ( ( JComponent ) lastComponent ).addAncestorListener ( lastAncestorListener );

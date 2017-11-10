@@ -21,7 +21,7 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -121,10 +121,10 @@ public class WebImageUI<C extends WebImage> extends WImageUI<C> implements Shape
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( image, new DataRunnable<IImagePainter> ()
+        PainterSupport.setPainter ( image, new Consumer<IImagePainter> ()
         {
             @Override
-            public void run ( final IImagePainter newPainter )
+            public void accept ( final IImagePainter newPainter )
             {
                 WebImageUI.this.painter = newPainter;
             }

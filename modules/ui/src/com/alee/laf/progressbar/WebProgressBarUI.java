@@ -23,7 +23,7 @@ import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.CompareUtils;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -163,10 +163,10 @@ public class WebProgressBarUI<C extends JProgressBar> extends WProgressBarUI<C> 
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( progressBar, new DataRunnable<IProgressBarPainter> ()
+        PainterSupport.setPainter ( progressBar, new Consumer<IProgressBarPainter> ()
         {
             @Override
-            public void run ( final IProgressBarPainter newPainter )
+            public void accept ( final IProgressBarPainter newPainter )
             {
                 WebProgressBarUI.this.painter = newPainter;
             }

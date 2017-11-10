@@ -21,7 +21,7 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -123,10 +123,10 @@ public class WebStatusBarUI<C extends WebStatusBar> extends WStatusBarUI<C> impl
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( statusBar, new DataRunnable<IStatusBarPainter> ()
+        PainterSupport.setPainter ( statusBar, new Consumer<IStatusBarPainter> ()
         {
             @Override
-            public void run ( final IStatusBarPainter newPainter )
+            public void accept ( final IStatusBarPainter newPainter )
             {
                 WebStatusBarUI.this.painter = newPainter;
             }

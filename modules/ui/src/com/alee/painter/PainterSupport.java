@@ -17,6 +17,7 @@
 
 package com.alee.painter;
 
+import com.alee.api.jdk.Consumer;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.Bounds;
 import com.alee.managers.style.BoundsType;
@@ -26,7 +27,6 @@ import com.alee.managers.style.data.ComponentStyle;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.AbstractSectionDecorationPainter;
 import com.alee.utils.*;
-import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
@@ -101,20 +101,20 @@ public final class PainterSupport
      * @param specificAdapterClass specific painter adapter class
      * @param <P>                  specific painter class type
      */
-    public static <P extends SpecificPainter> void setPainter ( final JComponent component, final DataRunnable<P> setter,
+    public static <P extends SpecificPainter> void setPainter ( final JComponent component, final Consumer<P> setter,
                                                                 final P oldPainter, final Painter painter, final Class<P> specificClass,
                                                                 final Class<? extends P> specificAdapterClass )
     {
         // Creating adaptive painter if required
-        final P properPainter = getApplicablePainter ( painter, specificClass, specificAdapterClass );
+        final P newPainter = getApplicablePainter ( painter, specificClass, specificAdapterClass );
 
         // Properly updating painter
         uninstallPainter ( component, oldPainter );
-        setter.run ( properPainter );
-        installPainter ( component, properPainter );
+        setter.accept ( newPainter );
+        installPainter ( component, newPainter );
 
         // Firing painter change event
-        SwingUtils.firePropertyChanged ( component, WebLookAndFeel.PAINTER_PROPERTY, oldPainter, properPainter );
+        SwingUtils.firePropertyChanged ( component, WebLookAndFeel.PAINTER_PROPERTY, oldPainter, newPainter );
     }
 
     /**

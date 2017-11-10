@@ -21,7 +21,7 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -123,10 +123,10 @@ public class WebPopupUI<C extends WebPopup> extends WPopupUI<C> implements Shape
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( popup, new DataRunnable<IPopupPainter> ()
+        PainterSupport.setPainter ( popup, new Consumer<IPopupPainter> ()
         {
             @Override
-            public void run ( final IPopupPainter newPainter )
+            public void accept ( final IPopupPainter newPainter )
             {
                 WebPopupUI.this.painter = newPainter;
             }

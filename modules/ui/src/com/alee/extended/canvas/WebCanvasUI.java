@@ -21,7 +21,7 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -123,10 +123,10 @@ public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements Sh
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( canvas, new DataRunnable<ICanvasPainter> ()
+        PainterSupport.setPainter ( canvas, new Consumer<ICanvasPainter> ()
         {
             @Override
-            public void run ( final ICanvasPainter newPainter )
+            public void accept ( final ICanvasPainter newPainter )
             {
                 WebCanvasUI.this.painter = newPainter;
             }

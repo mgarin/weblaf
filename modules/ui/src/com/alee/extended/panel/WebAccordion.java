@@ -17,6 +17,7 @@
 
 package com.alee.extended.panel;
 
+import com.alee.api.jdk.Supplier;
 import com.alee.extended.layout.AccordionLayout;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.settings.DefaultValue;
@@ -25,7 +26,6 @@ import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.swing.DataProvider;
 
 import javax.swing.*;
 import java.awt.*;
@@ -358,10 +358,10 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
         }
 
         // State change enabler
-        pane.setStateChangeHandler ( new DataProvider<Boolean> ()
+        pane.setStateChangeHandler ( new Supplier<Boolean> ()
         {
             @Override
-            public Boolean provide ()
+            public Boolean get ()
             {
                 // Allow action if we are expanding pane
                 if ( !pane.isExpanded () )

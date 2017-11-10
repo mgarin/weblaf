@@ -21,7 +21,7 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -120,10 +120,10 @@ public class WebLabelUI extends WLabelUI implements ShapeSupport, MarginSupport,
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( label, new DataRunnable<ILabelPainter> ()
+        PainterSupport.setPainter ( label, new Consumer<ILabelPainter> ()
         {
             @Override
-            public void run ( final ILabelPainter newPainter )
+            public void accept ( final ILabelPainter newPainter )
             {
                 WebLabelUI.this.painter = newPainter;
             }

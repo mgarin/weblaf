@@ -17,11 +17,11 @@
 
 package com.alee.extended.breadcrumb;
 
+import com.alee.api.jdk.Supplier;
 import com.alee.global.StyleConstants;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ShapeUtils;
-import com.alee.utils.swing.DataProvider;
 
 import javax.swing.*;
 import java.awt.*;
@@ -213,10 +213,10 @@ public final class BreadcrumbUtils
     public static Shape getBorderShape ( final JComponent element, final int w, final int h, final int overlap, final int shadeWidth,
                                          final boolean ltr )
     {
-        return ShapeUtils.getShape ( element, BORDER_SHAPE, new DataProvider<Shape> ()
+        return ShapeUtils.getShape ( element, BORDER_SHAPE, new Supplier<Shape> ()
         {
             @Override
-            public Shape provide ()
+            public Shape get ()
             {
                 return createBorderShape ( w, h, overlap, shadeWidth, ltr );
             }
@@ -269,10 +269,10 @@ public final class BreadcrumbUtils
                                        final int overlap, final int shadeWidth, final int round, final boolean encloseLast,
                                        final boolean ltr )
     {
-        return ShapeUtils.getShape ( element, FILL_SHAPE, new DataProvider<Shape> ()
+        return ShapeUtils.getShape ( element, FILL_SHAPE, new Supplier<Shape> ()
         {
             @Override
-            public Shape provide ()
+            public Shape get ()
             {
                 return createFillShape ( element, type, w, h, overlap, shadeWidth, round, encloseLast, ltr );
             }

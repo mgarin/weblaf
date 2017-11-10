@@ -29,7 +29,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class EnumLazyIconProvider
+public final class EnumLazyIconProvider
 {
     /**
      * Cached enum icons map.

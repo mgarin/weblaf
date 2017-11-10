@@ -25,7 +25,7 @@ import com.alee.painter.PainterSupport;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -148,10 +148,10 @@ public class WebTextFieldUI extends WTextFieldUI implements ShapeSupport, Margin
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( field, new DataRunnable<ITextFieldPainter> ()
+        PainterSupport.setPainter ( field, new Consumer<ITextFieldPainter> ()
         {
             @Override
-            public void run ( final ITextFieldPainter newPainter )
+            public void accept ( final ITextFieldPainter newPainter )
             {
                 WebTextFieldUI.this.painter = newPainter;
             }

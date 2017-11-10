@@ -18,6 +18,7 @@
 package com.alee.extended.panel;
 
 import com.alee.api.data.BoxOrientation;
+import com.alee.api.jdk.Supplier;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
@@ -26,8 +27,8 @@ import com.alee.laf.panel.WebPanel;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.icon.Icons;
 import com.alee.managers.language.LanguageMethods;
-import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.language.WebLanguageManager;
+import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -40,7 +41,6 @@ import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ImageUtils;
-import com.alee.utils.swing.DataProvider;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -98,7 +98,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Lang
     /**
      * Handler that dynamically enable and disable collapsible pane state changes by providing according boolean value.
      */
-    protected DataProvider<Boolean> stateChangeHandler = null;
+    protected Supplier<Boolean> stateChangeHandler = null;
 
     /**
      * Whether collapsible pane is expanded or not.
@@ -522,7 +522,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Lang
      *
      * @return state change handler
      */
-    public DataProvider<Boolean> getStateChangeHandler ()
+    public Supplier<Boolean> getStateChangeHandler ()
     {
         return stateChangeHandler;
     }
@@ -532,7 +532,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Lang
      *
      * @param stateChangeHandler new state change handler
      */
-    public void setStateChangeHandler ( final DataProvider<Boolean> stateChangeHandler )
+    public void setStateChangeHandler ( final Supplier<Boolean> stateChangeHandler )
     {
         this.stateChangeHandler = stateChangeHandler;
     }
@@ -544,7 +544,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Lang
      */
     public boolean isStateChangeEnabled ()
     {
-        return stateChangeHandler == null || stateChangeHandler.provide ();
+        return stateChangeHandler == null || stateChangeHandler.get ();
     }
 
     /**

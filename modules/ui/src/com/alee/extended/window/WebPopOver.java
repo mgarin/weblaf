@@ -17,11 +17,11 @@
 
 package com.alee.extended.window;
 
+import com.alee.api.jdk.Supplier;
 import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.laf.window.WebDialog;
 import com.alee.managers.style.StyleId;
 import com.alee.painter.Painter;
-import com.alee.utils.swing.DataProvider;
 
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
@@ -520,10 +520,10 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
                              final PopOverAlignment alignment )
     {
         final Rectangle bounds = new Rectangle ( x, y, w, h );
-        return show ( invoker, new DataProvider<Rectangle> ()
+        return show ( invoker, new Supplier<Rectangle> ()
         {
             @Override
-            public Rectangle provide ()
+            public Rectangle get ()
             {
                 return bounds;
             }
@@ -536,12 +536,12 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
      * WebPopOver opened in this way will always auto-follow invoker's ancestor window.
      *
      * @param invoker        invoker component
-     * @param boundsProvider source area provider
+     * @param boundsSupplier source area supplier
      * @return displayed WebPopOver
      */
-    public WebPopOver show ( final Component invoker, final DataProvider<Rectangle> boundsProvider )
+    public WebPopOver show ( final Component invoker, final Supplier<Rectangle> boundsSupplier )
     {
-        return show ( invoker, boundsProvider, PopOverDirection.down );
+        return show ( invoker, boundsSupplier, PopOverDirection.down );
     }
 
     /**
@@ -550,13 +550,13 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
      * WebPopOver opened in this way will always auto-follow invoker's ancestor window.
      *
      * @param invoker        invoker component
-     * @param boundsProvider source area provider
+     * @param boundsSupplier source area supplier
      * @param direction      preferred display direction
      * @return displayed WebPopOver
      */
-    public WebPopOver show ( final Component invoker, final DataProvider<Rectangle> boundsProvider, final PopOverDirection direction )
+    public WebPopOver show ( final Component invoker, final Supplier<Rectangle> boundsSupplier, final PopOverDirection direction )
     {
-        return show ( invoker, boundsProvider, direction, PopOverAlignment.centered );
+        return show ( invoker, boundsSupplier, direction, PopOverAlignment.centered );
     }
 
     /**
@@ -565,12 +565,12 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
      * WebPopOver opened in this way will always auto-follow invoker's ancestor window.
      *
      * @param invoker        invoker component
-     * @param boundsProvider source area provider
+     * @param boundsSupplier source area provider
      * @param direction      preferred display direction
      * @param alignment      preferred display alignment
      * @return displayed WebPopOver
      */
-    public WebPopOver show ( final Component invoker, final DataProvider<Rectangle> boundsProvider, final PopOverDirection direction,
+    public WebPopOver show ( final Component invoker, final Supplier<Rectangle> boundsSupplier, final PopOverDirection direction,
                              final PopOverAlignment alignment )
     {
         // todo Doesn't position properly for window-type invoker
@@ -582,7 +582,7 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
         final IPopOverPainter painter = getPainter ();
         if ( painter != null )
         {
-            painter.configure ( this, invoker, boundsProvider, direction, alignment );
+            painter.configure ( this, invoker, boundsSupplier, direction, alignment );
         }
 
         // Displaying popover

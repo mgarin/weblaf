@@ -17,7 +17,7 @@
 
 package com.alee.utils;
 
-import com.alee.utils.swing.DataProvider;
+import com.alee.api.jdk.Supplier;
 
 import java.awt.*;
 import java.awt.geom.GeneralPath;
@@ -173,12 +173,12 @@ public final class ShapeUtils
      *
      * @param component     component for which shape is cached
      * @param shapeId       unique shape ID
-     * @param shapeProvider shape provider
+     * @param shapeSupplier shape supplier
      * @param settings      shape settings used as a shape key
      * @param <T>           shape type
      * @return cached component shape
      */
-    public static <T extends Shape> T getShape ( final Component component, final String shapeId, final DataProvider<T> shapeProvider,
+    public static <T extends Shape> T getShape ( final Component component, final String shapeId, final Supplier<T> shapeSupplier,
                                                  final Object... settings )
     {
         final String settingsKey = TextUtils.getSettingsKey ( settings );
@@ -186,7 +186,7 @@ public final class ShapeUtils
         if ( cacheById == null )
         {
             // Shape is not yet cached
-            final Shape shape = shapeProvider.provide ();
+            final Shape shape = shapeSupplier.get ();
             cacheById = new HashMap<String, CachedShape> ( 1 );
             cacheById.put ( shapeId, new CachedShape ( settingsKey, shape ) );
             shapeCache.put ( component, cacheById );
@@ -198,7 +198,7 @@ public final class ShapeUtils
             if ( cachedShape == null || !cachedShape.getKey ().equals ( settingsKey ) )
             {
                 // Shape is not yet cached or cache entry is outdated
-                final Shape shape = shapeProvider.provide ();
+                final Shape shape = shapeSupplier.get ();
                 cacheById.put ( shapeId, new CachedShape ( settingsKey, shape ) );
                 return ( T ) shape;
             }

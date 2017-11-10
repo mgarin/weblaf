@@ -36,7 +36,7 @@ import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.MouseEventRunnable;
 
@@ -552,10 +552,10 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( frame, new DataRunnable<IDockableFramePainter> ()
+        PainterSupport.setPainter ( frame, new Consumer<IDockableFramePainter> ()
         {
             @Override
-            public void run ( final IDockableFramePainter newPainter )
+            public void accept ( final IDockableFramePainter newPainter )
             {
                 WebDockableFrameUI.this.painter = newPainter;
             }

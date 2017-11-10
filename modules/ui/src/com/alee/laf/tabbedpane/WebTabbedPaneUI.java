@@ -25,7 +25,7 @@ import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.SectionPainter;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -123,10 +123,10 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( tabPane, new DataRunnable<ITabbedPanePainter> ()
+        PainterSupport.setPainter ( tabPane, new Consumer<ITabbedPanePainter> ()
         {
             @Override
-            public void run ( final ITabbedPanePainter newPainter )
+            public void accept ( final ITabbedPanePainter newPainter )
             {
                 WebTabbedPaneUI.this.painter = newPainter;
             }

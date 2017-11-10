@@ -21,7 +21,7 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -123,10 +123,10 @@ public class WebPanelUI<C extends JPanel> extends WPanelUI<C> implements ShapeSu
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( panel, new DataRunnable<IPanelPainter> ()
+        PainterSupport.setPainter ( panel, new Consumer<IPanelPainter> ()
         {
             @Override
-            public void run ( final IPanelPainter newPainter )
+            public void accept ( final IPanelPainter newPainter )
             {
                 WebPanelUI.this.painter = newPainter;
             }

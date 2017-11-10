@@ -21,7 +21,7 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -123,10 +123,10 @@ public class WebCheckBoxUI<C extends JCheckBox> extends WCheckBoxUI<C> implement
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( button, new DataRunnable<ICheckBoxPainter> ()
+        PainterSupport.setPainter ( button, new Consumer<ICheckBoxPainter> ()
         {
             @Override
-            public void run ( final ICheckBoxPainter newPainter )
+            public void accept ( final ICheckBoxPainter newPainter )
             {
                 WebCheckBoxUI.this.painter = newPainter;
             }

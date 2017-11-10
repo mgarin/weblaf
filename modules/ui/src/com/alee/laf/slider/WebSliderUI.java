@@ -21,7 +21,7 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -134,10 +134,10 @@ public class WebSliderUI extends BasicSliderUI implements ShapeSupport, MarginSu
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( slider, new DataRunnable<ISliderPainter> ()
+        PainterSupport.setPainter ( slider, new Consumer<ISliderPainter> ()
         {
             @Override
-            public void run ( final ISliderPainter newPainter )
+            public void accept ( final ISliderPainter newPainter )
             {
                 WebSliderUI.this.painter = newPainter;
             }

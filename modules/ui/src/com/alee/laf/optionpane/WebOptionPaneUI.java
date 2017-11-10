@@ -27,7 +27,7 @@ import com.alee.painter.PainterSupport;
 import com.alee.utils.LafLookup;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.TextUtils;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -583,10 +583,10 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( optionPane, new DataRunnable<IOptionPanePainter> ()
+        PainterSupport.setPainter ( optionPane, new Consumer<IOptionPanePainter> ()
         {
             @Override
-            public void run ( final IOptionPanePainter newPainter )
+            public void accept ( final IOptionPanePainter newPainter )
             {
                 WebOptionPaneUI.this.painter = newPainter;
             }

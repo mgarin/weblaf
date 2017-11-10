@@ -25,7 +25,7 @@ import com.alee.painter.PainterSupport;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -148,10 +148,10 @@ public class WebFormattedTextFieldUI extends WFormattedTextFieldUI implements Sh
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( field, new DataRunnable<IFormattedTextFieldPainter> ()
+        PainterSupport.setPainter ( field, new Consumer<IFormattedTextFieldPainter> ()
         {
             @Override
-            public void run ( final IFormattedTextFieldPainter newPainter )
+            public void accept ( final IFormattedTextFieldPainter newPainter )
             {
                 WebFormattedTextFieldUI.this.painter = newPainter;
             }

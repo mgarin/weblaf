@@ -31,7 +31,7 @@ import com.alee.painter.PainterSupport;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 import com.alee.utils.swing.extensions.FocusEventRunnable;
 import com.alee.utils.swing.extensions.KeyEventRunnable;
 
@@ -449,10 +449,10 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C>
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( dateField, new DataRunnable<IDateFieldPainter> ()
+        PainterSupport.setPainter ( dateField, new Consumer<IDateFieldPainter> ()
         {
             @Override
-            public void run ( final IDateFieldPainter newPainter )
+            public void accept ( final IDateFieldPainter newPainter )
             {
                 WebDateFieldUI.this.painter = newPainter;
             }

@@ -24,7 +24,7 @@ import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.ReflectUtils;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -202,10 +202,10 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( list, new DataRunnable<IListPainter> ()
+        PainterSupport.setPainter ( list, new Consumer<IListPainter> ()
         {
             @Override
-            public void run ( final IListPainter newPainter )
+            public void accept ( final IListPainter newPainter )
             {
                 WebListUI.this.painter = newPainter;
             }

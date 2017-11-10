@@ -21,7 +21,7 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -170,10 +170,10 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements ShapeSupport
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( desktopIcon, new DataRunnable<IDesktopIconPainter> ()
+        PainterSupport.setPainter ( desktopIcon, new Consumer<IDesktopIconPainter> ()
         {
             @Override
-            public void run ( final IDesktopIconPainter newPainter )
+            public void accept ( final IDesktopIconPainter newPainter )
             {
                 WebDesktopIconUI.this.painter = newPainter;
             }

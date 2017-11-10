@@ -37,6 +37,12 @@ import java.util.Map;
 public abstract class AbstractComponentDescriptor<C extends JComponent> implements ComponentDescriptor<C>
 {
     /**
+     * todo 1. Add specific painter class definition
+     * todo 2. Add adaptive painter class definition
+     * todo 3. Automate painters installation/uninstallation within UIs (in StyleManager.installSkin/uninstallSkin)
+     */
+
+    /**
      * Component icons cache.
      * {@link Icon}s are saved per component class.
      */

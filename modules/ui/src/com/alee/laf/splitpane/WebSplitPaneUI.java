@@ -26,7 +26,7 @@ import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.GraphicsUtils;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -134,10 +134,10 @@ public class WebSplitPaneUI extends WSplitPaneUI implements ShapeSupport, Margin
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( splitPane, new DataRunnable<ISplitPanePainter> ()
+        PainterSupport.setPainter ( splitPane, new Consumer<ISplitPanePainter> ()
         {
             @Override
-            public void run ( final ISplitPanePainter newPainter )
+            public void accept ( final ISplitPanePainter newPainter )
             {
                 WebSplitPaneUI.this.painter = newPainter;
             }

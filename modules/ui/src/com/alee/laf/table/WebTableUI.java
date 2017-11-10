@@ -30,7 +30,7 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -198,10 +198,10 @@ public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupp
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( table, new DataRunnable<ITablePainter> ()
+        PainterSupport.setPainter ( table, new Consumer<ITablePainter> ()
         {
             @Override
-            public void run ( final ITablePainter newPainter )
+            public void accept ( final ITablePainter newPainter )
             {
                 WebTableUI.this.painter = newPainter;
             }

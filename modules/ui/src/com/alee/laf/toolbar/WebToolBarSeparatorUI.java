@@ -21,7 +21,7 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -124,10 +124,10 @@ public class WebToolBarSeparatorUI<C extends JToolBar.Separator> extends WToolBa
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( separator, new DataRunnable<IToolBarSeparatorPainter> ()
+        PainterSupport.setPainter ( separator, new Consumer<IToolBarSeparatorPainter> ()
         {
             @Override
-            public void run ( final IToolBarSeparatorPainter newPainter )
+            public void accept ( final IToolBarSeparatorPainter newPainter )
             {
                 WebToolBarSeparatorUI.this.painter = newPainter;
             }

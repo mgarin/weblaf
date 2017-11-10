@@ -17,6 +17,7 @@
 
 package com.alee.extended.window;
 
+import com.alee.api.jdk.Supplier;
 import com.alee.extended.behavior.ComponentMoveBehavior;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.menu.AbstractPopupPainter;
@@ -26,7 +27,6 @@ import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.SystemUtils;
 import com.alee.utils.swing.AncestorAdapter;
-import com.alee.utils.swing.DataProvider;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import javax.swing.*;
@@ -287,12 +287,6 @@ public class PopOverPainter<E extends JRootPane, U extends WRootPaneUI> extends 
         this.currentDirection = direction;
     }
 
-    /**
-     * Displays unattached WebPopOver at the specified screen location.
-     *
-     * @param popOver  WebPopOver to configure
-     * @param location WebPopOver location on screen
-     */
     @Override
     public void configure ( final WebPopOver popOver, final PopOverLocation location )
     {
@@ -354,13 +348,6 @@ public class PopOverPainter<E extends JRootPane, U extends WRootPaneUI> extends 
         }
     }
 
-    /**
-     * Displays unattached WebPopOver at the specified location.
-     *
-     * @param popOver WebPopOver to configure
-     * @param x       WebPopOver X location
-     * @param y       WebPopOver Y location
-     */
     @Override
     public void configure ( final WebPopOver popOver, final int x, final int y )
     {
@@ -374,35 +361,24 @@ public class PopOverPainter<E extends JRootPane, U extends WRootPaneUI> extends 
         popOver.setLocation ( x - getShadeWidth (), y - getShadeWidth () );
     }
 
-    /**
-     * Displays WebPopOver attached to the invoker component area and faced to specified direction.
-     * It will also be aligned using the specified alignment type when possible.
-     * WebPopOver opened in this way will always auto-follow invoker's ancestor window.
-     *
-     * @param popOver        WebPopOver to configure
-     * @param invoker        invoker component
-     * @param boundsProvider source area bounds provider
-     * @param direction      preferred display direction
-     * @param alignment      preferred display alignment
-     */
     @Override
-    public void configure ( final WebPopOver popOver, final Component invoker, final DataProvider<Rectangle> boundsProvider,
+    public void configure ( final WebPopOver popOver, final Component invoker, final Supplier<Rectangle> boundsSupplier,
                             final PopOverDirection direction, final PopOverAlignment alignment )
     {
         // Translating coordinates into screen coordinates system
-        final DataProvider<Rectangle> actualBoundsProvider = boundsProvider == null ? null : new DataProvider<Rectangle> ()
+        final Supplier<Rectangle> actualBoundsProvider = boundsSupplier == null ? null : new Supplier<Rectangle> ()
         {
             private Rectangle lastBounds = new Rectangle ();
 
             @Override
-            public Rectangle provide ()
+            public Rectangle get ()
             {
                 // Invoker might be hidden while WebPopOver is still visible
                 // This is why we should simply stop updating its position when that happens
                 // It is not the best workaround but at least it will keep us safe from exceptions
                 if ( invoker.isShowing () )
                 {
-                    final Rectangle bounds = boundsProvider.provide ();
+                    final Rectangle bounds = boundsSupplier.get ();
                     final Point los = invoker.getLocationOnScreen ();
                     lastBounds = new Rectangle ( los.x + bounds.x, los.y + bounds.y, bounds.width, bounds.height );
                 }
@@ -428,11 +404,11 @@ public class PopOverPainter<E extends JRootPane, U extends WRootPaneUI> extends 
      * @param invoker        invoker component
      * @param boundsProvider source area bounds provider
      */
-    protected void updatePopOverLocation ( final WebPopOver popOver, final Component invoker, final DataProvider<Rectangle> boundsProvider )
+    protected void updatePopOverLocation ( final WebPopOver popOver, final Component invoker, final Supplier<Rectangle> boundsProvider )
     {
         if ( boundsProvider != null )
         {
-            updatePopOverLocation ( popOver, invoker, boundsProvider.provide () );
+            updatePopOverLocation ( popOver, invoker, boundsProvider.get () );
         }
         else
         {
@@ -516,7 +492,7 @@ public class PopOverPainter<E extends JRootPane, U extends WRootPaneUI> extends 
      * @param boundsProvider source area bounds provider
      */
     protected void installPopOverLocationUpdater ( final WebPopOver popOver, final Component invoker,
-                                                   final DataProvider<Rectangle> boundsProvider )
+                                                   final Supplier<Rectangle> boundsProvider )
     {
         // Invoker component window
         final Window invokerWindow = SwingUtils.getWindowAncestor ( invoker );

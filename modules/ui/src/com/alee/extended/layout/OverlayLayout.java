@@ -214,7 +214,7 @@ public class OverlayLayout extends AbstractLayoutManager implements SwingConstan
                     }
                     else
                     {
-                        bounds = new Rectangle ( data.getRectangleProvider ().provide () );
+                        bounds = new Rectangle ( data.getBoundsSupplier ().get () );
                     }
                     component.setBounds ( limit ( pw, ph, bounds, bi ) );
                 }

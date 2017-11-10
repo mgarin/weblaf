@@ -25,7 +25,7 @@ import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.FileUtils;
 import com.alee.utils.filefilter.AllFilesFilter;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -345,10 +345,10 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( fileChooser, new DataRunnable<IFileChooserPainter> ()
+        PainterSupport.setPainter ( fileChooser, new Consumer<IFileChooserPainter> ()
         {
             @Override
-            public void run ( final IFileChooserPainter newPainter )
+            public void accept ( final IFileChooserPainter newPainter )
             {
                 WebFileChooserUI.this.painter = newPainter;
             }

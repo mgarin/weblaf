@@ -18,9 +18,9 @@
 package com.alee.painter.decoration.shape;
 
 import com.alee.api.data.CompassDirection;
+import com.alee.api.jdk.Supplier;
 import com.alee.painter.decoration.WebDecoration;
 import com.alee.utils.ShapeUtils;
-import com.alee.utils.swing.DataProvider;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -62,10 +62,10 @@ public class ArrowShape<E extends JComponent, D extends WebDecoration<E, D>, I e
     public Shape getShape ( final ShapeType type, final Rectangle bounds, final E c, final D d )
     {
         final CompassDirection direction = getDirection ( c );
-        return ShapeUtils.getShape ( c, "ArrowShape." + type, new DataProvider<Shape> ()
+        return ShapeUtils.getShape ( c, "ArrowShape." + type, new Supplier<Shape> ()
         {
             @Override
-            public Shape provide ()
+            public Shape get ()
             {
                 return createArrowButtonShape ( type, bounds, direction );
             }

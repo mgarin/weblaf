@@ -23,7 +23,7 @@ import com.alee.utils.*;
 import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.compare.Filter;
 import com.alee.utils.filefilter.DirectoriesFilter;
-import com.alee.utils.sort.GraphDataProvider;
+import com.alee.utils.sort.GraphStructureProvider;
 
 import javax.swing.*;
 import java.io.File;
@@ -883,7 +883,7 @@ public abstract class PluginManager<T extends Plugin>
                 }
 
                 // Creating graph provider for further topological sorting
-                final GraphDataProvider<DetectedPlugin<T>> graphDataProvider = new GraphDataProvider<DetectedPlugin<T>> ()
+                final GraphStructureProvider<DetectedPlugin<T>> graphStructureProvider = new GraphStructureProvider<DetectedPlugin<T>> ()
                 {
                     @Override
                     public List<DetectedPlugin<T>> getRoots ()
@@ -892,16 +892,16 @@ public abstract class PluginManager<T extends Plugin>
                     }
 
                     @Override
-                    public List<DetectedPlugin<T>> getChildren ( final DetectedPlugin<T> data )
+                    public List<DetectedPlugin<T>> getChildren ( final DetectedPlugin<T> parent )
                     {
-                        final List<DetectedPlugin<T>> children = references.get ( data.getInformation ().getId () );
+                        final List<DetectedPlugin<T>> children = references.get ( parent.getInformation ().getId () );
                         return children != null ? children : Collections.EMPTY_LIST;
                     }
                 };
 
                 // Performing topological sorting
                 // Saving result as new recently detected plugins list
-                final List<DetectedPlugin<T>> sorted = SortUtils.doTopologicalSort ( graphDataProvider );
+                final List<DetectedPlugin<T>> sorted = SortUtils.doTopologicalSort ( graphStructureProvider );
 
                 // Adding plugins which didn't get into graph into the end
                 // There might be such plugin for example in case it has some side dependencies

@@ -22,7 +22,7 @@ import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -146,10 +146,10 @@ public class WebPopupMenuUI extends WPopupMenuUI implements ShapeSupport, Margin
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( popupMenu, new DataRunnable<IPopupMenuPainter> ()
+        PainterSupport.setPainter ( popupMenu, new Consumer<IPopupMenuPainter> ()
         {
             @Override
-            public void run ( final IPopupMenuPainter newPainter )
+            public void accept ( final IPopupMenuPainter newPainter )
             {
                 WebPopupMenuUI.this.painter = newPainter;
             }

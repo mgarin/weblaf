@@ -21,7 +21,7 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -125,10 +125,10 @@ public class WebStyledLabelUI<C extends WebStyledLabel> extends WStyledLabelUI<C
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( label, new DataRunnable<IStyledLabelPainter> ()
+        PainterSupport.setPainter ( label, new Consumer<IStyledLabelPainter> ()
         {
             @Override
-            public void run ( final IStyledLabelPainter newPainter )
+            public void accept ( final IStyledLabelPainter newPainter )
             {
                 WebStyledLabelUI.this.painter = newPainter;
             }

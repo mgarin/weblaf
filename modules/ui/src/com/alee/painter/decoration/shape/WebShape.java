@@ -1,5 +1,6 @@
 package com.alee.painter.decoration.shape;
 
+import com.alee.api.jdk.Supplier;
 import com.alee.laf.grouping.GroupingLayout;
 import com.alee.painter.decoration.WebDecoration;
 import com.alee.painter.decoration.border.BorderWidth;
@@ -7,7 +8,6 @@ import com.alee.painter.decoration.shadow.ShadowType;
 import com.alee.utils.MathUtils;
 import com.alee.utils.ShapeUtils;
 import com.alee.utils.general.Pair;
-import com.alee.utils.swing.DataProvider;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -241,10 +241,10 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
         final int sw = d.getShadowWidth ( ShadowType.outer );
 
         // Retrieving shape
-        return ShapeUtils.getShape ( c, "WebShape." + type, new DataProvider<Shape> ()
+        return ShapeUtils.getShape ( c, "WebShape." + type, new Supplier<Shape> ()
         {
             @Override
-            public Shape provide ()
+            public Shape get ()
             {
                 final int x = bounds.x;
                 final int y = bounds.y;

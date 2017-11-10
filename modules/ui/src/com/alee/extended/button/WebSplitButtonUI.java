@@ -17,11 +17,11 @@
 
 package com.alee.extended.button;
 
+import com.alee.api.jdk.Consumer;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -130,10 +130,10 @@ public class WebSplitButtonUI<C extends WebSplitButton> extends WSplitButtonUI<C
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( button, new DataRunnable<ISplitButtonPainter> ()
+        PainterSupport.setPainter ( button, new Consumer<ISplitButtonPainter> ()
         {
             @Override
-            public void run ( final ISplitButtonPainter newPainter )
+            public void accept ( final ISplitButtonPainter newPainter )
             {
                 WebSplitButtonUI.this.painter = newPainter;
             }

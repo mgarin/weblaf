@@ -23,7 +23,7 @@ package com.alee.utils.swing.extensions;
  * @author Mikle Garin
  */
 
-@SuppressWarnings ("JavadocReference")
+@SuppressWarnings ( "JavadocReference" )
 public interface MethodExtension
 {
     /**

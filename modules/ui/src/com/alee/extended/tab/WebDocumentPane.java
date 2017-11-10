@@ -17,6 +17,7 @@
 
 package com.alee.extended.tab;
 
+import com.alee.api.jdk.Function;
 import com.alee.extended.behavior.ComponentVisibilityBehavior;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.splitpane.WebSplitPane;
@@ -132,9 +133,11 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
     protected WeakReference<T> previouslySelected = new WeakReference<T> ( null );
 
     /**
-     * Documents data provider.
+     * {@link Function} that resolves {@link DocumentData} for provided identifier.
+     * It is used in to open documents by their identifiers instead of document references.
+     * This {@link Function} is essential for proper state restoration functioning.
      */
-    protected DocumentDataProvider<T> documentsProvider = null;
+    protected Function<String, T> documentsProvider = null;
 
     /**
      * Document drag view handler.
@@ -1130,7 +1133,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
     {
         if ( documentsProvider != null )
         {
-            openDocument ( documentsProvider.provide ( documentId ), select );
+            openDocument ( documentsProvider.apply ( documentId ), select );
         }
     }
 
@@ -1261,25 +1264,25 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
     }
 
     /**
-     * Returns custom documents provider.
-     * This may be used in to open documents by ID instead of document references.
-     * It may also be used for state restoration method.
+     * Returns {@link Function} that resolves {@link DocumentData} for provided identifier.
+     * It is used in to open documents by their identifiers instead of document references.
+     * This {@link Function} is essential for proper state restoration functioning.
      *
-     * @return custom documents provider
+     * @return {@link Function} that resolves {@link DocumentData} for provided identifier
      */
-    public DocumentDataProvider<T> getDocumentsProvider ()
+    public Function<String, T> getDocumentsProvider ()
     {
         return documentsProvider;
     }
 
     /**
-     * Sets custom documents provider.
-     * This may be used in to open documents by ID instead of document references.
-     * It may also be used for state restoration method.
+     * Sets {@link Function} that resolves {@link DocumentData} for provided identifier.
+     * It is used in to open documents by their identifiers instead of document references.
+     * This {@link Function} is essential for proper state restoration functioning.
      *
-     * @param provider custom documents provider
+     * @param provider new {@link Function} for resolving {@link DocumentData} by provided identifier
      */
-    public void setDocumentsProvider ( final DocumentDataProvider<T> provider )
+    public void setDocumentsProvider ( final Function<String, T> provider )
     {
         this.documentsProvider = provider;
     }
@@ -1418,7 +1421,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
                     // In case document doesn't exist, try requesting it from provider if we have one
                     if ( documentsProvider != null && !documents.containsKey ( id ) )
                     {
-                        documents.put ( id, documentsProvider.provide ( id ) );
+                        documents.put ( id, documentsProvider.apply ( id ) );
                     }
 
                     // Simply open document if it exists

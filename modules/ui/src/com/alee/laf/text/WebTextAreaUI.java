@@ -23,7 +23,7 @@ import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -139,10 +139,10 @@ public class WebTextAreaUI extends WTextAreaUI implements ShapeSupport, MarginSu
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( textArea, new DataRunnable<ITextAreaPainter> ()
+        PainterSupport.setPainter ( textArea, new Consumer<ITextAreaPainter> ()
         {
             @Override
-            public void run ( final ITextAreaPainter newPainter )
+            public void accept ( final ITextAreaPainter newPainter )
             {
                 WebTextAreaUI.this.painter = newPainter;
             }

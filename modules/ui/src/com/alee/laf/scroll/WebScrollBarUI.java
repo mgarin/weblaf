@@ -28,7 +28,7 @@ import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -186,10 +186,10 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( scrollbar, new DataRunnable<IScrollBarPainter> ()
+        PainterSupport.setPainter ( scrollbar, new Consumer<IScrollBarPainter> ()
         {
             @Override
-            public void run ( final IScrollBarPainter newPainter )
+            public void accept ( final IScrollBarPainter newPainter )
             {
                 WebScrollBarUI.this.painter = newPainter;
             }

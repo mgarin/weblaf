@@ -15,21 +15,31 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.tab;
+package com.alee.utils.sort;
+
+import java.util.List;
 
 /**
- * This is a custom data provider used by WebDocumentPane.
+ * Simple graph structure provider for topological sorting.
  *
+ * @param <T> graph nodes type
  * @author Mikle Garin
  */
 
-public interface DocumentDataProvider<T extends DocumentData>
+public interface GraphStructureProvider<T>
 {
     /**
-     * Provides document data for the specified document ID.
+     * Returns graph root nodes.
      *
-     * @param documentId document ID to provide document data for
-     * @return document data for the specified document ID
+     * @return graph root nodes
      */
-    public T provide ( String documentId );
+    public List<T> getRoots ();
+
+    /**
+     * Returns child nodes for the specified parent.
+     *
+     * @param parent parent node to retrieve child nodes for
+     * @return child nodes for the specified parent
+     */
+    public List<T> getChildren ( T parent );
 }

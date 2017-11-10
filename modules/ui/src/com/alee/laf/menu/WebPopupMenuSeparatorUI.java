@@ -21,7 +21,7 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.swing.DataRunnable;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -124,10 +124,10 @@ public class WebPopupMenuSeparatorUI<C extends JPopupMenu.Separator> extends WPo
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( separator, new DataRunnable<IPopupMenuSeparatorPainter> ()
+        PainterSupport.setPainter ( separator, new Consumer<IPopupMenuSeparatorPainter> ()
         {
             @Override
-            public void run ( final IPopupMenuSeparatorPainter newPainter )
+            public void accept ( final IPopupMenuSeparatorPainter newPainter )
             {
                 WebPopupMenuSeparatorUI.this.painter = newPainter;
             }
