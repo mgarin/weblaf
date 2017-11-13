@@ -57,7 +57,6 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
     /**
      * {@link SectionPainter} that can be used to customize tree rows background.
      * It is separated from {@link #nodePainter} as nodes not always take the whole row space.
-     * This painter
      */
     @DefaultPainter ( TreeRowPainter.class )
     protected ITreeRowPainter rowPainter;
@@ -71,7 +70,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
 
     /**
      * {@link SectionPainter} that can be used to customize tree nodes selection background.
-     * Separate painter is used because even a single selection could include multiple nodes in some selection modes.
+     * Separate painter is used because selection could include multiple nodes in some selection modes.
      * This painter will not know any information about the nodes, use {@link #nodePainter} for painting node-specific decorations.
      * You can also use {@link #rowPainter} for row-wide background customization that is aware of the row node contents.
      */
@@ -590,7 +589,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
             {
                 supported = ( ( IDecorationPainter ) rowPainter ).usesState ( DecorationState.hover );
             }
-            else if ( nodePainter != null && nodePainter instanceof IDecorationPainter )
+            if ( !supported && nodePainter != null && nodePainter instanceof IDecorationPainter )
             {
                 supported = ( ( IDecorationPainter ) nodePainter ).usesState ( DecorationState.hover );
             }
