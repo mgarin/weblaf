@@ -233,15 +233,18 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
                 if ( isLanguageSensitive () )
                 {
                     final TableModel model = component.getModel ();
-                    if ( model instanceof AbstractTableModel )
+                    if ( model.getRowCount () > 0 )
                     {
-                        // Calling public model methods when possible
-                        ( ( AbstractTableModel ) model ).fireTableRowsUpdated ( 0, model.getRowCount () - 1 );
-                    }
-                    else
-                    {
-                        // Simply repainting table when we don't have tools to update it properly
-                        component.repaint ();
+                        if ( model instanceof AbstractTableModel )
+                        {
+                            // Calling public model methods when possible
+                            ( ( AbstractTableModel ) model ).fireTableRowsUpdated ( 0, model.getRowCount () - 1 );
+                        }
+                        else
+                        {
+                            // Simply repainting table when we don't have tools to update it properly
+                            component.repaint ();
+                        }
                     }
                 }
             }

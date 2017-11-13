@@ -492,17 +492,20 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
             {
                 if ( isLanguageSensitive () )
                 {
-                    // Forcing node sizes update within tree
-                    final TreeUI ui = component.getUI ();
-                    if ( ui instanceof WTreeUI )
+                    if ( component.getRowCount () > 0 )
                     {
-                        // Asking UI to update node sizes
-                        ( ( WTreeUI ) ui ).updateNodeSizes ();
-                    }
-                    else
-                    {
-                        // Simply repainting tree when we don't have tools to update it properly
-                        component.repaint ();
+                        // Forcing node sizes update within tree
+                        final TreeUI ui = component.getUI ();
+                        if ( ui instanceof WTreeUI )
+                        {
+                            // Asking UI to update node sizes
+                            ( ( WTreeUI ) ui ).updateNodeSizes ();
+                        }
+                        else
+                        {
+                            // Simply repainting tree when we don't have tools to update it properly
+                            component.repaint ();
+                        }
                     }
                 }
             }

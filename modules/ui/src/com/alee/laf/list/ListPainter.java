@@ -134,28 +134,31 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
                 if ( isLanguageSensitive () )
                 {
                     final ListModel model = component.getModel ();
-                    if ( model instanceof WebListModel )
+                    if ( model.getSize () > 0 )
                     {
-                        // Calling public model methods when possible
-                        ( ( WebListModel ) model ).fireContentsChanged ( ListPainter.this, 0, model.getSize () );
-                    }
-                    else if ( model instanceof AbstractListModel )
-                    {
-                        try
+                        if ( model instanceof WebListModel )
                         {
-                            // Invoking protected model methods when its based on abstract Swing one
-                            ReflectUtils.callMethod ( model, "fireContentsChanged", ListPainter.this, 0, model.getSize () );
+                            // Calling public model methods when possible
+                            ( ( WebListModel ) model ).fireContentsChanged ( ListPainter.this, 0, model.getSize () );
                         }
-                        catch ( final Exception e )
+                        else if ( model instanceof AbstractListModel )
                         {
-                            // Something went wrong
-                            throw new PainterException ( "Unable to fire list content changes", e );
+                            try
+                            {
+                                // Invoking protected model methods when its based on abstract Swing one
+                                ReflectUtils.callMethod ( model, "fireContentsChanged", ListPainter.this, 0, model.getSize () );
+                            }
+                            catch ( final Exception e )
+                            {
+                                // Something went wrong
+                                throw new PainterException ( "Unable to fire list content changes", e );
+                            }
                         }
-                    }
-                    else
-                    {
-                        // Simply repainting list when we don't have tools to update it properly
-                        component.repaint ();
+                        else
+                        {
+                            // Simply repainting list when we don't have tools to update it properly
+                            component.repaint ();
+                        }
                     }
                 }
             }
