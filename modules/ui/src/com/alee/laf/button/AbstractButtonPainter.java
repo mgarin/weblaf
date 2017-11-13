@@ -60,7 +60,7 @@ public abstract class AbstractButtonPainter<E extends AbstractButton, U extends 
     }
 
     @Override
-    protected List<String> getDecorationStates ()
+    public List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
         if ( isPressed () )

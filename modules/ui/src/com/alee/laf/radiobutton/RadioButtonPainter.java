@@ -21,7 +21,7 @@ public class RadioButtonPainter<E extends JRadioButton, U extends WRadioButtonUI
         extends AbstractStateButtonPainter<E, U, D> implements IRadioButtonPainter<E, U>
 {
     @Override
-    protected List<String> getDecorationStates ()
+    public List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
         if ( component.isSelected () )

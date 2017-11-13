@@ -41,7 +41,13 @@ public class ListItemPainter<E extends JList, U extends WebListUI, D extends IDe
     protected transient Integer index;
 
     @Override
-    protected List<String> getDecorationStates ()
+    public String getSectionId ()
+    {
+        return "item";
+    }
+
+    @Override
+    public List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
 

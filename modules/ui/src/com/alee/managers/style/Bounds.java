@@ -17,6 +17,7 @@
 
 package com.alee.managers.style;
 
+import com.alee.painter.SectionPainter;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.SwingUtils;
 
@@ -78,7 +79,8 @@ public final class Bounds
 
     /**
      * {@link Bounds} for the whole component with the specified (X,Y) shift.
-     * todo This is a temporary method for supporting {@link com.alee.painter.PainterSupport#paintSection} method workaround.
+     * todo This is a temporary method for supporting this workaround method:
+     * todo {@link com.alee.painter.AbstractPainter#paintSection(SectionPainter, Graphics2D, Rectangle)}
      *
      * @param component component
      * @param x         X coordinate shift

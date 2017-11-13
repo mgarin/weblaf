@@ -22,10 +22,10 @@
                 </decoration>
             </decorations>
 
-            <!-- Hover node background painter -->
-            <hoverPainter>
+            <!-- Node background painter -->
+            <nodePainter>
                 <decorations>
-                    <decoration opacity="0.4">
+                    <decoration states="unselected,hover" opacity="0.4">
                         <WebShape round="0" />
                         <GradientBackground>
                             <color>218,218,208</color>
@@ -33,9 +33,9 @@
                         </GradientBackground>
                     </decoration>
                 </decorations>
-            </hoverPainter>
+            </nodePainter>
 
-            <!-- Selected nodes background painter -->
+            <!-- Selection background painter -->
             <selectionPainter>
                 <decorations>
                     <decoration>
@@ -64,7 +64,7 @@
                 </decorations>
             </dropLocationPainter>
 
-            <!-- Nodes selector painter -->
+            <!-- Selector painter -->
             <selectorPainter>
                 <decorations>
                     <decoration>

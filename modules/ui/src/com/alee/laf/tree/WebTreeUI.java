@@ -17,6 +17,7 @@
 
 package com.alee.laf.tree;
 
+import com.alee.api.jdk.Consumer;
 import com.alee.extended.tree.WebCheckBoxTree;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.behavior.TreePathHoverBehavior;
@@ -26,7 +27,6 @@ import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -45,6 +45,7 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
 {
     /**
      * Default node icons.
+     * todo Replace with SVG icons and move into manager for lazy-initialization
      */
     public static ImageIcon ROOT_ICON = new ImageIcon ( WebTreeUI.class.getResource ( "icons/root.png" ) );
     public static ImageIcon CLOSED_ICON = new ImageIcon ( WebTreeUI.class.getResource ( "icons/closed.png" ) );
@@ -286,7 +287,8 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
     @Override
     public Rectangle getRowBounds ( final int row, final boolean fullRow )
     {
-        return fullRow ? getFullPathBounds ( getPathForRow ( tree, row ) ) : getPathBounds ( tree, getPathForRow ( tree, row ) );
+        final TreePath path = getPathForRow ( tree, row );
+        return fullRow ? getFullPathBounds ( path ) : getPathBounds ( tree, path );
     }
 
     /**

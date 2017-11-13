@@ -36,6 +36,12 @@ public class ListSelectionPainter<E extends JList, U extends WebListUI, D extend
         extends AbstractSectionDecorationPainter<E, U, D> implements IListSelectionPainter<E, U>
 {
     @Override
+    public String getSectionId ()
+    {
+        return "selection";
+    }
+
+    @Override
     protected boolean isFocused ()
     {
         return false;

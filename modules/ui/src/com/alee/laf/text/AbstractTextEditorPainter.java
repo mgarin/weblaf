@@ -115,7 +115,7 @@ public abstract class AbstractTextEditorPainter<E extends JTextComponent, U exte
     }
 
     @Override
-    protected List<String> getDecorationStates ()
+    public List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
         if ( component.isEditable () )

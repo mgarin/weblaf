@@ -32,4 +32,7 @@ import javax.swing.plaf.ButtonUI;
 
 public interface IButtonStatePainter<E extends AbstractButton, U extends ButtonUI> extends SectionPainter<E, U>
 {
+    /**
+     * This interface doesn't offer any additional methods to implement.
+     */
 }

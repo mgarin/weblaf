@@ -38,7 +38,7 @@ public class InternalFramePainter<E extends JInternalFrame, U extends WebInterna
     }
 
     @Override
-    protected List<String> getDecorationStates ()
+    public List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
         if ( component.isMaximum () )

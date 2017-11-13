@@ -52,7 +52,7 @@ import java.util.List;
  */
 
 public abstract class AbstractDecorationPainter<E extends JComponent, U extends ComponentUI, D extends IDecoration<E, D>>
-        extends AbstractPainter<E, U> implements PainterShapeProvider<E>
+        extends AbstractPainter<E, U> implements IDecorationPainter<E, U, D>, PainterShapeProvider<E>
 {
     /**
      * Decoratable states property.
@@ -473,62 +473,80 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     /**
+     * Returns whether or not component has distinct hierarchy-based view.
+     *
+     * @return {@code true} if component has distinct hierarchy-based view, {@code false} otherwise
+     */
+    protected boolean usesHierarchyBasedView ()
+    {
+        return true;
+    }
+
+    /**
      * Installs listener that will perform border updates on component hierarchy changes.
      * This is required to properly update decoration borders in case it was moved from or into container with grouping layout.
      * It also tracks neighbour components addition and removal to update this component border accordingly.
      */
     protected void installHierarchyListener ()
     {
-        neighboursTracker = new ContainerListener ()
+        if ( usesHierarchyBasedView () )
         {
-            @Override
-            public void componentAdded ( final ContainerEvent e )
+            neighboursTracker = new ContainerListener ()
             {
-                // Ensure component is still available
-                // This might happen if painter is replaced from another ContainerListener
-                if ( component != null )
+                @Override
+                public void componentAdded ( final ContainerEvent e )
                 {
-                    // Updating border when a child was added nearby
-                    if ( ancestor != null && ancestor.getLayout () instanceof GroupingLayout && e.getChild () != component )
+                    // Ensure component is still available
+                    // This might happen if painter is replaced from another ContainerListener
+                    if ( component != null )
                     {
-                        updateBorder ();
+                        // Updating border when a child was added nearby
+                        if ( ancestor != null && ancestor.getLayout () instanceof GroupingLayout && e.getChild () != component )
+                        {
+                            updateBorder ();
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void componentRemoved ( final ContainerEvent e )
-            {
-                // Ensure component is still available
-                // This might happen if painter is replaced from another ContainerListener
-                if ( component != null )
+                @Override
+                public void componentRemoved ( final ContainerEvent e )
                 {
-                    // Updating border when a child was removed nearby
-                    if ( ancestor != null && ancestor.getLayout () instanceof GroupingLayout && e.getChild () != component )
+                    // Ensure component is still available
+                    // This might happen if painter is replaced from another ContainerListener
+                    if ( component != null )
                     {
-                        updateBorder ();
+                        // Updating border when a child was removed nearby
+                        if ( ancestor != null && ancestor.getLayout () instanceof GroupingLayout && e.getChild () != component )
+                        {
+                            updateBorder ();
+                        }
                     }
                 }
-            }
-        };
-        hierarchyTracker = new HierarchyListener ()
-        {
-            @Override
-            public void hierarchyChanged ( final HierarchyEvent e )
+            };
+            hierarchyTracker = new HierarchyListener ()
             {
-                // Ensure component is still available
-                // This might happen if painter is replaced from another HierarchyListener
-                if ( component != null )
+                @Override
+                public void hierarchyChanged ( final HierarchyEvent e )
                 {
-                    AbstractDecorationPainter.this.hierarchyChanged ( e );
+                    // Ensure component is still available
+                    // This might happen if painter is replaced from another HierarchyListener
+                    if ( component != null )
+                    {
+                        AbstractDecorationPainter.this.hierarchyChanged ( e );
+                    }
                 }
-            }
-        };
-        component.addHierarchyListener ( hierarchyTracker );
+            };
+            component.addHierarchyListener ( hierarchyTracker );
+        }
+        else
+        {
+            ancestor = null;
+        }
     }
 
     /**
      * Informs about hierarchy changes.
+     * Note that this method will only be fired when component {@link #usesHierarchyBasedView()}.
      *
      * @param e {@link java.awt.event.HierarchyEvent}
      */
@@ -566,53 +584,17 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      */
     protected void uninstallHierarchyListener ()
     {
-        component.removeHierarchyListener ( hierarchyTracker );
-        hierarchyTracker = null;
-        if ( ancestor != null )
+        if ( hierarchyTracker != null )
         {
-            ancestor.removeContainerListener ( neighboursTracker );
-            ancestor = null;
-        }
-        neighboursTracker = null;
-    }
-
-    /**
-     * Returns section painters used within this painter.
-     * Might also return {@code null} in case no section painters are used within this one.
-     * This method is used for various internal update mechanisms involving section painters.
-     *
-     * @return section painters used within this painter
-     */
-    protected List<SectionPainter<E, U>> getSectionPainters ()
-    {
-        return null;
-    }
-
-    /**
-     * Returns section painters list in a most optimal way.
-     * Utility method for usage inside of classed extending this one.
-     *
-     * @param sections section painters, some or all of them can be {@code null}
-     * @return section painters list in a most optimal way
-     */
-    protected final List<SectionPainter<E, U>> asList ( final SectionPainter<E, U>... sections )
-    {
-        ArrayList<SectionPainter<E, U>> list = null;
-        if ( sections != null )
-        {
-            for ( final SectionPainter<E, U> section : sections )
+            component.removeHierarchyListener ( hierarchyTracker );
+            hierarchyTracker = null;
+            if ( ancestor != null )
             {
-                if ( section != null )
-                {
-                    if ( list == null )
-                    {
-                        list = new ArrayList<SectionPainter<E, U>> ( sections.length );
-                    }
-                    list.add ( section );
-                }
+                ancestor.removeContainerListener ( neighboursTracker );
+                ancestor = null;
             }
+            neighboursTracker = null;
         }
-        return list;
     }
 
     /**
@@ -647,12 +629,8 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         return states;
     }
 
-    /**
-     * Returns current component decoration states.
-     *
-     * @return current component decoration states
-     */
-    protected List<String> getDecorationStates ()
+    @Override
+    public List<String> getDecorationStates ()
     {
         final List<String> states = new ArrayList<String> ( 12 );
         states.add ( SystemUtils.getShortOsName () );
@@ -673,13 +651,8 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         return states;
     }
 
-    /**
-     * Returns whether component has decoration associated with specified state.
-     *
-     * @param state decoration state
-     * @return {@code true} if component has decoration associated with specified state, {@code false} otherwise
-     */
-    protected boolean usesState ( final String state )
+    @Override
+    public final boolean usesState ( final String state )
     {
         // Checking whether or not this painter uses this decoration state
         boolean usesState = usesState ( decorations, state );
@@ -687,14 +660,14 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         // Checking whether or not section painters used by this painter use it
         if ( !usesState )
         {
-            final List<SectionPainter<E, U>> sectionPainters = getSectionPainters ();
+            final List<SectionPainter<E, U>> sectionPainters = getInstalledSectionPainters ();
             if ( CollectionUtils.notEmpty ( sectionPainters ) )
             {
                 for ( final SectionPainter<E, U> section : sectionPainters )
                 {
-                    if ( section instanceof AbstractDecorationPainter )
+                    if ( section instanceof IDecorationPainter )
                     {
-                        if ( ( ( AbstractDecorationPainter ) section ).usesState ( state ) )
+                        if ( ( ( IDecorationPainter ) section ).usesState ( state ) )
                         {
                             usesState = true;
                             break;
@@ -736,7 +709,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      * @param forStates decoration states to retrieve decoration for
      * @return decorations for the specified states
      */
-    protected List<D> getDecorations ( final List<String> forStates )
+    protected final List<D> getDecorations ( final List<String> forStates )
     {
         if ( decorations != null && decorations.size () > 0 )
         {
@@ -756,14 +729,8 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         }
     }
 
-    /**
-     * Returns decoration matching current states.
-     * Decorations returned here are cached copies of the data presented in skins.
-     * This was made to avoid corrupting inital data and to increase the decoration retrieval speed.
-     *
-     * @return decoration matching current states
-     */
-    protected D getDecoration ()
+    @Override
+    public final D getDecoration ()
     {
         // Optimization for painter without decorations
         if ( decorations != null && decorations.size () > 0 )
@@ -902,7 +869,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      * @param decorations decorations to retrieve unique combination key for
      * @return unique decorations combination key
      */
-    protected String getDecorationsKey ( final List<D> decorations )
+    protected final String getDecorationsKey ( final List<D> decorations )
     {
         final StringBuilder key = new StringBuilder ( 15 * decorations.size () );
         for ( final D decoration : decorations )
@@ -921,7 +888,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      *
      * @param c painted component
      */
-    protected void deactivateLastDecoration ( final E c )
+    protected final void deactivateLastDecoration ( final E c )
     {
         final D decoration = getDecoration ();
         if ( decoration != null )
@@ -930,10 +897,8 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         }
     }
 
-    /**
-     * Performs current decoration state update.
-     */
-    protected void updateDecorationState ()
+    @Override
+    public final void updateDecorationState ()
     {
         final List<String> states = collectDecorationStates ();
         if ( !CollectionUtils.equals ( this.states, states ) )
@@ -943,14 +908,15 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
 
             // Updating section painters decoration states
             // This is required to provide state changes into section painters used within this painter
-            final List<SectionPainter<E, U>> sectionPainters = getSectionPainters ();
+            // Section painters that use default states collection mechanism are dependant on origin painter states
+            final List<SectionPainter<E, U>> sectionPainters = getInstalledSectionPainters ();
             if ( CollectionUtils.notEmpty ( sectionPainters ) )
             {
                 for ( final SectionPainter<E, U> section : sectionPainters )
                 {
-                    if ( section instanceof AbstractDecorationPainter )
+                    if ( section instanceof IDecorationPainter )
                     {
-                        ( ( AbstractDecorationPainter ) section ).updateDecorationState ();
+                        ( ( IDecorationPainter ) section ).updateDecorationState ();
                     }
                 }
             }

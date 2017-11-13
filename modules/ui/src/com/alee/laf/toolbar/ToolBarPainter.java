@@ -61,7 +61,7 @@ public class ToolBarPainter<E extends JToolBar, U extends WebToolBarUI, D extend
     }
 
     @Override
-    protected List<String> getDecorationStates ()
+    public List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
         states.add ( Orientation.get ( component.getOrientation () ).name () );

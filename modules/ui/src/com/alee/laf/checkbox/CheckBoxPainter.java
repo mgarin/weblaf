@@ -20,7 +20,7 @@ public class CheckBoxPainter<E extends JCheckBox, U extends WCheckBoxUI, D exten
         extends AbstractStateButtonPainter<E, U, D> implements ICheckBoxPainter<E, U>
 {
     @Override
-    protected List<String> getDecorationStates ()
+    public List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
         if ( component.isSelected () )

@@ -45,7 +45,19 @@ public class TreeRowPainter<E extends JTree, U extends WTreeUI, D extends IDecor
     protected transient Integer row;
 
     @Override
-    protected List<String> getDecorationStates ()
+    public String getSectionId ()
+    {
+        return "row";
+    }
+
+    @Override
+    protected boolean isFocused ()
+    {
+        return false;
+    }
+
+    @Override
+    public List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
         addRowStates ( states );
@@ -82,12 +94,26 @@ public class TreeRowPainter<E extends JTree, U extends WTreeUI, D extends IDecor
         // Adding row type
         addNumerationStates ( states, path );
 
-        // Adding common node states
+        // Selection state
         states.add ( component.isExpanded ( row ) ? DecorationState.expanded : DecorationState.collapsed );
+
+        // Expansion state
         states.add ( component.isRowSelected ( row ) ? DecorationState.selected : DecorationState.unselected );
 
+        // Hover state
+        if ( row == ui.getHoverRow () )
+        {
+            states.add ( DecorationState.hover );
+        }
+        else
+        {
+            // We have to remove it as the origin might have hover state
+            states.remove ( DecorationState.hover );
+        }
+
         // Adding possible extra node states
-        states.addAll ( DecorationUtils.getExtraStates ( path.getLastPathComponent () ) );
+        final Object value = path.getLastPathComponent ();
+        states.addAll ( DecorationUtils.getExtraStates ( value ) );
     }
 
     /**
@@ -99,12 +125,6 @@ public class TreeRowPainter<E extends JTree, U extends WTreeUI, D extends IDecor
     protected void addNumerationStates ( final List<String> states, final TreePath path )
     {
         states.add ( row % 2 == 0 ? DecorationState.odd : DecorationState.even );
-    }
-
-    @Override
-    protected boolean isFocused ()
-    {
-        return false;
     }
 
     @Override

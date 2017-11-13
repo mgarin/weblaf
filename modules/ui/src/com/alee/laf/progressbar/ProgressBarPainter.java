@@ -3,7 +3,6 @@ package com.alee.laf.progressbar;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.BoundsType;
 import com.alee.painter.DefaultPainter;
-import com.alee.painter.PainterSupport;
 import com.alee.painter.SectionPainter;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
@@ -55,19 +54,9 @@ public class ProgressBarPainter<E extends JProgressBar, U extends WProgressBarUI
     protected transient int value;
 
     @Override
-    protected void installSectionPainters ()
+    protected List<SectionPainter<E, U>> getSectionPainters ()
     {
-        super.installSectionPainters ();
-        progressPainter = PainterSupport.installSectionPainter ( this, progressPainter, null, component, ui );
-        progressTextPainter = PainterSupport.installSectionPainter ( this, progressTextPainter, null, component, ui );
-    }
-
-    @Override
-    protected void uninstallSectionPainters ()
-    {
-        progressTextPainter = PainterSupport.uninstallSectionPainter ( progressTextPainter, component, ui );
-        progressPainter = PainterSupport.uninstallSectionPainter ( progressPainter, component, ui );
-        super.uninstallSectionPainters ();
+        return asList ( progressPainter, progressTextPainter );
     }
 
     @Override
@@ -145,13 +134,7 @@ public class ProgressBarPainter<E extends JProgressBar, U extends WProgressBarUI
     }
 
     @Override
-    protected List<SectionPainter<E, U>> getSectionPainters ()
-    {
-        return asList ( progressPainter, progressTextPainter );
-    }
-
-    @Override
-    protected List<String> getDecorationStates ()
+    public List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
         states.add ( isHorizontal () ? DecorationState.horizontal : DecorationState.vertical );
@@ -199,7 +182,7 @@ public class ProgressBarPainter<E extends JProgressBar, U extends WProgressBarUI
             if ( component.isIndeterminate () )
             {
                 // Painting indeterminate progress
-                PainterSupport.paintSection ( progressPainter, g2d, component, ui, bounds );
+                paintSection ( progressPainter, g2d, bounds );
             }
             else
             {
@@ -231,7 +214,7 @@ public class ProgressBarPainter<E extends JProgressBar, U extends WProgressBarUI
                         }
                         bounds.height = p;
                     }
-                    PainterSupport.paintSection ( progressPainter, g2d, component, ui, bounds );
+                    paintSection ( progressPainter, g2d, bounds );
                 }
             }
         }
@@ -248,7 +231,7 @@ public class ProgressBarPainter<E extends JProgressBar, U extends WProgressBarUI
         if ( component.isStringPainted () )
         {
             // Painting progress text
-            PainterSupport.paintSection ( progressTextPainter, g2d, component, ui, bounds );
+            paintSection ( progressTextPainter, g2d, bounds );
         }
     }
 

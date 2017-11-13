@@ -238,7 +238,7 @@ public class RootPanePainter<E extends JRootPane, U extends WRootPaneUI, D exten
     }
 
     @Override
-    protected List<String> getDecorationStates ()
+    public List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
         states.add ( getWindowDecorationState () );

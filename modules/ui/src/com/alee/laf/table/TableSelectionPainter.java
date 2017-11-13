@@ -35,6 +35,12 @@ public class TableSelectionPainter<E extends JTable, U extends WebTableUI, D ext
         extends AbstractSectionDecorationPainter<E, U, D> implements ITableSelectionPainter<E, U>
 {
     @Override
+    public String getSectionId ()
+    {
+        return "selection";
+    }
+
+    @Override
     protected boolean isFocused ()
     {
         return false;

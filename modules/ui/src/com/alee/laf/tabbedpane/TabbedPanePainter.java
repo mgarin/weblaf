@@ -4,7 +4,6 @@ import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.AbstractPainter;
-import com.alee.painter.PainterSupport;
 import com.alee.painter.SectionPainter;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.GraphicsUtils;
@@ -526,8 +525,9 @@ public class TabbedPanePainter<E extends JTabbedPane, U extends WTabbedPaneUI> e
         final SectionPainter backgroundPainterAt = ui.getBackgroundPainterAt ( tabIndex );
         if ( backgroundPainterAt != null && isSelected )
         {
+            // todo This is a hack used to paint background as section
             final Shape old = GraphicsUtils.intersectClip ( g2d, bgShape );
-            PainterSupport.paintSection ( backgroundPainterAt, g2d, component, ui, new Rectangle ( x, y, w, h ) );
+            paintSection ( backgroundPainterAt, g2d, new Rectangle ( x, y, w, h ) );
             GraphicsUtils.restoreClip ( g2d, old );
         }
         else
@@ -806,8 +806,9 @@ public class TabbedPanePainter<E extends JTabbedPane, U extends WTabbedPaneUI> e
             final SectionPainter backgroundPainterAt = ui.getBackgroundPainterAt ( selectedIndex );
             if ( backgroundPainterAt != null )
             {
+                // todo This is a hack used to paint background as section
                 final Shape old = GraphicsUtils.intersectClip ( g2d, bs );
-                PainterSupport.paintSection ( backgroundPainterAt, g2d, component, ui, bs.getBounds () );
+                paintSection ( backgroundPainterAt, g2d, bs.getBounds () );
                 GraphicsUtils.restoreClip ( g2d, old );
             }
             else
@@ -830,7 +831,8 @@ public class TabbedPanePainter<E extends JTabbedPane, U extends WTabbedPaneUI> e
             final SectionPainter backgroundPainterAt = ui.getBackgroundPainterAt ( selectedIndex );
             if ( backgroundPainterAt != null )
             {
-                PainterSupport.paintSection ( backgroundPainterAt, g2d, component, ui, bs.getBounds () );
+                // todo This is a hack used to paint background as section
+                paintSection ( backgroundPainterAt, g2d, bs.getBounds () );
             }
             else
             {

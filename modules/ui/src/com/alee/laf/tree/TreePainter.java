@@ -4,13 +4,18 @@ import com.alee.api.jdk.Predicate;
 import com.alee.extended.tree.WebAsyncTree;
 import com.alee.extended.tree.WebExTree;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.language.*;
+import com.alee.managers.language.Language;
+import com.alee.managers.language.LanguageListener;
+import com.alee.managers.language.LanguageSensitive;
+import com.alee.managers.language.WebLanguageManager;
 import com.alee.managers.style.BoundsType;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.SectionPainter;
 import com.alee.painter.decoration.AbstractDecorationPainter;
+import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
+import com.alee.painter.decoration.IDecorationPainter;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.GeometryUtils;
@@ -50,24 +55,25 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
     protected Color linesColor;
 
     /**
-     * Tree rows background painter.
-     * It can be used to provide background customization for specific tree rows.
+     * {@link SectionPainter} that can be used to customize tree rows background.
+     * It is separated from {@link #nodePainter} as nodes not always take the whole row space.
+     * This painter
      */
     @DefaultPainter ( TreeRowPainter.class )
     protected ITreeRowPainter rowPainter;
 
     /**
-     * Hover node background painter.
-     * It can be used to provide background for hover nodes.
-     * todo Change to "nodePainter" and simply use "hover" state there if needed
+     * {@link SectionPainter} that can be used to customize tree nodes background.
+     * It is separated from {@link #rowPainter} as nodes not always take the whole row space.
      */
     @DefaultPainter ( TreeNodePainter.class )
-    protected ITreeNodePainter hoverPainter;
+    protected ITreeNodePainter nodePainter;
 
     /**
-     * Selected nodes background painter.
-     * It can be used to provide background for selected nodes.
-     * WebLaF uses this painter instead of cell renderer -based selection decoration.
+     * {@link SectionPainter} that can be used to customize tree nodes selection background.
+     * Separate painter is used because even a single selection could include multiple nodes in some selection modes.
+     * This painter will not know any information about the nodes, use {@link #nodePainter} for painting node-specific decorations.
+     * You can also use {@link #rowPainter} for row-wide background customization that is aware of the row node contents.
      */
     @DefaultPainter ( TreeSelectionPainter.class )
     protected ITreeSelectionPainter selectionPainter;
@@ -116,25 +122,9 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
     protected transient int lastSelectionRow = -1;
 
     @Override
-    protected void installSectionPainters ()
+    protected List<SectionPainter<E, U>> getSectionPainters ()
     {
-        super.installSectionPainters ();
-        rowPainter = PainterSupport.installSectionPainter ( this, rowPainter, null, component, ui );
-        hoverPainter = PainterSupport.installSectionPainter ( this, hoverPainter, null, component, ui );
-        selectionPainter = PainterSupport.installSectionPainter ( this, selectionPainter, null, component, ui );
-        dropLocationPainter = PainterSupport.installSectionPainter ( this, dropLocationPainter, null, component, ui );
-        selectorPainter = PainterSupport.installSectionPainter ( this, selectorPainter, null, component, ui );
-    }
-
-    @Override
-    protected void uninstallSectionPainters ()
-    {
-        selectorPainter = PainterSupport.uninstallSectionPainter ( selectorPainter, component, ui );
-        dropLocationPainter = PainterSupport.uninstallSectionPainter ( dropLocationPainter, component, ui );
-        selectionPainter = PainterSupport.uninstallSectionPainter ( selectionPainter, component, ui );
-        hoverPainter = PainterSupport.uninstallSectionPainter ( hoverPainter, component, ui );
-        rowPainter = PainterSupport.uninstallSectionPainter ( rowPainter, component, ui );
-        super.uninstallSectionPainters ();
+        return asList ( rowPainter, nodePainter, selectionPainter, dropLocationPainter, selectorPainter );
     }
 
     @Override
@@ -588,9 +578,28 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
     }
 
     @Override
-    protected List<SectionPainter<E, U>> getSectionPainters ()
+    public boolean isHoverDecorationSupported ()
     {
-        return asList ( rowPainter, hoverPainter, selectionPainter, dropLocationPainter, selectorPainter );
+        boolean supported = false;
+        if ( component != null && component.isEnabled () )
+        {
+            if ( rowPainter != null && rowPainter instanceof IDecorationPainter )
+            {
+                supported = ( ( IDecorationPainter ) rowPainter ).usesState ( DecorationState.hover );
+            }
+            else if ( nodePainter != null && nodePainter instanceof IDecorationPainter )
+            {
+                supported = ( ( IDecorationPainter ) nodePainter ).usesState ( DecorationState.hover );
+            }
+        }
+        return supported;
+    }
+
+    @Override
+    public void prepareToPaint ( final Hashtable<TreePath, Boolean> paintingCache, final TreeCellRenderer currentCellRenderer )
+    {
+        this.paintingCache = paintingCache;
+        this.currentCellRenderer = currentCellRenderer;
     }
 
     @Override
@@ -614,9 +623,6 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
             // Painting tree background
             paintBackground ( g2d );
 
-            // Painting hover node background
-            paintHoverNodeBackground ( g2d );
-
             // Painting selected nodes background
             paintSelectedNodesBackground ( g2d );
 
@@ -628,12 +634,13 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
 
             // Multiselector
             paintMultiselector ( g2d );
-
-            treeModel = null;
-            treeLayoutCache = null;
-            paintingCache = null;
-            rendererPane = null;
         }
+
+        // Cleaning up
+        treeModel = null;
+        treeLayoutCache = null;
+        paintingCache = null;
+        rendererPane = null;
     }
 
     /**
@@ -644,7 +651,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
     protected void paintBackground ( final Graphics2D g2d )
     {
         // Painting row background if one is available
-        if ( rowPainter != null )
+        if ( rowPainter != null || nodePainter != null )
         {
             final Rectangle paintBounds = g2d.getClipBounds ();
             final TreePath initialPath = ui.getClosestPathForLocation ( component, 0, paintBounds.y );
@@ -667,30 +674,45 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
                         bounds = getPathBounds ( path, insets, boundsBuffer );
                         if ( bounds == null )
                         {
-                            // This will only happen if the model changes out
-                            // from under us (usually in another thread).
-                            // Swing isn't multi-threaded, but I'll put this
-                            // check in anyway.
+                            // Note from Swing devs:
+                            // This will only happen if the model changes out from under us (usually in another thread)
+                            // Swing isn't multi-threaded, but I'll put this check in anyway
                             return;
                         }
 
-                        // Calculating row bounds
-                        // We have to ensure they do exist to avoid issues
-                        final Rectangle rowBounds = ui.getRowBounds ( row, true );
-                        if ( rowBounds != null )
+                        // Painting row background
+                        if ( rowPainter != null )
                         {
-                            final Insets padding = PainterSupport.getPadding ( component );
-                            if ( padding != null )
+                            // We have to ensure we can retrieve bounds for it first
+                            final Rectangle rowBounds = ui.getRowBounds ( row, true );
+                            if ( rowBounds != null )
                             {
-                                // Increasing background by the padding sizes at left and right sides
-                                // This is required to properly display full row background, not node background
-                                rowBounds.x -= padding.left;
-                                rowBounds.width += padding.left + padding.right;
-                            }
+                                // This is a workaround to make sure row painter takes the whole tree width
+                                final Insets padding = PainterSupport.getPadding ( component );
+                                if ( padding != null )
+                                {
+                                    // Increasing background by the padding sizes at left and right sides
+                                    rowBounds.x -= padding.left;
+                                    rowBounds.width += padding.left + padding.right;
+                                }
 
-                            // Painting row background
-                            rowPainter.prepareToPaint ( row );
-                            PainterSupport.paintSection ( rowPainter, g2d, component, ui, rowBounds );
+                                // Painting row background
+                                rowPainter.prepareToPaint ( row );
+                                paintSection ( rowPainter, g2d, rowBounds );
+                            }
+                        }
+
+                        // Painting node background
+                        if ( nodePainter != null )
+                        {
+                            // We have to ensure we can retrieve bounds for it first
+                            final Rectangle nodeBounds = ui.getRowBounds ( row );
+                            if ( nodeBounds != null )
+                            {
+                                // Painting hover node background
+                                nodePainter.prepareToPaint ( row );
+                                paintSection ( nodePainter, g2d, nodeBounds );
+                            }
                         }
 
                         if ( bounds.y + bounds.height >= endY )
@@ -706,13 +728,6 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
                 }
             }
         }
-    }
-
-    @Override
-    public void prepareToPaint ( final Hashtable<TreePath, Boolean> paintingCache, final TreeCellRenderer currentCellRenderer )
-    {
-        this.paintingCache = paintingCache;
-        this.currentCellRenderer = currentCellRenderer;
     }
 
     /**
@@ -743,36 +758,6 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
         return ltr ? x - ( int ) Math.ceil ( iconWidth / 2.0 ) : x - ( int ) Math.floor ( iconWidth / 2.0 );
     }
 
-    @Override
-    public boolean isHoverDecorationSupported ()
-    {
-        return hoverPainter != null && component != null && component.isEnabled ();
-    }
-
-    /**
-     * Paints hover node highlight.
-     *
-     * @param g2d graphics context
-     */
-    protected void paintHoverNodeBackground ( final Graphics2D g2d )
-    {
-        if ( isHoverDecorationSupported () )
-        {
-            // Checking hover row availability
-            final int hoverRow = ui.getHoverRow ();
-            if ( hoverRow != -1 && !component.isRowSelected ( hoverRow ) )
-            {
-                // Checking hover row bounds
-                final Rectangle r = ui.getRowBounds ( hoverRow );
-                if ( r != null )
-                {
-                    // Painting hover node background
-                    PainterSupport.paintSection ( hoverPainter, g2d, component, ui, r );
-                }
-            }
-        }
-    }
-
     /**
      * Paints special WebLaF tree nodes selection.
      * It is rendered separately from nodes allowing you to simplify your tree cell renderer component.
@@ -788,7 +773,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
             for ( final Rectangle rect : selections )
             {
                 // Painting single selection
-                PainterSupport.paintSection ( selectionPainter, g2d, component, ui, rect );
+                paintSection ( selectionPainter, g2d, rect );
             }
         }
     }
@@ -1481,7 +1466,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
 
                 // Painting drop location view
                 dropLocationPainter.prepareToPaint ( dropLocation );
-                PainterSupport.paintSection ( dropLocationPainter, g2d, component, ui, dropViewBounds );
+                paintSection ( dropLocationPainter, g2d, dropViewBounds );
             }
         }
     }
@@ -1502,7 +1487,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
             bounds.height -= 1;
 
             // Painting selector
-            PainterSupport.paintSection ( selectorPainter, g2d, component, ui, bounds );
+            paintSection ( selectorPainter, g2d, bounds );
         }
     }
 

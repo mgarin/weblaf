@@ -47,7 +47,13 @@ public class TreeDropLocationPainter<E extends JTree, U extends WebTreeUI, D ext
     protected JTree.DropLocation location;
 
     @Override
-    protected List<String> getDecorationStates ()
+    public String getSectionId ()
+    {
+        return "drop.location";
+    }
+
+    @Override
+    public List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
         if ( location != null )

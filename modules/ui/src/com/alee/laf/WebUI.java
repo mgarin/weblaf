@@ -27,6 +27,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
+@SuppressWarnings ( "unused" )
 public interface WebUI<C extends JComponent>
 {
     /**

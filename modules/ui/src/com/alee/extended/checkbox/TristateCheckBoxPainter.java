@@ -21,7 +21,7 @@ public class TristateCheckBoxPainter<E extends WebTristateCheckBox, U extends WT
         extends AbstractStateButtonPainter<E, U, D> implements ITristateCheckBoxPainter<E, U>
 {
     @Override
-    protected List<String> getDecorationStates ()
+    public List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
         if ( component.getState () == CheckState.checked )

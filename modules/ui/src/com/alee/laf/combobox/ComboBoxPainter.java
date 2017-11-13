@@ -159,7 +159,7 @@ public class ComboBoxPainter<E extends JComboBox, U extends WComboBoxUI, D exten
     }
 
     @Override
-    protected List<String> getDecorationStates ()
+    public List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
         if ( component.isEditable () )

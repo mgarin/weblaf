@@ -25,7 +25,6 @@ import com.alee.managers.style.PainterShapeProvider;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.painter.decoration.AbstractDecorationPainter;
-import com.alee.painter.decoration.AbstractSectionDecorationPainter;
 import com.alee.utils.*;
 
 import javax.swing.*;
@@ -255,125 +254,6 @@ public final class PainterSupport
 
             // Removing painter listener
             listeners.remove ( painter );
-        }
-    }
-
-    /**
-     * Installs section painter into the specified component.
-     * It is highly recommended to call this method only from EDT.
-     *
-     * @param origin    origin painter
-     * @param painter   section painter to install
-     * @param old       previously installed section painter
-     * @param component component painter should be installed into
-     * @param ui        component UI
-     * @param <T>       section painter type
-     * @return installed sub-painter
-     */
-    public static <T extends SectionPainter> T installSectionPainter ( final Painter origin, final T painter, final Painter old,
-                                                                       final JComponent component, final ComponentUI ui )
-    {
-        if ( component != null && ui != null )
-        {
-            if ( old != null )
-            {
-                old.uninstall ( component, ui );
-                if ( old instanceof AbstractSectionDecorationPainter )
-                {
-                    ( ( AbstractSectionDecorationPainter ) old ).setOrigin ( null );
-                }
-            }
-            if ( painter != null )
-            {
-                if ( painter instanceof AbstractSectionDecorationPainter )
-                {
-                    ( ( AbstractSectionDecorationPainter ) painter ).setOrigin ( origin );
-                }
-                painter.install ( component, ui );
-            }
-        }
-        return painter;
-    }
-
-    /**
-     * Uninstalls section painter from the specified component.
-     * It is highly recommended to call this method only from EDT.
-     *
-     * @param painter   section painter to uninstall
-     * @param component component painter should be uninstalled from
-     * @param ui        component UI
-     * @param <T>       section painter type
-     * @return {@code null}
-     */
-    public static <T extends SectionPainter> T uninstallSectionPainter ( final T painter, final JComponent component, final ComponentUI ui )
-    {
-        if ( component != null && ui != null )
-        {
-            if ( painter != null )
-            {
-                painter.uninstall ( component, ui );
-                if ( painter instanceof AbstractSectionDecorationPainter )
-                {
-                    ( ( AbstractSectionDecorationPainter ) painter ).clearOrigin ();
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Paints {@link com.alee.painter.SectionPainter} at the specified bounds.
-     * This method was introduced as one of the measures to fix #401 issue appearing on Linux systems.
-     *
-     * @param painter   {@link com.alee.painter.SectionPainter}
-     * @param g2d       graphics context
-     * @param component section component
-     * @param ui        section component ui
-     * @param bounds    section bounds relative to component coordinates system
-     */
-    public static void paintSection ( final SectionPainter painter, final Graphics2D g2d, final JComponent component, final ComponentUI ui,
-                                      final Rectangle bounds )
-    {
-        if ( SystemUtils.isUnix () )
-        {
-            // todo This part of code is only here until #401 issue fix for Unix systems
-            // todo The problem with this workaround is that it provides bounds which are only relevant within paint run
-            // todo In general we want to have bounds which are relevant related
-
-            // Translating to section coordinates
-            g2d.translate ( bounds.x, bounds.y );
-
-            // Clipping area
-            final Rectangle section = new Rectangle ( 0, 0, bounds.width, bounds.height );
-            final Shape oc = GraphicsUtils.intersectClip ( g2d, section );
-
-            // Creating appropriate bounds for painter
-            final Bounds componentBounds = new Bounds ( component, -bounds.x, -bounds.y );
-            final Bounds sectionBounds = new Bounds ( componentBounds, section );
-
-            // Painting section
-            painter.paint ( g2d, component, ui, sectionBounds );
-
-            // Restoring old clip
-            GraphicsUtils.restoreClip ( g2d, oc );
-
-            // Translating back
-            g2d.translate ( -bounds.x, -bounds.y );
-        }
-        else
-        {
-            // Clipping area
-            final Shape oc = GraphicsUtils.intersectClip ( g2d, bounds );
-
-            // Creating appropriate bounds for painter
-            final Bounds componentBounds = new Bounds ( component );
-            final Bounds sectionBounds = new Bounds ( componentBounds, bounds );
-
-            // Painting section
-            painter.paint ( g2d, component, ui, sectionBounds );
-
-            // Restoring old clip
-            GraphicsUtils.restoreClip ( g2d, oc );
         }
     }
 

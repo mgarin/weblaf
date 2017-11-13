@@ -56,7 +56,7 @@ public class LinkPainter<E extends WebLink, U extends WLinkUI, D extends IDecora
     }
 
     @Override
-    protected List<String> getDecorationStates ()
+    public List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
         if ( component.isVisitable () )

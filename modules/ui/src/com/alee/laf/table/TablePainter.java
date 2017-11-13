@@ -1,9 +1,11 @@
 package com.alee.laf.table;
 
-import com.alee.managers.language.*;
+import com.alee.managers.language.Language;
+import com.alee.managers.language.LanguageListener;
+import com.alee.managers.language.LanguageSensitive;
+import com.alee.managers.language.WebLanguageManager;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.DefaultPainter;
-import com.alee.painter.PainterSupport;
 import com.alee.painter.SectionPainter;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.IDecoration;
@@ -87,25 +89,9 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
     protected transient CellRendererPane rendererPane = null;
 
     @Override
-    protected void installSectionPainters ()
+    protected List<SectionPainter<E, U>> getSectionPainters ()
     {
-        super.installSectionPainters ();
-        this.rowPainter = PainterSupport.installSectionPainter ( this, rowPainter, null, component, ui );
-        this.columnPainter = PainterSupport.installSectionPainter ( this, columnPainter, null, component, ui );
-        this.cellPainter = PainterSupport.installSectionPainter ( this, cellPainter, null, component, ui );
-        this.selectionPainter = PainterSupport.installSectionPainter ( this, selectionPainter, null, component, ui );
-        this.draggedColumnPainter = PainterSupport.installSectionPainter ( this, draggedColumnPainter, null, component, ui );
-    }
-
-    @Override
-    protected void uninstallSectionPainters ()
-    {
-        this.draggedColumnPainter = PainterSupport.uninstallSectionPainter ( draggedColumnPainter, component, ui );
-        this.selectionPainter = PainterSupport.uninstallSectionPainter ( selectionPainter, component, ui );
-        this.cellPainter = PainterSupport.uninstallSectionPainter ( cellPainter, component, ui );
-        this.columnPainter = PainterSupport.uninstallSectionPainter ( columnPainter, component, ui );
-        this.rowPainter = PainterSupport.uninstallSectionPainter ( rowPainter, component, ui );
-        super.uninstallSectionPainters ();
+        return asList ( rowPainter, columnPainter, cellPainter, selectionPainter, draggedColumnPainter );
     }
 
     @Override
@@ -339,12 +325,6 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
     }
 
     @Override
-    protected List<SectionPainter<E, U>> getSectionPainters ()
-    {
-        return asList ( rowPainter, columnPainter, cellPainter, selectionPainter, draggedColumnPainter );
-    }
-
-    @Override
     public void prepareToPaint ( final CellRendererPane rendererPane )
     {
         this.rendererPane = rendererPane;
@@ -449,7 +429,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
                 cellRect = component.getCellRect ( row, cMin, false );
                 rowRect = new Rectangle ( bounds.x, cellRect.y, bounds.width, cellRect.height );
                 rowPainter.prepareToPaint ( row );
-                PainterSupport.paintSection ( rowPainter, g2d, component, ui, rowRect );
+                paintSection ( rowPainter, g2d, rowRect );
             }
         }
 
@@ -465,7 +445,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
                 cellRect.width = columnWidth - columnMargin;
                 colRect = new Rectangle ( cellRect.x, bounds.y, cellRect.width, bounds.height );
                 columnPainter.prepareToPaint ( column );
-                PainterSupport.paintSection ( columnPainter, g2d, component, ui, colRect );
+                paintSection ( columnPainter, g2d, colRect );
                 cellRect.x += columnWidth;
             }
         }
@@ -494,7 +474,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
                     if ( cellPainter != null )
                     {
                         cellPainter.prepareToPaint ( row, column );
-                        PainterSupport.paintSection ( cellPainter, g2d, component, ui, cellRect );
+                        paintSection ( cellPainter, g2d, cellRect );
                     }
 
                     // Shift for LTR orientation
@@ -593,7 +573,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
                             final Rectangle first = component.getCellRect ( rowSection.getKey (), colSection.getKey (), false );
                             final Rectangle last = component.getCellRect ( rowSection.getValue (), colSection.getValue (), false );
                             final Rectangle selection = GeometryUtils.getContainingRect ( first, last );
-                            PainterSupport.paintSection ( selectionPainter, g2d, component, ui, selection );
+                            paintSection ( selectionPainter, g2d, selection );
                         }
                     }
                 }
@@ -605,7 +585,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
                         final Rectangle first = component.getCellRect ( rowSection.getKey (), 0, false );
                         final Rectangle last = component.getCellRect ( rowSection.getValue (), component.getColumnCount () - 1, false );
                         final Rectangle selection = GeometryUtils.getContainingRect ( first, last );
-                        PainterSupport.paintSection ( selectionPainter, g2d, component, ui, selection );
+                        paintSection ( selectionPainter, g2d, selection );
                     }
                 }
                 else if ( cs )
@@ -616,7 +596,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
                         final Rectangle first = component.getCellRect ( 0, colSection.getKey (), false );
                         final Rectangle last = component.getCellRect ( component.getRowCount () - 1, colSection.getValue (), false );
                         final Rectangle selection = GeometryUtils.getContainingRect ( first, last );
-                        PainterSupport.paintSection ( selectionPainter, g2d, component, ui, selection );
+                        paintSection ( selectionPainter, g2d, selection );
                     }
                 }
             }
@@ -784,7 +764,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
         {
             final Rectangle b = new Rectangle ( vcr.x, vcr.y, vcr.width, vcr.height );
             draggedColumnPainter.prepareToPaint ( index );
-            PainterSupport.paintSection ( draggedColumnPainter, g2d, component, ui, b );
+            paintSection ( draggedColumnPainter, g2d, b );
         }
 
         // Paint the vertical grid lines if necessary.

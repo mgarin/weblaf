@@ -45,13 +45,19 @@ public class TableCellPainter<E extends JTable, U extends WebTableUI, D extends 
     protected transient Integer column;
 
     @Override
+    public String getSectionId ()
+    {
+        return "cell";
+    }
+
+    @Override
     protected boolean isFocused ()
     {
         return false;
     }
 
     @Override
-    protected List<String> getDecorationStates ()
+    public List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
 

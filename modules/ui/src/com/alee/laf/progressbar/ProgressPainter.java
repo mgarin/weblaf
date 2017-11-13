@@ -34,7 +34,9 @@ import javax.swing.*;
 public class ProgressPainter<E extends JProgressBar, U extends WProgressBarUI, D extends IDecoration<E, D>>
         extends AbstractSectionDecorationPainter<E, U, D> implements IProgressPainter<E, U>
 {
-    /**
-     * Implementation is used completely from {@link AbstractSectionDecorationPainter}.
-     */
+    @Override
+    public String getSectionId ()
+    {
+        return "progress";
+    }
 }

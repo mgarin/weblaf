@@ -35,7 +35,7 @@ public class MenuPainter<E extends JMenu, U extends WebMenuUI, D extends IDecora
     }
 
     @Override
-    protected List<String> getDecorationStates ()
+    public List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
 

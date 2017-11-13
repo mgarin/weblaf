@@ -42,13 +42,19 @@ public class TableColumnPainter<E extends JTable, U extends WebTableUI, D extend
     protected transient Integer column;
 
     @Override
+    public String getSectionId ()
+    {
+        return "column";
+    }
+
+    @Override
     protected boolean isFocused ()
     {
         return false;
     }
 
     @Override
-    protected List<String> getDecorationStates ()
+    public List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
 

@@ -1,9 +1,11 @@
 package com.alee.laf.list;
 
-import com.alee.managers.language.*;
+import com.alee.managers.language.Language;
+import com.alee.managers.language.LanguageListener;
+import com.alee.managers.language.LanguageSensitive;
+import com.alee.managers.language.WebLanguageManager;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.PainterException;
-import com.alee.painter.PainterSupport;
 import com.alee.painter.SectionPainter;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.IDecoration;
@@ -66,19 +68,9 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
     protected transient int[] cellHeights = null;
 
     @Override
-    protected void installSectionPainters ()
+    protected List<SectionPainter<E, U>> getSectionPainters ()
     {
-        super.installSectionPainters ();
-        hoverPainter = PainterSupport.installSectionPainter ( this, hoverPainter, null, component, ui );
-        selectionPainter = PainterSupport.installSectionPainter ( this, selectionPainter, null, component, ui );
-    }
-
-    @Override
-    protected void uninstallSectionPainters ()
-    {
-        selectionPainter = PainterSupport.uninstallSectionPainter ( selectionPainter, component, ui );
-        hoverPainter = PainterSupport.uninstallSectionPainter ( hoverPainter, component, ui );
-        super.uninstallSectionPainters ();
+        return asList ( hoverPainter, selectionPainter );
     }
 
     @Override
@@ -217,12 +209,6 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
     protected void uninstallRuntimeVariables ()
     {
         cellHeights = null;
-    }
-
-    @Override
-    protected List<SectionPainter<E, U>> getSectionPainters ()
-    {
-        return asList ( hoverPainter, selectionPainter );
     }
 
     @Override
@@ -826,7 +812,7 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
                 {
                     // Painting hover cell background
                     hoverPainter.prepareToPaint ( hoverIndex );
-                    PainterSupport.paintSection ( hoverPainter, g2d, component, ui, bounds );
+                    paintSection ( hoverPainter, g2d, bounds );
                 }
             }
         }
@@ -846,7 +832,7 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
             final List<Rectangle> selections = getSelectionRects ();
             for ( final Rectangle bounds : selections )
             {
-                PainterSupport.paintSection ( selectionPainter, g2d, component, ui, bounds );
+                paintSection ( selectionPainter, g2d, bounds );
             }
         }
     }

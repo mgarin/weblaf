@@ -31,7 +31,37 @@ import javax.swing.plaf.ComponentUI;
 public interface SectionPainter<E extends JComponent, U extends ComponentUI> extends Painter<E, U>
 {
     /**
-     * This interface has no methods so far.
-     * Some optional methods might be added here later when moved to JDK8.
+     * Returns section identifier that is be unique within its parent {@link Painter}.
+     * It could be anything, but shorter identifiers are recommended for performance reasons.
+     *
+     * @return section identifier that is be unique within its parent {@link Painter}
      */
+    public String getSectionId ();
+
+    /**
+     * Returns origin {@link Painter}.
+     *
+     * @return origin {@link Painter}
+     */
+    public Painter<E, U> getOrigin ();
+
+    /**
+     * Installs this {@link SectionPainter} into specified {@link Painter}.
+     * Use this method over {@link #install(JComponent, ComponentUI)} whenever you want to install this as {@link SectionPainter}.
+     *
+     * @param c      component this painter is being installed onto
+     * @param ui     component UI
+     * @param origin origin {@link Painter}
+     */
+    public void install ( E c, U ui, Painter<E, U> origin );
+
+    /**
+     * Uninstalls this {@link SectionPainter} from specified {@link Painter}.
+     * Use this method over {@link #uninstall(JComponent, ComponentUI)} whenever you want to uninstall this as {@link SectionPainter}.
+     *
+     * @param c      component this painter is being uninstalled from
+     * @param ui     component UI
+     * @param origin origin {@link Painter}
+     */
+    public void uninstall ( E c, U ui, Painter<E, U> origin );
 }

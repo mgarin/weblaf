@@ -35,6 +35,7 @@ import java.util.List;
  * @param <E> component type
  * @param <D> decoration type
  * @author Mikle Garin
+ * @see IDecoration
  */
 
 @XStreamAlias ( "Decorations" )

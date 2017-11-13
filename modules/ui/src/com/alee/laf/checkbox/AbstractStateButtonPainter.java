@@ -3,7 +3,6 @@ package com.alee.laf.checkbox;
 import com.alee.laf.button.AbstractButtonPainter;
 import com.alee.laf.radiobutton.IAbstractStateButtonPainter;
 import com.alee.painter.DefaultPainter;
-import com.alee.painter.PainterSupport;
 import com.alee.painter.SectionPainter;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.GraphicsUtils;
@@ -38,17 +37,9 @@ public abstract class AbstractStateButtonPainter<E extends AbstractButton, U ext
     protected transient Rectangle iconBounds;
 
     @Override
-    protected void installSectionPainters ()
+    protected List<SectionPainter<E, U>> getSectionPainters ()
     {
-        super.installSectionPainters ();
-        checkStatePainter = PainterSupport.installSectionPainter ( this, checkStatePainter, null, component, ui );
-    }
-
-    @Override
-    protected void uninstallSectionPainters ()
-    {
-        checkStatePainter = PainterSupport.uninstallSectionPainter ( checkStatePainter, component, ui );
-        super.uninstallSectionPainters ();
+        return asList ( checkStatePainter );
     }
 
     @Override
@@ -63,12 +54,6 @@ public abstract class AbstractStateButtonPainter<E extends AbstractButton, U ext
     {
         component.setIcon ( null );
         super.uninstallPropertiesAndListeners ();
-    }
-
-    @Override
-    protected List<SectionPainter<E, U>> getSectionPainters ()
-    {
-        return asList ( checkStatePainter );
     }
 
     /**
@@ -108,7 +93,7 @@ public abstract class AbstractStateButtonPainter<E extends AbstractButton, U ext
             {
                 final Graphics2D g2d = ( Graphics2D ) g;
                 final Object aa = GraphicsUtils.setupAntialias ( g2d );
-                PainterSupport.paintSection ( checkStatePainter, g2d, component, ui, iconBounds );
+                paintSection ( checkStatePainter, g2d, iconBounds );
                 GraphicsUtils.restoreAntialias ( g2d, aa );
             }
         }

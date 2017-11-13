@@ -18,6 +18,7 @@
 package com.alee.painter.decoration;
 
 import com.alee.painter.Painter;
+import com.alee.painter.PainterException;
 import com.alee.painter.SectionPainter;
 
 import javax.swing.*;
@@ -38,46 +39,114 @@ public abstract class AbstractSectionDecorationPainter<E extends JComponent, U e
         extends AbstractDecorationPainter<E, U, D> implements SectionPainter<E, U>
 {
     /**
-     * Origin painter.
+     * Origin {@link Painter}.
      * It is mainly used to provide origin decoration state duplication behavior.
-     * It is kept within weak reference to avoid memory leaks as section painters might be easily replaced.
+     * It is kept within {@link WeakReference} to avoid memory leaks as section painters might be easily replaced.
      */
     protected transient WeakReference<Painter<E, U>> origin;
 
-    /**
-     * Returns origin painter.
-     *
-     * @return origin painter
-     */
-    public Painter<E, U> getOrigin ()
-    {
-        return origin != null ? origin.get () : null;
-    }
-
-    /**
-     * Sets origin painter.
-     *
-     * @param origin origin painter
-     */
-    public void setOrigin ( final Painter<E, U> origin )
+    @Override
+    public void install ( final E c, final U ui, final Painter<E, U> origin )
     {
         this.origin = new WeakReference<Painter<E, U>> ( origin );
-    }
+        super.install ( c, ui );
 
-    /**
-     * Clears origin painter reference.
-     */
-    public void clearOrigin ()
-    {
-        this.origin = null;
     }
 
     @Override
-    protected List<String> getDecorationStates ()
+    public void uninstall ( final E c, final U ui, final Painter<E, U> origin )
     {
+        super.uninstall ( c, ui );
+        this.origin = null;
+
+    }
+
+    @Override
+    public Painter<E, U> getOrigin ()
+    {
+        if ( origin == null )
+        {
+            throw new PainterException ( "Origin Painter was not specified for painter: " + this );
+        }
+        final Painter<E, U> originPainter = origin.get ();
+        if ( originPainter == null )
+        {
+            throw new PainterException ( "Origin Painter was destroyed before its SectionPainter: " + this );
+        }
+        return originPainter;
+    }
+
+    /**
+     * We do not want {@link SectionPainter} to perform any default tracking as it is already done within {@link #origin}.
+     * Maybe in some rare cases in the future this will be enabled but so far there are none.
+     *
+     * @return {@code false}
+     */
+    @Override
+    protected boolean usesFocusedView ()
+    {
+        return false;
+    }
+
+    /**
+     * We do not want {@link SectionPainter} to perform any default tracking as it is already done within {@link #origin}.
+     * Maybe in some rare cases in the future this will be enabled but so far there are none.
+     *
+     * @return {@code false}
+     */
+    @Override
+    protected boolean usesInFocusedParentView ()
+    {
+        return false;
+    }
+
+    /**
+     * We do not want {@link SectionPainter} to perform any default tracking as it is already done within {@link #origin}.
+     * Maybe in some rare cases in the future this will be enabled but so far there are none.
+     *
+     * @return {@code false}
+     */
+    @Override
+    protected boolean usesHoverView ()
+    {
+        return false;
+    }
+
+    /**
+     * We do not want {@link SectionPainter} to perform any default tracking as it is already done within {@link #origin}.
+     * Maybe in some rare cases in the future this will be enabled but so far there are none.
+     *
+     * @return {@code false}
+     */
+    @Override
+    protected boolean usesHierarchyBasedView ()
+    {
+        return false;
+    }
+
+    /**
+     * Returns decoration states from {@link #origin} {@link Painter} if possible.
+     * That is quite useful to retain all origin component states from its {@link Painter} and further expand on them for the section.
+     *
+     * @return current component section decoration states
+     */
+    @Override
+    public List<String> getDecorationStates ()
+    {
+        final List<String> states;
         final Painter<E, U> origin = getOrigin ();
-        return origin != null && origin instanceof AbstractDecorationPainter ?
-                ( ( AbstractDecorationPainter ) origin ).getDecorationStates () : super.getDecorationStates ();
+        if ( origin != null && origin instanceof IDecorationPainter )
+        {
+            // Retrieving origin decoration states
+            final IDecorationPainter painter = ( IDecorationPainter ) origin;
+            states = painter.getDecorationStates ();
+        }
+        else
+        {
+            // Retrieving default decoration states
+            states = super.getDecorationStates ();
+        }
+        return states;
     }
 
     /**

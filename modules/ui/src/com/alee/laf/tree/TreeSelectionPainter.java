@@ -36,6 +36,12 @@ public class TreeSelectionPainter<E extends JTree, U extends WebTreeUI, D extend
         extends AbstractSectionDecorationPainter<E, U, D> implements ITreeSelectionPainter<E, U>
 {
     @Override
+    public String getSectionId ()
+    {
+        return "selection";
+    }
+
+    @Override
     protected boolean isFocused ()
     {
         return false;

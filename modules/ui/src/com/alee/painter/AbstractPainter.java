@@ -19,8 +19,7 @@ package com.alee.painter;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.Bounds;
-import com.alee.utils.CompareUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.*;
 import com.alee.utils.laf.WebBorder;
 
 import javax.swing.*;
@@ -30,7 +29,9 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This abstract {@link Painter} implementation provides a few basic commonly used features.
@@ -69,6 +70,11 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      * Component UI reference.
      */
     protected transient U ui;
+
+    /**
+     * Installed section painters.
+     */
+    protected transient Map<String, SectionPainter<E, U>> sectionPainters;
 
     /**
      * Whether or not painted component has LTR orientation.
@@ -156,27 +162,199 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      */
     protected boolean isSectionPainter ()
     {
-        // todo Optimize this in future to return true/false
-        // todo Also this can be completely moved to higher level implementations of section painters
         return this instanceof SectionPainter;
     }
 
     /**
      * Installs {@link SectionPainter}s used by this {@link Painter}.
-     * Override this method instead of {@link #install(JComponent, ComponentUI)} to install additional {@link SectionPainter}s.
      */
-    protected void installSectionPainters ()
+    protected final void installSectionPainters ()
     {
-        // No section painters by default
+        final List<SectionPainter<E, U>> sectionPainters = getSectionPainters ();
+        if ( CollectionUtils.notEmpty ( sectionPainters ) )
+        {
+            for ( final SectionPainter<E, U> sectionPainter : sectionPainters )
+            {
+                installSectionPainter ( sectionPainter );
+            }
+        }
     }
 
     /**
      * Uninstalls {@link SectionPainter}s used by this {@link Painter}.
-     * Override this method instead of {@link #install(JComponent, ComponentUI)} to uninstall additional {@link SectionPainter}s.
      */
-    protected void uninstallSectionPainters ()
+    protected final void uninstallSectionPainters ()
     {
-        // No section painters by default
+        final List<SectionPainter<E, U>> sectionPainters = getInstalledSectionPainters ();
+        if ( CollectionUtils.notEmpty ( sectionPainters ) )
+        {
+            for ( final SectionPainter<E, U> sectionPainter : sectionPainters )
+            {
+                uninstallSectionPainter ( sectionPainter );
+            }
+        }
+    }
+
+    /**
+     * Returns {@link SectionPainter}s used by this painter or {@code null} if none are used.
+     * Do not return any {@code null} {@link SectionPainter}s here, it will cause an exception.
+     * You can use {@link #asList(SectionPainter[])} method to conveniently form a list filtering out {@link null}s.
+     *
+     * @return {@link SectionPainter}s used by this painter or {@code null} if none are used
+     */
+    protected List<SectionPainter<E, U>> getSectionPainters ()
+    {
+        return null;
+    }
+
+    /**
+     * Returns section painters list in a most optimal way.
+     * Utility method for usage inside of classed extending this one.
+     *
+     * @param sections section painters, some or all of them can be {@code null}
+     * @return section painters list in a most optimal way
+     */
+    protected final List<SectionPainter<E, U>> asList ( final SectionPainter<E, U>... sections )
+    {
+        ArrayList<SectionPainter<E, U>> list = null;
+        if ( sections != null )
+        {
+            for ( final SectionPainter<E, U> section : sections )
+            {
+                if ( section != null )
+                {
+                    if ( list == null )
+                    {
+                        list = new ArrayList<SectionPainter<E, U>> ( sections.length );
+                    }
+                    list.add ( section );
+                }
+            }
+        }
+        return list;
+    }
+
+    /**
+     * Returns {@link SectionPainter}s installed within this painter or {@code null} if none are installed.
+     * This method is used for various internal update mechanisms involving {@link SectionPainter}s.
+     *
+     * @return {@link SectionPainter}s installed within this painter or {@code null} if none are installed
+     */
+    protected final List<SectionPainter<E, U>> getInstalledSectionPainters ()
+    {
+        return MapUtils.notEmpty ( sectionPainters ) ? new ArrayList<SectionPainter<E, U>> ( sectionPainters.values () ) : null;
+    }
+
+    /**
+     * Installs {@link SectionPainter} onto this {@link Painter}.
+     *
+     * @param painter {@link SectionPainter} to install
+     */
+    protected final void installSectionPainter ( final SectionPainter<E, U> painter )
+    {
+        // Ensure painter exists
+        if ( painter == null )
+        {
+            throw new PainterException ( "Installed Painter cannot be null" );
+        }
+
+        // Initializing cache map
+        if ( sectionPainters == null )
+        {
+            sectionPainters = new HashMap<String, SectionPainter<E, U>> ( 3 );
+        }
+
+        // Section identifier
+        final String sectionId = painter.getSectionId ();
+
+        // Uninstalling previous section painter under same section identifier
+        final SectionPainter<E, U> old = sectionPainters.get ( sectionId );
+        if ( old != null )
+        {
+            old.uninstall ( component, ui, AbstractPainter.this );
+        }
+
+        // Installing new section painter
+        painter.install ( component, ui, AbstractPainter.this );
+
+        // Caching new section painter
+        sectionPainters.put ( sectionId, painter );
+    }
+
+    /**
+     * Uninstalls {@link SectionPainter} from this {@link Painter}.
+     *
+     * @param painter {@link SectionPainter} to uninstall
+     */
+    protected final void uninstallSectionPainter ( final SectionPainter<E, U> painter )
+    {
+        // Ensure painter exists
+        if ( painter == null )
+        {
+            throw new PainterException ( "Uninstalled Painter cannot be null" );
+        }
+
+        // Section identifier
+        final String sectionId = painter.getSectionId ();
+
+        // Removing section painter cache
+        sectionPainters.remove ( sectionId );
+
+        // Uninstalling section painter
+        painter.uninstall ( component, ui, AbstractPainter.this );
+    }
+
+    /**
+     * Paints {@link com.alee.painter.SectionPainter} at the specified bounds.
+     * This method was introduced as one of the measures to fix #401 issue appearing on Linux systems.
+     *
+     * @param painter {@link com.alee.painter.SectionPainter}
+     * @param g2d     graphics context
+     * @param bounds  section bounds relative to component coordinates system
+     */
+    protected void paintSection ( final SectionPainter painter, final Graphics2D g2d, final Rectangle bounds )
+    {
+        if ( SystemUtils.isUnix () )
+        {
+            // todo This part of code is only here until #401 issue fix for Unix systems
+            // todo The problem with this workaround is that it provides bounds which are only relevant within paint run
+            // todo In general we want to have bounds which are relevant related
+
+            // Translating to section coordinates
+            g2d.translate ( bounds.x, bounds.y );
+
+            // Clipping area
+            final Rectangle section = new Rectangle ( 0, 0, bounds.width, bounds.height );
+            final Shape oc = GraphicsUtils.intersectClip ( g2d, section );
+
+            // Creating appropriate bounds for painter
+            final Bounds componentBounds = new Bounds ( component, -bounds.x, -bounds.y );
+            final Bounds sectionBounds = new Bounds ( componentBounds, section );
+
+            // Painting section
+            painter.paint ( g2d, component, ui, sectionBounds );
+
+            // Restoring old clip
+            GraphicsUtils.restoreClip ( g2d, oc );
+
+            // Translating back
+            g2d.translate ( -bounds.x, -bounds.y );
+        }
+        else
+        {
+            // Clipping area
+            final Shape oc = GraphicsUtils.intersectClip ( g2d, bounds );
+
+            // Creating appropriate bounds for painter
+            final Bounds componentBounds = new Bounds ( component );
+            final Bounds sectionBounds = new Bounds ( componentBounds, bounds );
+
+            // Painting section
+            painter.paint ( g2d, component, ui, sectionBounds );
+
+            // Restoring old clip
+            GraphicsUtils.restoreClip ( g2d, oc );
+        }
     }
 
     /**

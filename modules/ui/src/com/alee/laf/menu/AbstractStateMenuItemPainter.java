@@ -58,7 +58,7 @@ public abstract class AbstractStateMenuItemPainter<E extends JMenuItem, U extend
     }
 
     @Override
-    protected List<String> getDecorationStates ()
+    public List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
         if ( component.isSelected () )

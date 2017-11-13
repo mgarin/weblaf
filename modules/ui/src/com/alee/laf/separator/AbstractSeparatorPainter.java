@@ -22,7 +22,7 @@ public abstract class AbstractSeparatorPainter<E extends JSeparator, U extends S
         extends AbstractDecorationPainter<E, U, D> implements IAbstractSeparatorPainter<E, U>
 {
     @Override
-    protected List<String> getDecorationStates ()
+    public List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
         states.add ( component.getOrientation () == SwingConstants.HORIZONTAL ? DecorationState.horizontal : DecorationState.vertical );
