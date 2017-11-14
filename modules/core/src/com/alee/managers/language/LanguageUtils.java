@@ -100,8 +100,21 @@ public final class LanguageUtils
     public static Locale getSystemLocale ()
     {
         final String language = System.getProperty ( "user.language" );
-        final String country = System.getProperty ( "user.country" );
-        final String variant = System.getProperty ( "user.variant" );
-        return new Locale ( language, country, variant );
+        if ( TextUtils.notEmpty ( language ) )
+        {
+            // Constructing system locale
+            final String country = System.getProperty ( "user.country" );
+            final String variant = System.getProperty ( "user.variant" );
+            return new Locale (
+                    language,
+                    TextUtils.notEmpty ( country ) ? country : "",
+                    TextUtils.notEmpty ( variant ) ? variant : ""
+            );
+        }
+        else
+        {
+            // Constructing fallback locale
+            return new Locale ( "en", "US" );
+        }
     }
 }
