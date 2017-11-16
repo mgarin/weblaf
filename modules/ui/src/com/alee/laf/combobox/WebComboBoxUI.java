@@ -17,6 +17,7 @@
 
 package com.alee.laf.combobox;
 
+import com.alee.api.jdk.Consumer;
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
@@ -30,7 +31,6 @@ import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
 import com.alee.utils.CompareUtils;
-import com.alee.api.jdk.Consumer;
 import com.alee.utils.swing.EditabilityListener;
 import com.alee.utils.swing.VisibilityListener;
 
@@ -82,6 +82,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
      */
     protected transient PropertyChangeListener visibilityListener;
     protected transient EventListenerList listenerList;
+    protected transient PropertyChangeListener editorChangeListener;
 
     /**
      * Runtime variables.
@@ -125,6 +126,18 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
             };
             ( ( JComponent ) popup ).addPropertyChangeListener ( WebLookAndFeel.VISIBLE_PROPERTY, visibilityListener );
         }
+        editorChangeListener = new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent evt )
+            {
+                if ( CompareUtils.equals ( evt.getPropertyName (), WebLookAndFeel.EDITOR_PROPERTY ) )
+                {
+                    updateEditor ( comboBox.getEditor () );
+                }
+            }
+        };
+        comboBox.addPropertyChangeListener ( editorChangeListener );
 
         // Applying skin
         StyleManager.installSkin ( comboBox );
@@ -137,6 +150,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
         StyleManager.uninstallSkin ( comboBox );
 
         // Listeners
+        comboBox.removePropertyChangeListener ( editorChangeListener );
         if ( popup instanceof JComponent )
         {
             ( ( JComponent ) popup ).removePropertyChangeListener ( WebLookAndFeel.VISIBLE_PROPERTY, visibilityListener );
@@ -313,26 +327,40 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     protected ComboBoxEditor createEditor ()
     {
         final ComboBoxEditor editor = super.createEditor ();
-        final Component e = editor.getEditorComponent ();
-        e.addFocusListener ( new FocusAdapter ()
-        {
-            @Override
-            public void focusGained ( final FocusEvent e )
-            {
-                comboBox.repaint ();
-            }
-
-            @Override
-            public void focusLost ( final FocusEvent e )
-            {
-                comboBox.repaint ();
-            }
-        } );
-        if ( e instanceof JTextField )
-        {
-            StyleId.comboboxEditor.at ( comboBox ).set ( ( JTextField ) e );
-        }
+        updateEditor ( editor );
         return editor;
+    }
+
+    /**
+     * Forces combobox editor style update.
+     * todo Properly remove focus listener?
+     *
+     * @param editor editor {@link Component}
+     */
+    private void updateEditor ( final ComboBoxEditor editor )
+    {
+        if ( editor != null )
+        {
+            final Component editorComponent = editor.getEditorComponent ();
+            editorComponent.addFocusListener ( new FocusAdapter ()
+            {
+                @Override
+                public void focusGained ( final FocusEvent e )
+                {
+                    comboBox.repaint ();
+                }
+
+                @Override
+                public void focusLost ( final FocusEvent e )
+                {
+                    comboBox.repaint ();
+                }
+            } );
+            if ( editorComponent instanceof JTextField )
+            {
+                StyleId.comboboxEditor.at ( comboBox ).set ( ( JTextField ) editorComponent );
+            }
+        }
     }
 
     /**
