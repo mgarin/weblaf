@@ -118,6 +118,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String LEADING_COMPONENT_PROPERTY = "leadingComponent";
     public static final String TRAILING_COMPONENT_PROPERTY = "trailingComponent";
     public static final String TABBED_PANE_STYLE_PROPERTY = "tabbedPaneStyle";
+    public static final String EDITOR_PROPERTY = "editor";
 
     /**
      * Whether or not library should force Event Dispatch Thread usage for all UI-related operations.
