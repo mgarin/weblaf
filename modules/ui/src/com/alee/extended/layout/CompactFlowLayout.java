@@ -87,9 +87,10 @@ public class CompactFlowLayout extends FlowLayout
         synchronized ( target.getTreeLock () )
         {
             final Insets insets = target.getInsets ();
-            final int maxwidth = target.getWidth () - ( insets.left + insets.right + getHgap () * 2 );
+            final int maxwidth = target.getWidth () - ( insets.left + insets.right );
             final int nmembers = target.getComponentCount ();
-            int x = 0, y = insets.top + getVgap ();
+            int x = 0;
+            int y = insets.top;
             int rowh = 0, start = 0;
 
             final boolean ltr = target.getComponentOrientation ().isLeftToRight ();
@@ -125,7 +126,7 @@ public class CompactFlowLayout extends FlowLayout
                             ascent[ i ] = -1;
                         }
                     }
-                    if ( x == 0 || x + d.width <= maxwidth )
+                    if ( x == 0 || x + d.width + ( x > 0 ? getHgap () : 0 ) <= maxwidth )
                     {
                         if ( x > 0 )
                         {
@@ -136,9 +137,9 @@ public class CompactFlowLayout extends FlowLayout
                     }
                     else
                     {
-                        rowh = moveComponents ( target, insets.left + getHgap (), y,
-                                maxwidth - x, rowh, start, i, ltr,
-                                useBaseline, ascent, descent );
+                        rowh = moveComponents ( target, insets.left, y,
+                                maxwidth - x, rowh,
+                                start, i, ltr, useBaseline, ascent, descent );
                         x = d.width;
                         y += getVgap () + rowh;
                         rowh = d.height;
@@ -146,7 +147,8 @@ public class CompactFlowLayout extends FlowLayout
                     }
                 }
             }
-            moveComponents ( target, insets.left + getHgap (), y, maxwidth - x, rowh,
+            moveComponents ( target, insets.left, y,
+                    maxwidth - x, rowh,
                     start, nmembers, ltr, useBaseline, ascent, descent );
         }
     }
