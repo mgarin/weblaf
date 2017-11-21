@@ -432,7 +432,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
         {
             // Executing children load in a separate thread to avoid locking EDT
             // This queue will also take care of amount of threads to execute async trees requests
-            AsyncTreeQueue.execute ( tree, new Runnable ()
+            AsyncTreeQueue.getInstance ( tree ).execute ( new Runnable ()
             {
                 @Override
                 public void run ()

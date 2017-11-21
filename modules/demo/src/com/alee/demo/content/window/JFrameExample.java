@@ -24,7 +24,7 @@ import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
-import com.alee.managers.language.WebLanguageManager;
+import com.alee.managers.language.UILanguageManager;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
@@ -99,7 +99,7 @@ public class JFrameExample extends AbstractStylePreviewExample
                 {
                     final String title = getExampleLanguagePrefix () + "content";
                     final JFrame frame = new JFrame ();
-                    WebLanguageManager.registerComponent ( frame.getRootPane (), title );
+                    UILanguageManager.registerComponent ( frame.getRootPane (), title );
                     frame.getRootPane ().putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
                     frame.setIconImages ( WebLookAndFeel.getImages () );
                     frame.add ( new WebLabel ( title, WebLabel.CENTER ) );

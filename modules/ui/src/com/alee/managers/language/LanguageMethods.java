@@ -22,7 +22,7 @@ import com.alee.utils.swing.extensions.MethodExtension;
 
 /**
  * This interface provides a set of methods that should be implemented by components supporting automated translations.
- * Commonly all implementations are leading to similar {@link WebLanguageManager} methods.
+ * Commonly all implementations are leading to similar {@link UILanguageManager} methods.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>

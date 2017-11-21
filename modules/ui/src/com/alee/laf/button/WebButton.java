@@ -288,8 +288,8 @@ public class WebButton extends JButton
     @Override
     protected void init ( final String text, final Icon icon )
     {
-        super.init ( WebLanguageManager.getInitialText ( text ), icon );
-        WebLanguageManager.registerInitialLanguage ( this, text );
+        super.init ( UILanguageManager.getInitialText ( text ), icon );
+        UILanguageManager.registerInitialLanguage ( this, text );
     }
 
     /**
@@ -768,85 +768,85 @@ public class WebButton extends JButton
     @Override
     public String getLanguage ()
     {
-        return WebLanguageManager.getComponentKey ( this );
+        return UILanguageManager.getComponentKey ( this );
     }
 
     @Override
     public void setLanguage ( final String key, final Object... data )
     {
-        WebLanguageManager.registerComponent ( this, key, data );
+        UILanguageManager.registerComponent ( this, key, data );
     }
 
     @Override
     public void updateLanguage ( final Object... data )
     {
-        WebLanguageManager.updateComponent ( this, data );
+        UILanguageManager.updateComponent ( this, data );
     }
 
     @Override
     public void updateLanguage ( final String key, final Object... data )
     {
-        WebLanguageManager.updateComponent ( this, key, data );
+        UILanguageManager.updateComponent ( this, key, data );
     }
 
     @Override
     public void removeLanguage ()
     {
-        WebLanguageManager.unregisterComponent ( this );
+        UILanguageManager.unregisterComponent ( this );
     }
 
     @Override
     public boolean isLanguageSet ()
     {
-        return WebLanguageManager.isRegisteredComponent ( this );
+        return UILanguageManager.isRegisteredComponent ( this );
     }
 
     @Override
     public void setLanguageUpdater ( final LanguageUpdater updater )
     {
-        WebLanguageManager.registerLanguageUpdater ( this, updater );
+        UILanguageManager.registerLanguageUpdater ( this, updater );
     }
 
     @Override
     public void removeLanguageUpdater ()
     {
-        WebLanguageManager.unregisterLanguageUpdater ( this );
+        UILanguageManager.unregisterLanguageUpdater ( this );
     }
 
     @Override
     public void addLanguageListener ( final LanguageListener listener )
     {
-        WebLanguageManager.addLanguageListener ( this, listener );
+        UILanguageManager.addLanguageListener ( this, listener );
     }
 
     @Override
     public void removeLanguageListener ( final LanguageListener listener )
     {
-        WebLanguageManager.removeLanguageListener ( this, listener );
+        UILanguageManager.removeLanguageListener ( this, listener );
     }
 
     @Override
     public void removeLanguageListeners ()
     {
-        WebLanguageManager.removeLanguageListeners ( this );
+        UILanguageManager.removeLanguageListeners ( this );
     }
 
     @Override
     public void addDictionaryListener ( final DictionaryListener listener )
     {
-        WebLanguageManager.addDictionaryListener ( this, listener );
+        UILanguageManager.addDictionaryListener ( this, listener );
     }
 
     @Override
     public void removeDictionaryListener ( final DictionaryListener listener )
     {
-        WebLanguageManager.removeDictionaryListener ( this, listener );
+        UILanguageManager.removeDictionaryListener ( this, listener );
     }
 
     @Override
     public void removeDictionaryListeners ()
     {
-        WebLanguageManager.removeDictionaryListeners ( this );
+        UILanguageManager.removeDictionaryListeners ( this );
     }
 
     @Override

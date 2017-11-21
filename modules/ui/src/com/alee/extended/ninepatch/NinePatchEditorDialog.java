@@ -21,7 +21,7 @@ import com.alee.api.jdk.Supplier;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.window.WebFrame;
 import com.alee.managers.settings.SettingsManager;
-import com.alee.managers.settings.processors.data.WindowSettings;
+import com.alee.managers.settings.processors.WindowSettings;
 import com.alee.utils.ImageUtils;
 
 import javax.swing.*;

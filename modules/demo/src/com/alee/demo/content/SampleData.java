@@ -19,9 +19,10 @@ package com.alee.demo.content;
 
 import com.alee.api.TitleSupport;
 import com.alee.managers.language.LM;
+import com.alee.managers.language.LanguageSensitive;
 import com.alee.utils.CollectionUtils;
 
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import java.util.List;
 
@@ -40,20 +41,7 @@ public final class SampleData
      */
     public static TableModel createShortTableModel ()
     {
-        final Object[] columns = { "First Name", "Last Name", "Hobby", "Age", "Vegetarian" };
-        final Object[] kathy = { "Kathy", "Smith", "Snowboarding", 19, false };
-        final Object[] john = { "John", "Doe", "Rowing", 32, true };
-        final Object[] sue = { "Sue", "Black", "Knitting", 56, false };
-        final Object[] jane = { "Jane", "White", "Speed reading", 20, true };
-        final Object[][] data = { kathy, john, sue, jane };
-        return new DefaultTableModel ( data, columns )
-        {
-            @Override
-            public Class<?> getColumnClass ( final int col )
-            {
-                return col == 3 ? Integer.class : col == 4 ? Boolean.class : String.class;
-            }
-        };
+        return new SampleTableModel ( 5 );
     }
 
     /**
@@ -63,28 +51,131 @@ public final class SampleData
      */
     public static TableModel createLongTableModel ()
     {
-        final Object[] columns = { "First Name", "Last Name", "Hobby", "Age", "Vegetarian" };
-        final Object[] kathy = { "Kathy", "Smith", "Snowboarding", 19, false };
-        final Object[] john = { "John", "Doe", "Rowing", 32, true };
-        final Object[] sue = { "Sue", "Black", "Knitting", 56, false };
-        final Object[] jane = { "Jane", "White", "Speed reading", 20, true };
-        final Object[] joe = { "Joe", "Brown", "Swimming", 14, false };
-        final Object[] sven = { "Sven", "Alister", "Boxing", 36, false };
-        final Object[] allen = { "Allen", "Snow", "Diving", 18, true };
-        final Object[] mikle = { "Mikle", "Garin", "Judo", 27, false };
-        final Object[] jake = { "Jake", "Alduin", "Fencing", 35, false };
-        final Object[] andrew = { "Andrew", "Garfild", "Programming", 26, false };
-        final Object[] kate = { "Kate", "Matthew", "Bowling", 22, false };
-        final Object[] paul = { "Paul", "Johnson", "Modelling", 38, false };
-        final Object[][] data = { kathy, john, sue, jane, joe, sven, allen, mikle, jake, andrew, kate, paul };
-        return new DefaultTableModel ( data, columns )
-        {
-            @Override
-            public Class<?> getColumnClass ( final int col )
-            {
-                return col == 3 ? Integer.class : col == 4 ? Boolean.class : String.class;
-            }
+        return new SampleTableModel ( 12 );
+    }
+
+    /**
+     * Sample model for example tables.
+     */
+    private static class SampleTableModel extends AbstractTableModel implements LanguageSensitive
+    {
+        /**
+         * Table data.
+         */
+        private static final Object[][] data = new Object[][]{
+                { 19, false }, { 32, true }, { 56, false }, { 20, true }, { 14, false }, { 36, false },
+                { 18, true }, { 27, false }, { 35, false }, { 26, false }, { 22, false }, { 38, false }
         };
+
+        /**
+         * Amount of rows.
+         */
+        private final int rows;
+
+        /**
+         * Constructs new {@link SampleTableModel}.
+         *
+         * @param rows rows
+         */
+        public SampleTableModel ( final int rows )
+        {
+            super ();
+            if ( rows > data.length )
+            {
+                throw new RuntimeException ( "Unsupported amount of rows: " + rows );
+            }
+            this.rows = rows;
+        }
+
+        @Override
+        public Class<?> getColumnClass ( final int column )
+        {
+            switch ( column )
+            {
+                case 3:
+                    return Integer.class;
+
+                case 4:
+                    return Boolean.class;
+
+                default:
+                    return String.class;
+            }
+        }
+
+        @Override
+        public int getColumnCount ()
+        {
+            return 5;
+        }
+
+        @Override
+        public String getColumnName ( final int column )
+        {
+            switch ( column )
+            {
+                case 0:
+                    return LM.get ( "demo.example.data.grids.data.column.first.name" );
+
+                case 1:
+                    return LM.get ( "demo.example.data.grids.data.column.last.name" );
+
+                case 2:
+                    return LM.get ( "demo.example.data.grids.data.column.hobby" );
+
+                case 3:
+                    return LM.get ( "demo.example.data.grids.data.column.age" );
+
+                case 4:
+                    return LM.get ( "demo.example.data.grids.data.column.vegeterian" );
+
+                default:
+                    throw new RuntimeException ( "There is no column for index: " + column );
+            }
+        }
+
+        @Override
+        public int getRowCount ()
+        {
+            return rows;
+        }
+
+        @Override
+        public Object getValueAt ( final int rowIndex, final int columnIndex )
+        {
+            switch ( columnIndex )
+            {
+                case 0:
+                    return LM.getState ( "demo.example.data.grids.data.row." + rowIndex, "first.name" );
+
+                case 1:
+                    return LM.getState ( "demo.example.data.grids.data.row." + rowIndex, "last.name" );
+
+                case 2:
+                    return LM.getState ( "demo.example.data.grids.data.row." + rowIndex, "hobby" );
+
+                case 3:
+                    return data[ rowIndex ][ 0 ];
+
+                case 4:
+                    return data[ rowIndex ][ 1 ];
+
+                default:
+                    throw new RuntimeException ( "There is no column data for index: " + columnIndex );
+            }
+        }
+
+        @Override
+        public boolean isCellEditable ( final int rowIndex, final int columnIndex )
+        {
+            return true;
+        }
+
+        @Override
+        public void setValueAt ( final Object aValue, final int rowIndex, final int columnIndex )
+        {
+            data[ rowIndex ][ columnIndex ] = aValue;
+        }
     }
 
     /**

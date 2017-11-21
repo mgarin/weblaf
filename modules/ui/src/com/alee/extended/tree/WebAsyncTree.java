@@ -430,7 +430,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      */
     public void setMaximumThreadsAmount ( final int amount )
     {
-        AsyncTreeQueue.setMaximumThreadsAmount ( this, amount );
+        AsyncTreeQueue.getInstance ( this ).setMaximumThreadsAmount ( amount );
     }
 
     /**

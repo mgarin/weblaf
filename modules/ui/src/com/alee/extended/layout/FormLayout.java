@@ -21,8 +21,8 @@ import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 /**
  * @author Mikle Garin
@@ -88,7 +88,7 @@ public class FormLayout extends AbstractLayoutManager
     /**
      * Added component constraints.
      */
-    protected Map<Component, String> layoutConstraints = new WeakHashMap<Component, String> ();
+    protected Map<Component, String> layoutConstraints = new HashMap<Component, String> ();
 
     /**
      * Constructs new FormLayout with zero gaps and filled right side.

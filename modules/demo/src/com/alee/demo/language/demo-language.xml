@@ -430,8 +430,8 @@
                         <value lang="ru">Наведите для просмотра подсказки</value>
                     </record>
                     <record key="tip">
-                        <value lang="en">Custom tooltip with {styled:c(255,155,155)} text inside{br}Style is provided by {WebStyledLabel:b} component</value>
-                        <value lang="ru">Кастомная подсказка со {стилизованным:c(255,155,155)} текстом внутри{br}Стилизация основана на {WebStyledLabel:b} компоненте</value>
+                        <value lang="en">Custom {tooltip:u} with {styled:c(255,155,155)} text inside {tm:sup}{br}Based on {WebStyledLabel:b} component</value>
+                        <value lang="ru">Кастомная {подсказка:u} со {стилизованным:c(255,155,155)} текстом внутри {tm:sup}{br}Создана на основе {WebStyledLabel:b} компонента</value>
                     </record>
                 </Dictionary>
             </Dictionary>
@@ -1104,6 +1104,60 @@
                     <value lang="en">JPanel</value>
                     <value lang="ru">JPanel</value>
                 </record>
+                <Dictionary prefix="basic">
+                    <record key="title">
+                        <value lang="en">Simple panel</value>
+                        <value lang="ru">Простая панель</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="decorated">
+                    <record key="title">
+                        <value lang="en">Decorated panel</value>
+                        <value lang="ru">Декорированная панель</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="transparent">
+                    <record key="title">
+                        <value lang="en">Transparent panel</value>
+                        <value lang="ru">Прозрачная панель</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="focusable">
+                    <record key="title">
+                        <value lang="en">Focusable panel</value>
+                        <value lang="ru">Фокусабельная панель</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="webpanel">
+                <record key="title">
+                    <value lang="en">WebPanel</value>
+                    <value lang="ru">WebPanel</value>
+                </record>
+                <Dictionary prefix="basic">
+                    <record key="title">
+                        <value lang="en">Simple panel</value>
+                        <value lang="ru">Простая панель</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="decorated">
+                    <record key="title">
+                        <value lang="en">Decorated panel</value>
+                        <value lang="ru">Декорированная панель</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="transparent">
+                    <record key="title">
+                        <value lang="en">Transparent panel</value>
+                        <value lang="ru">Прозрачная панель</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="focusable">
+                    <record key="title">
+                        <value lang="en">Focusable panel</value>
+                        <value lang="ru">Фокусабельная панель</value>
+                    </record>
+                </Dictionary>
             </Dictionary>
             <Dictionary prefix="jtoolbar">
                 <record key="title">
@@ -1354,6 +1408,176 @@
                     <value lang="en">Grids</value>
                     <value lang="ru">Таблицы</value>
                 </record>
+                <Dictionary prefix="data">
+                    <Dictionary prefix="column">
+                        <record key="first.name">
+                            <value lang="en">First name</value>
+                            <value lang="ru">Имя</value>
+                        </record>
+                        <record key="last.name">
+                            <value lang="en">Last name</value>
+                            <value lang="ru">Фамилия</value>
+                        </record>
+                        <record key="hobby">
+                            <value lang="en">Hobby</value>
+                            <value lang="ru">Хобби</value>
+                        </record>
+                        <record key="age">
+                            <value lang="en">Age</value>
+                            <value lang="ru">Возраст</value>
+                        </record>
+                        <record key="vegeterian">
+                            <value lang="en">Vegeterian</value>
+                            <value lang="ru">Вегетерианец</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="row">
+                        <record key="0">
+                            <value lang="en">
+                                <text state="first.name">Kathy</text>
+                                <text state="last.name">Smith</text>
+                                <text state="hobby">Snowboarding</text>
+                            </value>
+                            <value lang="ru">
+                                <text state="first.name">Кэти</text>
+                                <text state="last.name">Смитт</text>
+                                <text state="hobby">Сноубординг</text>
+                            </value>
+                        </record>
+                        <record key="1">
+                            <value lang="en">
+                                <text state="first.name">John</text>
+                                <text state="last.name">Doe</text>
+                                <text state="hobby">Rowing</text>
+                            </value>
+                            <value lang="ru">
+                                <text state="first.name">Джон</text>
+                                <text state="last.name">Доэ</text>
+                                <text state="hobby">Гребля</text>
+                            </value>
+                        </record>
+                        <record key="2">
+                            <value lang="en">
+                                <text state="first.name">Sue</text>
+                                <text state="last.name">Black</text>
+                                <text state="hobby">Knitting</text>
+                            </value>
+                            <value lang="ru">
+                                <text state="first.name">Сью</text>
+                                <text state="last.name">Блэк</text>
+                                <text state="hobby">Вязание</text>
+                            </value>
+                        </record>
+                        <record key="3">
+                            <value lang="en">
+                                <text state="first.name">Jane</text>
+                                <text state="last.name">White</text>
+                                <text state="hobby">Skydiving</text>
+                            </value>
+                            <value lang="ru">
+                                <text state="first.name">Джейн</text>
+                                <text state="last.name">Вайт</text>
+                                <text state="hobby">Прыжки с парашютом</text>
+                            </value>
+                        </record>
+                        <record key="4">
+                            <value lang="en">
+                                <text state="first.name">Joe</text>
+                                <text state="last.name">Brown</text>
+                                <text state="hobby">Swimming</text>
+                            </value>
+                            <value lang="ru">
+                                <text state="first.name">Джо</text>
+                                <text state="last.name">Браун</text>
+                                <text state="hobby">Плавание</text>
+                            </value>
+                        </record>
+                        <record key="5">
+                            <value lang="en">
+                                <text state="first.name">Sven</text>
+                                <text state="last.name">Alister</text>
+                                <text state="hobby">Boxing</text>
+                            </value>
+                            <value lang="ru">
+                                <text state="first.name">Свэн</text>
+                                <text state="last.name">Алистер</text>
+                                <text state="hobby">Бокс</text>
+                            </value>
+                        </record>
+                        <record key="6">
+                            <value lang="en">
+                                <text state="first.name">Allen</text>
+                                <text state="last.name">Snow</text>
+                                <text state="hobby">Diving</text>
+                            </value>
+                            <value lang="ru">
+                                <text state="first.name">Аллен</text>
+                                <text state="last.name">Сноу</text>
+                                <text state="hobby">Дайвинг</text>
+                            </value>
+                        </record>
+                        <record key="7">
+                            <value lang="en">
+                                <text state="first.name">Mikle</text>
+                                <text state="last.name">Garin</text>
+                                <text state="hobby">Judo</text>
+                            </value>
+                            <value lang="ru">
+                                <text state="first.name">Михаил</text>
+                                <text state="last.name">Гарин</text>
+                                <text state="hobby">Дзюдо</text>
+                            </value>
+                        </record>
+                        <record key="8">
+                            <value lang="en">
+                                <text state="first.name">Jake</text>
+                                <text state="last.name">Alduin</text>
+                                <text state="hobby">Fencing</text>
+                            </value>
+                            <value lang="ru">
+                                <text state="first.name">Джейк</text>
+                                <text state="last.name">Алдуин</text>
+                                <text state="hobby">Фехтование</text>
+                            </value>
+                        </record>
+                        <record key="9">
+                            <value lang="en">
+                                <text state="first.name">Andrew</text>
+                                <text state="last.name">Garfild</text>
+                                <text state="hobby">Programming</text>
+                            </value>
+                            <value lang="ru">
+                                <text state="first.name">Эндрю</text>
+                                <text state="last.name">Гарфилд</text>
+                                <text state="hobby">Программирование</text>
+                            </value>
+                        </record>
+                        <record key="10">
+                            <value lang="en">
+                                <text state="first.name">Kate</text>
+                                <text state="last.name">Matthew</text>
+                                <text state="hobby">Bowling</text>
+                            </value>
+                            <value lang="ru">
+                                <text state="first.name">Кэйт</text>
+                                <text state="last.name">Мэтью</text>
+                                <text state="hobby">Боулинг</text>
+                            </value>
+                        </record>
+                        <record key="11">
+                            <value lang="en">
+                                <text state="first.name">Paul</text>
+                                <text state="last.name">Johnson</text>
+                                <text state="hobby">Modelling</text>
+                            </value>
+                            <value lang="ru">
+                                <text state="first.name">Пол</text>
+                                <text state="last.name">Джонсон</text>
+                                <text state="hobby">Моделирование</text>
+                            </value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
                 <Dictionary prefix="jtable">
                     <record key="title">
                         <value lang="en">JTable</value>

@@ -19,6 +19,7 @@ package com.alee.extended.dock.drag;
 
 import com.alee.extended.dock.WebDockableFrame;
 import com.alee.extended.dock.WebDockablePane;
+import com.alee.managers.drag.DragException;
 import com.alee.managers.drag.view.ComponentDragViewHandler;
 import com.alee.utils.SwingUtils;
 
@@ -26,6 +27,7 @@ import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DragSourceDragEvent;
 import java.awt.image.BufferedImage;
+import java.lang.ref.WeakReference;
 
 /**
  * Custom DragViewHandler for WebDocumentPane document.
@@ -39,9 +41,9 @@ import java.awt.image.BufferedImage;
 public class FrameDragViewHandler extends ComponentDragViewHandler<WebDockableFrame, FrameDragData>
 {
     /**
-     * {@link com.alee.extended.dock.WebDockablePane} using this drag view handler.
+     * {@link WeakReference} to {@link com.alee.extended.dock.WebDockablePane} using this drag view handler.
      */
-    protected final WebDockablePane dockablePane;
+    protected final WeakReference<WebDockablePane> dockablePane;
 
     /**
      * Constructs new {@link com.alee.extended.dock.drag.FrameDragViewHandler}.
@@ -51,7 +53,7 @@ public class FrameDragViewHandler extends ComponentDragViewHandler<WebDockableFr
     public FrameDragViewHandler ( final WebDockablePane dockablePane )
     {
         super ();
-        this.dockablePane = dockablePane;
+        this.dockablePane = new WeakReference<WebDockablePane> ( dockablePane );
     }
 
     @Override
@@ -63,13 +65,19 @@ public class FrameDragViewHandler extends ComponentDragViewHandler<WebDockableFr
     @Override
     public boolean supports ( final FrameDragData object, final DragSourceDragEvent event )
     {
-        return dockablePane.getFrame ( object.getId () ) != null;
+        return dockablePane.get ().getFrame ( object.getId () ) != null;
     }
 
     @Override
     public WebDockableFrame getComponent ( final FrameDragData object, final DragSourceDragEvent event )
     {
-        return dockablePane.getFrame ( object.getId () );
+        final WebDockablePane pane = dockablePane.get ();
+        if ( pane == null )
+        {
+            final String msg = "Unable to resolve WebDockablePane for dragged frame with identifier: %s";
+            throw new DragException ( String.format ( msg, object.getId () ) );
+        }
+        return pane.getFrame ( object.getId () );
     }
 
     @Override

@@ -3,12 +3,14 @@ package com.alee.laf.list;
 import com.alee.managers.language.Language;
 import com.alee.managers.language.LanguageListener;
 import com.alee.managers.language.LanguageSensitive;
-import com.alee.managers.language.WebLanguageManager;
+import com.alee.managers.language.UILanguageManager;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.PainterException;
 import com.alee.painter.SectionPainter;
 import com.alee.painter.decoration.AbstractDecorationPainter;
+import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
+import com.alee.painter.decoration.IDecorationPainter;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.ReflectUtils;
 
@@ -35,14 +37,15 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
         implements IListPainter<E, U>
 {
     /**
-     * Hover list item decoration painter.
-     * todo Change to "itemPainter" and simply use "hover" state there if needed
+     * {@link SectionPainter} that can be used to customize list items background.
      */
     @DefaultPainter ( ListItemPainter.class )
-    protected IListItemPainter hoverPainter;
+    protected IListItemPainter itemPainter;
 
     /**
-     * Selected list items decoration painter.
+     * {@link SectionPainter} that can be used to customize list items selection background.
+     * Separate painter is used because selection could include multiple list items in some selection modes.
+     * This painter will not know any information about the items, use {@link #itemPainter} for painting item-specific decorations.
      */
     @DefaultPainter ( ListSelectionPainter.class )
     protected IListSelectionPainter selectionPainter;
@@ -70,7 +73,7 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
     @Override
     protected List<SectionPainter<E, U>> getSectionPainters ()
     {
-        return asList ( hoverPainter, selectionPainter );
+        return asList ( itemPainter, selectionPainter );
     }
 
     @Override
@@ -163,7 +166,7 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
                 }
             }
         };
-        WebLanguageManager.addLanguageListener ( component, languageSensitive );
+        UILanguageManager.addLanguageListener ( component, languageSensitive );
     }
 
     /**
@@ -202,7 +205,7 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
      */
     protected void uninstallLanguageListeners ()
     {
-        WebLanguageManager.removeLanguageListener ( component, languageSensitive );
+        UILanguageManager.removeLanguageListener ( component, languageSensitive );
         languageSensitive = null;
     }
 
@@ -212,6 +215,20 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
     protected void uninstallRuntimeVariables ()
     {
         cellHeights = null;
+    }
+
+    @Override
+    public boolean isItemHoverDecorationSupported ()
+    {
+        boolean supported = false;
+        if ( component != null && component.isEnabled () )
+        {
+            if ( itemPainter != null && itemPainter instanceof IDecorationPainter )
+            {
+                supported = ( ( IDecorationPainter ) itemPainter ).usesState ( DecorationState.hover );
+            }
+        }
+        return supported;
     }
 
     @Override
@@ -234,7 +251,7 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
     protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         // Painting hover cell background
-        paintHoverCellBackground ( g2d );
+        paintBackground ( g2d );
 
         // Painting selected cells background
         paintSelectedCellsBackground ( g2d );
@@ -247,15 +264,116 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
     }
 
     /**
+     * Paints list background.
+     *
+     * @param g2d graphics context
+     */
+    protected void paintBackground ( final Graphics2D g2d )
+    {
+        if ( itemPainter != null )
+        {
+            // Saving initial clip
+            final Shape clip = g2d.getClip ();
+
+            // Painting background for visible cells
+            final ListModel dataModel = component.getModel ();
+            final int size = dataModel.getSize ();
+            if ( size > 0 )
+            {
+                // Determine how many columns we need to paint
+                final Rectangle paintBounds = g2d.getClipBounds ();
+                final int startColumn;
+                final int endColumn;
+                if ( ltr )
+                {
+                    startColumn = convertLocationToColumn ( paintBounds.x, paintBounds.y );
+                    endColumn = convertLocationToColumn ( paintBounds.x + paintBounds.width, paintBounds.y );
+                }
+                else
+                {
+                    startColumn = convertLocationToColumn ( paintBounds.x + paintBounds.width, paintBounds.y );
+                    endColumn = convertLocationToColumn ( paintBounds.x, paintBounds.y );
+                }
+                final int maxY = paintBounds.y + paintBounds.height;
+                final int rowIncrement = layoutOrientation == JList.HORIZONTAL_WRAP ? columnCount : 1;
+                for ( int colCounter = startColumn; colCounter <= endColumn; colCounter++ )
+                {
+                    // And then how many rows in this column
+                    int row = convertLocationToRowInColumn ( paintBounds.y, colCounter );
+                    final int rowCount = getRowCount ( colCounter );
+                    int index = getModelIndex ( colCounter, row );
+                    final Rectangle rowBounds = ui.getCellBounds ( component, index, index );
+                    if ( rowBounds == null )
+                    {
+                        // Not valid, bail!
+                        return;
+                    }
+                    while ( row < rowCount && rowBounds.y < maxY && index < size )
+                    {
+                        rowBounds.height = getHeight ( colCounter, row );
+                        g2d.setClip ( rowBounds.x, rowBounds.y, rowBounds.width, rowBounds.height );
+                        g2d.clipRect ( paintBounds.x, paintBounds.y, paintBounds.width, paintBounds.height );
+
+                        // Painting hover cell background
+                        itemPainter.prepareToPaint ( index );
+                        paintSection ( itemPainter, g2d, rowBounds );
+
+                        rowBounds.y += rowBounds.height;
+                        index += rowIncrement;
+                        row++;
+                    }
+                }
+            }
+
+            // Restoring initial clip
+            g2d.setClip ( clip );
+        }
+
+
+//        if ( isItemHoverDecorationSupported () )
+//        {
+//            // Checking hover cell availability
+//            final int hoverIndex = ui.getHoverIndex ();
+//            if ( hoverIndex != -1 && !component.isSelectedIndex ( hoverIndex ) )
+//            {
+//                // Checking hover cell bounds
+//                final Rectangle bounds = ui.getCellBounds ( component, hoverIndex, hoverIndex );
+//                if ( bounds != null )
+//                {
+//                    // Painting hover cell background
+//                    itemPainter.prepareToPaint ( hoverIndex );
+//                    paintSection ( itemPainter, g2d, bounds );
+//                }
+//            }
+//        }
+    }
+
+    /**
+     * Paints special WebLaF list cells selection.
+     * It is rendered separately from cells allowing you to simplify your list cell renderer component.
+     *
+     * @param g2d graphics context
+     */
+    protected void paintSelectedCellsBackground ( final Graphics2D g2d )
+    {
+        if ( selectionPainter != null && component.getSelectedIndex () != -1 && ui.getSelectionStyle () != ListSelectionStyle.none )
+        {
+            // Painting selections
+            final List<Rectangle> selections = getSelectionRects ();
+            for ( final Rectangle bounds : selections )
+            {
+                paintSection ( selectionPainter, g2d, bounds );
+            }
+        }
+    }
+
+    /**
      * Paints existing list items.
      *
      * @param g2d graphics context
      */
     protected void paintList ( final Graphics2D g2d )
     {
-        // Saving initial clip
-        final Shape clip = g2d.getClip ();
-
         // Retrieving paint settings
         layoutOrientation = component.getLayoutOrientation ();
         rendererPane = ui.getCellRendererPane ();
@@ -265,6 +383,9 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
         final int size = dataModel.getSize ();
         if ( renderer != null && size > 0 )
         {
+            // Saving initial clip
+            final Shape clip = g2d.getClip ();
+
             // Determine how many columns we need to paint
             final Rectangle paintBounds = g2d.getClipBounds ();
             final int startColumn;
@@ -296,8 +417,7 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
                     // Not valid, bail!
                     return;
                 }
-                while ( row < rowCount && rowBounds.y < maxY &&
-                        index < size )
+                while ( row < rowCount && rowBounds.y < maxY && index < size )
                 {
                     rowBounds.height = getHeight ( colCounter, row );
                     g2d.setClip ( rowBounds.x, rowBounds.y, rowBounds.width, rowBounds.height );
@@ -308,14 +428,36 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
                     row++;
                 }
             }
+
+            // Restoring initial clip
+            g2d.setClip ( clip );
         }
 
         // Empty out the renderer pane, allowing renderers to be gc'ed.
         rendererPane.removeAll ();
         rendererPane = null;
+    }
 
-        // Restoring initial clip
-        g2d.setClip ( clip );
+    /**
+     * Paint one List cell: compute the relevant state, get the "rubber stamp" cell renderer component, and then use the CellRendererPane
+     * to paint it. Subclasses may want to override this method rather than paint().
+     *
+     * @param g2d          graphics context
+     * @param index        cell index
+     * @param rowBounds    cell bounds
+     * @param cellRenderer cell renderer
+     * @param dataModel    list model
+     * @param selModel     list selection model
+     * @param leadIndex    lead cell index
+     */
+    protected void paintCell ( final Graphics2D g2d, final int index, final Rectangle rowBounds, final ListCellRenderer cellRenderer,
+                               final ListModel dataModel, final ListSelectionModel selModel, final int leadIndex )
+    {
+        final Object value = dataModel.getElementAt ( index );
+        final boolean isSelected = selModel.isSelectedIndex ( index );
+        final boolean cellHasFocus = component.hasFocus () && index == leadIndex;
+        final Component renderer = cellRenderer.getListCellRendererComponent ( component, value, index, isSelected, cellHasFocus );
+        rendererPane.paintComponent ( g2d, renderer, component, rowBounds.x, rowBounds.y, rowBounds.width, rowBounds.height, true );
     }
 
     /**
@@ -411,7 +553,6 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
     protected int convertLocationToRowInColumn ( final int y, final int column )
     {
         int x = 0;
-
         if ( layoutOrientation != JList.VERTICAL )
         {
             if ( ltr )
@@ -767,78 +908,6 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
     //    {
     //        return ui.getCellBounds ( list, index, index );
     //    }
-
-    /**
-     * Paint one List cell: compute the relevant state, get the "rubber stamp" cell renderer component, and then use the CellRendererPane
-     * to paint it. Subclasses may want to override this method rather than paint().
-     *
-     * @param g2d          graphics context
-     * @param index        cell index
-     * @param rowBounds    cell bounds
-     * @param cellRenderer cell renderer
-     * @param dataModel    list model
-     * @param selModel     list selection model
-     * @param leadIndex    lead cell index
-     */
-    protected void paintCell ( final Graphics2D g2d, final int index, final Rectangle rowBounds, final ListCellRenderer cellRenderer,
-                               final ListModel dataModel, final ListSelectionModel selModel, final int leadIndex )
-    {
-        final Object value = dataModel.getElementAt ( index );
-        final boolean isSelected = selModel.isSelectedIndex ( index );
-        final boolean cellHasFocus = component.hasFocus () && index == leadIndex;
-        final Component renderer = cellRenderer.getListCellRendererComponent ( component, value, index, isSelected, cellHasFocus );
-        rendererPane.paintComponent ( g2d, renderer, component, rowBounds.x, rowBounds.y, rowBounds.width, rowBounds.height, true );
-    }
-
-    @Override
-    public boolean isHoverDecorationSupported ()
-    {
-        return hoverPainter != null && component != null && component.isEnabled ();
-    }
-
-    /**
-     * Paints hover cell highlight.
-     *
-     * @param g2d graphics context
-     */
-    protected void paintHoverCellBackground ( final Graphics2D g2d )
-    {
-        if ( isHoverDecorationSupported () )
-        {
-            // Checking hover cell availability
-            final int hoverIndex = ui.getHoverIndex ();
-            if ( hoverIndex != -1 && !component.isSelectedIndex ( hoverIndex ) )
-            {
-                // Checking hover cell bounds
-                final Rectangle bounds = ui.getCellBounds ( component, hoverIndex, hoverIndex );
-                if ( bounds != null )
-                {
-                    // Painting hover cell background
-                    hoverPainter.prepareToPaint ( hoverIndex );
-                    paintSection ( hoverPainter, g2d, bounds );
-                }
-            }
-        }
-    }
-
-    /**
-     * Paints special WebLaF list cells selection.
-     * It is rendered separately from cells allowing you to simplify your list cell renderer component.
-     *
-     * @param g2d graphics context
-     */
-    protected void paintSelectedCellsBackground ( final Graphics2D g2d )
-    {
-        if ( selectionPainter != null && component.getSelectedIndex () != -1 && ui.getSelectionStyle () != ListSelectionStyle.none )
-        {
-            // Painting selections
-            final List<Rectangle> selections = getSelectionRects ();
-            for ( final Rectangle bounds : selections )
-            {
-                paintSection ( selectionPainter, g2d, bounds );
-            }
-        }
-    }
 
     /**
      * Returns list of list selections bounds.

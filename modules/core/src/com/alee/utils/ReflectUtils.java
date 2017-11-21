@@ -1248,12 +1248,44 @@ public final class ReflectUtils
      */
     public static Constructor getConstructor ( final Class theClass, final Class... parameterTypes ) throws NoSuchMethodException
     {
-        // This enhancement was a bad idea and was disabled
-        // In case constructor is protected/private it won't be found
-        // if ( parameterTypes.length == 0 )
-        // {
-        //     return theClass.getConstructor ();
-        // }
+        // This enhancement is a bad idea since protected/private constructor it won't be found
+        /*// Simplified constructor search for empty parameters
+        if ( parameterTypes.length == 0 )
+        {
+            return theClass.getConstructor ();
+        }*/
+
+        // This enhancement is a bad idea as it will return appropriate inner class constructor
+        // but you will surely be disoriented outside of this call why you have an extra parement
+        // and generally you won't be able to properly instantiate it without additional workarounds
+        /*// Workaround for simplifying inner classes constructor retrieval
+        final Class[] actualParameterTypes;
+        if ( theClass.isMemberClass () && ModifierType.STATIC.not ( theClass ) )
+        {
+            actualParameterTypes = new Class[ parameterTypes.length + 1 ];
+            actualParameterTypes[ 0 ] = theClass.getEnclosingClass ();
+            System.arraycopy ( parameterTypes, 0, actualParameterTypes, 1, parameterTypes.length );
+        }
+        else
+        {
+            actualParameterTypes = parameterTypes;
+        }*/
+
+        // Special check for inner classes
+        if ( theClass.isMemberClass () && ModifierType.STATIC.not ( theClass ) )
+        {
+            // Ensure first parameter is a type compatible with class enclosing specified inner class
+            if ( parameterTypes.length == 0 )
+            {
+                // No parameters at all, it seems caller is not aware it is asking to find inner class constructor
+                throw new ReflectionException ( "Enclosing class paramter for inner class constructor is missing" );
+            }
+            else if ( !isAssignable ( theClass.getEnclosingClass (), parameterTypes[ 0 ] ) )
+            {
+                // Inner's class enclosing class is not assignable from first parameter type
+                throw new ReflectionException ( "Incorrect first parameter for inner class constructor" );
+            }
+        }
 
         // Constructors can be used only from the topmost class so we don't need to look for them in superclasses
         for ( final Constructor constructor : theClass.getDeclaredConstructors () )

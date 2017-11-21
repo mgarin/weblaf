@@ -21,13 +21,13 @@ import javax.swing.*;
 import java.lang.ref.WeakReference;
 
 /**
- * Base data class for any SettingsProcessor.
+ * Base data class for any {@link SettingsProcessor}.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
- * @see com.alee.managers.settings.SettingsManager
- * @see com.alee.managers.settings.ComponentSettingsManager
- * @see com.alee.managers.settings.SettingsProcessor
+ * @see SettingsManager
+ * @see UISettingsManager
+ * @see SettingsProcessor
  */
 
 public class SettingsProcessorData
@@ -210,5 +210,14 @@ public class SettingsProcessorData
     public void setApplySettingsChanges ( final boolean applySettingsChanges )
     {
         this.applySettingsChanges = applySettingsChanges;
+    }
+
+    @Override
+    public String toString ()
+    {
+        final JComponent jComponent = component.get ();
+        final String name = jComponent != null ? jComponent.getClass ().getSimpleName () : "null";
+        final String settings = "[" + group + "/" + key + "]";
+        return name + settings;
     }
 }

@@ -14,12 +14,12 @@
             <decorations>
                 <decoration>
                     <WebShape round="4,4,2,2" />
-                    <WebShadow type="outer" opacity="0.3" width="20" />
+                    <WebShadow type="outer" opacity="0.5" width="20" />
                     <LineBorder color="20,20,20" />
                     <ColorBackground color="68,68,68" />
                 </decoration>
                 <decoration states="focused">
-                    <WebShadow type="outer" opacity="0.5" />
+                    <WebShadow type="outer" opacity="0.8" />
                 </decoration>
                 <decoration states="maximized">
                     <WebShape round="0" />

@@ -115,7 +115,7 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
         tree.setInvokesStopCellEditing ( true );
 
         // Hover behavior
-        hoverNodeTracker = new TreePathHoverBehavior ( tree, true )
+        hoverNodeTracker = new TreePathHoverBehavior<JTree> ( tree, true )
         {
             @Override
             public void hoverChanged ( final TreePath previous, final TreePath current )
@@ -126,7 +126,7 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
 
                 // Repainting nodes according to hover changes
                 // This occurs only if hover highlight is enabled
-                if ( painter != null && painter.isHoverDecorationSupported () )
+                if ( painter != null && painter.isRowHoverDecorationSupported () )
                 {
                     repaintRow ( previousRow );
                     repaintRow ( hoverRow );

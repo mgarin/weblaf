@@ -19,7 +19,7 @@ package com.alee.laf.label;
 
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageMethods;
-import com.alee.managers.language.WebLanguageManager;
+import com.alee.managers.language.UILanguageManager;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipMethods;
@@ -231,8 +231,8 @@ public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMetho
      */
     public WebLabel ( final StyleId id, final String text, final Icon icon, final int horizontalAlignment, final Object... data )
     {
-        super ( WebLanguageManager.getInitialText ( text, data ), icon, horizontalAlignment );
-        WebLanguageManager.registerInitialLanguage ( this, text, data );
+        super ( UILanguageManager.getInitialText ( text, data ), icon, horizontalAlignment );
+        UILanguageManager.registerInitialLanguage ( this, text, data );
         setStyleId ( id );
     }
 
@@ -686,49 +686,49 @@ public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMetho
     @Override
     public String getLanguage ()
     {
-        return WebLanguageManager.getComponentKey ( this );
+        return UILanguageManager.getComponentKey ( this );
     }
 
     @Override
     public void setLanguage ( final String key, final Object... data )
     {
-        WebLanguageManager.registerComponent ( this, key, data );
+        UILanguageManager.registerComponent ( this, key, data );
     }
 
     @Override
     public void updateLanguage ( final Object... data )
     {
-        WebLanguageManager.updateComponent ( this, data );
+        UILanguageManager.updateComponent ( this, data );
     }
 
     @Override
     public void updateLanguage ( final String key, final Object... data )
     {
-        WebLanguageManager.updateComponent ( this, key, data );
+        UILanguageManager.updateComponent ( this, key, data );
     }
 
     @Override
     public void removeLanguage ()
     {
-        WebLanguageManager.unregisterComponent ( this );
+        UILanguageManager.unregisterComponent ( this );
     }
 
     @Override
     public boolean isLanguageSet ()
     {
-        return WebLanguageManager.isRegisteredComponent ( this );
+        return UILanguageManager.isRegisteredComponent ( this );
     }
 
     @Override
     public void setLanguageUpdater ( final LanguageUpdater updater )
     {
-        WebLanguageManager.registerLanguageUpdater ( this, updater );
+        UILanguageManager.registerLanguageUpdater ( this, updater );
     }
 
     @Override
     public void removeLanguageUpdater ()
     {
-        WebLanguageManager.unregisterLanguageUpdater ( this );
+        UILanguageManager.unregisterLanguageUpdater ( this );
     }
 
     @Override

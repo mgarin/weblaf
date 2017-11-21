@@ -29,7 +29,7 @@ import com.alee.utils.SwingUtils;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-ProxyManager">How to use ProxyManager</a>
  * @see com.alee.managers.proxy.ProxyManager
- * @see com.alee.managers.proxy.SystemProxyConfirmationSupport
+ * @see SystemProxyConfirmationSupport
  */
 
 public class WebSystemProxyConfirmationSupport implements SystemProxyConfirmationSupport

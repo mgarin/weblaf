@@ -17,6 +17,7 @@
 
 package com.alee.laf.list;
 
+import com.alee.api.jdk.Consumer;
 import com.alee.laf.list.behavior.ListItemHoverBehavior;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipProvider;
@@ -24,7 +25,6 @@ import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.ReflectUtils;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -85,7 +85,7 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
         super.installUI ( c );
 
         // Hover behavior
-        hoverCellTracker = new ListItemHoverBehavior ( list, true )
+        hoverCellTracker = new ListItemHoverBehavior<JList> ( list, true )
         {
             @Override
             public void hoverChanged ( final Integer previous, final Integer current )
@@ -96,7 +96,7 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
 
                 // Repainting nodes according to hover changes
                 // This occurs only if hover highlight is enabled
-                if ( painter != null && painter.isHoverDecorationSupported () )
+                if ( painter != null && painter.isItemHoverDecorationSupported () )
                 {
                     repaintCell ( previousIndex );
                     repaintCell ( hoverIndex );

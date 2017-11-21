@@ -101,6 +101,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         this.ui = ui;
 
         // Installing section painters
+        // This must always be done first, before we try installing any listeners
         installSectionPainters ();
 
         // Installing properties and listeners
@@ -121,6 +122,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         uninstallPropertiesAndListeners ();
 
         // Uninstalling section painters
+        // This must always be done last, after we uninstall all listeners
         uninstallSectionPainters ();
 
         // Cleaning up references
@@ -679,6 +681,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      * Should be called when painter opacity changes.
      * todo Use this instead of the outer border updates?
      */
+    @SuppressWarnings ( "unused" )
     protected void updateOpacity ()
     {
         if ( isSettingsUpdateAllowed () )

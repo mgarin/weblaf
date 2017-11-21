@@ -69,7 +69,7 @@ public class DoubleColorField extends WebPanel
             }
         } );
 
-        LanguageManager.addLanguageListener ( new LanguageListener ()
+        addLanguageListener ( new LanguageListener ()
         {
             @Override
             public void languageChanged ( final Language oldLanguage, final Language newLanguage )

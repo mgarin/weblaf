@@ -17,6 +17,7 @@
 
 package com.alee.extended.dock;
 
+import com.alee.api.jdk.Consumer;
 import com.alee.extended.behavior.ComponentMoveBehavior;
 import com.alee.extended.dock.drag.DockableFrameTransferHandler;
 import com.alee.extended.label.WebStyledLabel;
@@ -36,7 +37,6 @@ import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.api.jdk.Consumer;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.MouseEventRunnable;
 
@@ -301,7 +301,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
                 frame.close ();
             }
         } );
-        focusTracker = new DefaultFocusTracker ( true )
+        focusTracker = new DefaultFocusTracker ( frame, true )
         {
             @Override
             public void focusChanged ( final boolean focused )
@@ -325,7 +325,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
     {
         frame.setTransferHandler ( null );
         frame.removePropertyChangeListener ( this );
-        FocusManager.removeFocusTracker ( focusTracker );
+        FocusManager.removeFocusTracker ( frame, focusTracker );
         ComponentMoveBehavior.uninstall ( titlePanel );
     }
 

@@ -4,7 +4,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.Language;
 import com.alee.managers.language.LanguageListener;
 import com.alee.managers.language.LanguageSensitive;
-import com.alee.managers.language.WebLanguageManager;
+import com.alee.managers.language.UILanguageManager;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
@@ -116,7 +116,7 @@ public class ComboBoxPainter<E extends JComboBox, U extends WComboBoxUI, D exten
                 }
             }
         };
-        WebLanguageManager.addLanguageListener ( component, languageSensitive );
+        UILanguageManager.addLanguageListener ( component, languageSensitive );
     }
 
     /**
@@ -154,7 +154,7 @@ public class ComboBoxPainter<E extends JComboBox, U extends WComboBoxUI, D exten
      */
     protected void uninstallLanguageListeners ()
     {
-        WebLanguageManager.removeLanguageListener ( component, languageSensitive );
+        UILanguageManager.removeLanguageListener ( component, languageSensitive );
         languageSensitive = null;
     }
 

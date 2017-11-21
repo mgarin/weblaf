@@ -3,7 +3,7 @@ package com.alee.laf.table;
 import com.alee.managers.language.Language;
 import com.alee.managers.language.LanguageListener;
 import com.alee.managers.language.LanguageSensitive;
-import com.alee.managers.language.WebLanguageManager;
+import com.alee.managers.language.UILanguageManager;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.SectionPainter;
@@ -249,7 +249,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
                 }
             }
         };
-        WebLanguageManager.addLanguageListener ( component, languageSensitive );
+        UILanguageManager.addLanguageListener ( component, languageSensitive );
     }
 
     /**
@@ -323,7 +323,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
      */
     protected void uninstallLanguageListeners ()
     {
-        WebLanguageManager.removeLanguageListener ( component, languageSensitive );
+        UILanguageManager.removeLanguageListener ( component, languageSensitive );
         languageSensitive = null;
     }
 

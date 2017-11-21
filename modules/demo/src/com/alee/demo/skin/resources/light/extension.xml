@@ -119,4 +119,17 @@
 
     </style>
 
+    <!-- Placeholder label -->
+    <style type="label" id="placeholder" padding="10,15,10,15">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="0" />
+                    <LineBorder color="darkGray" stroke="basic;1;round;round;0;4,5" />
+                    <ColorBackground color="white" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
 </skin>

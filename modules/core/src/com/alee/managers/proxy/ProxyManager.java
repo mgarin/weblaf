@@ -38,7 +38,7 @@ import java.util.Properties;
  * @see com.alee.managers.proxy.SystemProxyConfirmationSupport
  */
 
-public class ProxyManager
+public final class ProxyManager
 {
     /**
      * Settings group key for proxy settings.

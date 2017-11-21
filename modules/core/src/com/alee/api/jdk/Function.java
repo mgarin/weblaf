@@ -19,8 +19,8 @@ package com.alee.api.jdk;
 
 /**
  * Represents a function that accepts one argument and produces a result.
- * <p>
- * This is a custom supplier for JDK6 support.
+ *
+ * This is a custom function for JDK6 support.
  *
  * @param <T> the type of the input to the function
  * @param <R> the type of the result of the function

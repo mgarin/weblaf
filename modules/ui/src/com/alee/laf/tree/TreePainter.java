@@ -7,7 +7,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.Language;
 import com.alee.managers.language.LanguageListener;
 import com.alee.managers.language.LanguageSensitive;
-import com.alee.managers.language.WebLanguageManager;
+import com.alee.managers.language.UILanguageManager;
 import com.alee.managers.style.BoundsType;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.PainterSupport;
@@ -509,7 +509,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
                 }
             }
         };
-        WebLanguageManager.addLanguageListener ( component, languageSensitive );
+        UILanguageManager.addLanguageListener ( component, languageSensitive );
     }
 
     /**
@@ -550,7 +550,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
      */
     protected void uninstallLanguageListeners ()
     {
-        WebLanguageManager.removeLanguageListener ( component, languageSensitive );
+        UILanguageManager.removeLanguageListener ( component, languageSensitive );
         languageSensitive = null;
     }
 
@@ -580,7 +580,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
     }
 
     @Override
-    public boolean isHoverDecorationSupported ()
+    public boolean isRowHoverDecorationSupported ()
     {
         boolean supported = false;
         if ( component != null && component.isEnabled () )
@@ -929,6 +929,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
                     bounds = getPathBounds ( path, insets, boundsBuffer );
                     if ( bounds == null )
                     {
+                        // Note from Swing devs:
                         // This will only happen if the model changes out from under us (usually in another thread).
                         // Swing isn't multi-threaded, but I'll put this check in anyway.
                         return;

@@ -19,7 +19,7 @@ package com.alee.managers.language.updaters;
 
 import com.alee.managers.language.Language;
 import com.alee.managers.language.LanguageState;
-import com.alee.managers.language.WebLanguageManager;
+import com.alee.managers.language.UILanguageManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
 
 import javax.swing.*;
@@ -46,14 +46,14 @@ public class ToolTipLU<E extends JComponent> implements LanguageUpdater<E>, Lang
     public void update ( final E component, final Language language, final String key, final Object... data )
     {
         // Updating Swing component tooltips
-        final LanguageUpdater swingTooltipUpdater = WebLanguageManager.getLanguageUpdater ( JToolTip.class );
+        final LanguageUpdater swingTooltipUpdater = UILanguageManager.getLanguageUpdater ( JToolTip.class );
         if ( swingTooltipUpdater != null )
         {
             swingTooltipUpdater.update ( component, language, key, data );
         }
 
         // Updating custom WebLaF component tooltips
-        final LanguageUpdater customTooltipUpdater = WebLanguageManager.getLanguageUpdater ( WebCustomTooltip.class );
+        final LanguageUpdater customTooltipUpdater = UILanguageManager.getLanguageUpdater ( WebCustomTooltip.class );
         if ( customTooltipUpdater != null )
         {
             customTooltipUpdater.update ( component, language, key, data );

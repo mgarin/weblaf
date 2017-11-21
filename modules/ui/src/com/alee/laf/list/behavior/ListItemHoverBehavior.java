@@ -26,17 +26,18 @@ import java.awt.*;
  * Abstract behavior that provides hover events for {@link javax.swing.JList} items.
  * For a simple installation and uninstallation you can call {@link #install()} and {@link #uninstall()} methods.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public abstract class ListItemHoverBehavior extends AbstractObjectHoverBehavior<JList, Integer>
+public abstract class ListItemHoverBehavior<C extends JList> extends AbstractObjectHoverBehavior<C, Integer>
 {
     /**
      * Constructs behavior for the specified list.
      *
      * @param list list into which this behavior is installed
      */
-    public ListItemHoverBehavior ( final JList list )
+    public ListItemHoverBehavior ( final C list )
     {
         this ( list, true );
     }
@@ -47,7 +48,7 @@ public abstract class ListItemHoverBehavior extends AbstractObjectHoverBehavior<
      * @param list        list into which this behavior is installed
      * @param enabledOnly whether or not behavior should only track hover events when list is enabled
      */
-    public ListItemHoverBehavior ( final JList list, final boolean enabledOnly )
+    public ListItemHoverBehavior ( final C list, final boolean enabledOnly )
     {
         super ( list, enabledOnly );
     }
@@ -59,7 +60,7 @@ public abstract class ListItemHoverBehavior extends AbstractObjectHoverBehavior<
         int index = component.locationToIndex ( location );
         if ( index != getEmptyObject () )
         {
-            // Ensure that
+            // Ensure that cell under the index is within visible bounds
             final Rectangle rectangle = component.getCellBounds ( index, index );
             index = rectangle.contains ( location ) ? index : getEmptyObject ();
         }

@@ -18,10 +18,10 @@
                 </decoration>
             </decorations>
 
-            <!-- Hover cell background painter -->
-            <hoverPainter>
+            <!-- Item background painter -->
+            <itemPainter>
                 <decorations>
-                    <decoration opacity="0.4">
+                    <decoration states="unselected,hover" opacity="0.4">
                         <WebShape round="0" />
                         <GradientBackground>
                             <color>55,55,55</color>
@@ -29,7 +29,7 @@
                         </GradientBackground>
                     </decoration>
                 </decorations>
-            </hoverPainter>
+            </itemPainter>
 
             <!-- Selected cells background painter -->
             <selectionPainter>

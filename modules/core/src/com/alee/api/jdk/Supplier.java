@@ -20,7 +20,7 @@ package com.alee.api.jdk;
 /**
  * Represents a supplier of results.
  * There is no requirement that a new or distinct result be returned each time the supplier is invoked.
- * <p>
+ *
  * This is a custom supplier for JDK6 support.
  *
  * @param <T> the type of results supplied by this supplier

@@ -19,7 +19,6 @@ package com.alee.managers.settings.processors;
 
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
-import com.alee.managers.settings.processors.data.WindowSettings;
 import com.alee.utils.CoreSwingUtils;
 
 import javax.swing.*;

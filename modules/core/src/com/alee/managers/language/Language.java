@@ -32,6 +32,8 @@ import java.util.Locale;
  * This class doesn't store anything on its own and only acts as a proxy to {@link LanguageManager}.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>
+ * @see LanguageManager
  */
 
 public class Language implements Serializable

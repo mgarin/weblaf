@@ -18,15 +18,18 @@
 package com.alee.managers.focus;
 
 import com.alee.utils.SwingUtils;
+import com.alee.utils.collection.ImmutableList;
+import com.alee.utils.collection.WeakHashSet;
 
+import javax.swing.FocusManager;
+import javax.swing.*;
 import java.awt.*;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
- * Small extension class for {@link com.alee.managers.focus.FocusTracker} that simplifies its creation.
+ * Default {@link FocusTracker} implementation for {@link FocusTracker} usage convenience.
+ * This implementation also offers customization of additional focusable {@link Component}s attached to tracked {@link JComponent}.
  *
  * @author Mikle Garin
  */
@@ -34,121 +37,76 @@ import java.util.List;
 public abstract class DefaultFocusTracker implements FocusTracker
 {
     /**
-     * Whether tracking is currently enabled or not.
+     * Tracked {@link JComponent}.
      */
-    private boolean enabled;
+    protected final JComponent component;
 
     /**
-     * Whether component and its children in components tree should be counted as a single component or not.
+     * Whether or not tracking is currently enabled.
      */
-    private boolean uniteWithChildren;
+    protected boolean enabled;
 
     /**
-     * Custom children which should be tracked together with this component.
+     * Whether or not tracked {@link JComponent} and its children should be counted as a single focusable unit.
      */
-    private List<WeakReference<Component>> customChildren;
+    protected boolean uniteWithChildren;
 
     /**
-     * Constructs new tracker with the specified tracked component.
+     * Whether or not tracked {@link JComponent} is currently focused according to this tracker settings.
      */
-    public DefaultFocusTracker ()
-    {
-        this ( true );
-    }
+    protected boolean focused;
 
     /**
-     * Constructs new tracker with the specified tracked component.
+     * Additional focusable children which should be tracked in addition to the main tracked {@link JComponent}.
+     * Note that this {@link Set} is backed by {@link WeakHashSet} implementation to avoid any memory leaks.
+     * So it is safe to add any components here, even ones that might be removed at some point.
+     */
+    protected Set<Component> focusableChildren;
+
+    /**
+     * Constructs new {@link DefaultFocusTracker}.
      *
-     * @param uniteWithChildren whether component and its children in components tree should be counted as a single component or not
+     * @param component         tracked {@link JComponent}
+     * @param uniteWithChildren whether or not tracked {@link JComponent} and its children should be counted as a single focusable unit
      */
-    public DefaultFocusTracker ( final boolean uniteWithChildren )
+    public DefaultFocusTracker ( final JComponent component, final boolean uniteWithChildren )
     {
         super ();
+        this.component = component;
         this.enabled = true;
         this.uniteWithChildren = uniteWithChildren;
+        this.focused = isInvolved ( component, FocusManager.getCurrentManager ().getFocusOwner () );
     }
 
     @Override
-    public boolean isTrackingEnabled ()
+    public boolean isEnabled ()
     {
-        return enabled;
+        return enabled && component.isShowing ();
     }
 
-    /**
-     * Sets whether tracking is currently enabled or not.
-     *
-     * @param enabled whether tracking is currently enabled or not
-     */
-    public void setTrackingEnabled ( final boolean enabled )
+    @Override
+    public void setEnabled ( final boolean enabled )
     {
         this.enabled = enabled;
     }
 
     @Override
-    public boolean isInvolved ( final Component component, final Component tracked )
+    public boolean isFocused ()
     {
-        if ( isUniteWithChildren () )
-        {
-            if ( SwingUtils.isEqualOrChild ( tracked, component ) )
-            {
-                return true;
-            }
-            if ( customChildren != null )
-            {
-                final Iterator<WeakReference<Component>> iterator = customChildren.iterator ();
-                while ( iterator.hasNext () )
-                {
-                    final WeakReference<Component> next = iterator.next ();
-                    final Component customChild = next.get ();
-                    if ( customChild == null )
-                    {
-                        iterator.remove ();
-                    }
-                    else
-                    {
-                        if ( SwingUtils.isEqualOrChild ( customChild, component ) )
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        else
-        {
-            if ( tracked == component )
-            {
-                return true;
-            }
-            if ( customChildren != null )
-            {
-                final Iterator<WeakReference<Component>> iterator = customChildren.iterator ();
-                while ( iterator.hasNext () )
-                {
-                    final WeakReference<Component> next = iterator.next ();
-                    final Component customChild = next.get ();
-                    if ( customChild == null )
-                    {
-                        iterator.remove ();
-                    }
-                    else
-                    {
-                        if ( customChild == component )
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
+        return focused;
+    }
+
+    @Override
+    public void setFocused ( final boolean focused )
+    {
+        this.focused = focused;
     }
 
     /**
-     * Returns whether component and its children in components tree should be counted as a single component or not.
-     * In case component and its children are counted as one focus changes within them will be ignored by tracker.
+     * Returns whether or not tracked {@link JComponent} and its children should be counted as a single focusable unit.
+     * In case component and its children are counted as one unit - focus changes between them will be ignored by tracker.
      *
-     * @return true if component and its children in components tree should be counted as a single component, false otherwise
+     * @return {@code true} if tracked {@link JComponent} and its children should be counted as a single focusable unit, {@code false} otherwise
      */
     public boolean isUniteWithChildren ()
     {
@@ -156,97 +114,139 @@ public abstract class DefaultFocusTracker implements FocusTracker
     }
 
     /**
-     * Sets whether component and its children in components tree should be counted as a single component or not.
+     * Sets whether or not tracked {@link JComponent} and its children should be counted as a single focusable unit.
+     * In case component and its children are counted as one unit - focus changes between them will be ignored by tracker.
      *
-     * @param uniteWithChildren whether component and its children in components tree should be counted as a single component or not
+     * @param unite whether or not tracked {@link JComponent} and its children should be counted as a single focusable unit
      */
-    public void setUniteWithChildren ( final boolean uniteWithChildren )
+    public void setUniteWithChildren ( final boolean unite )
     {
-        this.uniteWithChildren = uniteWithChildren;
+        this.uniteWithChildren = unite;
     }
 
     /**
-     * Returns custom children which should be tracked together with this component.
-     * Note that `isUniteWithChildren` value will also affect how these children focus is checked.
+     * Returns additional focusable children which should be tracked in addition to the main tracked {@link JComponent}.
+     * Note that {@link #uniteWithChildren} setting also affects how these children focus is checked.
      *
      * @return custom children which should be tracked together with this component
      */
-    public List<Component> getCustomChildren ()
+    public List<Component> getFocusableChildren ()
     {
-        final List<Component> children = new ArrayList<Component> ( customChildren.size () );
-        final Iterator<WeakReference<Component>> iterator = customChildren.iterator ();
-        while ( iterator.hasNext () )
+        return new ImmutableList<Component> ( focusableChildren );
+    }
+
+    /**
+     * Adds new focusable child {@link Component}.
+     * Note that {@link #uniteWithChildren} setting also affects how these children focus is checked.
+     *
+     * @param child focusable child {@link Component} to add
+     */
+    public void addFocusableChild ( final Component child )
+    {
+        if ( focusableChildren == null )
         {
-            final WeakReference<Component> next = iterator.next ();
-            final Component component = next.get ();
-            if ( component == null )
-            {
-                iterator.remove ();
-            }
-            else
-            {
-                children.add ( component );
-            }
+            focusableChildren = new WeakHashSet<Component> ( 1 );
         }
-        return children;
+        focusableChildren.add ( child );
     }
 
     /**
-     * Returns weakly-referenced custom children.
+     * Removes focusable child {@link Component}.
+     * Note that {@link #uniteWithChildren} setting also affects how these children focus is checked.
      *
-     * @return weakly-referenced custom children
+     * @param child focusable child {@link Component} to remove
      */
-    public List<WeakReference<Component>> getWeakCustomChildren ()
+    public void removeFocusableChild ( final Component child )
     {
-        return customChildren;
-    }
-
-    /**
-     * Sets custom children which should be tracked together with this component.
-     *
-     * @param customChildren custom children which should be tracked together with this component
-     */
-    public void setCustomChildren ( final List<Component> customChildren )
-    {
-        for ( final Component customChild : customChildren )
+        if ( focusableChildren != null )
         {
-            addCustomChild ( customChild );
+            focusableChildren.remove ( child );
         }
     }
 
-    /**
-     * Adds new custom child.
-     *
-     * @param customChild custom child to add
-     */
-    public void addCustomChild ( final Component customChild )
+    @Override
+    public boolean isInvolved ( final JComponent tracked, final Component component )
     {
-        if ( customChildren == null )
+        // Focus left application
+        if ( component == null )
         {
-            customChildren = new ArrayList<WeakReference<Component>> ( 1 );
+            return false;
         }
-        customChildren.add ( new WeakReference<Component> ( customChild ) );
-    }
 
-    /**
-     * Removes custom child.
-     *
-     * @param customChild custom child to remove
-     */
-    public void removeCustomChild ( final Component customChild )
-    {
-        if ( customChildren != null )
+        // Checking component directly
+        if ( isChildInvolved ( tracked, component ) )
         {
-            final Iterator<WeakReference<Component>> iterator = customChildren.iterator ();
-            while ( iterator.hasNext () )
+            return true;
+        }
+
+        // Checking registered children
+        if ( focusableChildren != null )
+        {
+            for ( final Component child : focusableChildren )
             {
-                final WeakReference<Component> next = iterator.next ();
-                final Component component = next.get ();
-                if ( component == null || component == customChild )
+                if ( isChildInvolved ( child, component ) )
                 {
-                    iterator.remove ();
+                    return true;
                 }
             }
         }
+
+        // None involved
+        return false;
+    }
+
+    /**
+     * Returns whether specified {@link Component} is involved with this tracked {@link Component} or not.
+     *
+     * @param tracked   tracked {@link Component}
+     * @param component {@link Component} to check for involvement
+     * @return {@code true} if specified {@link Component} is involved with this tracked {@link Component}, {@code false} otherwise
+     */
+    protected boolean isChildInvolved ( final Component tracked, final Component component )
+    {
+        final boolean involved;
+        if ( isUniteWithChildren () )
+        {
+            if ( SwingUtils.isEqualOrChild ( tracked, component ) )
+            {
+                // Component or one of its children involved
+                involved = true;
+            }
+            else if ( tracked instanceof JRootPane )
+            {
+                // JRootPane's window or one of its children involved
+                // Special workaround to include window components into focus checks
+                // This works exclusively for JRootPane components as it basically represents window
+                final Window window = SwingUtils.getWindowAncestor ( tracked );
+                involved = window != null && SwingUtils.isEqualOrChild ( window, component );
+            }
+            else
+            {
+                // None involved
+                involved = false;
+            }
+        }
+        else
+        {
+            if ( tracked == component )
+            {
+                // Component involved directly
+                involved = true;
+            }
+            else if ( tracked instanceof JRootPane )
+            {
+                // JRootPane's window involved directly
+                // Special workaround to include window components into focus checks
+                // This works exclusively for JRootPane components as it basically represents window
+                final Window window = SwingUtils.getWindowAncestor ( tracked );
+                involved = window != null && window == component;
+            }
+            else
+            {
+                // None involved
+                involved = false;
+            }
+        }
+        return involved;
     }
 }

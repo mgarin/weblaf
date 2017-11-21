@@ -87,7 +87,7 @@ public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T exte
 
                 // Adding data to model
                 // Performing it in a separate non-EDT thread
-                AsyncTreeQueue.execute ( tree, new Runnable ()
+                AsyncTreeQueue.getInstance ( tree ).execute ( new Runnable ()
                 {
                     @Override
                     public void run ()
@@ -108,7 +108,7 @@ public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T exte
                         {
                             // Adding data to model
                             // Performing it in a separate non-EDT thread
-                            AsyncTreeQueue.execute ( tree, new Runnable ()
+                            AsyncTreeQueue.getInstance ( tree ).execute ( new Runnable ()
                             {
                                 @Override
                                 public void run ()

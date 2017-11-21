@@ -28,7 +28,7 @@ public final class AdaptiveTreePainter<E extends JTree, U extends WTreeUI> exten
     }
 
     @Override
-    public boolean isHoverDecorationSupported ()
+    public boolean isRowHoverDecorationSupported ()
     {
         return false;
     }

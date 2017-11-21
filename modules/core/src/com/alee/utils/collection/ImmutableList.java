@@ -39,7 +39,7 @@ public class ImmutableList<E> extends ImmutableCollection<E> implements List<E>
     /**
      * Constructs new {@link ImmutableList} based on the specified list data.
      *
-     * @param data list data
+     * @param data data array
      */
     public ImmutableList ( final E... data )
     {
@@ -47,13 +47,13 @@ public class ImmutableList<E> extends ImmutableCollection<E> implements List<E>
     }
 
     /**
-     * Constructs new {@link ImmutableList} based on the specified {@link List}.
+     * Constructs new {@link ImmutableList} based on the specified {@link Collection}.
      *
-     * @param list {@link List}
+     * @param collection data {@link Collection}
      */
-    public ImmutableList ( final List<? extends E> list )
+    public ImmutableList ( final Collection<? extends E> collection )
     {
-        super ( list );
+        super ( collection );
     }
 
     @Override

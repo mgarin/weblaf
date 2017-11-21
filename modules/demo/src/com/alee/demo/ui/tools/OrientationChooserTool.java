@@ -26,7 +26,6 @@ import com.alee.laf.panel.WebPanel;
 import com.alee.managers.language.LM;
 import com.alee.managers.language.Language;
 import com.alee.managers.language.LanguageListener;
-import com.alee.managers.language.LanguageManager;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
@@ -105,7 +104,7 @@ public final class OrientationChooserTool extends WebPanel
         public OrientationModel ()
         {
             super ( CollectionUtils.asVector ( LEFT_TO_RIGHT, RIGHT_TO_LEFT ) );
-            LanguageManager.addLanguageListener ( this );
+            OrientationChooserTool.this.addLanguageListener ( this );
         }
 
         @Override

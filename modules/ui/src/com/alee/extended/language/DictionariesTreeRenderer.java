@@ -18,7 +18,7 @@
 package com.alee.extended.language;
 
 import com.alee.extended.label.WebStyledLabel;
-import com.alee.managers.language.WebLanguageManager;
+import com.alee.managers.language.UILanguageManager;
 import com.alee.managers.language.data.Dictionary;
 import com.alee.managers.language.data.Record;
 import com.alee.managers.language.data.Text;
@@ -94,7 +94,7 @@ public class DictionariesTreeRenderer extends WebStyledLabel implements TreeCell
         else if ( val instanceof Value )
         {
             final Value v = ( Value ) val;
-            setIcon ( WebLanguageManager.getLocaleIcon ( v.getLocale () ) );
+            setIcon ( UILanguageManager.getLocaleIcon ( v.getLocale () ) );
             setText ( v.getLocale ().toString () );
         }
         else if ( val instanceof Text )

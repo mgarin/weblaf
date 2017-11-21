@@ -25,11 +25,11 @@ import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.DictionaryListener;
 import com.alee.managers.language.LanguageEventMethods;
 import com.alee.managers.language.LanguageListener;
-import com.alee.managers.language.WebLanguageManager;
+import com.alee.managers.language.UILanguageManager;
 import com.alee.managers.settings.DefaultValue;
-import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.settings.UISettingsManager;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.Paintable;
@@ -1790,131 +1790,131 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     @Override
     public void addLanguageListener ( final LanguageListener listener )
     {
-        WebLanguageManager.addLanguageListener ( this, listener );
+        UILanguageManager.addLanguageListener ( this, listener );
     }
 
     @Override
     public void removeLanguageListener ( final LanguageListener listener )
     {
-        WebLanguageManager.removeLanguageListener ( this, listener );
+        UILanguageManager.removeLanguageListener ( this, listener );
     }
 
     @Override
     public void removeLanguageListeners ()
     {
-        WebLanguageManager.removeLanguageListeners ( this );
+        UILanguageManager.removeLanguageListeners ( this );
     }
 
     @Override
     public void addDictionaryListener ( final DictionaryListener listener )
     {
-        WebLanguageManager.addDictionaryListener ( this, listener );
+        UILanguageManager.addDictionaryListener ( this, listener );
     }
 
     @Override
     public void removeDictionaryListener ( final DictionaryListener listener )
     {
-        WebLanguageManager.removeDictionaryListener ( this, listener );
+        UILanguageManager.removeDictionaryListener ( this, listener );
     }
 
     @Override
     public void removeDictionaryListeners ()
     {
-        WebLanguageManager.removeDictionaryListeners ( this );
+        UILanguageManager.removeDictionaryListeners ( this );
     }
 
     @Override
     public void registerSettings ( final String key )
     {
-        SettingsManager.registerComponent ( this, key );
+        UISettingsManager.registerComponent ( this, key );
     }
 
     @Override
     public <V extends DefaultValue> void registerSettings ( final String key, final Class<V> defaultValueClass )
     {
-        SettingsManager.registerComponent ( this, key, defaultValueClass );
+        UISettingsManager.registerComponent ( this, key, defaultValueClass );
     }
 
     @Override
     public void registerSettings ( final String key, final Object defaultValue )
     {
-        SettingsManager.registerComponent ( this, key, defaultValue );
+        UISettingsManager.registerComponent ( this, key, defaultValue );
     }
 
     @Override
     public void registerSettings ( final String group, final String key )
     {
-        SettingsManager.registerComponent ( this, group, key );
+        UISettingsManager.registerComponent ( this, group, key );
     }
 
     @Override
     public <V extends DefaultValue> void registerSettings ( final String group, final String key, final Class<V> defaultValueClass )
     {
-        SettingsManager.registerComponent ( this, group, key, defaultValueClass );
+        UISettingsManager.registerComponent ( this, group, key, defaultValueClass );
     }
 
     @Override
     public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
-        SettingsManager.registerComponent ( this, group, key, defaultValue );
+        UISettingsManager.registerComponent ( this, group, key, defaultValue );
     }
 
     @Override
     public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
-        SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
+        UISettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
     }
 
     @Override
     public <V extends DefaultValue> void registerSettings ( final String key, final Class<V> defaultValueClass,
                                                             final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
-        SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
+        UISettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
 
     @Override
     public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
                                    final boolean applySettingsChanges )
     {
-        SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
+        UISettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
 
     @Override
     public <V extends DefaultValue> void registerSettings ( final String group, final String key, final Class<V> defaultValueClass,
                                                             final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
-        SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
+        UISettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
 
     @Override
     public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
                                    final boolean applySettingsChanges )
     {
-        SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
+        UISettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
 
     @Override
     public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
-        SettingsManager.registerComponent ( this, settingsProcessor );
+        UISettingsManager.registerComponent ( this, settingsProcessor );
     }
 
     @Override
     public void unregisterSettings ()
     {
-        SettingsManager.unregisterComponent ( this );
+        UISettingsManager.unregisterComponent ( this );
     }
 
     @Override
     public void loadSettings ()
     {
-        SettingsManager.loadComponentSettings ( this );
+        UISettingsManager.loadSettings ( this );
     }
 
     @Override
     public void saveSettings ()
     {
-        SettingsManager.saveComponentSettings ( this );
+        UISettingsManager.saveSettings ( this );
     }
 
     @Override

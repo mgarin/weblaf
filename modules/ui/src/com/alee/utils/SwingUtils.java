@@ -2418,37 +2418,34 @@ public final class SwingUtils extends CoreSwingUtils
     /**
      * Returns whether the first component or any of its children are equal to second component or not.
      *
-     * @param component1 first component to compare
-     * @param component2 second component to compare
-     * @return true if the first component or any of its children are equal to second component, false otherwise
+     * @param component first component to compare
+     * @param child     second component to compare
+     * @return {@code true} if the first component or any of its children are equal to second component, {@code false} otherwise
      */
-    public static boolean isEqualOrChild ( final Component component1, final Component component2 )
+    public static boolean isEqualOrChild ( final Component component, final Component child )
     {
-        if ( component1 == component2 )
+        if ( component == child )
         {
             return true;
         }
-        else if ( component1 == null && component2 != null || component1 != null && component2 == null )
+        else if ( component == null && child != null || component != null && child == null )
         {
+            return false;
+        }
+        else if ( component instanceof Container )
+        {
+            for ( final Component c : ( ( Container ) component ).getComponents () )
+            {
+                if ( isEqualOrChild ( c, child ) )
+                {
+                    return true;
+                }
+            }
             return false;
         }
         else
         {
-            if ( component1 instanceof Container )
-            {
-                for ( final Component c : ( ( Container ) component1 ).getComponents () )
-                {
-                    if ( isEqualOrChild ( c, component2 ) )
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            }
-            else
-            {
-                return false;
-            }
+            return false;
         }
     }
 

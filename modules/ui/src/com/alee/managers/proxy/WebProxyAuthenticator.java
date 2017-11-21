@@ -45,8 +45,8 @@ import java.net.PasswordAuthentication;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-ProxyManager">How to use ProxyManager</a>
- * @see com.alee.managers.proxy.WebProxyManager
- * @see com.alee.managers.proxy.ProxyManager
+ * @see UIProxyManager
+ * @see ProxyManager
  */
 
 public class WebProxyAuthenticator extends Authenticator

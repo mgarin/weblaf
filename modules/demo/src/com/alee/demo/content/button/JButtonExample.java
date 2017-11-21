@@ -22,7 +22,7 @@ import com.alee.demo.api.example.wiki.OracleWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.grouping.GroupPane;
-import com.alee.managers.language.WebLanguageManager;
+import com.alee.managers.language.UILanguageManager;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
@@ -89,23 +89,23 @@ public class JButtonExample extends AbstractStylePreviewExample
         {
             final JButton basic = new JButton ();
             basic.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
-            WebLanguageManager.registerComponent ( basic, getPreviewLanguagePrefix () + "basic" );
+            UILanguageManager.registerComponent ( basic, getPreviewLanguagePrefix () + "basic" );
 
             final JButton group1 = new JButton ();
             group1.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
-            WebLanguageManager.registerComponent ( group1, getPreviewLanguagePrefix () + "group1" );
+            UILanguageManager.registerComponent ( group1, getPreviewLanguagePrefix () + "group1" );
 
             final JButton group2 = new JButton ();
             group2.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
-            WebLanguageManager.registerComponent ( group2, getPreviewLanguagePrefix () + "group2" );
+            UILanguageManager.registerComponent ( group2, getPreviewLanguagePrefix () + "group2" );
 
             final JButton group3 = new JButton ();
             group3.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
-            WebLanguageManager.registerComponent ( group3, getPreviewLanguagePrefix () + "group3" );
+            UILanguageManager.registerComponent ( group3, getPreviewLanguagePrefix () + "group3" );
 
             final JButton icon = new JButton ( WebLookAndFeel.getIcon ( 16 ) );
             icon.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
-            WebLanguageManager.registerComponent ( icon, getPreviewLanguagePrefix () + "icon" );
+            UILanguageManager.registerComponent ( icon, getPreviewLanguagePrefix () + "icon" );
 
             return CollectionUtils.asList ( basic, new GroupPane ( group1, group2, group3 ), icon );
         }

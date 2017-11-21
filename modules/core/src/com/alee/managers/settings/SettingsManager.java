@@ -25,7 +25,6 @@ import com.alee.utils.ReflectUtils;
 import com.alee.utils.XmlUtils;
 import com.alee.utils.swing.WebTimer;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,20 +36,19 @@ import java.util.Map;
 
 /**
  * This manager allows you to quickly and easily save any serializable data into settings files using simple XML format.
- * <p>
+ *
  * You can define settings group file name (they are equal to the SettingsGroup name and should be unique), its location on local or
  * remote drive and each separate property key. Any amount of properties could be stored in each group. Also there are some additional
  * manager settings that allows you to configure SettingsManager to work the way you want it to. The rest of the work is done by the
  * SettingsManager - it decides where, when and how to save the settings files.
- * <p>
- * Settings data aliasing (see XStream documentation and XmlUtils class) or SettingsGroup file location changes should be done before
- * requesting any of the settings, preferably right at the application startup. Otherwise data might not be properly read and settings will
- * appear empty.
+ *
+ * Settings data aliasing (see XStream documentation and {@link XmlUtils} class) or SettingsGroup file location changes should be done
+ * before requesting any of the settings, preferably right at the application startup. Otherwise data might not be properly read and
+ * settings will appear empty.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
- * @see com.alee.managers.settings.ComponentSettingsManager
- * @see com.alee.utils.XmlUtils
+ * @see XmlUtils
  */
 
 public final class SettingsManager
@@ -172,9 +170,6 @@ public final class SettingsManager
             XmlUtils.processAnnotations ( SettingsGroupState.class );
             XmlUtils.processAnnotations ( ReadState.class );
 
-            // Initializing sub-manager
-            ComponentSettingsManager.initialize ();
-
             // Updating initialization mark
             initialized = true;
         }
@@ -198,282 +193,6 @@ public final class SettingsManager
     public static Map<String, SettingsGroup> getLoadedGroupsMap ()
     {
         return groups;
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     * <p>
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component component to register
-     * @param key       component settings key
-     */
-    public static void registerComponent ( final JComponent component, final String key )
-    {
-        registerComponent ( component, key, ( Object ) null );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     * <p>
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component         component to register
-     * @param key               component settings key
-     * @param defaultValueClass component default value class
-     * @param <T>               default value type
-     * @see DefaultValue
-     */
-    public static <T extends DefaultValue> void registerComponent ( final JComponent component, final String key,
-                                                                    final Class<T> defaultValueClass )
-    {
-        registerComponent ( component, key, getDefaultValue ( defaultValueClass ) );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     * <p>
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component    component to register
-     * @param key          component settings key
-     * @param defaultValue component default value
-     */
-    public static void registerComponent ( final JComponent component, final String key, final Object defaultValue )
-    {
-        registerComponent ( component, defaultSettingsGroup, key, defaultValue );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     * <p>
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component component to register
-     * @param group     component settings group
-     * @param key       component settings key
-     */
-    public static void registerComponent ( final JComponent component, final String group, final String key )
-    {
-        registerComponent ( component, group, key, ( Object ) null );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     * <p>
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component         component to register
-     * @param group             component settings group
-     * @param key               component settings key
-     * @param defaultValueClass component default value class
-     * @param <T>               default value type
-     * @see DefaultValue
-     */
-    public static <T extends DefaultValue> void registerComponent ( final JComponent component, final String group, final String key,
-                                                                    final Class<T> defaultValueClass )
-    {
-        registerComponent ( component, group, key, getDefaultValue ( defaultValueClass ) );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     * <p>
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component    component to register
-     * @param group        component settings group
-     * @param key          component settings key
-     * @param defaultValue component default value
-     */
-    public static void registerComponent ( final JComponent component, final String group, final String key, final Object defaultValue )
-    {
-        registerComponent ( component, group, key, defaultValue, true, true );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     * <p>
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component            component to register
-     * @param key                  component settings key
-     * @param loadInitialSettings  whether to load initial available settings into the component or not
-     * @param applySettingsChanges whether to apply settings changes to the component or not
-     */
-    public static void registerComponent ( final JComponent component, final String key, final boolean loadInitialSettings,
-                                           final boolean applySettingsChanges )
-    {
-        registerComponent ( component, key, null, loadInitialSettings, applySettingsChanges );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     * <p>
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component            component to register
-     * @param key                  component settings key
-     * @param defaultValueClass    component default value class
-     * @param loadInitialSettings  whether to load initial available settings into the component or not
-     * @param applySettingsChanges whether to apply settings changes to the component or not
-     * @param <T>                  default value type
-     * @see DefaultValue
-     */
-    public static <T extends DefaultValue> void registerComponent ( final JComponent component, final String key,
-                                                                    final Class<T> defaultValueClass, final boolean loadInitialSettings,
-                                                                    final boolean applySettingsChanges )
-    {
-        registerComponent ( component, key, getDefaultValue ( defaultValueClass ), loadInitialSettings, applySettingsChanges );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     * <p>
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component            component to register
-     * @param key                  component settings key
-     * @param defaultValue         component default value
-     * @param loadInitialSettings  whether to load initial available settings into the component or not
-     * @param applySettingsChanges whether to apply settings changes to the component or not
-     */
-    public static void registerComponent ( final JComponent component, final String key, final Object defaultValue,
-                                           final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        registerComponent ( component, defaultSettingsGroup, key, defaultValue, loadInitialSettings, applySettingsChanges );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     * <p>
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component            component to register
-     * @param group                component settings group
-     * @param key                  component settings key
-     * @param defaultValueClass    component default value class
-     * @param loadInitialSettings  whether to load initial available settings into the component or not
-     * @param applySettingsChanges whether to apply settings changes to the component or not
-     * @param <T>                  default value type
-     * @see DefaultValue
-     */
-    public static <T extends DefaultValue> void registerComponent ( final JComponent component, final String group, final String key,
-                                                                    final Class<T> defaultValueClass, final boolean loadInitialSettings,
-                                                                    final boolean applySettingsChanges )
-    {
-        registerComponent ( component, group, key, getDefaultValue ( defaultValueClass ), loadInitialSettings, applySettingsChanges );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     * <p>
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component            component to register
-     * @param group                component settings group
-     * @param key                  component settings key
-     * @param defaultValue         component default value
-     * @param loadInitialSettings  whether to load initial available settings into the component or not
-     * @param applySettingsChanges whether to apply settings changes to the component or not
-     */
-    public static void registerComponent ( final JComponent component, final String group, final String key, final Object defaultValue,
-                                           final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        ComponentSettingsManager.registerComponent (
-                new SettingsProcessorData ( component, group, key, defaultValue, loadInitialSettings, applySettingsChanges ) );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     * <p>
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component         component to register
-     * @param settingsProcessor component settings processor
-     */
-    public static void registerComponent ( final JComponent component, final SettingsProcessor settingsProcessor )
-    {
-        ComponentSettingsManager.registerComponent ( component, settingsProcessor );
-    }
-
-    /**
-     * Unregisters component from settings auto-save.
-     *
-     * @param component component to unregister
-     */
-    public static void unregisterComponent ( final JComponent component )
-    {
-        ComponentSettingsManager.unregisterComponent ( component );
-    }
-
-    /**
-     * Loads saved settings into the component if it is registered.
-     *
-     * @param component component registered for settings auto-save
-     */
-    public static void loadComponentSettings ( final JComponent component )
-    {
-        ComponentSettingsManager.loadSettings ( component );
-    }
-
-    /**
-     * Saves component settings.
-     *
-     * @param component component registered for settings auto-save
-     */
-    public static void saveComponentSettings ( final JComponent component )
-    {
-        ComponentSettingsManager.saveSettings ( component );
-    }
-
-    /**
-     * Registers specified settings processor class for the specified component type.
-     *
-     * @param componentType     component type
-     * @param settingsProcessor settings processor class
-     * @param <T>               settings processor type
-     */
-    public static <T extends SettingsProcessor> void registerSettingsProcessor ( final Class<? extends JComponent> componentType,
-                                                                                 final Class<T> settingsProcessor )
-    {
-        ComponentSettingsManager.registerSettingsProcessor ( componentType, settingsProcessor );
     }
 
     /**
@@ -1095,9 +814,6 @@ public final class SettingsManager
         {
             saveSettings ( entry.getKey (), entry.getValue () );
         }
-
-        // Saving all component settings
-        ComponentSettingsManager.saveSettings ();
     }
 
     /**

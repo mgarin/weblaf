@@ -272,7 +272,7 @@ public class WebCalendar extends WebPanel implements LanguageListener
         centerPanel.add ( monthDaysTransition, BorderLayout.CENTER );
 
         // Language listener
-        LanguageManager.addLanguageListener ( this );
+        addLanguageListener ( this );
     }
 
     @Override

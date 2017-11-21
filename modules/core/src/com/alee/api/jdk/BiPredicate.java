@@ -20,7 +20,7 @@ package com.alee.api.jdk;
 /**
  * Represents a predicate (boolean-valued function) of two arguments.
  * This is the two-arity specialization of {@link Predicate}.
- * <p>
+ *
  * This is a custom bi-predicate for JDK6 support.
  *
  * @param <T> first input argument type

@@ -190,8 +190,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     {
         if ( usesFocusedView () )
         {
-            focused = SwingUtils.hasFocusOwner ( component );
-            focusStateTracker = new DefaultFocusTracker ( true )
+            focusStateTracker = new DefaultFocusTracker ( component, true )
             {
                 @Override
                 public void focusChanged ( final boolean focused )
@@ -205,10 +204,11 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                 }
             };
             FocusManager.addFocusTracker ( component, focusStateTracker );
+            this.focused = focusStateTracker.isFocused ();
         }
         else
         {
-            focused = false;
+            this.focused = false;
         }
     }
 
@@ -220,7 +220,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      */
     protected void focusChanged ( final boolean focused )
     {
-        AbstractDecorationPainter.this.focused = focused;
+        this.focused = focused;
         updateDecorationState ();
     }
 
@@ -241,7 +241,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     {
         if ( focusStateTracker != null )
         {
-            FocusManager.removeFocusTracker ( focusStateTracker );
+            FocusManager.removeFocusTracker ( component, focusStateTracker );
             focusStateTracker = null;
             focused = false;
         }
@@ -295,7 +295,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                     }
                 }
             };
-            FocusManager.registerGlobalFocusListener ( inFocusedParentTracker );
+            FocusManager.registerGlobalFocusListener ( component, inFocusedParentTracker );
         }
         else
         {
@@ -376,7 +376,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     {
         if ( inFocusedParentTracker != null )
         {
-            FocusManager.unregisterGlobalFocusListener ( inFocusedParentTracker );
+            FocusManager.unregisterGlobalFocusListener ( component, inFocusedParentTracker );
             inFocusedParentTracker = null;
             inFocusedParent = false;
         }

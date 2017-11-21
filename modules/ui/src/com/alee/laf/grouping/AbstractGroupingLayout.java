@@ -27,8 +27,8 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 /**
  * Abstract {@link com.alee.laf.grouping.GroupingLayout} that contains most basic features for any final implementation.
@@ -335,7 +335,7 @@ public abstract class AbstractGroupingLayout extends AbstractLayoutManager imple
         // Saving child reference
         if ( children == null )
         {
-            children = new WeakHashMap<Component, Pair<String, String>> ( 3 );
+            children = new HashMap<Component, Pair<String, String>> ( 3 );
         }
         children.put ( component, new Pair<String, String> () );
 

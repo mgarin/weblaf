@@ -25,11 +25,11 @@ import com.alee.managers.focus.FocusManager;
 import com.alee.managers.language.DictionaryListener;
 import com.alee.managers.language.LanguageEventMethods;
 import com.alee.managers.language.LanguageListener;
-import com.alee.managers.language.WebLanguageManager;
+import com.alee.managers.language.UILanguageManager;
 import com.alee.managers.settings.DefaultValue;
-import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.settings.UISettingsManager;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -47,7 +47,7 @@ import java.util.Map;
 /**
  * {@link JWindow} extension class.
  * It contains various useful methods to simplify core component usage.
- * <p/>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
@@ -68,7 +68,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
     /**
      * Window focus tracker.
      */
-    protected DefaultFocusTracker focusTracker;
+    protected transient DefaultFocusTracker focusTracker;
 
     /**
      * Creates a window with no specified owner. This window will not be focusable.
@@ -268,24 +268,25 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
 
         // Adding focus tracker for this window
         // It is stored into a separate field to avoid its disposal from memory
-        focusTracker = new DefaultFocusTracker ( true )
+        focusTracker = new DefaultFocusTracker ( getRootPane (), true )
         {
             @Override
-            public boolean isTrackingEnabled ()
+            public boolean isEnabled ()
             {
-                return isShowing () && isCloseOnFocusLoss ();
+                return closeOnFocusLoss && super.isEnabled ();
             }
 
             @Override
             public void focusChanged ( final boolean focused )
             {
-                if ( isCloseOnFocusLoss () && isShowing () && !focused )
+                if ( isEnabled () && !focused )
                 {
+                    // Simply disposing window
                     dispose ();
                 }
             }
         };
-        FocusManager.addFocusTracker ( this, focusTracker );
+        FocusManager.addFocusTracker ( getRootPane (), focusTracker );
     }
 
     @Override
@@ -321,7 +322,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
      */
     public List<Component> getFocusableChildren ()
     {
-        return focusTracker.getCustomChildren ();
+        return focusTracker.getFocusableChildren ();
     }
 
     /**
@@ -331,7 +332,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
      */
     public void addFocusableChild ( final Component child )
     {
-        focusTracker.addCustomChild ( child );
+        focusTracker.addFocusableChild ( child );
     }
 
     /**
@@ -341,7 +342,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
      */
     public void removeFocusableChild ( final Component child )
     {
-        focusTracker.removeCustomChild ( child );
+        focusTracker.removeFocusableChild ( child );
     }
 
     @Override
@@ -499,131 +500,131 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
     @Override
     public void addLanguageListener ( final LanguageListener listener )
     {
-        WebLanguageManager.addLanguageListener ( getRootPane (), listener );
+        UILanguageManager.addLanguageListener ( getRootPane (), listener );
     }
 
     @Override
     public void removeLanguageListener ( final LanguageListener listener )
     {
-        WebLanguageManager.removeLanguageListener ( getRootPane (), listener );
+        UILanguageManager.removeLanguageListener ( getRootPane (), listener );
     }
 
     @Override
     public void removeLanguageListeners ()
     {
-        WebLanguageManager.removeLanguageListeners ( getRootPane () );
+        UILanguageManager.removeLanguageListeners ( getRootPane () );
     }
 
     @Override
     public void addDictionaryListener ( final DictionaryListener listener )
     {
-        WebLanguageManager.addDictionaryListener ( getRootPane (), listener );
+        UILanguageManager.addDictionaryListener ( getRootPane (), listener );
     }
 
     @Override
     public void removeDictionaryListener ( final DictionaryListener listener )
     {
-        WebLanguageManager.removeDictionaryListener ( getRootPane (), listener );
+        UILanguageManager.removeDictionaryListener ( getRootPane (), listener );
     }
 
     @Override
     public void removeDictionaryListeners ()
     {
-        WebLanguageManager.removeDictionaryListeners ( getRootPane () );
+        UILanguageManager.removeDictionaryListeners ( getRootPane () );
     }
 
     @Override
     public void registerSettings ( final String key )
     {
-        SettingsManager.registerComponent ( getRootPane (), key );
+        UISettingsManager.registerComponent ( getRootPane (), key );
     }
 
     @Override
     public <V extends DefaultValue> void registerSettings ( final String key, final Class<V> defaultValueClass )
     {
-        SettingsManager.registerComponent ( getRootPane (), key, defaultValueClass );
+        UISettingsManager.registerComponent ( getRootPane (), key, defaultValueClass );
     }
 
     @Override
     public void registerSettings ( final String key, final Object defaultValue )
     {
-        SettingsManager.registerComponent ( getRootPane (), key, defaultValue );
+        UISettingsManager.registerComponent ( getRootPane (), key, defaultValue );
     }
 
     @Override
     public void registerSettings ( final String group, final String key )
     {
-        SettingsManager.registerComponent ( getRootPane (), group, key );
+        UISettingsManager.registerComponent ( getRootPane (), group, key );
     }
 
     @Override
     public <V extends DefaultValue> void registerSettings ( final String group, final String key, final Class<V> defaultValueClass )
     {
-        SettingsManager.registerComponent ( getRootPane (), group, key, defaultValueClass );
+        UISettingsManager.registerComponent ( getRootPane (), group, key, defaultValueClass );
     }
 
     @Override
     public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
-        SettingsManager.registerComponent ( getRootPane (), group, key, defaultValue );
+        UISettingsManager.registerComponent ( getRootPane (), group, key, defaultValue );
     }
 
     @Override
     public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
-        SettingsManager.registerComponent ( getRootPane (), key, loadInitialSettings, applySettingsChanges );
+        UISettingsManager.registerComponent ( getRootPane (), key, loadInitialSettings, applySettingsChanges );
     }
 
     @Override
     public <V extends DefaultValue> void registerSettings ( final String key, final Class<V> defaultValueClass,
                                                             final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
-        SettingsManager.registerComponent ( getRootPane (), key, defaultValueClass, loadInitialSettings, applySettingsChanges );
+        UISettingsManager.registerComponent ( getRootPane (), key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
 
     @Override
     public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
                                    final boolean applySettingsChanges )
     {
-        SettingsManager.registerComponent ( getRootPane (), key, defaultValue, loadInitialSettings, applySettingsChanges );
+        UISettingsManager.registerComponent ( getRootPane (), key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
 
     @Override
     public <V extends DefaultValue> void registerSettings ( final String group, final String key, final Class<V> defaultValueClass,
                                                             final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
-        SettingsManager.registerComponent ( getRootPane (), group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
+        UISettingsManager.registerComponent ( getRootPane (), group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
 
     @Override
     public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
                                    final boolean applySettingsChanges )
     {
-        SettingsManager.registerComponent ( getRootPane (), group, key, defaultValue, loadInitialSettings, applySettingsChanges );
+        UISettingsManager.registerComponent ( getRootPane (), group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
 
     @Override
     public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
-        SettingsManager.registerComponent ( getRootPane (), settingsProcessor );
+        UISettingsManager.registerComponent ( getRootPane (), settingsProcessor );
     }
 
     @Override
     public void unregisterSettings ()
     {
-        SettingsManager.unregisterComponent ( getRootPane () );
+        UISettingsManager.unregisterComponent ( getRootPane () );
     }
 
     @Override
     public void loadSettings ()
     {
-        SettingsManager.loadComponentSettings ( getRootPane () );
+        UISettingsManager.loadSettings ( getRootPane () );
     }
 
     @Override
     public void saveSettings ()
     {
-        SettingsManager.saveComponentSettings ( getRootPane () );
+        UISettingsManager.saveSettings ( getRootPane () );
     }
 
     @Override

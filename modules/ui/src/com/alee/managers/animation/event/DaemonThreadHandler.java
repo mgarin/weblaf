@@ -23,7 +23,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Event handler that sends tasks into separate daemon thread.
+ * {@link EventHandler} that sends tasks into separate daemon thread.
  *
  * @author Mikle Garin
  */
@@ -41,7 +41,7 @@ public final class DaemonThreadHandler implements EventHandler
     public DaemonThreadHandler ()
     {
         super ();
-        executor = Executors.newSingleThreadExecutor ( new DaemonThreadFactory () );
+        executor = Executors.newSingleThreadExecutor ( new DaemonThreadFactory ( "DaemonThreadHandler" ) );
     }
 
     @Override

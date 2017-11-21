@@ -7,7 +7,6 @@
 
         <!-- Path content panel -->
         <style type="panel" id="content" extends="transparent">
-
             <painter>
                 <decorations>
                     <decoration>

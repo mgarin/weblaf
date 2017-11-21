@@ -152,9 +152,9 @@ public final class ComponentStyle implements Serializable, Cloneable
     }
 
     /**
-     * Returns component style ID.
+     * Returns component style identifier.
      *
-     * @return component style ID
+     * @return component style identifier
      */
     public String getId ()
     {
@@ -162,9 +162,10 @@ public final class ComponentStyle implements Serializable, Cloneable
     }
 
     /**
-     * Returns complete style ID.
+     * Returns complete style identifier.
+     * Not that it will also include types of each of the parents.
      *
-     * @return complete style ID
+     * @return complete style identifier
      * @see StyleId#getCompleteId()
      */
     public String getCompleteId ()
@@ -175,6 +176,7 @@ public final class ComponentStyle implements Serializable, Cloneable
 
     /**
      * Returns path for complete style ID.
+     * Not that it will also include types of each of the parents.
      *
      * @return path for complete style ID
      * @see StyleId#getPathId(JComponent)

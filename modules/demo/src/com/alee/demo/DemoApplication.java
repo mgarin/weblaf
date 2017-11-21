@@ -116,6 +116,15 @@ public final class DemoApplication extends WebFrame
     }
 
     /**
+     * Displays demo application.
+     */
+    public void display ()
+    {
+        initialize ();
+        setVisible ( true );
+    }
+
+    /**
      * Initializes demo application content.
      */
     private void initialize ()
@@ -299,24 +308,6 @@ public final class DemoApplication extends WebFrame
     public void open ( final Example example )
     {
         examplesPane.openDocument ( ExampleData.forExample ( example ) );
-    }
-
-    /**
-     * Displays demo application.
-     */
-    public void display ()
-    {
-        SwingUtils.invokeLater ( new Runnable ()
-        {
-            @Override
-            public void run ()
-            {
-                initialize ();
-                setVisible ( true );
-
-                //                new HeatMap ().display ( DemoApplication.getInstance () );
-            }
-        } );
     }
 
     /**

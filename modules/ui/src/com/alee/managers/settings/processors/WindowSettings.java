@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.settings.processors.data;
+package com.alee.managers.settings.processors;
 
 import com.alee.api.clone.Clone;
 import com.alee.api.merge.Mergeable;

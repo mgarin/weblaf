@@ -36,9 +36,8 @@ import java.io.Serializable;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
  * @see com.alee.managers.settings.SettingsManager
- * @see com.alee.managers.settings.SettingsManager#registerSettingsProcessor(Class, Class)
- * @see com.alee.managers.settings.ComponentSettingsManager
- * @see com.alee.managers.settings.ComponentSettingsManager#registerSettingsProcessor(Class, Class)
+ * @see UISettingsManager
+ * @see UISettingsManager#registerSettingsProcessor(Class, Class)
  */
 
 public abstract class SettingsProcessor<C extends JComponent, V extends Serializable>

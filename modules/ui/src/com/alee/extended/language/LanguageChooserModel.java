@@ -21,8 +21,10 @@ import com.alee.laf.combobox.WebComboBoxModel;
 import com.alee.managers.language.*;
 import com.alee.managers.language.data.Dictionary;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.collection.ImmutableList;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -46,7 +48,28 @@ public class LanguageChooserModel extends WebComboBoxModel<Locale> implements La
      */
     public LanguageChooserModel ()
     {
+        this ( new ImmutableList<Locale> () );
+    }
+
+    /**
+     * Constructs new {@link LanguageChooserModel}.
+     *
+     * @param locales {@link Locale}s to limit choice to
+     */
+    public LanguageChooserModel ( final Locale... locales )
+    {
+        this ( new ImmutableList<Locale> ( locales ) );
+    }
+
+    /**
+     * Constructs new {@link LanguageChooserModel}.
+     *
+     * @param locales {@link Collection} of {@link Locale}s to limit choice to
+     */
+    public LanguageChooserModel ( final Collection<Locale> locales )
+    {
         super ();
+        this.locales = new ImmutableList<Locale> ( locales );
         updateLocales ();
     }
 
@@ -61,13 +84,24 @@ public class LanguageChooserModel extends WebComboBoxModel<Locale> implements La
     }
 
     /**
-     * Sets {@link List} of {@link Locale}s to limit choice to.
+     * Sets {@link Locale}s to limit choice to.
      *
-     * @param locales new {@link List} of {@link Locale}s to limit choice to
+     * @param locales new {@link Locale}s to limit choice to
      */
-    public void setLocales ( final List<Locale> locales )
+    public void setLocales ( final Locale... locales )
     {
-        this.locales = locales;
+        this.locales = new ImmutableList<Locale> ( locales );
+        updateLocales ();
+    }
+
+    /**
+     * Sets {@link Collection} of {@link Locale}s to limit choice to.
+     *
+     * @param locales new {@link Collection} of {@link Locale}s to limit choice to
+     */
+    public void setLocales ( final Collection<Locale> locales )
+    {
+        this.locales = new ImmutableList<Locale> ( locales );
         updateLocales ();
     }
 

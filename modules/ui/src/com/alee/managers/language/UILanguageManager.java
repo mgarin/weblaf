@@ -17,21 +17,24 @@
 
 package com.alee.managers.language;
 
+import com.alee.api.jdk.BiConsumer;
 import com.alee.managers.language.data.Dictionary;
 import com.alee.managers.language.updaters.*;
 import com.alee.utils.ArrayUtils;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.WeakComponentData;
+import com.alee.utils.swing.WeakComponentDataList;
 
 import javax.swing.*;
 import java.awt.*;
-import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
 
 /**
- * {@link WebLanguageManager} is an extension over {@link LanguageManager} that offers extensive Swing components translation support.
- * {@link WebLanguageManager} provides various ways of translating components that are registered within this manager and also dynamically
+ * {@link UILanguageManager} is an extension over {@link LanguageManager} that offers extensive Swing components translation support.
+ * {@link UILanguageManager} provides various ways of translating components that are registered within this manager and also dynamically
  * updating their translation upon {@link Language} or {@link Dictionary} changes.
  *
  * @author Mikle Garin
@@ -39,43 +42,36 @@ import java.util.List;
  * @see LanguageManager
  * @see Language
  * @see Dictionary
+ * @see LanguageUpdater
  */
 
-public final class WebLanguageManager
+public final class UILanguageManager
 {
     /**
-     * Key used to store custom {@link LanguageUpdater} within {@link JComponent}.
-     */
-    public static final String COMPONENT_UPDATER_KEY = "language.updater";
-
-    /**
-     * Key used to store custom {@link LanguageListener}s within {@link JComponent}.
-     */
-    public static final String COMPONENT_LANGUAGE_LISTENERS_KEY = "language.listener";
-
-    /**
-     * Key used to store custom {@link DictionaryListener}s within {@link JComponent}.
-     */
-    public static final String COMPONENT_DICTIONARY_LISTENERS_KEY = "dictionary.listener";
-
-    /**
-     * Unknown language icon.
+     * Unknown {@link Locale} icon.
+     * todo Move into {@link com.alee.managers.icon.IconManager}
      *
      * @see #getLocaleIcon(Locale)
      */
     private static final ImageIcon UNKNOWN_LANGUAGE = new ImageIcon ( LanguageManager.class.getResource ( "icons/unknown.png" ) );
 
     /**
-     * Language icons.
-     * Supported language icons can be loaded without any effort as they are included in WebLaF library.
-     * Custom language icons can be provided from the code using setLanguageIcon(String, ImageIcon) method.
+     * {@link Locale} icons.
+     *
+     * Supported icons can be loaded without any effort as they are included in WebLaF library:
+     * - {@link #getLanguageIcon(Language)}
+     * - {@link #getLocaleIcon(Locale)}
+     *
+     * Custom icons can be provided from the code using either of two methods:
+     * - {@link #setLanguageIcon(Language, Icon)}
+     * - {@link #setLocaleIcon(Locale, Icon)}
      *
      * @see #getLanguageIcon(Language)
      * @see #getLocaleIcon(Locale)
      * @see #setLanguageIcon(Language, Icon)
      * @see #setLocaleIcon(Locale, Icon)
      */
-    private static final Map<String, Icon> languageIcons = new HashMap<String, Icon> ();
+    private static final Map<String, Icon> localeIcons = new HashMap<String, Icon> ();
 
     /**
      * Whether or not text-containing components should check passed text for translation or not.
@@ -93,18 +89,8 @@ public final class WebLanguageManager
      * @see #unregisterComponent(JComponent)
      * @see #isRegisteredComponent(JComponent)
      */
-    private static final Map<JComponent, String> components = new WeakHashMap<JComponent, String> ();
-
-    /**
-     * Object data provided with component language key.
-     * It is used to format the final translation string.
-     *
-     * @see #registerComponent(JComponent, String, Object...)
-     * @see #unregisterComponent(JComponent)
-     * @see #updateComponent(JComponent, Object...)
-     * @see #updateComponent(JComponent, String, Object...)
-     */
-    private static final Map<JComponent, Object[]> componentsData = new WeakHashMap<JComponent, Object[]> ();
+    private static final WeakComponentData<JComponent, TranslationKey> components =
+            new WeakComponentData<JComponent, TranslationKey> ( "WebLanguageManager.TranslationKey", 100 );
 
     /**
      * Special comparator for sorting LanguageUpdaters list.
@@ -131,36 +117,41 @@ public final class WebLanguageManager
      * @see #unregisterLanguageUpdater(JComponent)
      * @see #getLanguageUpdater(JComponent)
      */
-    private static final Map<JComponent, WeakReference<LanguageUpdater>> customUpdaters =
-            new WeakHashMap<JComponent, WeakReference<LanguageUpdater>> ();
+    private static final WeakComponentData<JComponent, LanguageUpdater> customUpdaters =
+            new WeakComponentData<JComponent, LanguageUpdater> ( "WebLanguageManager.LanguageUpdater", 2 );
 
     /**
-     * Language updaters cache by specific class types.
-     * Used to improve LanguageUpdater retrieval speed for language requests.
-     * This cache gets fully updated when any language updater is added or removed.
+     * {@link LanguageUpdater}s cached by specific class types.
+     * Used to improve {@link LanguageUpdater} retrieval speed for language requests.
+     * This cache gets fully updated when any {@link LanguageUpdater} is added or removed.
+     *
+     * @see LanguageUpdater
+     * @see #getLanguageUpdater(JComponent)
+     * @see #getLanguageUpdater(Class)
      */
     private static final Map<Class, LanguageUpdater> updatersCache = new HashMap<Class, LanguageUpdater> ();
 
     /**
-     * {@link Map} of {@link JComponent} containing {@link LanguageListener}s tied to them.
-     * {@link Boolean} is simply stored to indicate component
+     * {@link LanguageListener}s registered for specified {@link JComponent}s.
      *
      * @see LanguageListener
      * @see #addLanguageListener(JComponent, LanguageListener)
      * @see #removeLanguageListener(JComponent, LanguageListener)
      * @see #removeLanguageListeners(JComponent)
      */
-    private static final Map<JComponent, Boolean> componentLanguageListeners = new WeakHashMap<JComponent, Boolean> ( 3 );
+    private static final WeakComponentDataList<JComponent, LanguageListener> componentLanguageListeners =
+            new WeakComponentDataList<JComponent, LanguageListener> ( "WebLanguageManager.LanguageListener", 50 );
 
     /**
-     * {@link Map} of {@link JComponent} containing {@link LanguageListener}s tied to them.
+     * {@link DictionaryListener}s registered for specified {@link JComponent}s.
      *
-     * @see LanguageListener
-     * @see #addLanguageListener(JComponent, LanguageListener)
-     * @see #removeLanguageListener(JComponent, LanguageListener)
-     * @see #removeLanguageListeners(JComponent)
+     * @see DictionaryListener
+     * @see #addDictionaryListener(JComponent, DictionaryListener)
+     * @see #removeDictionaryListener(JComponent, DictionaryListener)
+     * @see #removeDictionaryListeners(JComponent)
      */
-    private static final Map<JComponent, Boolean> componentDictionaryListeners = new WeakHashMap<JComponent, Boolean> ( 3 );
+    private static final WeakComponentDataList<JComponent, DictionaryListener> componentDictionaryListeners =
+            new WeakComponentDataList<JComponent, DictionaryListener> ( "WebLanguageManager.LanguageListener", 5 );
 
     /**
      * Manager initialization mark.
@@ -259,7 +250,7 @@ public final class WebLanguageManager
             } );
 
             // Default WebLaF dictionary
-            LanguageManager.addDictionary ( new Dictionary ( WebLanguageManager.class, "resources/ui-language.xml" ) );
+            LanguageManager.addDictionary ( new Dictionary ( UILanguageManager.class, "resources/ui-language.xml" ) );
         }
     }
 
@@ -318,19 +309,19 @@ public final class WebLanguageManager
     public static Icon getLocaleIcon ( final Locale locale )
     {
         final String key = LanguageUtils.toString ( locale );
-        if ( languageIcons.containsKey ( key ) )
+        if ( localeIcons.containsKey ( key ) )
         {
-            return languageIcons.get ( key );
+            return localeIcons.get ( key );
         }
         else
         {
             ImageIcon icon;
             try
             {
-                URL res = WebLanguageManager.class.getResource ( "icons/" + key + ".png" );
+                URL res = UILanguageManager.class.getResource ( "icons/" + key + ".png" );
                 if ( res == null )
                 {
-                    res = WebLanguageManager.class.getResource ( "icons/" + locale.getLanguage () + ".png" );
+                    res = UILanguageManager.class.getResource ( "icons/" + locale.getLanguage () + ".png" );
                 }
                 icon = new ImageIcon ( res );
             }
@@ -338,7 +329,7 @@ public final class WebLanguageManager
             {
                 icon = UNKNOWN_LANGUAGE;
             }
-            languageIcons.put ( key, icon );
+            localeIcons.put ( key, icon );
             return icon;
         }
     }
@@ -365,7 +356,7 @@ public final class WebLanguageManager
     public static Icon setLocaleIcon ( final Locale locale, final Icon icon )
     {
         final String key = LanguageUtils.toString ( locale );
-        return languageIcons.put ( key, icon );
+        return localeIcons.put ( key, icon );
     }
 
     /**
@@ -418,11 +409,7 @@ public final class WebLanguageManager
      */
     public static void registerLanguageUpdater ( final JComponent component, final LanguageUpdater updater )
     {
-        synchronized ( updaters )
-        {
-            component.putClientProperty ( COMPONENT_UPDATER_KEY, updater );
-            customUpdaters.put ( component, new WeakReference<LanguageUpdater> ( updater ) );
-        }
+        customUpdaters.set ( component, updater );
     }
 
     /**
@@ -432,11 +419,7 @@ public final class WebLanguageManager
      */
     public static void unregisterLanguageUpdater ( final JComponent component )
     {
-        synchronized ( updaters )
-        {
-            component.putClientProperty ( COMPONENT_UPDATER_KEY, null );
-            customUpdaters.remove ( component );
-        }
+        customUpdaters.clear ( component );
     }
 
     /**
@@ -449,62 +432,60 @@ public final class WebLanguageManager
      */
     public static LanguageUpdater getLanguageUpdater ( final JComponent component )
     {
-        synchronized ( updaters )
+        final LanguageUpdater updater;
+        final LanguageUpdater customUpdater = customUpdaters.get ( component );
+        if ( customUpdater != null )
         {
-            // Checking custom updaters first
-            final WeakReference<LanguageUpdater> updaterReference = customUpdaters.get ( component );
-            final LanguageUpdater customUpdater = updaterReference != null ? updaterReference.get () : null;
-            if ( customUpdater != null )
+            // Found custom updater
+            updater = customUpdater;
+        }
+        else
+        {
+            synchronized ( updaters )
             {
-                return customUpdater;
-            }
-
-            // Retrieving cached updater
-            LanguageUpdater updater = updatersCache.get ( component.getClass () );
-
-            // Checking found updater
-            if ( updater != null )
-            {
-                // Returning cached updater
-                return updater;
-            }
-            else
-            {
-                // Searching for a suitable component updater if none cached yet
-                final List<LanguageUpdater> foundUpdaters = new ArrayList<LanguageUpdater> ();
-                for ( final LanguageUpdater lu : updaters )
+                final LanguageUpdater cachedUpdater = updatersCache.get ( component.getClass () );
+                if ( cachedUpdater != null )
                 {
-                    if ( lu.getComponentClass ().isInstance ( component ) )
-                    {
-                        foundUpdaters.add ( lu );
-                    }
-                }
-
-                // Determining the best updater according to class hierarchy
-                if ( foundUpdaters.size () == 1 )
-                {
-                    // Single updater
-                    updater = foundUpdaters.get ( 0 );
-                }
-                else if ( foundUpdaters.size () > 1 )
-                {
-                    // More than one updater
-                    Collections.sort ( foundUpdaters, languageUpdaterComparator );
-                    updater = foundUpdaters.get ( 0 );
+                    // Found cached updater
+                    updater = cachedUpdater;
                 }
                 else
                 {
-                    // Throw an exception in case no LanguageUpdater found
-                    // Usually this shouldn't happen unless you try to register an unsupported component
-                    throw new RuntimeException ( "Unable to find LanguageUpdater for component: " + component );
+                    // Searching for a suitable component updater if none cached yet
+                    final List<LanguageUpdater> foundUpdaters = new ArrayList<LanguageUpdater> ();
+                    for ( final LanguageUpdater lu : updaters )
+                    {
+                        if ( lu.getComponentClass ().isInstance ( component ) )
+                        {
+                            foundUpdaters.add ( lu );
+                        }
+                    }
+
+                    // Determining the best updater according to class hierarchy
+                    if ( foundUpdaters.size () == 1 )
+                    {
+                        // Single updater
+                        updater = foundUpdaters.get ( 0 );
+                    }
+                    else if ( foundUpdaters.size () > 1 )
+                    {
+                        // More than one updater
+                        Collections.sort ( foundUpdaters, languageUpdaterComparator );
+                        updater = foundUpdaters.get ( 0 );
+                    }
+                    else
+                    {
+                        // Throw an exception in case no LanguageUpdater found
+                        // Usually this shouldn't happen unless you try to register an unsupported component
+                        throw new RuntimeException ( "Unable to find LanguageUpdater for component: " + component );
+                    }
+
+                    // Caching resolved updater
+                    updatersCache.put ( component.getClass (), updater );
                 }
-
-                // Caching resolved updater
-                updatersCache.put ( component.getClass (), updater );
-
-                return updater;
             }
         }
+        return updater;
     }
 
     /**
@@ -650,18 +631,11 @@ public final class WebLanguageManager
             data = null;
         }
 
-        // Saving component
-        synchronized ( components )
-        {
-            components.put ( component, key );
-            if ( data != null )
-            {
-                componentsData.put ( component, data );
-            }
-        }
+        // Registering component
+        components.set ( component, TranslationKey.of ( key, data ) );
 
         // Updating component language
-        updateComponent ( component, key );
+        updateComponent ( component );
     }
 
     /**
@@ -674,14 +648,8 @@ public final class WebLanguageManager
         // Must be initialized
         mustBeInitialized ();
 
-        synchronized ( components )
-        {
-            if ( components.containsKey ( component ) )
-            {
-                components.remove ( component );
-                componentsData.remove ( component );
-            }
-        }
+        // Unregistering component
+        components.clear ( component );
     }
 
     /**
@@ -696,10 +664,7 @@ public final class WebLanguageManager
         mustBeInitialized ();
 
         // Checking whether or not component is registered
-        synchronized ( components )
-        {
-            return components.containsKey ( component );
-        }
+        return components.contains ( component );
     }
 
     /**
@@ -714,10 +679,8 @@ public final class WebLanguageManager
         mustBeInitialized ();
 
         // Retrieving registered component key
-        synchronized ( components )
-        {
-            return components.get ( component );
-        }
+        final TranslationKey translationKey = components.get ( component );
+        return translationKey != null ? translationKey.getKey () : null;
     }
 
     /**
@@ -729,13 +692,14 @@ public final class WebLanguageManager
         mustBeInitialized ();
 
         // Updating all registered components
-        synchronized ( components )
+        components.forEach ( new BiConsumer<JComponent, TranslationKey> ()
         {
-            for ( final Map.Entry<JComponent, String> entry : components.entrySet () )
+            @Override
+            public void accept ( final JComponent component, final TranslationKey translationKey )
             {
-                updateComponent ( entry.getKey (), entry.getValue () );
+                updateComponent ( component );
             }
-        }
+        } );
     }
 
     /**
@@ -749,23 +713,24 @@ public final class WebLanguageManager
         mustBeInitialized ();
 
         // Updating components registered for provided keys
-        synchronized ( components )
+        components.forEach ( new BiConsumer<JComponent, TranslationKey> ()
         {
-            for ( final Map.Entry<JComponent, String> entry : components.entrySet () )
+            @Override
+            public void accept ( final JComponent component, final TranslationKey translationKey )
             {
-                if ( keys.contains ( entry.getValue () ) )
+                if ( keys.contains ( translationKey.getKey () ) )
                 {
-                    updateComponent ( entry.getKey (), entry.getValue () );
+                    updateComponent ( component );
                 }
             }
-        }
+        } );
     }
 
     /**
-     * Forces component language update.
+     * Forces {@link JComponent} language update.
      *
-     * @param component component to update
-     * @param data      component language data
+     * @param component {@link JComponent} to update
+     * @param data      new formatting data
      */
     public static void updateComponent ( final JComponent component, final Object... data )
     {
@@ -773,50 +738,122 @@ public final class WebLanguageManager
         mustBeInitialized ();
 
         // Checking that component is registered
-        final String key = components.get ( component );
-        if ( key != null )
+        if ( isRegisteredComponent ( component ) )
         {
-            // Updating component language
-            updateComponent ( component, key, data );
+            // Retrieving actual data for update
+            final TranslationKey translationKey = components.get ( component );
+            final Object[] actualData = getActualData ( component, translationKey.getKey (), data );
+
+            // Updating component translation data
+            translationKey.setData ( actualData );
+
+            // Checking component updater existence
+            final LanguageUpdater updater = getLanguageUpdater ( component );
+            if ( updater != null )
+            {
+                // Updating component language
+                updater.update ( component, LM.getLanguage (), translationKey.getKey (), translationKey.getData () );
+            }
+            else
+            {
+                // Missing language updater
+                throw new LanguageException ( "Component LanguageUpdater is missing: " + component );
+            }
+        }
+        else
+        {
+            // Premature update call
+            throw new LanguageException ( "Component is not registered yet: " + component );
         }
     }
 
     /**
-     * Forces component language update.
+     * Forces {@link JComponent} language update.
      *
-     * @param component component to update
-     * @param key       component language key
-     * @param data      component language data
+     * @param component {@link JComponent} to update
+     * @param key       new language key
+     * @param data      new formatting data
      */
     public static void updateComponent ( final JComponent component, final String key, final Object... data )
     {
         // Must be initialized
         mustBeInitialized ();
 
-        // Checking component updater existence
-        final LanguageUpdater updater = getLanguageUpdater ( component );
-        if ( updater != null )
+        // Checking that component is registered
+        if ( isRegisteredComponent ( component ) )
         {
-            // Retrieving actual component data
-            final Object[] actualData;
-            synchronized ( components )
+            // Retrieving actual data for update
+            final Object[] actualData = getActualData ( component, key, data );
+
+            // Updating component translation settings
+            final TranslationKey translationKey = TranslationKey.of ( key, actualData );
+            components.set ( component, translationKey );
+
+            // Checking component updater existence
+            final LanguageUpdater updater = getLanguageUpdater ( component );
+            if ( updater != null )
             {
-                if ( ArrayUtils.notEmpty ( data ) )
+                // Updating component language
+                updater.update ( component, LM.getLanguage (), translationKey.getKey (), translationKey.getData () );
+            }
+            else
+            {
+                // Missing language updater
+                throw new LanguageException ( "Component LanguageUpdater is missing: " + component );
+            }
+        }
+        else
+        {
+            // Premature update call
+            throw new LanguageException ( "Component is not registered yet: " + component );
+        }
+    }
+
+    /**
+     * Returns actual {@link JComponent} translation data based on its translation settings.
+     *
+     * @param component {@link JComponent} to get actual data for
+     * @param key       translation key
+     * @param data      translation data
+     * @return actual {@link JComponent} translation data based on its translation settings
+     */
+    private static Object[] getActualData ( final JComponent component, final String key, final Object[] data )
+    {
+        final Object[] actualData;
+        final TranslationKey oldKey = components.get ( component );
+        if ( CompareUtils.equals ( oldKey.getKey (), key ) )
+        {
+            // When keys are identical we want to compare passed data
+            // This is just an extra layer of checks to indentify issues with data usage
+            if ( ArrayUtils.notEmpty ( data ) )
+            {
+                // Checking sizes of new and old data arrays
+                if ( !ArrayUtils.isEmpty ( oldKey.getData () ) && oldKey.getData ().length == data.length )
                 {
-                    // Saving new component data
-                    componentsData.put ( component, data );
+                    // Everything is good, data size is the same
                     actualData = data;
                 }
                 else
                 {
-                    // Retrieving previously provided component data
-                    actualData = componentsData.get ( component );
+                    // Data size has changed, this is not really acceptable without key change
+                    // This identifies an issue with updating component translation and therefore exception is thrown
+                    throw new LanguageException ( "Translation" );
                 }
             }
-
-            // Updating component language
-            updater.update ( component, LM.getLanguage (), key, actualData );
+            else
+            {
+                // Whenever new data is empty we can use old data
+                // This is important to avoid issues with the vararg method usage and for general convenience
+                actualData = oldKey.getData ();
+            }
         }
+        else
+        {
+            // New key always should bring new data
+            // We will accept even empty data here
+            actualData = data;
+        }
+        return actualData;
     }
 
     /**
@@ -830,17 +867,7 @@ public final class WebLanguageManager
      */
     public static void addLanguageListener ( final JComponent component, final LanguageListener listener )
     {
-        synchronized ( componentLanguageListeners )
-        {
-            List<LanguageListener> listeners = ( List<LanguageListener> ) component.getClientProperty ( COMPONENT_LANGUAGE_LISTENERS_KEY );
-            if ( listeners == null )
-            {
-                listeners = new ArrayList<LanguageListener> ( 1 );
-                component.putClientProperty ( COMPONENT_LANGUAGE_LISTENERS_KEY, listeners );
-            }
-            listeners.add ( listener );
-            componentLanguageListeners.put ( component, true );
-        }
+        componentLanguageListeners.add ( component, listener );
     }
 
     /**
@@ -851,20 +878,7 @@ public final class WebLanguageManager
      */
     public static void removeLanguageListener ( final JComponent component, final LanguageListener listener )
     {
-        synchronized ( componentLanguageListeners )
-        {
-            final List<LanguageListener> listeners = ( List<LanguageListener> ) component
-                    .getClientProperty ( COMPONENT_LANGUAGE_LISTENERS_KEY );
-            if ( listeners != null )
-            {
-                listeners.remove ( listener );
-                if ( listeners.isEmpty () )
-                {
-                    component.putClientProperty ( COMPONENT_LANGUAGE_LISTENERS_KEY, null );
-                    componentLanguageListeners.remove ( component );
-                }
-            }
-        }
+        componentLanguageListeners.remove ( component, listener );
     }
 
     /**
@@ -874,17 +888,7 @@ public final class WebLanguageManager
      */
     public static void removeLanguageListeners ( final JComponent component )
     {
-        synchronized ( componentLanguageListeners )
-        {
-            final List<LanguageListener> listeners = ( List<LanguageListener> ) component
-                    .getClientProperty ( COMPONENT_LANGUAGE_LISTENERS_KEY );
-            if ( listeners != null )
-            {
-                listeners.clear ();
-                component.putClientProperty ( COMPONENT_LANGUAGE_LISTENERS_KEY, null );
-            }
-            componentLanguageListeners.remove ( component );
-        }
+        componentLanguageListeners.clear ( component );
     }
 
     /**
@@ -895,25 +899,14 @@ public final class WebLanguageManager
      */
     private static void fireLanguageChanged ( final Language oldLanguage, final Language newLanguage )
     {
-        synchronized ( componentLanguageListeners )
+        componentLanguageListeners.forEachData ( new BiConsumer<JComponent, LanguageListener> ()
         {
-            for ( final Map.Entry<JComponent, Boolean> entry : componentLanguageListeners.entrySet () )
+            @Override
+            public void accept ( final JComponent component, final LanguageListener languageListener )
             {
-                final JComponent component = entry.getKey ();
-                if ( component != null )
-                {
-                    final List<LanguageListener> listeners = ( List<LanguageListener> ) component
-                            .getClientProperty ( COMPONENT_LANGUAGE_LISTENERS_KEY );
-                    if ( listeners != null )
-                    {
-                        for ( final LanguageListener listener : listeners )
-                        {
-                            listener.languageChanged ( oldLanguage, newLanguage );
-                        }
-                    }
-                }
+                languageListener.languageChanged ( oldLanguage, newLanguage );
             }
-        }
+        } );
     }
 
     /**
@@ -928,18 +921,7 @@ public final class WebLanguageManager
      */
     public static void addDictionaryListener ( final JComponent component, final DictionaryListener listener )
     {
-        synchronized ( componentDictionaryListeners )
-        {
-            List<DictionaryListener> listeners = ( List<DictionaryListener> ) component
-                    .getClientProperty ( COMPONENT_DICTIONARY_LISTENERS_KEY );
-            if ( listeners == null )
-            {
-                listeners = new ArrayList<DictionaryListener> ( 1 );
-                component.putClientProperty ( COMPONENT_DICTIONARY_LISTENERS_KEY, listeners );
-            }
-            listeners.add ( listener );
-            componentDictionaryListeners.put ( component, true );
-        }
+        componentDictionaryListeners.add ( component, listener );
     }
 
     /**
@@ -950,20 +932,7 @@ public final class WebLanguageManager
      */
     public static void removeDictionaryListener ( final JComponent component, final DictionaryListener listener )
     {
-        synchronized ( componentDictionaryListeners )
-        {
-            final List<DictionaryListener> listeners = ( List<DictionaryListener> ) component
-                    .getClientProperty ( COMPONENT_DICTIONARY_LISTENERS_KEY );
-            if ( listeners != null )
-            {
-                listeners.remove ( listener );
-                if ( listeners.isEmpty () )
-                {
-                    component.putClientProperty ( COMPONENT_DICTIONARY_LISTENERS_KEY, null );
-                    componentDictionaryListeners.remove ( component );
-                }
-            }
-        }
+        componentDictionaryListeners.remove ( component, listener );
     }
 
     /**
@@ -973,17 +942,7 @@ public final class WebLanguageManager
      */
     public static void removeDictionaryListeners ( final JComponent component )
     {
-        synchronized ( componentDictionaryListeners )
-        {
-            final List<DictionaryListener> listeners = ( List<DictionaryListener> ) component
-                    .getClientProperty ( COMPONENT_DICTIONARY_LISTENERS_KEY );
-            if ( listeners != null )
-            {
-                listeners.clear ();
-                component.putClientProperty ( COMPONENT_DICTIONARY_LISTENERS_KEY, null );
-            }
-            componentDictionaryListeners.remove ( component );
-        }
+        componentDictionaryListeners.clear ( component );
     }
 
     /**
@@ -993,25 +952,14 @@ public final class WebLanguageManager
      */
     private static void fireDictionaryAdded ( final Dictionary dictionary )
     {
-        synchronized ( componentDictionaryListeners )
+        componentDictionaryListeners.forEachData ( new BiConsumer<JComponent, DictionaryListener> ()
         {
-            for ( final Map.Entry<JComponent, Boolean> entry : componentDictionaryListeners.entrySet () )
+            @Override
+            public void accept ( final JComponent component, final DictionaryListener languageListener )
             {
-                final JComponent component = entry.getKey ();
-                if ( component != null )
-                {
-                    final List<DictionaryListener> listeners = ( List<DictionaryListener> ) component
-                            .getClientProperty ( COMPONENT_DICTIONARY_LISTENERS_KEY );
-                    if ( listeners != null )
-                    {
-                        for ( final DictionaryListener listener : listeners )
-                        {
-                            listener.dictionaryAdded ( dictionary );
-                        }
-                    }
-                }
+                languageListener.dictionaryAdded ( dictionary );
             }
-        }
+        } );
     }
 
     /**
@@ -1021,25 +969,14 @@ public final class WebLanguageManager
      */
     private static void fireDictionaryRemoved ( final Dictionary dictionary )
     {
-        synchronized ( componentDictionaryListeners )
+        componentDictionaryListeners.forEachData ( new BiConsumer<JComponent, DictionaryListener> ()
         {
-            for ( final Map.Entry<JComponent, Boolean> entry : componentDictionaryListeners.entrySet () )
+            @Override
+            public void accept ( final JComponent component, final DictionaryListener languageListener )
             {
-                final JComponent component = entry.getKey ();
-                if ( component != null )
-                {
-                    final List<DictionaryListener> listeners = ( List<DictionaryListener> ) component
-                            .getClientProperty ( COMPONENT_DICTIONARY_LISTENERS_KEY );
-                    if ( listeners != null )
-                    {
-                        for ( final DictionaryListener listener : listeners )
-                        {
-                            listener.dictionaryRemoved ( dictionary );
-                        }
-                    }
-                }
+                languageListener.dictionaryRemoved ( dictionary );
             }
-        }
+        } );
     }
 
     /**
@@ -1047,24 +984,13 @@ public final class WebLanguageManager
      */
     private static void fireDictionariesCleared ()
     {
-        synchronized ( componentDictionaryListeners )
+        componentDictionaryListeners.forEachData ( new BiConsumer<JComponent, DictionaryListener> ()
         {
-            for ( final Map.Entry<JComponent, Boolean> entry : componentDictionaryListeners.entrySet () )
+            @Override
+            public void accept ( final JComponent component, final DictionaryListener languageListener )
             {
-                final JComponent component = entry.getKey ();
-                if ( component != null )
-                {
-                    final List<DictionaryListener> listeners = ( List<DictionaryListener> ) component
-                            .getClientProperty ( COMPONENT_DICTIONARY_LISTENERS_KEY );
-                    if ( listeners != null )
-                    {
-                        for ( final DictionaryListener listener : listeners )
-                        {
-                            listener.dictionariesCleared ();
-                        }
-                    }
-                }
+                languageListener.dictionariesCleared ();
             }
-        }
+        } );
     }
 }

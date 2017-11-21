@@ -17,10 +17,11 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.jdk.Function;
+import com.alee.api.jdk.Supplier;
 import com.alee.utils.concurrent.DaemonThreadFactory;
+import com.alee.utils.swing.WeakComponentData;
 
-import java.util.Map;
-import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -33,52 +34,26 @@ import java.util.concurrent.Executors;
 public final class AsyncTreeQueue
 {
     /**
-     * Maximum threads amount to run all asynchronous trees requests in.
-     * You can set this to zero to disable thread limit.
+     * Maximum number of threads to run all asynchronous tree requests in.
+     * You can set this to zero to disable hardcoded thread limit.
      */
-    public static int threadsAmount = 4;
+    private static final int threadsNumber = 4;
 
     /**
-     * Whether to use threads mount limit for each separate asynchronous tree or for all existing asynchronous trees.
+     * Queue {@link Thread} number.
      */
-    public static boolean separateLimitForEachTree = true;
+    private static int queueNumber = 0;
 
     /**
-     * Currently cached queues list.
+     * Cached tree queues.
      */
-    private static final Map<WebAsyncTree, AsyncTreeQueue> queues = new WeakHashMap<WebAsyncTree, AsyncTreeQueue> ();
-
-    /**
-     * Lock for ExecutorService calls synchronization.
-     */
-    private final Object lock = new Object ();
+    private static final WeakComponentData<WebAsyncTree, AsyncTreeQueue> queues =
+            new WeakComponentData<WebAsyncTree, AsyncTreeQueue> ( "AsyncTreeQueue", 3 );
 
     /**
      * ExecutorService to limit simultaneously running threads.
      */
-    private ExecutorService executorService = Executors.newFixedThreadPool ( threadsAmount, new DaemonThreadFactory () );
-
-    /**
-     * Sets maximum threads amount for the specified asynchronous tree.
-     *
-     * @param asyncTree asynchronous tree to process
-     * @param amount    new maximum threads amount
-     */
-    public static void setMaximumThreadsAmount ( final WebAsyncTree asyncTree, final int amount )
-    {
-        getInstance ( asyncTree ).setMaximumThreadsAmount ( amount );
-    }
-
-    /**
-     * Executes runnable using queue for the specified asynchronous tree.
-     *
-     * @param asyncTree asynchronous tree to process
-     * @param runnable  runnable to execute
-     */
-    public static void execute ( final WebAsyncTree asyncTree, final Runnable runnable )
-    {
-        getInstance ( asyncTree ).execute ( runnable );
-    }
+    private ExecutorService executorService;
 
     /**
      * Returns an instance of queue for the specified asynchronous tree.
@@ -89,49 +64,14 @@ public final class AsyncTreeQueue
      */
     public static AsyncTreeQueue getInstance ( final WebAsyncTree asyncTree )
     {
-        if ( separateLimitForEachTree )
+        return queues.get ( asyncTree, new Function<WebAsyncTree, AsyncTreeQueue> ()
         {
-            return getInstanceImpl ( asyncTree );
-        }
-        else
-        {
-            return getInstanceImpl ( null );
-        }
-    }
-
-    /**
-     * Returns an instance of queue for the specified asynchronous tree.
-     *
-     * @param asyncTree asynchronous tree to process
-     * @return an instance of queue for the specified asynchronous tree
-     */
-    private static AsyncTreeQueue getInstanceImpl ( final WebAsyncTree asyncTree )
-    {
-        AsyncTreeQueue queue = queues.get ( asyncTree );
-        if ( queue == null )
-        {
-            // Shutting down all tree-specific queues since the queue generation rule has changed
-            if ( asyncTree == null )
+            @Override
+            public AsyncTreeQueue apply ( final WebAsyncTree webAsyncTree )
             {
-                shutdownAllQueues ();
+                return new AsyncTreeQueue ();
             }
-
-            // Creating new queue
-            queue = new AsyncTreeQueue ();
-            queues.put ( asyncTree, queue );
-        }
-        return queue;
-    }
-
-    /**
-     * Forces all queues to shutdown.
-     */
-    private static void shutdownAllQueues ()
-    {
-        for ( final Map.Entry<WebAsyncTree, AsyncTreeQueue> queueEntry : queues.entrySet () )
-        {
-            queueEntry.getValue ().shutdown ();
-        }
+        } );
     }
 
     /**
@@ -140,43 +80,63 @@ public final class AsyncTreeQueue
     private AsyncTreeQueue ()
     {
         super ();
+        restartService ( threadsNumber );
     }
 
     /**
-     * Sets maximum threads amount for this queue.
+     * Sets maximum number of threads for this queue.
      *
-     * @param amount maximum threads amount for this queue
+     * @param threadsNumber maximum number of threads for this queue
      */
-    public void setMaximumThreadsAmount ( final int amount )
+    public void setMaximumThreadsAmount ( final int threadsNumber )
     {
-        synchronized ( lock )
+        restartService ( threadsNumber );
+    }
+
+    /**
+     * Restarts this queue service.
+     *
+     * @param threadsNumber maximum number of threads for this queue
+     */
+    public synchronized void restartService ( final int threadsNumber )
+    {
+        // Shutting down previous service
+        shutdownService ();
+
+        // Thread factory for the service
+        final DaemonThreadFactory thread = new DaemonThreadFactory ( new Supplier<String> ()
         {
-            if ( executorService != null )
+            @Override
+            public String get ()
             {
-                executorService.shutdown ();
+                synchronized ( AsyncTreeQueue.class )
+                {
+                    return "AsyncTreeQueue-" + queueNumber++;
+                }
             }
-            if ( amount > 0 )
-            {
-                executorService = Executors.newFixedThreadPool ( amount, new DaemonThreadFactory () );
-            }
-            else
-            {
-                executorService = null;
-            }
+        } );
+
+        // Creating new service
+        if ( threadsNumber > 0 )
+        {
+            // Fixed thread pool
+            executorService = Executors.newFixedThreadPool ( threadsNumber, thread );
+        }
+        else
+        {
+            // Unlimited thread pool
+            executorService = Executors.newCachedThreadPool ( thread );
         }
     }
 
     /**
      * Shutdowns this queue.
      */
-    public void shutdown ()
+    public synchronized void shutdownService ()
     {
-        synchronized ( lock )
+        if ( executorService != null )
         {
-            if ( executorService != null )
-            {
-                executorService.shutdown ();
-            }
+            executorService.shutdown ();
         }
     }
 
@@ -185,18 +145,8 @@ public final class AsyncTreeQueue
      *
      * @param runnable runnable to execute
      */
-    public void execute ( final Runnable runnable )
+    public synchronized void execute ( final Runnable runnable )
     {
-        synchronized ( lock )
-        {
-            if ( executorService != null )
-            {
-                executorService.execute ( runnable );
-            }
-            else
-            {
-                new Thread ( runnable, "AsyncTreeQueue" ).start ();
-            }
-        }
+        executorService.execute ( runnable );
     }
 }

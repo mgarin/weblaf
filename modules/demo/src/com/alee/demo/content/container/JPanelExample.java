@@ -17,13 +17,19 @@
 
 package com.alee.demo.content.container;
 
-import com.alee.demo.api.example.AbstractStylePreviewExample;
-import com.alee.demo.api.example.FeatureType;
-import com.alee.demo.api.example.Preview;
+import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
+import com.alee.demo.skin.DemoStyles;
+import com.alee.extended.layout.CompactFlowLayout;
+import com.alee.laf.button.WebButton;
+import com.alee.laf.label.WebLabel;
+import com.alee.managers.style.StyleId;
+import com.alee.painter.PainterSupport;
+import com.alee.utils.CollectionUtils;
 
-import java.util.Collections;
+import javax.swing.*;
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -59,6 +65,48 @@ public class JPanelExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        return Collections.emptyList ();
+        final BasicPanel e1 = new BasicPanel ( "basic", FeatureState.updated, StyleId.panel );
+        final BasicPanel e2 = new BasicPanel ( "decorated", FeatureState.updated, StyleId.panelDecorated );
+        final BasicPanel e3 = new BasicPanel ( "transparent", FeatureState.updated, StyleId.panelTransparent );
+        final BasicPanel e4 = new BasicPanel ( "focusable", FeatureState.updated, StyleId.panelFocusable );
+        return CollectionUtils.<Preview>asList ( e1, e2, e3, e4 );
+    }
+
+    /**
+     * Panel preview.
+     */
+    protected class BasicPanel extends AbstractStylePreview
+    {
+        /**
+         * Constructs new style preview.
+         *
+         * @param id           preview ID
+         * @param featureState feature state
+         * @param styleId      preview style ID
+         */
+        public BasicPanel ( final String id, final FeatureState featureState, final StyleId styleId )
+        {
+            super ( JPanelExample.this, id, featureState, styleId );
+        }
+
+        @Override
+        protected LayoutManager createPreviewLayout ()
+        {
+            return new CompactFlowLayout ( FlowLayout.LEADING, 8, 0 );
+        }
+
+        @Override
+        protected List<? extends JComponent> createPreviewElements ()
+        {
+            final JPanel panel = new JPanel ( new BorderLayout ( 15, 15 ) );
+            panel.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            PainterSupport.setPadding ( panel, new Insets ( 15, 15, 15, 15 ) );
+            panel.add ( new WebLabel ( DemoStyles.placeholderLabel, "NORTH", WebLabel.CENTER ), BorderLayout.NORTH );
+            panel.add ( new WebLabel ( DemoStyles.placeholderLabel, "EAST" ), BorderLayout.EAST );
+            panel.add ( new WebLabel ( DemoStyles.placeholderLabel, "SOUTH", WebLabel.CENTER ), BorderLayout.SOUTH );
+            panel.add ( new WebLabel ( DemoStyles.placeholderLabel, "WEST" ), BorderLayout.WEST );
+            panel.add ( new WebButton ( "CENTER" ), BorderLayout.CENTER );
+            return CollectionUtils.asList ( panel );
+        }
     }
 }

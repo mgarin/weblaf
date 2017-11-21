@@ -758,7 +758,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
                     }
                 }
             };
-            FocusManager.registerGlobalFocusListener ( focusListener );
+            FocusManager.registerGlobalFocusListener ( this, focusListener );
 
             // Displaying popup
             window.setVisible ( true );
@@ -962,7 +962,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
         // Removing popup hide event listeners
         Toolkit.getDefaultToolkit ().removeAWTEventListener ( mouseListener );
         mouseListener = null;
-        FocusManager.unregisterGlobalFocusListener ( focusListener );
+        FocusManager.unregisterGlobalFocusListener ( this, focusListener );
         focusListener = null;
 
         // Removing follow adapter
@@ -1071,19 +1071,13 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     @Override
     public void addPopupListener ( final PopupListener listener )
     {
-        synchronized ( lsync )
-        {
-            listenerList.add ( PopupListener.class, listener );
-        }
+        listenerList.add ( PopupListener.class, listener );
     }
 
     @Override
     public void removePopupListener ( final PopupListener listener )
     {
-        synchronized ( lsync )
-        {
-            listenerList.remove ( PopupListener.class, listener );
-        }
+        listenerList.remove ( PopupListener.class, listener );
     }
 
     @Override

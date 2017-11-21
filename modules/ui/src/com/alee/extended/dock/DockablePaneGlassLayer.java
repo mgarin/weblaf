@@ -249,7 +249,7 @@ public class DockablePaneGlassLayer extends JComponent
             @Override
             public void displayed ()
             {
-                DragManager.addDragListener ( dragListener );
+                DragManager.addDragListener ( DockablePaneGlassLayer.this, dragListener );
                 DragManager.registerViewHandler ( dragViewHandler );
             }
 
@@ -257,7 +257,7 @@ public class DockablePaneGlassLayer extends JComponent
             public void hidden ()
             {
                 DragManager.unregisterViewHandler ( dragViewHandler );
-                DragManager.removeDragListener ( dragListener );
+                DragManager.removeDragListener ( DockablePaneGlassLayer.this, dragListener );
             }
         }.install ();
     }

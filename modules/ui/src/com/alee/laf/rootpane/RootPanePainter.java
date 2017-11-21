@@ -64,10 +64,12 @@ public class RootPanePainter<E extends JRootPane, U extends WRootPaneUI, D exten
         final Window window = getWindow ();
         if ( window != null )
         {
+            // JRootPane is not focusable by default so we need to ask window instead
             usesFocusedView = window.isFocusableWindow () && usesState ( DecorationState.focused );
         }
         else
         {
+            // In case there is no window we check default conditions
             usesFocusedView = super.usesFocusedView ();
         }
         return usesFocusedView;
@@ -79,25 +81,28 @@ public class RootPanePainter<E extends JRootPane, U extends WRootPaneUI, D exten
         final Window window = getWindow ();
         if ( window != null && usesFocusedView () )
         {
+            // Optimized focused state listeners
+            focused = window.isFocused ();
             windowFocusListener = new WindowFocusListener ()
             {
                 @Override
                 public void windowGainedFocus ( final WindowEvent e )
                 {
-                    // Updating focus state
-                    RootPanePainter.this.focused = true;
-                    updateDecorationState ();
+                    RootPanePainter.this.focusChanged ( true );
                 }
 
                 @Override
                 public void windowLostFocus ( final WindowEvent e )
                 {
-                    // Updating decoration
-                    RootPanePainter.this.focused = false;
-                    updateDecorationState ();
+                    RootPanePainter.this.focusChanged ( false );
                 }
             };
             window.addWindowFocusListener ( windowFocusListener );
+        }
+        else
+        {
+            // Default focused state listeners
+            super.installFocusListener ();
         }
     }
 
@@ -107,8 +112,15 @@ public class RootPanePainter<E extends JRootPane, U extends WRootPaneUI, D exten
         final Window window = getWindow ();
         if ( window != null && windowFocusListener != null )
         {
+            // Optimized focused state listeners
             window.removeWindowFocusListener ( windowFocusListener );
             windowFocusListener = null;
+            focused = false;
+        }
+        else
+        {
+            // Default focused state listeners
+            super.uninstallFocusListener ();
         }
     }
 
@@ -127,13 +139,6 @@ public class RootPanePainter<E extends JRootPane, U extends WRootPaneUI, D exten
     {
         final D decoration = getDecoration ();
         return decoration != null && decoration.isVisible ();
-    }
-
-    @Override
-    protected boolean isFocused ()
-    {
-        final Window window = getWindow ();
-        return window != null && window.isFocused ();
     }
 
     @Override

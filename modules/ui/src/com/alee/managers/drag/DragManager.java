@@ -17,14 +17,16 @@
 
 package com.alee.managers.drag;
 
+import com.alee.api.jdk.BiConsumer;
 import com.alee.managers.drag.view.DragViewHandler;
 import com.alee.managers.glasspane.GlassPaneManager;
 import com.alee.managers.glasspane.WebGlassPane;
 import com.alee.managers.log.Log;
 import com.alee.utils.ArrayUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.WeakComponentDataList;
 
-import javax.swing.event.EventListenerList;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -46,7 +48,7 @@ import java.util.Map;
 public final class DragManager
 {
     /**
-     * todo 1. Move dragged object display to a separate transparent non-focusable window
+     * todo 1. Move dragged object display to a separate transparent non-focusable window on systems where it is possible
      */
 
     /**
@@ -54,7 +56,8 @@ public final class DragManager
      *
      * @see DragListener
      */
-    private static final EventListenerList listeners = new EventListenerList ();
+    private static final WeakComponentDataList<JComponent, DragListener> dragListeners =
+            new WeakComponentDataList<JComponent, DragListener> ( "DragManager.DragListener", 50 );
 
     /**
      * Drag view handlers map.
@@ -151,31 +154,43 @@ public final class DragManager
                     DragManager.flavors = flavors;
                     DragManager.dragging = true;
 
-                    // Informing listeners
-                    for ( final DragListener listener : listeners.getListeners ( DragListener.class ) )
+                    // Informing dragListeners
+                    dragListeners.forEachData ( new BiConsumer<JComponent, DragListener> ()
                     {
-                        listener.started ( event );
-                    }
+                        @Override
+                        public void accept ( final JComponent component, final DragListener dragListener )
+                        {
+                            dragListener.started ( event );
+                        }
+                    } );
                 }
 
                 @Override
                 public void dragEnter ( final DragSourceDragEvent event )
                 {
-                    // Informing listeners
-                    for ( final DragListener listener : listeners.getListeners ( DragListener.class ) )
+                    // Informing dragListeners
+                    dragListeners.forEachData ( new BiConsumer<JComponent, DragListener> ()
                     {
-                        listener.entered ( event );
-                    }
+                        @Override
+                        public void accept ( final JComponent component, final DragListener dragListener )
+                        {
+                            dragListener.entered ( event );
+                        }
+                    } );
                 }
 
                 @Override
                 public void dragExit ( final DragSourceEvent event )
                 {
-                    // Informing listeners
-                    for ( final DragListener listener : listeners.getListeners ( DragListener.class ) )
+                    // Informing dragListeners
+                    dragListeners.forEachData ( new BiConsumer<JComponent, DragListener> ()
                     {
-                        listener.exited ( event );
-                    }
+                        @Override
+                        public void accept ( final JComponent component, final DragListener dragListener )
+                        {
+                            dragListener.exited ( event );
+                        }
+                    } );
                 }
 
                 @Override
@@ -200,11 +215,15 @@ public final class DragManager
                         glassPane.setPaintedImage ( view, getLocation ( glassPane, event, view ) );
                     }
 
-                    // Informing listeners
-                    for ( final DragListener listener : listeners.getListeners ( DragListener.class ) )
+                    // Informing dragListeners
+                    dragListeners.forEachData ( new BiConsumer<JComponent, DragListener> ()
                     {
-                        listener.moved ( event );
-                    }
+                        @Override
+                        public void accept ( final JComponent component, final DragListener dragListener )
+                        {
+                            dragListener.moved ( event );
+                        }
+                    } );
                 }
 
                 @Override
@@ -226,11 +245,15 @@ public final class DragManager
                         dragViewHandler = null;
                     }
 
-                    // Informing listeners
-                    for ( final DragListener listener : listeners.getListeners ( DragListener.class ) )
+                    // Informing dragListeners
+                    dragListeners.forEachData ( new BiConsumer<JComponent, DragListener> ()
                     {
-                        listener.finished ( event );
-                    }
+                        @Override
+                        public void accept ( final JComponent component, final DragListener dragListener )
+                        {
+                            dragListener.finished ( event );
+                        }
+                    } );
                 }
 
                 /**
@@ -300,53 +323,55 @@ public final class DragManager
     }
 
     /**
-     * Registers new DragViewHandler.
+     * Registers {@link DragViewHandler}.
      *
-     * @param dragViewHandler DragViewHandler to register
+     * @param handler {@link DragViewHandler} to register
      */
-    public static void registerViewHandler ( final DragViewHandler dragViewHandler )
+    public static void registerViewHandler ( final DragViewHandler handler )
     {
-        final DataFlavor flavor = dragViewHandler.getObjectFlavor ();
+        final DataFlavor flavor = handler.getObjectFlavor ();
         List<DragViewHandler> handlers = viewHandlers.get ( flavor );
         if ( handlers == null )
         {
             handlers = new ArrayList<DragViewHandler> ( 1 );
             viewHandlers.put ( flavor, handlers );
         }
-        handlers.add ( dragViewHandler );
+        handlers.add ( handler );
     }
 
     /**
-     * Unregisters new DragViewHandler.
+     * Unregisters {@link DragViewHandler}.
      *
-     * @param dragViewHandler DragViewHandler to unregister
+     * @param handler {@link DragViewHandler} to unregister
      */
-    public static void unregisterViewHandler ( final DragViewHandler dragViewHandler )
+    public static void unregisterViewHandler ( final DragViewHandler handler )
     {
-        final List<DragViewHandler> handlers = viewHandlers.get ( dragViewHandler.getObjectFlavor () );
+        final List<DragViewHandler> handlers = viewHandlers.get ( handler.getObjectFlavor () );
         if ( handlers != null )
         {
-            handlers.remove ( dragViewHandler );
+            handlers.remove ( handler );
         }
     }
 
     /**
-     * Adds global drag and drop listener.
+     * Adds {@link DragListener} for the specified {@link JComponent}.
      *
-     * @param listener global drag and drop listener
+     * @param component {@link JComponent} to add {@link DragListener} for
+     * @param listener  {@link DragListener} to add
      */
-    public static void addDragListener ( final DragListener listener )
+    public static void addDragListener ( final JComponent component, final DragListener listener )
     {
-        listeners.add ( DragListener.class, listener );
+        dragListeners.add ( component, listener );
     }
 
     /**
-     * Removes global drag and drop listener.
+     * Removes {@link DragListener} from the specified {@link JComponent}.
      *
-     * @param listener global drag and drop listener
+     * @param component {@link JComponent} to remove {@link DragListener} from
+     * @param listener  {@link DragListener} to remove
      */
-    public static void removeDragListener ( final DragListener listener )
+    public static void removeDragListener ( final JComponent component, final DragListener listener )
     {
-        listeners.remove ( DragListener.class, listener );
+        dragListeners.remove ( component, listener );
     }
 }

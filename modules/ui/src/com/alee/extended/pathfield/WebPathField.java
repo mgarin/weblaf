@@ -29,8 +29,6 @@ import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.text.WebTextField;
 import com.alee.managers.drag.transfer.FilesTransferHandler;
-import com.alee.managers.focus.DefaultFocusTracker;
-import com.alee.managers.focus.FocusManager;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
@@ -120,12 +118,6 @@ public class WebPathField extends WebPanel
     protected int preferredWidth = -1;
     protected boolean filesDropEnabled = true;
     protected File selectedPath;
-
-    /**
-     * Runtime variables.
-     */
-    protected final DefaultFocusTracker focusTracker;
-    protected boolean focusOwner = false;
 
     public WebPathField ()
     {
@@ -542,18 +534,6 @@ public class WebPathField extends WebPanel
                 }
             }
         } );
-
-        // Focus listener
-        focusTracker = new DefaultFocusTracker ()
-        {
-            @Override
-            public void focusChanged ( final boolean focused )
-            {
-                focusOwner = focused;
-                WebPathField.this.repaint ();
-            }
-        };
-        FocusManager.addFocusTracker ( WebPathField.this, focusTracker );
 
         // Updating initial path
         updatePath ( path );

@@ -17,38 +17,64 @@
 
 package com.alee.managers.focus;
 
+import javax.swing.*;
 import java.awt.*;
 
+import com.alee.managers.focus.FocusManager;
+
 /**
- * Advanced interface that allows you to track focus behavior within component and its children.
- * Note that method names are made longer to avoid clashing with other component methods in case you implement tracker interface.
+ * Implementations of this interface can be used to track {@link JComponent} and its children focus state.
+ * There is also a {@link DefaultFocusTracker} implementation with all basic methods and which also contains a few additional features.
  *
  * @author Mikle Garin
+ * @see FocusManager
+ * @see DefaultFocusTracker
  */
 
 public interface FocusTracker
 {
     /**
-     * Returns whether tracking is currently enabled or not.
+     * Returns whether or not tracking is currently enabled.
      *
-     * @return true if tracking is currently enabled, false otherwise
+     * @return {@code true} if tracking is currently enabled, {@code false} otherwise
      */
-    public boolean isTrackingEnabled ();
+    public boolean isEnabled ();
 
     /**
-     * Returns whether specified component is involved with this tracker or not.
-     * This basically asks whether this object counts towards this tracker focus changes or not.
+     * Sets whether or not tracking is currently enabled.
      *
-     * @param component component to check for involvement
-     * @param tracked   tracked component
-     * @return true if the specified component is involved with this tracker, false otherwise
+     * @param enabled whether or not tracking is currently enabled
      */
-    public boolean isInvolved ( Component component, Component tracked );
+    public void setEnabled ( boolean enabled );
 
     /**
-     * Informs about component(s) focus changes depending on tracker settings.
+     * Returns whether or not tracked component is currently focused according to this tracker settings.
      *
-     * @param focused whether tracked component(s) is focused or not
+     * @return {@code true} if tracked component is currently focused according to this tracker settings, {@code false} otherwise
+     */
+    public boolean isFocused ();
+
+    /**
+     * Sets tracked component focused state.
+     *
+     * @param focused component focused state
+     */
+    public void setFocused ( boolean focused );
+
+    /**
+     * Returns whether specified {@link Component} is involved with this tracked {@link JComponent} or not.
+     * It basically says whether or not specified {@link Component} counts towards tracked {@link JComponent} focus changes.
+     *
+     * @param tracked   tracked {@link JComponent}
+     * @param component {@link Component} to check for involvement
+     * @return {@code true} if specified {@link Component} is involved with this tracked {@link JComponent}, {@code false} otherwise
+     */
+    public boolean isInvolved ( JComponent tracked, Component component );
+
+    /**
+     * Informs about tracked {@link JComponent} focus changes depending on tracker settings.
+     *
+     * @param focused whether tracked {@link JComponent} is focused or not
      */
     public void focusChanged ( boolean focused );
 }

@@ -101,7 +101,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
             @Override
             public void run ( final KeyEvent e )
             {
-                if ( getDocumentPane().isClosable () )
+                if ( getDocumentPane ().isClosable () )
                 {
                     final T selected = getSelected ();
                     if ( selected.isClosable () )
@@ -275,7 +275,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         } );
 
         // Adding focus tracker
-        focusTracker = new DefaultFocusTracker ( true )
+        focusTracker = new DefaultFocusTracker ( tabbedPane, true )
         {
             @Override
             public void focusChanged ( final boolean focused )

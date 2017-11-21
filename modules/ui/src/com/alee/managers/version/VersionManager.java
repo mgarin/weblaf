@@ -26,7 +26,7 @@ import com.alee.utils.XmlUtils;
  * @author Mikle Garin
  */
 
-public class VersionManager
+public final class VersionManager
 {
     /**
      * todo 1. Extend this manager to allow custom versions management.

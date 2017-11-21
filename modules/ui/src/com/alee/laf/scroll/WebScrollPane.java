@@ -22,7 +22,7 @@ import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.DictionaryListener;
 import com.alee.managers.language.LanguageEventMethods;
 import com.alee.managers.language.LanguageListener;
-import com.alee.managers.language.WebLanguageManager;
+import com.alee.managers.language.UILanguageManager;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -444,37 +444,37 @@ public class WebScrollPane extends JScrollPane
     @Override
     public void addLanguageListener ( final LanguageListener listener )
     {
-        WebLanguageManager.addLanguageListener ( getRootPane (), listener );
+        UILanguageManager.addLanguageListener ( getRootPane (), listener );
     }
 
     @Override
     public void removeLanguageListener ( final LanguageListener listener )
     {
-        WebLanguageManager.removeLanguageListener ( getRootPane (), listener );
+        UILanguageManager.removeLanguageListener ( getRootPane (), listener );
     }
 
     @Override
     public void removeLanguageListeners ()
     {
-        WebLanguageManager.removeLanguageListeners ( getRootPane () );
+        UILanguageManager.removeLanguageListeners ( getRootPane () );
     }
 
     @Override
     public void addDictionaryListener ( final DictionaryListener listener )
     {
-        WebLanguageManager.addDictionaryListener ( getRootPane (), listener );
+        UILanguageManager.addDictionaryListener ( getRootPane (), listener );
     }
 
     @Override
     public void removeDictionaryListener ( final DictionaryListener listener )
     {
-        WebLanguageManager.removeDictionaryListener ( getRootPane (), listener );
+        UILanguageManager.removeDictionaryListener ( getRootPane (), listener );
     }
 
     @Override
     public void removeDictionaryListeners ()
     {
-        WebLanguageManager.removeDictionaryListeners ( getRootPane () );
+        UILanguageManager.removeDictionaryListeners ( getRootPane () );
     }
 
     @Override

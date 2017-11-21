@@ -38,6 +38,7 @@ public final class DemoStyles
     public static final StyleId filterfield = StyleId.of ( "filter" );
     public static final StyleId resourceLink = StyleId.of ( "resource" );
     public static final StyleId fieldInner = StyleId.of ( "field-inner" );
+    public static final StyleId placeholderLabel = StyleId.of ( "placeholder" );
 
     /**
      * Examples frame.

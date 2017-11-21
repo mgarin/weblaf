@@ -50,7 +50,6 @@ public abstract class AbstractSectionDecorationPainter<E extends JComponent, U e
     {
         this.origin = new WeakReference<Painter<E, U>> ( origin );
         super.install ( c, ui );
-
     }
 
     @Override
@@ -58,7 +57,6 @@ public abstract class AbstractSectionDecorationPainter<E extends JComponent, U e
     {
         super.uninstall ( c, ui );
         this.origin = null;
-
     }
 
     @Override

@@ -31,6 +31,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
+ * Utility class that allows asynchronous image thumbnails generation.
+ *
  * @author Mikle Garin
  */
 
@@ -44,7 +46,8 @@ public class ThumbnailGenerator implements Runnable
      * Executor service for thumbnails generation.
      * It was made static to be shared by different file lists and avoid overload.
      */
-    protected static final ExecutorService executorService = Executors.newSingleThreadExecutor ( new DaemonThreadFactory () );
+    protected static final ExecutorService executorService =
+            Executors.newSingleThreadExecutor ( new DaemonThreadFactory ( "ThumbnailGenerator" ) );
 
     /**
      * Map containing references to running thumbnail generators.

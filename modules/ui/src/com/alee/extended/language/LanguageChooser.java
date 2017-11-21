@@ -26,6 +26,7 @@ import com.alee.utils.collection.ImmutableList;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -51,11 +52,74 @@ public class LanguageChooser extends WebComboBox
     /**
      * Constructs new {@link LanguageChooser}.
      *
+     * @param locales {@link Locale}s to limit choice to
+     */
+    public LanguageChooser ( final Locale... locales )
+    {
+        this ( StyleId.auto, locales );
+    }
+
+    /**
+     * Constructs new {@link LanguageChooser}.
+     *
+     * @param locales {@link Collection} of {@link Locale}s to limit choice to
+     */
+    public LanguageChooser ( final Collection<Locale> locales )
+    {
+        this ( StyleId.auto, locales );
+    }
+
+    /**
+     * Constructs new {@link LanguageChooser}.
+     *
+     * @param model {@link LanguageChooserModel}
+     */
+    public LanguageChooser ( final LanguageChooserModel model )
+    {
+        this ( StyleId.auto, model );
+    }
+
+    /**
+     * Constructs new {@link LanguageChooser}.
+     *
      * @param id style ID
      */
     public LanguageChooser ( final StyleId id )
     {
-        super ( id, new LanguageChooserModel () );
+        this ( id, new LanguageChooserModel () );
+    }
+
+    /**
+     * Constructs new {@link LanguageChooser}.
+     *
+     * @param id      style ID
+     * @param locales {@link Locale}s to limit choice to
+     */
+    public LanguageChooser ( final StyleId id, final Locale... locales )
+    {
+        this ( id, new LanguageChooserModel ( locales ) );
+    }
+
+    /**
+     * Constructs new {@link LanguageChooser}.
+     *
+     * @param id      style ID
+     * @param locales {@link Collection} of {@link Locale}s to limit choice to
+     */
+    public LanguageChooser ( final StyleId id, final Collection<Locale> locales )
+    {
+        this ( id, new LanguageChooserModel ( locales ) );
+    }
+
+    /**
+     * Constructs new {@link LanguageChooser}.
+     *
+     * @param id    style ID
+     * @param model {@link LanguageChooserModel}
+     */
+    public LanguageChooser ( final StyleId id, final LanguageChooserModel model )
+    {
+        super ( id, model );
         setRenderer ( new LanguageChooserRenderer () );
         addActionListener ( new ActionListener ()
         {
@@ -113,9 +177,9 @@ public class LanguageChooser extends WebComboBox
     }
 
     /**
-     * Sets {@link List} of {@link Locale}s to limit choice to.
+     * Sets {@link Locale}s to limit choice to.
      *
-     * @param locales new {@link List} of {@link Locale}s to limit choice to
+     * @param locales {@link Locale}s to limit choice to
      */
     public void setLocales ( final Locale... locales )
     {
@@ -123,11 +187,11 @@ public class LanguageChooser extends WebComboBox
     }
 
     /**
-     * Sets {@link List} of {@link Locale}s to limit choice to.
+     * Sets {@link Collection} of {@link Locale}s to limit choice to.
      *
-     * @param locales new {@link List} of {@link Locale}s to limit choice to
+     * @param locales {@link Collection} of {@link Locale}s to limit choice to
      */
-    public void setLocales ( final List<Locale> locales )
+    public void setLocales ( final Collection<Locale> locales )
     {
         getModel ().setLocales ( locales );
     }

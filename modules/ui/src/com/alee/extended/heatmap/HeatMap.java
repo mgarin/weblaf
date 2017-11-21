@@ -48,7 +48,7 @@ public class HeatMap extends JComponent
     /**
      * {@link HeatMap} layer on {@link JLayeredPane}.
      */
-    protected final static Integer HEAT_MAP_LAYER = 10000;
+    protected static final Integer HEAT_MAP_LAYER = 10000;
 
     /**
      * {@link HeatMap} intensity colors.
@@ -133,7 +133,7 @@ public class HeatMap extends JComponent
     protected transient final ExecutorService EXECUTOR = new ThreadPoolExecutor (
             1, 1, 0L, TimeUnit.MILLISECONDS,
             new ArrayBlockingQueue<Runnable> ( 1 ),
-            new DaemonThreadFactory (),
+            new DaemonThreadFactory ( "HeatMap" ),
             new ThreadPoolExecutor.DiscardOldestPolicy ()
     );
 

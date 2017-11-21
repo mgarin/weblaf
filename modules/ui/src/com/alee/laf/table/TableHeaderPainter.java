@@ -1,16 +1,17 @@
 package com.alee.laf.table;
 
-import com.alee.managers.language.*;
+import com.alee.managers.language.Language;
+import com.alee.managers.language.LanguageListener;
+import com.alee.managers.language.LanguageSensitive;
+import com.alee.managers.language.UILanguageManager;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.AbstractPainter;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
+import javax.swing.event.TableModelEvent;
+import javax.swing.table.*;
 import java.awt.*;
 
 /**
@@ -71,12 +72,22 @@ public class TableHeaderPainter<E extends JTableHeader, U extends WebTableHeader
             {
                 if ( isLanguageSensitive () )
                 {
-                    // Simply repainting table header
-                    component.repaint ();
+                    final JTable table = component.getTable ();
+                    if ( table != null && table.getModel () instanceof AbstractTableModel )
+                    {
+                        // Calling public model methods when possible
+                        final AbstractTableModel tableModel = ( AbstractTableModel ) table.getModel ();
+                        tableModel.fireTableRowsUpdated ( TableModelEvent.HEADER_ROW, TableModelEvent.HEADER_ROW );
+                    }
+                    else
+                    {
+                        // Simply repainting table header
+                        component.repaint ();
+                    }
                 }
             }
         };
-        WebLanguageManager.addLanguageListener ( component, languageSensitive );
+        UILanguageManager.addLanguageListener ( component, languageSensitive );
     }
 
     /**
@@ -88,9 +99,11 @@ public class TableHeaderPainter<E extends JTableHeader, U extends WebTableHeader
     {
         boolean sensitive = false;
         if ( component instanceof LanguageSensitive ||
-                component.getDefaultRenderer () instanceof LanguageSensitive )
+                component.getDefaultRenderer () instanceof LanguageSensitive ||
+                component.getTable () instanceof LanguageSensitive ||
+                component.getTable () != null && component.getTable ().getModel () instanceof LanguageSensitive )
         {
-            // Either table header or its default renderer is language-sensitive
+            // Either table header, its default renderer, table itself or table model is language-sensitive
             sensitive = true;
         }
         else
@@ -99,7 +112,7 @@ public class TableHeaderPainter<E extends JTableHeader, U extends WebTableHeader
             final TableColumnModel columnModel = component.getColumnModel ();
             for ( int i = 0; i < columnModel.getColumnCount (); i++ )
             {
-                if ( columnModel.getColumn ( i ).getCellRenderer () instanceof LanguageSensitive )
+                if ( getHeaderRenderer ( i ) instanceof LanguageSensitive )
                 {
                     sensitive = true;
                     break;
@@ -110,7 +123,8 @@ public class TableHeaderPainter<E extends JTableHeader, U extends WebTableHeader
                 // Checking whether or not one of table header values is language-sensitive
                 for ( int i = 0; i < columnModel.getColumnCount (); i++ )
                 {
-                    if (columnModel.getColumn ( i ).getHeaderValue () instanceof LanguageSensitive   ) {
+                    if ( columnModel.getColumn ( i ).getHeaderValue () instanceof LanguageSensitive )
+                    {
                         sensitive = true;
                         break;
                     }
@@ -125,7 +139,7 @@ public class TableHeaderPainter<E extends JTableHeader, U extends WebTableHeader
      */
     protected void uninstallLanguageListeners ()
     {
-        WebLanguageManager.removeLanguageListener ( component, languageSensitive );
+        UILanguageManager.removeLanguageListener ( component, languageSensitive );
         languageSensitive = null;
     }
 
@@ -266,7 +280,7 @@ public class TableHeaderPainter<E extends JTableHeader, U extends WebTableHeader
         // Painting dragged cell renderer
         final JComponent headerRenderer = ( JComponent ) getHeaderRenderer ( columnIndex );
         headerRenderer.setOpaque ( false );
-        headerRenderer.setEnabled ( table.isEnabled () );
+        headerRenderer.setEnabled ( table == null || table.isEnabled () );
         rendererPane.paintComponent ( g2d, headerRenderer, component, rect.x, rect.y, rect.width, rect.height, true );
 
         // Right side border

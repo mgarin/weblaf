@@ -17,6 +17,8 @@
 
 package com.alee.managers.style;
 
+import com.alee.api.jdk.BiConsumer;
+import com.alee.api.jdk.Function;
 import com.alee.extended.button.SplitButtonDescriptor;
 import com.alee.extended.canvas.CanvasDescriptor;
 import com.alee.extended.canvas.Gripper;
@@ -102,9 +104,13 @@ import com.alee.painter.decoration.shape.BoundsShape;
 import com.alee.painter.decoration.shape.EllipseShape;
 import com.alee.painter.decoration.shape.WebShape;
 import com.alee.skin.web.WebSkin;
-import com.alee.utils.*;
+import com.alee.utils.LafUtils;
+import com.alee.utils.ReflectUtils;
+import com.alee.utils.TextUtils;
+import com.alee.utils.XmlUtils;
 import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.ninepatch.NinePatchIcon;
+import com.alee.utils.swing.WeakComponentData;
 
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
@@ -126,6 +132,7 @@ public final class StyleManager
 {
     /**
      * List of listeners for various style events.
+     * todo Might cause memory leaks in components
      */
     private static final EventListenerList listenerList = new EventListenerList ();
 
@@ -164,7 +171,8 @@ public final class StyleManager
      * 3. Style children each styled component has
      * Those children are generally collected here for convenient changes tracking.
      */
-    private static final Map<JComponent, StyleData> styleData = new WeakHashMap<JComponent, StyleData> ();
+    private static final WeakComponentData<JComponent, StyleData> styleData =
+            new WeakComponentData<JComponent, StyleData> ( "StyleManager.StyleData", 200 );
 
     /**
      * Installed skin extensions.
@@ -891,18 +899,19 @@ public final class StyleManager
             }
 
             // Applying new skin to all existing skinnable components
-            final HashMap<JComponent, StyleData> skins = MapUtils.copyMap ( styleData );
-            for ( final Map.Entry<JComponent, StyleData> entry : skins.entrySet () )
+            styleData.forEach ( new BiConsumer<JComponent, StyleData> ()
             {
-                final JComponent component = entry.getKey ();
-                final StyleData data = getData ( component );
-                if ( !data.isPinnedSkin () && data.getSkin () == previousSkin )
+                @Override
+                public void accept ( final JComponent component, final StyleData styleData )
                 {
-                    // There is no need to update child style components here as we will reach them anyway
-                    // So we simply update each single component skin separately
-                    data.applySkin ( skin, false );
+                    if ( !styleData.isPinnedSkin () && styleData.getSkin () == previousSkin )
+                    {
+                        // There is no need to update child style components here as we will reach them anyway
+                        // So we simply update each single component skin separately
+                        styleData.applySkin ( skin, false );
+                    }
                 }
-            }
+            } );
 
             // Informing about skin change
             fireSkinChanged ( previousSkin, skin );
@@ -1268,14 +1277,14 @@ public final class StyleManager
         }
 
         // Retrieving component style data
-        StyleData data = styleData.get ( component );
-        if ( data == null )
+        return styleData.get ( component, new Function<JComponent, StyleData> ()
         {
-            // Creating and caching new component style data
-            data = new StyleData ( component );
-            styleData.put ( component, data );
-        }
-        return data;
+            @Override
+            public StyleData apply ( final JComponent component )
+            {
+                return new StyleData ( component );
+            }
+        } );
     }
 
     /**

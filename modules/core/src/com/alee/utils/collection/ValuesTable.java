@@ -32,8 +32,10 @@ import java.util.Map;
  * Both key and value should be unique and adding same key or value will replace existing one in the lists.
  *
  * @author Mikle Garin
+ * @deprecated will be removed with later changes, probably replaced with more common implementations
  */
 
+@Deprecated
 @XStreamAlias ( "ValuesTable" )
 @XStreamConverter ( ValuesTableConverter.class )
 public class ValuesTable<K, V> implements Serializable

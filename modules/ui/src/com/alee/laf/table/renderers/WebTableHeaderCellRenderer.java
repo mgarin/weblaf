@@ -59,7 +59,10 @@ public class WebTableHeaderCellRenderer extends WebLabel implements TableCellRen
         boolean isPaintingForPrint = false;
 
         // Updating custom style ID
-        setStyleId ( StyleId.tableHeaderCellRenderer.at ( table.getTableHeader () ) );
+        if ( table != null )
+        {
+            setStyleId ( StyleId.tableHeaderCellRenderer.at ( table.getTableHeader () ) );
+        }
 
         // Title icon
         Icon sortIcon = null;
@@ -107,9 +110,11 @@ public class WebTableHeaderCellRenderer extends WebLabel implements TableCellRen
                         case ASCENDING:
                             sortIcon = UIManager.getIcon ( "Table.ascendingSortIcon" );
                             break;
+
                         case DESCENDING:
                             sortIcon = UIManager.getIcon ( "Table.descendingSortIcon" );
                             break;
+
                         case UNSORTED:
                             sortIcon = UIManager.getIcon ( "Table.naturalSortIcon" );
                             break;

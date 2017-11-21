@@ -15,13 +15,25 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.task;
+package com.alee.api.jdk;
 
 /**
+ * Represents an operation that accepts two input arguments and returns no result. This is the two-arity specialization of {@link Consumer}.
+ * Unlike most other functional interfaces, {@code BiConsumer} is expected to operate via side-effects.
+ *
+ * This is a custom bi-consumer for JDK6 support.
+ *
+ * @param <T> the type of the input to the operation
  * @author Mikle Garin
  */
 
-public class TaskManager
+public interface BiConsumer<T, U>
 {
-    // todo
+    /**
+     * Performs this operation on the given arguments.
+     *
+     * @param t the first input argument
+     * @param u the second input argument
+     */
+    public void accept ( T t, U u );
 }

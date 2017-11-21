@@ -155,8 +155,8 @@ public class WebMenu extends JMenu implements Styleable, Paintable, ShapeMethods
     @Override
     protected void init ( final String text, final Icon icon )
     {
-        super.init ( WebLanguageManager.getInitialText ( text ), icon );
-        WebLanguageManager.registerInitialLanguage ( this, text );
+        super.init ( UILanguageManager.getInitialText ( text ), icon );
+        UILanguageManager.registerInitialLanguage ( this, text );
     }
 
     @Override
@@ -312,85 +312,85 @@ public class WebMenu extends JMenu implements Styleable, Paintable, ShapeMethods
     @Override
     public String getLanguage ()
     {
-        return WebLanguageManager.getComponentKey ( this );
+        return UILanguageManager.getComponentKey ( this );
     }
 
     @Override
     public void setLanguage ( final String key, final Object... data )
     {
-        WebLanguageManager.registerComponent ( this, key, data );
+        UILanguageManager.registerComponent ( this, key, data );
     }
 
     @Override
     public void updateLanguage ( final Object... data )
     {
-        WebLanguageManager.updateComponent ( this, data );
+        UILanguageManager.updateComponent ( this, data );
     }
 
     @Override
     public void updateLanguage ( final String key, final Object... data )
     {
-        WebLanguageManager.updateComponent ( this, key, data );
+        UILanguageManager.updateComponent ( this, key, data );
     }
 
     @Override
     public void removeLanguage ()
     {
-        WebLanguageManager.unregisterComponent ( this );
+        UILanguageManager.unregisterComponent ( this );
     }
 
     @Override
     public boolean isLanguageSet ()
     {
-        return WebLanguageManager.isRegisteredComponent ( this );
+        return UILanguageManager.isRegisteredComponent ( this );
     }
 
     @Override
     public void setLanguageUpdater ( final LanguageUpdater updater )
     {
-        WebLanguageManager.registerLanguageUpdater ( this, updater );
+        UILanguageManager.registerLanguageUpdater ( this, updater );
     }
 
     @Override
     public void removeLanguageUpdater ()
     {
-        WebLanguageManager.unregisterLanguageUpdater ( this );
+        UILanguageManager.unregisterLanguageUpdater ( this );
     }
 
     @Override
     public void addLanguageListener ( final LanguageListener listener )
     {
-        WebLanguageManager.addLanguageListener ( getRootPane (), listener );
+        UILanguageManager.addLanguageListener ( getRootPane (), listener );
     }
 
     @Override
     public void removeLanguageListener ( final LanguageListener listener )
     {
-        WebLanguageManager.removeLanguageListener ( getRootPane (), listener );
+        UILanguageManager.removeLanguageListener ( getRootPane (), listener );
     }
 
     @Override
     public void removeLanguageListeners ()
     {
-        WebLanguageManager.removeLanguageListeners ( getRootPane () );
+        UILanguageManager.removeLanguageListeners ( getRootPane () );
     }
 
     @Override
     public void addDictionaryListener ( final DictionaryListener listener )
     {
-        WebLanguageManager.addDictionaryListener ( getRootPane (), listener );
+        UILanguageManager.addDictionaryListener ( getRootPane (), listener );
     }
 
     @Override
     public void removeDictionaryListener ( final DictionaryListener listener )
     {
-        WebLanguageManager.removeDictionaryListener ( getRootPane (), listener );
+        UILanguageManager.removeDictionaryListener ( getRootPane (), listener );
     }
 
     @Override
     public void removeDictionaryListeners ()
     {
-        WebLanguageManager.removeDictionaryListeners ( getRootPane () );
+        UILanguageManager.removeDictionaryListeners ( getRootPane () );
     }
 
     @Override

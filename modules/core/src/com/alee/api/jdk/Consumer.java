@@ -20,8 +20,8 @@ package com.alee.api.jdk;
 /**
  * Represents an operation that accepts a single input argument and returns no result.
  * Unlike most other functional interfaces, {@code Consumer} is expected to operate via side-effects.
- * <p>
- * This is a custom supplier for JDK6 support.
+ *
+ * This is a custom consumer for JDK6 support.
  *
  * @param <T> the type of the input to the operation
  * @author Mikle Garin

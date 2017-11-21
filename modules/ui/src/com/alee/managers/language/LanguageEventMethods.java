@@ -23,7 +23,7 @@ import javax.swing.*;
 
 /**
  * This interface provides a set of methods that can be implemented by any components that could provide event listeners.
- * Commonly all implementations are leading to similar {@link WebLanguageManager} methods.
+ * Commonly all implementations are leading to similar {@link UILanguageManager} methods.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>

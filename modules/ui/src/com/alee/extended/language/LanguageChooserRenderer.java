@@ -20,7 +20,7 @@ package com.alee.extended.language;
 import com.alee.laf.combobox.WebComboBoxRenderer;
 import com.alee.laf.list.WebListCellRenderer;
 import com.alee.managers.language.LanguageManager;
-import com.alee.managers.language.WebLanguageManager;
+import com.alee.managers.language.UILanguageManager;
 
 import javax.swing.*;
 import java.util.Locale;
@@ -38,7 +38,7 @@ public class LanguageChooserRenderer extends WebComboBoxRenderer
                                   final boolean hasFocus )
     {
         final Locale locale = ( Locale ) value;
-        return WebLanguageManager.getLocaleIcon ( locale );
+        return UILanguageManager.getLocaleIcon ( locale );
     }
 
     @Override

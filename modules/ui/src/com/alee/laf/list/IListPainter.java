@@ -15,11 +15,12 @@ import javax.swing.*;
 public interface IListPainter<E extends JList, U extends WListUI> extends SpecificPainter<E, U>
 {
     /**
-     * Returns whether or not hover item decoration is supported by this list painter.
+     * Returns whether or not item hover decoration is supported by this list painter.
+     * This
      *
-     * @return true if hover item decoration is supported by this list painter, false otherwise
+     * @return {@code true} if item hover decoration is supported by this list painter, {@code false} otherwise
      */
-    public boolean isHoverDecorationSupported ();
+    public boolean isItemHoverDecorationSupported ();
 
     /**
      * Prepares painter to pain list.

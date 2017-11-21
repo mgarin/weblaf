@@ -26,10 +26,12 @@ import com.alee.laf.panel.WebPanel;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.style.StyleId;
-import com.alee.utils.CollectionUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.*;
+import com.alee.utils.swing.AncestorAdapter;
+import com.alee.utils.swing.EmptyMouseAdapter;
+import com.alee.utils.swing.FadeStateType;
+import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -52,8 +54,6 @@ import java.util.List;
 
 public class WebInnerPopup extends WebPanel implements Popup, PopupMethods
 {
-    protected List<PopupListener> popupListeners = new ArrayList<PopupListener> ( 2 );
-
     // Popup constants
     protected static final int fadeFps = 24;
     protected static final long fadeTime = 400;
@@ -180,14 +180,8 @@ public class WebInnerPopup extends WebPanel implements Popup, PopupMethods
         } );
 
         // Focus tracking
-        focusTracker = new DefaultFocusTracker ( true )
+        focusTracker = new DefaultFocusTracker ( this, true )
         {
-            @Override
-            public boolean isTrackingEnabled ()
-            {
-                return WebInnerPopup.this.isShowing ();
-            }
-
             @Override
             public void focusChanged ( final boolean focused )
             {
@@ -584,13 +578,13 @@ public class WebInnerPopup extends WebPanel implements Popup, PopupMethods
     @Override
     public void addPopupListener ( final PopupListener listener )
     {
-        popupListeners.add ( listener );
+        listenerList.add ( PopupListener.class, listener );
     }
 
     @Override
     public void removePopupListener ( final PopupListener listener )
     {
-        popupListeners.remove ( listener );
+        listenerList.remove ( PopupListener.class, listener );
     }
 
     @Override
@@ -622,7 +616,7 @@ public class WebInnerPopup extends WebPanel implements Popup, PopupMethods
      */
     public void firePopupWillBeOpened ()
     {
-        for ( final PopupListener listener : CollectionUtils.copy ( popupListeners ) )
+        for ( final PopupListener listener : listenerList.getListeners ( PopupListener.class ) )
         {
             listener.popupWillBeOpened ();
         }
@@ -633,7 +627,7 @@ public class WebInnerPopup extends WebPanel implements Popup, PopupMethods
      */
     public void firePopupOpened ()
     {
-        for ( final PopupListener listener : CollectionUtils.copy ( popupListeners ) )
+        for ( final PopupListener listener : listenerList.getListeners ( PopupListener.class ) )
         {
             listener.popupOpened ();
         }
@@ -644,7 +638,7 @@ public class WebInnerPopup extends WebPanel implements Popup, PopupMethods
      */
     public void firePopupWillBeClosed ()
     {
-        for ( final PopupListener listener : CollectionUtils.copy ( popupListeners ) )
+        for ( final PopupListener listener : listenerList.getListeners ( PopupListener.class ) )
         {
             listener.popupWillBeClosed ();
         }
@@ -655,7 +649,7 @@ public class WebInnerPopup extends WebPanel implements Popup, PopupMethods
      */
     public void firePopupClosed ()
     {
-        for ( final PopupListener listener : CollectionUtils.copy ( popupListeners ) )
+        for ( final PopupListener listener : listenerList.getListeners ( PopupListener.class ) )
         {
             listener.popupClosed ();
         }

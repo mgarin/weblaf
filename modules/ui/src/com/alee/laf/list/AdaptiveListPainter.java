@@ -25,7 +25,7 @@ public final class AdaptiveListPainter<E extends JList, U extends WListUI> exten
     }
 
     @Override
-    public boolean isHoverDecorationSupported ()
+    public boolean isItemHoverDecorationSupported ()
     {
         return false;
     }

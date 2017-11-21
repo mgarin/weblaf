@@ -31,10 +31,7 @@ import java.awt.*;
 import java.awt.dnd.DragSourceDragEvent;
 import java.awt.dnd.DragSourceDropEvent;
 import java.awt.dnd.DragSourceEvent;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -42,22 +39,20 @@ import java.beans.PropertyChangeListener;
  * Abstract behavior that provides hover events for any component containing multiple items.
  * It uses mouse enter/exit/move events and component resized/moved/shown/hidden events to track hover index.
  * It might seem excessive, but simple move listener does not cover whole variety of possible cases when hover index can be changed.
- * <p/>
- * Implementing {@link #getObjectAt(java.awt.Point)} and {@link #hoverChanged(Object, Object)} methods is sufficient for further usage of
- * this behavior in any custom component it is being implemented for.
+ *
+ * Implementing next two methods:
+ * - {@link #getObjectAt(java.awt.Point)}
+ * - {@link #hoverChanged(Object, Object)}
+ * is sufficient for behavior usage.
  *
  * @param <C> component type
  * @param <V> hovered element type
  * @author Mikle Garin
  */
 
-public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> extends MouseAdapter
-        implements ComponentListener, AncestorListener, DragListener, PropertyChangeListener, Behavior
+public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> extends AbstractComponentBehavior<C>
+        implements MouseListener, MouseMotionListener, ComponentListener, AncestorListener, DragListener, PropertyChangeListener
 {
-    /**
-     * Component into which this behavior is installed.
-     */
-    protected final C component;
 
     /**
      * Whether or not behavior should only track hover events when component is enabled.
@@ -71,9 +66,9 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     protected V hoverObject;
 
     /**
-     * Constructs behavior for the specified component.
+     * Constructs new {@link AbstractObjectHoverBehavior} for the specified {@link JComponent}.
      *
-     * @param component component into which this behavior is installed
+     * @param component {@link JComponent} into which this behavior is installed
      */
     public AbstractObjectHoverBehavior ( final C component )
     {
@@ -81,20 +76,20 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     /**
-     * Constructs behavior for the specified component.
+     * Constructs new {@link AbstractObjectHoverBehavior} for the specified {@link JComponent}.
      *
-     * @param component   component into which this behavior is installed
+     * @param component   {@link JComponent} into which this behavior is installed
      * @param enabledOnly whether or not behavior should only track hover events when component is enabled
      */
     public AbstractObjectHoverBehavior ( final C component, final boolean enabledOnly )
     {
-        super ();
+        super ( component );
         this.enabledOnly = enabledOnly;
-        this.component = component;
     }
 
     /**
      * Installs behavior into component.
+     * todo Proper initial hover object?
      */
     public void install ()
     {
@@ -102,8 +97,8 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
         component.addMouseMotionListener ( this );
         component.addAncestorListener ( this );
         component.addComponentListener ( this );
-        DragManager.addDragListener ( this );
         component.addPropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, this );
+        DragManager.addDragListener ( component, this );
     }
 
     /**
@@ -111,113 +106,154 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
      */
     public void uninstall ()
     {
+        DragManager.removeDragListener ( component, this );
         component.removePropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, this );
-        DragManager.removeDragListener ( this );
         component.removeComponentListener ( this );
         component.removeAncestorListener ( this );
         component.removeMouseMotionListener ( this );
         component.removeMouseListener ( this );
+        hoverObject = null;
+    }
+
+    @Override
+    public void mouseClicked ( final MouseEvent event )
+    {
+        /**
+         * No extra updates required on this event.
+         */
+    }
+
+    @Override
+    public void mousePressed ( final MouseEvent event )
+    {
+        /**
+         * No extra updates required on this event.
+         */
+    }
+
+    @Override
+    public void mouseReleased ( final MouseEvent event )
+    {
+        /**
+         * This is necessary for updating hover object after {@link #mouseDragged(MouseEvent)} has finished.
+         */
+        updateHover ( event );
     }
 
     @Override
     public void mouseEntered ( final MouseEvent event )
     {
-        updateHover ( event );
-    }
-
-    @Override
-    public void mouseMoved ( final MouseEvent event )
-    {
-        updateHover ( event );
-    }
-
-    @Override
-    public void mouseDragged ( final MouseEvent event )
-    {
+        /**
+         * Even though {@link #mouseMoved(MouseEvent)} event is always thrown along with this one when we are moving within window bounds,
+         * it is still necessary for updating in case we ALT-TAB from another application.
+         * todo This causes "stuck hover" effect when mouse is draged from other component.
+         */
         updateHover ( event );
     }
 
     @Override
     public void mouseExited ( final MouseEvent event )
     {
+        /**
+         * This should clear hover upon exiting component area or ALT-TAB-ing to another application.
+         */
         clearHover ();
+    }
+
+    @Override
+    public void mouseMoved ( final MouseEvent event )
+    {
+        /**
+         * Upon simple mouse movements over the component we need to constantly update hover.
+         * This is the most common case, but all other checks are also necessary to avoid visual misbehavior.
+         */
+        updateHover ( event );
+    }
+
+    @Override
+    public void mouseDragged ( final MouseEvent event )
+    {
+        /**
+         * Upon normal drag we keep hover updated just as we do with {@link #mouseMoved(MouseEvent)}.
+         * This is NOT an actual native drag operation, but simply a mouse drag within this component.
+         * Native drag is handled differently within {@link #updateHover()}.
+         */
+        updateHover ( event );
     }
 
     @Override
     public void ancestorAdded ( final AncestorEvent event )
     {
+        /**
+         * Updating hover properly upon component ancestor updates.
+         */
         updateHover ();
     }
 
     @Override
     public void ancestorRemoved ( final AncestorEvent event )
     {
+        /**
+         * Updating hover properly upon component ancestor updates.
+         */
         updateHover ();
     }
 
     @Override
     public void ancestorMoved ( final AncestorEvent event )
     {
+        /**
+         * Updating hover properly upon component ancestor updates.
+         */
         updateHover ();
     }
 
     @Override
     public void componentResized ( final ComponentEvent event )
     {
+        /**
+         * Whenever component size or state changes we might have to update hover.
+         * It is hard to say here what exactly should happen with hover, so it is left for {@link #updateHover()} operation to find out.
+         */
         updateHover ();
     }
 
     @Override
     public void componentMoved ( final ComponentEvent event )
     {
+        /**
+         * Whenever component size or state changes we might have to update hover.
+         * It is hard to say here what exactly should happen with hover, so it is left for {@link #updateHover()} operation to find out.
+         */
         updateHover ();
     }
 
     @Override
     public void componentShown ( final ComponentEvent event )
     {
+        /**
+         * Whenever component size or state changes we might have to update hover.
+         * It is hard to say here what exactly should happen with hover, so it is left for {@link #updateHover()} operation to find out.
+         */
         updateHover ();
     }
 
     @Override
     public void componentHidden ( final ComponentEvent event )
     {
-        updateHover ();
-    }
-
-    @Override
-    public void started ( final DragSourceDragEvent event )
-    {
-        //
-    }
-
-    @Override
-    public void entered ( final DragSourceDragEvent event )
-    {
-        updateHover ();
-    }
-
-    @Override
-    public void moved ( final DragSourceDragEvent event )
-    {
-        //
-    }
-
-    @Override
-    public void exited ( final DragSourceEvent event )
-    {
-        updateHover ();
-    }
-
-    @Override
-    public void finished ( final DragSourceDropEvent event )
-    {
+        /**
+         * Whenever component size or state changes we might have to update hover.
+         * It is hard to say here what exactly should happen with hover, so it is left for {@link #updateHover()} operation to find out.
+         */
         updateHover ();
     }
 
     @Override
     public void propertyChange ( final PropertyChangeEvent event )
     {
+        /**
+         * Since hover state might be dependant on enabled state we have to update it properly.
+         */
         if ( enabledOnly )
         {
             if ( component.isEnabled () )
@@ -229,6 +265,49 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
                 clearHover ();
             }
         }
+    }
+
+    @Override
+    public void started ( final DragSourceDragEvent event )
+    {
+        /**
+         * No extra updates required on this event.
+         */
+    }
+
+    @Override
+    public void entered ( final DragSourceDragEvent event )
+    {
+        /**
+         * Updating hover on drag enter.
+         */
+        updateHover ();
+    }
+
+    @Override
+    public void moved ( final DragSourceDragEvent event )
+    {
+        /**
+         * No extra updates required on this event.
+         */
+    }
+
+    @Override
+    public void exited ( final DragSourceEvent event )
+    {
+        /**
+         * Updating hover on drag exit.
+         */
+        updateHover ();
+    }
+
+    @Override
+    public void finished ( final DragSourceDropEvent event )
+    {
+        /**
+         * Updating hover on drag finish.
+         */
+        updateHover ();
     }
 
     /**

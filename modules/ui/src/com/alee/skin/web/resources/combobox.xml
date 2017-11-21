@@ -92,8 +92,8 @@
             <style type="list" id="popup" extends="transparent">
                 <painter>
 
-                    <!-- Hide hover cell background painter -->
-                    <hoverPainter overwrite="true" />
+                    <!-- Hide item background painter -->
+                    <itemPainter overwrite="true" />
 
                 </painter>
 

@@ -18,11 +18,11 @@ import java.util.Hashtable;
 public interface ITreePainter<E extends JTree, U extends WTreeUI> extends SpecificPainter<E, U>
 {
     /**
-     * Returns whether or not hover node decoration is supported by this tree painter.
+     * Returns whether or not row hover decoration is supported by this tree painter.
      *
-     * @return true if hover node decoration is supported by this tree painter, false otherwise
+     * @return {@code true} if row hover decoration is supported by this tree painter, {@code false} otherwise
      */
-    public boolean isHoverDecorationSupported ();
+    public boolean isRowHoverDecorationSupported ();
 
     /**
      * Prepares painter to pain tree.

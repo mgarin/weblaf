@@ -20,8 +20,8 @@ package com.alee.extended.button;
 import com.alee.extended.layout.AbstractLayoutManager;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 /**
  * Special layout for {@link com.alee.extended.button.WebSwitch} component.
@@ -35,7 +35,7 @@ public class WebSwitchLayout extends AbstractLayoutManager
     public static final String RIGHT = "RIGHT";
     public static final String GRIPPER = "GRIPPER";
 
-    private final Map<Component, String> constraints = new WeakHashMap<Component, String> ();
+    private final Map<Component, String> constraints = new HashMap<Component, String> ();
 
     @Override
     public void addComponent ( final Component component, final Object constraints )

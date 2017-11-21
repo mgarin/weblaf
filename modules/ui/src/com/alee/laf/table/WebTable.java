@@ -21,7 +21,7 @@ import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.DictionaryListener;
 import com.alee.managers.language.LanguageEventMethods;
 import com.alee.managers.language.LanguageListener;
-import com.alee.managers.language.WebLanguageManager;
+import com.alee.managers.language.UILanguageManager;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.Paintable;
@@ -837,37 +837,37 @@ public class WebTable extends JTable
     @Override
     public void addLanguageListener ( final LanguageListener listener )
     {
-        WebLanguageManager.addLanguageListener ( this, listener );
+        UILanguageManager.addLanguageListener ( this, listener );
     }
 
     @Override
     public void removeLanguageListener ( final LanguageListener listener )
     {
-        WebLanguageManager.removeLanguageListener ( this, listener );
+        UILanguageManager.removeLanguageListener ( this, listener );
     }
 
     @Override
     public void removeLanguageListeners ()
     {
-        WebLanguageManager.removeLanguageListeners ( this );
+        UILanguageManager.removeLanguageListeners ( this );
     }
 
     @Override
     public void addDictionaryListener ( final DictionaryListener listener )
     {
-        WebLanguageManager.addDictionaryListener ( this, listener );
+        UILanguageManager.addDictionaryListener ( this, listener );
     }
 
     @Override
     public void removeDictionaryListener ( final DictionaryListener listener )
     {
-        WebLanguageManager.removeDictionaryListener ( this, listener );
+        UILanguageManager.removeDictionaryListener ( this, listener );
     }
 
     @Override
     public void removeDictionaryListeners ()
     {
-        WebLanguageManager.removeDictionaryListeners ( this );
+        UILanguageManager.removeDictionaryListeners ( this );
     }
 
     @Override

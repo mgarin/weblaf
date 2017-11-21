@@ -53,7 +53,7 @@ public class LazyLoadBehavior implements Behavior
     /**
      * ExecutorService to limit simultaneously running threads.
      */
-    protected static ExecutorService executorService = Executors.newFixedThreadPool ( 4, new DaemonThreadFactory () );
+    protected static ExecutorService executorService = Executors.newFixedThreadPool ( 4, new DaemonThreadFactory ( "LazyLoadBehavior" ) );
 
     /**
      * Performs lazy UI component load.

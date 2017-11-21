@@ -15,13 +15,32 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.help;
+package com.alee.extended.behavior;
+
+import javax.swing.*;
 
 /**
+ * Simple abstract {@link Behavior} implementation that keeps {@link JComponent} reference and has its type generic.
+ *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public class HelpManager
+public abstract class AbstractComponentBehavior<C extends JComponent> implements Behavior
 {
-    // todo
+    /**
+     * {@link JComponent} into which this behavior is installed.
+     */
+    protected final C component;
+
+    /**
+     * Constructs new {@link AbstractComponentBehavior} for the specified {@link JComponent}.
+     *
+     * @param component {@link JComponent} into which this behavior is installed
+     */
+    public AbstractComponentBehavior ( final C component )
+    {
+        super ();
+        this.component = component;
+    }
 }

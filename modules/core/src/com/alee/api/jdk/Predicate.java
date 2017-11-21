@@ -20,16 +20,14 @@ package com.alee.api.jdk;
 /**
  * Represents a predicate (boolean-valued function) of one argument.
  *
+ * This is a custom predicate for JDK6 support.
+ *
  * @param <T> the type of the input to the predicate
  * @author Mikle Garin
  */
 
 public interface Predicate<T>
 {
-    /**
-     * todo 1. This is a custom predicate for JDK6 support, it should be removed in WebLaF 2.x
-     */
-
     /**
      * Evaluates this predicate on the given argument.
      *

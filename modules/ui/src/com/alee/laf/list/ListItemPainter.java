@@ -17,7 +17,10 @@
 
 package com.alee.laf.list;
 
-import com.alee.painter.decoration.*;
+import com.alee.painter.decoration.AbstractSectionDecorationPainter;
+import com.alee.painter.decoration.DecorationState;
+import com.alee.painter.decoration.DecorationUtils;
+import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
 import java.util.List;
@@ -50,26 +53,69 @@ public class ListItemPainter<E extends JList, U extends WebListUI, D extends IDe
     public List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
+        addItemStates ( states );
+        return states;
+    }
 
-        // Checking setings initialization
+    /**
+     * Adds states provided by this painter.
+     *
+     * @param states list to add states to
+     */
+    protected void addItemStates ( final List<String> states )
+    {
+        // Ensure index is specified
         if ( index != null )
         {
+            // Ensure item exists
             final ListModel model = component.getModel ();
-            if ( model != null && 0 < index && index < model.getSize () )
+            if ( model != null && 0 <= index && index < model.getSize () )
             {
-                // Adding index type
-                states.add ( index % 2 == 0 ? DecorationState.odd : DecorationState.even );
-
-                // Adding common item states
-                states.add ( component.isSelectedIndex ( index ) ? DecorationState.selected : DecorationState.unselected );
-
-                // Adding possible item states
-                final Object value = model.getElementAt ( index );
-                states.addAll ( DecorationUtils.getExtraStates ( value ) );
+                final Object item = model.getElementAt ( index );
+                addItemStates ( states, item );
             }
         }
+    }
 
-        return states;
+    /**
+     * Adds states provided by specified item.
+     *
+     * @param states list to add states to
+     * @param item   item to provide states for
+     */
+    protected void addItemStates ( final List<String> states, final Object item )
+    {
+        // Adding row type
+        addNumerationStates ( states, item );
+
+        // Adding common item states
+        states.add ( component.isSelectedIndex ( index ) ? DecorationState.selected : DecorationState.unselected );
+
+        // Hover state
+        if ( index == ui.getHoverIndex () )
+        {
+            states.add ( DecorationState.hover );
+        }
+        else
+        {
+            // We have to remove it as the origin might have hover state
+            states.remove ( DecorationState.hover );
+        }
+
+        // Adding possible item states
+        states.addAll ( DecorationUtils.getExtraStates ( item ) );
+    }
+
+    /**
+     * Adds numeration states for the specified item.
+     *
+     * @param states list to add states to
+     * @param item   item to provide states for
+     */
+    @SuppressWarnings ( "unused" )
+    protected void addNumerationStates ( final List<String> states, final Object item )
+    {
+        states.add ( index % 2 == 0 ? DecorationState.odd : DecorationState.even );
     }
 
     @Override

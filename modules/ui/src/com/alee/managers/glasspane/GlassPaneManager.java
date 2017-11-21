@@ -17,7 +17,9 @@
 
 package com.alee.managers.glasspane;
 
+import com.alee.api.jdk.Function;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.WeakComponentData;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,12 +28,16 @@ import java.awt.*;
  * This manager provides an instance of WebGlassPane for specified JRootPane instance.
  *
  * @author Mikle Garin
- * @see com.alee.managers.glasspane.WebGlassPane
+ * @see WebGlassPane
  */
 
-public class GlassPaneManager
+public final class GlassPaneManager
 {
-    public static final String WEB_GLASS_PANE_KEY = "web.glass.pane";
+    /**
+     * {@link WebGlassPane}s used within various windows.
+     */
+    private static final WeakComponentData<JComponent, WebGlassPane> glassPanes =
+            new WeakComponentData<JComponent, WebGlassPane> ( "GlassPaneManager.WebGlassPane", 3 );
 
     /**
      * Returns registered WebGlassPane for JRootPane under the specified component.
@@ -58,20 +64,22 @@ public class GlassPaneManager
     {
         if ( rootPane != null )
         {
-            WebGlassPane glassPane = ( WebGlassPane ) rootPane.getClientProperty ( WEB_GLASS_PANE_KEY );
-            if ( glassPane == null )
+            return glassPanes.get ( rootPane, new Function<JComponent, WebGlassPane> ()
             {
-                glassPane = new WebGlassPane ();
-                rootPane.setGlassPane ( glassPane );
-                glassPane.setVisible ( true );
-                rootPane.invalidate ();
-                rootPane.putClientProperty ( WEB_GLASS_PANE_KEY, glassPane );
-            }
-            return glassPane;
+                @Override
+                public WebGlassPane apply ( final JComponent component )
+                {
+                    final WebGlassPane glassPane = new WebGlassPane ();
+                    rootPane.setGlassPane ( glassPane );
+                    glassPane.setVisible ( true );
+                    rootPane.invalidate ();
+                    return glassPane;
+                }
+            } );
         }
         else
         {
-            return null;
+            throw new GlassPaneException ( "JRootPane is not specified for WebGlassPane" );
         }
     }
 }

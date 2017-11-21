@@ -30,7 +30,7 @@ import java.io.Serializable;
  */
 
 @XStreamAlias ( "VersionInfo" )
-public class VersionInfo implements Serializable
+public final class VersionInfo implements Serializable
 {
     /**
      * Full library name.

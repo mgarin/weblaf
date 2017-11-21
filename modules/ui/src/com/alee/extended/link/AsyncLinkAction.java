@@ -36,7 +36,7 @@ public abstract class AsyncLinkAction implements LinkAction
     /**
      * ExecutorService to limit simultaneously running threads.
      */
-    protected static ExecutorService executorService = Executors.newFixedThreadPool ( 4, new DaemonThreadFactory () );
+    protected static ExecutorService executorService = Executors.newFixedThreadPool ( 4, new DaemonThreadFactory ( "AsyncLinkAction" ) );
 
     @Override
     public void linkExecuted ( final ActionEvent event )
