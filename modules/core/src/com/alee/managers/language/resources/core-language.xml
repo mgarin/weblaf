@@ -1,4 +1,4 @@
-<Dictionary name="WebLaF core module" prefix="weblaf">
+<Dictionary name="WebLaF core module" prefix="weblaf" xmlns="http://weblookandfeel.com/language">
     <Dictionary name="Time" prefix="time">
         <Dictionary name="Units" prefix="units">
             <Dictionary name="Short name" prefix="short">

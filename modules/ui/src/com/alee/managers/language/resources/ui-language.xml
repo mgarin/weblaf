@@ -1,4 +1,4 @@
-<Dictionary name="WebLaF ui module" prefix="weblaf">
+<Dictionary name="WebLaF ui module" prefix="weblaf" xmlns="http://weblookandfeel.com/language">
     <Dictionary name="Information window" prefix="info">
         <record key="title">
             <value lang="en">Library information</value>
@@ -246,7 +246,7 @@
             <value lang="it" mnemonic="J">Si</value>
             <value lang="tr" mnemonic="Y">Yes</value>
             <value lang="vi" mnemonic="C">Có</value>
-            <value lang="hu" menmonic="I">Igen</value>
+            <value lang="hu" mnemonic="I">Igen</value>
         </record>
         <record key="no">
             <value lang="en" mnemonic="N">No</value>
