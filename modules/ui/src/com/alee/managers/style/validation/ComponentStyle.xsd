@@ -129,14 +129,14 @@
 
                         <!-- com.alee.laf.list.ListPainter -->
                         <xs:sequence>
-                            <xs:element name="hoverPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
+                            <xs:element name="itemPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
                             <xs:element name="selectionPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
                         </xs:sequence>
 
                         <!-- com.alee.laf.tree.TreePainter -->
                         <xs:sequence>
                             <xs:element name="rowPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
-                            <xs:element name="hoverPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
+                            <xs:element name="nodePainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
                             <xs:element name="selectionPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
                             <xs:element name="dropLocationPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
                             <xs:element name="selectorPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
