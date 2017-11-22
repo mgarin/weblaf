@@ -17,7 +17,7 @@
 
 package com.alee.managers.icon.set;
 
-import com.alee.managers.icon.data.IconData;
+import com.alee.managers.icon.data.AbstractIconData;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.NetUtils;
 import com.alee.utils.TextUtils;
@@ -76,7 +76,7 @@ public class XmlIconSet extends AbstractIconSet
         // Updating and caching icons information
         if ( CollectionUtils.notEmpty ( iconSetData.getIcons () ) )
         {
-            for ( final IconData iconData : iconSetData.getIcons () )
+            for ( final AbstractIconData iconData : iconSetData.getIcons () )
             {
                 // Changing relative class to IconSet relative class if one exists
                 // This will only be performed if IconData relative class is not specified and global one is specified

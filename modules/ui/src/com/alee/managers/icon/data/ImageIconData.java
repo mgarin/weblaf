@@ -23,14 +23,14 @@ import javax.swing.*;
 import java.net.URL;
 
 /**
- * {@link IconData} implementation for {@link ImageIcon} icon type.
+ * {@link AbstractIconData} implementation for {@link ImageIcon} icon type.
  *
  * @author Mikle Garin
  * @see ImageIcon
  */
 
 @XStreamAlias ( "ImageIcon" )
-public class ImageIconData extends IconData<ImageIcon>
+public class ImageIconData extends AbstractIconData<ImageIcon>
 {
     @Override
     public ImageIcon loadIcon ()

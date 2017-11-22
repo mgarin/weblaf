@@ -1,4 +1,4 @@
-<IconSet id="weblaf-info" nearClass="com.alee.laf.information.LibraryInfoIconSet" base="icons/">
+<IconSet id="weblaf-info" nearClass="com.alee.laf.information.LibraryInfoIconSet" base="icons/" xmlns="http://weblookandfeel.com/icons">
 
     <!-- Java 32x32 icon -->
     <SvgIcon id="java32" path="java.svg" size="32,32">

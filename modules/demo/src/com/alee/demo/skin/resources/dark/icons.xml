@@ -1,4 +1,4 @@
-<IconSet id="weblaf-demo" nearClass="com.alee.demo.skin.DarkIconSet" base="icons/">
+<IconSet id="weblaf-demo" nearClass="com.alee.demo.skin.DarkIconSet" base="icons/" xmlns="http://weblookandfeel.com/icons">
 
     <!-- Example frame icons -->
     <SvgIcon id="examples16" path="frames/examples.svg" size="16,16">
@@ -21,7 +21,7 @@
     </SvgIcon>
 
     <!-- Type icons -->
-    <ImageIcon id="group16" path="types/group.png" size="16,16" />
+    <ImageIcon id="group16" path="types/group.png" />
 
     <!-- General purpose 36x36 icons -->
     <SvgIcon id="compass36" path="general/compass.svg" size="36,36">

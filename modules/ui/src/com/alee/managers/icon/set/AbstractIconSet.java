@@ -18,7 +18,7 @@
 package com.alee.managers.icon.set;
 
 import com.alee.managers.icon.IconException;
-import com.alee.managers.icon.data.IconData;
+import com.alee.managers.icon.data.AbstractIconData;
 import com.alee.utils.TextUtils;
 
 import javax.swing.*;
@@ -41,10 +41,10 @@ public abstract class AbstractIconSet implements IconSet
     private final String id;
 
     /**
-     * {@link IconData} cache used for loading icons lazily.
-     * It contains: {@link Icon} identifier -> {@link IconData}.
+     * {@link AbstractIconData} cache used for loading icons lazily.
+     * It contains: {@link Icon} identifier -> {@link AbstractIconData}.
      */
-    private final Map<String, IconData> iconsData;
+    private final Map<String, AbstractIconData> iconsData;
 
     /**
      * Loaded {@link Icon}s cache.
@@ -69,7 +69,7 @@ public abstract class AbstractIconSet implements IconSet
         this.id = id;
 
         // Initializing icon information cache
-        iconsData = new HashMap<String, IconData> ( 100 );
+        iconsData = new HashMap<String, AbstractIconData> ( 100 );
 
         // Initializing loaded icons cache
         cache = new HashMap<String, Icon> ( 30 );
@@ -88,7 +88,7 @@ public abstract class AbstractIconSet implements IconSet
     }
 
     @Override
-    public void addIcon ( final IconData icon )
+    public void addIcon ( final AbstractIconData icon )
     {
         // Saving lazy icon information
         iconsData.put ( icon.getId (), icon );
@@ -103,7 +103,7 @@ public abstract class AbstractIconSet implements IconSet
         Icon icon = cache.get ( id );
         if ( icon == null )
         {
-            final IconData iconData = iconsData.get ( id );
+            final AbstractIconData iconData = iconsData.get ( id );
             if ( iconData != null )
             {
                 try

@@ -30,7 +30,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Abstract {@link IconData} containing basic {@link Icon} information.
+ * Abstract {@link AbstractIconData} containing basic {@link Icon} information.
  *
  * @param <T> icon type
  * @author Mikle Garin
@@ -39,10 +39,10 @@ import java.util.List;
  * @see SvgIconData
  */
 
-public abstract class IconData<T extends Icon> implements Serializable, Cloneable, Identifiable
+public abstract class AbstractIconData<T extends Icon> implements Serializable, Cloneable, Identifiable
 {
     /**
-     * Unique icon ID.
+     * Unique icon identifier.
      * Used to access icon through {@link com.alee.managers.icon.IconManager}.
      */
     @XStreamAsAttribute
@@ -70,7 +70,7 @@ public abstract class IconData<T extends Icon> implements Serializable, Cloneabl
     /**
      * Constructs new empty icon information.
      */
-    public IconData ()
+    public AbstractIconData ()
     {
         super ();
     }
@@ -78,10 +78,10 @@ public abstract class IconData<T extends Icon> implements Serializable, Cloneabl
     /**
      * Constructs new icon information.
      *
-     * @param id   unique icon ID
+     * @param id   unique icon identifier
      * @param path icon path
      */
-    public IconData ( final String id, final String path )
+    public AbstractIconData ( final String id, final String path )
     {
         super ();
         setId ( id );
@@ -91,11 +91,11 @@ public abstract class IconData<T extends Icon> implements Serializable, Cloneabl
     /**
      * Constructs new icon information.
      *
-     * @param id        unique icon ID
+     * @param id        unique icon identifier
      * @param nearClass class which specified path is relative to
      * @param path      icon path
      */
-    public IconData ( final String id, final Class nearClass, final String path )
+    public AbstractIconData ( final String id, final Class nearClass, final String path )
     {
         super ();
         setId ( id );
@@ -110,9 +110,9 @@ public abstract class IconData<T extends Icon> implements Serializable, Cloneabl
     }
 
     /**
-     * Sets unique icon ID.
+     * Sets unique icon identifier.
      *
-     * @param id unique icon ID
+     * @param id unique icon identifier
      */
     public void setId ( final String id )
     {
@@ -185,7 +185,7 @@ public abstract class IconData<T extends Icon> implements Serializable, Cloneabl
     protected abstract T loadIcon ();
 
     @Override
-    public IconData clone ()
+    public AbstractIconData clone ()
     {
         return Clone.cloneByFieldsSafely ( this );
     }

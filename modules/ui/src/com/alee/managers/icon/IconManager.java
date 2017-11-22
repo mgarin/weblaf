@@ -21,7 +21,7 @@ import com.alee.extended.svg.SvgFill;
 import com.alee.extended.svg.SvgIconData;
 import com.alee.extended.svg.SvgStroke;
 import com.alee.extended.svg.SvgTransform;
-import com.alee.managers.icon.data.IconData;
+import com.alee.managers.icon.data.AbstractIconData;
 import com.alee.managers.icon.data.ImageIconData;
 import com.alee.managers.icon.data.SetIcon;
 import com.alee.managers.icon.set.IconSet;
@@ -74,7 +74,7 @@ public final class IconManager
             // Base XStream aliases
             XmlUtils.processAnnotations ( SetIcon.class );
             XmlUtils.processAnnotations ( IconSetData.class );
-            XmlUtils.processAnnotations ( IconData.class );
+            XmlUtils.processAnnotations ( AbstractIconData.class );
 
             // ImageIcon aliases
             XmlUtils.processAnnotations ( ImageIconData.class );

@@ -1,4 +1,4 @@
-<IconSet id="weblaf" nearClass="com.alee.iconset.WebIconSet" base="icons/flat/">
+<IconSet id="weblaf" nearClass="com.alee.iconset.WebIconSet" base="icons/flat/" xmlns="http://weblookandfeel.com/icons">
 
     <!-- General purpose icons -->
     <SvgIcon id="underline" path="underline.svg" size="16,16">

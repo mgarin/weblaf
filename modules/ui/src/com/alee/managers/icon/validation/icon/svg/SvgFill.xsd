@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema targetNamespace="http://weblookandfeel.com/icons" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractSvgAttributeAdjustment.xsd" />
+    <xs:include schemaLocation="../../awt/Color.xsd" />
+
+    <!-- com.alee.extended.svg.SvgFill -->
+    <xs:complexType name="SvgFill">
+        <xs:complexContent>
+            <xs:extension base="AbstractSvgAttributeAdjustment">
+
+                <!-- Fill color -->
+                <xs:attribute name="color" type="Color" use="optional" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

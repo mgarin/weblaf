@@ -18,7 +18,7 @@
 package com.alee.managers.icon.set;
 
 import com.alee.api.Identifiable;
-import com.alee.managers.icon.data.IconData;
+import com.alee.managers.icon.data.AbstractIconData;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
@@ -36,7 +36,7 @@ import java.util.List;
 public final class IconSetData implements Identifiable, Serializable
 {
     /**
-     * Icon set ID.
+     * Icon set identifier.
      */
     @XStreamAsAttribute
     protected String id;
@@ -57,7 +57,7 @@ public final class IconSetData implements Identifiable, Serializable
      * List of set icons.
      */
     @XStreamImplicit
-    protected List<IconData> icons;
+    protected List<AbstractIconData> icons;
 
     @Override
     public String getId ()
@@ -66,9 +66,9 @@ public final class IconSetData implements Identifiable, Serializable
     }
 
     /**
-     * Sets icon set ID.
+     * Sets icon set identifier.
      *
-     * @param id icon set ID
+     * @param id icon set identifier
      */
     public void setId ( final String id )
     {
@@ -120,7 +120,7 @@ public final class IconSetData implements Identifiable, Serializable
      *
      * @return list of set icons
      */
-    public List<IconData> getIcons ()
+    public List<AbstractIconData> getIcons ()
     {
         return icons;
     }
@@ -130,7 +130,7 @@ public final class IconSetData implements Identifiable, Serializable
      *
      * @param icons list of set icons
      */
-    public void setIcons ( final List<IconData> icons )
+    public void setIcons ( final List<AbstractIconData> icons )
     {
         this.icons = icons;
     }

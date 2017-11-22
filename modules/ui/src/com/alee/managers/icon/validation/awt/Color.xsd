@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema targetNamespace="http://weblookandfeel.com/icons" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <!-- java.awt.Color -->
+    <xs:simpleType name="Color">
+        <xs:union>
+
+            <!-- Pattern-based colors -->
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+
+                    <!-- Hex color -->
+                    <xs:pattern value="^#[0-9a-f]{3}([0-9a-f]{3})?$" />
+
+                    <!-- RGB color -->
+                    <!-- todo Proper RGB values check -->
+                    <xs:pattern value="^[0-9]+,[0-9]+,[0-9]+$" />
+
+                    <!-- RGBA color -->
+                    <!-- todo Proper RGB values check -->
+                    <xs:pattern value="^[0-9]+,[0-9]+,[0-9]+,[0-9]+$" />
+
+                </xs:restriction>
+            </xs:simpleType>
+
+            <!-- Preset colors -->
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+
+                    <!-- Special "null" colors -->
+                    <xs:enumeration value="null" />
+                    <xs:enumeration value="none" />
+
+                    <!-- Fully transparent color -->
+                    <xs:enumeration value="transparent" />
+
+                    <!-- Standard Swing colors-->
+                    <xs:enumeration value="black" />
+                    <xs:enumeration value="white" />
+                    <xs:enumeration value="red" />
+                    <xs:enumeration value="green" />
+                    <xs:enumeration value="blue" />
+                    <xs:enumeration value="lightGray" />
+                    <xs:enumeration value="gray" />
+                    <xs:enumeration value="darkGray" />
+                    <xs:enumeration value="pink" />
+                    <xs:enumeration value="orange" />
+                    <xs:enumeration value="yellow" />
+                    <xs:enumeration value="magenta" />
+                    <xs:enumeration value="cyan" />
+
+                </xs:restriction>
+            </xs:simpleType>
+
+        </xs:union>
+    </xs:simpleType>
+
+</xs:schema>
