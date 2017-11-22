@@ -7,17 +7,6 @@
 
             <!-- todo Add class name pattern restriction -->
 
-            <!--&lt;!&ndash; Hex color &ndash;&gt;
-            <xs:pattern value="^#[0-9a-f]{3}([0-9a-f]{3})?$" />
-
-            &lt;!&ndash; RGB color &ndash;&gt;
-            &lt;!&ndash; todo Proper RGB values check &ndash;&gt;
-            <xs:pattern value="^[0-9]+,[0-9]+,[0-9]+$" />
-
-            &lt;!&ndash; RGBA color &ndash;&gt;
-            &lt;!&ndash; todo Proper RGB values check &ndash;&gt;
-            <xs:pattern value="^[0-9]+,[0-9]+,[0-9]+,[0-9]+$" />-->
-
         </xs:restriction>
     </xs:simpleType>
 
