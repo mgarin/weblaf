@@ -37,7 +37,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 import java.util.List;
-import java.util.Map;
 
 /**
  * The base class for fully custom WebLaF components.
@@ -105,21 +104,9 @@ public abstract class WebComponent<C extends WebComponent<C, U>, U extends Compo
     }
 
     @Override
-    public Map<String, Painter> getCustomPainters ()
-    {
-        return StyleManager.getCustomPainters ( this );
-    }
-
-    @Override
     public Painter getCustomPainter ()
     {
         return StyleManager.getCustomPainter ( this );
-    }
-
-    @Override
-    public Painter getCustomPainter ( final String id )
-    {
-        return StyleManager.getCustomPainter ( this, id );
     }
 
     @Override
@@ -129,15 +116,9 @@ public abstract class WebComponent<C extends WebComponent<C, U>, U extends Compo
     }
 
     @Override
-    public Painter setCustomPainter ( final String id, final Painter painter )
+    public boolean resetCustomPainter ()
     {
-        return StyleManager.setCustomPainter ( this, id, painter );
-    }
-
-    @Override
-    public boolean resetPainter ()
-    {
-        return StyleManager.resetPainter ( this );
+        return StyleManager.resetCustomPainter ( this );
     }
 
     @Override

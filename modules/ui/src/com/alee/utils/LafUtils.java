@@ -207,12 +207,14 @@ public final class LafUtils
                 StyleConstants.disabledBorderColor );
     }
 
+    @Deprecated
     public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component, final Color shadeColor, final int shadeWidth,
                                        final int round, final boolean fillBackground, final boolean webColored, final Color border )
     {
         return drawWebStyle ( g2d, component, shadeColor, shadeWidth, round, fillBackground, webColored, border, border );
     }
 
+    @Deprecated
     public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component, final Color shadeColor, final int shadeWidth,
                                        final int round, final boolean fillBackground, final boolean webColored, final Color border,
                                        final Color disabledBorder )
@@ -220,6 +222,7 @@ public final class LafUtils
         return drawWebStyle ( g2d, component, shadeColor, shadeWidth, round, fillBackground, webColored, border, disabledBorder, 1f );
     }
 
+    @Deprecated
     public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component, final Color shadeColor, final int shadeWidth,
                                        final int round, final boolean fillBackground, final boolean webColored, final Color border,
                                        final Color disabledBorder, final float opacity )
@@ -228,6 +231,7 @@ public final class LafUtils
                 component.getBackground (), opacity );
     }
 
+    @Deprecated
     public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component, final Color shadeColor, final int shadeWidth,
                                        final int round, final boolean fillBackground, final boolean webColored, final Color border,
                                        final Color disabledBorder, final Color background, final float opacity )
@@ -288,11 +292,13 @@ public final class LafUtils
 
     private static final Map<String, GradientPaint> gradientCache = new HashMap<String, GradientPaint> ();
 
+    @Deprecated
     public static GradientPaint getWebGradientPaint ( final Rectangle bounds )
     {
         return getWebGradientPaint ( bounds.x, bounds.y, bounds.x, bounds.y + bounds.height );
     }
 
+    @Deprecated
     public static GradientPaint getWebGradientPaint ( final int x1, final int y1, final int x2, final int y2 )
     {
         final String key = x1 + ";" + y1 + ";" + x2 + ";" + y2;
@@ -308,6 +314,7 @@ public final class LafUtils
         }
     }
 
+    @Deprecated
     public static Shape getWebBorderShape ( final JComponent component, final int shadeWidth, final int round )
     {
         if ( round > 0 )
@@ -326,6 +333,7 @@ public final class LafUtils
      * Paints custom shaped web styled border within the component with shadow and background
      */
 
+    @Deprecated
     public static void drawCustomWebBorder ( final Graphics2D g2d, final JComponent component, final Shape borderShape,
                                              final Color shadeColor, final int shadeWidth, final boolean fillBackground,
                                              final boolean webColored )
@@ -334,6 +342,7 @@ public final class LafUtils
                 Color.LIGHT_GRAY );
     }
 
+    @Deprecated
     public static void drawCustomWebBorder ( final Graphics2D g2d, final JComponent component, final Shape borderShape,
                                              final Color shadeColor, final int shadeWidth, final boolean fillBackground,
                                              final boolean webColored, final Color border, final Color disabledBorder )
@@ -342,6 +351,7 @@ public final class LafUtils
                 component.getBackground () );
     }
 
+    @Deprecated
     public static void drawCustomWebBorder ( final Graphics2D g2d, final JComponent component, final Shape borderShape,
                                              final Color shadeColor, final int shadeWidth, final boolean fillBackground,
                                              final boolean webColored, final Color border, final Color disabledBorder,
@@ -386,17 +396,20 @@ public final class LafUtils
      * Draws custom shaped web styled focus within the component
      */
 
+    @Deprecated
     public static void drawCustomWebFocus ( final Graphics2D g2d, final JComponent component, final FocusType focusType, final Shape shape )
     {
         drawCustomWebFocus ( g2d, component, focusType, shape, null );
     }
 
+    @Deprecated
     public static void drawCustomWebFocus ( final Graphics2D g2d, final JComponent component, final FocusType focusType, final Shape shape,
                                             final Boolean mouseover )
     {
         drawCustomWebFocus ( g2d, component, focusType, shape, mouseover, null );
     }
 
+    @Deprecated
     public static void drawCustomWebFocus ( final Graphics2D g2d, final JComponent component, final FocusType focusType, final Shape shape,
                                             final Boolean mouseover, Boolean hasFocus )
     {

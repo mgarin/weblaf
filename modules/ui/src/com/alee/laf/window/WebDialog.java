@@ -41,7 +41,6 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
-import java.util.Map;
 
 /**
  * {@link JDialog} extension class.
@@ -932,21 +931,9 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
     }
 
     @Override
-    public Map<String, Painter> getCustomPainters ()
-    {
-        return StyleManager.getCustomPainters ( getRootPane () );
-    }
-
-    @Override
     public Painter getCustomPainter ()
     {
         return StyleManager.getCustomPainter ( getRootPane () );
-    }
-
-    @Override
-    public Painter getCustomPainter ( final String id )
-    {
-        return StyleManager.getCustomPainter ( getRootPane (), id );
     }
 
     @Override
@@ -956,15 +943,9 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
     }
 
     @Override
-    public Painter setCustomPainter ( final String id, final Painter painter )
+    public boolean resetCustomPainter ()
     {
-        return StyleManager.setCustomPainter ( getRootPane (), id, painter );
-    }
-
-    @Override
-    public boolean resetPainter ()
-    {
-        return StyleManager.resetPainter ( getRootPane () );
+        return StyleManager.resetCustomPainter ( getRootPane () );
     }
 
     @Override

@@ -43,7 +43,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 import java.util.List;
-import java.util.Map;
 
 /**
  * {@link JTextField} extension class.
@@ -288,21 +287,9 @@ public class WebTextField extends JTextField implements IInputPrompt, ILeadingCo
     }
 
     @Override
-    public Map<String, Painter> getCustomPainters ()
-    {
-        return StyleManager.getCustomPainters ( this );
-    }
-
-    @Override
     public Painter getCustomPainter ()
     {
         return StyleManager.getCustomPainter ( this );
-    }
-
-    @Override
-    public Painter getCustomPainter ( final String id )
-    {
-        return StyleManager.getCustomPainter ( this, id );
     }
 
     @Override
@@ -312,15 +299,9 @@ public class WebTextField extends JTextField implements IInputPrompt, ILeadingCo
     }
 
     @Override
-    public Painter setCustomPainter ( final String id, final Painter painter )
+    public boolean resetCustomPainter ()
     {
-        return StyleManager.setCustomPainter ( this, id, painter );
-    }
-
-    @Override
-    public boolean resetPainter ()
-    {
-        return StyleManager.resetPainter ( this );
+        return StyleManager.resetCustomPainter ( this );
     }
 
     @Override

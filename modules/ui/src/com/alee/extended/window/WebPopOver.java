@@ -32,12 +32,12 @@ import java.awt.*;
  * It may also act as a simple dialog with custom styling if configured so.
  *
  * @author Mikle Garin
- * @see com.alee.laf.window.WebDialog
+ * @see WebDialog
  * @see PopOverPainter
  * @see com.alee.laf.menu.AbstractPopupPainter
- * @see com.alee.extended.window.PopOverSourcePoint
- * @see com.alee.extended.window.PopOverDirection
- * @see com.alee.extended.window.PopOverAlignment
+ * @see PopOverSourcePoint
+ * @see PopOverDirection
+ * @see PopOverAlignment
  */
 
 public class WebPopOver extends WebDialog implements PopOverEventMethods

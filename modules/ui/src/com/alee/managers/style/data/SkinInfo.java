@@ -649,7 +649,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
         {
             for ( int i = 0; i < style.getStylesCount (); i++ )
             {
-                performOverride ( globalStyles, style.getStyles (), i, globalIndex );
+                performOverride ( globalStyles, style.getNestedStyles (), i, globalIndex );
             }
         }
 
@@ -735,7 +735,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
         while ( !componentStyles.isEmpty () )
         {
             final ComponentStyle currentStyle = componentStyles.remove ( 0 );
-            final List<ComponentStyle> styles = oldStyle == null ? globalStyles : oldStyle.getStyles ();
+            final List<ComponentStyle> styles = oldStyle == null ? globalStyles : oldStyle.getNestedStyles ();
             final int maxIndex = oldStyle == null ? globalStyles.indexOf ( currentStyle ) : Integer.MAX_VALUE;
             if ( ( oldStyle = findStyle ( currentStyle.getType (), currentStyle.getId (), styles, maxIndex ) ) == null &&
                     ( oldStyle = findStyle ( currentStyle.getType (), currentStyle.getExtendsId (), styles, maxIndex ) ) == null &&
@@ -773,7 +773,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
                 componentStyles.put ( style.getCompleteId (), style );
 
                 // Adding child styles into cache
-                gatherStyles ( style.getStyles (), stylesCache );
+                gatherStyles ( style.getNestedStyles (), stylesCache );
             }
         }
     }
@@ -845,7 +845,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
         {
             for ( int i = 0; i < style.getStylesCount (); i++ )
             {
-                buildStyle ( style.getStyles (), i, building, builtStyles );
+                buildStyle ( style.getNestedStyles (), i, building, builtStyles );
             }
         }
 

@@ -31,7 +31,7 @@ import java.awt.*;
  */
 
 @Deprecated
-public class StyleConstants
+public final class StyleConstants
 {
     /**
      * Transparent color constant.

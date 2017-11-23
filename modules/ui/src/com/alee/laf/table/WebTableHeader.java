@@ -24,7 +24,6 @@ import com.alee.painter.Painter;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
-import java.util.Map;
 
 /**
  * {@link JTableHeader} extension class.
@@ -149,21 +148,9 @@ public class WebTableHeader extends JTableHeader implements Styleable, Paintable
     }
 
     @Override
-    public Map<String, Painter> getCustomPainters ()
-    {
-        return StyleManager.getCustomPainters ( this );
-    }
-
-    @Override
     public Painter getCustomPainter ()
     {
         return StyleManager.getCustomPainter ( this );
-    }
-
-    @Override
-    public Painter getCustomPainter ( final String id )
-    {
-        return StyleManager.getCustomPainter ( this, id );
     }
 
     @Override
@@ -173,15 +160,9 @@ public class WebTableHeader extends JTableHeader implements Styleable, Paintable
     }
 
     @Override
-    public Painter setCustomPainter ( final String id, final Painter painter )
+    public boolean resetCustomPainter ()
     {
-        return StyleManager.setCustomPainter ( this, id, painter );
-    }
-
-    @Override
-    public boolean resetPainter ()
-    {
-        return StyleManager.resetPainter ( this );
+        return StyleManager.resetCustomPainter ( this );
     }
 
     @Override

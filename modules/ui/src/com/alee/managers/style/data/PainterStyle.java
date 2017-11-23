@@ -20,16 +20,15 @@ package com.alee.managers.style.data;
 import com.alee.api.clone.Clone;
 import com.alee.api.merge.Mergeable;
 import com.alee.api.merge.Overwriting;
-import com.alee.painter.Painter;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 import java.io.Serializable;
-import java.util.Map;
+import java.util.LinkedHashMap;
 
 /**
- * Contains single {@link Painter} style data.
- * It stores any {@link Painter}-related data without instantiating {@link Painter} itself.
+ * Contains single {@link com.alee.painter.Painter} style data.
+ * It stores any {@link com.alee.painter.Painter}-related data without instantiating {@link com.alee.painter.Painter} itself.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
@@ -40,36 +39,23 @@ import java.util.Map;
 public final class PainterStyle implements Mergeable, Overwriting, Serializable, Cloneable
 {
     /**
-     * Whether or not this {@link Painter} should overwrite another one when merged.
+     * Whether or not this {@link com.alee.painter.Painter} should overwrite another one when merged.
      */
     @XStreamAsAttribute
     protected Boolean overwrite;
 
     /**
-     * Painter ID.
-     * Refers to painter type.
-     * It is required since a lot of components has more than just one painter.
-     */
-    @Deprecated
-    private String id;
-
-    /**
-     * Whether this is base component painter or not.
-     */
-    @Deprecated
-    private boolean base;
-
-    /**
      * Painter class canonical name.
      * Used for painter instantiation.
      */
+    @XStreamAsAttribute
     private String painterClass;
 
     /**
      * Painter properties.
      * Contains parsed painter settings.
      */
-    private Map<String, Object> properties;
+    private LinkedHashMap<String, Object> properties;
 
     /**
      * Constructs new painter style information.
@@ -86,57 +72,13 @@ public final class PainterStyle implements Mergeable, Overwriting, Serializable,
     }
 
     /**
-     * Sets whether or not this {@link Painter} should overwrite another one when merged.
+     * Sets whether or not this {@link com.alee.painter.Painter} should overwrite another one when merged.
      *
-     * @param overwrite whether or not this {@link Painter} should overwrite another one when merged
+     * @param overwrite whether or not this {@link com.alee.painter.Painter} should overwrite another one when merged
      */
     public void setOverwrite ( final Boolean overwrite )
     {
         this.overwrite = overwrite;
-    }
-
-    /**
-     * Returns painter ID.
-     *
-     * @return painter ID
-     */
-    @Deprecated
-    public String getId ()
-    {
-        return id;
-    }
-
-    /**
-     * Sets painter ID.
-     *
-     * @param id new painter ID
-     */
-    @Deprecated
-    public void setId ( final String id )
-    {
-        this.id = id;
-    }
-
-    /**
-     * Returns whether this is base component painter or not.
-     *
-     * @return true if this is base component painter, false otherwise
-     */
-    @Deprecated
-    public boolean isBase ()
-    {
-        return base;
-    }
-
-    /**
-     * Sets whether this is base component painter or not.
-     *
-     * @param base whether this is base component painter or not
-     */
-    @Deprecated
-    public void setBase ( final boolean base )
-    {
-        this.base = base;
     }
 
     /**
@@ -164,7 +106,7 @@ public final class PainterStyle implements Mergeable, Overwriting, Serializable,
      *
      * @return painter properties
      */
-    public Map<String, Object> getProperties ()
+    public LinkedHashMap<String, Object> getProperties ()
     {
         return properties;
     }
@@ -174,7 +116,7 @@ public final class PainterStyle implements Mergeable, Overwriting, Serializable,
      *
      * @param properties new painter properties
      */
-    public void setProperties ( final Map<String, Object> properties )
+    public void setProperties ( final LinkedHashMap<String, Object> properties )
     {
         this.properties = properties;
     }

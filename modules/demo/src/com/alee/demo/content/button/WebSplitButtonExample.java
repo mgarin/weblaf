@@ -17,8 +17,8 @@
 
 package com.alee.demo.content.button;
 
-import com.alee.demo.skin.DemoIcons;
 import com.alee.demo.api.example.*;
+import com.alee.demo.skin.DemoIcons;
 import com.alee.extended.button.WebSplitButton;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.grouping.GroupPane;

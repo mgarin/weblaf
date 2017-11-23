@@ -25,7 +25,11 @@ import com.alee.managers.style.PainterShapeProvider;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.painter.decoration.AbstractDecorationPainter;
-import com.alee.utils.*;
+import com.alee.utils.LafUtils;
+import com.alee.utils.ReflectUtils;
+import com.alee.utils.SwingUtils;
+import com.alee.utils.general.Pair;
+import com.alee.utils.swing.WeakComponentData;
 
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
@@ -37,12 +41,12 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 /**
- * This class provides utilities for linking painter with component UIs.
- * It was added to simplify painters usage within UI classes tied to specific {@link javax.swing.plaf.ComponentUI} implementations.
+ * This class provides utilities for linking {@link Painter}s with component UIs.
+ * It was added to simplify {@link Painter}s usage within UI classes tied to specific {@link ComponentUI} implementations.
  * Without this utility class a lot of code copy-paste would be required between all different UI implementations.
  *
- * Painter do not suffer from that issue since they are implemented differently - each specific Painters has its own interface unlike
- * UIs which are not based on interfaces but abstract classes.
+ * {@link Painter}s do not suffer from that issue since they are implemented differently - each specific Painters has its own interface
+ * unlike {@link ComponentUI}s which are not based on interfaces but always abstract classes, like {@link javax.swing.plaf.ButtonUI} one.
  *
  * @author Mikle Garin
  */
@@ -50,15 +54,14 @@ import java.util.WeakHashMap;
 public final class PainterSupport
 {
     /**
-     * Installed painters map.
+     * Installed painters.
+     * todo These should be moved into {@link StyleManager} and preserver in {@link com.alee.managers.style.StyleData}
      *
      * @see #installPainter(JComponent, Painter)
      * @see #uninstallPainter(JComponent, Painter)
-     * @deprecated Ther should only be one {@link Painter} per component
      */
-    @Deprecated
-    private static final Map<JComponent, Map<Painter, PainterListener>> installedPainters =
-            new WeakHashMap<JComponent, Map<Painter, PainterListener>> ( 100 );
+    private static final WeakComponentData<JComponent, Pair<Painter, PainterListener>> installedPainters =
+            new WeakComponentData<JComponent, Pair<Painter, PainterListener>> ( "PainterSupport.painter", 200 );
 
     /**
      * Margins saved per-component instance.
@@ -150,6 +153,7 @@ public final class PainterSupport
     /**
      * Installs painter into the specified component.
      * It is highly recommended to call this method only from EDT.
+     * todo Move this code into {@link AbstractPainter#install(JComponent, ComponentUI)}
      *
      * @param component component painter is applied to
      * @param painter   painter to install
@@ -157,82 +161,84 @@ public final class PainterSupport
     private static void installPainter ( final JComponent component, final Painter painter )
     {
         // Simply ignore this call if empty painter is set or component doesn't exist
-        if ( component == null || painter == null )
-        {
-            return;
-        }
-
-        // Installing painter
-        Map<Painter, PainterListener> listeners = installedPainters.get ( component );
-        if ( listeners == null )
-        {
-            listeners = new WeakHashMap<Painter, PainterListener> ( 1 );
-            installedPainters.put ( component, listeners );
-        }
-        if ( !installedPainters.containsKey ( painter ) )
+        if ( component != null && painter != null )
         {
             // Installing painter
-            painter.install ( component, LafUtils.getUI ( component ) );
-
-            // Applying initial component settings
-            final Boolean opaque = painter.isOpaque ();
-            if ( opaque != null )
+            if ( !installedPainters.contains ( component ) )
             {
-                LookAndFeel.installProperty ( component, WebLookAndFeel.OPAQUE_PROPERTY, opaque ? Boolean.TRUE : Boolean.FALSE );
-            }
+                // Installing painter
+                painter.install ( component, LafUtils.getUI ( component ) );
 
-            // Creating weak references to use them inside the listener
-            // Otherwise we will force it to keep strong reference to component and painter if we use them directly
-            final WeakReference<JComponent> c = new WeakReference<JComponent> ( component );
-            final WeakReference<Painter> p = new WeakReference<Painter> ( painter );
-
-            // Adding painter listener
-            final PainterListener listener = new PainterListener ()
-            {
-                @Override
-                public void repaint ()
+                // Applying initial component settings
+                final Boolean opaque = painter.isOpaque ();
+                if ( opaque != null )
                 {
-                    // Forcing component to be repainted
-                    c.get ().repaint ();
+                    LookAndFeel.installProperty ( component, WebLookAndFeel.OPAQUE_PROPERTY, opaque ? Boolean.TRUE : Boolean.FALSE );
                 }
 
-                @Override
-                public void repaint ( final int x, final int y, final int width, final int height )
-                {
-                    // Forcing component to be repainted
-                    c.get ().repaint ( x, y, width, height );
-                }
+                // Creating weak references to use them inside the listener
+                // Otherwise we will force it to keep strong reference to component and painter if we use them directly
+                final WeakReference<JComponent> c = new WeakReference<JComponent> ( component );
+                final WeakReference<Painter> p = new WeakReference<Painter> ( painter );
 
-                @Override
-                public void revalidate ()
+                // Adding painter listener
+                final PainterListener listener = new PainterListener ()
                 {
-                    // Forcing layout updates
-                    c.get ().revalidate ();
-                }
-
-                @Override
-                public void updateOpacity ()
-                {
-                    // Updating component opacity according to painter
-                    final Painter painter = p.get ();
-                    if ( painter != null )
+                    @Override
+                    public void repaint ()
                     {
-                        final Boolean opaque = painter.isOpaque ();
-                        if ( opaque != null )
+                        // Forcing component to be repainted
+                        c.get ().repaint ();
+                    }
+
+                    @Override
+                    public void repaint ( final int x, final int y, final int width, final int height )
+                    {
+                        // Forcing component to be repainted
+                        c.get ().repaint ( x, y, width, height );
+                    }
+
+                    @Override
+                    public void revalidate ()
+                    {
+                        // Forcing layout updates
+                        c.get ().revalidate ();
+                    }
+
+                    @Override
+                    public void updateOpacity ()
+                    {
+                        // Updating component opacity according to painter
+                        final Painter painter = p.get ();
+                        if ( painter != null )
                         {
-                            LookAndFeel.installProperty ( c.get (), WebLookAndFeel.OPAQUE_PROPERTY, opaque ? Boolean.TRUE : Boolean.FALSE );
+                            final Boolean opaque = painter.isOpaque ();
+                            if ( opaque != null )
+                            {
+                                LookAndFeel.installProperty ( c.get (), WebLookAndFeel.OPAQUE_PROPERTY,
+                                        opaque ? Boolean.TRUE : Boolean.FALSE );
+                            }
                         }
                     }
-                }
-            };
-            painter.addPainterListener ( listener );
-            listeners.put ( painter, listener );
+                };
+                painter.addPainterListener ( listener );
+
+                // Saving painter-listener pair
+                installedPainters.set ( component, new Pair<Painter, PainterListener> ( painter, listener ) );
+            }
+            else
+            {
+                // Inform about painters usage issue
+                final String msg = "Another painter is already installed on component: %s";
+                throw new PainterException ( String.format ( msg, component ) );
+            }
         }
     }
 
     /**
      * Uninstalls painter from the specified component.
      * It is highly recommended to call this method only from EDT.
+     * todo Move this code into {@link AbstractPainter#uninstall(JComponent, ComponentUI)}
      *
      * @param component component painter is uninstalled from
      * @param painter   painter to uninstall
@@ -240,20 +246,37 @@ public final class PainterSupport
     private static void uninstallPainter ( final JComponent component, final Painter painter )
     {
         // Simply ignore this call if painter or component doesn't exist
-        if ( component == null || painter == null )
+        if ( component != null && painter != null )
         {
-            return;
-        }
+            if ( installedPainters.contains ( component ) )
+            {
 
-        // Uninstalling painter
-        final Map<Painter, PainterListener> listeners = installedPainters.get ( component );
-        if ( listeners != null )
-        {
-            // Uninstalling painter
-            painter.uninstall ( component, LafUtils.getUI ( component ) );
+                final Pair<Painter, PainterListener> installed = installedPainters.get ( component );
+                final Painter installedPainter = installed.getKey ();
+                if ( installedPainter == painter )
+                {
+                    // Removing custom listener
+                    installedPainter.removePainterListener ( installed.getValue () );
 
-            // Removing painter listener
-            listeners.remove ( painter );
+                    // Uninstalling painter
+                    installedPainter.uninstall ( component, LafUtils.getUI ( component ) );
+
+                    // Removing painter reference
+                    installedPainters.clear ( component );
+                }
+                else
+                {
+                    // Inform about painters usage issue
+                    final String msg = "Wrong painter uninstall was requested for component: %s";
+                    throw new PainterException ( String.format ( msg, component ) );
+                }
+            }
+            else
+            {
+                // Inform about painters usage issue
+                final String msg = "There are no painters installed on component: %s";
+                throw new PainterException ( String.format ( msg, component ) );
+            }
         }
     }
 

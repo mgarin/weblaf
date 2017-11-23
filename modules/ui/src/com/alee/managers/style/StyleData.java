@@ -30,7 +30,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This object contains runtime style data for single component instance.
@@ -67,12 +66,9 @@ public final class StyleData implements PropertyChangeListener
     private StyleId styleId;
 
     /**
-     * Custom painters.
-     *
-     * @deprecated there should only be one painter available at a time
+     * Custom {@link Painter}.
      */
-    @Deprecated
-    private Map<String, Painter> painters;
+    private Painter customPainter;
 
     /**
      * Related style children.
@@ -103,7 +99,7 @@ public final class StyleData implements PropertyChangeListener
         this.skin = null;
         this.pinnedSkin = false;
         this.styleId = null;
-        this.painters = null;
+        this.customPainter = null;
         this.children = null;
         this.listeners = null;
 
@@ -535,25 +531,54 @@ public final class StyleData implements PropertyChangeListener
     }
 
     /**
-     * Returns custom painters.
+     * Returns custom {@link Painter}.
      *
-     * @return custom painters
+     * @return custom {@link Painter}
      */
-    @Deprecated
-    protected Map<String, Painter> getPainters ()
+    protected Painter getCustomPainter ()
     {
-        return painters;
+        return customPainter;
     }
 
     /**
-     * Sets custom painters.
+     * Sets custom {@link Painter}.
      *
-     * @param painters custom painters
+     * @param painter new custom {@link Painter}
+     * @return previously used custom {@link Painter}
      */
-    @Deprecated
-    protected void setPainters ( final Map<String, Painter> painters )
+    protected Painter setCustomPainter ( final Painter painter )
     {
-        this.painters = painters;
+        // Saving previous custom painter for return
+        final Painter oldPainter = this.customPainter;
+
+        // Updating custom painter
+        this.customPainter = painter;
+
+        // Reapplying skin
+        // todo This is not the best way to update
+        applySkin ( getSkin (), false );
+
+        return oldPainter;
+    }
+
+    /**
+     * Resets custom {@link Painter} to default one.
+     *
+     * @return {@code true} if custom {@link Painter} was successfully resetted, {@code false} otherwise
+     */
+    public boolean resetCustomPainter ()
+    {
+        // Operation is successful when there is a custom painter to reset
+        final boolean successful = this.customPainter != null;
+
+        // Resetting custom painter
+        this.customPainter = null;
+
+        // Reapply skin
+        // todo This is not the best way to update
+        applySkin ( getSkin (), false );
+
+        return successful;
     }
 
     /**

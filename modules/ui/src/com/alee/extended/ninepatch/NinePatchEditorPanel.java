@@ -864,7 +864,7 @@ public class NinePatchEditorPanel extends WebPanel
             public void actionPerformed ( final ActionEvent e )
             {
                 SettingsManager.set ( "NinePatchEditor", "preview.transparentBackground", true );
-                previewPanel.resetPainter ();
+                previewPanel.resetCustomPainter ();
             }
         } );
         drawColoredBackground.addActionListener ( new ActionListener ()

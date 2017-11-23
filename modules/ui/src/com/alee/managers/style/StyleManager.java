@@ -1010,7 +1010,6 @@ public final class StyleManager
 
     /**
      * Applies current skin to the skinnable component.
-     * <p>
      * This method is used only to setup style data into UI on install.
      * It is not recommended to use it outside of that install behavior.
      *
@@ -1036,7 +1035,6 @@ public final class StyleManager
 
     /**
      * Removes skin applied to the specified component and returns it.
-     * <p>
      * This method is used only to cleanup style data from UI on uninstall.
      * It is not recommended to use it outside of that uninstall behavior.
      *
@@ -1125,116 +1123,38 @@ public final class StyleManager
     }
 
     /**
-     * Returns all custom painters for the specified component.
-     *
-     * @param component component to retrieve custom painters for
-     * @return all custom painters for the specified component
-     */
-    @Deprecated
-    public static Map<String, Painter> getCustomPainters ( final JComponent component )
-    {
-        return getData ( component ).getPainters ();
-    }
-
-    /**
-     * Returns custom base painter for the specified component.
-     *
-     * @param component component to retrieve custom base painter for
-     * @return custom base painter for the specified component
-     */
-    public static Painter getCustomPainter ( final JComponent component )
-    {
-        return getCustomPainter ( component, ComponentStyle.BASE_PAINTER_ID );
-    }
-
-    /**
      * Returns custom painter for the specified component.
      *
      * @param component component to retrieve custom painter for
-     * @param id        painter ID
      * @return custom painter for the specified component
      */
-    @Deprecated
-    public static Painter getCustomPainter ( final JComponent component, final String id )
+    public static Painter getCustomPainter ( final JComponent component )
     {
-        final Map<String, Painter> customPainters = getCustomPainters ( component );
-        return customPainters != null ? customPainters.get ( id ) : null;
+        return getData ( component ).getCustomPainter ();
     }
 
     /**
-     * Sets custom base painter for the specified component.
+     * Sets new custom {@link Painter} for the specified {@link JComponent}.
      * You should call this method when setting painter outside of the UI.
      *
      * @param component component to set painter for
-     * @param painter   painter
-     * @param <T>       painter type
-     * @return old custom painter
+     * @param painter   {@link Painter}
+     * @return previously used custom {@link Painter}
      */
-    public static <T extends Painter> T setCustomPainter ( final JComponent component, final T painter )
+    public static Painter setCustomPainter ( final JComponent component, final Painter painter )
     {
-        return setCustomPainter ( component, ComponentStyle.BASE_PAINTER_ID, painter );
+        return getData ( component ).setCustomPainter ( painter );
     }
 
     /**
-     * Sets custom painter for the specified component under the specified painter ID.
-     * You should call this method when setting painter outside of the UI.
+     * Resets custom {@link Painter} for the specified {@link JComponent} to default one.
      *
-     * @param component component to set painter for
-     * @param id        painter ID
-     * @param painter   painter
-     * @param <T>       painter type
-     * @return old custom painter
+     * @param component {@link JComponent} to reset custom {@link Painter} for
+     * @return {@code true} if custom {@link Painter} was successfully resetted, {@code false} otherwise
      */
-    @Deprecated
-    public static <T extends Painter> T setCustomPainter ( final JComponent component, final String id, final T painter )
+    public static boolean resetCustomPainter ( final JComponent component )
     {
-        // todo Move this into StyleData?
-
-        // Saving custom painter
-        final StyleData data = getData ( component );
-        Map<String, Painter> painters = data.getPainters ();
-        if ( painters == null )
-        {
-            painters = new HashMap<String, Painter> ( 1 );
-            data.setPainters ( painters );
-        }
-        final T oldValue = ( T ) painters.put ( id, painter );
-
-        // Forcing component update
-        // todo Some methods in skin instead of full reinstall?
-        // todo This also incorrectly resets custom skin!
-        installSkin ( component );
-
-        return oldValue;
-    }
-
-    /**
-     * Resets painter for the specified component to default one.
-     *
-     * @param component component to reset painter for
-     * @return true if painter was successfully resetted, false otherwise
-     */
-    public static boolean resetPainter ( final JComponent component )
-    {
-        // todo Move this into StyleData?
-
-        final Map<String, Painter> painters = getData ( component ).getPainters ();
-        if ( painters != null && painters.size () > 0 )
-        {
-            // Removing all custom painters
-            painters.clear ();
-
-            // Forcing component skin update
-            // todo Some methods in skin instead of full reinstall?
-            // todo This also incorrectly resets custom skin!
-            installSkin ( component );
-
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return getData ( component ).resetCustomPainter ();
     }
 
     /**
