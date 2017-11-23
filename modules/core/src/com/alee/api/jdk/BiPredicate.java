@@ -26,6 +26,7 @@ package com.alee.api.jdk;
  * @param <T> first input argument type
  * @param <U> second input argument type
  * @author Mikle Garin
+ * @see Predicate
  */
 
 public interface BiPredicate<T, U>

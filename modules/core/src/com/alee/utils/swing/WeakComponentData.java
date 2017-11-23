@@ -18,6 +18,7 @@
 package com.alee.utils.swing;
 
 import com.alee.api.jdk.BiConsumer;
+import com.alee.api.jdk.BiFunction;
 import com.alee.api.jdk.BiPredicate;
 import com.alee.api.jdk.Function;
 import com.alee.utils.collection.ImmutableSet;
@@ -115,18 +116,46 @@ public class WeakComponentData<C extends JComponent, D>
      * Returns data stored in the {@link JComponent}.
      * If no data can be found it will be created using mapping {@link Function}, stored within {@link JComponent} and returned as result.
      *
-     * @param component       {@link JComponent} to retrieve data from
-     * @param mappingFunction mapping {@link Function} for the case of missing data
+     * @param component   {@link JComponent} to retrieve data from
+     * @param defaultData {@link Function} that creates default data in case it is missing
      * @return data stored in the {@link JComponent}
      */
-    public synchronized D get ( final C component, final Function<C, D> mappingFunction )
+    public synchronized D get ( final C component, final Function<C, D> defaultData )
     {
         // Trying to retrieve existing data
         D data = get ( component );
         if ( data == null )
         {
             // Requesting new data
-            data = mappingFunction.apply ( component );
+            data = defaultData.apply ( component );
+            set ( component, data );
+        }
+        return data;
+    }
+
+    /**
+     * Modifies data stored in the {@link JComponent} using specified {@link BiFunction} and returns it.
+     * If no data can be found it will be created using mapping {@link Function}, stored within {@link JComponent} and returned as result.
+     *
+     * @param component    {@link JComponent} to retrieve and modify data from
+     * @param modifiedData {@link BiFunction} that modifies data in case it exists
+     * @param defaultData  {@link Function} that creates default data in case it is missing
+     * @return modified data from the {@link JComponent}
+     */
+    public synchronized D modify ( final C component, final BiFunction<C, D, D> modifiedData, final Function<C, D> defaultData )
+    {
+        // Trying to retrieve existing data
+        D data = get ( component );
+        if ( data == null )
+        {
+            // Requesting new data
+            data = defaultData.apply ( component );
+            set ( component, data );
+        }
+        else
+        {
+            // Modifying existing data
+            data = modifiedData.apply ( component, data );
             set ( component, data );
         }
         return data;

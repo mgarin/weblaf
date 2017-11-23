@@ -18,23 +18,26 @@
 package com.alee.api.jdk;
 
 /**
- * Represents an operation that accepts two input arguments and returns no result. This is the two-arity specialization of {@link Consumer}.
- * Unlike most other functional interfaces, {@code BiConsumer} is expected to operate via side-effects.
+ * Represents a function that accepts two arguments and produces a result.
+ * This is the two-arity specialization of {@link Function}.
  *
- * This is a custom bi-consumer for JDK6 support.
+ * This is a custom bi-function for JDK6 support.
  *
- * @param <T> the type of the input to the operation
+ * @param <T> the type of the first argument to the function
+ * @param <U> the type of the second argument to the function
+ * @param <R> the type of the result of the function
  * @author Mikle Garin
- * @see Consumer
+ * @see Function
  */
 
-public interface BiConsumer<T, U>
+public interface BiFunction<T, U, R>
 {
     /**
-     * Performs this operation on the given arguments.
+     * Applies this function to the given arguments.
      *
-     * @param t the first input argument
-     * @param u the second input argument
+     * @param t the first function argument
+     * @param u the second function argument
+     * @return the function result
      */
-    public void accept ( T t, U u );
+    public R apply ( T t, U u );
 }

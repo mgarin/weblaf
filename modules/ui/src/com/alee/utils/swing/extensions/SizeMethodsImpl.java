@@ -17,280 +17,300 @@
 
 package com.alee.utils.swing.extensions;
 
+import com.alee.api.jdk.BiFunction;
+import com.alee.api.jdk.Function;
+import com.alee.utils.swing.WeakComponentData;
+
+import javax.swing.*;
 import java.awt.*;
-import java.util.Map;
-import java.util.WeakHashMap;
 
 /**
- * Common implementations for {@link com.alee.utils.swing.extensions.SizeMethods} interface methods.
+ * Common implementations for {@link SizeMethods} interface methods.
  *
  * @author Mikle Garin
- * @see com.alee.utils.swing.extensions.SizeMethods
+ * @see SizeMethods
  */
 
 public final class SizeMethodsImpl
 {
     /**
-     * Minimum sizes cache.
-     * It uses weak component references to avoid memory leaks.
+     * {@link JComponent} minimum sizes.
      */
-    private static final Map<Component, Dimension> minimumSizeCache = new WeakHashMap<Component, Dimension> ();
+    private static final WeakComponentData<JComponent, Dimension> minimumSizeCache =
+            new WeakComponentData<JComponent, Dimension> ( "SizeMethodsImpl.minimumSize", 5 );
 
     /**
-     * Maximum sizes cache.
-     * It uses weak component references to avoid memory leaks.
+     * {@link JComponent} maximum sizes.
      */
-    private static final Map<Component, Dimension> maximumSizeCache = new WeakHashMap<Component, Dimension> ();
+    private static final WeakComponentData<JComponent, Dimension> maximumSizeCache =
+            new WeakComponentData<JComponent, Dimension> ( "SizeMethodsImpl.maximumSize", 5 );
 
     /**
-     * Preferred sizes cache.
-     * It uses weak component references to avoid memory leaks.
+     * {@link JComponent} preferred sizes.
      */
-    private static final Map<Component, Dimension> preferredSizeCache = new WeakHashMap<Component, Dimension> ();
+    private static final WeakComponentData<JComponent, Dimension> preferredSizeCache =
+            new WeakComponentData<JComponent, Dimension> ( "SizeMethodsImpl.preferredSize", 50 );
 
     /**
-     * Returns component preferred width.
+     * Returns {@link JComponent} preferred width.
      *
-     * @param component component to process
-     * @param <C>       provided component type
-     * @return component preferred width
+     * @param component {@link JComponent} to process
+     * @return {@link JComponent} preferred width
      */
-    public static <C extends Component> int getPreferredWidth ( final C component )
+    public static int getPreferredWidth ( final JComponent component )
     {
         final Dimension ps = preferredSizeCache.get ( component );
         return ps != null ? ps.width : SizeMethods.UNDEFINED;
     }
 
     /**
-     * Sets component preferred width.
-     * Pass {@link com.alee.utils.swing.extensions.SizeMethods#UNDEFINED} to let component choose preferred width on its own.
+     * Sets {@link JComponent} preferred width.
+     * Pass {@link SizeMethods#UNDEFINED} to let {@link JComponent} choose preferred width on its own.
      *
-     * @param component      component to process
-     * @param preferredWidth new component preferred width
-     * @param <C>            provided component type
-     * @param <T>            actual component type
-     * @return modified component
+     * @param component      {@link JComponent} to process
+     * @param preferredWidth new {@link JComponent} preferred width
+     * @param <C>            {@link JComponent} type
+     * @return modified {@link JComponent}
      */
-    public static <C extends Component, T extends C> T setPreferredWidth ( final C component, final int preferredWidth )
+    public static <C extends JComponent> C setPreferredWidth ( final JComponent component, final int preferredWidth )
     {
-        Dimension ps = preferredSizeCache.get ( component );
-        if ( ps == null )
+        preferredSizeCache.modify ( component, new BiFunction<JComponent, Dimension, Dimension> ()
         {
-            ps = new Dimension ( preferredWidth, SizeMethods.UNDEFINED );
-            preferredSizeCache.put ( component, ps );
-        }
-        else
+            @Override
+            public Dimension apply ( final JComponent component, final Dimension dimension )
+            {
+                return new Dimension ( preferredWidth, dimension.height );
+            }
+        }, new Function<JComponent, Dimension> ()
         {
-            ps.width = preferredWidth;
-        }
-        return ( T ) component;
+            @Override
+            public Dimension apply ( final JComponent component )
+            {
+                return new Dimension ( preferredWidth, SizeMethods.UNDEFINED );
+            }
+        } );
+        return ( C ) component;
     }
 
     /**
-     * Returns component preferred height.
+     * Returns {@link JComponent} preferred height.
      *
-     * @param component component to process
-     * @param <C>       provided component type
-     * @return component preferred height
+     * @param component {@link JComponent} to process
+     * @return {@link JComponent} preferred height
      */
-    public static <C extends Component> int getPreferredHeight ( final C component )
+    public static int getPreferredHeight ( final JComponent component )
     {
         final Dimension ps = preferredSizeCache.get ( component );
         return ps != null ? ps.height : SizeMethods.UNDEFINED;
     }
 
     /**
-     * Sets component preferred height.
-     * Pass {@link com.alee.utils.swing.extensions.SizeMethods#UNDEFINED} to let component choose preferred height on its own.
+     * Sets {@link JComponent} preferred height.
+     * Pass {@link SizeMethods#UNDEFINED} to let {@link JComponent} choose preferred height on its own.
      *
-     * @param component       component to process
-     * @param preferredHeight new component preferred height
-     * @param <C>             provided component type
-     * @param <T>             actual component type
-     * @return modified component
+     * @param component       {@link JComponent} to process
+     * @param preferredHeight new {@link JComponent} preferred height
+     * @param <C>             {@link JComponent} type
+     * @return modified {@link JComponent}
      */
-    public static <C extends Component, T extends C> T setPreferredHeight ( final C component, final int preferredHeight )
+    public static <C extends JComponent> C setPreferredHeight ( final JComponent component, final int preferredHeight )
     {
-        Dimension ps = preferredSizeCache.get ( component );
-        if ( ps == null )
+        preferredSizeCache.modify ( component, new BiFunction<JComponent, Dimension, Dimension> ()
         {
-            ps = new Dimension ( SizeMethods.UNDEFINED, preferredHeight );
-            preferredSizeCache.put ( component, ps );
-        }
-        else
+            @Override
+            public Dimension apply ( final JComponent component, final Dimension dimension )
+            {
+                return new Dimension ( dimension.width, preferredHeight );
+            }
+        }, new Function<JComponent, Dimension> ()
         {
-            ps.height = preferredHeight;
-        }
-        return ( T ) component;
+            @Override
+            public Dimension apply ( final JComponent component )
+            {
+                return new Dimension ( SizeMethods.UNDEFINED, preferredHeight );
+            }
+        } );
+        return ( C ) component;
     }
 
     /**
-     * Returns component minimum width.
+     * Returns {@link JComponent} minimum width.
      *
-     * @param component component to process
-     * @param <C>       provided component type
-     * @return component minimum width
+     * @param component {@link JComponent} to process
+     * @return {@link JComponent} minimum width
      */
-    public static <C extends Component> int getMinimumWidth ( final C component )
+    public static int getMinimumWidth ( final JComponent component )
     {
         final Dimension ms = minimumSizeCache.get ( component );
         return ms != null ? ms.width : SizeMethods.UNDEFINED;
     }
 
     /**
-     * Sets component minimum width.
-     * Pass {@link com.alee.utils.swing.extensions.SizeMethods#UNDEFINED} to let component choose minimum width on its own.
+     * Sets {@link JComponent} minimum width.
+     * Pass {@link SizeMethods#UNDEFINED} to let {@link JComponent} choose minimum width on its own.
      *
-     * @param component    component to process
-     * @param minimumWidth new component minimum width
-     * @param <C>          provided component type
-     * @param <T>          actual component type
-     * @return modified component
+     * @param component    {@link JComponent} to process
+     * @param minimumWidth new {@link JComponent} minimum width
+     * @param <C>          {@link JComponent} type
+     * @return modified {@link JComponent}
      */
-    public static <C extends Component, T extends C> T setMinimumWidth ( final C component, final int minimumWidth )
+    public static <C extends JComponent> C setMinimumWidth ( final JComponent component, final int minimumWidth )
     {
-        Dimension ms = minimumSizeCache.get ( component );
-        if ( ms == null )
+        minimumSizeCache.modify ( component, new BiFunction<JComponent, Dimension, Dimension> ()
         {
-            ms = new Dimension ( minimumWidth, SizeMethods.UNDEFINED );
-            minimumSizeCache.put ( component, ms );
-        }
-        else
+            @Override
+            public Dimension apply ( final JComponent component, final Dimension dimension )
+            {
+                return new Dimension ( minimumWidth, dimension.height );
+            }
+        }, new Function<JComponent, Dimension> ()
         {
-            ms.width = minimumWidth;
-        }
-        return ( T ) component;
+            @Override
+            public Dimension apply ( final JComponent component )
+            {
+                return new Dimension ( minimumWidth, SizeMethods.UNDEFINED );
+            }
+        } );
+        return ( C ) component;
     }
 
     /**
-     * Returns component minimum height.
+     * Returns {@link JComponent} minimum height.
      *
-     * @param component component to process
-     * @param <C>       provided component type
-     * @return component minimum height
+     * @param component {@link JComponent} to process
+     * @return {@link JComponent} minimum height
      */
-    public static <C extends Component> int getMinimumHeight ( final C component )
+    public static int getMinimumHeight ( final JComponent component )
     {
         final Dimension ms = minimumSizeCache.get ( component );
         return ms != null ? ms.height : SizeMethods.UNDEFINED;
     }
 
     /**
-     * Sets component minimum height.
-     * Pass {@link com.alee.utils.swing.extensions.SizeMethods#UNDEFINED} to let component choose minimum height on its own.
+     * Sets {@link JComponent} minimum height.
+     * Pass {@link SizeMethods#UNDEFINED} to let {@link JComponent} choose minimum height on its own.
      *
-     * @param component     component to process
-     * @param minimumHeight new component minimum height
-     * @param <C>           provided component type
-     * @param <T>           actual component type
-     * @return modified component
+     * @param component     {@link JComponent} to process
+     * @param minimumHeight new {@link JComponent} minimum height
+     * @param <C>           {@link JComponent} type
+     * @return modified {@link JComponent}
      */
-    public static <C extends Component, T extends C> T setMinimumHeight ( final C component, final int minimumHeight )
+    public static <C extends JComponent> C setMinimumHeight ( final JComponent component, final int minimumHeight )
     {
-        Dimension ms = minimumSizeCache.get ( component );
-        if ( ms == null )
+        minimumSizeCache.modify ( component, new BiFunction<JComponent, Dimension, Dimension> ()
         {
-            ms = new Dimension ( SizeMethods.UNDEFINED, minimumHeight );
-            minimumSizeCache.put ( component, ms );
-        }
-        else
+            @Override
+            public Dimension apply ( final JComponent component, final Dimension dimension )
+            {
+                return new Dimension ( dimension.width, minimumHeight );
+            }
+        }, new Function<JComponent, Dimension> ()
         {
-            ms.height = minimumHeight;
-        }
-        return ( T ) component;
+            @Override
+            public Dimension apply ( final JComponent component )
+            {
+                return new Dimension ( SizeMethods.UNDEFINED, minimumHeight );
+            }
+        } );
+        return ( C ) component;
     }
 
     /**
-     * Returns component maximum width.
+     * Returns {@link JComponent} maximum width.
      *
-     * @param component component to process
-     * @param <C>       provided component type
-     * @return component maximum width
+     * @param component {@link JComponent} to process
+     * @return {@link JComponent} maximum width
      */
-    public static <C extends Component> int getMaximumWidth ( final C component )
+    public static int getMaximumWidth ( final JComponent component )
     {
         final Dimension ms = maximumSizeCache.get ( component );
         return ms != null ? ms.width : SizeMethods.UNDEFINED;
     }
 
     /**
-     * Sets component maximum width.
-     * Pass {@link com.alee.utils.swing.extensions.SizeMethods#UNDEFINED} to let component choose maximum width on its own.
+     * Sets {@link JComponent} maximum width.
+     * Pass {@link SizeMethods#UNDEFINED} to let {@link JComponent} choose maximum width on its own.
      *
-     * @param component    component to process
-     * @param maximumWidth new component maximum width
-     * @param <C>          provided component type
-     * @param <T>          actual component type
-     * @return modified component
+     * @param component    {@link JComponent} to process
+     * @param maximumWidth new {@link JComponent} maximum width
+     * @param <C>          {@link JComponent} type
+     * @return modified {@link JComponent}
      */
-    public static <C extends Component, T extends C> T setMaximumWidth ( final C component, final int maximumWidth )
+    public static <C extends JComponent> C setMaximumWidth ( final JComponent component, final int maximumWidth )
     {
-        Dimension ms = maximumSizeCache.get ( component );
-        if ( ms == null )
+        maximumSizeCache.modify ( component, new BiFunction<JComponent, Dimension, Dimension> ()
         {
-            ms = new Dimension ( maximumWidth, SizeMethods.UNDEFINED );
-            maximumSizeCache.put ( component, ms );
-        }
-        else
+            @Override
+            public Dimension apply ( final JComponent component, final Dimension dimension )
+            {
+                return new Dimension ( maximumWidth, dimension.height );
+            }
+        }, new Function<JComponent, Dimension> ()
         {
-            ms.width = maximumWidth;
-        }
-        return ( T ) component;
+            @Override
+            public Dimension apply ( final JComponent component )
+            {
+                return new Dimension ( maximumWidth, SizeMethods.UNDEFINED );
+            }
+        } );
+        return ( C ) component;
     }
 
     /**
-     * Returns component maximum height.
+     * Returns {@link JComponent} maximum height.
      *
-     * @param component component to process
-     * @param <C>       provided component type
-     * @return component maximum height
+     * @param component {@link JComponent} to process
+     * @return {@link JComponent} maximum height
      */
-    public static <C extends Component> int getMaximumHeight ( final C component )
+    public static int getMaximumHeight ( final JComponent component )
     {
         final Dimension ms = maximumSizeCache.get ( component );
         return ms != null ? ms.height : SizeMethods.UNDEFINED;
     }
 
     /**
-     * Sets component maximum height.
-     * Pass {@link com.alee.utils.swing.extensions.SizeMethods#UNDEFINED} to let component choose maximum height on its own.
+     * Sets {@link JComponent} maximum height.
+     * Pass {@link SizeMethods#UNDEFINED} to let {@link JComponent} choose maximum height on its own.
      *
-     * @param component     component to process
-     * @param maximumHeight new component maximum height
-     * @param <C>           provided component type
-     * @param <T>           actual component type
-     * @return modified component
+     * @param component     {@link JComponent} to process
+     * @param maximumHeight new {@link JComponent} maximum height
+     * @param <C>           {@link JComponent} type
+     * @return modified {@link JComponent}
      */
-    public static <C extends Component, T extends C> T setMaximumHeight ( final C component, final int maximumHeight )
+    public static <C extends JComponent> C setMaximumHeight ( final JComponent component, final int maximumHeight )
     {
-        Dimension ms = maximumSizeCache.get ( component );
-        if ( ms == null )
+        maximumSizeCache.modify ( component, new BiFunction<JComponent, Dimension, Dimension> ()
         {
-            ms = new Dimension ( SizeMethods.UNDEFINED, maximumHeight );
-            maximumSizeCache.put ( component, ms );
-        }
-        else
+            @Override
+            public Dimension apply ( final JComponent component, final Dimension dimension )
+            {
+                return new Dimension ( dimension.width, maximumHeight );
+            }
+        }, new Function<JComponent, Dimension> ()
         {
-            ms.height = maximumHeight;
-        }
-        return ( T ) component;
+            @Override
+            public Dimension apply ( final JComponent component )
+            {
+                return new Dimension ( SizeMethods.UNDEFINED, maximumHeight );
+            }
+        } );
+        return ( C ) component;
     }
 
     /**
-     * Returns component preferred size.
+     * Returns {@link JComponent} preferred size.
      * This size is already adjusted according to min/max width and height settings.
      *
-     * @param component           component to process
-     * @param actualPreferredSize actual component preferred size
-     * @param <C>                 provided component type
-     * @return component preferred size
+     * @param component             {@link JComponent} to process
+     * @param originalPreferredSize original {@link JComponent} preferred size
+     * @return {@link JComponent} preferred size
      */
-    public static <C extends Component> Dimension getPreferredSize ( final C component, final Dimension actualPreferredSize )
+    public static Dimension getPreferredSize ( final JComponent component, final Dimension originalPreferredSize )
     {
         final Dimension ps = preferredSizeCache.get ( component );
         final Dimension min = minimumSizeCache.get ( component );
         final Dimension max = maximumSizeCache.get ( component );
-        final Dimension preferredSize = new Dimension ( actualPreferredSize );
+        final Dimension preferredSize = new Dimension ( originalPreferredSize );
         if ( ps != null && ps.width != SizeMethods.UNDEFINED )
         {
             preferredSize.width = ps.width;
@@ -325,34 +345,32 @@ public final class SizeMethodsImpl
     }
 
     /**
-     * Returns actual component preferred size before any adjustments.
-     * This might be useful for various calculations involving component size.
+     * Returns original {@link JComponent} preferred size before any adjustments.
+     * This might be useful for various calculations involving {@link JComponent} size.
      *
-     * @param component           component to process
-     * @param actualPreferredSize actual component preferred size
-     * @param <C>                 provided component type
-     * @return actual component preferred size before any adjustments
+     * @param component             {@link JComponent} to process
+     * @param originalPreferredSize original {@link JComponent} preferred size
+     * @return original {@link JComponent} preferred size before any adjustments
      */
     @SuppressWarnings ( "UnusedParameters" )
-    public static <C extends Component> Dimension getOriginalPreferredSize ( final C component, final Dimension actualPreferredSize )
+    public static Dimension getOriginalPreferredSize ( final JComponent component, final Dimension originalPreferredSize )
     {
-        return actualPreferredSize;
+        return originalPreferredSize;
     }
 
     /**
-     * Sets component preferred size.
+     * Sets {@link JComponent} preferred size.
      * This method is a simple bridge for JComponent#setPreferredSize method.
      *
-     * @param component component to process
-     * @param width     component preferred width
-     * @param height    component preferred height
-     * @param <C>       provided component type
-     * @param <T>       actual component type
-     * @return modified component
+     * @param component {@link JComponent} to process
+     * @param width     {@link JComponent} preferred width
+     * @param height    {@link JComponent} preferred height
+     * @param <C>       {@link JComponent} type
+     * @return modified {@link JComponent}
      */
-    public static <C extends Component, T extends C> T setPreferredSize ( final C component, final int width, final int height )
+    public static <C extends JComponent> C setPreferredSize ( final JComponent component, final int width, final int height )
     {
         component.setPreferredSize ( new Dimension ( width, height ) );
-        return ( T ) component;
+        return ( C ) component;
     }
 }

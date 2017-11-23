@@ -17,10 +17,11 @@
 
 package com.alee.utils.swing.extensions;
 
+import javax.swing.*;
 import java.awt.*;
 
 /**
- * This interface provides a set of methods that should be added into components that support custom size methods.
+ * This interface provides a set of methods that should be added into any {@link JComponent} that supports customizable sizes.
  *
  * @param <C> component type
  * @author Mikle Garin
@@ -28,7 +29,7 @@ import java.awt.*;
  * @see com.alee.utils.swing.extensions.SizeMethodsImpl
  */
 
-public interface SizeMethods<C extends Component> extends MethodExtension
+public interface SizeMethods<C extends JComponent> extends MethodExtension
 {
     /**
      * Undefined size value constant.
@@ -36,125 +37,125 @@ public interface SizeMethods<C extends Component> extends MethodExtension
     public static final int UNDEFINED = -1;
 
     /**
-     * Returns component preferred width.
+     * Returns {@link JComponent} preferred width.
      *
-     * @return component preferred width
+     * @return {@link JComponent} preferred width
      */
     public int getPreferredWidth ();
 
     /**
-     * Sets component preferred width.
-     * Pass {@link #UNDEFINED} to let component choose preferred width on its own.
+     * Sets {@link JComponent} preferred width.
+     * Pass {@link #UNDEFINED} to let {@link JComponent} choose preferred width on its own.
      *
-     * @param preferredWidth new component preferred width
-     * @return modified component
+     * @param preferredWidth new {@link JComponent} preferred width
+     * @return modified {@link JComponent}
      */
     public C setPreferredWidth ( int preferredWidth );
 
     /**
-     * Returns component preferred height.
+     * Returns {@link JComponent} preferred height.
      *
-     * @return component preferred height
+     * @return {@link JComponent} preferred height
      */
     public int getPreferredHeight ();
 
     /**
-     * Sets component preferred height.
-     * Pass {@link #UNDEFINED} to let component choose preferred height on its own.
+     * Sets {@link JComponent} preferred height.
+     * Pass {@link #UNDEFINED} to let {@link JComponent} choose preferred height on its own.
      *
-     * @param preferredHeight new component preferred height
-     * @return modified component
+     * @param preferredHeight new {@link JComponent} preferred height
+     * @return modified {@link JComponent}
      */
     public C setPreferredHeight ( int preferredHeight );
 
     /**
-     * Returns component minimum width.
+     * Returns {@link JComponent} minimum width.
      *
-     * @return component minimum width
+     * @return {@link JComponent} minimum width
      */
     public int getMinimumWidth ();
 
     /**
-     * Sets component minimum width.
-     * Pass {@link #UNDEFINED} to let component choose minimum width on its own.
+     * Sets {@link JComponent} minimum width.
+     * Pass {@link #UNDEFINED} to let {@link JComponent} choose minimum width on its own.
      *
-     * @param minimumWidth new component minimum width
-     * @return modified component
+     * @param minimumWidth new {@link JComponent} minimum width
+     * @return modified {@link JComponent}
      */
     public C setMinimumWidth ( int minimumWidth );
 
     /**
-     * Returns component minimum height.
+     * Returns {@link JComponent} minimum height.
      *
-     * @return component minimum height
+     * @return {@link JComponent} minimum height
      */
     public int getMinimumHeight ();
 
     /**
-     * Sets component minimum height.
-     * Pass {@link #UNDEFINED} to let component choose minimum height on its own.
+     * Sets {@link JComponent} minimum height.
+     * Pass {@link #UNDEFINED} to let {@link JComponent} choose minimum height on its own.
      *
-     * @param minimumHeight new component minimum height
-     * @return modified component
+     * @param minimumHeight new {@link JComponent} minimum height
+     * @return modified {@link JComponent}
      */
     public C setMinimumHeight ( int minimumHeight );
 
     /**
-     * Returns component maximum width.
+     * Returns {@link JComponent} maximum width.
      *
-     * @return component maximum width
+     * @return {@link JComponent} maximum width
      */
     public int getMaximumWidth ();
 
     /**
-     * Sets component maximum width.
-     * Pass {@link #UNDEFINED} to let component choose maximum width on its own.
+     * Sets {@link JComponent} maximum width.
+     * Pass {@link #UNDEFINED} to let {@link JComponent} choose maximum width on its own.
      *
-     * @param maximumWidth new component maximum width
-     * @return modified component
+     * @param maximumWidth new {@link JComponent} maximum width
+     * @return modified {@link JComponent}
      */
     public C setMaximumWidth ( int maximumWidth );
 
     /**
-     * Returns component maximum height.
+     * Returns {@link JComponent} maximum height.
      *
-     * @return component maximum height
+     * @return {@link JComponent} maximum height
      */
     public int getMaximumHeight ();
 
     /**
-     * Sets component maximum height.
-     * Pass {@link #UNDEFINED} to let component choose maximum height on its own.
+     * Sets {@link JComponent} maximum height.
+     * Pass {@link #UNDEFINED} to let {@link JComponent} choose maximum height on its own.
      *
-     * @param maximumHeight new component maximum height
-     * @return modified component
+     * @param maximumHeight new {@link JComponent} maximum height
+     * @return modified {@link JComponent}
      */
     public C setMaximumHeight ( int maximumHeight );
 
     /**
-     * Returns component preferred size.
+     * Returns {@link JComponent} preferred size.
      * This size is already adjusted according to min/max width and height settings.
-     * Use {@link #getOriginalPreferredSize()} method to retrieve original component preferred size.
+     * Use {@link #getOriginalPreferredSize()} method to retrieve original {@link JComponent} preferred size.
      *
-     * @return component preferred size
+     * @return {@link JComponent} preferred size
      */
     public Dimension getPreferredSize ();
 
     /**
-     * Returns actual component preferred size before any adjustments.
-     * This might be useful for various calculations involving component size.
+     * Returns original {@link JComponent} preferred size before any adjustments.
+     * This might be useful for various calculations involving {@link JComponent} size.
      *
-     * @return actual component preferred size before any adjustments
+     * @return original {@link JComponent} preferred size before any adjustments
      */
     public Dimension getOriginalPreferredSize ();
 
     /**
-     * Sets component preferred size.
+     * Sets {@link JComponent} preferred size.
      * This method is a simple bridge for JComponent#setPreferredSize method.
      *
-     * @param width  component preferred width
-     * @param height component preferred height
-     * @return modified component
+     * @param width  {@link JComponent} preferred width
+     * @param height {@link JComponent} preferred height
+     * @return modified {@link JComponent}
      */
     public C setPreferredSize ( int width, int height );
 }
