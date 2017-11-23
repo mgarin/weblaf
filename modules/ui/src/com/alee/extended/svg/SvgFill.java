@@ -30,7 +30,7 @@ import java.awt.*;
  */
 
 @XStreamAlias ( "SvgFill" )
-public class SvgFill extends SvgAttributeAdjustment
+public class SvgFill extends AbstractSvgAttributeAdjustment
 {
     /**
      * Fill color.

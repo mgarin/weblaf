@@ -17,7 +17,7 @@
 
 package com.alee.extended.svg;
 
-import com.alee.managers.icon.data.IconData;
+import com.alee.managers.icon.data.AbstractIconData;
 import com.alee.utils.TextUtils;
 import com.kitfox.svg.SVGUniverse;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * {@link IconData} implementation for {@link SvgIcon} icon type.
+ * {@link AbstractIconData} implementation for {@link SvgIcon} icon type.
  *
  * @author Mikle Garin
  * @see SvgIcon
@@ -37,7 +37,7 @@ import java.util.Map;
  */
 
 @XStreamAlias ( "SvgIcon" )
-public class SvgIconData extends IconData<SvgIcon>
+public class SvgIconData extends AbstractIconData<SvgIcon>
 {
     /**
      * Static {@link SVGUniverse} cache shared between all {@link SvgIconData} instances.

@@ -27,7 +27,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public abstract class SvgAttributeAdjustment extends SvgAdjustment
+public abstract class AbstractSvgAttributeAdjustment extends AbstractSvgAdjustment
 {
     @Override
     protected void apply ( final SvgIcon icon, final List<SVGElement> elements )

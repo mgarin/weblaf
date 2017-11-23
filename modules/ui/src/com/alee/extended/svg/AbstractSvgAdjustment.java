@@ -24,12 +24,12 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import java.util.List;
 
 /**
- * Base class for any adjustments for {@link SvgIcon}.
+ * Base class for any selector-based adjustments for {@link SvgIcon}.
  *
  * @author Mikle Garin
  */
 
-public abstract class SvgAdjustment implements IconAdjustment<SvgIcon>
+public abstract class AbstractSvgAdjustment implements IconAdjustment<SvgIcon>
 {
     /**
      * SVG element selector.

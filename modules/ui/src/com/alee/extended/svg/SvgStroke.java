@@ -30,7 +30,7 @@ import java.awt.*;
  */
 
 @XStreamAlias ( "SvgStroke" )
-public class SvgStroke extends SvgAttributeAdjustment
+public class SvgStroke extends AbstractSvgAttributeAdjustment
 {
     /**
      * Stroke color.

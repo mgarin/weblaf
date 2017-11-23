@@ -17,9 +17,7 @@
 
 package com.alee.extended.svg;
 
-import com.alee.utils.CompareUtils;
 import com.alee.utils.NetUtils;
-import com.alee.utils.TextUtils;
 import com.kitfox.svg.*;
 import com.kitfox.svg.animation.AnimationElement;
 import com.kitfox.svg.app.beans.SVGIcon;
@@ -40,27 +38,19 @@ import java.util.List;
  * Note that distinct {@link SVGUniverse} should be provided in case you want to reconfigure the same icon differently.
  * Otherwise default universe is used and changes will be applied to all icons coming from the same source.
  *
- * When you want to modify some SVG settings you will have to reference SVG elements.
- * This implementation uses css-like selectors which could reference:
- *
- * 1. Element by its ID, example: {@code #id}
- * In that case all SVG elements with the specified ID will be adjusted.
- *
- * 2. Element by its class, example: {@code .name}
- * In that case all SVG elements with the specified class name will be adjusted.
- *
- * 3. Element by its name, example: {@code svg}, {@code path} or any other SVG element
- * In that case all SVG elements of the specified type will be adjusted.
+ * When you want to modify some SVG settings you will have to find specific SVG elements within {@link SVGDiagram}.
+ * This is where css-like selectors will help you a lot, check out {@link SvgSelector} JavaDoc for more information on syntax.
  *
  * @author Mikle Garin
+ * @see SvgSelector
  */
 
-public class SvgIcon extends SVGIcon
+public class SvgIcon extends SVGIcon implements Cloneable
 {
     /**
      * Cached raster image.
      */
-    protected BufferedImage cache;
+    protected transient BufferedImage cache;
 
     /**
      * Constructs new empty {@link SvgIcon}.
@@ -318,6 +308,17 @@ public class SvgIcon extends SVGIcon
     }
 
     /**
+     * Returns list of {@link SVGElement} for the specified {@link SvgSelector}.
+     *
+     * @param selector {@link SvgSelector}
+     * @return list of {@link SVGElement} for the specified {@link SvgSelector}
+     */
+    public List<SVGElement> find ( final SvgSelector selector )
+    {
+        return find ( selector, getRoot () );
+    }
+
+    /**
      * Returns list of {@link SVGElement} for the specified selector.
      *
      * @param selector css-like selector
@@ -325,6 +326,18 @@ public class SvgIcon extends SVGIcon
      * @return list of {@link SVGElement} for the specified selector
      */
     public List<SVGElement> find ( final String selector, final SVGElement element )
+    {
+        return find ( selector, element, new ArrayList<SVGElement> ( 1 ) );
+    }
+
+    /**
+     * Returns list of {@link SVGElement} for the specified {@link SvgSelector}.
+     *
+     * @param selector {@link SvgSelector}
+     * @param element  root {@link SVGElement} to start search from
+     * @return list of {@link SVGElement} for the specified {@link SvgSelector}
+     */
+    public List<SVGElement> find ( final SvgSelector selector, final SVGElement element )
     {
         return find ( selector, element, new ArrayList<SVGElement> ( 1 ) );
     }
@@ -339,7 +352,20 @@ public class SvgIcon extends SVGIcon
      */
     public List<SVGElement> find ( final String selector, final SVGElement element, final List<SVGElement> result )
     {
-        if ( isApplicable ( selector, element ) )
+        return find ( new SvgSelector ( selector ), element, result );
+    }
+
+    /**
+     * Returns list of {@link SVGElement} for the specified {@link SvgSelector}.
+     *
+     * @param selector {@link SvgSelector}
+     * @param element  root {@link SVGElement} to start search from
+     * @param result   list to place results into
+     * @return list of {@link SVGElement} for the specified {@link SvgSelector}
+     */
+    public List<SVGElement> find ( final SvgSelector selector, final SVGElement element, final List<SVGElement> result )
+    {
+        if ( selector.isApplicable ( this, element ) )
         {
             result.add ( element );
         }
@@ -348,41 +374,6 @@ public class SvgIcon extends SVGIcon
             find ( selector, element.getChild ( i ), result );
         }
         return result;
-    }
-
-    /**
-     * Returns whether or not specified {@link SVGElement} fits selector conditions.
-     *
-     * @param selector css-like selector
-     * @param element  {@link SVGElement}
-     * @return true if specified {@link SVGElement} fits selector conditions, false otherwise
-     */
-    protected boolean isApplicable ( final String selector, final SVGElement element )
-    {
-        if ( !TextUtils.isEmpty ( selector ) )
-        {
-            if ( selector.startsWith ( "#" ) )
-            {
-                final String id = selector.substring ( 1 );
-                final boolean exist = hasAttribute ( element, SvgElements.ID );
-                return exist && CompareUtils.equals ( id, getAttribute ( element, SvgElements.ID ).getStringValue () );
-            }
-            else if ( selector.startsWith ( "." ) )
-            {
-                final String style = selector.substring ( 1 );
-                final boolean exist = hasAttribute ( element, SvgElements.CLAZZ );
-                return exist && CompareUtils.equals ( style, getAttribute ( element, SvgElements.CLAZZ ).getStringValue () );
-            }
-            else
-            {
-                return element.getClass () == SvgElements.CLASSES.get ( selector );
-            }
-        }
-        else
-        {
-            final String msg = "SVG element selector cannot be empty";
-            throw new RuntimeException ( msg );
-        }
     }
 
     /**
@@ -546,5 +537,11 @@ public class SvgIcon extends SVGIcon
         setPreferredSize ( ps );
 
         return image;
+    }
+
+    @Override
+    public SvgIcon clone ()
+    {
+        return new SvgIcon ( new SVGUniverse (), getSvgURI (), getIconWidth (), getIconHeight () );
     }
 }

@@ -259,6 +259,18 @@ public final class ColorUtils
     }
 
     /**
+     * Returns grayscale version of the specified {@link Color}.
+     *
+     * @param color {@link Color} to make grayscale version of
+     * @return grayscale version of the specified {@link Color}
+     */
+    public static Color grayscale ( final Color color )
+    {
+        final int avg = ( int ) ( color.getRed () * 0.299 + color.getGreen () * 0.587 + color.getBlue () * 0.114 );
+        return new Color ( avg, avg, avg, color.getAlpha () );
+    }
+
+    /**
      * Returns randomly generated soft color based on the specified color.
      *
      * @param base color base

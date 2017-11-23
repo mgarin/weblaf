@@ -17,10 +17,7 @@
 
 package com.alee.managers.icon;
 
-import com.alee.extended.svg.SvgFill;
-import com.alee.extended.svg.SvgIconData;
-import com.alee.extended.svg.SvgStroke;
-import com.alee.extended.svg.SvgTransform;
+import com.alee.extended.svg.*;
 import com.alee.managers.icon.data.AbstractIconData;
 import com.alee.managers.icon.data.ImageIconData;
 import com.alee.managers.icon.data.SetIcon;
@@ -84,6 +81,7 @@ public final class IconManager
             XmlUtils.processAnnotations ( SvgStroke.class );
             XmlUtils.processAnnotations ( SvgFill.class );
             XmlUtils.processAnnotations ( SvgTransform.class );
+            XmlUtils.processAnnotations ( SvgGrayscale.class );
         }
     }
 
@@ -174,7 +172,8 @@ public final class IconManager
     /**
      * Returns {@link Icon} for the specified identifier.
      *
-     * @param id {@link Icon} identifier
+     * @param id  {@link Icon} identifier
+     * @param <I> {@link Icon} type
      * @return {@link Icon} for the specified identifier
      * @throws IconException if {@link Icon} cannot be found for the specified identifier
      */

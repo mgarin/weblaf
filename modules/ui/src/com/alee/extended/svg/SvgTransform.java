@@ -31,7 +31,7 @@ import java.awt.geom.Point2D;
  */
 
 @XStreamAlias ( "SvgTransform" )
-public class SvgTransform extends SvgAttributeAdjustment
+public class SvgTransform extends AbstractSvgAttributeAdjustment
 {
     /**
      * Icon translation.

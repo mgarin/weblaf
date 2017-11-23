@@ -63,9 +63,10 @@ public final class LazyIcon implements Icon
      * Returns actual {@link Icon} used by this {@link LazyIcon}.
      * Use this method wisely as it will load {@link Icon} into memory.
      *
+     * @param <I> {@link Icon} type
      * @return actual {@link Icon} used by this {@link LazyIcon}
      */
-    public Icon getIcon ()
+    public <I extends Icon> I getIcon ()
     {
         return IconManager.getIcon ( getId () );
     }
