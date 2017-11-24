@@ -812,9 +812,10 @@ public final class LafUtils
      *
      * @param component component to process
      * @return shape provider for the specified component or null if shape provider is not supported
+     * @deprecated this should be retrieved through a proper interface reference
      */
     @Deprecated
-    public static Shape getShape ( final Component component )
+    public static Shape getShape ( final JComponent component )
     {
         if ( component instanceof ShapeSupport )
         {
@@ -822,13 +823,10 @@ public final class LafUtils
         }
         else
         {
-            if ( component instanceof JComponent )
+            final ComponentUI ui = getUI ( component );
+            if ( ui != null && ui instanceof ShapeSupport )
             {
-                final ComponentUI ui = getUI ( ( JComponent ) component );
-                if ( ui != null && ui instanceof ShapeSupport )
-                {
-                    return ( ( ShapeSupport ) ui ).getShape ();
-                }
+                return ( ( ShapeSupport ) ui ).getShape ();
             }
         }
         return BoundsType.margin.bounds ( component );

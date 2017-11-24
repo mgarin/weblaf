@@ -37,8 +37,6 @@ import javax.swing.border.Border;
 import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 import java.lang.ref.WeakReference;
-import java.util.Map;
-import java.util.WeakHashMap;
 
 /**
  * This class provides utilities for linking {@link Painter}s with component UIs.
@@ -70,13 +68,15 @@ public final class PainterSupport
      * @see #getMargin(Component)
      * @see #setMargin(JComponent, Insets)
      */
-    private static final Map<JComponent, Insets> margins = new WeakHashMap<JComponent, Insets> ( 100 );
+    private static final WeakComponentData<JComponent, Insets> margins =
+            new WeakComponentData<JComponent, Insets> ( "PainterSupport.margin", 200 );
 
     /**
      * Paddings saved per-component instance.
      * todo These settings should be completely moved into {@link AbstractPainter} upon multiple painters elimination
      */
-    private static final Map<JComponent, Insets> paddings = new WeakHashMap<JComponent, Insets> ( 100 );
+    private static final WeakComponentData<JComponent, Insets> paddings =
+            new WeakComponentData<JComponent, Insets> ( "PainterSupport.padding", 200 );
 
     /**
      * Returns either the specified painter if it is not an adapted painter or the adapted painter.
@@ -306,7 +306,7 @@ public final class PainterSupport
      * @param component component to retrieve margin from
      * @return current component margin
      */
-    public static Insets getMargin ( final Component component )
+    public static Insets getMargin ( final JComponent component )
     {
         /*if ( component instanceof MarginSupport )
         {
@@ -337,7 +337,7 @@ public final class PainterSupport
     public static void setMargin ( final JComponent component, final Insets margin )
     {
         // Updating margin cache
-        final Insets oldMargin = margins.put ( component, margin );
+        final Insets oldMargin = margins.set ( component, margin );
 
         // Notifying everyone about component margin changes
         SwingUtils.firePropertyChanged ( component, WebLookAndFeel.LAF_MARGIN_PROPERTY, oldMargin, margin );
@@ -350,7 +350,7 @@ public final class PainterSupport
      * @param component component to retrieve padding from
      * @return current component padding
      */
-    public static Insets getPadding ( final Component component )
+    public static Insets getPadding ( final JComponent component )
     {
         return paddings.get ( component );
     }
@@ -365,7 +365,7 @@ public final class PainterSupport
     public static void setPadding ( final JComponent component, final Insets padding )
     {
         // Updating padding cache
-        final Insets oldPadding = paddings.put ( component, padding );
+        final Insets oldPadding = paddings.set ( component, padding );
 
         // Notifying everyone about component padding changes
         SwingUtils.firePropertyChanged ( component, WebLookAndFeel.LAF_PADDING_PROPERTY, oldPadding, padding );

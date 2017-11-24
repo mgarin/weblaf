@@ -167,9 +167,14 @@ public class WeakComponentData<C extends JComponent, D>
      *
      * @param component {@link JComponent} to store data in
      * @param data      data to store
+     * @return old data
      */
-    public synchronized void set ( final C component, final D data )
+    public synchronized D set ( final C component, final D data )
     {
+        // Saving old data
+        final D oldData = get ( component );
+
+        // Modifying data
         if ( data != null )
         {
             // Saving new data
@@ -181,6 +186,9 @@ public class WeakComponentData<C extends JComponent, D>
             // Clearing data instead if its null
             clear ( component );
         }
+
+        // Returning old data
+        return oldData;
     }
 
     /**
@@ -190,16 +198,25 @@ public class WeakComponentData<C extends JComponent, D>
      * @param component       {@link JComponent} to store data in
      * @param data            data to store
      * @param oldDataConsumer {@link BiConsumer} for previous data
+     * @return old data
      */
-    public synchronized void set ( final C component, final D data, final BiConsumer<C, D> oldDataConsumer )
+    public synchronized D set ( final C component, final D data, final BiConsumer<C, D> oldDataConsumer )
     {
+        // Processing old data
+        final D oldData;
+        if ( contains ( component ) )
+        {
+            oldData = get ( component );
+            oldDataConsumer.accept ( component, get ( component ) );
+        }
+        else
+        {
+            oldData = null;
+        }
+
+        // Modifying data
         if ( data != null )
         {
-            // Processing old data
-            if ( contains ( component ) )
-            {
-                oldDataConsumer.accept ( component, get ( component ) );
-            }
 
             // Saving new data
             set ( component, data );
@@ -209,17 +226,28 @@ public class WeakComponentData<C extends JComponent, D>
             // Clearing data instead if its null
             clear ( component, oldDataConsumer );
         }
+
+        // Returning old data
+        return oldData;
     }
 
     /**
      * Clears data stored in the {@link JComponent}.
      *
      * @param component {@link JComponent} to clear stored data for
+     * @return old data
      */
-    public synchronized void clear ( final C component )
+    public synchronized D clear ( final C component )
     {
+        // Saving old data
+        final D oldData = get ( component );
+
+        // Clearing data
         component.putClientProperty ( key, null );
         components.remove ( component );
+
+        // Returning old data
+        return oldData;
     }
 
     /**
@@ -227,17 +255,28 @@ public class WeakComponentData<C extends JComponent, D>
      *
      * @param component           {@link JComponent} to clear stored data for
      * @param removedDataConsumer {@link BiConsumer} for removed data
+     * @return old data
      */
-    public synchronized void clear ( final C component, final BiConsumer<C, D> removedDataConsumer )
+    public synchronized D clear ( final C component, final BiConsumer<C, D> removedDataConsumer )
     {
+        final D oldData;
         if ( contains ( component ) )
         {
+            // Saving old data
+            oldData = get ( component );
+
             // Processing data to be removed
-            removedDataConsumer.accept ( component, get ( component ) );
+            removedDataConsumer.accept ( component, oldData );
 
             // Clearing data
             clear ( component );
         }
+        else
+        {
+            // No old data
+            oldData = null;
+        }
+        return oldData;
     }
 
     /**

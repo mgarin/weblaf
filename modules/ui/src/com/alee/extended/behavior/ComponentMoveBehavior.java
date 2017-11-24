@@ -224,7 +224,7 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
      */
     protected Rectangle getDragStartBounds ( final MouseEvent e )
     {
-        return BoundsType.margin.bounds ( e.getComponent () );
+        return BoundsType.margin.bounds ( e.getComponent () ) ;
     }
 
     /**

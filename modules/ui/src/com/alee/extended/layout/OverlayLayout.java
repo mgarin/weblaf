@@ -169,7 +169,7 @@ public class OverlayLayout extends AbstractLayoutManager implements SwingConstan
                 else if ( constraint.equals ( OVERLAY ) )
                 {
                     final WebOverlay webOverlay = ( WebOverlay ) parent;
-                    final OverlayData data = webOverlay.getOverlayData ( component );
+                    final OverlayData data = webOverlay.getOverlayData ( ( JComponent ) component );
                     final Insets om = overlayMargin != null ? overlayMargin : new Insets ( 0, 0, 0, 0 );
                     final Rectangle bounds;
                     if ( data.getLocation ().equals ( OverlayLocation.fill ) )

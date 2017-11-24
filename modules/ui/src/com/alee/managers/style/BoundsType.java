@@ -108,7 +108,7 @@ public enum BoundsType
      * @param component component to retrieve border for
      * @return border for bounds of this type for the specified component
      */
-    public Insets border ( final Component component )
+    public Insets border ( final JComponent component )
     {
         final Insets i = new Insets ( 0, 0, 0, 0 );
         switch ( this )
@@ -199,7 +199,7 @@ public enum BoundsType
      */
     public Rectangle bounds ( final Component component )
     {
-        final Insets i = border ( component );
+        final Insets i = component instanceof JComponent ? border ( ( JComponent ) component ) : new Insets ( 0, 0, 0, 0 );
         return new Rectangle ( i.left, i.top, component.getWidth () - i.left - i.right, component.getHeight () - i.top - i.bottom );
     }
 }

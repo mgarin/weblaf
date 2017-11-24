@@ -37,30 +37,30 @@ import java.util.Map;
 
 public class WebOverlay extends WebPanel implements SwingConstants
 {
-    private Component component;
-    private Map<Component, OverlayData> overlayData;
+    private JComponent component;
+    private Map<JComponent, OverlayData> overlayData;
 
     public WebOverlay ()
     {
         this ( StyleId.auto );
     }
 
-    public WebOverlay ( final Component component )
+    public WebOverlay ( final JComponent component )
     {
         this ( StyleId.auto, component );
     }
 
-    public WebOverlay ( final Component component, final Component overlay )
+    public WebOverlay ( final JComponent component, final JComponent overlay )
     {
         this ( StyleId.auto, component, overlay );
     }
 
-    public WebOverlay ( final Component component, final Component overlay, final int halign, final int valign )
+    public WebOverlay ( final JComponent component, final JComponent overlay, final int halign, final int valign )
     {
         this ( StyleId.auto, component, overlay, halign, valign );
     }
 
-    public WebOverlay ( final Component component, final Component overlay, final Supplier<Rectangle> boundsSupplier )
+    public WebOverlay ( final JComponent component, final JComponent overlay, final Supplier<Rectangle> boundsSupplier )
     {
         this ( StyleId.auto, component, overlay, boundsSupplier );
     }
@@ -71,14 +71,14 @@ public class WebOverlay extends WebPanel implements SwingConstants
         initialize ();
     }
 
-    public WebOverlay ( final StyleId id, final Component component )
+    public WebOverlay ( final StyleId id, final JComponent component )
     {
         super ( id, new OverlayLayout () );
         initialize ();
         setComponent ( component );
     }
 
-    public WebOverlay ( final StyleId id, final Component component, final Component overlay )
+    public WebOverlay ( final StyleId id, final JComponent component, final JComponent overlay )
     {
         super ( id, new OverlayLayout () );
         initialize ();
@@ -86,7 +86,7 @@ public class WebOverlay extends WebPanel implements SwingConstants
         addOverlay ( overlay );
     }
 
-    public WebOverlay ( final StyleId id, final Component component, final Component overlay, final int halign, final int valign )
+    public WebOverlay ( final StyleId id, final JComponent component, final JComponent overlay, final int halign, final int valign )
     {
         super ( id, new OverlayLayout () );
         initialize ();
@@ -94,8 +94,7 @@ public class WebOverlay extends WebPanel implements SwingConstants
         addOverlay ( overlay, halign, valign );
     }
 
-    public WebOverlay ( final StyleId id, final Component component, final Component overlay,
-                        final Supplier<Rectangle> boundsSupplier )
+    public WebOverlay ( final StyleId id, final JComponent component, final JComponent overlay, final Supplier<Rectangle> boundsSupplier )
     {
         super ( id, new OverlayLayout () );
         initialize ();
@@ -106,7 +105,7 @@ public class WebOverlay extends WebPanel implements SwingConstants
     private void initialize ()
     {
         component = null;
-        overlayData = new HashMap<Component, OverlayData> ();
+        overlayData = new HashMap<JComponent, OverlayData> ();
     }
 
     public Insets getComponentMargin ()
@@ -154,7 +153,7 @@ public class WebOverlay extends WebPanel implements SwingConstants
         return ( OverlayLayout ) super.getLayout ();
     }
 
-    public void setComponent ( final Component component )
+    public void setComponent ( final JComponent component )
     {
         if ( this.component != null )
         {
@@ -164,36 +163,36 @@ public class WebOverlay extends WebPanel implements SwingConstants
         add ( component, OverlayLayout.COMPONENT );
     }
 
-    public Component getComponent ()
+    public JComponent getComponent ()
     {
         return component;
     }
 
-    public void addOverlay ( final Component overlay )
+    public void addOverlay ( final JComponent overlay )
     {
         overlayData.put ( overlay, new OverlayData () );
         add ( overlay, OverlayLayout.OVERLAY, 0 );
     }
 
-    public void addOverlay ( final Component overlay, final int halign, final int valign )
+    public void addOverlay ( final JComponent overlay, final int halign, final int valign )
     {
         overlayData.put ( overlay, new OverlayData ( halign, valign ) );
         add ( overlay, OverlayLayout.OVERLAY, 0 );
     }
 
-    public void addOverlay ( final Component overlay, final Supplier<Rectangle> boundsSupplier )
+    public void addOverlay ( final JComponent overlay, final Supplier<Rectangle> boundsSupplier )
     {
         overlayData.put ( overlay, new OverlayData ( boundsSupplier ) );
         add ( overlay, OverlayLayout.OVERLAY, 0 );
     }
 
-    public void removeOverlay ( final Component overlay )
+    public void removeOverlay ( final JComponent overlay )
     {
         overlayData.remove ( overlay );
         remove ( overlay );
     }
 
-    public OverlayData getOverlayData ( final Component overlay )
+    public OverlayData getOverlayData ( final JComponent overlay )
     {
         return overlayData.get ( overlay );
     }

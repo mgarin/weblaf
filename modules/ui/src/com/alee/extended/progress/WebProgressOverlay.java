@@ -52,7 +52,7 @@ public class WebProgressOverlay extends WebOverlay
         initializeProgressLayer ();
     }
 
-    public WebProgressOverlay ( final Component component )
+    public WebProgressOverlay ( final JComponent component )
     {
         super ( component );
         initializeProgressLayer ();
