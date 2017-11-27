@@ -29,7 +29,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class LafLookup
+public final class LafLookup
 {
     /**
      * Returns default {@link int} value for the specified {@code key}.

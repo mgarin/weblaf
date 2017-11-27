@@ -119,7 +119,8 @@ import java.util.*;
 
 /**
  * This manager handles all default Swing and custom WebLaF component styles.
- * It provides API to manage global {@link Skin}s in runtime, customize
+ * It provides API for {@link ComponentDescriptor}s usage for adjusting default component settings.
+ * It also manages global and per-component {@link Skin}s and custom component {@link Painter}s.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>

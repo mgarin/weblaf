@@ -449,6 +449,8 @@ public class WebTable extends JTable
             final CellEditor cellEditor = getCellEditor ();
             try
             {
+                // todo There should be a proper interface for that
+                //noinspection JavaReflectionMemberAccess
                 final Object o = cellEditor.getClass ().getMethod ( "getComponent" ).invoke ( cellEditor );
                 if ( o instanceof Component )
                 {

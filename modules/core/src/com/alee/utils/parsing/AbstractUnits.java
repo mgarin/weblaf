@@ -162,16 +162,17 @@ public abstract class AbstractUnits
         }
 
         // Resolve user-friendly unit-based text
-        String result = "";
+        final StringBuilder result = new StringBuilder ();
         for ( final Unit units : this.units )
         {
             final String amount = units.toString ( value );
             if ( amount != null )
             {
-                result += ( !result.isEmpty () ? " " : "" ) + amount;
+                result.append ( result.length () > 0 ? " " : "" );
+                result.append ( amount );
             }
         }
-        return result;
+        return result.toString ();
     }
 
     /**

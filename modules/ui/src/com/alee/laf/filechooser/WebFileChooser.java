@@ -299,7 +299,7 @@ public class WebFileChooser extends JFileChooser
     /**
     * Sets currently selected file.
     *
-    * @param the file to select
+    * @param file the file to select
     */
     @Override
     public void setSelectedFile ( final File file )

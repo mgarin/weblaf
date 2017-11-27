@@ -31,7 +31,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class HighlightManager
+public final class HighlightManager
 {
     /**
      * HighlightManager initialization

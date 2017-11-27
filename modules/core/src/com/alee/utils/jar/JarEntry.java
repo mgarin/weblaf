@@ -272,35 +272,35 @@ public class JarEntry
     public String getCanonicalEntryName ()
     {
         // Creating canonical name
-        String canonicalName = getName ();
+        StringBuilder canonicalName = new StringBuilder ( getName () );
         JarEntry parent = getParent ();
         while ( parent != null && !parent.getType ().equals ( JarEntryType.jarEntry ) )
         {
-            canonicalName = parent.getName () + "." + canonicalName;
+            canonicalName.insert ( 0, parent.getName () + "." );
             parent = parent.getParent ();
         }
 
         // Removing extension from classes
         if ( type.equals ( JarEntryType.classEntry ) || type.equals ( JarEntryType.javaEntry ) )
         {
-            canonicalName = canonicalName.substring ( 0, canonicalName.lastIndexOf ( "." ) );
+            canonicalName = new StringBuilder ( canonicalName.substring ( 0, canonicalName.lastIndexOf ( "." ) ) );
         }
 
-        return canonicalName;
+        return canonicalName.toString ();
     }
 
     public String getCanonicalEntryPath ()
     {
         // Creating canonical path
-        String canonicalName = getName ();
+        final StringBuilder canonicalName = new StringBuilder ( getName () );
         JarEntry parent = getParent ();
         while ( parent != null && !parent.getType ().equals ( JarEntryType.jarEntry ) &&
                 !parent.getParent ().getType ().equals ( JarEntryType.jarEntry ) )
         {
-            canonicalName = parent.getName () + "/" + canonicalName;
+            canonicalName.insert ( 0, parent.getName () + "/" );
             parent = parent.getParent ();
         }
-        return canonicalName;
+        return canonicalName.toString ();
     }
 
     public List<JarEntry> getPath ()

@@ -31,7 +31,7 @@ import java.util.ArrayList;
  * @version 1.01 July 2001
  */
 
-@SuppressWarnings ( "SpellCheckingInspection" )
+@SuppressWarnings ( { "SpellCheckingInspection", "StringConcatenationInLoop", "JavaDoc" } )
 public class GifDecoder
 {
     /**
@@ -119,6 +119,7 @@ public class GifDecoder
         return pixelAspect;
     }
 
+    @SuppressWarnings ( "JavaDoc" )
     public static class GifFrame
     {
         public GifFrame ( final BufferedImage bufferedImage, final int delay )
@@ -142,7 +143,7 @@ public class GifDecoder
     {
         //
         delay = -1;
-        if ( ( n >= 0 ) && ( n < frameCount ) )
+        if ( n >= 0 && n < frameCount )
         {
             delay = ( ( GifFrame ) frames.get ( n ) ).delay;
         }
@@ -158,7 +159,7 @@ public class GifDecoder
     public BufferedImage getFrame ( final int n )
     {
         BufferedImage bi = null;
-        if ( ( n >= 0 ) && ( n < frameCount ) )
+        if ( n >= 0 && n < frameCount )
         {
             bi = ( ( GifFrame ) frames.get ( n ) ).bufferedImage;
         }
@@ -291,7 +292,7 @@ public class GifDecoder
         int bi;
         int pi;
 
-        if ( ( pixels == null ) || ( pixels.length < npix ) )
+        if ( pixels == null || pixels.length < npix )
         {
             pixels = new byte[ npix ];    // allocate new pixel array
         }
@@ -361,7 +362,7 @@ public class GifDecoder
 
                 //  Interpret the code
 
-                if ( ( code > available ) || ( code == end_of_information ) )
+                if ( code > available || code == end_of_information )
                 {
                     break;
                 }
@@ -404,7 +405,7 @@ public class GifDecoder
                 prefix[ available ] = ( short ) old_code;
                 suffix[ available ] = ( byte ) first;
                 available++;
-                if ( ( ( available & code_mask ) == 0 ) && ( available < MaxStackSize ) )
+                if ( ( available & code_mask ) == 0 && available < MaxStackSize )
                 {
                     code_size++;
                     code_mask += available;
@@ -539,7 +540,7 @@ public class GifDecoder
                 final int r = ( int ) c[ j++ ] & 0xff;
                 final int g = ( int ) c[ j++ ] & 0xff;
                 final int b = ( int ) c[ j++ ] & 0xff;
-                tab[ i++ ] = 0xff000000 | ( r << 16 ) | ( g << 8 ) | b;
+                tab[ i++ ] = 0xff000000 | r << 16 | g << 8 | b;
             }
         }
         return tab;
@@ -757,10 +758,10 @@ public class GifDecoder
                 // loop count sub-block
                 final int b1 = ( int ) currentDataBlock[ 1 ] & 0xff;
                 final int b2 = ( int ) currentDataBlock[ 2 ] & 0xff;
-                loopCount = ( b2 << 8 ) | b1;
+                loopCount = b2 << 8 | b1;
             }
         }
-        while ( ( blockSize > 0 ) && !err () );
+        while ( blockSize > 0 && !err () );
     }
 
 
@@ -770,7 +771,7 @@ public class GifDecoder
     protected int readShort ()
     {
         // read 16-bit value, LSB first
-        return read () | ( read () << 8 );
+        return read () | read () << 8;
     }
 
 
@@ -877,7 +878,7 @@ public class GifDecoder
                 final int k = line * width;
                 int dx = k + ix;          // start of line in dest
                 int dlim = dx + iw;       // end of dest line
-                if ( ( k + width ) < dlim )
+                if ( k + width < dlim )
                 {
                     dlim = k + width;      // past dest edge
                 }
@@ -906,7 +907,7 @@ public class GifDecoder
         {
             readBlock ();
         }
-        while ( ( blockSize > 0 ) && !err () );
+        while ( blockSize > 0 && !err () );
     }
 
     /**

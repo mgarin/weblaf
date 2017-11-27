@@ -25,7 +25,7 @@ import javax.swing.text.JTextComponent;
 /**
  * Custom {@link LanguageUpdater} for {@link JTextComponent}.
  *
- * @param <E> component type
+ * @param <C> component type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>
  * @see com.alee.managers.language.LanguageManager

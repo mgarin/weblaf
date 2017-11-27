@@ -22,7 +22,7 @@ package com.alee.graphics.filters;
  * @author Jerry Huxtable
  */
 
-public class ImageMath
+public final class ImageMath
 {
     public final static float PI = ( float ) Math.PI;
     public final static float HALF_PI = ( float ) Math.PI / 2.0f;

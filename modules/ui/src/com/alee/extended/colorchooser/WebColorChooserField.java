@@ -26,14 +26,14 @@ import com.alee.laf.button.WebButton;
 import com.alee.laf.colorchooser.ColorChooserListener;
 import com.alee.laf.colorchooser.WebColorChooserPanel;
 import com.alee.laf.label.WebLabel;
-import com.alee.laf.window.WebWindow;
 import com.alee.laf.text.WebTextField;
+import com.alee.laf.window.WebWindow;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.log.Log;
-import com.alee.managers.style.StyleId;
 import com.alee.managers.style.BoundsType;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.*;
 import com.alee.utils.swing.ChooserListener;
 
@@ -749,11 +749,11 @@ public class WebColorChooserField extends WebTextField
         final int y;
         if ( los.y + h + popup.getHeight () <= gb.y + gb.height )
         {
-            y = los.y + h + ( /*isDrawBorder () ?*/ 0 /*: 1*/ );
+            y = los.y + h; // + ( isDrawBorder () ? 0 : 1 );
         }
         else
         {
-            y = los.y - popup.getHeight () - ( /*isDrawBorder () ?*/ 0 /*: 1*/ );
+            y = los.y - popup.getHeight (); // - ( isDrawBorder () ? 0 : 1 );
         }
 
         popup.setLocation ( x, y );

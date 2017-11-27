@@ -30,7 +30,7 @@ import java.util.WeakHashMap;
  * @author Mikle Garin
  */
 
-public class Log
+public final class Log
 {
     /**
      * todo 1. Replace "get()" with inner caller resolvers
