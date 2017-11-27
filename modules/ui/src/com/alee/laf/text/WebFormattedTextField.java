@@ -43,7 +43,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 import java.text.Format;
 import java.util.List;
-import java.util.Map;
 
 /**
  * {@link JFormattedTextField} extension class.

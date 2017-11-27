@@ -36,7 +36,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.List;
 
 /**
  * @author Mikle Garin
@@ -44,7 +43,7 @@ import java.util.List;
 
 public class WebButtonPopup extends WebInnerPopup
 {
-    private static final List<String> BUTTON_PROPERTIES = new ImmutableList<String> (
+    private static final ImmutableList<String> BUTTON_PROPERTIES = new ImmutableList<String> (
             AbstractButton.ICON_CHANGED_PROPERTY,
             AbstractButton.TEXT_CHANGED_PROPERTY,
             AbstractButton.HORIZONTAL_ALIGNMENT_CHANGED_PROPERTY,

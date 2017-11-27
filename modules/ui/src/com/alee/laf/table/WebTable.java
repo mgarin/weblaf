@@ -39,7 +39,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 import java.util.EventObject;
-import java.util.Map;
 import java.util.Vector;
 
 /**

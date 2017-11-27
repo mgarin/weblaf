@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xs:schema targetNamespace="http://weblookandfeel.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
-
-    <xs:include schemaLocation="../awt/Color.xsd" />
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
 
     <!-- com.alee.painter.decoration.background.GradientColor -->
     <xs:complexType name="GradientColor">
         <xs:simpleContent>
 
             <!-- Gradient color for the specified position -->
-            <xs:extension base="Color">
+            <xs:extension base="java.awt:Color">
 
                 <!-- Position of the color between the starting and end points -->
                 <xs:attribute name="fraction" type="xs:float" />

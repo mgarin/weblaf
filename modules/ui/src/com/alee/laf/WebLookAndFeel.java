@@ -18,7 +18,6 @@
 package com.alee.laf;
 
 import com.alee.extended.svg.SvgIcon;
-import com.alee.global.StyleConstants;
 import com.alee.graphics.image.gif.GifIcon;
 import com.alee.laf.edt.ExceptionNonEventThreadHandler;
 import com.alee.laf.edt.NonEventThreadHandler;
@@ -30,8 +29,10 @@ import com.alee.managers.icon.LazyIcon;
 import com.alee.managers.style.ComponentDescriptor;
 import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleManager;
+import com.alee.skin.web.WebSkin;
 import com.alee.utils.*;
 import com.alee.utils.laf.WebBorder;
+import com.alee.utils.reflection.PreparedInstance;
 import com.alee.utils.swing.SwingLazyValue;
 
 import javax.swing.*;
@@ -443,11 +444,11 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "Tree.expandedIcon", Icons.squareMinus );
         // Tree default selection style
         table.put ( "Tree.textForeground", new ColorUIResource ( Color.BLACK ) );
-        table.put ( "Tree.textBackground", new ColorUIResource ( StyleConstants.transparent ) );
+        table.put ( "Tree.textBackground", new ColorUIResource ( new Color ( 255, 255, 255, 0 ) ) );
         table.put ( "Tree.selectionForeground", new ColorUIResource ( Color.BLACK ) );
-        table.put ( "Tree.selectionBackground", new ColorUIResource ( StyleConstants.transparent ) );
-        table.put ( "Tree.selectionBorderColor", new ColorUIResource ( StyleConstants.transparent ) );
-        table.put ( "Tree.dropCellBackground", new ColorUIResource ( StyleConstants.transparent ) );
+        table.put ( "Tree.selectionBackground", new ColorUIResource (  new Color ( 255, 255, 255, 0 ) ) );
+        table.put ( "Tree.selectionBorderColor", new ColorUIResource (  new Color ( 255, 255, 255, 0 ) ) );
+        table.put ( "Tree.dropCellBackground", new ColorUIResource (  new Color ( 255, 255, 255, 0 ) ) );
         // Tree default renderer content margins
         table.put ( "Tree.rendererFillBackground", Boolean.FALSE );
         table.put ( "Tree.drawsFocusBorderAroundIcon", Boolean.FALSE );
@@ -857,8 +858,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
-     * Initializes library managers.
-     * Initialization order is strict since some managers require other managers to be loaded.
+     * Initializes library managers separately.
      */
     public static void initializeManagers ()
     {
@@ -866,45 +866,34 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
-     * Installs look and feel in one simple call.
+     * Installs {@link WebLookAndFeel} in one call.
      *
      * @throws LookAndFeelException when unable to install {@link WebLookAndFeel}
      */
     public static void install () throws LookAndFeelException
     {
-        install ( StyleManager.getDefaultSkin (), false );
+        install ( WebSkin.class );
     }
 
     /**
-     * Installs look and feel in one simple call.
+     * Installs {@link WebLookAndFeel} in one call.
      *
-     * @param updateUI whether or not should update visual representation of all existing components
+     * @param skin      {@link Skin} class
+     * @param arguments {@link Skin} constructor arguments
      * @throws LookAndFeelException when unable to install {@link WebLookAndFeel}
      */
-    public static void install ( final boolean updateUI ) throws LookAndFeelException
+    public static void install ( final Class<? extends Skin> skin, final Object... arguments ) throws LookAndFeelException
     {
-        install ( StyleManager.getDefaultSkin (), updateUI );
+        install ( new PreparedInstance<Skin> ( ( Class<Skin> ) skin, arguments ) );
     }
 
     /**
-     * Installs look and feel in one simple call.
+     * Installs {@link WebLookAndFeel} in one call.
      *
-     * @param skin initially installed skin class
+     * @param skin {@link PreparedInstance} for {@link Skin}
      * @throws LookAndFeelException when unable to install {@link WebLookAndFeel}
      */
-    public static void install ( final Class<? extends Skin> skin ) throws LookAndFeelException
-    {
-        install ( skin, false );
-    }
-
-    /**
-     * Installs look and feel in one simple call.
-     *
-     * @param skin     initially installed skin class
-     * @param updateUI whether or not should update visual representation of all existing components
-     * @throws LookAndFeelException when unable to install {@link WebLookAndFeel}
-     */
-    public static void install ( final Class<? extends Skin> skin, final boolean updateUI ) throws LookAndFeelException
+    public static void install ( final PreparedInstance<? extends Skin> skin ) throws LookAndFeelException
     {
         // Event Dispatch Thread check
         checkEventDispatchThread ();
@@ -917,12 +906,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
         // Installing LookAndFeel
         LafUtils.setupLookAndFeel ( WebLookAndFeel.class );
-
-        // Updating already created components tree
-        if ( updateUI )
-        {
-            updateAllComponentUIs ();
-        }
     }
 
     /**
@@ -942,17 +925,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     public static void uninstall () throws LookAndFeelException
     {
-        uninstall ( false );
-    }
-
-    /**
-     * Restores previously installed {@link LookAndFeel}.
-     *
-     * @param updateUI whether or not should update visual representation of all existing components
-     * @throws LookAndFeelException if {@link WebLookAndFeel} is not installed or there was no previously installed {@link LookAndFeel}
-     */
-    public static void uninstall ( final boolean updateUI ) throws LookAndFeelException
-    {
         // Event Dispatch Thread check
         checkEventDispatchThread ();
 
@@ -963,12 +935,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
             {
                 // Installing previous LookAndFeel
                 LafUtils.setupLookAndFeel ( previousLookAndFeelClass );
-
-                // Updating already created components tree
-                if ( updateUI )
-                {
-                    updateAllComponentUIs ();
-                }
 
                 // Cleaning up previous LaF whatever the result is
                 previousLookAndFeelClass = null;

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xs:schema targetNamespace="http://weblookandfeel.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
 
     <xs:include schemaLocation="AbstractBackground.xsd" />
     <xs:include schemaLocation="../ext/Orientation.xsd" />
-    <xs:include schemaLocation="../awt/Color.xsd" />
 
     <!-- com.alee.painter.decoration.background.MovingHighlightBackground -->
     <xs:complexType name="MovingHighlightBackground">
@@ -17,7 +18,7 @@
                 <xs:attribute name="width" type="xs:integer" />
 
                 <!-- Highlight color -->
-                <xs:attribute name="color" type="Color" />
+                <xs:attribute name="color" type="java.awt:Color" />
 
                 <!-- Amount of highlight passes before delay -->
                 <xs:attribute name="passes" type="xs:integer" />

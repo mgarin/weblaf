@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xs:schema targetNamespace="http://weblookandfeel.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
 
-    <xs:include schemaLocation="awt/Dimension.xsd" />
     <xs:include schemaLocation="ext/CursorType.xsd" />
     <xs:include schemaLocation="ext/Resource.xsd" />
     <xs:include schemaLocation="shape/WebShape.xsd" />
@@ -46,7 +47,7 @@
         <xs:attribute name="visible" type="xs:boolean" />
 
         <!-- Preferred size -->
-        <xs:attribute name="size" type="Dimension" />
+        <xs:attribute name="size" type="java.awt:Dimension" />
 
         <!-- Display opacity -->
         <xs:attribute name="opacity" type="xs:float" />

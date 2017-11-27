@@ -23,7 +23,6 @@ import com.alee.painter.Painter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Map;
 
 /**
  * {@link JOptionPane} extension class.

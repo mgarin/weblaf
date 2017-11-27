@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xs:schema targetNamespace="http://weblookandfeel.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.lang="java.lang"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
 
-    <xs:include schemaLocation="lang/Class.xsd" />
-    <xs:include schemaLocation="awt/Insets.xsd" />
-    <xs:include schemaLocation="awt/LayoutManager.xsd" />
-    <xs:include schemaLocation="ext/ComponentType.xsd" />
     <xs:include schemaLocation="Decoration.xsd" />
+    <xs:include schemaLocation="ext/ComponentType.xsd" />
 
     <!-- com.alee.managers.style.data.ComponentStyle -->
     <xs:complexType name="ComponentStyle">
@@ -34,10 +34,10 @@
         <xs:attribute name="id" type="xs:string" use="optional" />
 
         <!-- Margin -->
-        <xs:attribute name="margin" type="Insets" use="optional" />
+        <xs:attribute name="margin" type="java.awt:Insets" use="optional" />
 
         <!-- Padding -->
-        <xs:attribute name="padding" type="Insets" use="optional" />
+        <xs:attribute name="padding" type="java.awt:Insets" use="optional" />
 
         <!-- Extends -->
         <xs:attribute name="extends" type="xs:string" use="optional" />
@@ -72,14 +72,14 @@
                     <xs:choice minOccurs="0" maxOccurs="1">
 
                         <!-- Any custom layout settings -->
-                        <xs:element name="layout" type="LayoutManager" />
+                        <xs:element name="layout" type="java.awt:LayoutManager" />
 
                     </xs:choice>
 
                 </xs:sequence>
 
                 <!-- Specific JComponent class -->
-                <xs:attribute name="class" type="Class" use="optional" />
+                <xs:attribute name="class" type="java.lang:Class" use="optional" />
 
             </xs:extension>
         </xs:complexContent>
@@ -94,15 +94,15 @@
                 <xs:sequence>
 
                     <!-- Margin -->
-                    <xs:element name="margin" type="Insets" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="margin" type="java.awt:Insets" minOccurs="0" maxOccurs="1" />
 
                     <!-- Padding -->
-                    <xs:element name="padding" type="Insets" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="padding" type="java.awt:Insets" minOccurs="0" maxOccurs="1" />
 
                 </xs:sequence>
 
                 <!-- Specific ComponentUI class -->
-                <xs:attribute name="class" type="Class" use="optional" />
+                <xs:attribute name="class" type="java.lang:Class" use="optional" />
 
             </xs:extension>
         </xs:complexContent>
@@ -165,7 +165,7 @@
                 <xs:attribute name="overwrite" type="xs:boolean" use="optional" />
 
                 <!-- Specific Painter class -->
-                <xs:attribute name="class" type="Class" use="optional" />
+                <xs:attribute name="class" type="java.lang:Class" use="optional" />
 
             </xs:extension>
         </xs:complexContent>

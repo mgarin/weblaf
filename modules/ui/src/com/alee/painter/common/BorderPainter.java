@@ -44,17 +44,17 @@ public class BorderPainter<E extends JComponent, U extends ComponentUI> extends 
     /**
      * Border round.
      */
-    protected int round;
-
-    /**
-     * Border color.
-     */
-    protected Color color;
+    protected Integer round;
 
     /**
      * Border stroke.
      */
     protected Stroke stroke;
+
+    /**
+     * Border color.
+     */
+    protected Color color;
 
     /**
      * Constructs default border painter.
@@ -82,7 +82,7 @@ public class BorderPainter<E extends JComponent, U extends ComponentUI> extends 
      */
     public int getRound ()
     {
-        return round;
+        return round != null ? round : 0;
     }
 
     /**
@@ -94,7 +94,37 @@ public class BorderPainter<E extends JComponent, U extends ComponentUI> extends 
     public void setRound ( final int round )
     {
         this.round = round;
-        repaint ();
+    }
+
+    /**
+     * Returns border stroke.
+     *
+     * @return border stroke
+     */
+    public Stroke getStroke ()
+    {
+        return stroke;
+    }
+
+    /**
+     * Returns stroke width.
+     *
+     * @return stroke width
+     */
+    protected int getStrokeWidth ()
+    {
+        final Stroke stroke = getStroke ();
+        return stroke != null && stroke instanceof BasicStroke ? Math.round ( ( ( BasicStroke ) stroke ).getLineWidth () ) : 1;
+    }
+
+    /**
+     * Sets border stroke.
+     *
+     * @param stroke new border stroke
+     */
+    public void setStroke ( final Stroke stroke )
+    {
+        this.stroke = stroke;
     }
 
     /**
@@ -115,39 +145,6 @@ public class BorderPainter<E extends JComponent, U extends ComponentUI> extends 
     public void setColor ( final Color color )
     {
         this.color = color;
-        repaint ();
-    }
-
-    /**
-     * Returns border stroke.
-     *
-     * @return border stroke
-     */
-    public Stroke getStroke ()
-    {
-        return stroke;
-    }
-
-    /**
-     * Sets border stroke.
-     *
-     * @param stroke new border stroke
-     */
-    public void setStroke ( final Stroke stroke )
-    {
-        this.stroke = stroke;
-        repaint ();
-    }
-
-    /**
-     * Returns stroke width.
-     *
-     * @return stroke width
-     */
-    protected int getStrokeWidth ()
-    {
-        final Stroke stroke = getStroke ();
-        return stroke != null && stroke instanceof BasicStroke ? Math.round ( ( ( BasicStroke ) stroke ).getLineWidth () ) : 0;
     }
 
     @Override
@@ -160,17 +157,14 @@ public class BorderPainter<E extends JComponent, U extends ComponentUI> extends 
     @Override
     public void paint ( final Graphics2D g2d, final E c, final U ui, final Bounds bounds )
     {
-        if ( stroke != null && color != null )
-        {
-            final Object aa = GraphicsUtils.setupAntialias ( g2d );
-            final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke, stroke != null );
+        final Object aa = GraphicsUtils.setupAntialias ( g2d );
+        final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke, stroke != null );
 
-            g2d.setPaint ( color );
-            g2d.draw ( getBorderShape ( bounds.get () ) );
+        g2d.setPaint ( color );
+        g2d.draw ( getBorderShape ( bounds.get () ) );
 
-            GraphicsUtils.restoreStroke ( g2d, os, stroke != null );
-            GraphicsUtils.restoreAntialias ( g2d, aa );
-        }
+        GraphicsUtils.restoreStroke ( g2d, os, stroke != null );
+        GraphicsUtils.restoreAntialias ( g2d, aa );
     }
 
     /**
@@ -181,6 +175,7 @@ public class BorderPainter<E extends JComponent, U extends ComponentUI> extends 
      */
     protected RectangularShape getBorderShape ( final Rectangle bounds )
     {
+        final int round = getRound ();
         final int width = getStrokeWidth ();
         final double shear = width == 1 ? 0 : ( double ) width / 2;
         if ( round > 0 )

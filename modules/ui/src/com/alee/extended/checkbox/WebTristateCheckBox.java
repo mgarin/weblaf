@@ -38,7 +38,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This {@link JCheckBox} extension class provides additional third selection state - mixed state.

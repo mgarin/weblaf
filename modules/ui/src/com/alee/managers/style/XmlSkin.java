@@ -50,16 +50,6 @@ public class XmlSkin extends AbstractSkin
     /**
      * Constructs new xml-based skin.
      *
-     * @param location skin info XML file location
-     */
-    public XmlSkin ( final String location )
-    {
-        this ( new File ( location ) );
-    }
-
-    /**
-     * Constructs new xml-based skin.
-     *
      * @param location skin info XML file
      */
     public XmlSkin ( final File location )

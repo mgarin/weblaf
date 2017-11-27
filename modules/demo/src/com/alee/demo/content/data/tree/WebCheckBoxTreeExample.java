@@ -17,6 +17,7 @@
 
 package com.alee.demo.content.data.tree;
 
+import com.alee.api.jdk.Predicate;
 import com.alee.demo.api.example.*;
 import com.alee.extended.tree.WebCheckBoxTree;
 import com.alee.laf.scroll.WebScrollPane;
@@ -25,7 +26,6 @@ import com.alee.laf.tree.WebTreeModel;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
-import com.alee.utils.swing.StateProvider;
 
 import javax.swing.*;
 import java.util.List;
@@ -107,26 +107,26 @@ public class WebCheckBoxTreeExample extends AbstractStylePreviewExample
             final WebCheckBoxTree tree = new WebCheckBoxTree ( getStyleId (), createSampleModel () );
             tree.setEditable ( true );
             tree.setVisibleRowCount ( 13 );
-            tree.setCheckBoxEnabledStateProvider ( new StateProvider<UniqueNode> ()
+            tree.setCheckBoxEnabledStateProvider ( new Predicate<UniqueNode> ()
             {
                 @Override
-                public boolean provide ( final UniqueNode node )
+                public boolean test ( final UniqueNode node )
                 {
                     return !node.isLeaf () || !CompareUtils.equals ( node.getParent ().getUserObject ().toString (), "Disabled" );
                 }
             } );
-            tree.setCheckBoxVisibleStateProvider ( new StateProvider<UniqueNode> ()
+            tree.setCheckBoxVisibleStateProvider ( new Predicate<UniqueNode> ()
             {
                 @Override
-                public boolean provide ( final UniqueNode node )
+                public boolean test ( final UniqueNode node )
                 {
                     return !node.isLeaf () || !CompareUtils.equals ( node.getParent ().getUserObject ().toString (), "Hidden" );
                 }
             } );
-            tree.setEditableStateProvider ( new StateProvider<UniqueNode> ()
+            tree.setEditableStateProvider ( new Predicate<UniqueNode> ()
             {
                 @Override
-                public boolean provide ( final UniqueNode node )
+                public boolean test ( final UniqueNode node )
                 {
                     return node.isLeaf () && CompareUtils.equals ( node.getParent ().getUserObject ().toString (), "Editable" );
                 }

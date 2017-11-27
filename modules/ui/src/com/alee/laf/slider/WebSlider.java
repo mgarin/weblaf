@@ -43,7 +43,6 @@ import java.beans.PropertyChangeListener;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 
 /**
  * {@link JSlider} extension class.

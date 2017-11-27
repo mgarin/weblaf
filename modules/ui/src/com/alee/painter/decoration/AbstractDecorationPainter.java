@@ -28,6 +28,7 @@ import com.alee.managers.focus.GlobalFocusListener;
 import com.alee.managers.style.Bounds;
 import com.alee.managers.style.BoundsType;
 import com.alee.managers.style.PainterShapeProvider;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.AbstractPainter;
 import com.alee.painter.SectionPainter;
 import com.alee.utils.*;
@@ -617,6 +618,9 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         // Retrieving current decoration states
         final List<String> states = getDecorationStates ();
 
+        // Adding custom Skin decoration states
+        states.addAll ( DecorationUtils.getExtraStates ( StyleManager.getSkin ( component ) ) );
+
         // Adding custom UI decoration states
         states.addAll ( DecorationUtils.getExtraStates ( ui ) );
 
@@ -689,7 +693,6 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      */
     protected final boolean usesState ( final Decorations<E, D> decorations, final String state )
     {
-        // todo Cache returned value?
         if ( decorations != null && decorations.size () > 0 )
         {
             for ( final D decoration : decorations )

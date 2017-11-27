@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xs:schema targetNamespace="http://weblookandfeel.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
 
     <xs:include schemaLocation="AbstractContent.xsd" />
     <xs:include schemaLocation="../ext/TextRasterization.xsd" />
-    <xs:include schemaLocation="../awt/Color.xsd" />
 
     <!-- com.alee.painter.decoration.content.AbstractTextContent -->
     <xs:complexType name="AbstractTextContent">
@@ -14,7 +15,7 @@
                 <xs:attribute name="rasterization" type="TextRasterization" />
 
                 <!-- Text foreground color -->
-                <xs:attribute name="color" type="Color" />
+                <xs:attribute name="color" type="java.awt:Color" />
 
                 <!-- Horizontal text alignment -->
                 <xs:attribute name="halign" type="xs:integer" />
@@ -29,7 +30,7 @@
                 <xs:attribute name="shadow" type="xs:boolean" />
 
                 <!-- Text shadow color -->
-                <xs:attribute name="shadowColor" type="Color" />
+                <xs:attribute name="shadowColor" type="java.awt:Color" />
 
                 <!-- Text shadow size -->
                 <xs:attribute name="shadowSize" type="xs:integer" />

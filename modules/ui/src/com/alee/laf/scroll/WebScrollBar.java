@@ -33,7 +33,6 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
-import java.util.Map;
 
 /**
  * {@link JScrollBar} extension class.

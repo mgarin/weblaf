@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xs:schema targetNamespace="http://weblookandfeel.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
 
     <xs:include schemaLocation="AbstractBorder.xsd" />
-    <xs:include schemaLocation="../awt/Stroke.xsd" />
-    <xs:include schemaLocation="../awt/Color.xsd" />
 
     <!-- com.alee.painter.decoration.border.LineBorder -->
     <xs:complexType name="LineBorder">
@@ -11,10 +11,10 @@
             <xs:extension base="AbstractBorder">
 
                 <!-- Border stroke -->
-                <xs:attribute name="stroke" type="Stroke" />
+                <xs:attribute name="stroke" type="java.awt:Stroke" />
 
                 <!-- Border color -->
-                <xs:attribute name="color" type="Color" />
+                <xs:attribute name="color" type="java.awt:Color" />
 
             </xs:extension>
         </xs:complexContent>

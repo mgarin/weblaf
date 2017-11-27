@@ -28,7 +28,6 @@ import com.alee.utils.swing.extensions.SizeMethodsImpl;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import java.awt.*;
-import java.util.Map;
 
 /**
  * {@link RTextScrollPane} extension class.

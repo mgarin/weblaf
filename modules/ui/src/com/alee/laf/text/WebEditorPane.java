@@ -39,7 +39,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Map;
 
 /**
  * {@link JEditorPane} extension class.

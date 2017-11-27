@@ -1,4 +1,4 @@
-<Dictionary name="WebLaF demo module" prefix="demo" xmlns="http://weblookandfeel.com/language">
+<Dictionary name="WebLaF demo module" prefix="demo" xmlns="http://weblookandfeel.com/Dictionary">
     <Dictionary name="Tools" prefix="tool">
         <record key="skin">
             <value lang="en" state="tooltip">Application skin</value>

@@ -56,6 +56,6 @@ public final class MapMergeBehavior<T extends Map> implements GlobalMergeBehavio
             final Object baseValue = base.get ( key );
             base.put ( key, merge.merge ( baseValue, value ) );
         }
-        return ( T ) base;
+        return base;
     }
 }

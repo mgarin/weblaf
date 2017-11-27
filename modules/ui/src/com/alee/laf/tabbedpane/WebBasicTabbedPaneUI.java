@@ -2519,7 +2519,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
                     {
                         mnemonic -= 'a' - 'A';
                     }
-                    final Integer index = ui.mnemonicToIndexMap.get ( Integer.valueOf ( mnemonic ) );
+                    final Integer index = ui.mnemonicToIndexMap.get ( mnemonic );
                     if ( index != null && pane.isEnabledAt ( index ) )
                     {
                         pane.setSelectedIndex ( index );

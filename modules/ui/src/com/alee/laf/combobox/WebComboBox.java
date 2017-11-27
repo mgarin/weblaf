@@ -44,7 +44,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 
 /**

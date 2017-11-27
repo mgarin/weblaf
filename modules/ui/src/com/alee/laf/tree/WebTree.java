@@ -38,7 +38,6 @@ import com.alee.utils.GeometryUtils;
 import com.alee.utils.compare.Filter;
 import com.alee.utils.swing.HoverListener;
 import com.alee.utils.swing.MouseButton;
-import com.alee.utils.swing.StateProvider;
 import com.alee.utils.swing.extensions.*;
 
 import javax.swing.*;
@@ -116,7 +115,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     /**
      * Special state provider that can be set to check whether or not specific nodes are editable.
      */
-    protected StateProvider<E> editableStateProvider = null;
+    protected Predicate<E> editableStateProvider = null;
 
     /**
      * Custom WebLaF tooltip provider.
@@ -330,7 +329,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      *
      * @return special state provider that can be set to check whether or not specific nodes are editable
      */
-    public StateProvider<E> getEditableStateProvider ()
+    public Predicate<E> getEditableStateProvider ()
     {
         return editableStateProvider;
     }
@@ -341,7 +340,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      *
      * @param stateProvider special state provider that can be set to check whether or not specific nodes are editable
      */
-    public void setEditableStateProvider ( final StateProvider<E> stateProvider )
+    public void setEditableStateProvider ( final Predicate<E> stateProvider )
     {
         this.editableStateProvider = stateProvider;
     }
@@ -362,7 +361,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      */
     public boolean isNodeEditable ( final E node )
     {
-        return editableStateProvider == null || editableStateProvider.provide ( node );
+        return editableStateProvider == null || editableStateProvider.test ( node );
     }
 
     /**

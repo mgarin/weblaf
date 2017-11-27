@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xs:schema targetNamespace="http://weblookandfeel.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+<xs:schema targetNamespace="java.awt"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.lang="java.lang"
+           elementFormDefault="qualified">
 
     <!-- java.awt.Color -->
     <xs:simpleType name="Color">
@@ -54,5 +57,63 @@
 
         </xs:union>
     </xs:simpleType>
+
+    <!-- java.awt.Dimension -->
+    <xs:simpleType name="Dimension">
+        <xs:restriction base="xs:string">
+
+            <!-- Integer width and height values -->
+            <xs:pattern value="^[0-9]+,[0-9]+$" />
+
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- java.awt.Insets -->
+    <xs:simpleType name="Insets">
+        <xs:restriction base="xs:string">
+
+            <!-- Simple insets -->
+            <xs:pattern value="^[0-9]+$" />
+
+            <!-- Full insets -->
+            <xs:pattern value="^[0-9]+,[0-9]+,[0-9]+,[0-9]+$" />
+
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- java.awt.geom.Point2D -->
+    <xs:simpleType name="Point2D">
+        <xs:restriction base="xs:string">
+
+            <!-- Float X,Y values -->
+            <xs:pattern value="^[+-]?([0-9]*[.])?[0-9]+,[+-]?([0-9]*[.])?[0-9]+$" />
+
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- java.awt.Stroke -->
+    <xs:simpleType name="Stroke">
+        <xs:restriction base="xs:string">
+
+            <!-- todo Proper Stroke value check -->
+
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- java.awt.LayoutManager -->
+    <xs:complexType name="LayoutManager">
+
+        <!-- Any custom layout settings -->
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:any processContents="skip" />
+        </xs:choice>
+
+        <!-- Layout implementation class -->
+        <xs:attribute name="class" type="java.lang:Class" />
+
+        <!-- Any custom attribute -->
+        <xs:anyAttribute />
+
+    </xs:complexType>
 
 </xs:schema>

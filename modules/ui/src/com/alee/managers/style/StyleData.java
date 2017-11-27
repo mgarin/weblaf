@@ -555,8 +555,11 @@ public final class StyleData implements PropertyChangeListener
         this.customPainter = painter;
 
         // Reapplying skin
-        // todo This is not the best way to update
-        applySkin ( getSkin (), false );
+        final JComponent component = getComponent ();
+        getSkin ().applySkin ( component );
+
+        // Informing about skin changes
+        fireSkinUpdated ( component, getStyleId () );
 
         return oldPainter;
     }
@@ -574,9 +577,12 @@ public final class StyleData implements PropertyChangeListener
         // Resetting custom painter
         this.customPainter = null;
 
-        // Reapply skin
-        // todo This is not the best way to update
-        applySkin ( getSkin (), false );
+        // Reapplying skin
+        final JComponent component = getComponent ();
+        getSkin ().applySkin ( component );
+
+        // Informing about skin changes
+        fireSkinUpdated ( component, getStyleId () );
 
         return successful;
     }

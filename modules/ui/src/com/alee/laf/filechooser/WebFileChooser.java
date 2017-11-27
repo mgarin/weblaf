@@ -33,7 +33,6 @@ import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.io.File;
 import java.util.List;
-import java.util.Map;
 
 /**
  * {@link JFileChooser} extension class.
@@ -302,6 +301,7 @@ public class WebFileChooser extends JFileChooser
     *
     * @param the file to select
     */
+    @Override
     public void setSelectedFile ( final File file )
     {
     	if ( file == null || file.exists () )

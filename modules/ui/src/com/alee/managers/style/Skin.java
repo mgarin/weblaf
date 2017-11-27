@@ -29,14 +29,11 @@ import java.util.List;
 /**
  * Base interface single WebLaF skin.
  * Each skin combines a group of component painters and settings to provide an unique visual style.
+ * If can also initialize WebLaF with your skin directly through one of {@link com.alee.laf.WebLookAndFeel} install methods.
  *
- * If you want to initialize WebLaF using your skin straight away you need an empty constructor in implementation of this class.
- * Then you can use {@link StyleManager#setDefaultSkin(Class)} or {@link StyleManager#setDefaultSkin(String)} methods to provide it.
- * You can also initialize WebLaF directly using your skin through one of {@link com.alee.laf.WebLookAndFeel} static install methods.
- *
- * Existing full skin implementations are:
- * {@link com.alee.skin.web.WebSkin}
- * {@link com.alee.skin.dark.DarkSkin}
+ * Here is a list of complete skin implementations:
+ * - {@link com.alee.skin.web.WebSkin}
+ * - {@link com.alee.skin.dark.DarkSkin}
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>

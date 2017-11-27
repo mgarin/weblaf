@@ -39,7 +39,6 @@ import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * {@link JLabel} component extension that can render styled text.

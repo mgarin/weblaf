@@ -17,8 +17,6 @@
 
 package com.alee.extended.progress;
 
-import com.alee.global.StyleConstants;
-
 import java.awt.*;
 
 /**

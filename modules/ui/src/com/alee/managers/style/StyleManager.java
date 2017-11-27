@@ -110,6 +110,7 @@ import com.alee.utils.TextUtils;
 import com.alee.utils.XmlUtils;
 import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.ninepatch.NinePatchIcon;
+import com.alee.utils.reflection.PreparedInstance;
 import com.alee.utils.swing.WeakComponentData;
 
 import javax.swing.*;
@@ -122,17 +123,17 @@ import java.util.*;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
- * @see com.alee.managers.style.Skin
- * @see com.alee.managers.style.data.SkinInfo
- * @see com.alee.managers.style.StyleId
- * @see com.alee.managers.style.StyleData
+ * @see Skin
+ * @see SkinExtension
+ * @see StyleId
+ * @see StyleData
  */
 
 public final class StyleManager
 {
     /**
      * List of listeners for various style events.
-     * todo Might cause memory leaks in components
+     * todo Might cause memory leaks in components, replace with {@link com.alee.utils.swing.WeakComponentDataList}?
      */
     private static final EventListenerList listenerList = new EventListenerList ();
 
@@ -187,18 +188,16 @@ public final class StyleManager
 
     /**
      * Synchronization lock object for skin operations.
+     * todo This lock is redundant if all actions must be performed on EDT anyway
      */
     private static final Object skinLock = new Object ();
 
     /**
-     * Default WebLaF skin class.
-     * Class of the skin used by default when no other skins provided.
-     * This skin can be set before WebLaF initialization to avoid unnecessary UI updates afterwards.
-     *
-     * Every skin set as default must have an empty constructor that properly initializes that skin.
-     * Otherwise you have to set that skin manually through one of the methods in this manager.
+     * {@link PreparedInstance} for default WebLaF {@link Skin}.
+     * It can be specified before WebLaF is installed or any managers are initialized.
+     * It can be used to avoid extra loading time due to default skin or unnecessary UI updates later on.
      */
-    private static Class<? extends Skin> defaultSkinClass = null;
+    private static PreparedInstance<? extends Skin> defaultSkin = null;
 
     /**
      * Currently used skin.
@@ -750,62 +749,67 @@ public final class StyleManager
     }
 
     /**
-     * Returns default skin.
+     * Returns {@link PreparedInstance} for default {@link Skin}.
      *
-     * @return default skin
+     * @return {@link PreparedInstance} for default {@link Skin}
      */
-    public static Class<? extends Skin> getDefaultSkin ()
+    public static PreparedInstance<? extends Skin> getDefaultSkin ()
     {
-        return defaultSkinClass != null ? defaultSkinClass : WebSkin.class;
+        return defaultSkin != null ? defaultSkin : new PreparedInstance<WebSkin> ( WebSkin.class );
     }
 
     /**
-     * Sets default skin.
-     * Manager initialization is not required to change default {@link Skin}.
+     * Changes default {@link Skin} used upon {@link StyleManager} initialization.
+     * {@link StyleManager} doesn't need to be initialized to change it.
      *
-     * @param skinClassName default skin class name
-     * @return previous default skin
+     * @param skin      default {@link Skin} class name
+     * @param arguments default {@link Skin} constructor arguments
      */
-    public static Class<? extends Skin> setDefaultSkin ( final String skinClassName )
+    public static void setDefaultSkin ( final String skin, final Object... arguments )
     {
         try
         {
-            final Class<? extends Skin> skinClass = ReflectUtils.getClass ( skinClassName );
-            return setDefaultSkin ( skinClass );
+            final Class<? extends Skin> skinClass = ReflectUtils.getClass ( skin );
+            setDefaultSkin ( new PreparedInstance<Skin> ( ( Class<Skin> ) skinClass, arguments ) );
         }
         catch ( final ClassNotFoundException e )
         {
             final String msg = "Unable to load skin class for name: %s";
-            throw new StyleException ( String.format ( msg, skinClassName ), e );
+            throw new StyleException ( String.format ( msg, skin ), e );
         }
     }
 
     /**
-     * Sets default skin.
+     * Changes default {@link Skin} used upon {@link StyleManager} initialization.
+     * {@link StyleManager} doesn't need to be initialized to change it.
+     *
+     * @param skin      default {@link Skin} class
+     * @param arguments default {@link Skin} constructor arguments
+     */
+    public static void setDefaultSkin ( final Class<? extends Skin> skin, final Object... arguments )
+    {
+        setDefaultSkin ( new PreparedInstance<Skin> ( ( Class<Skin> ) skin, arguments ) );
+    }
+
+    /**
+     * Changes default {@link Skin} used upon {@link StyleManager} initialization.
      * Manager initialization is not required to change default {@link Skin}.
      *
-     * @param skinClass default skin class
-     * @return previous default skin
+     * @param skin default skin class
      */
-    public static Class<? extends Skin> setDefaultSkin ( final Class<? extends Skin> skinClass )
+    public static void setDefaultSkin ( final PreparedInstance<? extends Skin> skin )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
-        // Synchronized by skin lock
-        synchronized ( skinLock )
-        {
-            // Updating default skin class
-            final Class<? extends Skin> oldSkin = StyleManager.defaultSkinClass;
-            StyleManager.defaultSkinClass = skinClass;
-            return oldSkin;
-        }
+        // Updating default skin class
+        StyleManager.defaultSkin = skin;
     }
 
     /**
-     * Returns currently applied skin.
+     * Returns currently applied {@link Skin}.
      *
-     * @return currently applied skin
+     * @return currently applied {@link Skin}
      */
     public static Skin getSkin ()
     {
@@ -817,44 +821,58 @@ public final class StyleManager
     }
 
     /**
-     * Applies specified skin to all existing skinnable components.
-     * This skin will also be applied to all skinnable components created afterwards.
+     * Applies {@link Skin} with the specified {@link Class} name to all {@link Styleable} components.
+     * That {@link Skin} will also be applied to all {@link Styleable} components created afterwards.
      *
-     * @param skinClassName class name of the skin to be applied
-     * @return previously applied skin
+     * @param skin      {@link Skin} class name
+     * @param arguments {@link Skin} constructor arguments
+     * @return previously applied {@link Skin}
      */
-    public static Skin setSkin ( final String skinClassName )
-    {
-        return setSkin ( ReflectUtils.getClassSafely ( skinClassName ) );
-    }
-
-    /**
-     * Applies specified skin to all existing skinnable components.
-     * This skin will also be applied to all skinnable components created afterwards.
-     *
-     * @param skinClass class of the skin to be applied
-     * @return previously applied skin
-     */
-    public static Skin setSkin ( final Class skinClass )
+    public static Skin setSkin ( final String skin, final Object... arguments )
     {
         try
         {
-            final Skin skin = ReflectUtils.createInstance ( skinClass );
-            return setSkin ( skin );
+            final Class<? extends Skin> skinClass = ReflectUtils.getClass ( skin );
+            return setSkin ( skinClass, arguments );
         }
-        catch ( final Exception e )
+        catch ( final ClassNotFoundException e )
         {
-            final String msg = "Unable to instantiate skin for class: %s";
-            throw new StyleException ( String.format ( msg, skinClass ), e );
+            final String msg = "Unable to load skin class for name: %s";
+            throw new StyleException ( String.format ( msg, skin ), e );
         }
     }
 
     /**
-     * Applies specified skin to all existing skinnable components.
-     * This skin will also be applied to all skinnable components created afterwards.
+     * Applies {@link Skin} of the specified {@link Class} to all {@link Styleable} components.
+     * That {@link Skin} will also be applied to all {@link Styleable} components created afterwards.
      *
-     * @param skin skin to be applied
-     * @return previously applied skin
+     * @param skin      {@link Skin} class
+     * @param arguments {@link Skin} constructor arguments
+     * @return previously applied {@link Skin}
+     */
+    public static Skin setSkin ( final Class<? extends Skin> skin, final Object... arguments )
+    {
+        return setSkin ( new PreparedInstance<Skin> ( ( Class<Skin> ) skin, arguments ) );
+    }
+
+    /**
+     * Applies {@link Skin} based on the {@link PreparedInstance} to all {@link Styleable} components.
+     * That {@link Skin} will also be applied to all {@link Styleable} components created afterwards.
+     *
+     * @param skin {@link PreparedInstance} for {@link Skin}
+     * @return previously applied {@link Skin}
+     */
+    public static Skin setSkin ( final PreparedInstance<? extends Skin> skin )
+    {
+        return setSkin ( skin.create () );
+    }
+
+    /**
+     * Applies specified {@link Skin} to all {@link Styleable} components.
+     * That {@link Skin} will also be applied to all {@link Styleable} components created afterwards.
+     *
+     * @param skin {@link Skin} to apply
+     * @return previously applied {@link Skin}
      */
     public static Skin setSkin ( final Skin skin )
     {

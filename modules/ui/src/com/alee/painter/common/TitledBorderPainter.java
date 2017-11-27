@@ -275,7 +275,7 @@ public class TitledBorderPainter<E extends JComponent, U extends ComponentUI> ex
         fontMetrics = emptyTitle ? null : c.getFontMetrics ( c.getFont () );
         titleWidth = emptyTitle ? 0 : fontMetrics.stringWidth ( titleText );
         titleAreaHeight = getTitleAreaHeight ( c );
-        titleX = getTitleX ( c );
+        titleX = getTitleX ();
         titleY = getTitleY ();
         borderCenter = ( double ) sw / 2;
         borderPosition = getBorderPosition ();
@@ -337,17 +337,17 @@ public class TitledBorderPainter<E extends JComponent, U extends ComponentUI> ex
         }
     }
 
-    protected int getTitleX ( final E c )
+    protected int getTitleX ()
     {
         if ( titleAlignment == LEFT || titleAlignment == LEADING && ltr ||
                 titleAlignment == TRAILING && !ltr )
         {
-            return Math.max ( sw, round ) + titleOffset + titleBorderGap;
+            return Math.max ( sw, getRound () ) + titleOffset + titleBorderGap;
         }
         else if ( titleAlignment == RIGHT || titleAlignment == TRAILING && ltr ||
                 titleAlignment == LEADING && !ltr )
         {
-            return w - Math.max ( sw, round ) - titleOffset - titleBorderGap -
+            return w - Math.max ( sw, getRound () ) - titleOffset - titleBorderGap -
                     titleWidth;
         }
         else
@@ -451,9 +451,9 @@ public class TitledBorderPainter<E extends JComponent, U extends ComponentUI> ex
                 break;
             }
         }
-        return round > 0 ?
-                new RoundRectangle2D.Double ( rect.getX (), rect.getY (), rect.getWidth (), rect.getHeight (), round * 2, round * 2 ) :
-                rect;
+        final int round = getRound ();
+        return round <= 0 ? rect :
+                new RoundRectangle2D.Double ( rect.getX (), rect.getY (), rect.getWidth (), rect.getHeight (), round * 2, round * 2 );
     }
 
     protected Shape getBorderClipShape ()
@@ -502,7 +502,7 @@ public class TitledBorderPainter<E extends JComponent, U extends ComponentUI> ex
         {
             final int titleAreaHeight = getTitleAreaHeight ( component );
             final int titleWidth = component.getFontMetrics ( component.getFont () ).stringWidth ( titleText );
-            final int border = Math.max ( getStrokeWidth (), round );
+            final int border = Math.max ( getStrokeWidth (), getRound () );
             final int title = Math.max ( titleAreaHeight, border );
             switch ( titleSide )
             {

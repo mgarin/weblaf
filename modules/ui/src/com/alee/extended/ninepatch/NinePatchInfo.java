@@ -90,6 +90,7 @@ public class NinePatchInfo implements Serializable
         this.verticalStretch = verticalStretch;
     }
 
+    @Override
     public boolean equals ( Object obj )
     {
         if ( obj != null && obj instanceof NinePatchInfo )

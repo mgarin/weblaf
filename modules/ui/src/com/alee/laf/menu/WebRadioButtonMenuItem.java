@@ -33,7 +33,6 @@ import com.alee.utils.swing.extensions.FontMethodsImpl;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Map;
 
 /**
  * {@link JRadioButtonMenuItem} extension class.

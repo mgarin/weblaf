@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xs:schema targetNamespace="http://weblookandfeel.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
 
     <xs:include schemaLocation="AbstractContent.xsd" />
-    <xs:include schemaLocation="../awt/Dimension.xsd" />
-    <xs:include schemaLocation="../awt/Color.xsd" />
 
     <!-- com.alee.extended.checkbox.MixedIcon -->
     <xs:complexType name="MixedIcon">
@@ -11,16 +11,16 @@
             <xs:extension base="AbstractContent">
 
                 <!-- Preferred icon size -->
-                <xs:attribute name="size" type="Dimension" />
+                <xs:attribute name="size" type="java.awt:Dimension" />
 
                 <!-- Icon shape rounding -->
                 <xs:attribute name="round" type="xs:integer" />
 
                 <!-- Left side background color -->
-                <xs:attribute name="leftColor" type="Color" />
+                <xs:attribute name="leftColor" type="java.awt:Color" />
 
                 <!-- Right side background color -->
-                <xs:attribute name="rightColor" type="Color" />
+                <xs:attribute name="rightColor" type="java.awt:Color" />
 
             </xs:extension>
         </xs:complexContent>

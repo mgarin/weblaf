@@ -1,4 +1,4 @@
-<IconSet id="weblaf-demo" nearClass="com.alee.demo.skin.DarkIconSet" base="icons/" xmlns="http://weblookandfeel.com/icons">
+<IconSet id="weblaf-demo" nearClass="com.alee.demo.skin.DarkIconSet" base="icons/" xmlns="http://weblookandfeel.com/XmlIconSet">
 
     <!-- Example frame icons -->
     <SvgIcon id="examples16" path="frames/examples.svg" size="16,16">

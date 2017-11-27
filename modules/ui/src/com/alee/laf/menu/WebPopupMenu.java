@@ -27,7 +27,6 @@ import com.alee.utils.swing.extensions.SizeMethodsImpl;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Map;
 
 /**
  * {@link JPopupMenu} extension class.

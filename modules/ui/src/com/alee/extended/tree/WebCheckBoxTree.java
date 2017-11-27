@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.jdk.Predicate;
 import com.alee.laf.checkbox.CheckState;
 import com.alee.laf.tree.WebTree;
 import com.alee.laf.tree.WebTreeModel;
@@ -24,7 +25,6 @@ import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.StateProvider;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
@@ -104,12 +104,12 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     /**
      * Checkbox enabled state provider.
      */
-    protected StateProvider<E> enabledStateProvider;
+    protected Predicate<E> enabledStateProvider;
 
     /**
      * Checkbox visibility state provider.
      */
-    protected StateProvider<E> visibleStateProvider;
+    protected Predicate<E> visibleStateProvider;
 
     /**
      * Tree actions handler.
@@ -541,7 +541,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public boolean isCheckBoxEnabled ( final E node )
     {
-        return enabledStateProvider == null || enabledStateProvider.provide ( node );
+        return enabledStateProvider == null || enabledStateProvider.test ( node );
     }
 
     /**
@@ -550,7 +550,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      *
      * @param provider enabled state provider
      */
-    public void setCheckBoxEnabledStateProvider ( final StateProvider<E> provider )
+    public void setCheckBoxEnabledStateProvider ( final Predicate<E> provider )
     {
         this.enabledStateProvider = provider;
     }
@@ -563,7 +563,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public boolean isCheckBoxVisible ( final E node )
     {
-        return visibleStateProvider == null || visibleStateProvider.provide ( node );
+        return visibleStateProvider == null || visibleStateProvider.test ( node );
     }
 
     /**
@@ -572,7 +572,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      *
      * @param provider new visibility state provider
      */
-    public void setCheckBoxVisibleStateProvider ( final StateProvider<E> provider )
+    public void setCheckBoxVisibleStateProvider ( final Predicate<E> provider )
     {
         this.visibleStateProvider = provider;
     }

@@ -22,7 +22,6 @@ import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
 
 import javax.swing.*;
-import java.util.Map;
 
 /**
  * {@link JViewport} extension class.
