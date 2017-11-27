@@ -59,14 +59,14 @@ public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport,
     protected AsyncNodeState state = AsyncNodeState.waiting;
 
     /**
-     * Load icon observer.
-     */
-    protected ImageObserver observer = null;
-
-    /**
      * Children load failure cause.
      */
     protected Throwable failureCause = null;
+
+    /**
+     * Load icon observer.
+     */
+    protected transient ImageObserver observer = null;
 
     /**
      * Costructs default node.
@@ -204,9 +204,10 @@ public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport,
     }
 
     /**
-     * Attaches node load icon observer to the specified async tree.
+     * Attaches {@link ImageObserver} to the load icon of this node.
+     * todo Perform this somewhere globally for all trees?
      *
-     * @param tree async tree
+     * @param tree {@link WebAsyncTree}
      */
     public void attachLoadIconObserver ( final WebAsyncTree tree )
     {
@@ -214,38 +215,60 @@ public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport,
         if ( icon != null && icon instanceof ImageIcon )
         {
             final ImageIcon imageIcon = ( ImageIcon ) icon;
+
+            // Make sure we have broadcas observer in the image icon
+            // This is necessary to ensure all updates are properly preserved
+            final BroadcastImageObserver broadcast;
             final ImageObserver existing = imageIcon.getImageObserver ();
             if ( existing == null )
             {
-                imageIcon.setImageObserver ( new BroadcastImageObserver () );
+                // Creating new broadcast image observer
+                broadcast = new BroadcastImageObserver ();
+                imageIcon.setImageObserver ( broadcast );
             }
             else if ( existing instanceof BroadcastImageObserver )
             {
-                if ( observer == null )
-                {
-                    observer = new NodeImageObserver ( tree, this );
-                }
-                ( ( BroadcastImageObserver ) existing ).addObserver ( observer );
+                // Using existing broadcast image observer
+                broadcast = ( BroadcastImageObserver ) existing;
             }
+            else
+            {
+                // Creating new broadcast image observer
+                // Adding previously added image observer to broadcast list
+                broadcast = new BroadcastImageObserver ();
+                broadcast.addObserver ( existing );
+                imageIcon.setImageObserver ( broadcast );
+            }
+
+            // Adding node observer
+            if ( observer == null )
+            {
+                observer = new NodeImageObserver ( tree, this );
+            }
+            broadcast.addObserver ( tree, observer );
         }
     }
 
     /**
-     * Detaches node load icon observer.
+     * Detaches {@link ImageObserver} from the load icon of this node.
+     * todo Perform this somewhere globally for all trees?
+     *
+     * @param tree {@link WebAsyncTree}
      */
-    public void detachLoadIconObserver ()
+    public void detachLoadIconObserver ( final WebAsyncTree tree )
     {
-        if ( observer != null )
+        final Icon icon = getLoadIcon ();
+        if ( icon != null && icon instanceof ImageIcon )
         {
-            final Icon icon = getLoadIcon ();
-            if ( icon != null && icon instanceof ImageIcon )
+            final ImageIcon imageIcon = ( ImageIcon ) icon;
+
+            // Removing node observer
+            // Since observer could have been changed externally we need to check it here
+            final ImageObserver existing = imageIcon.getImageObserver ();
+            if ( existing instanceof BroadcastImageObserver )
             {
-                final ImageIcon imageIcon = ( ImageIcon ) icon;
-                final ImageObserver existing = imageIcon.getImageObserver ();
-                if ( existing instanceof BroadcastImageObserver )
-                {
-                    ( ( BroadcastImageObserver ) existing ).removeObserver ( observer );
-                }
+                final BroadcastImageObserver broadcast = ( BroadcastImageObserver ) existing;
+                broadcast.removeObserver ( tree, observer );
             }
         }
     }

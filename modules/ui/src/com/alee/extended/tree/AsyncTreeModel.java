@@ -741,7 +741,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
         updateSortingAndFiltering ( parentNode );
 
         // Removing image observer
-        childNode.detachLoadIconObserver ();
+        childNode.detachLoadIconObserver ( tree );
     }
 
     // todo Implement when those methods will be separate from single one

@@ -65,7 +65,7 @@ public final class PainterSupport
      * Margins saved per-component instance.
      * todo These settings should be completely moved into {@link AbstractPainter} upon multiple painters elimination
      *
-     * @see #getMargin(Component)
+     * @see #getMargin(JComponent)
      * @see #setMargin(JComponent, Insets)
      */
     private static final WeakComponentData<JComponent, Insets> margins =
