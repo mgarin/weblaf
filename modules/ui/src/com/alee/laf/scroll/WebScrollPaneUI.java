@@ -189,7 +189,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
         removeCorners ();
 
         // Resetting layout to default used within JScrollPane
-        // This update will ensure that we properly cleanup scrollpane layout after ourselves
+        // This update will ensure that we properly cleanup custom layout
         scrollpane.setLayout ( new ScrollPaneLayout.UIResource () );
 
         // Uninstalling UI

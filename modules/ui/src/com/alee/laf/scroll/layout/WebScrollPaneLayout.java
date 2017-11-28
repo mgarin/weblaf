@@ -42,12 +42,14 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
 {
     /**
      * {@link ScrollBarSettings} for vertical scroll bar.
+     * These settings must always be specified otherwise you will have {@link NullPointerException}.
      */
     @XStreamAlias ( "Vertical" )
     protected ScrollBarSettings vpos;
 
     /**
      * {@link ScrollBarSettings} for horizontal scroll bar.
+     * These settings must always be specified otherwise you will have {@link NullPointerException}.
      */
     @XStreamAlias ( "Horizontal" )
     protected ScrollBarSettings hpos;
@@ -147,7 +149,6 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
          * If there's a visible column header remove the space it needs from the top of availR.
          * The column header is treated as if it were fixed height, arbitrary width.
          */
-
         final Rectangle colHeadR = new Rectangle ( 0, availR.y, 0, 0 );
         if ( colHead != null && colHead.isVisible () )
         {
@@ -161,7 +162,6 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
          * If there's a visible row header remove the space it needs from the left or right of availR.
          * The row header is treated as if it were fixed width, arbitrary height.
          */
-
         final Rectangle rowHeadR = new Rectangle ( 0, 0, 0, 0 );
         if ( rowHead != null && rowHead.isVisible () )
         {
@@ -182,7 +182,6 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
         /**
          * If there's a JScrollPane.viewportBorder, remove the space it occupies for availR.
          */
-
         final Border viewportBorder = scrollPane.getViewportBorder ();
         final Insets viewInsets;
         if ( viewportBorder != null )
@@ -214,7 +213,6 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
 
         final Component view = viewport != null ? viewport.getView () : null;
         final Dimension viewPrefSize = view != null ? view.getPreferredSize () : new Dimension ( 0, 0 );
-
         Dimension extentSize = viewport != null ? viewport.toViewCoordinates ( availR.getSize () ) : new Dimension ( 0, 0 );
 
         boolean viewTracksViewportWidth = false;
@@ -226,7 +224,6 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
          * Don't bother checking the Scrollable methods if there is no room for the viewport,
          * we aren't going to show any scrollbars in this case anyway.
          */
-
         if ( !isEmpty && view instanceof Scrollable )
         {
             sv = ( Scrollable ) view;
@@ -242,7 +239,6 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
          * If there's a vertical scrollbar and we need one, allocate space for it (we'll make it visible later).
          * A vertical scrollbar is considered to be fixed width, arbitrary height.
          */
-
         final Rectangle vsbR = new Rectangle ( 0, availR.y - viewInsets.top, 0, 0 );
         boolean vsbNeeded = !isEmpty && vsbPolicy != VERTICAL_SCROLLBAR_NEVER &&
                 ( vsbPolicy == VERTICAL_SCROLLBAR_ALWAYS || !viewTracksViewportHeight && viewPrefSize.height > extentSize.height );
@@ -257,7 +253,6 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
          * If there's a horizontal scrollbar and we need one, allocate space for it (we'll make it visible later)
          * A horizontal scrollbar is considered to be fixed height, arbitrary width
          */
-
         final Rectangle hsbR = new Rectangle ( availR.x - viewInsets.left, 0, 0, 0 );
         boolean hsbNeeded = !isEmpty && hsbPolicy != HORIZONTAL_SCROLLBAR_NEVER &&
                 ( hsbPolicy == HORIZONTAL_SCROLLBAR_ALWAYS || !viewTracksViewportWidth && viewPrefSize.width > extentSize.width );
@@ -288,7 +283,6 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
          * Some components base their return values for the Scrollable methods on the size of the Viewport, so that if we don't
          * ask after resetting the bounds we may have gotten the wrong answer.
          */
-
         if ( viewport != null )
         {
             viewport.setBounds ( availR );
@@ -345,7 +339,6 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
          * We now have the final size of the viewport: availR.
          * Now fixup the header and scrollbar widths/heights.
          */
-
         vsbR.height = availR.height + viewInsets.top + viewInsets.bottom;
         if ( hsbNeeded )
         {
@@ -361,7 +354,6 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
                 vsbR.height -= hsbR.height;
             }
         }
-
         hsbR.width = availR.width + viewInsets.left + viewInsets.right;
         if ( vsbNeeded )
         {
@@ -387,7 +379,6 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
          * Set the bounds of the remaining components.
          * The scrollbars are made invisible if they're not needed.
          */
-
         if ( rowHead != null )
         {
             rowHead.setBounds ( rowHeadR );
@@ -396,7 +387,6 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
         {
             colHead.setBounds ( colHeadR );
         }
-
         if ( vsb != null )
         {
             if ( vsbNeeded )
@@ -426,7 +416,6 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
                 vsb.setVisible ( false );
             }
         }
-
         if ( hsb != null )
         {
             if ( hsbNeeded )
@@ -459,7 +448,6 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
                 hsb.setVisible ( false );
             }
         }
-
         if ( lowerLeft != null )
         {
             lowerLeft.setBounds ( ltr ? rowHeadR.x : vsbR.x, hsbR.y, ltr ? rowHeadR.width : vsbR.width, hsbR.height );
@@ -602,7 +590,6 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
         /**
          * If there's a viewport add its preferredSize
          */
-
         if ( extentSize != null )
         {
             prefWidth += extentSize.width;
@@ -612,7 +599,6 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
         /**
          * If there's a JScrollPane.viewportBorder, add its insets
          */
-
         final Border viewportBorder = scrollPane.getViewportBorder ();
         if ( viewportBorder != null )
         {
@@ -624,7 +610,6 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
         /**
          * If a header exists and it's visible, factor its preferred size in
          */
-
         if ( rowHead != null && rowHead.isVisible () )
         {
             prefWidth += rowHead.getPreferredSize ().width;
@@ -648,8 +633,8 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
          * extentSize) to the preferredSize of the view. Although we're not responsible for laying out the view we'll assume that the
          * JViewport will always give it its preferredSize.
          */
-
-        if ( vpos.isExtending () && vsb != null && vsbPolicy != VERTICAL_SCROLLBAR_NEVER )
+        if ( vsb != null && vsbPolicy != VERTICAL_SCROLLBAR_NEVER &&
+                ( !vpos.isHovering () || vpos.isHovering () && vpos.isExtending () ) )
         {
             if ( vsbPolicy == VERTICAL_SCROLLBAR_ALWAYS )
             {
@@ -668,8 +653,8 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
                 }
             }
         }
-
-        if ( hpos.isExtending () && hsb != null && hsbPolicy != HORIZONTAL_SCROLLBAR_NEVER )
+        if ( hsb != null && hsbPolicy != HORIZONTAL_SCROLLBAR_NEVER &&
+                ( !hpos.isHovering () || hpos.isHovering () && hpos.isExtending () ) )
         {
             if ( hsbPolicy == HORIZONTAL_SCROLLBAR_ALWAYS )
             {
@@ -722,7 +707,6 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
         /**
          * If there's a viewport add its minimumSize.
          */
-
         if ( viewport != null )
         {
             final Dimension size = viewport.getMinimumSize ();
@@ -733,7 +717,6 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
         /**
          * If there's a JScrollPane.viewportBorder, add its insets.
          */
-
         final Border viewportBorder = scrollPane.getViewportBorder ();
         if ( viewportBorder != null )
         {
@@ -745,14 +728,12 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
         /**
          * If a header exists and it's visible, factor its minimum size in.
          */
-
         if ( rowHead != null && rowHead.isVisible () )
         {
             final Dimension size = rowHead.getMinimumSize ();
             minWidth += size.width;
             minHeight = Math.max ( minHeight, size.height );
         }
-
         if ( colHead != null && colHead.isVisible () )
         {
             final Dimension size = colHead.getMinimumSize ();
@@ -764,14 +745,12 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
          * If a scrollbar might appear, factor its minimum size in.
          * Though if {@link ScrollBarSettings#isExtending()} is {@code false} then scroll bar sizes are completely ignored.
          */
-
         if ( vpos.isExtending () && vsb != null && vsbPolicy != VERTICAL_SCROLLBAR_NEVER )
         {
             final Dimension size = vsb.getMinimumSize ();
             minWidth += size.width;
             minHeight = Math.max ( minHeight, size.height );
         }
-
         if ( hpos.isExtending () && hsb != null && hsbPolicy != HORIZONTAL_SCROLLBAR_NEVER )
         {
             final Dimension size = hsb.getMinimumSize ();

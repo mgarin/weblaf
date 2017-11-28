@@ -109,8 +109,8 @@
     <style type="scrollpane" id="hovering">
         <component>
             <layout class="WebScrollPaneLayout$UIResource">
-                <Vertical trailing="true" hovering="true" />
-                <Horizontal hovering="true" />
+                <Vertical leading="false" trailing="true" hovering="true" extending="false" />
+                <Horizontal leading="false" trailing="false" hovering="true" extending="true" />
             </layout>
         </component>
 
@@ -131,7 +131,7 @@
             </painter>
         </style>
         <style type="scrollbar" id="vertical" extends="scrollbar" padding="2,0,2,2" />
-        <style type="scrollbar" id="horizontal" extends="scrollbar" padding="0,2,2,2" />
+        <style type="scrollbar" id="horizontal" extends="scrollbar" padding="2,2,2,2" />
 
         <!-- Corners -->
         <style type="canvas" id="corner">

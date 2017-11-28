@@ -82,6 +82,7 @@ import com.alee.laf.tooltip.ToolTipDescriptor;
 import com.alee.laf.tooltip.ToolTipText;
 import com.alee.laf.tree.TreeDescriptor;
 import com.alee.laf.viewport.ViewportDescriptor;
+import com.alee.laf.viewport.WebViewportLayout;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.painter.Painter;
@@ -314,6 +315,8 @@ public final class StyleManager
         // Layout aliases
         XmlUtils.processAnnotations ( WebScrollPaneLayout.class );
         XmlUtils.processAnnotations ( WebScrollPaneLayout.UIResource.class );
+        XmlUtils.processAnnotations ( WebViewportLayout.class );
+        XmlUtils.processAnnotations ( WebViewportLayout.UIResource.class );
 
         // Workaround for ScrollPaneLayout due to neccessity of its usage
         XmlUtils.omitField ( ScrollPaneLayout.class, "viewport" );

@@ -17,13 +17,13 @@
 
 package com.alee.laf.viewport;
 
+import com.alee.api.jdk.Consumer;
 import com.alee.managers.style.Bounds;
 import com.alee.managers.style.ShapeSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -74,6 +74,10 @@ public class WebViewportUI<C extends JViewport> extends WViewportUI<C> implement
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( viewport );
+
+        // Resetting layout to default used within JViewport
+        // This update will ensure that we properly cleanup custom layout
+        viewport.setLayout ( new ViewportLayout () );
 
         // Uninstalling UI
         super.uninstallUI ( c );
