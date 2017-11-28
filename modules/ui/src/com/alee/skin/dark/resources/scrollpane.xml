@@ -120,13 +120,13 @@
                 <thumbRound>0</thumbRound>
                 <thumbMargin>0,0,0,0</thumbMargin>
                 <scrollBarWidth>10</scrollBarWidth>
-                <thumbBorderColor>220,220,220,48</thumbBorderColor>
+                <thumbBorderColor>20,20,20</thumbBorderColor>
                 <thumbBackgroundColor>210,210,210,48</thumbBackgroundColor>
-                <thumbDisabledBorderColor>220,220,220,24</thumbDisabledBorderColor>
+                <thumbDisabledBorderColor>68,72,74</thumbDisabledBorderColor>
                 <thumbDisabledBackgroundColor>210,210,210,24</thumbDisabledBackgroundColor>
-                <thumbRolloverBorderColor>250,250,250,64</thumbRolloverBorderColor>
+                <thumbRolloverBorderColor>20,20,20</thumbRolloverBorderColor>
                 <thumbRolloverBackgroundColor>240,240,240,64</thumbRolloverBackgroundColor>
-                <thumbPressedBorderColor>250,250,250,64</thumbPressedBorderColor>
+                <thumbPressedBorderColor>20,20,20</thumbPressedBorderColor>
                 <thumbPressedBackgroundColor>250,250,250,86</thumbPressedBackgroundColor>
             </painter>
         </style>
@@ -167,13 +167,13 @@
                 <thumbRound>2</thumbRound>
                 <thumbMargin>0,0,0,3</thumbMargin>
                 <scrollBarWidth>11</scrollBarWidth>
-                <thumbBorderColor>220,220,220,48</thumbBorderColor>
+                <thumbBorderColor>20,20,20</thumbBorderColor>
                 <thumbBackgroundColor>210,210,210,48</thumbBackgroundColor>
-                <thumbDisabledBorderColor>220,220,220,24</thumbDisabledBorderColor>
+                <thumbDisabledBorderColor>68,72,74</thumbDisabledBorderColor>
                 <thumbDisabledBackgroundColor>210,210,210,24</thumbDisabledBackgroundColor>
-                <thumbRolloverBorderColor>250,250,250,64</thumbRolloverBorderColor>
+                <thumbRolloverBorderColor>20,20,20</thumbRolloverBorderColor>
                 <thumbRolloverBackgroundColor>240,240,240,64</thumbRolloverBackgroundColor>
-                <thumbPressedBorderColor>250,250,250,64</thumbPressedBorderColor>
+                <thumbPressedBorderColor>20,20,20</thumbPressedBorderColor>
                 <thumbPressedBackgroundColor>250,250,250,86</thumbPressedBackgroundColor>
             </painter>
         </style>
