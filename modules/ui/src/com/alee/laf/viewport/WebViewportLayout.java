@@ -98,7 +98,7 @@ public class WebViewportLayout extends AbstractLayoutManager implements Mergeabl
                 if ( vpos.isHovering () && vpos.isExtending () )
                 {
                     final JScrollBar vsb = scrollPane.getVerticalScrollBar ();
-                    if ( vsb.isShowing () )
+                    if ( vsb != null && vsb.isShowing () )
                     {
                         viewSize.width += vsb.getPreferredSize ().width;
                     }
@@ -111,7 +111,7 @@ public class WebViewportLayout extends AbstractLayoutManager implements Mergeabl
                 if ( hpos.isHovering () && hpos.isExtending () )
                 {
                     final JScrollBar hsb = scrollPane.getHorizontalScrollBar ();
-                    if ( hsb.isShowing () )
+                    if ( hsb != null && hsb.isShowing () )
                     {
                         viewSize.height += hsb.getPreferredSize ().height;
                     }
@@ -219,7 +219,7 @@ public class WebViewportLayout extends AbstractLayoutManager implements Mergeabl
                 if ( vpos.isHovering () && vpos.isExtending () )
                 {
                     final JScrollBar vsb = scrollPane.getVerticalScrollBar ();
-                    if ( vsb.isShowing () )
+                    if ( vsb != null && vsb.isShowing () )
                     {
                         ps.width += vsb.getPreferredSize ().width;
                     }
@@ -232,7 +232,7 @@ public class WebViewportLayout extends AbstractLayoutManager implements Mergeabl
                 if ( hpos.isHovering () && hpos.isExtending () )
                 {
                     final JScrollBar hsb = scrollPane.getHorizontalScrollBar ();
-                    if ( hsb.isShowing () )
+                    if ( hsb != null && hsb.isShowing () )
                     {
                         ps.height += hsb.getPreferredSize ().height;
                     }
