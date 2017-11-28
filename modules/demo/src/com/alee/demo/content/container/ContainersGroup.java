@@ -40,6 +40,7 @@ public class ContainersGroup extends AbstractExampleGroup
         return CollectionUtils.<Class>asList (
                 JPanelExample.class,
                 WebPanelExample.class,
+                JScrollPaneExample.class,
                 JToolBarExample.class,
                 GroupPaneExample.class,
                 WebCollapsiblePaneExample.class

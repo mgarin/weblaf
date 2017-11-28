@@ -1159,6 +1159,60 @@
                     </record>
                 </Dictionary>
             </Dictionary>
+            <Dictionary prefix="jscrollpane">
+                <record key="title">
+                    <value lang="en">JScrollPane</value>
+                    <value lang="ru">JScrollPane</value>
+                </record>
+                <Dictionary prefix="basic">
+                    <record key="title">
+                        <value lang="en">Basic</value>
+                        <value lang="ru">Базовая</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="nofocus">
+                    <record key="title">
+                        <value lang="en">Non-focusable</value>
+                        <value lang="ru">Без отображения фокуса</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="undecorated">
+                    <record key="title">
+                        <value lang="en">Undecorated</value>
+                        <value lang="ru">Без декораций</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="transparent">
+                    <record key="title">
+                        <value lang="en">Transparent</value>
+                        <value lang="ru">Прозрачная</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="buttonless">
+                    <record key="title">
+                        <value lang="en">Buttonless</value>
+                        <value lang="ru">Панель прокрутки</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="transparent.buttonless">
+                    <record key="title">
+                        <value lang="en">Transparent buttonless</value>
+                        <value lang="ru">Прозрачная без кнопок</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="hovering">
+                    <record key="title">
+                        <value lang="en">Hovering</value>
+                        <value lang="ru">Нависающая</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="transparent.hovering">
+                    <record key="title">
+                        <value lang="en">Transparent hovering</value>
+                        <value lang="ru">Прозрачная нависающая</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
             <Dictionary prefix="jtoolbar">
                 <record key="title">
                     <value lang="en">JToolBar</value>

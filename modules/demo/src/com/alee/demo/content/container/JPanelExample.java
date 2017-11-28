@@ -65,11 +65,12 @@ public class JPanelExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final BasicPanel e1 = new BasicPanel ( "basic", FeatureState.updated, StyleId.panel );
-        final BasicPanel e2 = new BasicPanel ( "decorated", FeatureState.updated, StyleId.panelDecorated );
-        final BasicPanel e3 = new BasicPanel ( "transparent", FeatureState.updated, StyleId.panelTransparent );
-        final BasicPanel e4 = new BasicPanel ( "focusable", FeatureState.updated, StyleId.panelFocusable );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3, e4 );
+        return CollectionUtils.<Preview>asList (
+                new BasicPanel ( "basic", FeatureState.updated, StyleId.panel ),
+                new BasicPanel ( "decorated", FeatureState.updated, StyleId.panelDecorated ),
+                new BasicPanel ( "transparent", FeatureState.updated, StyleId.panelTransparent ),
+                new BasicPanel ( "focusable", FeatureState.updated, StyleId.panelFocusable )
+        );
     }
 
     /**
