@@ -34,10 +34,7 @@ import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.icon.Icons;
 import com.alee.managers.style.StyleId;
-import com.alee.utils.CollectionUtils;
-import com.alee.utils.FileUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.SystemUtils;
+import com.alee.utils.*;
 import com.alee.utils.filefilter.AbstractFileFilter;
 import com.alee.utils.filefilter.DirectoriesFilter;
 
@@ -465,7 +462,7 @@ public class WebPathField extends WebPanel
                         }
 
                         // Fixing window bounds
-                        final Point los = pathField.getLocationOnScreen ();
+                        final Point los = CoreSwingUtils.locationOnScreen ( pathField );
                         autocompleteDialog.setSize ( pathField.getWidth (), listScroll.getPreferredSize ().height );
                         autocompleteDialog.setLocation ( pathField.getComponentOrientation ().isLeftToRight () ? los.x :
                                 los.x + pathField.getWidth () - autocompleteDialog.getWidth (), los.y + pathField.getHeight () );

@@ -23,6 +23,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.menu.AbstractPopupPainter;
 import com.alee.laf.menu.PopupStyle;
 import com.alee.laf.rootpane.WRootPaneUI;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.SystemUtils;
@@ -379,7 +380,7 @@ public class PopOverPainter<E extends JRootPane, U extends WRootPaneUI> extends 
                 if ( invoker.isShowing () )
                 {
                     final Rectangle bounds = boundsSupplier.get ();
-                    final Point los = invoker.getLocationOnScreen ();
+                    final Point los = CoreSwingUtils.locationOnScreen ( invoker );
                     lastBounds = new Rectangle ( los.x + bounds.x, los.y + bounds.y, bounds.width, bounds.height );
                 }
                 return lastBounds;

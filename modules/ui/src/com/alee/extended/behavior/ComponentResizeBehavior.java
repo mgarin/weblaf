@@ -17,8 +17,8 @@
 
 package com.alee.extended.behavior;
 
-import com.alee.api.jdk.Function;
 import com.alee.api.data.CompassDirection;
+import com.alee.api.jdk.Function;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
 
@@ -135,7 +135,7 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
             if ( d != null )
             {
                 resizing = true;
-                final Point los = e.getComponent ().getLocationOnScreen ();
+                final Point los = CoreSwingUtils.locationOnScreen ( e.getComponent () );
                 initialPoint = new Point ( los.x + e.getX (), los.y + e.getY () );
                 initialBounds = getResized ( e ).getBounds ();
                 currentDirection = d;

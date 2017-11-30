@@ -17,6 +17,7 @@
 
 package com.alee.managers.drag.view;
 
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -73,7 +74,7 @@ public abstract class ComponentDragViewHandler<C extends JComponent, T> implemen
      */
     protected Point calculateViewRelativeLocation ( final C component, final DragSourceDragEvent event )
     {
-        final Point los = component.getLocationOnScreen ();
+        final Point los = CoreSwingUtils.locationOnScreen ( component );
         final Point eloc = event.getLocation ();
         return new Point ( los.x - eloc.x, los.y - eloc.y );
     }

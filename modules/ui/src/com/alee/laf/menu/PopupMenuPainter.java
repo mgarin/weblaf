@@ -314,7 +314,7 @@ public class PopupMenuPainter<E extends JPopupMenu, U extends WPopupMenuUI> exte
 
             // Calculating position variables
             final boolean showing = invoker.isShowing ();
-            final Point los = showing ? invoker.getLocationOnScreen () : new Point ( 0, 0 );
+            final Point los = showing ? CoreSwingUtils.locationOnScreen ( invoker ) : new Point ( 0, 0 );
             final boolean fixLocation = this.fixLocation && showing;
             final int sideWidth = getSideWidth ();
 
@@ -511,7 +511,7 @@ public class PopupMenuPainter<E extends JPopupMenu, U extends WPopupMenuUI> exte
      * @param window    popup menu window
      * @param popupMenu popup menu
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void uninstallPopupSettings ( final Window window, final E popupMenu )
     {
         if ( window != null && shaped && SwingUtils.isHeavyWeightWindow ( window ) )

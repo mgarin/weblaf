@@ -27,6 +27,7 @@ import com.alee.laf.grouping.AbstractGroupingLayout;
 import com.alee.laf.window.WebDialog;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.general.Pair;
 
 import javax.swing.*;
@@ -41,14 +42,14 @@ import static com.alee.api.data.Orientation.horizontal;
 import static com.alee.api.data.Orientation.vertical;
 
 /**
- * Basic {@link com.alee.extended.dock.DockablePaneModel} implementation.
+ * Basic {@link DockablePaneModel} implementation.
  * It handles elements location data and also provides appropriate layout for all elements on the dockable pane.
  * It also provides frames drag data and various methods to modify element locations.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
- * @see com.alee.extended.dock.WebDockablePane
- * @see com.alee.extended.dock.DockablePaneModel
+ * @see WebDockablePane
+ * @see DockablePaneModel
  */
 
 public class WebDockablePaneModel extends AbstractGroupingLayout implements DockablePaneModel
@@ -59,7 +60,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     protected static final int dropSide = 40;
 
     /**
-     * Root element on the {@link com.alee.extended.dock.WebDockablePane}.
+     * Root element on the {@link WebDockablePane}.
      */
     protected DockableContainer root;
 
@@ -86,7 +87,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     protected Rectangle previewBounds = null;
 
     /**
-     * Constructs new {@link com.alee.extended.dock.DockablePaneModel} implementation with only content in its structure.
+     * Constructs new {@link DockablePaneModel} implementation with only content in its structure.
      */
     public WebDockablePaneModel ()
     {
@@ -94,9 +95,9 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     }
 
     /**
-     * Constructs new {@link com.alee.extended.dock.DockablePaneModel} implementation with the specified structure of the elements.
+     * Constructs new {@link DockablePaneModel} implementation with the specified structure of the elements.
      *
-     * @param root root container on the {@link com.alee.extended.dock.WebDockablePane}
+     * @param root root container on the {@link WebDockablePane}
      */
     public WebDockablePaneModel ( final DockableContainer root )
     {
@@ -660,7 +661,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
      * Returns outer pane bounds.
      * These bounds include sidebar and content elements.
      *
-     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane}
+     * @param dockablePane {@link WebDockablePane}
      * @return outer pane bounds
      */
     protected Rectangle getOuterBounds ( final WebDockablePane dockablePane )
@@ -675,7 +676,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
      * Returns inner pane bounds.
      * These bounds include only content elements.
      *
-     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane}
+     * @param dockablePane {@link WebDockablePane}
      * @return inner pane bounds
      */
     protected Rectangle getInnerBounds ( final WebDockablePane dockablePane )
@@ -692,11 +693,11 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     }
 
     /**
-     * Returns frame bounds for {@link com.alee.extended.dock.DockableFrameState#preview} state.
+     * Returns frame bounds for {@link DockableFrameState#preview} state.
      *
-     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane}
-     * @param frame        {@link com.alee.extended.dock.WebDockableFrame}
-     * @return frame bounds for {@link com.alee.extended.dock.DockableFrameState#preview} state
+     * @param dockablePane {@link WebDockablePane}
+     * @param frame        {@link WebDockableFrame}
+     * @return frame bounds for {@link DockableFrameState#preview} state
      */
     protected Rectangle getPreviewBounds ( final WebDockablePane dockablePane, final WebDockableFrame frame )
     {
@@ -786,7 +787,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     /**
      * Returns visible sidebar buttons list.
      *
-     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane}
+     * @param dockablePane {@link WebDockablePane}
      * @param side         buttons side
      * @return visible sidebar buttons list
      */
@@ -826,9 +827,9 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     }
 
     /**
-     * Collects visible sidebar buttons at the specified side inside the specified {@link com.alee.extended.dock.data.DockableElement}.
+     * Collects visible sidebar buttons at the specified side inside the specified {@link DockableElement}.
      *
-     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane}
+     * @param dockablePane {@link WebDockablePane}
      * @param element      element to collect sidebar buttons from
      * @param buttons      buttons list to fill in
      */
@@ -920,7 +921,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
             previewBounds = lastBounds != null ? lastBounds : getPreviewBounds ( dockablePane, frame );
 
             // Adjusting bounds to location on screen
-            final Point los = dockablePane.getLocationOnScreen ();
+            final Point los = CoreSwingUtils.locationOnScreen ( dockablePane );
             previewBounds.x += los.x;
             previewBounds.y += los.y;
         }

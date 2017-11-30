@@ -28,6 +28,7 @@ import com.alee.laf.window.WebWindow;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.tooltip.TooltipManager;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.file.FileComparator;
@@ -376,7 +377,7 @@ public class WebFileBreadcrumb extends WebBreadcrumb
         window.applyComponentOrientation ( getComponentOrientation () );
         window.pack ();
 
-        final Point los = fileButton.getLocationOnScreen ();
+        final Point los = CoreSwingUtils.locationOnScreen ( fileButton );
         final Insets bi = list.getWebListCellRenderer ().getBorder ().getBorderInsets ( list );
         if ( getComponentOrientation ().isLeftToRight () )
         {

@@ -715,7 +715,7 @@ public class WebColorChooserField extends WebTextField
 
     protected void updatePopupLocation ()
     {
-        final Point los = WebColorChooserField.this.getLocationOnScreen ();
+        final Point los = CoreSwingUtils.locationOnScreen ( WebColorChooserField.this );
         final Rectangle gb = SystemUtils.getDeviceBounds ( popup.getGraphicsConfiguration (), true );
         final int shadeWidth = /*isDrawBorder () ? getShadeWidth () :*/ 0; // todo check shade width
         final boolean ltr = WebColorChooserField.this.getComponentOrientation ().isLeftToRight ();

@@ -101,7 +101,9 @@ public class CoreSwingUtils
      */
     public static Rectangle getBoundsOnScreen ( final Component component )
     {
-        return new Rectangle ( component.getLocationOnScreen (), component.getSize () );
+        final Point los = locationOnScreen ( component );
+        final Dimension size = component.getSize ();
+        return new Rectangle ( los, size );
     }
 
     /**
@@ -138,8 +140,8 @@ public class CoreSwingUtils
      */
     public static Point getRelativeLocation ( final Component component, final Component relativeTo )
     {
-        final Point los = component.getLocationOnScreen ();
-        final Point rt = relativeTo.getLocationOnScreen ();
+        final Point los = locationOnScreen ( component );
+        final Point rt = locationOnScreen ( relativeTo );
         return new Point ( los.x - rt.x, los.y - rt.y );
     }
 
@@ -264,7 +266,7 @@ public class CoreSwingUtils
     public static Point getMouseLocation ( final Component component )
     {
         final Point mouse = getMouseLocation ();
-        final Point los = component.getLocationOnScreen ();
+        final Point los = locationOnScreen ( component );
         return new Point ( mouse.x - los.x, mouse.y - los.y );
     }
 
@@ -320,6 +322,27 @@ public class CoreSwingUtils
             SwingUtilities.computeIntersection ( 0, 0, bounds.width, bounds.height, visibleRect );
         }
         return visibleRect;
+    }
+
+    /**
+     * Returns {@link Component} location on screen.
+     * Throws a detailed exception in case {@link Component} was not showing.
+     *
+     * @param component {@link Component} to determine locatin on screen for
+     * @return {@link Component} location on screen
+     */
+    public static Point locationOnScreen ( final Component component )
+    {
+        try
+        {
+            // Trying to acquire component location on screen
+            return component.getLocationOnScreen ();
+        }
+        catch ( final IllegalComponentStateException e )
+        {
+            // Re-throwing exception with more information on the component
+            throw new RuntimeException ( "Component must be showing on the screen to determine its location: " + component );
+        }
     }
 
     /**
