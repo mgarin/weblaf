@@ -424,7 +424,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
                 }
 
                 // Change selection if it is not the same as before
-                if ( !CollectionUtils.equals ( getSelectedRows (), newSelection ) )
+                if ( !CollectionUtils.equals ( getSelectedRows (), newSelection, true ) )
                 {
                     if ( newSelection.size () > 0 )
                     {

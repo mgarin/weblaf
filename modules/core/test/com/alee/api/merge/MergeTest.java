@@ -542,7 +542,7 @@ public class MergeTest
                     bool == ( ( TestObject ) object ).bool &&
                     CompareUtils.equals ( text, ( ( TestObject ) object ).text ) &&
                     number == ( ( TestObject ) object ).number &&
-                    CollectionUtils.equals ( list, ( ( TestObject ) object ).list );
+                    CollectionUtils.equals ( list, ( ( TestObject ) object ).list, true );
         }
     }
 

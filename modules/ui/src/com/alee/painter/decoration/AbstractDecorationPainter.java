@@ -904,7 +904,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     public final void updateDecorationState ()
     {
         final List<String> states = collectDecorationStates ();
-        if ( !CollectionUtils.equals ( this.states, states ) )
+        if ( !CollectionUtils.equals ( this.states, states, true ) )
         {
             // Saving new decoration states
             this.states = states;

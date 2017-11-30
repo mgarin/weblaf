@@ -480,13 +480,14 @@ public final class CollectionUtils
     }
 
     /**
-     * Returns whether lists are equal or not.
+     * Returns whether {@link List}s are equal or not.
      *
-     * @param list1 first list
-     * @param list2 second list
-     * @return {@code true} if lists are equal, {@code false} otherwise
+     * @param list1         first {@link List}
+     * @param list2         second {@link List}
+     * @param strictIndices whether or not {@link List}s should have same elements at the same indices
+     * @return {@code true} if {@link List}s are equal, {@code false} otherwise
      */
-    public static boolean equals ( final List list1, final List list2 )
+    public static boolean equals ( final List list1, final List list2, final boolean strictIndices )
     {
         if ( list1 == null && list2 == null )
         {
@@ -498,11 +499,24 @@ public final class CollectionUtils
         }
         else
         {
-            for ( final Object object : list1 )
+            if ( strictIndices )
             {
-                if ( !list2.contains ( object ) )
+                for ( int i = 0; i < list1.size (); i++ )
                 {
-                    return false;
+                    if ( !CompareUtils.equals ( list1.get ( i ), list2.get ( i ) ) )
+                    {
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                for ( final Object object : list1 )
+                {
+                    if ( !list2.contains ( object ) )
+                    {
+                        return false;
+                    }
                 }
             }
             return true;
