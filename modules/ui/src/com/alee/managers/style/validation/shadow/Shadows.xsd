@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="WebShadow.xsd" />
+    <xs:include schemaLocation="ExpandingShadow.xsd" />
+
+    <!-- IShadow implementations -->
+    <xs:group name="Shadows">
+        <xs:choice>
+
+            <!-- Basic supported shadows -->
+            <xs:element name="WebShadow" type="WebShadow" />
+            <xs:element name="ExpandingShadow" type="ExpandingShadow" />
+
+            <!-- Any custom shadows -->
+            <xs:any processContents="skip" />
+
+        </xs:choice>
+    </xs:group>
+
+</xs:schema>

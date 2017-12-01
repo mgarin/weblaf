@@ -5,18 +5,10 @@
 
     <xs:include schemaLocation="ext/CursorType.xsd" />
     <xs:include schemaLocation="ext/Resource.xsd" />
-    <xs:include schemaLocation="shape/WebShape.xsd" />
-    <xs:include schemaLocation="shape/BoundsShape.xsd" />
-    <xs:include schemaLocation="shape/EllipseShape.xsd" />
-    <xs:include schemaLocation="shape/ArrowShape.xsd" />
-    <xs:include schemaLocation="shadow/WebShadow.xsd" />
-    <xs:include schemaLocation="shadow/ExpandingShadow.xsd" />
-    <xs:include schemaLocation="border/LineBorder.xsd" />
-    <xs:include schemaLocation="background/ColorBackground.xsd" />
-    <xs:include schemaLocation="background/GradientBackground.xsd" />
-    <xs:include schemaLocation="background/PresetTextureBackground.xsd" />
-    <xs:include schemaLocation="background/AlphaLayerBackground.xsd" />
-    <xs:include schemaLocation="background/MovingHighlightBackground.xsd" />
+    <xs:include schemaLocation="shape/Shapes.xsd" />
+    <xs:include schemaLocation="shadow/Shadows.xsd" />
+    <xs:include schemaLocation="border/Borders.xsd" />
+    <xs:include schemaLocation="background/Backgrounds.xsd" />
     <xs:include schemaLocation="content/IContent.xsd" />
 
     <!-- com.alee.painter.decoration.Decorations -->
@@ -95,56 +87,16 @@
                 <xs:sequence>
 
                     <!-- Shape -->
-                    <xs:choice minOccurs="0" maxOccurs="1">
-
-                        <!-- Basic supported shapes -->
-                        <xs:element name="WebShape" type="WebShape" />
-                        <xs:element name="BoundsShape" type="BoundsShape" />
-                        <xs:element name="EllipseShape" type="EllipseShape" />
-                        <xs:element name="ArrowShape" type="ArrowShape" />
-
-                        <!-- Any custom shape -->
-                        <xs:any processContents="skip" />
-
-                    </xs:choice>
+                    <xs:group ref="Shapes" minOccurs="0" maxOccurs="1" />
 
                     <!-- Shadows -->
-                    <xs:choice minOccurs="0" maxOccurs="2">
-
-                        <!-- Basic supported shadows -->
-                        <xs:element name="WebShadow" type="WebShadow" />
-                        <xs:element name="ExpandingShadow" type="ExpandingShadow" />
-
-                        <!-- Any custom shadows -->
-                        <xs:any processContents="skip" />
-
-                    </xs:choice>
+                    <xs:group ref="Shadows" minOccurs="0" maxOccurs="2" />
 
                     <!-- Border -->
-                    <xs:choice minOccurs="0" maxOccurs="1">
-
-                        <!-- Basic supported borders -->
-                        <xs:element name="LineBorder" type="LineBorder" />
-
-                        <!-- Any custom border -->
-                        <xs:any processContents="skip" />
-
-                    </xs:choice>
+                    <xs:group ref="Borders" minOccurs="0" maxOccurs="1" />
 
                     <!-- Backgrounds -->
-                    <xs:choice minOccurs="0" maxOccurs="unbounded">
-
-                        <!-- Basic supported backgrounds -->
-                        <xs:element name="ColorBackground" type="ColorBackground" />
-                        <xs:element name="GradientBackground" type="GradientBackground" />
-                        <xs:element name="PresetTextureBackground" type="PresetTextureBackground" />
-                        <xs:element name="AlphaLayerBackground" type="AlphaLayerBackground" />
-                        <xs:element name="MovingHighlightBackground" type="MovingHighlightBackground" />
-
-                        <!-- Any custom backgrounds -->
-                        <xs:any processContents="skip" />
-
-                    </xs:choice>
+                    <xs:group ref="Backgrounds" minOccurs="0" maxOccurs="unbounded" />
 
                 </xs:sequence>
 
