@@ -17,7 +17,7 @@
 
 package com.alee.laf.splitpane;
 
-import com.alee.global.StyleConstants;
+import com.alee.api.jdk.Consumer;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.icon.Icons;
@@ -25,8 +25,8 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
+import com.alee.utils.ColorUtils;
 import com.alee.utils.GraphicsUtils;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -151,7 +151,7 @@ public class WebSplitPaneUI extends WSplitPaneUI implements ShapeSupport, Margin
         {
             protected final Border border = BorderFactory.createEmptyBorder ( 0, 0, 0, 0 );
             protected final Color color = new Color ( 158, 158, 158 );
-            protected final Color[] gradient = new Color[]{ StyleConstants.transparent, color, color, StyleConstants.transparent };
+            protected final Color[] gradient = new Color[]{ ColorUtils.transparent (), color, color, ColorUtils.transparent () };
 
             @Override
             public Border getBorder ()

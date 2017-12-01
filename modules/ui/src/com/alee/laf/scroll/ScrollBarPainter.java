@@ -17,12 +17,12 @@
 
 package com.alee.laf.scroll;
 
-import com.alee.global.StyleConstants;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.AbstractPainter;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.MathUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -179,7 +179,7 @@ public class ScrollBarPainter<E extends JScrollBar, U extends WScrollBarUI> exte
                 {
                     if ( rolloverAnimator == null )
                     {
-                        rolloverAnimator = new WebTimer ( StyleConstants.fps36, new ActionListener ()
+                        rolloverAnimator = new WebTimer ( SwingUtils.frameRateDelay ( 36 ), new ActionListener ()
                         {
                             @Override
                             public void actionPerformed ( final ActionEvent e )

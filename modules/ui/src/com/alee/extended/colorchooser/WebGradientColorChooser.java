@@ -17,7 +17,6 @@
 
 package com.alee.extended.colorchooser;
 
-import com.alee.global.StyleConstants;
 import com.alee.laf.colorchooser.WebColorChooser;
 import com.alee.managers.settings.*;
 import com.alee.utils.*;
@@ -50,7 +49,7 @@ public class WebGradientColorChooser extends JComponent
     private static final Color[] lineOverlayColors =
             new Color[]{ ColorUtils.white ( 160 ), ColorUtils.white ( 120 ), ColorUtils.white ( 100 ), ColorUtils.white ( 40 ) };
     private static final Color[] controlOverlayColors =
-            new Color[]{ ColorUtils.white ( 80 ), ColorUtils.white ( 50 ), ColorUtils.white ( 20 ), StyleConstants.transparent };
+            new Color[]{ ColorUtils.white ( 80 ), ColorUtils.white ( 50 ), ColorUtils.white ( 20 ), ColorUtils.transparent () };
     private static final float closestPoint = 0.001f;
 
     // Runtime data
@@ -481,10 +480,10 @@ public class WebGradientColorChooser extends JComponent
                     // Painting separators
                     if ( gapX2 - gapX1 > textWidth + 14 )
                     {
-                        g2d.setPaint ( new GradientPaint ( gapX1 + 2, 0, StyleConstants.transparent, textX - 2, 0, Color.LIGHT_GRAY ) );
+                        g2d.setPaint ( new GradientPaint ( gapX1 + 2, 0, ColorUtils.transparent (), textX - 2, 0, Color.LIGHT_GRAY ) );
                         g2d.drawLine ( gapX1 + 2, lineY, textX - 2, lineY );
                         g2d.setPaint ( new GradientPaint ( textX + textWidth + 2, 0, Color.LIGHT_GRAY, gapX2 - 2, 0,
-                                StyleConstants.transparent ) );
+                                ColorUtils.transparent () ) );
                         g2d.drawLine ( textX + textWidth + 2, lineY, gapX2 - 2, lineY );
                     }
                 }
@@ -499,7 +498,7 @@ public class WebGradientColorChooser extends JComponent
         if ( isEnabled () && !control )
         {
             GraphicsUtils.drawShade ( g2d, new RoundRectangle2D.Double ( bounds.x, bounds.y, bounds.width - 1, bounds.height - 1, 4, 4 ),
-                    isFocusOwner () ? StyleConstants.fieldFocusColor : StyleConstants.borderColor, shadeWidth );
+                    isFocusOwner () ? new Color ( 85, 142, 239 ) : new Color ( 170, 170, 170 ), shadeWidth );
         }
 
         // Background
@@ -514,7 +513,7 @@ public class WebGradientColorChooser extends JComponent
         if ( control )
         {
             g2d.setPaint ( new GradientPaint ( bounds.x + 2, bounds.y + 2, ColorUtils.white ( 180 ), bounds.x + bounds.width * 2 / 3,
-                    bounds.y + bounds.height - 2, StyleConstants.transparent ) );
+                    bounds.y + bounds.height - 2, ColorUtils.transparent () ) );
             g2d.fillRect ( bounds.x + 2, bounds.y + 2, bounds.width - 4, bounds.height - 4 );
         }
 

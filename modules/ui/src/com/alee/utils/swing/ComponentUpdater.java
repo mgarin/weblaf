@@ -17,7 +17,7 @@
 
 package com.alee.utils.swing;
 
-import com.alee.global.StyleConstants;
+import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -38,7 +38,7 @@ public class ComponentUpdater extends WebTimer implements AncestorListener
 
     public ComponentUpdater ( final JComponent component )
     {
-        super ( StyleConstants.fps36 );
+        super ( SwingUtils.frameRateDelay ( 36 ) );
         initialize ( component );
     }
 

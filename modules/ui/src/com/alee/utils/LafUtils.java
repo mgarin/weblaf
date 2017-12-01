@@ -17,7 +17,6 @@
 
 package com.alee.utils;
 
-import com.alee.global.StyleConstants;
 import com.alee.laf.LookAndFeelException;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.rootpane.WebRootPaneUI;
@@ -147,12 +146,12 @@ public final class LafUtils
 
     public static void drawAlphaLayer ( final Graphics2D g2d, final int x, final int y, final int width, final int height )
     {
-        drawAlphaLayer ( g2d, x, y, width, height, StyleConstants.ALPHA_RECT_SIZE );
+        drawAlphaLayer ( g2d, x, y, width, height, 10 );
     }
 
     public static void drawAlphaLayer ( final Graphics2D g2d, final int x, final int y, final int width, final int height, final int size )
     {
-        drawAlphaLayer ( g2d, x, y, width, height, size, StyleConstants.LIGHT_ALPHA, StyleConstants.DARK_ALPHA );
+        drawAlphaLayer ( g2d, x, y, width, height, size, new Color ( 255, 255, 255 ), new Color ( 204, 204, 204 ) );
     }
 
     public static void drawAlphaLayer ( final Graphics2D g2d, final int x, final int y, final int width, final int height, final int size,
@@ -203,8 +202,7 @@ public final class LafUtils
     public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component, final Color shadeColor, final int shadeWidth,
                                        final int round, final boolean fillBackground, final boolean webColored )
     {
-        return drawWebStyle ( g2d, component, shadeColor, shadeWidth, round, fillBackground, webColored, StyleConstants.darkBorderColor,
-                StyleConstants.disabledBorderColor );
+        return drawWebStyle ( g2d, component, shadeColor, shadeWidth, round, fillBackground, webColored, Color.GRAY, Color.LIGHT_GRAY );
     }
 
     @Deprecated
@@ -308,7 +306,7 @@ public final class LafUtils
         }
         else
         {
-            final GradientPaint gp = new GradientPaint ( x1, y1, StyleConstants.topBgColor, x2, y2, StyleConstants.bottomBgColor );
+            final GradientPaint gp = new GradientPaint ( x1, y1, Color.WHITE, x2, y2, new Color ( 223, 223, 223 ) );
             gradientCache.put ( key, gp );
             return gp;
         }
@@ -371,8 +369,8 @@ public final class LafUtils
             if ( webColored )
             {
                 final Rectangle shapeBounds = borderShape.getBounds ();
-                g2d.setPaint ( new GradientPaint ( 0, shapeBounds.y, StyleConstants.topBgColor, 0, shapeBounds.y + shapeBounds.height,
-                        StyleConstants.bottomBgColor ) );
+                g2d.setPaint ( new GradientPaint ( 0, shapeBounds.y, Color.WHITE, 0, shapeBounds.y + shapeBounds.height,
+                        new Color ( 223, 223, 223 ) ) );
                 g2d.fill ( borderShape );
             }
             else
@@ -417,9 +415,10 @@ public final class LafUtils
         if ( hasFocus && focusType.equals ( FocusType.componentFocus ) )
         {
             final Object aa = GraphicsUtils.setupAntialias ( g2d );
-            final Stroke os = GraphicsUtils.setupStroke ( g2d, StyleConstants.focusStroke );
+            final Stroke os = GraphicsUtils.setupStroke ( g2d,
+                    new BasicStroke ( 1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1, new float[]{ 1, 2 }, 0 ) );
 
-            g2d.setPaint ( StyleConstants.focusColor );
+            g2d.setPaint ( new Color ( 160, 160, 160 ) );
             g2d.draw ( shape );
 
             GraphicsUtils.restoreStroke ( g2d, os );
@@ -428,9 +427,9 @@ public final class LafUtils
         else if ( focusType.equals ( FocusType.fieldFocus ) && ( hasFocus || mouseover != null && mouseover ) )
         {
             final Object aa = GraphicsUtils.setupAntialias ( g2d );
-            final Stroke os = GraphicsUtils.setupStroke ( g2d, StyleConstants.fieldFocusStroke );
+            final Stroke os = GraphicsUtils.setupStroke ( g2d, new BasicStroke ( 1.5f ) );
 
-            g2d.setPaint ( hasFocus ? StyleConstants.fieldFocusColor : StyleConstants.transparentFieldFocusColor );
+            g2d.setPaint ( hasFocus ? new Color ( 85, 142, 239 ) : new Color ( 85, 142, 239, 128 ) );
             g2d.draw ( shape );
 
             GraphicsUtils.restoreStroke ( g2d, os );

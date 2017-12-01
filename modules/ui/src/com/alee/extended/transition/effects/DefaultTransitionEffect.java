@@ -18,7 +18,7 @@
 package com.alee.extended.transition.effects;
 
 import com.alee.extended.transition.ImageTransition;
-import com.alee.global.StyleConstants;
+import com.alee.utils.SwingUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +41,7 @@ public abstract class DefaultTransitionEffect implements TransitionEffect
     @Override
     public long getAnimationDelay ()
     {
-        return StyleConstants.fps36;
+        return SwingUtils.frameRateDelay ( 36 );
     }
 
     @Override

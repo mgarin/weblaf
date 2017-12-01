@@ -18,12 +18,8 @@
 package com.alee.extended.progress;
 
 import com.alee.extended.layout.AbstractLayoutManager;
-import com.alee.global.StyleConstants;
 import com.alee.managers.style.ShapeMethods;
-import com.alee.utils.CollectionUtils;
-import com.alee.utils.GraphicsUtils;
-import com.alee.utils.LafUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.*;
 import com.alee.utils.swing.extensions.SizeMethods;
 import com.alee.utils.swing.extensions.SizeMethodsImpl;
 
@@ -1100,18 +1096,18 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         if ( orientation == HORIZONTAL )
         {
             final boolean ltr = getComponentOrientation ().isLeftToRight ();
-            final float px = ltr ? ( p1.x - stepControlFillWidth / 2 ) : ( p1.x + stepControlFillWidth / 2 - pw );
+            final float px = ltr ? p1.x - stepControlFillWidth / 2 : p1.x + stepControlFillWidth / 2 - pw;
             final float[] fractions = ltr ? new float[]{ 0f, ( stepControlFillWidth + sw * tss ) / pw, 1f } :
                     new float[]{ 0f, 1 - ( stepControlFillWidth + sw * tss ) / pw, 1f };
             final Color[] colors =
-                    ltr ? new Color[]{ color, color, StyleConstants.transparent } : new Color[]{ StyleConstants.transparent, color, color };
+                    ltr ? new Color[]{ color, color, ColorUtils.transparent () } : new Color[]{ ColorUtils.transparent (), color, color };
             return new LinearGradientPaint ( px, 0, px + pw, 0, fractions, colors );
         }
         else
         {
             final float py = p1.y - stepControlFillWidth / 2;
             return new LinearGradientPaint ( 0, py, 0, py + pw, new float[]{ 0f, ( stepControlFillWidth + sw * tss ) / pw, 1f },
-                    new Color[]{ color, color, StyleConstants.transparent } );
+                    new Color[]{ color, color, ColorUtils.transparent () } );
         }
     }
 
@@ -1178,7 +1174,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         if ( orientation == HORIZONTAL )
         {
             final boolean ltr = getComponentOrientation ().isLeftToRight ();
-            return new Rectangle2D.Double ( ltr ? p1.x : p2.x, p1.y - pathWidth / 2f, ltr ? ( p2.x - p1.x ) : ( p1.x - p2.x ), pathWidth );
+            return new Rectangle2D.Double ( ltr ? p1.x : p2.x, p1.y - pathWidth / 2f, ltr ? p2.x - p1.x : p1.x - p2.x, pathWidth );
         }
         else
         {
@@ -1198,7 +1194,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         if ( orientation == HORIZONTAL )
         {
             final boolean ltr = getComponentOrientation ().isLeftToRight ();
-            return new Rectangle2D.Double ( ltr ? p1.x : p2.x, p1.y + 0.5f - pathFillWidth / 2f, ltr ? ( p2.x - p1.x ) : ( p1.x - p2.x ),
+            return new Rectangle2D.Double ( ltr ? p1.x : p2.x, p1.y + 0.5f - pathFillWidth / 2f, ltr ? p2.x - p1.x : p1.x - p2.x,
                     pathFillWidth );
         }
         else
@@ -1241,7 +1237,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
 
         if ( orientation == HORIZONTAL )
         {
-            final int pathPart = midSteps > 0 ? getPathLength () * ( ltr ? step : ( midSteps - step ) ) / midSteps : 0;
+            final int pathPart = midSteps > 0 ? getPathLength () * ( ltr ? step : midSteps - step ) / midSteps : 0;
             final int x = margin.left + sideWidth + pathPart;
             final int wh = getHeight () - margin.top - margin.bottom;
             final int sh = max.height + ( max.height > 0 ? spacing : 0 );

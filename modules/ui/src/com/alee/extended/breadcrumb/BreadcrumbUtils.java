@@ -18,7 +18,6 @@
 package com.alee.extended.breadcrumb;
 
 import com.alee.api.jdk.Supplier;
-import com.alee.global.StyleConstants;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ShapeUtils;
@@ -55,7 +54,7 @@ public final class BreadcrumbUtils
     public static final Color[] progressLineColors = new Color[]{ progressSideColor, Color.GRAY, progressSideColor };
     public static final float[] shadeFractions = new float[]{ 0f, 0.25f, 0.75f, 1f };
     public static final Color[] shadeColors =
-            new Color[]{ StyleConstants.transparent, new Color ( 210, 210, 210 ), new Color ( 210, 210, 210 ), StyleConstants.transparent };
+            new Color[]{ ColorUtils.transparent (), new Color ( 210, 210, 210 ), new Color ( 210, 210, 210 ), ColorUtils.transparent () };
 
     /**
      * Returns breadcrumb element margin.
