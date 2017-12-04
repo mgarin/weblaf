@@ -15,30 +15,31 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.painter.decoration.background;
-
-import com.alee.api.Identifiable;
-import com.alee.api.merge.MergeBehavior;
-import com.alee.api.merge.Overwriting;
-import com.alee.painter.decoration.IDecoration;
-import com.alee.painter.decoration.IShapedElement;
+package com.alee.painter.decoration;
 
 import javax.swing.*;
-import java.io.Serializable;
+import java.awt.*;
 
 /**
- * Interface for any custom background.
+ * Interface for component decoration elements based on custom shapes.
  *
  * @param <E> component type
  * @param <D> decoration type
- * @param <I> background type
+ * @param <I> element type
  * @author Mikle Garin
  */
 
-public interface IBackground<E extends JComponent, D extends IDecoration<E, D>, I extends IBackground<E, D, I>>
-        extends IShapedElement<E, D, I>, Identifiable, MergeBehavior<I>, Overwriting, Cloneable, Serializable
+public interface IShapedElement<E extends JComponent, D extends IDecoration<E, D>, I extends IShapedElement<E, D, I>>
+        extends IDecoratonElement<E, D, I>
 {
     /**
-     * This interface doesn't offer any additional methods to implement.
+     * Paints element using the specified shape.
+     *
+     * @param g2d    graphics context
+     * @param bounds painting bounds
+     * @param c      painted component
+     * @param d      painted decoration state
+     * @param shape  element shape
      */
+    public void paint ( Graphics2D g2d, Rectangle bounds, E c, D d, Shape shape );
 }

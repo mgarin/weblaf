@@ -21,8 +21,8 @@ import com.alee.api.Identifiable;
 import com.alee.api.merge.MergeBehavior;
 import com.alee.api.merge.Overwriting;
 import com.alee.managers.style.BoundsType;
-import com.alee.painter.decoration.DecoratonElement;
 import com.alee.painter.decoration.IDecoration;
+import com.alee.painter.decoration.IDecoratonElement;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,7 +38,7 @@ import java.io.Serializable;
  */
 
 public interface IContent<E extends JComponent, D extends IDecoration<E, D>, I extends IContent<E, D, I>>
-        extends Identifiable, DecoratonElement<E, D, I>, MergeBehavior<I>, Overwriting, Cloneable, Serializable
+        extends Identifiable, IDecoratonElement<E, D, I>, MergeBehavior<I>, Overwriting, Cloneable, Serializable
 {
     /**
      * Returns content bounds type.
@@ -50,7 +50,7 @@ public interface IContent<E extends JComponent, D extends IDecoration<E, D>, I e
 
     /**
      * Returns content constraints within {@link com.alee.painter.decoration.layout.IContentLayout}.
-     * In case layout is not specified these constraints will never be used and requested at all.
+     * In case this {@link IContent} is not placed within any layout these constraints will never be requested.
      *
      * @return content constraints within {@link com.alee.painter.decoration.layout.IContentLayout}
      */

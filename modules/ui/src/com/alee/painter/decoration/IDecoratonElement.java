@@ -20,7 +20,10 @@ package com.alee.painter.decoration;
 import javax.swing.*;
 
 /**
- * Component decoration elements interface.
+ * Base interface for any component decoration elements.
+ * Element might not directly contain any visual representation, but it is always tied to specific decoration states.
+ * For example {@link com.alee.painter.decoration.shape.IShape} only provides {@link java.awt.Shape} for other elements.
+ * As another example {@link com.alee.painter.decoration.background.IBackground} paints an actual background for any provided shape.
  *
  * @param <E> component type
  * @param <D> decoration type
@@ -28,23 +31,24 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public interface DecoratonElement<E extends JComponent, D extends IDecoration<E, D>, I extends DecoratonElement<E, D, I>>
+@SuppressWarnings ( "unused" )
+public interface IDecoratonElement<E extends JComponent, D extends IDecoration<E, D>, I extends IDecoratonElement<E, D, I>>
 {
     /**
-     * Called upon decoration activation.
-     * Occurs when decoration using this element becomes the active one.
+     * Called upon {@link IDecoration} activation.
+     * Occurs when {@link IDecoration} using this {@link IDecoratonElement} becomes active.
      *
-     * @param c painted component
-     * @param d painted decoration state
+     * @param c {@link JComponent}
+     * @param d {@link IDecoration}
      */
     public void activate ( E c, D d );
 
     /**
-     * Called upon decoration deactivation.
-     * Occurs when decoration using this element becomes inactive.
+     * Called upon {@link IDecoration} deactivation.
+     * Occurs when {@link IDecoration} using this {@link IDecoratonElement} becomes inactive.
      *
-     * @param c painted component
-     * @param d painted decoration state
+     * @param c {@link JComponent}
+     * @param d {@link IDecoration}
      */
     public void deactivate ( E c, D d );
 }

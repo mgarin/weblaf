@@ -20,15 +20,15 @@ package com.alee.painter.decoration.shape;
 import com.alee.api.Identifiable;
 import com.alee.api.merge.MergeBehavior;
 import com.alee.api.merge.Overwriting;
-import com.alee.painter.decoration.DecoratonElement;
 import com.alee.painter.decoration.IDecoration;
+import com.alee.painter.decoration.IDecoratonElement;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.Serializable;
 
 /**
- * Customizable component shape interface.
+ * Interface for providing custom element shape.
  *
  * @param <E> component type
  * @param <D> decoration type
@@ -37,7 +37,7 @@ import java.io.Serializable;
  */
 
 public interface IShape<E extends JComponent, D extends IDecoration<E, D>, I extends IShape<E, D, I>>
-        extends DecoratonElement<E, D, I>, Serializable, Cloneable, MergeBehavior<I>, Overwriting, Identifiable
+        extends IDecoratonElement<E, D, I>, Serializable, Cloneable, MergeBehavior<I>, Overwriting, Identifiable
 {
     /**
      * Returns whether shape is visible within component bounds.
@@ -79,7 +79,7 @@ public interface IShape<E extends JComponent, D extends IDecoration<E, D>, I ext
      * Returns shape stretch information.
      * If this method returns something that is not {@code null} shape is stretchable horizontally and/or vertically.
      * That information might be extremely useful for painting optimization, but it is not necessary to implement this method.
-     * <p>
+     *
      * As an example - WebLaF uses this information to optimize (reduce amount of) shadow images generation.
      * Since generating even a small shadow requires a good chunk of memory and processing time it is necessary.
      *

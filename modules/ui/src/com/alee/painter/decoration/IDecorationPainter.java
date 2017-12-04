@@ -35,7 +35,8 @@ import java.util.List;
  * @see Painter
  */
 
-public interface IDecorationPainter<E extends JComponent, U extends ComponentUI, D extends IDecoration<E, D>> extends Painter<E, U>
+public interface IDecorationPainter<E extends JComponent, U extends ComponentUI, D extends IDecoration<E, D>>
+        extends Painter<E, U>
 {
     /**
      * Returns current component decoration states.
