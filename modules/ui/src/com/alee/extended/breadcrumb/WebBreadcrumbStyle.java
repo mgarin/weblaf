@@ -17,7 +17,6 @@
 
 package com.alee.extended.breadcrumb;
 
-import com.alee.global.StyleConstants;
 import com.alee.utils.laf.ShadeType;
 
 import java.awt.*;
@@ -46,27 +45,27 @@ public final class WebBreadcrumbStyle
     /**
      * Breadcrumb element border color
      */
-    public static Color borderColor = StyleConstants.darkBorderColor;
+    public static Color borderColor = Color.GRAY;
 
     /**
      * Breadcrumb element border color
      */
-    public static Color disabledBorderColor = StyleConstants.disabledBorderColor;
+    public static Color disabledBorderColor = Color.LIGHT_GRAY;
 
     /**
      * Breadcrumb top color
      */
-    public static Color bgTop = StyleConstants.topBgColor;
+    public static Color bgTop = Color.WHITE;
 
     /**
      * Breadcrumb bottom color
      */
-    public static Color bgBottom = StyleConstants.bottomBgColor;
+    public static Color bgBottom = new Color ( 223, 223, 223 );
 
     /**
      * Breadcrumb bottom selected color
      */
-    public static Color selectedBgColor = StyleConstants.selectedBgColor;
+    public static Color selectedBgColor = new Color ( 223, 220, 213 );
 
     /**
      * Default breadcrumb element margin

@@ -20,6 +20,7 @@ package com.alee.painter.decoration;
 import com.alee.api.clone.Clone;
 import com.alee.api.merge.Merge;
 import com.alee.api.merge.MergeBehavior;
+import com.alee.utils.collection.EmptyIterator;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
@@ -67,7 +68,7 @@ public final class Decorations<E extends JComponent, D extends IDecoration<E, D>
     @Override
     public Iterator<D> iterator ()
     {
-        return decorations.iterator ();
+        return decorations != null ? decorations.iterator () : EmptyIterator.<D>instance ();
     }
 
     /**

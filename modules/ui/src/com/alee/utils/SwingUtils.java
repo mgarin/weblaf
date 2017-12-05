@@ -2933,6 +2933,17 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
+     * Returns delay in milliseconds for the preferred frame rate.
+     *
+     * @param frameRate frame rate per second (FPS)
+     * @return delay in milliseconds for the preferred frame rate
+     */
+    public static long frameRateDelay ( final int frameRate )
+    {
+        return Math.min ( 10L, 1000L / frameRate );
+    }
+
+    /**
      * Returns the width of the passed in String.
      * If the passed String is null, returns zero.
      *

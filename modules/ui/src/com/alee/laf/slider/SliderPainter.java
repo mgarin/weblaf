@@ -1,6 +1,5 @@
 package com.alee.laf.slider;
 
-import com.alee.global.StyleConstants;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.AbstractPainter;
 import com.alee.utils.ColorUtils;
@@ -760,7 +759,7 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
             g2d.fill ( ts );
 
             // Thumb border
-            g2d.setPaint ( component.isEnabled () ? StyleConstants.darkBorderColor : StyleConstants.disabledBorderColor );
+            g2d.setPaint ( component.isEnabled () ? Color.GRAY : Color.LIGHT_GRAY );
             g2d.draw ( ts );
 
             // Thumb focus
@@ -863,7 +862,7 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
             // Track shade
             if ( component.isEnabled () )
             {
-                GraphicsUtils.drawShade ( g2d, ss, component.isFocusOwner () ? StyleConstants.fieldFocusColor : new Color ( 210, 210, 210 ),
+                GraphicsUtils.drawShade ( g2d, ss, component.isFocusOwner () ? new Color ( 85, 142, 239 ) : new Color ( 210, 210, 210 ),
                         trackShadeWidth );
             }
 
@@ -906,16 +905,15 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
             g2d.fill ( ps );
 
             // Progress border
-            g2d.setPaint ( component.isEnabled () ? progressBorderColor : StyleConstants.disabledBorderColor );
+            g2d.setPaint ( component.isEnabled () ? progressBorderColor : Color.LIGHT_GRAY );
             g2d.draw ( ps );
         }
 
         // Track border & focus
         {
             // Track border
-            g2d.setPaint (
-                    component.isEnabled () ? rolloverDarkBorderOnly && !dragging ? getBorderColor () : StyleConstants.darkBorderColor :
-                            StyleConstants.disabledBorderColor );
+            g2d.setPaint ( component.isEnabled () ? rolloverDarkBorderOnly && !dragging ?
+                    getBorderColor () : Color.GRAY : Color.LIGHT_GRAY );
             g2d.draw ( ss );
         }
 
@@ -1202,7 +1200,7 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
 
     protected Color getBorderColor ()
     {
-        return ColorUtils.getIntermediateColor ( StyleConstants.borderColor, StyleConstants.darkBorderColor, getProgress () );
+        return ColorUtils.getIntermediateColor ( new Color ( 170, 170, 170 ), Color.GRAY, getProgress () );
     }
 
     @Override

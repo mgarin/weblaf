@@ -17,7 +17,6 @@
 
 package com.alee.extended.button;
 
-import com.alee.global.StyleConstants;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.hotkey.Hotkey;
@@ -157,7 +156,7 @@ public class WebSwitch extends WebPanel
      */
     protected void createAnimator ()
     {
-        animator = new WebTimer ( "WebSwitch.animator", StyleConstants.fps60, new ActionListener ()
+        animator = new WebTimer ( "WebSwitch.animator", SwingUtils.frameRateDelay ( 60 ), new ActionListener ()
         {
             @Override
             public void actionPerformed ( final ActionEvent e )

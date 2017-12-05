@@ -22,7 +22,6 @@ import com.alee.api.jdk.Function;
 import com.alee.extended.WebContainer;
 import com.alee.extended.behavior.ComponentMoveBehavior;
 import com.alee.extended.behavior.ComponentResizeBehavior;
-import com.alee.global.StyleConstants;
 import com.alee.laf.window.WindowMethods;
 import com.alee.laf.window.WindowMethodsImpl;
 import com.alee.managers.focus.FocusManager;
@@ -785,7 +784,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
             // Animating popup display
             if ( animate )
             {
-                showAnimator = WebTimer.repeat ( StyleConstants.fps48, 0L, new ActionListener ()
+                showAnimator = WebTimer.repeat ( SwingUtils.frameRateDelay ( 48 ), 0L, new ActionListener ()
                 {
                     @Override
                     public void actionPerformed ( final ActionEvent e )
@@ -914,7 +913,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
 
             if ( animate )
             {
-                hideAnimator = WebTimer.repeat ( StyleConstants.fps48, 0L, new ActionListener ()
+                hideAnimator = WebTimer.repeat ( SwingUtils.frameRateDelay ( 48 ), 0L, new ActionListener ()
                 {
                     @Override
                     public void actionPerformed ( final ActionEvent e )

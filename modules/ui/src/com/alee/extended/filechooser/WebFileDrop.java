@@ -18,12 +18,11 @@
 package com.alee.extended.filechooser;
 
 import com.alee.extended.layout.WrapFlowLayout;
-import com.alee.global.StyleConstants;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.drag.transfer.FilesTransferHandler;
 import com.alee.managers.language.LanguageMethods;
-import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.language.UILanguageManager;
+import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.*;
 import com.alee.utils.filefilter.AbstractFileFilter;
@@ -133,7 +132,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
                 {
                     stopAnimator ();
                     filesCount = selectedFiles.size ();
-                    animator = new WebTimer ( "WebFileDrop.textFadeOutTimer", StyleConstants.fps24, new ActionListener ()
+                    animator = new WebTimer ( "WebFileDrop.textFadeOutTimer", SwingUtils.frameRateDelay ( 24 ), new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -156,7 +155,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
                 {
                     stopAnimator ();
                     filesCount = selectedFiles.size ();
-                    animator = new WebTimer ( "WebFileDrop.textFadeInTimer", StyleConstants.fps24, new ActionListener ()
+                    animator = new WebTimer ( "WebFileDrop.textFadeInTimer", SwingUtils.frameRateDelay ( 24 ), new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )

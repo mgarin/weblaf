@@ -14,7 +14,9 @@
                     <MenuItemLayout padding="4,10,5,8" iconTextGap="6" textAcceleratorGap="20">
                         <SimpleButtonIcon constraints="icon" />
                         <ButtonText constraints="text" color="245,245,245" />
-                        <RoundRectangle constraints="accelerator" color="80,80,80" round="4" opacity="0" />
+                        <RoundRectangle constraints="accelerator" round="4" opacity="0">
+                            <ColorBackground color="80,80,80" />
+                        </RoundRectangle>
                         <AcceleratorText constraints="accelerator" padding="0,4,0,4" color="225,225,225" />
                     </MenuItemLayout>
                 </decoration>

@@ -19,9 +19,9 @@ package com.alee.painter.decoration.background;
 
 import com.alee.api.data.Orientation;
 import com.alee.extended.behavior.ComponentVisibilityBehavior;
-import com.alee.global.StyleConstants;
 import com.alee.managers.animation.transition.*;
 import com.alee.painter.decoration.IDecoration;
+import com.alee.utils.ColorUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.parsing.DurationUnits;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -175,6 +175,7 @@ public class MovingHighlightBackground<E extends JComponent, D extends IDecorati
      *
      * @param c painted component
      */
+    @SuppressWarnings ( "unused" )
     protected void stopAnimation ( final E c )
     {
         if ( transitionsQueue != null )
@@ -203,12 +204,12 @@ public class MovingHighlightBackground<E extends JComponent, D extends IDecorati
                 if ( c.getComponentOrientation ().isLeftToRight () )
                 {
                     paint = new RadialGradientPaint ( b.x - width / 2 + ( b.width + width ) * position, b.y + b.height / 2, width / 2,
-                            new float[]{ 0f, 1f }, new Color[]{ color, StyleConstants.transparent } );
+                            new float[]{ 0f, 1f }, new Color[]{ color, ColorUtils.transparent () } );
                 }
                 else
                 {
                     paint = new RadialGradientPaint ( b.x + b.width + width / 2 - ( b.width + width ) * position, b.y + b.height / 2,
-                            width / 2, new float[]{ 0f, 1f }, new Color[]{ color, StyleConstants.transparent } );
+                            width / 2, new float[]{ 0f, 1f }, new Color[]{ color, ColorUtils.transparent () } );
                 }
             }
             else
@@ -216,12 +217,12 @@ public class MovingHighlightBackground<E extends JComponent, D extends IDecorati
                 if ( c.getComponentOrientation ().isLeftToRight () )
                 {
                     paint = new RadialGradientPaint ( b.x + b.width / 2, b.y + b.height + width / 2 - ( b.height + width ) * position,
-                            width / 2, new float[]{ 0f, 1f }, new Color[]{ color, StyleConstants.transparent } );
+                            width / 2, new float[]{ 0f, 1f }, new Color[]{ color, ColorUtils.transparent () } );
                 }
                 else
                 {
                     paint = new RadialGradientPaint ( b.x + b.width / 2, b.y - width / 2 + ( b.height + width ) * position, width / 2,
-                            new float[]{ 0f, 1f }, new Color[]{ color, StyleConstants.transparent } );
+                            new float[]{ 0f, 1f }, new Color[]{ color, ColorUtils.transparent () } );
                 }
             }
 

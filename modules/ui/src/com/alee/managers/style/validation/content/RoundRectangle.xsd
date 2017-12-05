@@ -4,17 +4,18 @@
            elementFormDefault="qualified">
 
     <xs:include schemaLocation="AbstractContent.xsd" />
+    <xs:include schemaLocation="../background/Backgrounds.xsd" />
 
     <!-- com.alee.painter.decoration.content.RoundRectangle -->
     <xs:complexType name="RoundRectangle">
         <xs:complexContent>
             <xs:extension base="AbstractContent">
 
-                <!-- Corners rounding -->
-                <xs:attribute name="round" type="xs:integer" />
+                <!-- Background settings -->
+                <xs:group ref="Backgrounds" minOccurs="1" maxOccurs="unbounded" />
 
-                <!-- Background color -->
-                <xs:attribute name="color" type="java.awt:Color" />
+                <!-- Corners rounding -->
+                <xs:attribute name="round" type="xs:integer" use="optional" />
 
             </xs:extension>
         </xs:complexContent>

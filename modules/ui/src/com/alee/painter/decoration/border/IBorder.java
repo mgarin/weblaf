@@ -20,15 +20,14 @@ package com.alee.painter.decoration.border;
 import com.alee.api.Identifiable;
 import com.alee.api.merge.MergeBehavior;
 import com.alee.api.merge.Overwriting;
-import com.alee.painter.decoration.DecoratonElement;
 import com.alee.painter.decoration.IDecoration;
+import com.alee.painter.decoration.IShapedElement;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.Serializable;
 
 /**
- * Customizable component border interface.
+ * Interface for any custom borders.
  *
  * @param <E> component type
  * @param <D> decoration type
@@ -37,7 +36,7 @@ import java.io.Serializable;
  */
 
 public interface IBorder<E extends JComponent, D extends IDecoration<E, D>, I extends IBorder<E, D, I>>
-        extends DecoratonElement<E, D, I>, Serializable, Cloneable, MergeBehavior<I>, Overwriting, Identifiable
+        extends IShapedElement<E, D, I>, Serializable, Cloneable, MergeBehavior<I>, Overwriting, Identifiable
 {
     /**
      * Returns border opacity.
@@ -52,15 +51,4 @@ public interface IBorder<E extends JComponent, D extends IDecoration<E, D>, I ex
      * @return border width
      */
     public BorderWidth getWidth ();
-
-    /**
-     * Paints border using the specified shape.
-     *
-     * @param g2d    graphics context
-     * @param bounds painting bounds
-     * @param c      painted component
-     * @param d      painted decoration state
-     * @param shape  background shape
-     */
-    public void paint ( Graphics2D g2d, Rectangle bounds, E c, D d, Shape shape );
 }

@@ -31,6 +31,25 @@ import java.util.StringTokenizer;
 public final class ColorUtils
 {
     /**
+     * Cached transparent {@link Color}.
+     */
+    private static Color transparent;
+
+    /**
+     * Returns transparent {@link Color}.
+     *
+     * @return transparent {@link Color}
+     */
+    public static Color transparent ()
+    {
+        if ( transparent == null )
+        {
+            transparent = new Color ( 255, 255, 255, 0 );
+        }
+        return transparent;
+    }
+
+    /**
      * Returns color with alpha value set to 255.
      *
      * @param color color to modify

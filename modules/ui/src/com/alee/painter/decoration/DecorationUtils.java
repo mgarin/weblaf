@@ -145,9 +145,9 @@ public final class DecorationUtils
     }
 
     /**
-     * Informs about decoratable state changes.
+     * Informs about {@link JComponent} decoration state changes.
      *
-     * @param component component states changed for
+     * @param component {@link JComponent} decoration states changed for
      */
     public static void fireStatesChanged ( final JComponent component )
     {

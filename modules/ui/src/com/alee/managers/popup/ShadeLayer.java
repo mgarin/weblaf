@@ -18,8 +18,8 @@
 package com.alee.managers.popup;
 
 import com.alee.extended.layout.AlignLayout;
-import com.alee.global.StyleConstants;
 import com.alee.utils.GraphicsUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -197,7 +197,7 @@ public class ShadeLayer extends PopupLayer
             if ( animate )
             {
                 opacity = 0;
-                animator = new WebTimer ( "ShadeLayer.fadeIn", StyleConstants.fps24, new ActionListener ()
+                animator = new WebTimer ( "ShadeLayer.fadeIn", SwingUtils.frameRateDelay ( 24 ), new ActionListener ()
                 {
                     @Override
                     public void actionPerformed ( final ActionEvent e )

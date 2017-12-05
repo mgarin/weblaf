@@ -17,7 +17,7 @@
 
 package com.alee.extended.syntax;
 
-import com.alee.global.StyleConstants;
+import com.alee.utils.ColorUtils;
 import com.alee.utils.FileUtils;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 
@@ -107,7 +107,7 @@ public enum SyntaxPreset
                 @Override
                 public void apply ( final WebSyntaxArea syntaxArea )
                 {
-                    syntaxArea.setBackground ( StyleConstants.transparent );
+                    syntaxArea.setBackground ( ColorUtils.transparent () );
                     syntaxArea.setOpaque ( false );
                 }
             },

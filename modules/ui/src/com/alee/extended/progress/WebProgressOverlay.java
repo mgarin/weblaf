@@ -18,7 +18,6 @@
 package com.alee.extended.progress;
 
 import com.alee.extended.panel.WebOverlay;
-import com.alee.global.StyleConstants;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
@@ -161,7 +160,7 @@ public class WebProgressOverlay extends WebOverlay
                 ProgressLayer.this.setVisible ( true );
 
                 stopOpacityAnimator ();
-                opacityAnimator = new WebTimer ( "WebProgressOverlay.opacityAnimator", StyleConstants.fps24, new ActionListener ()
+                opacityAnimator = new WebTimer ( "WebProgressOverlay.opacityAnimator", SwingUtils.frameRateDelay ( 24 ), new ActionListener ()
                 {
                     @Override
                     public void actionPerformed ( final ActionEvent e )
@@ -180,7 +179,7 @@ public class WebProgressOverlay extends WebOverlay
                 opacityAnimator.start ();
 
                 stopAnimator ();
-                animator = new WebTimer ( ANIMATOR_ID, StyleConstants.fps36, new ActionListener ()
+                animator = new WebTimer ( ANIMATOR_ID, SwingUtils.frameRateDelay ( 36 ), new ActionListener ()
                 {
                     @Override
                     public void actionPerformed ( final ActionEvent e )
@@ -205,7 +204,7 @@ public class WebProgressOverlay extends WebOverlay
             else
             {
                 stopOpacityAnimator ();
-                opacityAnimator = new WebTimer ( OPACITY_ANIMATOR_ID, StyleConstants.fps36, new ActionListener ()
+                opacityAnimator = new WebTimer ( OPACITY_ANIMATOR_ID, SwingUtils.frameRateDelay ( 36 ), new ActionListener ()
                 {
                     @Override
                     public void actionPerformed ( final ActionEvent e )

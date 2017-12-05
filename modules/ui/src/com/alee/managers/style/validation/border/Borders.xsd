@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="LineBorder.xsd" />
+
+    <!-- IBorder implementations -->
+    <xs:group name="Borders">
+        <xs:choice>
+
+            <!-- Basic supported borders -->
+            <xs:element name="LineBorder" type="LineBorder" />
+
+            <!-- Any custom border -->
+            <xs:any processContents="skip" />
+
+        </xs:choice>
+    </xs:group>
+
+</xs:schema>

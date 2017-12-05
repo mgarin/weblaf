@@ -1,6 +1,5 @@
 package com.alee.laf.tabbedpane;
 
-import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.AbstractPainter;
@@ -9,6 +8,7 @@ import com.alee.utils.CompareUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.FocusType;
 import com.alee.utils.laf.WebBorder;
 
 import javax.swing.*;
@@ -563,7 +563,7 @@ public class TabbedPanePainter<E extends JTabbedPane, U extends WTabbedPaneUI> e
         final boolean drawFocus = isSelected && component.isFocusOwner ();
         if ( ui.getTabbedPaneStyle ().equals ( TabbedPaneStyle.standalone ) )
         {
-            LafUtils.drawCustomWebFocus ( g2d, null, StyleConstants.focusType, borderShape, null, drawFocus );
+            LafUtils.drawCustomWebFocus ( g2d, null, FocusType.fieldFocus, borderShape, null, drawFocus );
         }
         //        else if ( drawFocus )
         //        {
@@ -823,7 +823,7 @@ public class TabbedPanePainter<E extends JTabbedPane, U extends WTabbedPaneUI> e
             g2d.draw ( bs );
 
             // Area focus
-            LafUtils.drawCustomWebFocus ( g2d, null, StyleConstants.focusType, bs, null, component.isFocusOwner () );
+            LafUtils.drawCustomWebFocus ( g2d, null, FocusType.fieldFocus, bs, null, component.isFocusOwner () );
         }
         else
         {

@@ -309,9 +309,9 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     }
 
     /**
-     * Returns whether or not decoration has background.
+     * Returns whether or not decoration has at least one {@link IBackground}.
      *
-     * @return true if decoration has background, false otherwise
+     * @return {@code true} if decoration has at least one {@link IBackground}, {@code false} otherwise
      */
     public boolean hasBackground ()
     {
@@ -319,9 +319,9 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     }
 
     /**
-     * Returns decoration backgrounds.
+     * Returns decoration {@link IBackground}s.
      *
-     * @return decoration backgrounds
+     * @return decoration {@link IBackground}s
      */
     public List<IBackground> getBackgrounds ()
     {

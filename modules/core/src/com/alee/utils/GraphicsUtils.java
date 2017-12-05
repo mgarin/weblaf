@@ -17,7 +17,6 @@
 
 package com.alee.utils;
 
-import com.alee.global.StyleConstants;
 import com.alee.utils.laf.ShadeType;
 
 import java.awt.*;
@@ -380,7 +379,7 @@ public final class GraphicsUtils
 
     public static void drawShade ( final Graphics2D g2d, final Shape shape, final Color shadeColor, final int width )
     {
-        drawShade ( g2d, shape, StyleConstants.shadeType, shadeColor, width );
+        drawShade ( g2d, shape, ShadeType.simple, shadeColor, width );
     }
 
     public static void drawShade ( final Graphics2D g2d, final Shape shape, final ShadeType shadeType, final Color shadeColor,
@@ -391,7 +390,7 @@ public final class GraphicsUtils
 
     public static void drawShade ( final Graphics2D g2d, final Shape shape, final Color shadeColor, final int width, final Shape clip )
     {
-        drawShade ( g2d, shape, StyleConstants.shadeType, shadeColor, width, clip, true );
+        drawShade ( g2d, shape, ShadeType.simple, shadeColor, width, clip, true );
     }
 
     public static void drawShade ( final Graphics2D g2d, final Shape shape, final ShadeType shadeType, final Color shadeColor,
@@ -402,7 +401,7 @@ public final class GraphicsUtils
 
     public static void drawShade ( final Graphics2D g2d, final Shape shape, final Color shadeColor, final int width, final boolean round )
     {
-        drawShade ( g2d, shape, StyleConstants.shadeType, shadeColor, width, null, round );
+        drawShade ( g2d, shape, ShadeType.simple, shadeColor, width, null, round );
     }
 
     public static void drawShade ( final Graphics2D g2d, final Shape shape, final ShadeType shadeType, final Color shadeColor,
@@ -414,7 +413,7 @@ public final class GraphicsUtils
     public static void drawShade ( final Graphics2D g2d, final Shape shape, final Color shadeColor, final int width, final Shape clip,
                                    final boolean round )
     {
-        drawShade ( g2d, shape, StyleConstants.shadeType, shadeColor, width, clip, round );
+        drawShade ( g2d, shape, ShadeType.simple, shadeColor, width, clip, round );
     }
 
     public static void drawShade ( final Graphics2D g2d, final Shape shape, final ShadeType shadeType, final Color shadeColor, int width,

@@ -18,7 +18,6 @@
 package com.alee.extended.filechooser;
 
 import com.alee.extended.layout.TableLayout;
-import com.alee.global.StyleConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
@@ -29,6 +28,7 @@ import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.GraphicsUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.WebTimer;
 
@@ -56,7 +56,7 @@ public class WebFilePlate extends WebPanel
 
     protected boolean showRemoveButton = true;
     protected boolean showFileExtensions = false;
-    protected final boolean animate = StyleConstants.animate;
+    protected final boolean animate = true;
 
     protected boolean dragEnabled = false;
     protected int dragAction = TransferHandler.MOVE;
@@ -103,7 +103,7 @@ public class WebFilePlate extends WebPanel
                 }
                 if ( animate )
                 {
-                    animator = new WebTimer ( "WebFilePlate.fadeInTimer", StyleConstants.fps24, new ActionListener ()
+                    animator = new WebTimer ( "WebFilePlate.fadeInTimer", SwingUtils.frameRateDelay ( 24 ), new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -263,7 +263,7 @@ public class WebFilePlate extends WebPanel
         }
         if ( animate )
         {
-            animator = new WebTimer ( "WebFilePlate.fadeOutTimer", StyleConstants.fps24, new ActionListener ()
+            animator = new WebTimer ( "WebFilePlate.fadeOutTimer", SwingUtils.frameRateDelay ( 24 ), new ActionListener ()
             {
                 @Override
                 public void actionPerformed ( final ActionEvent e )

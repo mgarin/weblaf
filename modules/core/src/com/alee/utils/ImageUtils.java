@@ -17,7 +17,6 @@
 
 package com.alee.utils;
 
-import com.alee.global.StyleConstants;
 import com.alee.graphics.filters.ShadowFilter;
 import com.alee.managers.log.Log;
 import com.alee.utils.collection.ImmutableList;
@@ -1408,7 +1407,7 @@ public final class ImageUtils
             final Graphics2D g2d = shade.createGraphics ();
             GraphicsUtils.setupAntialias ( g2d );
             g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_IN ) );
-            g2d.setPaint ( StyleConstants.transparent );
+            g2d.setPaint ( ColorUtils.transparent () );
             g2d.fill ( shape );
             g2d.dispose ();
         }
@@ -1445,7 +1444,7 @@ public final class ImageUtils
         final Graphics2D g2d = shade.createGraphics ();
         GraphicsUtils.setupAntialias ( g2d );
         g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_IN ) );
-        g2d.setPaint ( StyleConstants.transparent );
+        g2d.setPaint ( ColorUtils.transparent () );
         g2d.fill ( area );
         g2d.dispose ();
 

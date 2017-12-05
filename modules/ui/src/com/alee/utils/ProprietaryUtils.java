@@ -17,7 +17,6 @@
 
 package com.alee.utils;
 
-import com.alee.global.StyleConstants;
 import com.alee.managers.log.Log;
 
 import javax.swing.*;
@@ -267,7 +266,7 @@ public final class ProprietaryUtils
     private static void setupOpacityBackgroundColor ( final boolean opaque, final Component component )
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
-        ReflectUtils.callMethod ( component, "setBackground", opaque ? Color.WHITE : StyleConstants.transparent );
+        ReflectUtils.callMethod ( component, "setBackground", opaque ? Color.WHITE : ColorUtils.transparent () );
     }
 
     /**

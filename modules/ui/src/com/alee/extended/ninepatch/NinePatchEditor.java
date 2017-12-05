@@ -822,7 +822,7 @@ public class NinePatchEditor extends WebPanel
                 if ( !npi.isPixel () )
                 {
                     // Stretch areas drag
-                    if ( hStretchAreaDragged && changedInterval.isSame ( npi ) || !someDragged &&
+                    if ( hStretchAreaDragged && changedInterval.getId ().equals ( npi.getId () ) || !someDragged &&
                             new Rectangle ( imageStartX + npi.getStart () * zoom, imageStartY - zoom,
                                     ( npi.getEnd () - npi.getStart () + 1 ) * zoom, zoom + ( fillStretchAreas ? ih : 0 ) )
                                     .contains ( x, y ) )
@@ -876,7 +876,7 @@ public class NinePatchEditor extends WebPanel
                     // Stretch areas resize cursor  
                     if ( y <= imageStartY + ih )
                     {
-                        if ( hStretchStartDragged && changedInterval.isSame ( npi ) || !someDragged &&
+                        if ( hStretchStartDragged && changedInterval.getId ().equals ( npi.getId () ) || !someDragged &&
                                 imageStartX + npi.getStart () * zoom - getSnap () <= x &&
                                 x <= imageStartX + npi.getStart () * zoom + getSnap () )
                         {
@@ -915,7 +915,7 @@ public class NinePatchEditor extends WebPanel
                             setCursor ( Cursor.getPredefinedCursor ( Cursor.E_RESIZE_CURSOR ) );
                             return repaintRequired;
                         }
-                        if ( hStretchEndDragged && changedInterval.isSame ( npi ) || !someDragged &&
+                        if ( hStretchEndDragged && changedInterval.getId ().equals ( npi.getId () ) || !someDragged &&
                                 imageStartX + ( npi.getEnd () + 1 ) * zoom - getSnap () <= x &&
                                 x <= imageStartX + ( npi.getEnd () + 1 ) * zoom + getSnap () )
                         {
@@ -962,7 +962,7 @@ public class NinePatchEditor extends WebPanel
                 if ( !npi.isPixel () )
                 {
                     // Stretch areas drag
-                    if ( vStretchAreaDragged && changedInterval.isSame ( npi ) || !someDragged &&
+                    if ( vStretchAreaDragged && changedInterval.getId ().equals ( npi.getId () ) || !someDragged &&
                             new Rectangle ( imageStartX - zoom, imageStartY + npi.getStart () * zoom, zoom + ( fillStretchAreas ? iw : 0 ),
                                     ( npi.getEnd () - npi.getStart () + 1 ) * zoom ).contains ( x, y ) )
                     {
@@ -1015,7 +1015,7 @@ public class NinePatchEditor extends WebPanel
                     // Stretch areas resize cursor  
                     if ( x <= imageStartX + iw )
                     {
-                        if ( vStretchStartDragged && changedInterval.isSame ( npi ) || !someDragged &&
+                        if ( vStretchStartDragged && changedInterval.getId ().equals ( npi.getId () ) || !someDragged &&
                                 imageStartY + npi.getStart () * zoom - getSnap () <= y &&
                                 y <= imageStartY + npi.getStart () * zoom + getSnap () )
                         {
@@ -1054,7 +1054,7 @@ public class NinePatchEditor extends WebPanel
                             setCursor ( Cursor.getPredefinedCursor ( Cursor.S_RESIZE_CURSOR ) );
                             return repaintRequired;
                         }
-                        if ( vStretchEndDragged && changedInterval.isSame ( npi ) || !someDragged &&
+                        if ( vStretchEndDragged && changedInterval.getId ().equals ( npi.getId () ) || !someDragged &&
                                 imageStartY + ( npi.getEnd () + 1 ) * zoom - getSnap () <= y &&
                                 y <= imageStartY + ( npi.getEnd () + 1 ) * zoom + getSnap () )
                         {

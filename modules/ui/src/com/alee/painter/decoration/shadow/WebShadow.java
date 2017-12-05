@@ -17,11 +17,11 @@
 
 package com.alee.painter.decoration.shadow;
 
-import com.alee.global.StyleConstants;
 import com.alee.graphics.filters.ShadowFilter;
 import com.alee.painter.decoration.WebDecoration;
 import com.alee.painter.decoration.shape.IShape;
 import com.alee.painter.decoration.shape.StretchInfo;
+import com.alee.utils.ColorUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.TextUtils;
@@ -316,7 +316,7 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
         GraphicsUtils.setupAntialias ( g2d );
         g2d.translate ( -bounds.x, -bounds.y );
         g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_IN ) );
-        g2d.setPaint ( StyleConstants.transparent );
+        g2d.setPaint ( ColorUtils.transparent () );
         g2d.fill ( shape );
         g2d.setPaint ( color );
         g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_IN ) );
@@ -464,7 +464,7 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
         GraphicsUtils.setupAntialias ( g2d );
         g2d.translate ( -b.x, -b.y );
         g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_IN ) );
-        g2d.setPaint ( StyleConstants.transparent );
+        g2d.setPaint ( ColorUtils.transparent () );
         g2d.fill ( area );
         g2d.setPaint ( color );
         g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_IN ) );

@@ -17,14 +17,20 @@
 
 package com.alee.painter.decoration.content;
 
+import com.alee.api.merge.Merge;
 import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
+import com.alee.painter.decoration.background.IBackground;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.GraphicsUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
+import java.util.List;
 
 /**
  * Simple round rectangle shape content implementation.
@@ -51,10 +57,10 @@ public class RoundRectangle<E extends JComponent, D extends IDecoration<E, D>, I
     protected Integer round;
 
     /**
-     * Background color.
+     * Multiple backgrounds for this shape.
      */
-    @XStreamAsAttribute
-    protected Color color;
+    @XStreamImplicit
+    protected List<IBackground> backgrounds;
 
     @Override
     public String getId ()
@@ -76,20 +82,17 @@ public class RoundRectangle<E extends JComponent, D extends IDecoration<E, D>, I
     }
 
     /**
-     * Returns background color.
+     * Returns decoration {@link IBackground}s.
      *
-     * @param c painted component
-     * @param d painted decoration state
-     * @return background color
+     * @return decoration {@link IBackground}s
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected Color getColor ( final E c, final D d )
+    public List<IBackground> getBackgrounds ()
     {
-        if ( color != null )
+        if ( CollectionUtils.isEmpty ( backgrounds ) )
         {
-            return color;
+            throw new DecorationException ( "At least one Background must be specified" );
         }
-        throw new DecorationException ( "Background color must be specified" );
+        return backgrounds;
     }
 
     @Override
@@ -102,12 +105,14 @@ public class RoundRectangle<E extends JComponent, D extends IDecoration<E, D>, I
     protected void paintContent ( final Graphics2D g2d, final E c, final D d, final Rectangle bounds )
     {
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
-        final Paint op = GraphicsUtils.setupPaint ( g2d, getColor ( c, d ) );
 
         final int round = getRound ( c, d );
-        g2d.fillRoundRect ( bounds.x, bounds.y, bounds.width, bounds.height, round, round );
+        final RoundRectangle2D shape = new RoundRectangle2D.Float ( bounds.x, bounds.y, bounds.width, bounds.height, round, round );
+        for ( final IBackground background : getBackgrounds () )
+        {
+            background.paint ( g2d, bounds, c, d, shape );
+        }
 
-        GraphicsUtils.restorePaint ( g2d, op );
         GraphicsUtils.restoreAntialias ( g2d, aa );
     }
 
@@ -128,7 +133,8 @@ public class RoundRectangle<E extends JComponent, D extends IDecoration<E, D>, I
     {
         super.merge ( content );
         round = content.isOverwrite () || content.round != null ? content.round : round;
-        color = content.isOverwrite () || content.color != null ? content.color : color;
+        backgrounds = content.isOverwrite () ? content.backgrounds :
+                Merge.COMMON.<List<IBackground>>merge ( backgrounds, content.backgrounds );
         return ( I ) this;
     }
 }

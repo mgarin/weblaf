@@ -19,7 +19,6 @@ package com.alee.extended.panel;
 
 import com.alee.api.data.BoxOrientation;
 import com.alee.api.jdk.Supplier;
-import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
@@ -41,6 +40,7 @@ import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ImageUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -659,7 +659,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Lang
 
         if ( animate && isShowing () )
         {
-            animator = new WebTimer ( "WebCollapsiblePane.collapseTimer", StyleConstants.fps48, new ActionListener ()
+            animator = new WebTimer ( "WebCollapsiblePane.collapseTimer", SwingUtils.frameRateDelay ( 48 ), new ActionListener ()
             {
                 @Override
                 public void actionPerformed ( final ActionEvent e )
@@ -758,7 +758,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Lang
 
         if ( animate && isShowing () )
         {
-            animator = new WebTimer ( "WebCollapsiblePane.expandTimer", StyleConstants.fps48, new ActionListener ()
+            animator = new WebTimer ( "WebCollapsiblePane.expandTimer", SwingUtils.frameRateDelay ( 48 ), new ActionListener ()
             {
                 @Override
                 public void actionPerformed ( final ActionEvent e )
