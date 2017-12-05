@@ -1233,6 +1233,26 @@ public final class FileUtils
     }
 
     /**
+     * Returns filtered files list.
+     *
+     * @param files      files collection to filter
+     * @param fileFilter file filter
+     * @return filtered files list
+     */
+    public static List<File> filterFiles ( final Collection<File> files, final Filter<File> fileFilter )
+    {
+        final List<File> filteredFiles = new ArrayList<File> ( files.size () );
+        for ( final File file : files )
+        {
+            if ( fileFilter.accept ( file ) )
+            {
+                filteredFiles.add ( file );
+            }
+        }
+        return filteredFiles;
+    }
+
+    /**
      * Returns complete file description.
      *
      * @param file     file to process
@@ -2685,7 +2705,7 @@ public final class FileUtils
         }
         else
         {
-            return "";
+            return file.getName () != null ? file.getName () : "";
         }
     }
 

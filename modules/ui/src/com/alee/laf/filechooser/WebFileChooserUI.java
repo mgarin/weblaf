@@ -17,6 +17,7 @@
 
 package com.alee.laf.filechooser;
 
+import com.alee.api.jdk.Consumer;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LM;
 import com.alee.managers.style.*;
@@ -25,7 +26,6 @@ import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.FileUtils;
 import com.alee.utils.filefilter.AllFilesFilter;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -247,24 +247,21 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
         }
         else if ( prop.equals ( JFileChooser.SELECTED_FILE_CHANGED_PROPERTY ) )
         {
-            // We are not listening to SELECTED_FILES_CHANGED_PROPERTY as it will only generate additional pointless event
-            // Property SELECTED_FILE_CHANGED_PROPERTY event is always triggered so it is sufficient
+            /**
+             * We are not listening to {@link JFileChooser#SELECTED_FILES_CHANGED_PROPERTY} as it will only generate unnecessary event.
+             * Property {@link JFileChooser#SELECTED_FILE_CHANGED_PROPERTY} event is always triggered so it is sufficient.
+             */
             if ( !ignoreFileSelectionChanges )
             {
-                final File[] selectedFiles = fileChooser.getSelectedFiles ();
-                if ( selectedFiles.length > 0 )
+                if ( event.getNewValue () instanceof File )
                 {
-                    // Update displayed directory and select all files
-                    // fileChooserPanel.setCurrentFolder ( selectedFiles[ 0 ].getParentFile () );
-                    // fileChooserPanel.setSelectedFiles ( selectedFiles );
-                    fileChooserPanel.setSelectedFiles ( selectedFiles );
-
+                    // Simply pass the file, it will be selected when directory is opened
+                    fileChooserPanel.setSelectedFile ( fileChooser.getSelectedFile () );
                 }
                 else
                 {
-                    // Simply pass the file, it will be selected when directory is opened
-                    // fileChooserPanel.setCurrentFolder ( fileChooser.getSelectedFile () );
-                    fileChooserPanel.setSelectedFile ( fileChooser.getSelectedFile () );
+                    // Update displayed directory and select all files
+                    fileChooserPanel.setSelectedFiles ( fileChooser.getSelectedFiles () );
                 }
             }
         }
