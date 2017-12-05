@@ -634,7 +634,7 @@
         </record>
         <record key="view.tiles">
             <value lang="en">Tiles</value>
-            <value lang="ru">Тайлы</value>
+            <value lang="ru">Плитка</value>
             <value lang="pl">Kafelki</value>
             <value lang="ar">أسطح</value>
             <value lang="es">Azulejos</value>

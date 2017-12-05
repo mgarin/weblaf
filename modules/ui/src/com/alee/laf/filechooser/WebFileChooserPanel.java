@@ -49,6 +49,7 @@ import com.alee.managers.style.StyleId;
 import com.alee.managers.tooltip.TooltipWay;
 import com.alee.utils.*;
 import com.alee.utils.collection.ImmutableList;
+import com.alee.utils.compare.Filter;
 import com.alee.utils.file.FileComparator;
 import com.alee.utils.filefilter.*;
 import com.alee.utils.swing.AncestorAdapter;
@@ -79,7 +80,7 @@ public class WebFileChooserPanel extends WebPanel
     /**
      * todo 1. When setting "show hidden files" to false - move out from hidden directories
      * todo 2. Proper hotkeys usage within window
-     * todo 3. Context menu for file selection components
+     * todo 3. Context menus for file selection components
      */
 
     /**
@@ -96,39 +97,15 @@ public class WebFileChooserPanel extends WebPanel
 
     /**
      * Custom selected files filter.
+     * Dialog type check is not used here since it might be (and usually will be) specified only upon opening the dialog.
+     * Therefore we do not know how exactly files should be filtered until then and cannot do it properly.
      */
-    protected final AbstractFileFilter selectedFilesFilter = new AbstractFileFilter ()
+    protected final Filter<File> selectedFilesFilter = new Filter<File> ()
     {
-        @Override
-        public ImageIcon getIcon ()
-        {
-            return null;
-        }
-
-        @Override
-        public String getDescription ()
-        {
-            return null;
-        }
-
         @Override
         public boolean accept ( final File file )
         {
-            switch ( getFileSelectionMode () )
-            {
-                case filesOnly:
-                {
-                    return chooserType == FileChooserType.open ? file.isFile () : !file.exists () || file.isFile ();
-                }
-                case directoriesOnly:
-                {
-                    return chooserType == FileChooserType.open ? file.isDirectory () : !file.exists () || file.isDirectory ();
-                }
-                default:
-                {
-                    return true;
-                }
-            }
+            return getFileSelectionMode ().accept ( file );
         }
     };
 
@@ -1028,8 +1005,7 @@ public class WebFileChooserPanel extends WebPanel
             @Override
             public void caretUpdate ( final CaretEvent e )
             {
-                // No need to specify files, they will be calculated when needed
-                updateAcceptButtonState ( null );
+                updateAcceptButtonState ();
             }
         } );
         selectedFilesTextField.addActionListener ( new ActionListener ()
@@ -1037,7 +1013,6 @@ public class WebFileChooserPanel extends WebPanel
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-                // Try to accept selection
                 acceptButton.doClick ( 0 );
             }
         } );
@@ -1121,9 +1096,9 @@ public class WebFileChooserPanel extends WebPanel
     }
 
     /**
-     * Returns the Selected Files TextField.
+     * Returns field used to display selected files in {@link FileChooserType#save} mode.
      *
-     * @return Selected Files TextField
+     * @return field used to display selected files in {@link FileChooserType#save} mode
      */
     public WebTextField getSelectedFilesTextField ()
     {
@@ -1131,9 +1106,9 @@ public class WebFileChooserPanel extends WebPanel
     }
 
     /**
-     * Returns the Selected Files ViewField.
+     * Returns field used to display selected files in {@link FileChooserType#open} mode.
      *
-     * @return Selected Files ViewField
+     * @return field used to display selected files in {@link FileChooserType#open} mode
      */
     public WebFileChooserField getSelectedFilesViewField ()
     {
@@ -1462,9 +1437,7 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected void updateSelectedFilesField ()
     {
-        // All selected files
-        final List<File> allFiles = getAllSelectedFiles ();
-        updateSelectedFilesFieldImpl ( allFiles );
+        updateSelectedFilesFieldImpl ( getAllSelectedFiles () );
     }
 
     /**
@@ -1486,13 +1459,9 @@ public class WebFileChooserPanel extends WebPanel
         {
             if ( files.size () > 0 )
             {
-                // Accept only file as selection, otherwise leave old file selected
                 final File file = files.get ( 0 );
-                if ( !file.exists () || FileUtils.isFile ( file ) )
-                {
-                    selectedFilesViewField.setSelectedFile ( file );
-                    selectedFilesTextField.setText ( getSingleFileView ( file ) );
-                }
+                selectedFilesViewField.setSelectedFile ( file );
+                selectedFilesTextField.setText ( getSingleFileView ( file ) );
             }
         }
         else
@@ -1543,23 +1512,27 @@ public class WebFileChooserPanel extends WebPanel
 
     /**
      * Updates accept button state.
+     */
+    protected void updateAcceptButtonState ()
+    {
+        updateAcceptButtonState ( getAllSelectedFiles () );
+    }
+
+    /**
+     * Updates accept button state.
      *
      * @param files filtered selected files
      */
-    protected void updateAcceptButtonState ( List<File> files )
+    protected void updateAcceptButtonState ( final List<File> files )
     {
         if ( chooserType == FileChooserType.save )
         {
             // Accept enabled due to entered file name
-            acceptButton.setEnabled ( !selectedFilesTextField.getText ().trim ().equals ( "" ) );
+            acceptButton.setEnabled ( TextUtils.notBlank ( selectedFilesTextField.getText () ) );
         }
         else
         {
             // Accept enabled due to selected files
-            if ( files == null )
-            {
-                files = getFilteredSelectedFiles ( getAllSelectedFiles () );
-            }
             acceptButton.setEnabled ( files.size () > 0 );
         }
     }
@@ -2333,6 +2306,7 @@ public class WebFileChooserPanel extends WebPanel
 
         /**
          * Other source.
+         * Mostly refers to updates made from outside using open API.
          */
         other
     }

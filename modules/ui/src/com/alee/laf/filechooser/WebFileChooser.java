@@ -295,29 +295,6 @@ public class WebFileChooser extends JFileChooser
     {
         setSelectedFile ( path != null ? new File ( path ) : null );
     }
-    
-    /**
-    * Sets currently selected file.
-    *
-    * @param file the file to select
-    */
-    @Override
-    public void setSelectedFile ( final File file )
-    {
-    	if ( file == null || file.exists () )
-    	{
-    		super.setSelectedFile ( file );
-    	}
-    	else
-    	{
-    		this.getFileChooserPanel ().getSelectedFilesViewField ().setSelectedFile( file );
-    		this.getFileChooserPanel ().getSelectedFilesTextField ().setText ( file.getName () );
-    		if ( file.getParent () != null && new File ( file.getParent () ).exists () ) 
-    		{
-    			this.setCurrentDirectory ( file.getParent () );
-    		}
-    	}
-    }
 
     /**
      * Returns file chooser panel.
