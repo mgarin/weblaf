@@ -39,7 +39,7 @@ import java.util.List;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  */
 
-@SuppressWarnings ("UnusedParameters")
+@SuppressWarnings ( "UnusedParameters" )
 public abstract class AbstractStyledTextContent<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractStyledTextContent<E, D, I>>
         extends AbstractTextContent<E, D, I>
 {
@@ -321,9 +321,9 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
         int y = bounds.y + maxAscent;
 
         final int mnemonicIndex = getMnemonicIndex ( c, d );
-        final int mr = getMaximumRows ( c, d );
-        final int rg = getRowGap ( c, d );
-        final TextWrap wt = getWrapType ( c, d );
+        final int maximumRows = getMaximumRows ( c, d );
+        final int rowGap = getRowGap ( c, d );
+        final TextWrap wrapType = getWrapType ( c, d );
         final boolean preserveLineBreaks = isPreserveLineBreaks ( c, d );
 
         Font font = c.getFont ();
@@ -356,7 +356,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
 
             if ( textRange.text.equals ( "\n" ) )
             {
-                if ( wt == TextWrap.none || preserveLineBreaks )
+                if ( wrapType == TextWrap.none || preserveLineBreaks )
                 {
                     if ( row.isEmpty () )
                     {
@@ -375,9 +375,10 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
                 int strWidth = cfm.stringWidth ( s );
                 final int widthLeft = endX - x;
 
-                if ( wt != TextWrap.none && widthLeft < strWidth && widthLeft >= 0 )
+                if ( wrapType != TextWrap.none && widthLeft < strWidth && widthLeft >= 0 )
                 {
-                    if ( ( mr > 0 && rowCount < mr - 1 || mr <= 0 ) && y + maxRowHeight + Math.max ( 0, rg ) <= endY )
+                    if ( ( maximumRows <= 0 || maximumRows > 0 && rowCount < maximumRows ) &&
+                            y + maxRowHeight + Math.max ( 0, rowGap ) <= endY )
                     {
                         int availLength = s.length () * widthLeft / strWidth + 1; // Optimistic prognoses
                         int firstWordOffset = Math.max ( 0, TextUtils.findFirstWordFromIndex ( s, 0 ) );
@@ -387,7 +388,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
                         {
                             final String subStringThisRow;
                             int lastInWordEndIndex;
-                            if ( wt == TextWrap.word || wt == TextWrap.mixed )
+                            if ( wrapType == TextWrap.word || wrapType == TextWrap.mixed )
                             {
                                 final String subString = s.substring ( 0, Math.max ( 0, Math.min ( availLength, s.length () ) ) );
 
@@ -397,7 +398,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
                                 // Only one word in row left
                                 if ( lastInWordEndIndex < 0 )
                                 {
-                                    if ( wt == TextWrap.word )
+                                    if ( wrapType == TextWrap.word )
                                     {
                                         if ( row.isEmpty () )
                                         {
@@ -490,12 +491,12 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
                 readyToPaint = false;
 
                 // Setting up next row
-                y += maxRowHeight + Math.max ( 0, rg );
+                y += maxRowHeight + Math.max ( 0, rowGap );
                 x = bounds.x;
                 i--;
 
                 // Checking that row is last
-                if ( y > endY || mr > 0 && rowCount >= mr - 1 )
+                if ( y > endY || maximumRows > 0 && rowCount >= maximumRows )
                 {
                     break;
                 }
@@ -748,6 +749,25 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
         final Dimension vSize = getPreferredStyledTextSize ( c, d, new Dimension ( Short.MAX_VALUE, Short.MAX_VALUE ) );
         final Dimension hSize = getPreferredStyledTextSize ( c, d, available );
         return SwingUtils.max ( vSize, hSize );
+
+        /**
+         * This doesn't work for some cases and causes issue when available size expands.
+         * It also doesn't properly scale in case of content layout or any kind of padding usage.
+         * Some major reworks in the size calculation structure are required to make this piece of code work.
+         */
+        /*// Preferred size for maximum possible space
+        final Insets p = PainterSupport.getPadding ( c );
+        final int pw = SizeMethodsImpl.getPreferredWidth ( c ) - ( p != null ? p.left + p.right : 0 );
+        final int mw = pw >= 0 && available.width <= 0 ? pw : Short.MAX_VALUE;
+        final int ph = SizeMethodsImpl.getPreferredHeight ( c ) - ( p != null ? p.top + p.bottom : 0 );
+        final int mh = ph >= 0 && available.height <= 0 ? ph : Short.MAX_VALUE;
+        final Dimension vSize = getPreferredStyledTextSize ( c, d, new Dimension ( mw, mh ) );
+
+        // Preferred size for available space
+        final Dimension hSize = getPreferredStyledTextSize ( c, d, available );
+
+        // Preferred contains maximum of two
+        return SwingUtils.max ( vSize, hSize );*/
     }
 
     /**
