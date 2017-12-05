@@ -381,13 +381,19 @@ public class WebLookAndFeel extends BasicLookAndFeel
     {
         super.initSystemColorDefaults ( table );
 
+        final String menuColor = ColorUtils.getHexColor ( Color.WHITE );
         final String textColor = ColorUtils.getHexColor ( Color.BLACK );
         final String textHighlightColor = ColorUtils.getHexColor ( new Color ( 210, 210, 210 ) );
         final String inactiveTextColor = ColorUtils.getHexColor ( new Color ( 160, 160, 160 ) );
 
-        final String[] defaultSystemColors =
-                { "menu", "#ffffff", "menuText", textColor, "textHighlight", textHighlightColor, "textHighlightText", textColor,
-                        "textInactiveText", inactiveTextColor, "controlText", textColor, };
+        final String[] defaultSystemColors = {
+                "menu", menuColor,
+                "menuText", textColor,
+                "textHighlight", textHighlightColor,
+                "textHighlightText", textColor,
+                "textInactiveText", inactiveTextColor,
+                "controlText", textColor,
+        };
 
         loadSystemColors ( table, defaultSystemColors, isNativeLookAndFeel () );
     }
@@ -446,9 +452,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "Tree.textForeground", new ColorUIResource ( Color.BLACK ) );
         table.put ( "Tree.textBackground", new ColorUIResource ( new Color ( 255, 255, 255, 0 ) ) );
         table.put ( "Tree.selectionForeground", new ColorUIResource ( Color.BLACK ) );
-        table.put ( "Tree.selectionBackground", new ColorUIResource (  new Color ( 255, 255, 255, 0 ) ) );
-        table.put ( "Tree.selectionBorderColor", new ColorUIResource (  new Color ( 255, 255, 255, 0 ) ) );
-        table.put ( "Tree.dropCellBackground", new ColorUIResource (  new Color ( 255, 255, 255, 0 ) ) );
+        table.put ( "Tree.selectionBackground", new ColorUIResource ( new Color ( 255, 255, 255, 0 ) ) );
+        table.put ( "Tree.selectionBorderColor", new ColorUIResource ( new Color ( 255, 255, 255, 0 ) ) );
+        table.put ( "Tree.dropCellBackground", new ColorUIResource ( new Color ( 255, 255, 255, 0 ) ) );
         // Tree default renderer content margins
         table.put ( "Tree.rendererFillBackground", Boolean.FALSE );
         table.put ( "Tree.drawsFocusBorderAroundIcon", Boolean.FALSE );
@@ -829,8 +835,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     protected static SwingLazyValue createLazyFont ( final Font font )
     {
-        return new SwingLazyValue ( "javax.swing.plaf.FontUIResource", null,
-                new Object[]{ font.getName (), font.getStyle (), font.getSize () } );
+        return new SwingLazyValue ( "javax.swing.plaf.FontUIResource", null, new Object[]{ font } );
     }
 
     /**

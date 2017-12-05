@@ -17,12 +17,11 @@
 
 package com.alee.utils.swing;
 
+import com.alee.utils.ReflectUtils;
+
 import javax.swing.*;
-import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 
 /**
  * {@link SwingLazyValue} is a copy of {@link javax.swing.UIDefaults.ProxyLazyValue} that does not snapshot the
@@ -30,121 +29,99 @@ import java.security.PrivilegedAction;
  * we need {@link javax.swing.UIDefaults.ProxyLazyValue} and should never be used in a place where the developer could supply the arguments.
  *
  * @author Mikle Garin
+ * @see javax.swing.UIDefaults.ProxyLazyValue
  */
 
 public final class SwingLazyValue implements UIDefaults.LazyValue
 {
+    /**
+     * Lazy value class name or name of the class for the static method invocation.
+     */
     private final String className;
+
+    /**
+     * Lazy value class static method name.
+     * If specified, it will be invoked to create the actual value.
+     */
     private final String methodName;
-    private Object[] args;
 
-    public SwingLazyValue ( final String c )
+    /**
+     * Class constructor or static method arguments.
+     */
+    private final Object[] arguments;
+
+    /**
+     * Constructs {@link SwingLazyValue} that will instantiate {@link Class} with the specified name as value.
+     *
+     * @param className {@link Class} name
+     */
+    public SwingLazyValue ( final String className )
     {
-        this ( c, ( String ) null );
+        this ( className, ( String ) null );
     }
 
-    public SwingLazyValue ( final String c, final String m )
+    /**
+     * Constructs {@link SwingLazyValue} that will retrieve value from a static {@link Method} from the class with the specified name.
+     *
+     * @param className  {@link Class} name
+     * @param methodName {@link Method} name
+     */
+    public SwingLazyValue ( final String className, final String methodName )
     {
-        this ( c, m, null );
+        this ( className, methodName, null );
     }
 
-    public SwingLazyValue ( final String c, final Object[] o )
+    /**
+     * Constructs {@link SwingLazyValue} that will instantiate {@link Class} with the specified name and arguments as value.
+     *
+     * @param className {@link Class} name
+     * @param arguments {@link Class} constructor arguments
+     */
+    public SwingLazyValue ( final String className, final Object[] arguments )
     {
-        this ( c, null, o );
+        this ( className, null, arguments );
     }
 
-    public SwingLazyValue ( final String c, final String m, final Object[] o )
+    /**
+     * Constructs {@link SwingLazyValue} that will retrieve value from a static {@link Method} from the class with the specified name.
+     *
+     * @param className  {@link Class} name
+     * @param methodName {@link Method} name
+     * @param arguments  {@link Method} arguments
+     */
+    public SwingLazyValue ( final String className, final String methodName, final Object[] arguments )
     {
-        className = c;
-        methodName = m;
-        if ( o != null )
-        {
-            args = o.clone ();
-        }
+        this.className = className;
+        this.methodName = methodName;
+        this.arguments = arguments != null ? arguments.clone () : null;
     }
 
     @Override
     public Object createValue ( final UIDefaults table )
     {
+        Object value = null;
         try
         {
-            final Class c = Class.forName ( className, true, null );
+            final Class clazz = Class.forName ( className, true, null );
             if ( methodName != null )
             {
-                final Class[] types = getClassArray ( args );
-                final Method m = c.getMethod ( methodName, types );
-                makeAccessible ( m );
-                return m.invoke ( c, args );
+                final Method m = ReflectUtils.getMethod ( clazz, methodName, arguments );
+                value = m.invoke ( clazz, arguments );
             }
             else
             {
-                final Class[] types = getClassArray ( args );
-                final Constructor constructor = c.getConstructor ( types );
-                makeAccessible ( constructor );
-                return constructor.newInstance ( args );
+                final Class[] types = ReflectUtils.getClassTypes ( arguments );
+                final Constructor constructor = ReflectUtils.getConstructor ( clazz, types );
+                value = constructor.newInstance ( arguments );
             }
         }
         catch ( final Exception e )
         {
-            // Ideally we would throw an exception, unfortunately
-            // often times there are errors as an initial look and
-            // feel is loaded before one can be switched. Perhaps a
-            // flag should be added for debugging, so that if true
-            // the exception would be thrown.
+            /**
+             * Ideally we would throw an exception, unfortunately often times there are errors as an initial look and feel is loaded
+             * before one can be switched. Perhaps a flag should be added for debugging, so that if true the exception would be thrown.
+             */
         }
-        return null;
-    }
-
-    private void makeAccessible ( final AccessibleObject object )
-    {
-        AccessController.doPrivileged ( new PrivilegedAction<Void> ()
-        {
-            @Override
-            public Void run ()
-            {
-                object.setAccessible ( true );
-                return null;
-            }
-        } );
-    }
-
-    private Class[] getClassArray ( final Object[] args )
-    {
-        Class[] types = null;
-        if ( args != null )
-        {
-            types = new Class[ args.length ];
-            for ( int i = 0; i < args.length; i++ )
-            {
-                /* PENDING(ges): At present only the primitive types
-                   used are handled correctly; this should eventually
-                   handle all primitive types */
-                if ( args[ i ] instanceof java.lang.Integer )
-                {
-                    types[ i ] = Integer.TYPE;
-                }
-                else if ( args[ i ] instanceof java.lang.Boolean )
-                {
-                    types[ i ] = Boolean.TYPE;
-                }
-                else if ( args[ i ] instanceof javax.swing.plaf.ColorUIResource )
-                {
-                    /* PENDING(ges) Currently the Reflection APIs do not
-                       search superclasses of parameters supplied for
-                       constructor/method lookup.  Since we only have
-                       one case where this is needed, we substitute
-                       directly instead of adding a massive amount
-                       of mechanism for this.  Eventually this will
-                       probably need to handle the general case as well.
-                    */
-                    types[ i ] = java.awt.Color.class;
-                }
-                else
-                {
-                    types[ i ] = args[ i ].getClass ();
-                }
-            }
-        }
-        return types;
+        return value;
     }
 }

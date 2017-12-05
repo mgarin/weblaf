@@ -359,10 +359,13 @@ public final class NativeFonts
      * @param fontKey  native {@link Font} key
      * @param fallback {@link Supplier} for the fallback {@link FontUIResource}
      * @return native Windows {@link FontUIResource} for the {@link Font} key and {@link Font} size key
+     * @see com.sun.java.swing.plaf.windows.WindowsLookAndFeel.WindowsFontProperty#configureValue(Object)
      */
     private static FontUIResource getWindowsFont ( final String fontKey, final Supplier<FontUIResource> fallback )
     {
-        FontUIResource font;
+        Font font;
+
+        // Determining font base
         if ( isUseNativeFonts () )
         {
             try
@@ -372,13 +375,17 @@ public final class NativeFonts
                  * This is how it could be done though: {@code Toolkit.getDefaultToolkit ().getDesktopProperty ( fontKey + ".height" )}
                  */
                 final Object nativeFont = Toolkit.getDefaultToolkit ().getDesktopProperty ( fontKey );
-                if ( nativeFont instanceof Font )
+                if ( nativeFont != null )
                 {
-                    font = new FontUIResource ( ( Font ) nativeFont );
+                    font = ( Font ) nativeFont;
                 }
                 else
                 {
-                    font = ( FontUIResource ) nativeFont;
+                    if ( DebugUtils.isGlobalDebugEnabled () )
+                    {
+                        Log.get ().error ( "Unable to retrieve native Windows font: " + fontKey );
+                    }
+                    font = fallback.get ();
                 }
             }
             catch ( final Exception e )
@@ -394,7 +401,56 @@ public final class NativeFonts
         {
             font = fallback.get ();
         }
-        return font;
+
+        // Switching to composite FontUIResource if needed
+        try
+        {
+            final Class fontManager = ReflectUtils.getClass ( "sun.font.FontManager" );
+            try
+            {
+                final Boolean defaultEncoding = ReflectUtils.callStaticMethod ( fontManager, "fontSupportsDefaultEncoding", font );
+                if ( !defaultEncoding )
+                {
+                    try
+                    {
+                        font = ReflectUtils.callStaticMethod ( fontManager, "getCompositeFontUIResource", font );
+                    }
+                    catch ( final Exception e )
+                    {
+                        if ( DebugUtils.isGlobalDebugEnabled () )
+                        {
+                            Log.get ().error ( "Unable to retrieve composite Font", e );
+                        }
+                    }
+                }
+            }
+            catch ( final Exception e )
+            {
+                if ( DebugUtils.isGlobalDebugEnabled () )
+                {
+                    Log.get ().error ( "Unable to check Font default encoding support", e );
+                }
+            }
+        }
+        catch ( final ClassNotFoundException e )
+        {
+            if ( DebugUtils.isGlobalDebugEnabled () )
+            {
+                Log.get ().error ( "Unable to access FontManager", e );
+            }
+        }
+
+        // Enclosing font in FontUIResource if needed
+        final FontUIResource fontUIResource;
+        if ( font instanceof FontUIResource )
+        {
+            fontUIResource = ( FontUIResource ) font;
+        }
+        else
+        {
+            fontUIResource = new FontUIResource ( font );
+        }
+        return fontUIResource;
     }
 
     /**
@@ -406,21 +462,25 @@ public final class NativeFonts
      */
     private static FontUIResource getMacOSFont ( final String fontMethodName, final Supplier<FontUIResource> fallback )
     {
-        FontUIResource font;
+        Font font;
         if ( isUseNativeFonts () )
         {
             try
             {
-                final Object object = ReflectUtils.callStaticMethod ( "com.apple.laf.AquaFonts", fontMethodName );
-                if ( object instanceof Font )
+                final Object nativeFont = ReflectUtils.callStaticMethod ( "com.apple.laf.AquaFonts", fontMethodName );
+                if ( nativeFont != null )
                 {
-                    font = new FontUIResource ( ( Font ) object );
+                    font = ( Font ) nativeFont;
                 }
                 else
                 {
-                    font = ( FontUIResource ) object;
+                    if ( DebugUtils.isGlobalDebugEnabled () )
+                    {
+                        final String msg = "Unable to retrieve native Mac OS X font using method: com.apple.laf.AquaFonts.%s()";
+                        Log.get ().error ( String.format ( msg, fontMethodName ) );
+                    }
+                    font = fallback.get ();
                 }
-
             }
             catch ( final Exception e )
             {
@@ -436,6 +496,17 @@ public final class NativeFonts
         {
             font = fallback.get ();
         }
-        return font;
+
+        // Enclosing font in FontUIResource if needed
+        final FontUIResource fontUIResource;
+        if ( font instanceof FontUIResource )
+        {
+            fontUIResource = ( FontUIResource ) font;
+        }
+        else
+        {
+            fontUIResource = new FontUIResource ( font );
+        }
+        return fontUIResource;
     }
 }

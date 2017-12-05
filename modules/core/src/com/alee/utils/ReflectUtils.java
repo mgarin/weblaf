@@ -1227,7 +1227,6 @@ public final class ReflectUtils
         final Constructor constructor = getConstructor ( theClass, parameterTypes );
 
         // Creating new instance
-        constructor.setAccessible ( true );
         return ( T ) constructor.newInstance ( arguments );
     }
 
@@ -1302,6 +1301,7 @@ public final class ReflectUtils
             else if ( types.length == 0 )
             {
                 // Constructor with no parameters
+                constructor.setAccessible ( true );
                 return constructor;
             }
 
@@ -1317,6 +1317,7 @@ public final class ReflectUtils
             }
             if ( fits )
             {
+                constructor.setAccessible ( true );
                 return constructor;
             }
         }
@@ -1789,9 +1790,7 @@ public final class ReflectUtils
 
         // Searching for more complex method
         final Class[] types = getClassTypes ( arguments );
-        final Method method = getMethodImpl ( aClass, aClass, methodName, types );
-        method.setAccessible ( true );
-        return method;
+        return getMethodImpl ( aClass, aClass, methodName, types );
     }
 
     /**
@@ -1831,6 +1830,7 @@ public final class ReflectUtils
                     if ( fits )
                     {
                         // Returning found method
+                        method.setAccessible ( true );
                         return method;
                     }
                 }
