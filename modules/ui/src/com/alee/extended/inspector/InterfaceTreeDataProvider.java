@@ -23,6 +23,7 @@ import com.alee.utils.compare.Filter;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -52,6 +53,29 @@ public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<Interf
         super ();
         this.tree = tree;
         this.inspected = inspected;
+
+        // Special comparator that keeps nodes in a strict order
+        setChildrenComparator ( new Comparator<InterfaceTreeNode> ()
+        {
+            @Override
+            public int compare ( final InterfaceTreeNode node1, final InterfaceTreeNode node2 )
+            {
+                final Component component1 = node1.getComponent ();
+                final Component component2 = node2.getComponent ();
+
+                // Checking that parent is the same
+                final Container parent = component1.getParent ();
+                if ( parent != component2.getParent () )
+                {
+                    throw new RuntimeException ( "Compared nodes cannot have different parent" );
+                }
+
+                // Comparing component's Z-index
+                final int zIndex1 = parent.getComponentZOrder ( component1 );
+                final int zIndex2 = parent.getComponentZOrder ( component2 );
+                return new Integer ( zIndex1 ).compareTo ( zIndex2 );
+            }
+        } );
     }
 
     @Override

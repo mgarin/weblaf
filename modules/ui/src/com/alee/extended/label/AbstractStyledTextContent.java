@@ -746,8 +746,12 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
     @Override
     protected Dimension getPreferredTextSize ( final E c, final D d, final Dimension available )
     {
+        // Preferred size for maximum possible space
         final Dimension vSize = getPreferredStyledTextSize ( c, d, new Dimension ( Short.MAX_VALUE, Short.MAX_VALUE ) );
+
+        // Preferred size for available space
         final Dimension hSize = getPreferredStyledTextSize ( c, d, available );
+
         return SwingUtils.max ( vSize, hSize );
 
         /**

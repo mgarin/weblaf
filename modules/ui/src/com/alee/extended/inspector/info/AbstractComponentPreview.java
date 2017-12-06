@@ -33,22 +33,21 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public abstract class AbstractComponentInfo<T extends Component> implements ComponentInfo<T>
+public abstract class AbstractComponentPreview<T extends Component> implements ComponentPreview<T>
 {
     /**
      * Opaque icon.
      */
-    public static final ImageIcon opaque = new ImageIcon ( AbstractComponentInfo.class.getResource ( "icons/opaque.png" ) );
+    public static final ImageIcon opaque = new ImageIcon ( AbstractComponentPreview.class.getResource ( "icons/opaque.png" ) );
 
     /**
      * Additional type icons.
      */
-    public static final ImageIcon frameType = new ImageIcon ( AbstractComponentInfo.class.getResource ( "icons/frame.png" ) );
-    public static final ImageIcon dialogType = new ImageIcon ( AbstractComponentInfo.class.getResource ( "icons/dialog.png" ) );
-    public static final ImageIcon windowType = new ImageIcon ( AbstractComponentInfo.class.getResource ( "icons/window.png" ) );
-    public static final ImageIcon layeredPaneType = new ImageIcon ( AbstractComponentInfo.class.getResource ( "icons/layeredpane.png" ) );
-    public static final ImageIcon glassPaneType = new ImageIcon ( AbstractComponentInfo.class.getResource ( "icons/glasspane.png" ) );
-    public static final ImageIcon unknownType = new ImageIcon ( AbstractComponentInfo.class.getResource ( "icons/unknown.png" ) );
+    public static final ImageIcon frameType = new ImageIcon ( AbstractComponentPreview.class.getResource ( "icons/frame.png" ) );
+    public static final ImageIcon dialogType = new ImageIcon ( AbstractComponentPreview.class.getResource ( "icons/dialog.png" ) );
+    public static final ImageIcon windowType = new ImageIcon ( AbstractComponentPreview.class.getResource ( "icons/window.png" ) );
+    public static final ImageIcon glassPaneType = new ImageIcon ( AbstractComponentPreview.class.getResource ( "icons/glasspane.png" ) );
+    public static final ImageIcon unknownType = new ImageIcon ( AbstractComponentPreview.class.getResource ( "icons/unknown.png" ) );
 
     /**
      * Merged icons cache.

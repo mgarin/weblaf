@@ -144,13 +144,13 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     public int getChildCount ( final Object parent )
     {
         final E node = ( E ) parent;
-        if ( isLeaf ( node ) )
-        {
-            return 0;
-        }
-        else if ( areChildrenLoaded ( node ) )
+        if ( areChildrenLoaded ( node ) )
         {
             return super.getChildCount ( parent );
+        }
+        else if ( isLeaf ( node ) )
+        {
+            return loadEmptyChildren ( node );
         }
         else
         {
@@ -322,6 +322,30 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
                 nodeById.put ( node.getId (), node );
             }
         }
+    }
+
+    /**
+     * Loads empty node children.
+     * It is called for any node that {@link #isLeaf(Object)} has returned {@code true}.
+     * This is a small workaround to avoid {@link #loadChildren(UniqueNode)} call upon child nodes insert into empty parent node.
+     *
+     * @param parent node to load empty children for
+     * @return {@code 0} children count
+     */
+    protected int loadEmptyChildren ( final E parent )
+    {
+        // Updating caches
+        synchronized ( cacheLock )
+        {
+            // Caching empty raw children
+            rawNodeChildrenCache.put ( parent.getId (), new ArrayList<E> ( 0 ) );
+
+            // Updatng cache
+            nodeCached.put ( parent.getId (), true );
+        }
+
+        // Always return zero children count
+        return 0;
     }
 
     /**

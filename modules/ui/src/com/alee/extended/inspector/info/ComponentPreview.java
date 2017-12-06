@@ -18,25 +18,30 @@
 package com.alee.extended.inspector.info;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
- * Default {@link JComponent} information provider.
+ * Short component information provider interface.
  *
+ * @param <T> component type
  * @author Mikle Garin
  */
 
-public class JComponentInfo<T extends JComponent> extends AWTComponentInfo<T>
+public interface ComponentPreview<T extends Component>
 {
-    @Override
-    public Icon getIconImpl ( final T component )
-    {
-        if ( component instanceof JLayeredPane )
-        {
-            return layeredPaneType;
-        }
-        else
-        {
-            return super.getIconImpl ( component );
-        }
-    }
+    /**
+     * Returns icon for the specified component.
+     *
+     * @param component component to provide icon for
+     * @return icon for the specified component
+     */
+    public Icon getIcon ( T component );
+
+    /**
+     * Returns string value for the specified component.
+     *
+     * @param component object to provide text for
+     * @return string value for the specified component
+     */
+    public String getText ( T component );
 }

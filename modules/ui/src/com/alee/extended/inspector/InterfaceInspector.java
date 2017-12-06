@@ -44,18 +44,17 @@ import java.awt.event.ActionListener;
 public class InterfaceInspector extends WebPanel
 {
     /**
-     * UI elements.
+     * {@link InterfaceTree}.
      */
     private final InterfaceTree tree;
-    private final WebScrollPane scrollPane;
 
     /**
-     * Component inspect behavior.
+     * {@link Component} inspect behavior.
      */
     private ComponentInspectBehavior inspectBehavior;
 
     /**
-     * Constructs new empty inspector.
+     * Constructs new empty {@link InterfaceInspector}.
      */
     public InterfaceInspector ()
     {
@@ -63,9 +62,9 @@ public class InterfaceInspector extends WebPanel
     }
 
     /**
-     * Constructs new inspector for the specified component and its childrens tree.
+     * Constructs new {@link InterfaceInspector} for the specified {@link Component} and its childrens tree.
      *
-     * @param inspected component to inspect
+     * @param inspected {@link Component} to inspect
      */
     public InterfaceInspector ( final Component inspected )
     {
@@ -73,7 +72,7 @@ public class InterfaceInspector extends WebPanel
     }
 
     /**
-     * Constructs new empty inspector.
+     * Constructs new empty {@link InterfaceInspector}.
      *
      * @param id style ID
      */
@@ -83,17 +82,17 @@ public class InterfaceInspector extends WebPanel
     }
 
     /**
-     * Constructs new inspector for the specified component and its childrens tree.
+     * Constructs new {@link InterfaceInspector} for the specified {@link Component} and its childrens tree.
      *
      * @param id        style ID
-     * @param inspected component to inspect
+     * @param inspected {@link Component} to inspect
      */
     public InterfaceInspector ( final StyleId id, final Component inspected )
     {
         super ( id );
 
         // Tree scroll
-        scrollPane = new WebScrollPane ( StyleId.inspectorScroll.at ( InterfaceInspector.this ) );
+        final WebScrollPane scrollPane = new WebScrollPane ( StyleId.inspectorScroll.at ( InterfaceInspector.this ) );
         scrollPane.setPreferredWidth ( 300 );
 
         // Interface tree
@@ -156,9 +155,9 @@ public class InterfaceInspector extends WebPanel
     }
 
     /**
-     * Sets inspected component.
+     * Sets inspected {@link Component}.
      *
-     * @param inspected component to inspect
+     * @param inspected {@link Component} to inspect
      */
     public void setInspected ( final Component inspected )
     {
@@ -166,7 +165,7 @@ public class InterfaceInspector extends WebPanel
     }
 
     /**
-     * Clears highlighted components.
+     * Clears highlighted {@link Component}s.
      */
     public void clearHighlights ()
     {
@@ -174,11 +173,11 @@ public class InterfaceInspector extends WebPanel
     }
 
     /**
-     * Returns separate inspector frame for the specified component.
-     * That frame will be displayed straight away on the screen.
+     * Returns separate {@link WebDialog} with inspector for the specified {@link Component}.
+     * That {@link WebDialog} will be displayed straight away on the screen.
      *
-     * @param inspected component to inspect
-     * @return separate inspector frame for the specified component
+     * @param inspected {@link Component} to inspect
+     * @return separate {@link WebDialog} with inspector for the specified {@link Component}
      */
     public static WebDialog showDialog ( final Component inspected )
     {
@@ -188,17 +187,17 @@ public class InterfaceInspector extends WebPanel
         dialog.setModal ( false );
         dialog.pack ();
         dialog.setLocationRelativeTo ( inspected );
-        // window.setAttachedTo ( ? );
+        // dialog.setAttachedTo ( ? );
         dialog.setVisible ( true );
         return dialog;
     }
 
     /**
-     * Returns separate inspector frame for the specified component.
-     * That frame will be displayed straight away on the screen.
+     * Returns separate {@link WebFrame} with inspector for the specified {@link Component}.
+     * That {@link WebFrame} will be displayed straight away on the screen.
      *
-     * @param inspected component to inspect
-     * @return separate inspector frame for the specified component
+     * @param inspected {@link Component} to inspect
+     * @return separate {@link WebFrame} with inspector for the specified {@link Component}
      */
     public static WebFrame showFrame ( final Component inspected )
     {
@@ -212,18 +211,31 @@ public class InterfaceInspector extends WebPanel
     }
 
     /**
-     * Returns separate inspector popover for the specified component.
-     * That popover will be displayed straight away near the inspected component.
+     * Returns separate {@link WebPopOver} with inspector for the specified {@link Component}.
+     * That {@link WebPopOver} will be displayed straight away near the inspected {@link Component}.
      *
-     * @param inspected component to inspect
-     * @return separate inspector popover for the specified component
+     * @param inspected {@link Component} to inspect
+     * @return separate {@link WebPopOver} with inspector for the specified {@link Component}
      */
     public static WebPopOver showPopOver ( final Component inspected )
+    {
+        return showPopOver ( inspected, PopOverDirection.right );
+    }
+
+    /**
+     * Returns separate {@link WebPopOver} with inspector for the specified {@link Component}.
+     * That {@link WebPopOver} will be displayed straight away near the inspected {@link Component}.
+     *
+     * @param inspected {@link Component} to inspect
+     * @param direction {@link PopOverDirection}
+     * @return separate {@link WebPopOver} with inspector for the specified {@link Component}
+     */
+    public static WebPopOver showPopOver ( final Component inspected, final PopOverDirection direction )
     {
         final WebPopOver popOver = new WebPopOver ( inspected );
         popOver.setIconImages ( WebLookAndFeel.getImages () );
         popOver.add ( new InterfaceInspector ( StyleId.inspectorPopover, inspected ) );
-        popOver.show ( inspected, PopOverDirection.right );
+        popOver.show ( inspected, direction );
         return popOver;
     }
 }

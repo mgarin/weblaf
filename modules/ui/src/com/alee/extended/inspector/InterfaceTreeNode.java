@@ -19,10 +19,10 @@ package com.alee.extended.inspector;
 
 import com.alee.api.IconSupport;
 import com.alee.api.TitleSupport;
-import com.alee.extended.inspector.info.AWTComponentInfo;
-import com.alee.extended.inspector.info.ComponentInfo;
-import com.alee.extended.inspector.info.JComponentInfo;
-import com.alee.extended.inspector.info.WComponentInfo;
+import com.alee.extended.inspector.info.AWTComponentPreview;
+import com.alee.extended.inspector.info.ComponentPreview;
+import com.alee.extended.inspector.info.JComponentPreview;
+import com.alee.extended.inspector.info.WComponentPreview;
 import com.alee.laf.tree.TreeState;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.managers.style.Skin;
@@ -30,7 +30,6 @@ import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleListener;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.LafUtils;
-import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,7 +39,7 @@ import java.awt.event.ContainerAdapter;
 import java.awt.event.ContainerEvent;
 
 /**
- * Custom node representing a single component in {@link com.alee.extended.inspector.InterfaceTree}.
+ * Custom node representing a single component in {@link InterfaceTree}.
  *
  * @author Mikle Garin
  */
@@ -48,11 +47,19 @@ import java.awt.event.ContainerEvent;
 public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleSupport
 {
     /**
-     * Component short info providers.
+     * {@link ComponentPreview} for extended components.
      */
-    private static final ComponentInfo wComponentInfo = new WComponentInfo ();
-    private static final ComponentInfo jComponentInfo = new JComponentInfo ();
-    private static final ComponentInfo awtComponentInfo = new AWTComponentInfo ();
+    private static final ComponentPreview wComponentPreview = new WComponentPreview ();
+
+    /**
+     * {@link ComponentPreview} for {@link JComponent}s.
+     */
+    private static final ComponentPreview jComponentPreview = new JComponentPreview ();
+
+    /**
+     * {@link ComponentPreview} for {@link Component}s.
+     */
+    private static final ComponentPreview awtComponentPreview = new AWTComponentPreview ();
 
     /**
      * Component state listeners.
@@ -62,36 +69,18 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
     private transient StyleListener styleListener;
 
     /**
-     * Constructs interface tree node.
+     * Constructs new {@link InterfaceTreeNode}.
      *
-     * @param tree      interface components tree
-     * @param component component this node references
+     * @param tree      {@link InterfaceTree}
+     * @param component {@link Component} this node references
      */
     public InterfaceTreeNode ( final InterfaceTree tree, final Component component )
     {
-        super ( "" + component.hashCode (), component );
+        super ( Integer.toString ( component.hashCode () ), component );
 
-        // It is really important to add component listeners later
-        // Otherwise we are risking to provide an additional set of listeners which will get invoked right away
-        SwingUtils.invokeLater ( new Runnable ()
-        {
-            @Override
-            public void run ()
-            {
-                initialize ( tree, component );
-            }
-        } );
-    }
-
-    /**
-     * Initializes this node.
-     *
-     * @param tree      interface components tree
-     * @param component component this node references
-     */
-    private void initialize ( final InterfaceTree tree, final Component component )
-    {
-        // Proper nodes state updates
+        /**
+         * Node component listener.
+         */
         componentAdapter = new ComponentAdapter ()
         {
             @Override
@@ -120,9 +109,16 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
         };
         component.addComponentListener ( componentAdapter );
 
+        /**
+         * It is important to avoid listening to {@link CellRendererPane}.
+         * It can generates hundreds of events and will clutter us with unnecessary updates.
+         * This will basically workaround any issues with {@link CellRendererPane} in {@link JTree}, {@link JList} and {@link JTable}.
+         */
         if ( !( component instanceof CellRendererPane ) )
         {
-            // Additional container listeners
+            /**
+             * Additional container listeners.
+             */
             if ( component instanceof Container )
             {
                 containerAdapter = new ContainerAdapter ()
@@ -134,7 +130,7 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
                         if ( tree.accept ( child ) )
                         {
                             final TreeState treeState = tree.getTreeState ( InterfaceTreeNode.this );
-                            tree.addChildNode ( InterfaceTreeNode.this, new InterfaceTreeNode ( tree, e.getChild () ) );
+                            tree.addChildNode ( InterfaceTreeNode.this, new InterfaceTreeNode ( tree, child ) );
                             tree.setTreeState ( treeState, InterfaceTreeNode.this );
                         }
                     }
@@ -160,8 +156,10 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
                 ( ( Container ) component ).addContainerListener ( containerAdapter );
             }
 
-            // Additional listeners for components using WebLaF-based UI
-            // This is checked instead of styling support to avoid issues when WebLaF is not installed as LaF
+            /**
+             * Additional listeners for components using WebLaF-based UI.
+             * This is checked instead of styling support to avoid issues when WebLaF is not installed as LaF.
+             */
             if ( component instanceof JComponent )
             {
                 final JComponent jComponent = ( JComponent ) component;
@@ -242,14 +240,14 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
     public Icon getIcon ()
     {
         final Component component = getComponent ();
-        return getInfo ( component ).getIcon ( component );
+        return getPreview ( component ).getIcon ( component );
     }
 
     @Override
     public String getTitle ()
     {
         final Component component = getComponent ();
-        return getInfo ( component ).getText ( component );
+        return getPreview ( component ).getText ( component );
     }
 
     /**
@@ -258,22 +256,22 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
      * @param component component to return descriptor for
      * @return component descriptor
      */
-    protected ComponentInfo getInfo ( final Component component )
+    protected ComponentPreview getPreview ( final Component component )
     {
         if ( component instanceof JComponent )
         {
             if ( StyleManager.isSupported ( ( JComponent ) component ) )
             {
-                return wComponentInfo;
+                return wComponentPreview;
             }
             else
             {
-                return jComponentInfo;
+                return jComponentPreview;
             }
         }
         else
         {
-            return awtComponentInfo;
+            return awtComponentPreview;
         }
     }
 

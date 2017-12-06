@@ -17,31 +17,38 @@
 
 package com.alee.extended.inspector.info;
 
+import com.alee.extended.heatmap.HeatMap;
+
 import javax.swing.*;
-import java.awt.*;
 
 /**
- * Component information provider interface.
+ * Default {@link JComponent} information provider.
  *
- * @param <T> component type
  * @author Mikle Garin
  */
 
-public interface ComponentInfo<T extends Component>
+public class JComponentPreview<T extends JComponent> extends AWTComponentPreview<T>
 {
     /**
-     * Returns icon for the specified component.
-     *
-     * @param component component to provide icon for
-     * @return icon for the specified component
+     * Additional type icons.
      */
-    public Icon getIcon ( T component );
+    public static final ImageIcon layeredPaneType = new ImageIcon ( AbstractComponentPreview.class.getResource ( "icons/layeredpane.png" ) );
+    public static final ImageIcon heatMapType = new ImageIcon ( AbstractComponentPreview.class.getResource ( "icons/heatmap.png" ) );
 
-    /**
-     * Returns string value for the specified component.
-     *
-     * @param component object to provide text for
-     * @return string value for the specified component
-     */
-    public String getText ( T component );
+    @Override
+    public Icon getIconImpl ( final T component )
+    {
+        if ( component instanceof JLayeredPane )
+        {
+            return layeredPaneType;
+        }
+        else if ( component instanceof HeatMap )
+        {
+            return heatMapType;
+        }
+        else
+        {
+            return super.getIconImpl ( component );
+        }
+    }
 }

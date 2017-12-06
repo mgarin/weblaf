@@ -35,7 +35,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WComponentInfo<T extends JComponent> extends AbstractComponentInfo<T>
+public class WComponentPreview<T extends JComponent> extends AbstractComponentPreview<T>
 {
     @Override
     public Icon getIconImpl ( final T component )
