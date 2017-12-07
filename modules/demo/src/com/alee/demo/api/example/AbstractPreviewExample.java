@@ -76,7 +76,7 @@ public abstract class AbstractPreviewExample extends AbstractExample
      */
     protected LayoutManager createPreviewLayout ()
     {
-        return new VerticalFlowLayout ( 0, -32, true, false );
+        return new VerticalFlowLayout ( 0, -25, true, false );
     }
 
     /**

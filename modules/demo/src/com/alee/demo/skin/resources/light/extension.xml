@@ -9,13 +9,39 @@
     <iconSet>com.alee.demo.skin.LightIconSet</iconSet>
 
     <!-- Empty central area panel -->
-    <style type="panel" id="emptycontent" extends="transparent" padding="10">
+    <style type="panel" id="emptycontent" padding="10">
+        <painter>
+            <decorations>
+                <decoration>
+                    <BoundsShape />
+                    <PresetTextureBackground preset="lightWashedWall" />
+                </decoration>
+            </decorations>
+        </painter>
 
-        <!-- Empty content label -->
+        <!-- Empty content labels -->
         <style type="styledlabel" id="emptycontent">
             <component>
-                <foreground>100,100,100</foreground>
                 <iconTextGap>10</iconTextGap>
+            </component>
+            <painter>
+                <decorations>
+                    <decoration>
+                        <LabelLayout>
+                            <StyledLabelText shadow="true" shadowColor="150,150,150" shadowSize="2" />
+                        </LabelLayout>
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+        <style type="styledlabel" id="emptycontent-info" extends="emptycontent">
+            <component>
+                <foreground>100,100,100</foreground>
+            </component>
+        </style>
+        <style type="styledlabel" id="emptycontent-warn" extends="emptycontent">
+            <component>
+                <foreground>150,50,50</foreground>
             </component>
         </style>
 
@@ -77,9 +103,9 @@
         <painter>
             <decorations>
                 <decoration>
-                    <BoundsShape />
-                    <WebShadow type="inner" width="15" />
-                    <ColorBackground color="white" />
+                    <WebShape round="0" />
+                    <WebShadow type="inner" width="10" />
+                    <PresetTextureBackground preset="lightWashedWall" />
                 </decoration>
             </decorations>
         </painter>

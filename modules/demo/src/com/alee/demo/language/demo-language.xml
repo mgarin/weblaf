@@ -129,12 +129,12 @@
     </Dictionary>
     <Dictionary name="Content area" prefix="content">
         <record key="empty">
-            <value lang="en">Double-click any example{br}in the left frame to view it</value>
-            <value lang="ru">Кликните дважды по любому примеру{br}в дереве слева для его просмотра</value>
+            <value lang="en">You can find all examples{br}in the examples frame on the left</value>
+            <value lang="ru">Вы можете найти все примеры{br}во фрейме с примерами слева</value>
         </record>
         <record key="issues">
             <value lang="en">This is an early demo preview{br}it still contains some issues</value>
-            <value lang="ru">Данное демо является ранним превью{br}в нём всё ещё присутствуют некоторые проблемы</value>
+            <value lang="ru">Это демо является ранним превью{br}в нём ещё присутствуют проблемы</value>
         </record>
         <Dictionary name="Example" prefix="example">
             <Dictionary name="Wiki" prefix="wiki">

@@ -247,7 +247,7 @@ public final class NinePatchUtils
 
         // Creating shade image
         final Shape shape = new RoundRectangle2D.Double ( shadeWidth, shadeWidth, w - shadeWidth * 2, w - shadeWidth * 2, r, r );
-        final BufferedImage shade = ImageUtils.createShadeImage ( w, w, shape, shadeWidth, shadeOpacity, true );
+        final BufferedImage shade = ImageUtils.createShadowImage ( w, w, shape, shadeWidth, shadeOpacity, true );
 
         // Creating nine-patch icon based on shade image
         final NinePatchIcon ninePatchIcon = NinePatchIcon.create ( shade );

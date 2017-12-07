@@ -34,6 +34,7 @@ import com.alee.extended.dock.SidebarVisibility;
 import com.alee.extended.dock.WebDockablePane;
 import com.alee.extended.label.TextWrap;
 import com.alee.extended.label.WebStyledLabel;
+import com.alee.extended.layout.AlignLayout;
 import com.alee.extended.link.UrlLinkAction;
 import com.alee.extended.link.WebLink;
 import com.alee.extended.panel.GroupPanel;
@@ -122,6 +123,7 @@ public final class DemoApplication extends WebFrame
     {
         initialize ();
         setVisible ( true );
+        examplesFrame.requestFocusInWindow ();
     }
 
     /**
@@ -168,18 +170,18 @@ public final class DemoApplication extends WebFrame
         } );
 
         final WebOverlay overlay = new WebOverlay ( StyleId.panelFocusable, examplesPane );
+        final WebPanel overlayContainer = new WebPanel ( DemoStyles.emptycontentPanel, new AlignLayout () );
 
-        final WebPanel overlayContainer = new WebPanel ( DemoStyles.emptycontentPanel );
+        final StyleId guideId = DemoStyles.emptycontentInfoLabel.at ( overlayContainer );
+        final WebStyledLabel guide = new WebStyledLabel ( guideId, "demo.content.empty", DemoIcons.compass36 );
+        guide.changeFontSize ( 5 ).setBoldFont ().setWrap ( TextWrap.none );
 
-        final StyleId overlayLabelId = DemoStyles.emptycontentLabel.at ( overlayContainer );
+        final StyleId issuesId = DemoStyles.emptycontentWarnLabel.at ( overlayContainer );
+        final WebStyledLabel issues = new WebStyledLabel ( issuesId, "demo.content.issues", DemoIcons.bug36 );
+        issues.changeFontSize ( 5 ).setBoldFont ().setWrap ( TextWrap.none );
 
-        final WebStyledLabel guide = new WebStyledLabel ( overlayLabelId, "demo.content.empty", DemoIcons.compass36 );
-        guide.changeFontSize ( 5 ).setWrap ( TextWrap.none );
-
-        final WebStyledLabel issues = new WebStyledLabel ( overlayLabelId, "demo.content.issues", DemoIcons.bug36 );
-        issues.changeFontSize ( 5 ).setWrap ( TextWrap.none );
-
-        overlayContainer.add ( new GroupPanel ( 20, false, guide, issues ) );
+        overlayContainer.add ( new GroupPanel ( 20, false, guide, issues ), "0,0" );
+        overlay.addOverlay ( overlayContainer );
 
         examplesPane.addDocumentListener ( new DocumentAdapter<ExampleData> ()
         {
@@ -195,7 +197,6 @@ public final class DemoApplication extends WebFrame
                 overlayContainer.setVisible ( examplesPane.getDocumentsCount () == 0 );
             }
         } );
-        overlay.addOverlay ( overlayContainer, SwingConstants.CENTER, SwingConstants.CENTER );
 
         dockablePane.setContent ( overlay );
     }

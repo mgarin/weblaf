@@ -1376,18 +1376,18 @@ public final class ImageUtils
     }
 
     /**
-     * Returns shade image based on provided shape.
+     * Returns shadow image based on provided shape.
      *
-     * @param width      shade image width
-     * @param height     shade image height
-     * @param shape      shade shape
-     * @param shadeWidth shade width
-     * @param opacity    shade opacity
-     * @param clipShade  whether or not should clip shade form
-     * @return shade image based on provided shape
+     * @param width       shadow image width
+     * @param height      shadow image height
+     * @param shape       shadow shape
+     * @param shadowWidth shadow width
+     * @param opacity     shadow opacity
+     * @param clip        whether or not should clip shadow form
+     * @return shadow image based on provided shape
      */
-    public static BufferedImage createShadeImage ( final int width, final int height, final Shape shape, final int shadeWidth,
-                                                   final float opacity, final boolean clipShade )
+    public static BufferedImage createShadowImage ( final int width, final int height, final Shape shape, final int shadowWidth,
+                                                    final float opacity, final boolean clip )
     {
         // Creating template image
         final BufferedImage bi = createCompatibleImage ( width, height, Transparency.TRANSLUCENT );
@@ -1397,14 +1397,14 @@ public final class ImageUtils
         ig.fill ( shape );
         ig.dispose ();
 
-        // Creating shade image
-        final ShadowFilter sf = new ShadowFilter ( shadeWidth, 0, 0, opacity );
-        final BufferedImage shade = sf.filter ( bi, null );
+        // Creating shadow image
+        final ShadowFilter sf = new ShadowFilter ( shadowWidth, 0, 0, opacity );
+        final BufferedImage shadow = sf.filter ( bi, null );
 
-        // Clipping shade image
-        if ( clipShade )
+        // Clipping shadow image
+        if ( clip )
         {
-            final Graphics2D g2d = shade.createGraphics ();
+            final Graphics2D g2d = shadow.createGraphics ();
             GraphicsUtils.setupAntialias ( g2d );
             g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_IN ) );
             g2d.setPaint ( ColorUtils.transparent () );
@@ -1412,19 +1412,19 @@ public final class ImageUtils
             g2d.dispose ();
         }
 
-        return shade;
+        return shadow;
     }
 
     /**
-     * Returns shade image based on provided shape.
+     * Returns shadow image based on provided shape.
      *
-     * @param width      shade image width
-     * @param shape      shade shape
-     * @param shadeWidth shade width
-     * @param opacity    shade opacity
-     * @return shade image based on provided shape
+     * @param width      shadow image width
+     * @param shape      shadow shape
+     * @param shadowWidth shadow width
+     * @param opacity    shadow opacity
+     * @return shadow image based on provided shape
      */
-    public static BufferedImage createInnerShadeImage ( final int width, final Shape shape, final int shadeWidth, final float opacity )
+    public static BufferedImage createInnerShadowImage ( final int width, final Shape shape, final int shadowWidth, final float opacity )
     {
         // Creating template image
         final BufferedImage bi = ImageUtils.createCompatibleImage ( width, width, Transparency.TRANSLUCENT );
@@ -1436,19 +1436,19 @@ public final class ImageUtils
         ig.fill ( area );
         ig.dispose ();
 
-        // Creating shade image
-        final ShadowFilter sf = new ShadowFilter ( shadeWidth, 0, 0, opacity );
-        final BufferedImage shade = sf.filter ( bi, null );
+        // Creating shadow image
+        final ShadowFilter sf = new ShadowFilter ( shadowWidth, 0, 0, opacity );
+        final BufferedImage shadow = sf.filter ( bi, null );
 
-        // Clipping shade image
-        final Graphics2D g2d = shade.createGraphics ();
+        // Clipping shadow image
+        final Graphics2D g2d = shadow.createGraphics ();
         GraphicsUtils.setupAntialias ( g2d );
         g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_IN ) );
         g2d.setPaint ( ColorUtils.transparent () );
         g2d.fill ( area );
         g2d.dispose ();
 
-        return shade.getSubimage ( shadeWidth, shadeWidth, width - shadeWidth * 2, width - shadeWidth * 2 );
+        return shadow.getSubimage ( shadowWidth, shadowWidth, width - shadowWidth * 2, width - shadowWidth * 2 );
     }
 
     /**

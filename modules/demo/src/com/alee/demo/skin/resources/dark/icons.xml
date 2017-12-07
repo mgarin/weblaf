@@ -28,7 +28,7 @@
         <SvgFill selector="svg" color="240,240,240" />
     </SvgIcon>
     <SvgIcon id="bug36" path="general/bug.svg" size="36,36">
-        <SvgFill selector="svg" color="240,240,240" />
+        <SvgFill selector="svg" color="255,150,150" />
     </SvgIcon>
     <SvgIcon id="github36" path="general/github.svg" size="36,36">
         <SvgFill selector="svg" color="240,240,240" />

@@ -89,9 +89,9 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
         final float opacity = getOpacity ();
         if ( width > 0 && opacity > 0f )
         {
-            // Shade image bounds
+            // Shadow image bounds
             final ShadowType type = getType ();
-            final Rectangle b = getShadeBounds ( type, shape, width );
+            final Rectangle b = getShadowBounds ( type, shape, width );
 
             // Deciding how shadow should be painted
             final IShape shapeType = d.getShape ();
@@ -104,14 +104,14 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
                 if ( type == ShadowType.outer )
                 {
                     // Outer 9-patch shadow icon
-                    shadowIcon = getShadeIcon ( stretch, b, width, opacity, getColor (), shape, settings );
+                    shadowIcon = getShadowIcon ( stretch, b, width, opacity, getColor (), shape, settings );
                     shadowIcon.paintIcon ( g2d, b.x, b.y, b.width, b.height );
                     shadowImage = null;
                 }
                 else
                 {
                     // Inner 9-patch shadow icon
-                    shadowIcon = getInnerShadeIcon ( stretch, b, width, opacity, getColor (), shape, settings );
+                    shadowIcon = getInnerShadowIcon ( stretch, b, width, opacity, getColor (), shape, settings );
                     shadowIcon.paintIcon ( g2d, b.x, b.y, b.width, b.height );
                     shadowImage = null;
                 }
@@ -123,20 +123,20 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
                 if ( type == ShadowType.outer )
                 {
                     // Outer shadow image
-                    shadowImage = getShadeImage ( b, width, opacity, getColor (), shape, settings );
+                    shadowImage = getShadowImage ( b, width, opacity, getColor (), shape, settings );
                     g2d.drawImage ( shadowImage, b.x, b.y, b.width, b.height, null );
                     shadowIcon = null;
                 }
                 else
                 {
                     // Inner shadow image
-                    shadowImage = getInnerShadeImage ( b, width, opacity, getColor (), shape, settings );
+                    shadowImage = getInnerShadowImage ( b, width, opacity, getColor (), shape, settings );
                     g2d.drawImage ( shadowImage, b.x, b.y, b.width, b.height, null );
                     shadowIcon = null;
                 }
             }
 
-            //            // Shade info
+            //            // Shadow info
             //            final StretchInfo stretch = d.getShape ().getStretchInfo ( bounds, c, d );
             //            if ( stretch != null )
             //            {
@@ -170,7 +170,7 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
      * @param width shadow width
      * @return bounds used for shadow image generation
      */
-    protected Rectangle getShadeBounds ( final ShadowType type, final Shape shape, final int width )
+    protected Rectangle getShadowBounds ( final ShadowType type, final Shape shape, final int width )
     {
         final Rectangle sb = shape.getBounds ();
         if ( type == ShadowType.outer )
@@ -195,8 +195,8 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
      * @param settings    shape settings
      * @return cached shadow icon based on provided shape
      */
-    public static NinePatchIcon getShadeIcon ( final StretchInfo stretchInfo, final Rectangle bounds, final int width, final float opacity,
-                                               final Color color, final Shape shape, final Object... settings )
+    public static NinePatchIcon getShadowIcon ( final StretchInfo stretchInfo, final Rectangle bounds, final int width, final float opacity,
+                                                final Color color, final Shape shape, final Object... settings )
     {
         // Width and height is added as key in case there are no horizontal and/or vertical stretchable areas
         final int hor = stretchInfo.getHorizontalStretch () == null ? bounds.width : 0;
@@ -205,7 +205,7 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
         NinePatchIcon shadow = shadowIconsCache.containsKey ( key ) ? shadowIconsCache.get ( key ).get () : null;
         if ( shadow == null )
         {
-            shadow = createShadeIcon ( stretchInfo, bounds, width, opacity, color, shape );
+            shadow = createShadowIcon ( stretchInfo, bounds, width, opacity, color, shape );
             shadowIconsCache.put ( key, new WeakReference<NinePatchIcon> ( shadow ) );
         }
         return shadow;
@@ -222,11 +222,11 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
      * @param shape       shadow shape
      * @return shadow nine-patch icon
      */
-    public static NinePatchIcon createShadeIcon ( final StretchInfo stretchInfo, final Rectangle bounds, final int width,
-                                                  final float opacity, final Color color, final Shape shape )
+    public static NinePatchIcon createShadowIcon ( final StretchInfo stretchInfo, final Rectangle bounds, final int width,
+                                                   final float opacity, final Color color, final Shape shape )
     {
         // Creating shadow image
-        final BufferedImage image = createShadeImage ( bounds, width, opacity, color, shape );
+        final BufferedImage image = createShadowImage ( bounds, width, opacity, color, shape );
 
         // Creating nine-patch icon based on shadow image
         final NinePatchIcon icon = NinePatchIcon.create ( image );
@@ -271,14 +271,14 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
      * @param settings shape settings
      * @return cached shadow image based on provided shape
      */
-    public static BufferedImage getShadeImage ( final Rectangle bounds, final int width, final float opacity, final Color color,
-                                                final Shape shape, final Object... settings )
+    public static BufferedImage getShadowImage ( final Rectangle bounds, final int width, final float opacity, final Color color,
+                                                 final Shape shape, final Object... settings )
     {
         final String key = TextUtils.getSettingsKey ( ShadowType.outer, bounds.width, bounds.height, width, opacity, color, settings );
         BufferedImage shadow = shadowImagesCache.containsKey ( key ) ? shadowImagesCache.get ( key ).get () : null;
         if ( shadow == null )
         {
-            shadow = createShadeImage ( bounds, width, opacity, color, shape );
+            shadow = createShadowImage ( bounds, width, opacity, color, shape );
             shadowImagesCache.put ( key, new WeakReference<BufferedImage> ( shadow ) );
         }
         return shadow;
@@ -294,8 +294,8 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
      * @param shape   shadow shape
      * @return shadow image based on provided shape
      */
-    public static BufferedImage createShadeImage ( final Rectangle bounds, final int width, final float opacity, final Color color,
-                                                   final Shape shape )
+    public static BufferedImage createShadowImage ( final Rectangle bounds, final int width, final float opacity, final Color color,
+                                                    final Shape shape )
     {
         // Creating template image
         final BufferedImage bi = ImageUtils.createCompatibleImage ( bounds.width, bounds.height, Transparency.TRANSLUCENT );
@@ -338,8 +338,8 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
      * @param settings    shape settings
      * @return cached inner shadow icon based on provided shape
      */
-    public static NinePatchIcon getInnerShadeIcon ( final StretchInfo stretchInfo, final Rectangle bounds, final int width,
-                                                    final float opacity, final Color color, final Shape shape, final Object... settings )
+    public static NinePatchIcon getInnerShadowIcon ( final StretchInfo stretchInfo, final Rectangle bounds, final int width,
+                                                     final float opacity, final Color color, final Shape shape, final Object... settings )
     {
         // Width and height is added as key in case there are no horizontal and/or vertical stretchable areas
         final int hor = stretchInfo.getHorizontalStretch () == null ? bounds.width : 0;
@@ -348,7 +348,7 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
         NinePatchIcon shadow = shadowIconsCache.containsKey ( key ) ? shadowIconsCache.get ( key ).get () : null;
         if ( shadow == null )
         {
-            shadow = createInnerShadeIcon ( stretchInfo, bounds, width, opacity, color, shape );
+            shadow = createInnerShadowIcon ( stretchInfo, bounds, width, opacity, color, shape );
             shadowIconsCache.put ( key, new WeakReference<NinePatchIcon> ( shadow ) );
         }
         return shadow;
@@ -365,11 +365,11 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
      * @param shape       shadow shape
      * @return inner shadow nine-patch icon
      */
-    public static NinePatchIcon createInnerShadeIcon ( final StretchInfo stretchInfo, final Rectangle bounds, final int width,
-                                                       final float opacity, final Color color, final Shape shape )
+    public static NinePatchIcon createInnerShadowIcon ( final StretchInfo stretchInfo, final Rectangle bounds, final int width,
+                                                        final float opacity, final Color color, final Shape shape )
     {
         // Creating inner shadow image
-        final BufferedImage image = createInnerShadeImage ( bounds, width, opacity, color, shape );
+        final BufferedImage image = createInnerShadowImage ( bounds, width, opacity, color, shape );
 
         // Creating nine-patch icon based on inner shadow image
         final NinePatchIcon icon = NinePatchIcon.create ( image );
@@ -414,14 +414,14 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
      * @param settings shape settings
      * @return cached inner shadow image based on provided shape
      */
-    public static BufferedImage getInnerShadeImage ( final Rectangle bounds, final int width, final float opacity, final Color color,
-                                                     final Shape shape, final Object... settings )
+    public static BufferedImage getInnerShadowImage ( final Rectangle bounds, final int width, final float opacity, final Color color,
+                                                      final Shape shape, final Object... settings )
     {
         final String key = TextUtils.getSettingsKey ( ShadowType.inner, bounds.width, bounds.height, width, opacity, color, settings );
         BufferedImage shadow = shadowImagesCache.containsKey ( key ) ? shadowImagesCache.get ( key ).get () : null;
         if ( shadow == null )
         {
-            shadow = createInnerShadeImage ( bounds, width, opacity, color, shape );
+            shadow = createInnerShadowImage ( bounds, width, opacity, color, shape );
             shadowImagesCache.put ( key, new WeakReference<BufferedImage> ( shadow ) );
         }
         return shadow;
@@ -437,11 +437,11 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
      * @param shape   shadow shape
      * @return inner shadow image based on provided shape
      */
-    public static BufferedImage createInnerShadeImage ( final Rectangle bounds, final int width, final float opacity, final Color color,
-                                                        final Shape shape )
+    public static BufferedImage createInnerShadowImage ( final Rectangle bounds, final int width, final float opacity, final Color color,
+                                                         final Shape shape )
     {
-        final Rectangle b =
-                new Rectangle ( bounds.x - width * 2, bounds.y - width * 2, bounds.width + width * 4, bounds.height + width * 4 );
+        final Rectangle b = new Rectangle ( bounds.x - width * 2, bounds.y - width * 2,
+                bounds.width + width * 4, bounds.height + width * 4 );
 
         // Creating template image
         final BufferedImage bi = ImageUtils.createCompatibleImage ( b.width, b.height, Transparency.TRANSLUCENT );

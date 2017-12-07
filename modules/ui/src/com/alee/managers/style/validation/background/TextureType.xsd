@@ -34,7 +34,10 @@
             <xs:enumeration value="lightMaze" />
 
             <!-- Washed wall texture -->
-            <xs:enumeration value="washedWall" />
+            <xs:enumeration value="lightWashedWall" />
+
+            <!-- Washed wall texture -->
+            <xs:enumeration value="darkWashedWall" />
 
             <!-- Alpha layer texture -->
             <xs:enumeration value="alpha" />

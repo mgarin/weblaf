@@ -693,7 +693,7 @@ public class MagnifierGlass extends JComponent
             {
                 final Dimension ps = getPreferredSize ();
                 final Ellipse2D.Double shape = new Ellipse2D.Double ( shadeWidth, shadeWidth, size.width, size.height );
-                shadeIcon = new ImageIcon ( ImageUtils.createShadeImage ( ps.width, ps.height, shape, shadeWidth, 0.75f, true ) );
+                shadeIcon = new ImageIcon ( ImageUtils.createShadowImage ( ps.width, ps.height, shape, shadeWidth, 0.75f, true ) );
                 lastShadeWidth = shadeWidth;
             }
         }

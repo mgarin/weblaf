@@ -102,7 +102,7 @@
             <decorations>
                 <decoration>
                     <WebShape round="8" />
-                    <ExpandingShadow type="outer" width="32" />
+                    <ExpandingShadow type="outer" width="25" opacity="1" />
                 </decoration>
             </decorations>
         </painter>

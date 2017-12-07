@@ -92,11 +92,17 @@ public enum TextureType
     lightMaze,
 
     /**
+     * Light washed wall texture.
+     * Pattern source: https://www.transparenttextures.com/
+     */
+    lightWashedWall,
+
+    /**
      * Washed wall texture.
      * Pattern source: http://subtlepatterns.com/
      * Made by Sagive SEO: http://www.sagive.co.il/
      */
-    washedWall,
+    darkWashedWall,
 
     /**
      * Alpha layer texture.
