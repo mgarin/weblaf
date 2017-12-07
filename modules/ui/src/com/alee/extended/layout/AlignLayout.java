@@ -238,6 +238,85 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
     }
 
     @Override
+    public void layoutContainer ( final Container parent )
+    {
+        final Insets insets = parent.getInsets ();
+        final int cw = parent.getWidth () - insets.left - insets.right;
+        final int ch = parent.getHeight () - insets.top - insets.bottom;
+        for ( final Component component : parent.getComponents () )
+        {
+            // Component constraints
+            final String align = constraints.get ( component );
+            final int halign = getHalign ( align );
+            final int valign = getValign ( align );
+
+            // Component size
+            final Dimension ps = component.getPreferredSize ();
+            ps.width = Math.min ( ps.width, cw );
+            ps.height = Math.min ( ps.height, ch );
+
+            // Determining x coordinate
+            int x = 0;
+            if ( hfill )
+            {
+                x = insets.left;
+            }
+            else
+            {
+                switch ( halign )
+                {
+                    case LEFT:
+                    {
+                        x = insets.left;
+                        break;
+                    }
+                    case CENTER:
+                    {
+                        x = parent.getWidth () / 2 - ps.width / 2;
+                        break;
+                    }
+                    case RIGHT:
+                    {
+                        x = parent.getWidth () - ps.width - insets.right;
+                        break;
+                    }
+                }
+            }
+
+            // Determining y coordinate
+            int y = 0;
+            if ( vfill )
+            {
+                y = insets.top;
+            }
+            else
+            {
+                switch ( valign )
+                {
+                    case TOP:
+                    {
+                        y = insets.top;
+                        break;
+                    }
+                    case CENTER:
+                    {
+                        y = parent.getHeight () / 2 - ps.height / 2;
+                        break;
+                    }
+                    case BOTTOM:
+                    {
+                        y = parent.getHeight () - ps.height - insets.bottom;
+                        break;
+                    }
+                }
+            }
+
+            // Placing component
+            component.setBounds ( x, y, hfill ? cw : ps.width, vfill ? ch : ps.height );
+        }
+    }
+
+    @Override
     public Dimension preferredLayoutSize ( final Container parent )
     {
         final Dimension ps;
@@ -332,80 +411,5 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
             }
         }
         return size.width > 0 || size.height > 0 ? size : null;
-    }
-
-    @Override
-    public void layoutContainer ( final Container parent )
-    {
-        final Insets insets = parent.getInsets ();
-        final int cw = parent.getWidth () - insets.left - insets.right;
-        final int ch = parent.getHeight () - insets.top - insets.bottom;
-        for ( final Component component : parent.getComponents () )
-        {
-            // Component constraints and size
-            final String align = constraints.get ( component );
-            final int halign = getHalign ( align );
-            final int valign = getValign ( align );
-            final Dimension ps = component.getPreferredSize ();
-
-            // Determining x coordinate
-            int x = 0;
-            if ( hfill )
-            {
-                x = insets.left;
-            }
-            else
-            {
-                switch ( halign )
-                {
-                    case LEFT:
-                    {
-                        x = insets.left;
-                        break;
-                    }
-                    case CENTER:
-                    {
-                        x = parent.getWidth () / 2 - ps.width / 2;
-                        break;
-                    }
-                    case RIGHT:
-                    {
-                        x = parent.getWidth () - ps.width - insets.right;
-                        break;
-                    }
-                }
-            }
-
-            // Determining y coordinate
-            int y = 0;
-            if ( vfill )
-            {
-                y = insets.top;
-            }
-            else
-            {
-                switch ( valign )
-                {
-                    case TOP:
-                    {
-                        y = insets.top;
-                        break;
-                    }
-                    case CENTER:
-                    {
-                        y = parent.getHeight () / 2 - ps.height / 2;
-                        break;
-                    }
-                    case BOTTOM:
-                    {
-                        y = parent.getHeight () - ps.height - insets.bottom;
-                        break;
-                    }
-                }
-            }
-
-            // Placing component
-            component.setBounds ( x, y, hfill ? cw : ps.width, vfill ? ch : ps.height );
-        }
     }
 }
