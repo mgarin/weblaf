@@ -124,11 +124,11 @@ public class ExpandingShadow<E extends JComponent, D extends IDecoration<E, D>, 
     {
         // Creating shadow pattern
         final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        gp.moveTo ( bounds.x + width * 1.45, bounds.y + width * 1.45 );
-        gp.lineTo ( bounds.x + bounds.width - width * 1.45, bounds.y + width * 1.45 );
-        gp.lineTo ( bounds.x + bounds.width - width, bounds.y + bounds.height - width );
-        gp.quadTo ( bounds.x + bounds.width / 2, bounds.y + bounds.height - width * 1.9, bounds.x + width,
-                bounds.y + bounds.height - width );
+        gp.moveTo ( bounds.x + width * 1.2, bounds.y + width * 1.2 );
+        gp.lineTo ( bounds.x + bounds.width - width * 1.2, bounds.y + width * 1.2 );
+        gp.lineTo ( bounds.x + bounds.width - width, bounds.y + bounds.height - width * 0.5 );
+        gp.quadTo ( bounds.x + bounds.width / 2, bounds.y + bounds.height - width * 1.9,
+                bounds.x + width, bounds.y + bounds.height - width * 0.5 );
         gp.closePath ();
 
         // Creating shadow image

@@ -30,6 +30,7 @@ import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleListener;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.LafUtils;
+import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,24 +50,24 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
     /**
      * {@link ComponentPreview} for extended components.
      */
-    private static final ComponentPreview wComponentPreview = new WComponentPreview ();
+    protected static final ComponentPreview wComponentPreview = new WComponentPreview ();
 
     /**
      * {@link ComponentPreview} for {@link JComponent}s.
      */
-    private static final ComponentPreview jComponentPreview = new JComponentPreview ();
+    protected static final ComponentPreview jComponentPreview = new JComponentPreview ();
 
     /**
      * {@link ComponentPreview} for {@link Component}s.
      */
-    private static final ComponentPreview awtComponentPreview = new AWTComponentPreview ();
+    protected static final ComponentPreview awtComponentPreview = new AWTComponentPreview ();
 
     /**
      * Component state listeners.
      */
-    private transient ComponentAdapter componentAdapter;
-    private transient ContainerAdapter containerAdapter;
-    private transient StyleListener styleListener;
+    protected transient ComponentAdapter componentAdapter;
+    protected transient ContainerAdapter containerAdapter;
+    protected transient StyleListener styleListener;
 
     /**
      * Constructs new {@link InterfaceTreeNode}.
@@ -86,25 +87,31 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
             @Override
             public void componentResized ( final ComponentEvent e )
             {
-                tree.updateNode ( InterfaceTreeNode.this );
+                /**
+                 * We don't need to react to size changes.
+                 * Also call to {@link InterfaceTreeNode#updateNodeLater(InterfaceTree)} causes UI flickering so this is disabled.
+                 */
             }
 
             @Override
             public void componentMoved ( final ComponentEvent e )
             {
-                tree.updateNode ( InterfaceTreeNode.this );
+                /**
+                 * We don't need to react to location changes.
+                 * Also call to {@link InterfaceTreeNode#updateNodeLater(InterfaceTree)} causes UI flickering so this is disabled.
+                 */
             }
 
             @Override
             public void componentShown ( final ComponentEvent e )
             {
-                tree.updateNode ( InterfaceTreeNode.this );
+                updateNodeLater ( tree );
             }
 
             @Override
             public void componentHidden ( final ComponentEvent e )
             {
-                tree.updateNode ( InterfaceTreeNode.this );
+                updateNodeLater ( tree );
             }
         };
         component.addComponentListener ( componentAdapter );
@@ -182,7 +189,7 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
                         @Override
                         public void skinUpdated ( final JComponent component, final StyleId styleId )
                         {
-                            tree.updateNode ( InterfaceTreeNode.this );
+                            updateNodeLater ( tree );
                         }
                     };
                     StyleManager.addStyleListener ( jComponent, styleListener );
@@ -192,9 +199,26 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
     }
 
     /**
+     * Performs delayed {@link InterfaceTreeNode} update.
+     *
+     * @param tree {@link InterfaceTree}
+     */
+    protected void updateNodeLater ( final InterfaceTree tree )
+    {
+        SwingUtils.invokeLater ( new Runnable ()
+        {
+            @Override
+            public void run ()
+            {
+                tree.updateNode ( InterfaceTreeNode.this );
+            }
+        } );
+    }
+
+    /**
      * Destroys this node and all of its data.
      */
-    private void destroy ()
+    protected void destroy ()
     {
         // Destroying all child nodes first
         for ( int i = 0; i < getChildCount (); i++ )
