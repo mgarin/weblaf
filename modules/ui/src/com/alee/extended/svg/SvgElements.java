@@ -52,6 +52,11 @@ public final class SvgElements
     public static final String FILL = "fill";
 
     /**
+     * Gradient stop color.
+     */
+    public static final String STOP_COLOR = "stop-color";
+
+    /**
      * Transform.
      */
     public static final String TRANSFORM = "transform";

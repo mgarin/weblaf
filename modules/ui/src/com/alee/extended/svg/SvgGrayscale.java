@@ -19,6 +19,8 @@ package com.alee.extended.svg;
 
 import com.alee.managers.icon.data.IconAdjustment;
 import com.alee.utils.ColorUtils;
+import com.alee.utils.TextUtils;
+import com.alee.utils.collection.ImmutableList;
 import com.kitfox.svg.SVGElement;
 import com.kitfox.svg.xml.StyleAttribute;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -27,7 +29,7 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * Simple adjustments for making {@link SvgIcon} use grayscale fill and stroke colors.
+ * Simple adjustments for making {@link SvgIcon} colors grayscale.
  *
  * @author Mikle Garin
  */
@@ -35,16 +37,33 @@ import java.util.List;
 @XStreamAlias ( "SvgGrayscale" )
 public class SvgGrayscale implements IconAdjustment<SvgIcon>
 {
+    /**
+     * todo 1. Adjust "style" attribute settings as well
+     */
+
+    /**
+     * Color attributes used for adjustment.
+     */
+    protected static final List<String> ATTRIBUTES = new ImmutableList<String> (
+            SvgElements.STROKE,
+            SvgElements.FILL,
+            SvgElements.STOP_COLOR
+    );
+
     @Override
     public void apply ( final SvgIcon icon )
     {
-        // Iterating through all strokes and fills
-        final List<SVGElement> elements = icon.find ( "*[" + SvgElements.STROKE + "," + SvgElements.FILL + "]" );
+        // Searching for elements containig color attributes
+        final List<SVGElement> elements = icon.find ( "*[" + TextUtils.listToString ( ATTRIBUTES, "," ) + "]" );
+
+        // Iterating through all found elements and adjusting color attributes
         for ( final SVGElement element : elements )
         {
-            // Modifying stroke and fill for elements where those exist
-            makeGrayscale ( icon, element, SvgElements.STROKE );
-            makeGrayscale ( icon, element, SvgElements.FILL );
+            // Modifying attributes for elements
+            for ( final String attribute : ATTRIBUTES )
+            {
+                makeGrayscale ( icon, element, attribute );
+            }
         }
     }
 
