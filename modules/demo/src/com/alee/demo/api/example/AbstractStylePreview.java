@@ -17,19 +17,7 @@
 
 package com.alee.demo.api.example;
 
-import com.alee.demo.skin.DemoStyles;
-import com.alee.extended.label.WebStyledLabel;
-import com.alee.extended.layout.HorizontalFlowLayout;
-import com.alee.laf.panel.WebPanel;
-import com.alee.laf.separator.WebSeparator;
-import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
-import com.alee.utils.SwingUtils;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.List;
 
 /**
  * Each {@link AbstractStylePreview} is tied to specific skin style.
@@ -37,7 +25,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public abstract class AbstractStylePreview extends AbstractPreview
+public abstract class AbstractStylePreview extends AbstractTitledPreview
 {
     /**
      * Preview style ID.
@@ -45,22 +33,7 @@ public abstract class AbstractStylePreview extends AbstractPreview
     protected final StyleId styleId;
 
     /**
-     * Preview container.
-     */
-    protected PreviewPanel previewPanel;
-
-    /**
-     * Preview information.
-     */
-    protected JComponent previewInfo;
-
-    /**
-     * Preview content elements.
-     */
-    protected List<? extends JComponent> previewContent;
-
-    /**
-     * Constructs new style preview.
+     * Constructs new {@link AbstractStylePreview}.
      *
      * @param example example this preview belongs to
      * @param id      preview ID
@@ -81,124 +54,5 @@ public abstract class AbstractStylePreview extends AbstractPreview
     protected StyleId getStyleId ()
     {
         return styleId;
-    }
-
-    @Override
-    protected JComponent createPreview ( final List<Preview> previews, final int index )
-    {
-        final Preview preview = previews.get ( index );
-
-        final HorizontalFlowLayout layout = new HorizontalFlowLayout ( 0, true );
-        previewPanel = new PreviewPanel ( preview.getFeatureState (), layout );
-        previewPanel.add ( getPreviewInfo () );
-        previewPanel.add ( createSeparator () );
-        previewPanel.add ( createPreviewContent () );
-        return previewPanel;
-    }
-
-    @Override
-    public JComponent getEqualizableWidthComponent ()
-    {
-        return getPreviewInfo ();
-    }
-
-    /**
-     * Returns cached preview component information.
-     *
-     * @return cached preview component information
-     */
-    protected JComponent getPreviewInfo ()
-    {
-        if ( previewInfo == null )
-        {
-            previewInfo = createPreviewInfo ();
-        }
-        return previewInfo;
-    }
-
-    /**
-     * Returns preview component information.
-     *
-     * @return preview component information
-     */
-    protected JComponent createPreviewInfo ()
-    {
-        final StyleId styleId = DemoStyles.previewTitleLabel.at ( previewPanel );
-        return new WebStyledLabel ( styleId, getTitle () ).setBoldFont ();
-    }
-
-    /**
-     * Returns newly created information and content separator.
-     *
-     * @return newly created information and content separator
-     */
-    protected WebSeparator createSeparator ()
-    {
-        final StyleId styleId = DemoStyles.previewSeparator.at ( previewPanel );
-        return new WebSeparator ( styleId );
-    }
-
-    /**
-     * Returns newly created previewed elements container.
-     *
-     * @return newly created previewed elements container
-     */
-    protected JComponent createPreviewContent ()
-    {
-        final StyleId styleId = DemoStyles.previewContent.at ( previewPanel );
-        final WebPanel contentPanel = new WebPanel ( styleId, createPreviewLayout () );
-        contentPanel.add ( getPreviewElements () );
-        return contentPanel;
-    }
-
-    /**
-     * Returns newly created previewed elements container layout.
-     *
-     * @return newly created previewed elements container layout
-     */
-    protected LayoutManager createPreviewLayout ()
-    {
-        return new HorizontalFlowLayout ( 8, false );
-    }
-
-    /**
-     * Returns cached preview content elements.
-     * This can be anything provided by the specific preview.
-     *
-     * @return cached preview content elements
-     */
-    protected List<? extends JComponent> getPreviewElements ()
-    {
-        if ( previewContent == null )
-        {
-            previewContent = createPreviewElements ();
-        }
-        return previewContent;
-    }
-
-    /**
-     * Returns preview content component.
-     * This can be anything provided by the example.
-     *
-     * @return preview content component
-     */
-    protected abstract List<? extends JComponent> createPreviewElements ();
-
-    @Override
-    public void applySkin ( final Skin skin )
-    {
-        for ( final JComponent component : getPreviewElements () )
-        {
-            StyleManager.setSkin ( component, skin, true );
-        }
-    }
-
-    @Override
-    public void applyEnabled ( final boolean enabled )
-    {
-        for ( final JComponent component : getPreviewElements () )
-        {
-            SwingUtils.setEnabledRecursively ( component, enabled );
-        }
     }
 }

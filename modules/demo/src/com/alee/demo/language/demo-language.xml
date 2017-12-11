@@ -2174,6 +2174,42 @@
                 </Dictionary>
             </Dictionary>
         </Dictionary>
+        <Dictionary prefix="image">
+            <record key="title">
+                <value lang="en">Images</value>
+                <value lang="ru">Изображения</value>
+            </record>
+            <Dictionary prefix="svg">
+                <record key="title">
+                    <value lang="en">SVG</value>
+                    <value lang="ru">SVG</value>
+                </record>
+                <Dictionary prefix="svgicon">
+                    <record key="title">
+                        <value lang="en">SvgIcon</value>
+                        <value lang="ru">SvgIcon</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic:</value>
+                            <value lang="ru">Базовые:</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="grayscale">
+                        <record key="title">
+                            <value lang="en">Grayscale:</value>
+                            <value lang="ru">Оттенки серого:</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="modified">
+                        <record key="title">
+                            <value lang="en">Modified:</value>
+                            <value lang="ru">Модифицированные:</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+            </Dictionary>
+        </Dictionary>
         <Dictionary prefix="animation">
             <record key="title">
                 <value lang="en">Animation</value>
