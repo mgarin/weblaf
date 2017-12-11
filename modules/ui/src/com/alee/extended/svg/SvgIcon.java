@@ -17,6 +17,7 @@
 
 package com.alee.extended.svg;
 
+import com.alee.managers.icon.data.IconAdjustment;
 import com.alee.utils.NetUtils;
 import com.kitfox.svg.*;
 import com.kitfox.svg.animation.AnimationElement;
@@ -262,6 +263,32 @@ public class SvgIcon extends SVGIcon implements Cloneable
         setAntiAlias ( true );
         setScaleToFit ( true );
         setPreferredSize ( width, height );
+    }
+
+    /**
+     * Applies all specified {@link IconAdjustment}s to this {@link SvgIcon}.
+     *
+     * @param adjustments {@link IconAdjustment}s to apply
+     */
+    public void apply ( final IconAdjustment<SvgIcon>... adjustments )
+    {
+        for ( final IconAdjustment<SvgIcon> adjustment : adjustments )
+        {
+            adjustment.apply ( this );
+        }
+    }
+
+    /**
+     * Applies all specified {@link IconAdjustment}s to this {@link SvgIcon}.
+     *
+     * @param adjustments {@link IconAdjustment}s to apply
+     */
+    public void apply ( final List<? extends IconAdjustment<SvgIcon>> adjustments )
+    {
+        for ( final IconAdjustment<SvgIcon> adjustment : adjustments )
+        {
+            adjustment.apply ( this );
+        }
     }
 
     /**
