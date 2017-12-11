@@ -25,6 +25,7 @@ import com.kitfox.svg.SVGElement;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -104,7 +105,8 @@ public final class SvgSelector implements Serializable
         }
 
         // Parsing selector
-        this.element = openBrace != -1 ? selector.substring ( 0, openBrace ).trim () : selector.trim ();
+        final String rawElement = openBrace != -1 ? selector.substring ( 0, openBrace ) : selector;
+        this.element = rawElement.trim ().toLowerCase ( Locale.ROOT );
 
         // Parsing extra information
         final String bracedText = openBrace != -1 ? selector.substring ( openBrace + OPEN_BRACE.length (), closeBrace ) : null;

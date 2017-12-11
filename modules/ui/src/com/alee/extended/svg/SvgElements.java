@@ -17,7 +17,7 @@
 
 package com.alee.extended.svg;
 
-import com.alee.utils.MapUtils;
+import com.alee.utils.map.ImmutableMap;
 import com.kitfox.svg.*;
 import com.kitfox.svg.animation.*;
 
@@ -31,6 +31,21 @@ import java.util.Map;
 
 public final class SvgElements
 {
+    /**
+     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Element/svg">SVG element</a>
+     */
+    public static final String SVG = "svg";
+
+    /**
+     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Element/g">Group element</a>
+     */
+    public static final String GROUP = "g";
+
+    /**
+     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Element/path">Path element</a>
+     */
+    public static final String PATH = "path";
+
     /**
      * Element ID.
      */
@@ -64,7 +79,10 @@ public final class SvgElements
     /**
      * Classes used to represent SVG elements.
      */
-    public static final Map<String, Class> CLASSES = MapUtils.newHashMap (
+    public static final Map<String, Class> CLASSES = new ImmutableMap<String, Class> (
+            SVG, SVGRoot.class,
+            GROUP, Group.class,
+            PATH, Path.class,
             "a", A.class,
             "animate", Animate.class,
             "animatecolor", AnimateColor.class,
@@ -78,7 +96,6 @@ public final class SvgElements
             "filter", Filter.class,
             "font", Font.class,
             "font-face", FontFace.class,
-            "g", Group.class,
             "glyph", Glyph.class,
             "hkern", Hkern.class,
             "image", ImageSVG.class,
@@ -86,7 +103,6 @@ public final class SvgElements
             "lineargradient", LinearGradient.class,
             "metadata", Metadata.class,
             "missing-glyph", MissingGlyph.class,
-            "path", Path.class,
             "pattern", PatternSVG.class,
             "polygon", Polygon.class,
             "polyline", Polyline.class,
@@ -96,7 +112,6 @@ public final class SvgElements
             "shape", ShapeElement.class,
             "stop", Stop.class,
             "style", Style.class,
-            "svg", SVGRoot.class,
             "symbol", Symbol.class,
             "text", Text.class,
             "title", Title.class,

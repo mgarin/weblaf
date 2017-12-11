@@ -151,7 +151,7 @@ public final class MapUtils
     /**
      * Returns newly created HashMap with the specified key and value pairs added.
      *
-     * @param objects key-value pairs
+     * @param objects mixed keys and values
      * @param <K>     key type
      * @param <V>     value type
      * @return newly created HashMap

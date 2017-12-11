@@ -33,6 +33,8 @@ public abstract class AbstractSvgAdjustment implements IconAdjustment<SvgIcon>
 {
     /**
      * SVG element selector.
+     *
+     * @see SvgSelector
      */
     @XStreamAsAttribute
     protected String selector;
