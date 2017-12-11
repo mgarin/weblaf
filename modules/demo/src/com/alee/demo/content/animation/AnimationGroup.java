@@ -37,6 +37,8 @@ public class AnimationGroup extends AbstractExampleGroup
     @Override
     protected List<Class> getExampleClasses ()
     {
-        return CollectionUtils.<Class>asList ( EasingExample.class );
+        return CollectionUtils.<Class>asList (
+                EasingExample.class
+        );
     }
 }

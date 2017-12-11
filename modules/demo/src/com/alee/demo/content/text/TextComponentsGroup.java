@@ -39,6 +39,9 @@ public class TextComponentsGroup extends AbstractExampleGroup
     @Override
     protected List<Class> getExampleGroupClasses ()
     {
-        return CollectionUtils.<Class>asList ( TextFieldsGroup.class, TextAreasGroup.class );
+        return CollectionUtils.<Class>asList (
+                TextFieldsGroup.class,
+                TextAreasGroup.class
+        );
     }
 }

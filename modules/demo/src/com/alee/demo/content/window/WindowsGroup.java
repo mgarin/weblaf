@@ -37,7 +37,12 @@ public class WindowsGroup extends AbstractExampleGroup
     @Override
     protected List<Class> getExampleClasses ()
     {
-        return CollectionUtils.<Class>asList ( JFrameExample.class, JDialogExample.class, JOptionPaneExample.class, WebPopupExample.class,
-                WebNotificationExample.class );
+        return CollectionUtils.<Class>asList (
+                JFrameExample.class,
+                JDialogExample.class,
+                JOptionPaneExample.class,
+                WebPopupExample.class,
+                WebNotificationExample.class
+        );
     }
 }

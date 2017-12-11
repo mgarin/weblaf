@@ -43,7 +43,9 @@ public class MenusGroup extends AbstractExampleGroup
     @Override
     protected List<Class> getExampleClasses ()
     {
-        return CollectionUtils.<Class>asList ( JMenuBarExample.class );
+        return CollectionUtils.<Class>asList (
+                JMenuBarExample.class
+        );
     }
 
     /**

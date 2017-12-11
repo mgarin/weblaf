@@ -39,6 +39,9 @@ public class ChoosersGroup extends AbstractExampleGroup
     @Override
     protected List<Class> getExampleGroupClasses ()
     {
-        return CollectionUtils.<Class>asList ( DialogChoosersGroup.class, FieldChoosersGroup.class );
+        return CollectionUtils.<Class>asList (
+                DialogChoosersGroup.class,
+                FieldChoosersGroup.class
+        );
     }
 }

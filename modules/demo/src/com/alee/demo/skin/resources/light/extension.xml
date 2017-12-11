@@ -36,7 +36,7 @@
         </style>
         <style type="styledlabel" id="emptycontent-info" extends="emptycontent">
             <component>
-                <foreground>100,100,100</foreground>
+                <foreground>50,50,50</foreground>
             </component>
         </style>
         <style type="styledlabel" id="emptycontent-warn" extends="emptycontent">

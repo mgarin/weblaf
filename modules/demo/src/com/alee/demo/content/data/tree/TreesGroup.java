@@ -37,7 +37,12 @@ public class TreesGroup extends AbstractExampleGroup
     @Override
     protected List<Class> getExampleClasses ()
     {
-        return CollectionUtils.<Class>asList ( JTreeExample.class, WebTreeExample.class, WebExTreeExample.class, WebAsyncTreeExample.class,
-                WebCheckBoxTreeExample.class );
+        return CollectionUtils.<Class>asList (
+                JTreeExample.class,
+                WebTreeExample.class,
+                WebExTreeExample.class,
+                WebAsyncTreeExample.class,
+                WebCheckBoxTreeExample.class
+        );
     }
 }

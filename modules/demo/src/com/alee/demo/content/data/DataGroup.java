@@ -40,6 +40,10 @@ public class DataGroup extends AbstractExampleGroup
     @Override
     protected List<Class> getExampleGroupClasses ()
     {
-        return CollectionUtils.<Class>asList ( ListsGroup.class, GridsGroup.class, TreesGroup.class );
+        return CollectionUtils.<Class>asList (
+                ListsGroup.class,
+                GridsGroup.class,
+                TreesGroup.class
+        );
     }
 }

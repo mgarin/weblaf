@@ -37,7 +37,14 @@ public class ButtonsGroup extends AbstractExampleGroup
     @Override
     protected List<Class> getExampleClasses ()
     {
-        return CollectionUtils.<Class>asList ( JButtonExample.class, JToggleButtonExample.class, JCheckBoxExample.class,
-                WebTristateCheckBoxExample.class, JRadioButtonExample.class, WebSplitButtonExample.class, WebSwitchExample.class );
+        return CollectionUtils.<Class>asList (
+                JButtonExample.class,
+                JToggleButtonExample.class,
+                JCheckBoxExample.class,
+                WebTristateCheckBoxExample.class,
+                JRadioButtonExample.class,
+                WebSplitButtonExample.class,
+                WebSwitchExample.class
+        );
     }
 }

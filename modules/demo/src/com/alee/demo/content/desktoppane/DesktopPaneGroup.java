@@ -37,6 +37,8 @@ public class DesktopPaneGroup extends AbstractExampleGroup
     @Override
     protected List<Class> getExampleClasses ()
     {
-        return CollectionUtils.<Class>asList ( JInternalFrameExample.class );
+        return CollectionUtils.<Class>asList (
+                JInternalFrameExample.class
+        );
     }
 }

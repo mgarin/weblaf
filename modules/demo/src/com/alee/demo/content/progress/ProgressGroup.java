@@ -37,6 +37,8 @@ public class ProgressGroup extends AbstractExampleGroup
     @Override
     protected List<Class> getExampleClasses ()
     {
-        return CollectionUtils.<Class>asList ( JProgressBarExample.class );
+        return CollectionUtils.<Class>asList (
+                JProgressBarExample.class
+        );
     }
 }

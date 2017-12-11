@@ -25,7 +25,7 @@
 
     <!-- General purpose 36x36 icons -->
     <SvgIcon id="compass36" path="general/compass.svg" size="36,36">
-        <SvgFill selector="svg" color="100,100,100" />
+        <SvgFill selector="svg" color="50,50,50" />
     </SvgIcon>
     <SvgIcon id="bug36" path="general/bug.svg" size="36,36">
         <SvgFill selector="svg" color="150,50,50" />

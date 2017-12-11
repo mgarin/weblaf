@@ -37,6 +37,10 @@ public class GridsGroup extends AbstractExampleGroup
     @Override
     protected List<Class> getExampleClasses ()
     {
-        return CollectionUtils.<Class>asList ( JTableExample.class, WebTableExample.class, WebFileTableExample.class );
+        return CollectionUtils.<Class>asList (
+                JTableExample.class,
+                WebTableExample.class,
+                WebFileTableExample.class
+        );
     }
 }

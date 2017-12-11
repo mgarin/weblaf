@@ -37,7 +37,11 @@ public class LabelsGroup extends AbstractExampleGroup
     @Override
     protected List<Class> getExampleClasses ()
     {
-        return CollectionUtils
-                .<Class>asList ( JLabelExample.class, WebStyledLabelExample.class, WebLinkExample.class, WebHotkeyLabelExample.class );
+        return CollectionUtils.<Class>asList (
+                JLabelExample.class,
+                WebStyledLabelExample.class,
+                WebLinkExample.class,
+                WebHotkeyLabelExample.class
+        );
     }
 }

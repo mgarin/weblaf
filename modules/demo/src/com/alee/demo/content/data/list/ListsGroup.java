@@ -37,7 +37,11 @@ public class ListsGroup extends AbstractExampleGroup
     @Override
     protected List<Class> getExampleClasses ()
     {
-        return CollectionUtils
-                .<Class>asList ( JListExample.class, WebListExample.class, WebFileListExample.class, WebCheckBoxListExample.class );
+        return CollectionUtils.<Class>asList (
+                JListExample.class,
+                WebListExample.class,
+                WebFileListExample.class,
+                WebCheckBoxListExample.class
+        );
     }
 }

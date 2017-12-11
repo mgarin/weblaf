@@ -37,8 +37,13 @@ public class TextAreasGroup extends AbstractExampleGroup
     @Override
     protected List<Class> getExampleClasses ()
     {
-        return CollectionUtils
-                .<Class>asList ( JTextAreaExample.class, WebTextAreaExample.class, JEditorPaneExample.class, WebEditorPaneExample.class,
-                        JTextPaneExample.class, WebTextPaneExample.class );
+        return CollectionUtils.<Class>asList (
+                JTextAreaExample.class,
+                WebTextAreaExample.class,
+                JEditorPaneExample.class,
+                WebEditorPaneExample.class,
+                JTextPaneExample.class,
+                WebTextPaneExample.class
+        );
     }
 }
