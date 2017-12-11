@@ -29,6 +29,10 @@ import java.util.List;
 public interface NodesLoadCallback<E extends AsyncUniqueNode>
 {
     /**
+     * todo 1. Add some methods for progress feedback?
+     */
+
+    /**
      * Informs model that children were loaded successfully.
      *
      * @param children list of loaded children

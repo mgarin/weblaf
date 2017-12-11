@@ -524,12 +524,48 @@ public final class CollectionUtils
     }
 
     /**
-     * Returns list of strings extracted from the specified elements list.
+     * Returns an {@code int[]} array created using {@link Collection} of {@link Integer}s.
      *
-     * @param list         elements list
-     * @param textProvider text provider
-     * @param <T>          elements type
-     * @return list of strings extracted from the specified elements list
+     * @param collection {@link Collection} of {@link Integer}s
+     * @return {@code int[]} array created using {@link Collection} of {@link Integer}s
+     */
+    public static int[] toIntArray ( final Collection<Integer> collection )
+    {
+        final int[] array = new int[ collection.size () ];
+        int index = 0;
+        for ( final Integer integer : collection )
+        {
+            array[ index ] = integer != null ? integer : 0;
+            index++;
+        }
+        return array;
+    }
+
+    /**
+     * Returns an {@code Object[]} array created using {@link Collection} of {@link Object}s.
+     *
+     * @param collection {@link Collection} of {@link Object}s
+     * @return {@code Object[]} array created using {@link Collection} of {@link Object}s
+     */
+    public static Object[] toObjectArray ( final Collection collection )
+    {
+        final Object[] array = new Object[ collection.size () ];
+        int index = 0;
+        for ( final Object object : collection )
+        {
+            array[ index ] = object;
+            index++;
+        }
+        return array;
+    }
+
+    /**
+     * Returns {@link List} of {@link String}s extracted from the specified elements {@link List}.
+     *
+     * @param list         {@link List}
+     * @param textProvider {@link String} provider
+     * @param <T>          {@link List} elements type
+     * @return {@link List} of {@link String}s extracted from the specified elements {@link List}
      */
     public static <T> ArrayList<String> toStringList ( final List<T> list, final TextProvider<T> textProvider )
     {
@@ -542,28 +578,11 @@ public final class CollectionUtils
     }
 
     /**
-     * Returns an int array created using Integer list.
+     * Returns {@link List} of {@link Object}s converted from array.
      *
-     * @param list Integer list
-     * @return int array
-     */
-    public static int[] toArray ( final List<Integer> list )
-    {
-        final int[] array = new int[ list.size () ];
-        for ( int i = 0; i < list.size (); i++ )
-        {
-            final Integer integer = list.get ( i );
-            array[ i ] = integer != null ? integer : 0;
-        }
-        return array;
-    }
-
-    /**
-     * Returns a list of objects converted from array.
-     *
-     * @param array data array
-     * @param <T>   data type
-     * @return data list
+     * @param array array
+     * @param <T>   array elements type
+     * @return {@link List} of {@link Object}s converted from array
      */
     public static <T> ArrayList<T> toList ( final T[] array )
     {
@@ -573,15 +592,15 @@ public final class CollectionUtils
     }
 
     /**
-     * Returns a list of objects converted from deque.
+     * Returns {@link List} of objects converted from {@link Collection}.
      *
-     * @param deque data deque
-     * @param <T>   data type
-     * @return data list
+     * @param collection {@link Collection}
+     * @param <T>        {@link Collection} elements type
+     * @return {@link List} of objects converted from {@link Collection}
      */
-    public static <T> ArrayList<T> toList ( final Deque<T> deque )
+    public static <T> ArrayList<T> toList ( final Collection<T> collection )
     {
-        return new ArrayList<T> ( deque );
+        return new ArrayList<T> ( collection );
     }
 
     /**

@@ -69,8 +69,8 @@ public class JScrollPaneExample extends AbstractStylePreviewExample
                 new BasicScrollPane ( "transparent", FeatureState.updated, StyleId.scrollpaneTransparent ),
                 new BasicScrollPane ( "buttonless", FeatureState.updated, StyleId.scrollpaneButtonless ),
                 new BasicScrollPane ( "transparent.buttonless", FeatureState.updated, StyleId.scrollpaneTransparentButtonless ),
-                new BasicScrollPane ( "hovering", FeatureState.updated, StyleId.scrollpaneHovering ),
-                new BasicScrollPane ( "transparent.hovering", FeatureState.updated, StyleId.scrollpaneTransparentHovering )
+                new BasicScrollPane ( "hovering", FeatureState.release, StyleId.scrollpaneHovering ),
+                new BasicScrollPane ( "transparent.hovering", FeatureState.release, StyleId.scrollpaneTransparentHovering )
         );
     }
 

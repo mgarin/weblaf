@@ -282,6 +282,11 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Lang
     {
         super ( id, new BorderLayout ( 0, 0 ) );
 
+        this.animate = true;
+        this.rotateStateIcon = true;
+        this.showStateIcon = true;
+        this.stateIconPosition = RIGHT;
+        this.titlePanePosition = TOP;
         this.content = content;
 
         // todo Handle enable/disable

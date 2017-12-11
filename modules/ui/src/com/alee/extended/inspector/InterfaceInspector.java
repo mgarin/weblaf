@@ -38,7 +38,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
+ * Complex component that provides Swing components structure overview and allows inspecting specific components.
+ * It also has a few methods to display as a separate window on top of any UI element.
+ *
  * @author Mikle Garin
+ * @see InterfaceTree
+ * @see #showDialog(Component)
+ * @see #showFrame(Component)
+ * @see #showPopOver(Component)
+ * @see #showPopOver(Component, PopOverDirection)
  */
 
 public class InterfaceInspector extends WebPanel

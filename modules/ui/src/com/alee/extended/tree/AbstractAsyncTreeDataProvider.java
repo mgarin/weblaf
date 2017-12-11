@@ -41,7 +41,7 @@ public abstract class AbstractAsyncTreeDataProvider<E extends AsyncUniqueNode> i
     protected Filter<E> filter = null;
 
     @Override
-    public Comparator<E> getChildrenComparator ( final E node, final List<E> children )
+    public Comparator<E> getChildrenComparator ( final E parent, final List<E> children )
     {
         return comparator;
     }
@@ -57,7 +57,7 @@ public abstract class AbstractAsyncTreeDataProvider<E extends AsyncUniqueNode> i
     }
 
     @Override
-    public Filter<E> getChildrenFilter ( final E node, final List<E> children )
+    public Filter<E> getChildrenFilter ( final E parent, final List<E> children )
     {
         return filter;
     }

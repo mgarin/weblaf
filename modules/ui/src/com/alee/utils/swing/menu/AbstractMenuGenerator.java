@@ -472,9 +472,8 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
     protected WebMenuItem createItem ( final StyleId id, final Object icon, final String text, final HotkeyData hotkey,
                                        final boolean enabled, final ActionListener actionListener )
     {
-        final WebMenuItem item = new WebMenuItem ( id );
+        final WebMenuItem item = new WebMenuItem ( id, getLanguageKey ( text ) );
         item.setIcon ( getIcon ( icon ) );
-        item.setLanguage ( getLanguageKey ( text ) );
         item.setAccelerator ( hotkey );
         item.setEnabled ( enabled );
         if ( actionListener != null )
@@ -756,13 +755,12 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
     protected WebCheckBoxMenuItem createCheckItem ( final StyleId id, final Object icon, final String text, final HotkeyData hotkey,
                                                     final boolean enabled, final boolean selected, final ActionListener actionListener )
     {
-        final WebCheckBoxMenuItem item = new WebCheckBoxMenuItem ( id );
+        final WebCheckBoxMenuItem item = new WebCheckBoxMenuItem ( id, getLanguageKey ( text ) );
         final Icon resolvedIcon = getIcon ( icon );
         if ( resolvedIcon != null )
         {
             item.setIcon ( resolvedIcon );
         }
-        item.setLanguage ( getLanguageKey ( text ) );
         item.setAccelerator ( hotkey );
         item.setEnabled ( enabled );
         item.setSelected ( selected );
@@ -1046,13 +1044,12 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
     protected WebRadioButtonMenuItem createRadioItem ( final StyleId id, final Object icon, final String text, final HotkeyData hotkey,
                                                        final boolean enabled, final boolean selected, final ActionListener actionListener )
     {
-        final WebRadioButtonMenuItem item = new WebRadioButtonMenuItem ( id );
+        final WebRadioButtonMenuItem item = new WebRadioButtonMenuItem ( id, getLanguageKey ( text ) );
         final Icon resolvedIcon = getIcon ( icon );
         if ( resolvedIcon != null )
         {
             item.setIcon ( resolvedIcon );
         }
-        item.setLanguage ( getLanguageKey ( text ) );
         item.setAccelerator ( hotkey );
         item.setEnabled ( enabled );
         item.setSelected ( selected );
@@ -1309,9 +1306,8 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
     protected WebMenu createSubMenu ( final StyleId id, final Object icon, final String text, final boolean enabled,
                                       final ActionListener actionListener )
     {
-        final WebMenu menu = new WebMenu ( id );
+        final WebMenu menu = new WebMenu ( id, getLanguageKey ( text ) );
         menu.setIcon ( getIcon ( icon ) );
-        menu.setLanguage ( getLanguageKey ( text ) );
         menu.setEnabled ( enabled );
         if ( actionListener != null )
         {

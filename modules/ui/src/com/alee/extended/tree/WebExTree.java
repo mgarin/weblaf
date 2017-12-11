@@ -19,6 +19,7 @@ package com.alee.extended.tree;
 
 import com.alee.extended.tree.sample.SampleExDataProvider;
 import com.alee.extended.tree.sample.SampleTreeCellEditor;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.laf.tree.WebTree;
 import com.alee.laf.tree.WebTreeCellEditor;
@@ -37,7 +38,7 @@ import java.util.List;
  * {@link WebTree} extension class.
  * It uses {@link ExTreeDataProvider} as data source instead of {@link TreeModel}.
  * This tree structure is always fully available and can be navigated through the nodes.
- * <p>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
@@ -141,7 +142,7 @@ public class WebExTree<E extends UniqueNode> extends WebTree<E>
             setModel ( new ExTreeModel<E> ( this, dataProvider ) );
 
             // Informing about data provider change
-            firePropertyChange ( TREE_DATA_PROVIDER_PROPERTY, oldDataProvider, dataProvider );
+            firePropertyChange ( WebLookAndFeel.TREE_DATA_PROVIDER_PROPERTY, oldDataProvider, dataProvider );
         }
     }
 
@@ -176,10 +177,10 @@ public class WebExTree<E extends UniqueNode> extends WebTree<E>
         if ( dataProvider instanceof AbstractExTreeDataProvider )
         {
             ( ( AbstractExTreeDataProvider ) dataProvider ).setChildrenComparator ( comparator );
-            updateSortingAndFiltering ();
+            filterAndSort ();
         }
 
-        firePropertyChange ( TREE_COMPARATOR_PROPERTY, oldComparator, comparator );
+        firePropertyChange ( WebLookAndFeel.TREE_COMPARATOR_PROPERTY, oldComparator, comparator );
     }
 
     /**
@@ -215,10 +216,10 @@ public class WebExTree<E extends UniqueNode> extends WebTree<E>
         if ( dataProvider instanceof AbstractExTreeDataProvider )
         {
             ( ( AbstractExTreeDataProvider ) dataProvider ).setChildrenFilter ( filter );
-            updateSortingAndFiltering ();
+            filterAndSort ();
         }
 
-        firePropertyChange ( TREE_FILTER_PROPERTY, oldFilter, filter );
+        firePropertyChange ( WebLookAndFeel.TREE_FILTER_PROPERTY, oldFilter, filter );
     }
 
     /**
@@ -232,9 +233,9 @@ public class WebExTree<E extends UniqueNode> extends WebTree<E>
     /**
      * Updates nodes sorting and filtering for all loaded nodes.
      */
-    public void updateSortingAndFiltering ()
+    public void filterAndSort ()
     {
-        getExModel ().updateSortingAndFiltering ();
+        getExModel ().filterAndSort ( getRootNode (), true );
     }
 
     /**
@@ -242,9 +243,9 @@ public class WebExTree<E extends UniqueNode> extends WebTree<E>
      *
      * @param node node to update sorting and filtering for
      */
-    public void updateSortingAndFiltering ( final E node )
+    public void filterAndSort ( final E node )
     {
-        getExModel ().updateSortingAndFiltering ( node );
+        getExModel ().filterAndSort ( node, false );
     }
 
     /**
@@ -289,7 +290,7 @@ public class WebExTree<E extends UniqueNode> extends WebTree<E>
      */
     public void addChildNode ( final E parent, final E child )
     {
-        getExModel ().addChildNodes ( parent, CollectionUtils.asList ( child ) );
+        getExModel ().addChildNode ( parent, child );
     }
 
     /**
@@ -348,11 +349,10 @@ public class WebExTree<E extends UniqueNode> extends WebTree<E>
      * This method will have effect only if node exists.
      *
      * @param nodeId ID of the node to remove
-     * @return true if tree structure was changed by the operation, false otherwise
      */
-    public boolean removeNode ( final String nodeId )
+    public void removeNode ( final String nodeId )
     {
-        return removeNode ( findNode ( nodeId ) );
+        removeNode ( findNode ( nodeId ) );
     }
 
     /**
@@ -360,16 +360,10 @@ public class WebExTree<E extends UniqueNode> extends WebTree<E>
      * This method will have effect only if node exists.
      *
      * @param node node to remove
-     * @return true if tree structure was changed by the operation, false otherwise
      */
-    public boolean removeNode ( final E node )
+    public void removeNode ( final E node )
     {
-        final boolean exists = node != null && node.getParent () != null;
-        if ( exists )
-        {
-            getExModel ().removeNodeFromParent ( node );
-        }
-        return exists;
+        getExModel ().removeNodeFromParent ( node );
     }
 
     /**
@@ -701,7 +695,7 @@ public class WebExTree<E extends UniqueNode> extends WebTree<E>
     }
 
     /**
-     * Finishes async tree path expansion.
+     * Finishes tree path expansion.
      *
      * @param lastFoundNode  last found path node
      * @param expandLastNode whether should expand last found path node or not

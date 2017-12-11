@@ -34,16 +34,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Tree representing Swing components structure.
- * It displays and dynamically updates Swing components tree of the specified root component.
- * <p>
+ * {@link WebExTree} representing Swing components structure.
+ * It displays and dynamically updates Swing components strcuture for the specified root {@link Component}.
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see InterfaceInspector
  * @see WebExTree
- * @see com.alee.laf.tree.WebTreeUI
- * @see com.alee.laf.tree.TreePainter
  */
 
 public class InterfaceTree extends WebExTree<InterfaceTreeNode>

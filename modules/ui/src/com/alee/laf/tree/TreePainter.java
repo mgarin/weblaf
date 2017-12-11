@@ -428,7 +428,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
                 {
                     if ( newSelection.size () > 0 )
                     {
-                        component.setSelectionRows ( CollectionUtils.toArray ( newSelection ) );
+                        component.setSelectionRows ( CollectionUtils.toIntArray ( newSelection ) );
                     }
                     else
                     {

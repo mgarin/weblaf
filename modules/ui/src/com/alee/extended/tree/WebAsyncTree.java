@@ -19,6 +19,7 @@ package com.alee.extended.tree;
 
 import com.alee.extended.tree.sample.SampleAsyncDataProvider;
 import com.alee.extended.tree.sample.SampleTreeCellEditor;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.WebTree;
 import com.alee.laf.tree.WebTreeCellEditor;
 import com.alee.managers.style.StyleId;
@@ -40,7 +41,7 @@ import java.util.List;
  * {@link WebTree} extension class.
  * It uses {@link AsyncTreeDataProvider} as data source instead of {@link TreeModel}.
  * This tree structure is almost never fully available and always loaded on demand.
- * <p>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
@@ -208,7 +209,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
         {
             final AsyncTreeDataProvider<E> oldDataProvider = getDataProvider ();
             setModel ( new AsyncTreeModel<E> ( this, dataProvider ) );
-            firePropertyChange ( TREE_DATA_PROVIDER_PROPERTY, oldDataProvider, dataProvider );
+            firePropertyChange ( WebLookAndFeel.TREE_DATA_PROVIDER_PROPERTY, oldDataProvider, dataProvider );
         }
     }
 
@@ -237,10 +238,10 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
         if ( dataProvider instanceof AbstractAsyncTreeDataProvider )
         {
             ( ( AbstractAsyncTreeDataProvider ) dataProvider ).setChildrenComparator ( comparator );
-            updateSortingAndFiltering ();
+            filterAndSort ();
         }
 
-        firePropertyChange ( TREE_COMPARATOR_PROPERTY, oldComparator, comparator );
+        firePropertyChange ( WebLookAndFeel.TREE_COMPARATOR_PROPERTY, oldComparator, comparator );
     }
 
     /**
@@ -276,10 +277,10 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
         if ( dataProvider instanceof AbstractAsyncTreeDataProvider )
         {
             ( ( AbstractAsyncTreeDataProvider ) dataProvider ).setChildrenFilter ( filter );
-            updateSortingAndFiltering ();
+            filterAndSort ();
         }
 
-        firePropertyChange ( TREE_FILTER_PROPERTY, oldFilter, filter );
+        firePropertyChange ( WebLookAndFeel.TREE_FILTER_PROPERTY, oldFilter, filter );
     }
 
     /**
@@ -293,9 +294,9 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     /**
      * Updates nodes sorting and filtering for all loaded nodes.
      */
-    public void updateSortingAndFiltering ()
+    public void filterAndSort ()
     {
-        getAsyncModel ().updateSortingAndFiltering ();
+        getAsyncModel ().filterAndSort ( getRootNode (), false );
     }
 
     /**
@@ -303,9 +304,9 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      *
      * @param node node to update sorting and filter for
      */
-    public void updateSortingAndFiltering ( final E node )
+    public void filterAndSort ( final E node )
     {
-        getAsyncModel ().updateSortingAndFiltering ( node );
+        getAsyncModel ().filterAndSort ( node, false );
     }
 
     /**
@@ -392,7 +393,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
                         {
                             // Updating tree sorting and filtering for parent of the edited node
                             final E node = ( E ) cellEditor.getCellEditorValue ();
-                            updateSortingAndFiltering ( ( E ) node.getParent () );
+                            filterAndSort ( ( E ) node.getParent () );
                         }
                     } );
                 }
@@ -456,7 +457,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      */
     public void addChildNode ( final E parent, final E child )
     {
-        getAsyncModel ().addChildNodes ( parent, CollectionUtils.asList ( child ) );
+        getAsyncModel ().addChildNode ( parent, child );
     }
 
     /**
@@ -518,11 +519,10 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * This method will have effect only if node exists.
      *
      * @param nodeId ID of the node to remove
-     * @return true if tree structure was changed by the operation, false otherwise
      */
-    public boolean removeNode ( final String nodeId )
+    public void removeNode ( final String nodeId )
     {
-        return removeNode ( findNode ( nodeId ) );
+        removeNode ( findNode ( nodeId ) );
     }
 
     /**
@@ -530,16 +530,10 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * This method will have effect only if node exists.
      *
      * @param node node to remove
-     * @return true if tree structure was changed by the operation, false otherwise
      */
-    public boolean removeNode ( final E node )
+    public void removeNode ( final E node )
     {
-        final boolean exists = node != null && node.getParent () != null;
-        if ( exists )
-        {
-            getAsyncModel ().removeNodeFromParent ( node );
-        }
-        return exists;
+        getAsyncModel ().removeNodeFromParent ( node );
     }
 
     /**

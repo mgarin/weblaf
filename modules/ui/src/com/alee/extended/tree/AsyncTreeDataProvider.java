@@ -27,57 +27,61 @@ import java.util.List;
  *
  * @param <E> custom node type
  * @author Mikle Garin
- * @see com.alee.extended.tree.WebAsyncTree
- * @see com.alee.extended.tree.AsyncTreeModel
+ * @see WebAsyncTree
+ * @see AsyncTreeModel
+ * @see AsyncUniqueNode
  */
 
 public interface AsyncTreeDataProvider<E extends AsyncUniqueNode>
 {
     /**
-     * Returns asynchronous tree root node.
+     * Returns root {@link AsyncUniqueNode}.
      * This request uses the EDT and should be processed quickly.
      *
-     * @return root node
+     * @return root {@link AsyncUniqueNode}
      */
     public E getRoot ();
 
     /**
-     * Starts loading child nodes for the specified asynchronous tree node.
-     * When you finish loading children for the specified node or you failed to load them, simply inform the listener about that.
-     * This request uses a separate thread and might take a lot of time to process without having any UI issues.
+     * Starts loading child {@link AsyncUniqueNode}s for the specified parent {@link AsyncUniqueNode}.
+     * When children loading is finished or failed you must inform the {@link NodesLoadCallback} about result.
+     * This request uses a separate {@link Thread} and is allowed to take as much time as it needs to complete.
      *
-     * @param node     parent node
-     * @param listener children loading progress listener
+     * @param parent   {@link AsyncUniqueNode} to load children for
+     * @param listener {@link NodesLoadCallback} for informing tree about operation result
      */
-    public void loadChildren ( E node, NodesLoadCallback<E> listener );
+    public void loadChildren ( E parent, NodesLoadCallback<E> listener );
 
     /**
-     * Returns whether the specified node is leaf (doesn't have any children) or not.
+     * Returns whether or not specified {@link AsyncUniqueNode} doesn't have any children.
+     * If you are not sure if the node is leaf or not - simply return false, that will allow the tree to expand this node.
+     * This method is created to avoid meaningless children requests for nodes which you are sure will never have children.
      * This request uses the EDT and should be processed quickly.
-     * If you are not sure if the node is leaf or not - simply return false, that will allow the tree to expand this node on request.
      *
-     * @param node node
-     * @return true if the specified node is leaf, false otherwise
+     * @param node {@link AsyncUniqueNode} to check
+     * @return {@code true} if the specified {@link AsyncUniqueNode} doesn't have any children, {@code false} otherwise
      */
     public boolean isLeaf ( E node );
 
     /**
-     * Returns child nodes filter for the specified asynchronous tree node.
+     * Returns {@link Filter} that will be used for the specified {@link AsyncUniqueNode} children.
+     * Specific {@link List} of child {@link AsyncUniqueNode}s is given for every separate filter operation.
      * No filtering applied to children in case null is returned.
      *
-     * @param node     parent node
-     * @param children children to be filtered
-     * @return child nodes filter
+     * @param parent   {@link AsyncUniqueNode} which children will be filtered using returned {@link Filter}
+     * @param children {@link AsyncUniqueNode}s to be filtered
+     * @return {@link Filter} that will be used for the specified {@link AsyncUniqueNode} children
      */
-    public Filter<E> getChildrenFilter ( E node, List<E> children );
+    public Filter<E> getChildrenFilter ( E parent, List<E> children );
 
     /**
-     * Returns child nodes comparator for the specified asynchronous tree node.
+     * Returns {@link Comparator} that will be used for the specified {@link AsyncUniqueNode} children.
+     * Specific {@link List} of child {@link AsyncUniqueNode}s is given for every separate comparison operation.
      * No sorting applied to children in case null is returned.
      *
-     * @param node     parent node
-     * @param children children to be sorted
-     * @return child nodes comparator
+     * @param parent   {@link AsyncUniqueNode} which children will be sorted using returned {@link Comparator}
+     * @param children {@link AsyncUniqueNode}s to be sorted
+     * @return {@link Comparator} that will be used for the specified {@link AsyncUniqueNode} children
      */
-    public Comparator<E> getChildrenComparator ( E node, List<E> children );
+    public Comparator<E> getChildrenComparator ( E parent, List<E> children );
 }

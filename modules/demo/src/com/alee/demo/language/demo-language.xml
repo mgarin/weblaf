@@ -1288,6 +1288,16 @@
                     <value lang="en">WebCollapsiblePane</value>
                     <value lang="ru">WebCollapsiblePane</value>
                 </record>
+                <Dictionary prefix="data">
+                    <record key="title">
+                        <value lang="en">Panel title</value>
+                        <value lang="ru">Заголовок панели</value>
+                    </record>
+                    <record key="content">
+                        <value lang="en">Sample\nmultiline\ntext</value>
+                        <value lang="ru">Простой\nмультистрочный\nтекст</value>
+                    </record>
+                </Dictionary>
                 <Dictionary prefix="left">
                     <record key="title">
                         <value lang="en">Left WebCollapsiblePane</value>

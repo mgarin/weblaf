@@ -42,7 +42,7 @@ public abstract class AbstractExTreeDataProvider<E extends UniqueNode> implement
     protected Filter<E> filter = null;
 
     @Override
-    public Comparator<E> getChildrenComparator ( final E node, final List<E> children )
+    public Comparator<E> getChildrenComparator ( final E parent, final List<E> children )
     {
         return comparator;
     }
@@ -58,7 +58,7 @@ public abstract class AbstractExTreeDataProvider<E extends UniqueNode> implement
     }
 
     @Override
-    public Filter<E> getChildrenFilter ( final E node, final List<E> children )
+    public Filter<E> getChildrenFilter ( final E parent, final List<E> children )
     {
         return filter;
     }
@@ -71,18 +71,5 @@ public abstract class AbstractExTreeDataProvider<E extends UniqueNode> implement
     public void setChildrenFilter ( final Filter<E> filter )
     {
         this.filter = filter;
-    }
-
-    /**
-     * Returns false by default to allow children load requests.
-     * It is recommended to override this behavior if you can easily determine whether node is leaf or not.
-     *
-     * @param node node
-     * @return false
-     */
-    @Override
-    public boolean isLeaf ( final E node )
-    {
-        return false;
     }
 }

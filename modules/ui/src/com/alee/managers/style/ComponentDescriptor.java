@@ -29,6 +29,12 @@ import javax.swing.plaf.ComponentUI;
  *
  * @param <C> {@link JComponent} type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see StyleManager
+ * @see StyleManager#registerComponentDescriptor(ComponentDescriptor)
+ * @see StyleManager#unregisterComponentDescriptor(ComponentDescriptor)
+ * @see StyleManager#initializeDescriptors()
+ * @see AbstractComponentDescriptor
  */
 
 public interface ComponentDescriptor<C extends JComponent> extends Identifiable, IconSupport, TitleSupport

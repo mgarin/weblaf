@@ -75,17 +75,4 @@ public class SampleExDataProvider extends AbstractExTreeDataProvider<SampleNode>
             }
         }
     }
-
-    /**
-     * Returns whether the specified sample node is leaf or not.
-     * Simply checks the node type to determine if it is leaf or not.
-     *
-     * @param node node
-     * @return true if the specified node is leaf, false otherwise
-     */
-    @Override
-    public boolean isLeaf ( final SampleNode node )
-    {
-        return node.getType ().equals ( SampleNodeType.leaf );
-    }
 }

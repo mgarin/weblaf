@@ -95,7 +95,7 @@
     <include>resources/checkboxtree.xml</include>
     <include>resources/excheckboxtree.xml</include>
     <!--<include>resources/filedrop.xml</include>-->
-    <!--<include>resources/collapsiblepane.xml</include>-->
+    <include>resources/collapsiblepane.xml</include>
     <!--<include>resources/accordion.xml</include>-->
     <!--<include>resources/breadcrumb.xml</include>-->
     <include>resources/syntaxarea.xml</include>

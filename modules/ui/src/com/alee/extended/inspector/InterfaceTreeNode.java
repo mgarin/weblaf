@@ -23,7 +23,6 @@ import com.alee.extended.inspector.info.AWTComponentPreview;
 import com.alee.extended.inspector.info.ComponentPreview;
 import com.alee.extended.inspector.info.JComponentPreview;
 import com.alee.extended.inspector.info.WComponentPreview;
-import com.alee.laf.tree.TreeState;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleId;
@@ -68,6 +67,7 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
     protected transient ComponentAdapter componentAdapter;
     protected transient ContainerAdapter containerAdapter;
     protected transient StyleListener styleListener;
+    protected transient InterfaceTree tree;
 
     /**
      * Constructs new {@link InterfaceTreeNode}.
@@ -78,6 +78,46 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
     public InterfaceTreeNode ( final InterfaceTree tree, final Component component )
     {
         super ( Integer.toString ( component.hashCode () ), component );
+        this.tree = tree;
+        install ();
+    }
+
+    /**
+     * Returns component this node references.
+     *
+     * @return component this node references
+     */
+    public Component getComponent ()
+    {
+        return ( Component ) getUserObject ();
+    }
+
+    @Override
+    protected void setId ()
+    {
+        this.id = Integer.toString ( getComponent ().hashCode () );
+    }
+
+    @Override
+    public Icon getIcon ()
+    {
+        final Component component = getComponent ();
+        return getPreview ( component ).getIcon ( component );
+    }
+
+    @Override
+    public String getTitle ()
+    {
+        final Component component = getComponent ();
+        return getPreview ( component ).getText ( component );
+    }
+
+    /**
+     * Installs component listeners.
+     */
+    protected void install ()
+    {
+        final Component component = getComponent ();
 
         /**
          * Node component listener.
@@ -136,28 +176,24 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
                         final Component child = e.getChild ();
                         if ( tree.accept ( child ) )
                         {
-                            final TreeState treeState = tree.getTreeState ( InterfaceTreeNode.this );
-                            tree.addChildNode ( InterfaceTreeNode.this, new InterfaceTreeNode ( tree, child ) );
-                            tree.setTreeState ( treeState, InterfaceTreeNode.this );
+                            final InterfaceTreeNode childNode = new InterfaceTreeNode ( tree, child );
+                            tree.addChildNode ( InterfaceTreeNode.this, childNode );
                         }
                     }
 
                     @Override
                     public void componentRemoved ( final ContainerEvent e )
                     {
-                        final TreeState treeState = tree.getTreeState ( InterfaceTreeNode.this );
                         final Component child = e.getChild ();
-                        for ( int i = 0; i < InterfaceTreeNode.this.getChildCount (); i++ )
+                        if ( tree.accept ( child ) )
                         {
-                            final InterfaceTreeNode childNode = ( InterfaceTreeNode ) InterfaceTreeNode.this.getChildAt ( i );
-                            if ( childNode.getComponent () == child )
+                            final InterfaceTreeNode childNode = tree.findNode ( Integer.toString ( child.hashCode () ) );
+                            if ( childNode != null )
                             {
+                                childNode.uninstall ();
                                 tree.removeNode ( childNode );
-                                childNode.destroy ();
-                                break;
                             }
                         }
-                        tree.setTreeState ( treeState, InterfaceTreeNode.this );
                     }
                 };
                 ( ( Container ) component ).addContainerListener ( containerAdapter );
@@ -199,32 +235,15 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
     }
 
     /**
-     * Performs delayed {@link InterfaceTreeNode} update.
-     *
-     * @param tree {@link InterfaceTree}
+     * Uninstalls component listeners.
      */
-    protected void updateNodeLater ( final InterfaceTree tree )
-    {
-        SwingUtils.invokeLater ( new Runnable ()
-        {
-            @Override
-            public void run ()
-            {
-                tree.updateNode ( InterfaceTreeNode.this );
-            }
-        } );
-    }
-
-    /**
-     * Destroys this node and all of its data.
-     */
-    protected void destroy ()
+    protected void uninstall ()
     {
         // Destroying all child nodes first
-        for ( int i = 0; i < getChildCount (); i++ )
+        // We access raw children directly to ensure we don't miss out any if they are currently filtered
+        for ( final InterfaceTreeNode child : tree.getExModel ().getRawChildren ( InterfaceTreeNode.this ) )
         {
-            final InterfaceTreeNode childAt = ( InterfaceTreeNode ) getChildAt ( i );
-            childAt.destroy ();
+            child.uninstall ();
         }
 
         // Destroying this node
@@ -241,37 +260,6 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
         componentAdapter = null;
         containerAdapter = null;
         styleListener = null;
-        setUserObject ( null );
-    }
-
-    /**
-     * Returns component this node references.
-     *
-     * @return component this node references
-     */
-    public Component getComponent ()
-    {
-        return ( Component ) getUserObject ();
-    }
-
-    @Override
-    protected void setId ()
-    {
-        this.id = Integer.toString ( getComponent ().hashCode () );
-    }
-
-    @Override
-    public Icon getIcon ()
-    {
-        final Component component = getComponent ();
-        return getPreview ( component ).getIcon ( component );
-    }
-
-    @Override
-    public String getTitle ()
-    {
-        final Component component = getComponent ();
-        return getPreview ( component ).getText ( component );
     }
 
     /**
@@ -297,6 +285,23 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
         {
             return awtComponentPreview;
         }
+    }
+
+    /**
+     * Performs delayed {@link InterfaceTreeNode} update.
+     *
+     * @param tree {@link InterfaceTree}
+     */
+    protected void updateNodeLater ( final InterfaceTree tree )
+    {
+        SwingUtils.invokeLater ( new Runnable ()
+        {
+            @Override
+            public void run ()
+            {
+                tree.updateNode ( InterfaceTreeNode.this );
+            }
+        } );
     }
 
     /**

@@ -39,9 +39,9 @@ public final class ExamplesTreeDataProvider extends AbstractExTreeDataProvider<E
     }
 
     @Override
-    public List<ExamplesTreeNode> getChildren ( final ExamplesTreeNode node )
+    public List<ExamplesTreeNode> getChildren ( final ExamplesTreeNode parent )
     {
-        switch ( node.getType () )
+        switch ( parent.getType () )
         {
             case root:
             {
@@ -49,7 +49,7 @@ public final class ExamplesTreeDataProvider extends AbstractExTreeDataProvider<E
             }
             case group:
             {
-                final ExampleGroup group = node.getExampleGroup ();
+                final ExampleGroup group = parent.getExampleGroup ();
                 final List<ExamplesTreeNode> children = new ArrayList<ExamplesTreeNode> ();
                 children.addAll ( toNodes ( group.getGroups () ) );
                 children.addAll ( toNodes ( group.getExamples () ) );
@@ -60,12 +60,6 @@ public final class ExamplesTreeDataProvider extends AbstractExTreeDataProvider<E
                 return Collections.emptyList ();
             }
         }
-    }
-
-    @Override
-    public boolean isLeaf ( final ExamplesTreeNode node )
-    {
-        return node.getType () == ExamplesTreeNodeType.example;
     }
 
     /**

@@ -48,123 +48,47 @@ public class WebCollapsiblePaneExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final LeftWebCollapsiblePane e1 = new LeftWebCollapsiblePane ( FeatureState.beta, StyleId.collapsiblepane );
-        final RightWebCollapsiblePane e2 = new RightWebCollapsiblePane ( FeatureState.beta, StyleId.collapsiblepane );
-        final TopWebCollapsiblePane e3 = new TopWebCollapsiblePane ( FeatureState.beta, StyleId.collapsiblepane );
-        final BottomWebCollapsiblePane e4 = new BottomWebCollapsiblePane ( FeatureState.beta, StyleId.collapsiblepane );
+        final BasicCollapsiblePanePreview e1 = new BasicCollapsiblePanePreview ( WebCollapsiblePane.TOP );
+        final BasicCollapsiblePanePreview e2 = new BasicCollapsiblePanePreview ( WebCollapsiblePane.LEFT );
+        final BasicCollapsiblePanePreview e3 = new BasicCollapsiblePanePreview ( WebCollapsiblePane.RIGHT );
+        final BasicCollapsiblePanePreview e4 = new BasicCollapsiblePanePreview ( WebCollapsiblePane.BOTTOM );
         return CollectionUtils.<Preview>asList ( e1, e2, e3, e4 );
-    }
-
-    /**
-     * Left WebCollapsiblePane Example
-     */
-    protected class LeftWebCollapsiblePane extends AbstractStylePreview
-    {
-        /**
-         * Constructs new style preview.
-         *
-         * @param featureState feature state
-         * @param id           preview style ID
-         */
-        public LeftWebCollapsiblePane ( final FeatureState featureState, final StyleId id )
-        {
-            super ( WebCollapsiblePaneExample.this, "left", featureState, id );
-        }
-
-        @Override
-        protected List<? extends JComponent> createPreviewElements ()
-        {
-            final WebCollapsiblePane e1 = new WebCollapsiblePane ( createCollapsiblePaneContent () );
-            e1.setTitlePanePosition ( WebCollapsiblePane.LEFT );
-            return CollectionUtils.asList ( e1 );
-        }
     }
 
     /**
      * Right WebCollapsiblePane Example
      */
-    protected class RightWebCollapsiblePane extends AbstractStylePreview
+    protected class BasicCollapsiblePanePreview extends AbstractStylePreview
     {
+        /**
+         * Title pane position.
+         */
+        private final int titlePosition;
+
         /**
          * Constructs new style preview.
          *
-         * @param featureState feature state
-         * @param id           preview style ID
+         * @param titlePosition title pane position
          */
-        public RightWebCollapsiblePane ( final FeatureState featureState, final StyleId id )
+        public BasicCollapsiblePanePreview ( final int titlePosition )
         {
-            super ( WebCollapsiblePaneExample.this, "right", featureState, id );
+            super ( WebCollapsiblePaneExample.this, "right", FeatureState.beta, StyleId.collapsiblepane );
+            this.titlePosition = titlePosition;
         }
 
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebCollapsiblePane e1 = new WebCollapsiblePane ( createCollapsiblePaneContent () );
-            e1.setTitlePanePosition ( WebCollapsiblePane.RIGHT );
-            return CollectionUtils.asList ( e1 );
-        }
-    }
+            final String textKey = getExampleLanguageKey ( "data.text" );
+            final WebTextArea textArea = new WebTextArea ();
+            textArea.setLanguage ( textKey );
+            textArea.setPreferredSize ( 150, 100 );
 
-    /**
-     * Top WebCollapsiblePane Example
-     */
-    protected class TopWebCollapsiblePane extends AbstractStylePreview
-    {
-        /**
-         * Constructs new style preview.
-         *
-         * @param featureState feature state
-         * @param id           preview style ID
-         */
-        public TopWebCollapsiblePane ( final FeatureState featureState, final StyleId id )
-        {
-            super ( WebCollapsiblePaneExample.this, "top", featureState, id );
-        }
+            final String titleKey = getExampleLanguageKey ( "data.title" );
+            final WebCollapsiblePane collapsiblePane = new WebCollapsiblePane ( titleKey, textArea );
+            collapsiblePane.setTitlePanePosition ( titlePosition );
 
-        @Override
-        protected List<? extends JComponent> createPreviewElements ()
-        {
-            final WebCollapsiblePane e1 = new WebCollapsiblePane ( createCollapsiblePaneContent () );
-            e1.setTitlePanePosition ( WebCollapsiblePane.TOP );
-            return CollectionUtils.asList ( e1 );
+            return CollectionUtils.asList ( collapsiblePane );
         }
-    }
-
-    /**
-     * Bottom WebCollapsiblePane Example
-     */
-    protected class BottomWebCollapsiblePane extends AbstractStylePreview
-    {
-        /**
-         * Constructs new style preview.
-         *
-         * @param featureState feature state
-         * @param id           preview style ID
-         */
-        public BottomWebCollapsiblePane ( final FeatureState featureState, final StyleId id )
-        {
-            super ( WebCollapsiblePaneExample.this, "bottom", featureState, id );
-        }
-
-        @Override
-        protected List<? extends JComponent> createPreviewElements ()
-        {
-            final WebCollapsiblePane e1 = new WebCollapsiblePane ( createCollapsiblePaneContent () );
-            e1.setTitlePanePosition ( WebCollapsiblePane.BOTTOM );
-            return CollectionUtils.asList ( e1 );
-        }
-    }
-
-    /**
-     * Returns collapsible pane example content.
-     *
-     * @return collapsible pane example content
-     */
-    protected JComponent createCollapsiblePaneContent ()
-    {
-        final WebTextArea textArea = new WebTextArea ();
-        textArea.setText ( "Sample" + "\n" + "multiline" + "\n" + "text" );
-        textArea.setPreferredSize ( 150, 100 );
-        return textArea;
     }
 }

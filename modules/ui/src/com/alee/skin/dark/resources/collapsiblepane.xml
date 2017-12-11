@@ -13,8 +13,8 @@
                         <WebShape round="0" />
                         <WebShadow type="outer" width="0" />
                         <GradientBackground>
-                            <color>white</color>
-                            <color>223,223,223</color>
+                            <color>111,115,117</color>
+                            <color>77,81,83</color>
                         </GradientBackground>
                     </decoration>
                     <decoration states="left">
@@ -81,7 +81,7 @@
         <!-- Content panel -->
         <style type="panel" id="content">
             <component>
-                <background>white</background>
+                <background>106,110,112</background>
             </component>
         </style>
 

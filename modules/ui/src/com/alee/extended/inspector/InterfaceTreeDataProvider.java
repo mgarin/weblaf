@@ -85,12 +85,13 @@ public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<Interf
     }
 
     @Override
-    public List<InterfaceTreeNode> getChildren ( final InterfaceTreeNode node )
+    public List<InterfaceTreeNode> getChildren ( final InterfaceTreeNode parent )
     {
-        final Container container = ( Container ) node.getComponent ();
-        final List<InterfaceTreeNode> nodes = new ArrayList<InterfaceTreeNode> ( container.getComponentCount () );
+        final Container container = ( Container ) parent.getComponent ();
+        final List<InterfaceTreeNode> nodes;
         if ( !( container instanceof CellRendererPane ) )
         {
+            nodes = new ArrayList<InterfaceTreeNode> ( container.getComponentCount () );
             for ( int i = 0; i < container.getComponentCount (); i++ )
             {
                 final Component component = container.getComponent ( i );
@@ -100,24 +101,11 @@ public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<Interf
                 }
             }
         }
-        return nodes;
-    }
-
-    @Override
-    public boolean isLeaf ( final InterfaceTreeNode node )
-    {
-        if ( node.getComponent () instanceof Container && !( node.getComponent () instanceof CellRendererPane ) )
+        else
         {
-            final Container container = ( Container ) node.getComponent ();
-            for ( int i = 0; i < container.getComponentCount (); i++ )
-            {
-                if ( accept ( container.getComponent ( i ) ) )
-                {
-                    return false;
-                }
-            }
+            nodes = new ArrayList<InterfaceTreeNode> ( 0 );
         }
-        return true;
+        return nodes;
     }
 
     @Override

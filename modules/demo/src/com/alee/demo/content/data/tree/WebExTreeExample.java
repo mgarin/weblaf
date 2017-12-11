@@ -185,12 +185,6 @@ public class WebExTreeExample extends AbstractStylePreviewExample
                 }
             }
 
-            @Override
-            public boolean isLeaf ( final SampleNode node )
-            {
-                return node.getType ().equals ( SampleNodeType.leaf );
-            }
-
             /**
              * Returns folder sample elements.
              *

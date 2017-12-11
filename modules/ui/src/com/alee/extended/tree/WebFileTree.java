@@ -365,13 +365,13 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
     /**
      * Expands tree structure to the specified file.
      * This method might not have any effect in case the specified field doesn't exist under the file tree root.
+     * todo Replace Runnable with listener (nodeExpanded, beforeSelection, afterSelection, completed)
      *
      * @param file        file to expand tree sctructure to
      * @param select      whether to select file or not
      * @param expand      whether to expand file or not
      * @param finalAction action performed after maximum possible file path has been expanded
      */
-    // todo Replace Runnable with listener (nodeExpanded, beforeSelection, afterSelection, completed)
     public void expandToFile ( final File file, final boolean select, final boolean expand, final Runnable finalAction )
     {
         if ( file != null )
@@ -708,11 +708,10 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * This method will have effect only if node with the specified file exists.
      *
      * @param file removed file
-     * @return true if tree structure was changed by the operation, false otherwise
      */
-    public boolean removeFile ( final File file )
+    public void removeFile ( final File file )
     {
-        return removeNode ( getNode ( file ) );
+        removeNode ( getNode ( file ) );
     }
 
     /**
@@ -720,17 +719,14 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * This method only works if nodes with the specified files exist.
      *
      * @param files removed files
-     * @return true if tree structure was changed by the operation, false otherwise
      */
-    public boolean removeFiles ( final File... files )
+    public void removeFiles ( final File... files )
     {
         // todo Optimize (multi-node delete method in model)
-        boolean changed = false;
         for ( final File file : files )
         {
-            changed |= removeFile ( file );
+            removeFile ( file );
         }
-        return changed;
     }
 
     /**
@@ -738,16 +734,14 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * This method only works if nodes with the specified files exist.
      *
      * @param files removed files
-     * @return true if tree structure was changed by the operation, false otherwise
      */
-    public boolean removeFiles ( final List<File> files )
+    public void removeFiles ( final List<File> files )
     {
-        boolean changed = false;
+        // todo Optimize (multi-node delete method in model)
         for ( final File file : files )
         {
-            changed |= removeFile ( file );
+            removeFile ( file );
         }
-        return changed;
     }
 
     /**

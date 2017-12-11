@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.menu.WebCheckBoxMenuItem;
 import com.alee.laf.menu.WebPopupMenu;
@@ -314,7 +315,7 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
                 applyFieldFilter ();
             }
         };
-        getTree ().addPropertyChangeListener ( WebTree.TREE_DATA_PROVIDER_PROPERTY, dataProviderChangeListener );
+        getTree ().addPropertyChangeListener ( WebLookAndFeel.TREE_DATA_PROVIDER_PROPERTY, dataProviderChangeListener );
 
         // Filter change listener to properly update field filter
         filterChangeListener = new PropertyChangeListener ()
@@ -326,7 +327,7 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
                 applyFieldFilter ();
             }
         };
-        getTree ().addPropertyChangeListener ( WebTree.TREE_FILTER_PROPERTY, dataProviderChangeListener );
+        getTree ().addPropertyChangeListener ( WebLookAndFeel.TREE_FILTER_PROPERTY, dataProviderChangeListener );
     }
 
     /**
@@ -508,7 +509,7 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
                 filter.clearCache ();
 
                 // Updating tree filtering
-                ( ( WebAsyncTree ) tree ).updateSortingAndFiltering ();
+                ( ( WebAsyncTree ) tree ).filterAndSort ();
             }
             else if ( tree instanceof WebExTree )
             {
@@ -526,7 +527,7 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
                 filter.clearCache ();
 
                 // Updating tree filtering
-                ( ( WebExTree ) tree ).updateSortingAndFiltering ();
+                ( ( WebExTree ) tree ).filterAndSort ();
 
                 // Restore tree state or expand tree
                 if ( defaultTreeStateBehavior )
@@ -570,7 +571,7 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
                 filter.clearCache ( node );
 
                 // Updating tree node filtering
-                ( ( WebAsyncTree ) tree ).updateSortingAndFiltering ( ( AsyncUniqueNode ) node.getParent () );
+                ( ( WebAsyncTree ) tree ).filterAndSort ( ( AsyncUniqueNode ) node.getParent () );
             }
             else if ( tree instanceof WebExTree )
             {
@@ -578,7 +579,7 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
                 filter.clearCache ( node );
 
                 // Updating tree node filtering
-                ( ( WebExTree ) tree ).updateSortingAndFiltering ( node.getParent () );
+                ( ( WebExTree ) tree ).filterAndSort ( node.getParent () );
             }
         }
     }

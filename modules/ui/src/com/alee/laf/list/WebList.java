@@ -286,7 +286,7 @@ public class WebList extends JList
                 indices.add ( i );
             }
         }
-        setSelectedIndices ( CollectionUtils.toArray ( indices ) );
+        setSelectedIndices ( CollectionUtils.toIntArray ( indices ) );
     }
 
     /**

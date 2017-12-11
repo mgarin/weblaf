@@ -23,7 +23,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Extended Swing DefaultTreeModel.
@@ -65,6 +67,16 @@ public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeM
         return ( E ) getRoot ();
     }
 
+    @Override
+    public void insertNodeInto ( final MutableTreeNode child, final MutableTreeNode parent, final int index )
+    {
+        // Inserting node
+        parent.insert ( child, index );
+
+        // Firing node addition
+        nodesWereInserted ( parent, new int[]{ index } );
+    }
+
     /**
      * Inserts a list of child nodes into parent node.
      *
@@ -74,18 +86,21 @@ public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeM
      */
     public void insertNodesInto ( final List<E> children, final E parent, final int index )
     {
-        for ( int i = children.size () - 1; i >= 0; i-- )
+        final int count = children.size ();
+        if ( count > 0 )
         {
-            parent.insert ( children.get ( i ), index );
-        }
+            // Inserting nodes
+            final int[] indices = new int[ count ];
+            for ( int i = index; i < index + count; i++ )
+            {
+                final int sourceIndex = i - index;
+                parent.insert ( children.get ( sourceIndex ), i );
+                indices[ sourceIndex ] = i;
+            }
 
-        final int[] indices = new int[ children.size () ];
-        for ( int i = 0; i < children.size (); i++ )
-        {
-            indices[ i ] = index + i;
+            // Firing nodes addition
+            nodesWereInserted ( parent, indices );
         }
-
-        nodesWereInserted ( parent, indices );
     }
 
     /**
@@ -97,63 +112,61 @@ public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeM
      */
     public void insertNodesInto ( final E[] children, final E parent, final int index )
     {
-        for ( int i = children.length - 1; i >= 0; i-- )
+        final int count = children.length;
+        if ( count > 0 )
         {
-            parent.insert ( children[ i ], index );
-        }
+            // Inserting nodes
+            final int[] indices = new int[ count ];
+            for ( int i = index; i < index + count; i++ )
+            {
+                final int sourceIndex = i - index;
+                parent.insert ( children[ sourceIndex ], i );
+                indices[ sourceIndex ] = i;
+            }
 
-        final int[] indices = new int[ children.length ];
-        for ( int i = 0; i < children.length; i++ )
-        {
-            indices[ i ] = index + i;
+            // Firing nodes addition
+            nodesWereInserted ( parent, indices );
         }
-
-        nodesWereInserted ( parent, indices );
     }
 
-    /**
-     * Removes specified nodes from tree structure.
-     *
-     * @param nodes nodes to remove
-     */
-    public void removeNodesFromParent ( final List<E> nodes )
+    @Override
+    public void removeNodeFromParent ( final MutableTreeNode node )
     {
-        // todo Optimize delete process
-
-        //        final Map<E, List<Integer>> removedNodes = new HashMap<E, List<Integer>> ();
-        //        for ( final E node : nodes )
-        //        {
-        //            final E parent = ( E ) node.getParent ();
-        //            final int index = parent.getIndex ( node );
-        //
-        //            List<Integer> indices = removedNodes.get ( parent );
-        //            indices
-        //        }
-        //
-        //        final int[] indices = new int[ children.length ];
-        //        for ( int i = 0; i < children.length; i++ )
-        //        {
-        //            indices[ i ] = index + i;
-        //        }
-        //
-        //        nodesWereRemoved ( parent, childIndex, removedArray );
-
-        for ( final E node : nodes )
+        // Removing nodes and collecting information on the operation
+        final E parent = ( E ) node.getParent ();
+        if ( parent == null )
         {
-            removeNodeFromParent ( node );
+            throw new IllegalArgumentException ( "Removed node does not have a parent" );
         }
+        final int index = parent.getIndex ( node );
+        parent.remove ( index );
+
+        // Firing nodes removal
+        nodesWereRemoved ( parent, new int[]{ index }, new Object[]{ node } );
     }
 
     /**
      * Removes all child nodes under the specified node from tree structure.
      *
-     * @param node node to remove children from
+     * @param parent node to remove children from
      */
-    public void removeNodesFromParent ( final E node )
+    public void removeNodesFromParent ( final E parent )
     {
-        for ( int i = 0; i < node.getChildCount (); i++ )
+        final int count = parent.getChildCount ();
+        if ( count > 0 )
         {
-            removeNodeFromParent ( ( MutableTreeNode ) node.getChildAt ( i ) );
+            // Removing nodes and collecting information on the operation
+            final int[] indices = new int[ count ];
+            final Object[] removed = new Object[ count ];
+            for ( int index = 0; index < count; index++ )
+            {
+                indices[ index ] = index;
+                removed[ index ] = parent.getChildAt ( index );
+                parent.remove ( index );
+            }
+
+            // Firing nodes removal
+            nodesWereRemoved ( parent, indices, removed );
         }
     }
 
@@ -164,10 +177,46 @@ public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeM
      */
     public void removeNodesFromParent ( final E[] nodes )
     {
-        // todo Optimize delete process
-        for ( final E node : nodes )
+        removeNodesFromParent ( CollectionUtils.toList ( nodes ) );
+    }
+
+    /**
+     * Removes specified nodes from tree structure.
+     *
+     * @param nodes nodes to remove
+     */
+    public void removeNodesFromParent ( final List<E> nodes )
+    {
+        if ( nodes.size () > 0 )
         {
-            removeNodeFromParent ( node );
+            // Removing nodes and collecting information on the operation
+            final Map<E, Map<E, Integer>> removedNodes = new HashMap<E, Map<E, Integer>> ();
+            for ( final E node : nodes )
+            {
+                // Empty parents are ignored as they might have been removed just now
+                final E parent = ( E ) node.getParent ();
+                if ( parent != null )
+                {
+                    final int index = parent.getIndex ( node );
+                    Map<E, Integer> indices = removedNodes.get ( parent );
+                    if ( indices == null )
+                    {
+                        indices = new HashMap<E, Integer> ( nodes.size () );
+                        removedNodes.put ( parent, indices );
+                    }
+                    parent.remove ( index );
+                    indices.put ( node, index );
+                }
+            }
+
+            // Firing nodes removal
+            for ( final Map.Entry<E, Map<E, Integer>> perParent : removedNodes.entrySet () )
+            {
+                final E parent = perParent.getKey ();
+                final int[] indices = CollectionUtils.toIntArray ( perParent.getValue ().values () );
+                final Object[] removed = CollectionUtils.toObjectArray ( perParent.getValue ().keySet () );
+                nodesWereRemoved ( parent, indices, removed );
+            }
         }
     }
 

@@ -28,8 +28,9 @@ import java.util.List;
  *
  * @param <E> custom node type
  * @author Mikle Garin
- * @see com.alee.extended.tree.WebExTree
- * @see com.alee.extended.tree.ExTreeModel
+ * @see WebExTree
+ * @see ExTreeModel
+ * @see UniqueNode
  */
 
 public interface ExTreeDataProvider<E extends UniqueNode>
@@ -45,37 +46,28 @@ public interface ExTreeDataProvider<E extends UniqueNode>
     /**
      * Returns child nodes for the specified asynchronous tree node.
      *
-     * @param node parent node
+     * @param parent parent node
      * @return child nodes list
      */
-    public List<E> getChildren ( E node );
-
-    /**
-     * Returns whether the specified node is leaf (doesn't have any children) or not.
-     * If you are not sure if the node is leaf or not - simply return false, that will allow the tree to expand this node on request.
-     *
-     * @param node node
-     * @return true if the specified node is leaf, false otherwise
-     */
-    public boolean isLeaf ( E node );
+    public List<E> getChildren ( E parent );
 
     /**
      * Returns child nodes filter for the specified asynchronous tree node.
      * No filtering applied to children in case null is returned.
      *
-     * @param node     parent node
+     * @param parent   parent node
      * @param children children to be filtered
      * @return child nodes filter
      */
-    public Filter<E> getChildrenFilter ( E node, List<E> children );
+    public Filter<E> getChildrenFilter ( E parent, List<E> children );
 
     /**
      * Returns child nodes comparator for the specified asynchronous tree node.
      * No sorting applied to children in case null is returned.
      *
-     * @param node     parent node
+     * @param parent   parent node
      * @param children children to be sorted
      * @return child nodes comparator
      */
-    public Comparator<E> getChildrenComparator ( E node, List<E> children );
+    public Comparator<E> getChildrenComparator ( E parent, List<E> children );
 }
