@@ -36,7 +36,7 @@ import java.util.Locale;
  */
 
 @FixMethodOrder ( MethodSorters.JVM )
-public class LanguageManagerTest
+public final class LanguageManagerTest
 {
     /**
      * Initializes {@link LanguageManager}.

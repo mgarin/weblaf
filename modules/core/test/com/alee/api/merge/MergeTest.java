@@ -45,7 +45,7 @@ import java.util.List;
  */
 
 @FixMethodOrder ( MethodSorters.JVM )
-public class MergeTest
+public final class MergeTest
 {
     /**
      * Testing common merge configuration on basic objects.

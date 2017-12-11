@@ -39,7 +39,7 @@ import javax.swing.plaf.ComponentUI;
  */
 
 @FixMethodOrder ( MethodSorters.JVM )
-public class ComponentDescriptorTest
+public final class ComponentDescriptorTest
 {
     /**
      * Initializes {@link WebLookAndFeel}.
