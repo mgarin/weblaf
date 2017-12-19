@@ -83,7 +83,7 @@ public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, 
 
         chooser.setLayout ( new BorderLayout () );
 
-        colorChooserPanel = new WebColorChooserPanel ( false );
+        colorChooserPanel = new WebColorChooserPanel ( StyleId.colorchooserContent.at ( chooser ), false );
         colorChooserPanel.setColor ( selectionModel.getSelectedColor () );
         colorChooserPanel.addChangeListener ( new ChangeListener ()
         {
@@ -119,9 +119,6 @@ public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, 
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        // Uninstalling applied skin
-        StyleManager.uninstallSkin ( chooser );
-
         // Removing content
         chooser.remove ( colorChooserPanel );
         chooser.setLayout ( null );
@@ -129,6 +126,9 @@ public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, 
         modelChangeListener = null;
         colorChooserPanel = null;
         selectionModel = null;
+
+        // Uninstalling applied skin
+        StyleManager.uninstallSkin ( chooser );
 
         // Removing color chooser reference
         chooser = null;

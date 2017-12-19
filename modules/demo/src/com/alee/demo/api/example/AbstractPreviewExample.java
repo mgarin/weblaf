@@ -104,7 +104,7 @@ public abstract class AbstractPreviewExample extends AbstractExample
                 examplesPane.add ( previewComponent );
 
                 // Colecting components to equalize
-                CollectionUtils.addAllNonNull ( components, preview.getEqualizableWidthComponent () );
+                CollectionUtils.addUniqueNonNull ( components, preview.getEqualizableWidthComponent () );
             }
 
             // Equalizing preview elements

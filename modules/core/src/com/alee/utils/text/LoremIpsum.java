@@ -21,6 +21,8 @@
 
 package com.alee.utils.text;
 
+import java.io.Serializable;
+
 /**
  * Simple lorem ipsum text generator.
  * Suitable for creating sample data for test cases and performance tests.
@@ -29,7 +31,7 @@ package com.alee.utils.text;
  * @version 1.0
  */
 
-public class LoremIpsum
+public class LoremIpsum implements Serializable
 {
     /**
      * Complete lorem ipsum text.

@@ -88,9 +88,9 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
     protected transient boolean dragging = false;
 
     @Override
-    public void install ( final E c, final U ui )
+    protected void installPropertiesAndListeners ()
     {
-        super.install ( c, ui );
+        super.installPropertiesAndListeners ();
 
         // Initializing caches
         focusRect = new Rectangle ();
@@ -172,7 +172,7 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
             public void mouseEntered ( final MouseEvent e )
             {
                 rollover = true;
-                if ( animated && c.isEnabled () )
+                if ( animated && component.isEnabled () )
                 {
                     rolloverTimer.start ();
                 }
@@ -187,7 +187,7 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
             public void mouseExited ( final MouseEvent e )
             {
                 rollover = false;
-                if ( animated && c.isEnabled () )
+                if ( animated && component.isEnabled () )
                 {
                     rolloverTimer.start ();
                 }
@@ -203,7 +203,7 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
     }
 
     @Override
-    public void uninstall ( final E c, final U ui )
+    protected void uninstallPropertiesAndListeners ()
     {
         // Removing listeners
         component.removeMouseWheelListener ( mouseWheelListener );
@@ -222,7 +222,7 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
         trackRect = null;
         thumbRect = null;
 
-        super.uninstall ( c, ui );
+        super.uninstallPropertiesAndListeners ();
     }
 
     @Override
@@ -1200,7 +1200,7 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
 
     protected Color getBorderColor ()
     {
-        return ColorUtils.getIntermediateColor ( new Color ( 170, 170, 170 ), Color.GRAY, getProgress () );
+        return ColorUtils.intermediate ( new Color ( 170, 170, 170 ), Color.GRAY, getProgress () );
     }
 
     @Override

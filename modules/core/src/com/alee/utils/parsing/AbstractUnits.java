@@ -22,6 +22,7 @@ import com.alee.utils.TextUtils;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Abstract class providing convenient conversion suport between user-friendly unit-based text values and single {@link long} value.
@@ -79,7 +80,7 @@ public abstract class AbstractUnits
             int unitStart = -1;
 
             // Iterating through each text character
-            final String string = TextUtils.removeSpacings ( TextUtils.removeLineBreaks ( text.toLowerCase () ) );
+            final String string = TextUtils.removeSpacings ( TextUtils.removeLineBreaks ( text.toLowerCase ( Locale.ROOT ) ) );
             for ( int i = 0; i < string.length (); i++ )
             {
                 final char ch = string.charAt ( i );
@@ -273,7 +274,7 @@ public abstract class AbstractUnits
          */
         public String toString ( final long value )
         {
-            final long display = limit > 0 ? ( value / amount ) % limit : value / amount;
+            final long display = limit > 0 ? value / amount % limit : value / amount;
             return display > 0 ? display + names.get ( 0 ) : null;
         }
 

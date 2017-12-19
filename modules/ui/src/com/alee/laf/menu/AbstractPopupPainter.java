@@ -457,7 +457,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
     {
         final Color bg = getComponentBackground ( popup );
         return !shaped || opacity >= 1f ? bg :
-                ColorUtils.getTransparentColor ( bg, Math.max ( 0, Math.min ( ( int ) ( opacity * 255 ), 255 ) ) );
+                ColorUtils.transparent ( bg, Math.max ( 0, Math.min ( ( int ) ( opacity * 255 ), 255 ) ) );
     }
 
     /**

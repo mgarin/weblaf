@@ -18,11 +18,13 @@
 package com.alee.utils.xml;
 
 import com.alee.utils.ColorUtils;
+import com.alee.utils.CompareUtils;
+import com.alee.utils.MapUtils;
 import com.alee.utils.XmlException;
-import com.alee.utils.collection.ValuesTable;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 import java.awt.*;
+import java.util.Map;
 
 /**
  * Custom XStream converter for {@link Color}.
@@ -43,39 +45,37 @@ public class ColorConverter extends AbstractSingleValueConverter
     public static final String NONE_COLOR = "none";
 
     /**
-     * Transparent color constant.
-     */
-    public static final Color TRANSPARENT = new Color ( 255, 255, 255, 0 );
-
-    /**
      * Default colors map.
      */
-    private static final ValuesTable<String, Color> defaultColors = new ValuesTable<String, Color> ();
+    private static final Map<String, Color> defaultColors = MapUtils.newHashMap (
+            /**
+             * Null colors.
+             */
+            NULL_COLOR, null,
+            NONE_COLOR, null,
 
-    static
-    {
-        // Special "null" colors
-        defaultColors.put ( NULL_COLOR, null );
-        defaultColors.put ( NONE_COLOR, null );
+            /**
+             * Transparent color.
+             */
+            "transparent", ColorUtils.transparent (),
 
-        // Special transparent color
-        defaultColors.put ( "transparent", TRANSPARENT );
-
-        // Standard Swing colors
-        defaultColors.put ( "black", Color.BLACK );
-        defaultColors.put ( "white", Color.WHITE );
-        defaultColors.put ( "red", Color.RED );
-        defaultColors.put ( "green", Color.GREEN );
-        defaultColors.put ( "blue", Color.BLUE );
-        defaultColors.put ( "lightGray", Color.LIGHT_GRAY );
-        defaultColors.put ( "gray", Color.GRAY );
-        defaultColors.put ( "darkGray", Color.DARK_GRAY );
-        defaultColors.put ( "pink", Color.PINK );
-        defaultColors.put ( "orange", Color.ORANGE );
-        defaultColors.put ( "yellow", Color.YELLOW );
-        defaultColors.put ( "magenta", Color.MAGENTA );
-        defaultColors.put ( "cyan", Color.CYAN );
-    }
+            /**
+             * Standard Swing colors.
+             */
+            "black", Color.BLACK,
+            "white", Color.WHITE,
+            "red", Color.RED,
+            "green", Color.GREEN,
+            "blue", Color.BLUE,
+            "lightGray", Color.LIGHT_GRAY,
+            "gray", Color.GRAY,
+            "darkGray", Color.DARK_GRAY,
+            "pink", Color.PINK,
+            "orange", Color.ORANGE,
+            "yellow", Color.YELLOW,
+            "magenta", Color.MAGENTA,
+            "cyan", Color.CYAN
+    );
 
     @Override
     public boolean canConvert ( final Class type )
@@ -106,7 +106,14 @@ public class ColorConverter extends AbstractSingleValueConverter
     {
         if ( defaultColors.containsValue ( color ) )
         {
-            return defaultColors.getKey ( color );
+            for ( final Map.Entry<String, Color> entry : defaultColors.entrySet () )
+            {
+                if ( CompareUtils.equals ( color, entry.getValue () ) )
+                {
+                    return entry.getKey ();
+                }
+            }
+            throw new RuntimeException ( "Unable to find mapping for Color: " + color );
         }
         else
         {
@@ -140,11 +147,11 @@ public class ColorConverter extends AbstractSingleValueConverter
             {
                 if ( color.contains ( "#" ) )
                 {
-                    return ColorUtils.parseHexColor ( color );
+                    return ColorUtils.fromHex ( color );
                 }
                 else
                 {
-                    return ColorUtils.parseRgbColor ( color );
+                    return ColorUtils.fromRGB ( color );
                 }
             }
         }

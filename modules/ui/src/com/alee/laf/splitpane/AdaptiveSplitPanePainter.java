@@ -6,19 +6,21 @@ import com.alee.painter.Painter;
 import javax.swing.*;
 
 /**
- * Simple SplitPanePainter adapter class.
- * It is used to install simple non-specific painters into WebSplitPaneUI.
+ * Simple {@link ISplitPanePainter} adapter class.
+ * It is used to install simple non-specific painters into {@link WSplitPaneUI}.
  *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public final class AdaptiveSplitPanePainter<E extends JSplitPane, U extends WebSplitPaneUI> extends AdaptivePainter<E, U>
+public final class AdaptiveSplitPanePainter<E extends JSplitPane, U extends WSplitPaneUI> extends AdaptivePainter<E, U>
         implements ISplitPanePainter<E, U>
 {
     /**
-     * Constructs new AdaptiveSplitPanePainter for the specified painter.
+     * Constructs new {@link AdaptiveSplitPanePainter} for the specified {@link Painter}.
      *
-     * @param painter painter to adapt
+     * @param painter {@link Painter} to adapt
      */
     public AdaptiveSplitPanePainter ( final Painter painter )
     {

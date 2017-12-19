@@ -66,26 +66,26 @@ public class JPanelExample extends AbstractStylePreviewExample
     protected List<Preview> createPreviews ()
     {
         return CollectionUtils.<Preview>asList (
-                new BasicPanel ( "basic", FeatureState.updated, StyleId.panel ),
-                new BasicPanel ( "decorated", FeatureState.updated, StyleId.panelDecorated ),
-                new BasicPanel ( "transparent", FeatureState.updated, StyleId.panelTransparent ),
-                new BasicPanel ( "focusable", FeatureState.updated, StyleId.panelFocusable )
+                new PanelPreview ( "basic", FeatureState.updated, StyleId.panel ),
+                new PanelPreview ( "decorated", FeatureState.updated, StyleId.panelDecorated ),
+                new PanelPreview ( "transparent", FeatureState.updated, StyleId.panelTransparent ),
+                new PanelPreview ( "focusable", FeatureState.updated, StyleId.panelFocusable )
         );
     }
 
     /**
-     * Panel preview.
+     * {@link JPanel} preview.
      */
-    protected class BasicPanel extends AbstractStylePreview
+    protected class PanelPreview extends AbstractStylePreview
     {
         /**
-         * Constructs new style preview.
+         * Constructs new {@link PanelPreview}.
          *
          * @param id           preview ID
          * @param featureState feature state
          * @param styleId      preview style ID
          */
-        public BasicPanel ( final String id, final FeatureState featureState, final StyleId styleId )
+        public PanelPreview ( final String id, final FeatureState featureState, final StyleId styleId )
         {
             super ( JPanelExample.this, id, featureState, styleId );
         }

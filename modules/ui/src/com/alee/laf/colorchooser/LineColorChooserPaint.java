@@ -116,7 +116,7 @@ public class LineColorChooserPaint implements Paint
     {
         if ( webSafe )
         {
-            color = ColorUtils.getWebSafeValue ( color );
+            color = ColorUtils.webSafe ( color );
         }
         if ( color < 0 )
         {

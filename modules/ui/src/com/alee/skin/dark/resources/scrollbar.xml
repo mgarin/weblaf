@@ -102,6 +102,7 @@
         </ui>
         <painter>
             <thumbRound>0</thumbRound>
+            <thumbMargin>1,1,1,1</thumbMargin>
         </painter>
     </style>
 

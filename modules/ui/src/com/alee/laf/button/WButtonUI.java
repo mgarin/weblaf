@@ -17,6 +17,7 @@
 
 package com.alee.laf.button;
 
+import com.alee.laf.UIInputListener;
 import com.alee.laf.WebUI;
 import com.alee.utils.LafUtils;
 
@@ -33,9 +34,9 @@ import javax.swing.plaf.ButtonUI;
 public abstract class WButtonUI<C extends AbstractButton> extends ButtonUI implements WebUI<C>
 {
     /**
-     * Listeners.
+     * {@link UIInputListener}.
      */
-    protected WButtonListener buttonListener;
+    protected UIInputListener inputListener;
 
     /**
      * Runtime variables.
@@ -95,12 +96,8 @@ public abstract class WButtonUI<C extends AbstractButton> extends ButtonUI imple
      */
     protected void installListeners ()
     {
-        buttonListener = createButtonListener ();
-        button.addMouseListener ( buttonListener );
-        button.addMouseMotionListener ( buttonListener );
-        button.addFocusListener ( buttonListener );
-        button.addPropertyChangeListener ( buttonListener );
-        buttonListener.installKeyboardActions ( button );
+        inputListener = createInputListener ();
+        inputListener.install ( button );
     }
 
     /**
@@ -108,20 +105,16 @@ public abstract class WButtonUI<C extends AbstractButton> extends ButtonUI imple
      */
     protected void uninstallListeners ()
     {
-        buttonListener.uninstallKeyboardActions ( button );
-        button.removeMouseListener ( buttonListener );
-        button.removeMouseMotionListener ( buttonListener );
-        button.removeFocusListener ( buttonListener );
-        button.removePropertyChangeListener ( buttonListener );
-        buttonListener = null;
+        inputListener.uninstall ( button );
+        inputListener = null;
     }
 
     /**
-     * Returns {@link WButtonListener} for the button.
+     * Returns {@link UIInputListener} for the button.
      *
-     * @return {@link WButtonListener} for the button
+     * @return {@link UIInputListener} for the button
      */
-    protected WButtonListener createButtonListener ()
+    protected UIInputListener createInputListener ()
     {
         return new WButtonListener ();
     }

@@ -122,7 +122,6 @@ public final class TimedAnimationPipeline extends AbstractAnimationPipeline impl
 
                     // Wait until next animation tick
                     // We will either wait until someone wakes up animator or delay ends
-                    // System.out.println ( "DELAY: " + delay / TimeUtils.nsInMillisecond );
                     if ( delay > 0 )
                     {
                         // We need to limit delay to 1 millisecond minimum to avoid zero delay here

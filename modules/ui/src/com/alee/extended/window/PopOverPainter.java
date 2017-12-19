@@ -87,13 +87,12 @@ public class PopOverPainter<E extends JRootPane, U extends WRootPaneUI> extends 
     protected PopOverAlignment preferredAlignment = null;
 
     @Override
-    public void install ( final E c, final U ui )
+    protected void installPropertiesAndListeners ()
     {
-        // Must call super to install default settings
-        super.install ( c, ui );
+        super.installPropertiesAndListeners ();
 
         // Retrieving popover instance
-        final WebPopOver popOver = getPopOver ( c );
+        final WebPopOver popOver = getPopOver ( component );
 
         // Window focus listener
         focusListener = new WindowFocusListener ()
@@ -121,7 +120,7 @@ public class PopOverPainter<E extends JRootPane, U extends WRootPaneUI> extends 
                 if ( popOver.isMovable () )
                 {
                     final int sw = getShadeWidth ();
-                    return new Rectangle ( sw, sw, c.getWidth () - sw * 2, c.getHeight () - sw * 2 );
+                    return new Rectangle ( sw, sw, component.getWidth () - sw * 2, component.getHeight () - sw * 2 );
                 }
                 else
                 {
@@ -144,8 +143,8 @@ public class PopOverPainter<E extends JRootPane, U extends WRootPaneUI> extends 
                 super.mouseDragged ( e );
             }
         };
-        c.addMouseListener ( moveAdapter );
-        c.addMouseMotionListener ( moveAdapter );
+        component.addMouseListener ( moveAdapter );
+        component.addMouseMotionListener ( moveAdapter );
 
         // Custom window shaping
         if ( !ProprietaryUtils.isWindowTransparencyAllowed () && ProprietaryUtils.isWindowShapeAllowed () )
@@ -158,7 +157,7 @@ public class PopOverPainter<E extends JRootPane, U extends WRootPaneUI> extends 
                     final Rectangle bounds = popOver.getBounds ();
                     bounds.width++;
                     bounds.height++;
-                    ProprietaryUtils.setWindowShape ( popOver, provideShape ( c, bounds ) );
+                    ProprietaryUtils.setWindowShape ( popOver, provideShape ( component, bounds ) );
                 }
             };
             popOver.addComponentListener ( resizeAdapter );
@@ -166,10 +165,10 @@ public class PopOverPainter<E extends JRootPane, U extends WRootPaneUI> extends 
     }
 
     @Override
-    public void uninstall ( final E c, final U ui )
+    protected void uninstallPropertiesAndListeners ()
     {
         // Retrieving popover instance
-        final WebPopOver popOver = getPopOver ( c );
+        final WebPopOver popOver = getPopOver ( component );
 
         // Custom window shaping
         if ( resizeAdapter != null )
@@ -179,16 +178,15 @@ public class PopOverPainter<E extends JRootPane, U extends WRootPaneUI> extends 
         }
 
         // Popover drag listener
-        c.removeMouseMotionListener ( moveAdapter );
-        c.removeMouseListener ( moveAdapter );
+        component.removeMouseMotionListener ( moveAdapter );
+        component.removeMouseListener ( moveAdapter );
         moveAdapter = null;
 
         // Window focus listener
         popOver.removeWindowFocusListener ( focusListener );
         focusListener = null;
 
-        // Must call super to uninstall default settings
-        super.uninstall ( c, ui );
+        super.uninstallPropertiesAndListeners ();
     }
 
     @Override

@@ -41,10 +41,6 @@ import java.util.List;
 public final class StyleData implements PropertyChangeListener
 {
     /**
-     * todo 1. Probably listen to JComponent UI property changes and destroy {@link StyleData} when UI changes to non-WebLaF one
-     */
-
-    /**
      * Component this style data is referencing.
      */
     private final WeakReference<JComponent> component;
@@ -102,16 +98,42 @@ public final class StyleData implements PropertyChangeListener
         this.customPainter = null;
         this.children = null;
         this.listeners = null;
+    }
+
+    /**
+     * Installs style listeners.
+     */
+    public void install ()
+    {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
 
         // Adding style identifier listener
-        // todo Move to install skin and remove upon skin uninstall
+        final JComponent component = getComponent ();
         component.addPropertyChangeListener ( StyleId.STYLE_PROPERTY, this );
         component.addPropertyChangeListener ( StyleId.PARENT_STYLE_PROPERTY, this );
+    }
+
+    /**
+     * Uninstalls style listeners.
+     */
+    public void uninstall ()
+    {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Adding style identifier listener
+        final JComponent component = getComponent ();
+        component.removePropertyChangeListener ( StyleId.PARENT_STYLE_PROPERTY, this );
+        component.removePropertyChangeListener ( StyleId.STYLE_PROPERTY, this );
     }
 
     @Override
     public void propertyChange ( final PropertyChangeEvent evt )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Retrieving component
         final JComponent component = getComponent ();
         final Object styleId = component.getClientProperty ( StyleId.STYLE_PROPERTY );
@@ -403,8 +425,6 @@ public final class StyleData implements PropertyChangeListener
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
-        // todo Remove listeners styleId/parent listeners
-
         // Checking previous skin existence
         final Skin oldSkin = this.skin;
         if ( this.skin != null )
@@ -548,6 +568,9 @@ public final class StyleData implements PropertyChangeListener
      */
     protected Painter setCustomPainter ( final Painter painter )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Saving previous custom painter for return
         final Painter oldPainter = this.customPainter;
 
@@ -571,6 +594,9 @@ public final class StyleData implements PropertyChangeListener
      */
     public boolean resetCustomPainter ()
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Operation is successful when there is a custom painter to reset
         final boolean successful = this.customPainter != null;
 
@@ -594,6 +620,10 @@ public final class StyleData implements PropertyChangeListener
      */
     protected void addChild ( final JComponent child )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Adding child
         if ( children == null )
         {
             children = new ArrayList<WeakReference<JComponent>> ( 1 );
@@ -608,6 +638,10 @@ public final class StyleData implements PropertyChangeListener
      */
     protected void removeChild ( final JComponent child )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Removing child
         final Iterator<WeakReference<JComponent>> iterator = children.iterator ();
         while ( iterator.hasNext () )
         {

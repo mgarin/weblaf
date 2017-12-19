@@ -6,7 +6,6 @@ import com.alee.painter.AbstractPainter;
 import com.alee.painter.SectionPainter;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.GraphicsUtils;
-import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.FocusType;
 import com.alee.utils.laf.WebBorder;
@@ -503,6 +502,35 @@ public class TabbedPanePainter<E extends JTabbedPane, U extends WTabbedPaneUI> e
         return null;
     }
 
+    private void paintCustomFocus ( final Graphics2D g2d, final JComponent component, final FocusType focusType, final Shape shape,
+                                    final Boolean mouseover, Boolean hasFocus )
+    {
+        hasFocus = hasFocus != null ? hasFocus : component.hasFocus () && component.isEnabled ();
+        if ( hasFocus && focusType.equals ( FocusType.componentFocus ) )
+        {
+            final Object aa = GraphicsUtils.setupAntialias ( g2d );
+            final Stroke os = GraphicsUtils.setupStroke ( g2d,
+                    new BasicStroke ( 1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1, new float[]{ 1, 2 }, 0 ) );
+
+            g2d.setPaint ( new Color ( 160, 160, 160 ) );
+            g2d.draw ( shape );
+
+            GraphicsUtils.restoreStroke ( g2d, os );
+            GraphicsUtils.restoreAntialias ( g2d, aa );
+        }
+        else if ( focusType.equals ( FocusType.fieldFocus ) && ( hasFocus || mouseover != null && mouseover ) )
+        {
+            final Object aa = GraphicsUtils.setupAntialias ( g2d );
+            final Stroke os = GraphicsUtils.setupStroke ( g2d, new BasicStroke ( 1.5f ) );
+
+            g2d.setPaint ( hasFocus ? new Color ( 85, 142, 239 ) : new Color ( 85, 142, 239, 128 ) );
+            g2d.draw ( shape );
+
+            GraphicsUtils.restoreStroke ( g2d, os );
+            GraphicsUtils.restoreAntialias ( g2d, aa );
+        }
+    }
+
     protected void paintTabBackground ( final Graphics g, final int tabPlacement, final int tabIndex, final int x, final int y, final int w,
                                         final int h, final boolean isSelected )
     {
@@ -563,7 +591,7 @@ public class TabbedPanePainter<E extends JTabbedPane, U extends WTabbedPaneUI> e
         final boolean drawFocus = isSelected && component.isFocusOwner ();
         if ( ui.getTabbedPaneStyle ().equals ( TabbedPaneStyle.standalone ) )
         {
-            LafUtils.drawCustomWebFocus ( g2d, null, FocusType.fieldFocus, borderShape, null, drawFocus );
+            paintCustomFocus ( g2d, null, FocusType.fieldFocus, borderShape, null, drawFocus );
         }
         //        else if ( drawFocus )
         //        {
@@ -823,7 +851,7 @@ public class TabbedPanePainter<E extends JTabbedPane, U extends WTabbedPaneUI> e
             g2d.draw ( bs );
 
             // Area focus
-            LafUtils.drawCustomWebFocus ( g2d, null, FocusType.fieldFocus, bs, null, component.isFocusOwner () );
+            paintCustomFocus ( g2d, null, FocusType.fieldFocus, bs, null, component.isFocusOwner () );
         }
         else
         {

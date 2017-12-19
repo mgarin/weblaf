@@ -83,12 +83,22 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
 
     public WebColorChooserPanel ()
     {
-        this ( false );
+        this ( StyleId.colorchooserpanel, false );
     }
 
     public WebColorChooserPanel ( final boolean showButtonsPanel )
     {
-        super ( StyleId.colorchooserPanel );
+        this ( StyleId.colorchooserpanel, showButtonsPanel );
+    }
+
+    public WebColorChooserPanel ( final StyleId id )
+    {
+        this ( id, false );
+    }
+
+    public WebColorChooserPanel ( final StyleId id, final boolean showButtonsPanel )
+    {
+        super ( id );
 
         this.showButtonsPanel = showButtonsPanel;
 
@@ -264,7 +274,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
 
                     try
                     {
-                        color = ColorUtils.parseHexColor ( hexColor.getText () );
+                        color = ColorUtils.fromHex ( hexColor.getText () );
                         updateColors ( color, UpdateSource.hexField );
                     }
                     catch ( final Exception ex )
@@ -473,7 +483,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
     private void updateHexField ( final Color color )
     {
         // Substring removes first # symbol
-        hexColor.setText ( ColorUtils.getHexColor ( color ).substring ( 1 ) );
+        hexColor.setText ( ColorUtils.toHex ( color ).substring ( 1 ) );
     }
 
     private void updateRGBFields ( final Color color )

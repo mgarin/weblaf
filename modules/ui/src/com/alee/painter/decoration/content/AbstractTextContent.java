@@ -659,7 +659,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
             {
                 preAlpha = Math.min ( ( ( AlphaComposite ) oldComposite ).getAlpha (), preAlpha );
             }
-            g2d.setPaint ( ColorUtils.removeAlpha ( color ) );
+            g2d.setPaint ( ColorUtils.opaque ( color ) );
 
             // If the effect is a shadow it looks better to stop painting a bit earlier - shadow will look softer
             final int maxSize = isShadow ? size - 1 : size;

@@ -93,12 +93,12 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     @Override
     public void install ( final E c, final U ui )
     {
-        // Updating marks
-        this.installed = true;
-
         // Saving references
         this.component = c;
         this.ui = ui;
+
+        // Additional actions before installation
+        beforeInstall ();
 
         // Installing section painters
         // This must always be done first, before we try installing any listeners
@@ -107,17 +107,16 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         // Installing properties and listeners
         installPropertiesAndListeners ();
 
-        // Updating orientation
-        updateOrientation ();
-        saveOrientation ();
-
-        // Updating border
-        updateBorder ();
+        // Additional actions after installation
+        afterInstall ();
     }
 
     @Override
     public void uninstall ( final E c, final U ui )
     {
+        // Additional actions before uninstallation
+        beforeUninstall ();
+
         // Uninstalling properties and listeners
         uninstallPropertiesAndListeners ();
 
@@ -125,11 +124,52 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         // This must always be done last, after we uninstall all listeners
         uninstallSectionPainters ();
 
+        // Additional actions after uninstallation
+        afterUninstall ();
+
         // Cleaning up references
         this.component = null;
         this.ui = null;
+    }
 
-        // Updating marks
+    /**
+     * Performs additional actions before installation ends.
+     * This is an additional method for override convenience.
+     */
+    protected void beforeInstall ()
+    {
+        // Updating installation mark
+        this.installed = true;
+    }
+
+    /**
+     * Performs additional actions on installation ends.
+     * This is an additional method for override convenience.
+     */
+    protected void afterInstall ()
+    {
+        // Updating initial border
+        updateBorder ();
+    }
+
+    /**
+     * Performs additional actions before uninstallation ends.
+     * This is an additional method for override convenience.
+     */
+    protected void beforeUninstall ()
+    {
+        /**
+         * Do nothing by default.
+         */
+    }
+
+    /**
+     * Performs additional actions after uninstallation ends.
+     * This is an additional method for override convenience.
+     */
+    protected void afterUninstall ()
+    {
+        // Updating installation mark
         this.installed = false;
     }
 
@@ -365,6 +405,11 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      */
     protected void installPropertiesAndListeners ()
     {
+        // Updating orientation
+        updateOrientation ();
+        saveOrientation ();
+
+        // Install property change listener
         installPropertyChangeListener ();
     }
 
@@ -374,6 +419,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      */
     protected void uninstallPropertiesAndListeners ()
     {
+        // Uninstall property change listener
         uninstallPropertyChangeListener ();
     }
 

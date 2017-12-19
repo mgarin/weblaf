@@ -26,6 +26,7 @@ import com.alee.utils.ArrayUtils;
 import com.alee.utils.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -47,12 +48,12 @@ import java.util.List;
 public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Stateful
 {
     /**
-     * Custom canvas states.
+     * Custom {@link WebCanvas} states.
      */
     protected List<String> states;
 
     /**
-     * Constructs new canvas.
+     * Constructs new {@link WebCanvas}.
      */
     public WebCanvas ()
     {
@@ -60,9 +61,9 @@ public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Sta
     }
 
     /**
-     * Constructs new canvas.
+     * Constructs new {@link WebCanvas}.
      *
-     * @param states custom canvas states
+     * @param states custom {@link WebCanvas} states
      */
     public WebCanvas ( final String... states )
     {
@@ -70,14 +71,15 @@ public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Sta
     }
 
     /**
-     * Constructs new canvas.
+     * Constructs new {@link WebCanvas}.
      *
      * @param id     style ID
-     * @param states custom canvas states
+     * @param states custom {@link WebCanvas} states
      */
     public WebCanvas ( final StyleId id, final String... states )
     {
         super ();
+        this.states = new ArrayList<String> ( 1 );
         addStates ( states );
         updateUI ();
         setStyleId ( id );
@@ -90,70 +92,96 @@ public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Sta
     }
 
     /**
-     * Returns custom canvas states.
+     * Returns custom {@link WebCanvas} states.
      *
-     * @return custom canvas states
+     * @return custom {@link WebCanvas} states
      */
     @Override
     public List<String> getStates ()
     {
-        return states;
+        return new ArrayList<String> ( states );
     }
 
     /**
-     * Sets custom canvas states.
+     * Sets custom {@link WebCanvas} states.
      *
-     * @param states custom canvas states
+     * @param states custom {@link WebCanvas} states
      */
     public void setStates ( final List<String> states )
     {
-        final List<String> old = CollectionUtils.copy ( this.states );
-        this.states = states;
-        fireStatesChanged ( old, this.states );
+        if ( !CollectionUtils.equals ( this.states, states, false ) )
+        {
+            final List<String> old = CollectionUtils.copy ( this.states );
+            this.states = states;
+            fireStatesChanged ( old, this.states );
+        }
     }
 
     /**
-     * Adds custom canvas states.
+     * Adds custom {@link WebCanvas} states.
      *
-     * @param states custom canvas states to add
+     * @param states custom {@link WebCanvas} states to add
      */
     public void addStates ( final String... states )
     {
         if ( ArrayUtils.notEmpty ( states ) )
         {
             final List<String> old = CollectionUtils.copy ( this.states );
-            if ( this.states == null )
-            {
-                this.states = new ArrayList<String> ( 1 );
-            }
-            CollectionUtils.addAllNonNull ( this.states, states );
+            CollectionUtils.addUniqueNonNull ( this.states, states );
             fireStatesChanged ( old, this.states );
         }
     }
 
     /**
-     * Removes custom canvas states.
+     * Adds custom {@link WebCanvas} states.
      *
-     * @param states custom canvas states to remove
+     * @param states custom {@link WebCanvas} states to add
+     */
+    public void addStates ( final Collection<String> states )
+    {
+        if ( ArrayUtils.notEmpty ( states ) )
+        {
+            final List<String> old = CollectionUtils.copy ( this.states );
+            CollectionUtils.addUniqueNonNull ( this.states, states );
+            fireStatesChanged ( old, this.states );
+        }
+    }
+
+    /**
+     * Removes custom {@link WebCanvas} states.
+     *
+     * @param states custom {@link WebCanvas} states to remove
      */
     public void removeStates ( final String... states )
     {
         if ( ArrayUtils.notEmpty ( states ) )
         {
             final List<String> old = CollectionUtils.copy ( this.states );
-            if ( this.states != null )
-            {
-                CollectionUtils.removeAll ( this.states, states );
-            }
+            CollectionUtils.removeAll ( this.states, states );
             fireStatesChanged ( old, this.states );
         }
     }
 
     /**
-     * Updates decoration states.
+     * Removes custom {@link WebCanvas} states.
      *
-     * @param oldStates previous custom states
-     * @param newStates current custom states
+     * @param states custom {@link WebCanvas} states to remove
+     */
+    public void removeStates ( final Collection<String> states )
+    {
+        if ( ArrayUtils.notEmpty ( states ) )
+        {
+            final List<String> old = CollectionUtils.copy ( this.states );
+            CollectionUtils.removeAll ( this.states, states );
+            fireStatesChanged ( old, this.states );
+        }
+    }
+
+    /**
+     * Updates {@link WebCanvas} decoration states.
+     *
+     * @param oldStates previous custom {@link WebCanvas} states
+     * @param newStates current custom {@link WebCanvas} states
      */
     public void fireStatesChanged ( final List<String> oldStates, final List<String> newStates )
     {

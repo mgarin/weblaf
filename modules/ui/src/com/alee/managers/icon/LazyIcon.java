@@ -88,4 +88,10 @@ public final class LazyIcon implements Icon
     {
         return getIcon ().getIconHeight ();
     }
+
+    @Override
+    public String toString ()
+    {
+        return getClass ().getCanonicalName () + "[id=" + getId () + "]";
+    }
 }

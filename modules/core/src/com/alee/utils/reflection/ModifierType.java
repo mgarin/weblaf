@@ -22,6 +22,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Enumeration representing {@link Class}, {@link Field} and {@link Method} modifier types.
@@ -172,7 +173,7 @@ public enum ModifierType
     @Override
     public String toString ()
     {
-        return this.name ().toLowerCase ();
+        return this.name ().toLowerCase ( Locale.ROOT );
     }
 
     /**

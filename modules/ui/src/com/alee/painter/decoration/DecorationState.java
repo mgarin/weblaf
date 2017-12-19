@@ -47,32 +47,160 @@ public interface DecorationState
     public static final String disabled = "disabled";
 
     /**
-     * Used to provide LTR component orientation type.
+     * Used to provide LTR component orientation type state.
      *
      * @see AbstractDecorationPainter#getDecorationStates()
      */
     public static final String leftToRight = "ltr";
 
     /**
-     * Used to provide RTL component orientation type.
+     * Used to provide RTL component orientation type state.
      *
      * @see AbstractDecorationPainter#getDecorationStates()
      */
     public static final String rightToLeft = "rtl";
 
+    /**
+     * Used to provide component focused state.
+     *
+     * @see AbstractDecorationPainter#getDecorationStates()
+     * @see com.alee.laf.list.WebListCellRenderer#getStates()
+     * @see com.alee.laf.table.renderers.WebTableCellRenderer#getStates()
+     * @see com.alee.laf.table.renderers.WebTableBooleanCellRenderer#getStates()
+     * @see com.alee.laf.tree.WebTreeCellRenderer#getStates()
+     * @see com.alee.extended.tree.WebCheckBoxTreeCellRenderer#getStates()
+     */
     public static final String focused = "focused";
+
+    /**
+     * Used to provide component parent focused state.
+     *
+     * @see AbstractDecorationPainter#getDecorationStates()
+     */
     public static final String inFocusedParent = "in-focused-parent";
+
+    /**
+     * Used to provide component focused state.
+     *
+     * @see AbstractDecorationPainter#getDecorationStates()
+     * @see com.alee.laf.list.WebListCellRenderer#getStates()
+     * @see com.alee.laf.list.ListItemPainter#getDecorationStates()
+     * @see com.alee.laf.tree.WebTreeCellRenderer#getStates()
+     * @see com.alee.laf.tree.TreeRowPainter#getDecorationStates()
+     * @see com.alee.laf.tree.TreeNodePainter#getDecorationStates()
+     */
     public static final String hover = "hover";
+
+    /**
+     * Used to provide component pressed state.
+     *
+     * @see com.alee.laf.button.AbstractButtonPainter#getDecorationStates()
+     * @see com.alee.laf.combobox.WebComboBoxRenderer#getStates()
+     */
     public static final String pressed = "pressed";
+
+    /**
+     * Used to provide component selected state.
+     *
+     * @see com.alee.laf.button.AbstractButtonPainter#getDecorationStates()
+     * @see com.alee.laf.list.WebListCellRenderer#getStates()
+     * @see com.alee.laf.list.ListItemPainter#getDecorationStates()
+     * @see com.alee.laf.table.TableRowPainter#getDecorationStates()
+     * @see com.alee.laf.table.TableColumnPainter#getDecorationStates()
+     * @see com.alee.laf.table.TableCellPainter#getDecorationStates()
+     * @see com.alee.laf.table.renderers.WebTableCellRenderer#getStates()
+     * @see com.alee.laf.table.renderers.WebTableBooleanCellRenderer#getStates()
+     * @see com.alee.laf.tree.TreeRowPainter#getDecorationStates()
+     * @see com.alee.laf.tree.TreeNodePainter#getDecorationStates()
+     * @see com.alee.laf.tree.WebTreeCellRenderer#getStates()
+     * @see com.alee.extended.tree.WebCheckBoxTreeCellRenderer#getStates()
+     */
     public static final String selected = "selected";
+
+    /**
+     * Used to provide component unselected state.
+     *
+     * @see com.alee.laf.button.AbstractButtonPainter#getDecorationStates()
+     * @see com.alee.laf.list.WebListCellRenderer#getStates()
+     * @see com.alee.laf.list.ListItemPainter#getDecorationStates()
+     * @see com.alee.laf.table.TableRowPainter#getDecorationStates()
+     * @see com.alee.laf.table.TableColumnPainter#getDecorationStates()
+     * @see com.alee.laf.table.TableCellPainter#getDecorationStates()
+     * @see com.alee.laf.table.renderers.WebTableCellRenderer#getStates()
+     * @see com.alee.laf.table.renderers.WebTableBooleanCellRenderer#getStates()
+     * @see com.alee.laf.tree.TreeRowPainter#getDecorationStates()
+     * @see com.alee.laf.tree.TreeNodePainter#getDecorationStates()
+     * @see com.alee.laf.tree.WebTreeCellRenderer#getStates()
+     * @see com.alee.extended.tree.WebCheckBoxTreeCellRenderer#getStates()
+     */
     public static final String unselected = "unselected";
-    public static final String empty = "empty";
-    public static final String collapsed = "collapsed";
-    public static final String expanded = "expanded";
-    public static final String dragged = "dragged";
+
+    /**
+     * Used to provide component checked state.
+     *
+     * @see com.alee.laf.checkbox.CheckBoxPainter#getDecorationStates()
+     * @see com.alee.extended.checkbox.TristateCheckBoxPainter#getDecorationStates()
+     * @see com.alee.laf.radiobutton.RadioButtonPainter#getDecorationStates()
+     * @see com.alee.laf.menu.AbstractStateMenuItemPainter#getDecorationStates()
+     */
     public static final String checked = "checked";
+
+    /**
+     * Used to provide component mixed state.
+     *
+     * @see com.alee.extended.checkbox.TristateCheckBoxPainter#getDecorationStates()
+     */
     public static final String mixed = "mixed";
+
+    /**
+     * Used to provide component empty state.
+     *
+     * @see com.alee.laf.text.AbstractTextEditorPainter#getDecorationStates()
+     */
+    public static final String empty = "empty";
+
+    /**
+     * Used to provide component collapsed state.
+     *
+     * @see com.alee.extended.panel.WebCollapsiblePane.HeaderPanel#getStates()
+     * @see com.alee.laf.combobox.WebComboBoxRenderer#getStates()
+     * @see com.alee.laf.combobox.ComboBoxPainter#getDecorationStates()
+     * @see com.alee.laf.combobox.WebComboBoxUI.ComboBoxButton#getStates()
+     * @see com.alee.laf.combobox.WebComboBoxUI.ComboBoxSeparator#getStates()
+     * @see com.alee.laf.tree.WebTreeCellRenderer#getStates()
+     * @see com.alee.laf.tree.TreeRowPainter#getDecorationStates()
+     * @see com.alee.laf.tree.TreeNodePainter#getDecorationStates()
+     * @see com.alee.extended.tree.WebCheckBoxTreeCellRenderer#getStates()
+     */
+    public static final String collapsed = "collapsed";
+
+    /**
+     * Used to provide component expanded state.
+     *
+     * @see com.alee.extended.panel.WebCollapsiblePane.HeaderPanel#getStates()
+     * @see com.alee.laf.combobox.WebComboBoxRenderer#getStates()
+     * @see com.alee.laf.combobox.ComboBoxPainter#getDecorationStates()
+     * @see com.alee.laf.combobox.WebComboBoxUI.ComboBoxButton#getStates()
+     * @see com.alee.laf.combobox.WebComboBoxUI.ComboBoxSeparator#getStates()
+     * @see com.alee.laf.tree.WebTreeCellRenderer#getStates()
+     * @see com.alee.laf.tree.TreeRowPainter#getDecorationStates()
+     * @see com.alee.laf.tree.TreeNodePainter#getDecorationStates()
+     * @see com.alee.extended.tree.WebCheckBoxTreeCellRenderer#getStates()
+     */
+    public static final String expanded = "expanded";
+
+    /**
+     * Used to provide drop on state.
+     *
+     * @see com.alee.laf.tree.TreeDropLocationPainter#getDecorationStates()
+     */
     public static final String dropOn = "drop-on";
+
+    /**
+     * Used to provide drop between state.
+     *
+     * @see com.alee.laf.tree.TreeDropLocationPainter#getDecorationStates()
+     */
     public static final String dropBetween = "drop-between";
 
     /**
@@ -81,6 +209,7 @@ public interface DecorationState
      * @see com.alee.laf.combobox.WebComboBoxUI.ComboBoxSeparator#getStates()
      * @see com.alee.laf.combobox.WebComboBoxUI.ComboBoxButton#getStates()
      * @see com.alee.laf.combobox.ComboBoxPainter#getDecorationStates()
+     * @see com.alee.laf.text.AbstractTextEditorPainter#getDecorationStates()
      */
     public static final String editable = "editable";
 
@@ -101,16 +230,38 @@ public interface DecorationState
     /**
      * Used to provide component horizontal orientation state.
      *
+     * @see com.alee.laf.separator.AbstractSeparatorPainter#getDecorationStates()
      * @see com.alee.laf.progressbar.ProgressBarPainter#getDecorationStates()
+     * @see com.alee.laf.scroll.WebScrollBarUI.ScrollBarButton#getStates()
+     * @see com.alee.laf.splitpane.SplitPaneDividerPainter#getDecorationStates()
+     * @see com.alee.laf.splitpane.SplitPanePainter#getDecorationStates()
+     * @see com.alee.laf.splitpane.WebSplitPaneDivider.OneTouchButton#getStates()
+     * @see com.alee.laf.splitpane.WSplitPaneUI.NonContinuousDivider#getStates()
      */
     public static final String horizontal = "horizontal";
 
     /**
      * Used to provide component vertical orientation state.
      *
+     * @see com.alee.laf.separator.AbstractSeparatorPainter#getDecorationStates()
      * @see com.alee.laf.progressbar.ProgressBarPainter#getDecorationStates()
+     * @see com.alee.laf.scroll.WebScrollBarUI.ScrollBarButton#getStates()
+     * @see com.alee.laf.splitpane.WSplitPaneUI.NonContinuousDivider#getStates()
+     * @see com.alee.laf.splitpane.SplitPanePainter#getDecorationStates()
+     * @see com.alee.laf.splitpane.WebSplitPaneDivider.OneTouchButton#getStates()
+     * @see com.alee.laf.splitpane.SplitPaneDividerPainter#getDecorationStates()
      */
     public static final String vertical = "vertical";
+
+    /**
+     * Used to provide split pane one-touch buttons visibility state.
+     *
+     * @see com.alee.laf.splitpane.WSplitPaneUI.NonContinuousDivider#getStates()
+     * @see com.alee.laf.splitpane.SplitPanePainter#getDecorationStates()
+     * @see com.alee.laf.splitpane.WebSplitPaneDivider.OneTouchButton#getStates()
+     * @see com.alee.laf.splitpane.SplitPaneDividerPainter#getDecorationStates()
+     */
+    public static final String oneTouch = "one-touch";
 
     /**
      * Used to provide iconified state for root pane painter.
@@ -190,14 +341,17 @@ public interface DecorationState
      * Used to provide tree node leaf state.
      *
      * @see com.alee.laf.tree.WebTreeCellRenderer#getStates()
+     * @see com.alee.extended.tree.WebCheckBoxTreeCellRenderer#getStates()
      */
     public static final String leaf = "leaf";
 
     /**
      * Even position state.
      *
-     * @see com.alee.laf.tree.TreeNodePainter#getDecorationStates()
+     * @see com.alee.laf.list.ListItemPainter#getDecorationStates()
      * @see com.alee.laf.tree.TreeRowPainter#getDecorationStates()
+     * @see com.alee.laf.tree.TreeNodePainter#getDecorationStates()
+     * @see com.alee.laf.tree.GroupedTreeRowPainter#getDecorationStates()
      * @see com.alee.laf.table.TableRowPainter#getDecorationStates()
      * @see com.alee.laf.table.TableColumnPainter#getDecorationStates()
      */
@@ -206,8 +360,10 @@ public interface DecorationState
     /**
      * Odd position state.
      *
-     * @see com.alee.laf.tree.TreeNodePainter#getDecorationStates()
+     * @see com.alee.laf.list.ListItemPainter#getDecorationStates()
      * @see com.alee.laf.tree.TreeRowPainter#getDecorationStates()
+     * @see com.alee.laf.tree.TreeNodePainter#getDecorationStates()
+     * @see com.alee.laf.tree.GroupedTreeRowPainter#getDecorationStates()
      * @see com.alee.laf.table.TableRowPainter#getDecorationStates()
      * @see com.alee.laf.table.TableColumnPainter#getDecorationStates()
      */

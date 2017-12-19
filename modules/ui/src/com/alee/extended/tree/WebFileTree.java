@@ -163,6 +163,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
 
         // Visual settings
         setEditable ( false );
+        setShowsRootHandles ( true );
         setRootVisible ( rootFiles != null && rootFiles.size () == 1 );
         setCellEditor ( new WebFileTreeCellEditor () );
 

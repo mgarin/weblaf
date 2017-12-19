@@ -255,11 +255,11 @@ public class WebColorChooserField extends WebTextField
             try
             {
                 final boolean hex = colorDisplayType.equals ( ColorDisplayType.hex );
-                Color newColor = hex ? ColorUtils.parseHexColor ( current ) : ColorUtils.parseRgbColor ( current );
+                Color newColor = hex ? ColorUtils.fromHex ( current ) : ColorUtils.fromRGB ( current );
                 if ( newColor != null )
                 {
                     // todo Ignoring alpha for now
-                    newColor = ColorUtils.removeAlpha ( newColor );
+                    newColor = ColorUtils.opaque ( newColor );
 
                     // Apply new value
                     setColorImpl ( newColor );
@@ -301,7 +301,7 @@ public class WebColorChooserField extends WebTextField
     protected String getColorText ( final Color color )
     {
         final boolean hex = colorDisplayType.equals ( ColorDisplayType.hex );
-        return hex ? ColorUtils.getHexColor ( color ) : color.getRed () + "," + color.getGreen () + "," + color.getBlue ();
+        return hex ? ColorUtils.toHex ( color ) : color.getRed () + "," + color.getGreen () + "," + color.getBlue ();
     }
 
     //    protected void updateMargin ()

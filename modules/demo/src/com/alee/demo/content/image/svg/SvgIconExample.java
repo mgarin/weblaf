@@ -132,7 +132,7 @@ public class SvgIconExample extends AbstractPreviewExample
         @Override
         protected String getValue ( final SvgIcon icon )
         {
-            return ColorUtils.getHexColor ( Color.RED );
+            return ColorUtils.toHex ( Color.RED );
         }
     }
 }

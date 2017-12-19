@@ -93,7 +93,7 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
         container.add ( createPreviewToolBar (), BorderLayout.NORTH );
 
         // Actual example content
-        final WebScrollPane scrollPane = new WebScrollPane ( StyleId.scrollpaneUndecorated, createContentImpl () );
+        final WebScrollPane scrollPane = new WebScrollPane ( StyleId.scrollpaneUndecoratedButtonless, createContentImpl () );
         scrollPane.getVerticalScrollBar ().setUnitIncrement ( 20 );
         scrollPane.getVerticalScrollBar ().setBlockIncrement ( 50 );
         scrollPane.getHorizontalScrollBar ().setUnitIncrement ( 20 );

@@ -17,8 +17,6 @@
 
 package com.alee.utils;
 
-import com.alee.utils.collection.DoubleMap;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -104,19 +102,6 @@ public final class MapUtils
     public static <K, V> LinkedHashMap<K, V> copyLinkedHashMap ( final LinkedHashMap<K, V> map )
     {
         return new LinkedHashMap<K, V> ( map );
-    }
-
-    /**
-     * Returns copied DoubleMap.
-     *
-     * @param map DoubleMap to copy
-     * @param <K> DoubleMap key type
-     * @param <V> DoubleMap value type
-     * @return copied DoubleMap
-     */
-    public static <K, V> DoubleMap<K, V> copyDoubleMap ( final DoubleMap<K, V> map )
-    {
-        return new DoubleMap<K, V> ( map );
     }
 
     /**

@@ -17,41 +17,34 @@
 
 package com.alee.laf.button;
 
-import com.alee.managers.log.Log;
+import com.alee.laf.AbstractUIInputListener;
+import com.alee.laf.UIAction;
+import com.alee.laf.UIActionMap;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.LafLookup;
 import com.alee.utils.LafUtils;
-import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.LazyActionMap;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentInputMapUIResource;
-import javax.swing.plaf.basic.BasicButtonListener;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * Basic listener for {@link com.alee.laf.button.WButtonUI} implementation.
- * It is based on common Swing {@link javax.swing.plaf.basic.BasicButtonListener} but doesn't have some unnecessary update calls.
+ * Basic listener for {@link WButtonUI} implementation.
+ * It is based on common Swing {@link javax.swing.plaf.basic.BasicButtonListener} but cleaned up and optimized.
  *
+ * @param <C> {@link AbstractButton} type
+ * @param <U> {@link WButtonUI} type
  * @author Jeff Dinkins
  * @author Arnaud Weber
  * @author Mikle Garin
  */
 
-public class WButtonListener implements MouseListener, MouseMotionListener, FocusListener, PropertyChangeListener
+public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>>
+        extends AbstractUIInputListener<C, U> implements MouseListener, MouseMotionListener, FocusListener, PropertyChangeListener
 {
-    /**
-     * Pressed action name.
-     */
-    protected static final String PRESSED = "pressed";
-
-    /**
-     * Released action name.
-     */
-    protected static final String RELEASED = "released";
-
     /**
      * Last button press timestamp.
      */
@@ -62,53 +55,77 @@ public class WButtonListener implements MouseListener, MouseMotionListener, Focu
      */
     protected boolean shouldDiscardRelease = false;
 
-    /**
-     * Loads all available button actions.
-     * Called through reflection upon lazy actions initialization.
-     *
-     * @param map {@link LazyActionMap} to populate actions into
-     */
-    public static void loadActionMap ( final LazyActionMap map )
+    @Override
+    public void install ( final C component )
     {
-        try
-        {
-            // Using BasicButtonListener.Actions class instead of our own implementation due to proprietary APIs usage there
-            final Class actionClass = ReflectUtils.getInnerClass ( BasicButtonListener.class, "Actions" );
-            map.put ( ( Action ) ReflectUtils.createInstanceSafely ( actionClass, PRESSED ) );
-            map.put ( ( Action ) ReflectUtils.createInstanceSafely ( actionClass, RELEASED ) );
-        }
-        catch ( final ClassNotFoundException e )
-        {
-            // Informing about inaccessible actions
-            Log.get ().error ( "Unable to initialize lazy actions for button" );
-        }
+        super.install ( component );
+
+        // Installing listeners
+        component.addMouseListener ( this );
+        component.addMouseMotionListener ( this );
+        component.addFocusListener ( this );
+        component.addPropertyChangeListener ( this );
+
+        // Installing ActionMap
+        final UIActionMap actionMap = new UIActionMap ();
+        actionMap.put ( new Action ( component, Action.PRESSED ) );
+        actionMap.put ( new Action ( component, Action.RELEASED ) );
+        SwingUtilities.replaceUIActionMap ( component, actionMap );
+
+        // Installing InputMap
+        final InputMap inputMap = LafLookup.getInputMap ( component, JComponent.WHEN_FOCUSED );
+        SwingUtilities.replaceUIInputMap ( component, JComponent.WHEN_FOCUSED, inputMap );
+        updateMnemonicBinding ( component );
+    }
+
+    @Override
+    public void uninstall ( final C component )
+    {
+        // Uninstalling InputMap
+        SwingUtilities.replaceUIInputMap ( component, JComponent.WHEN_IN_FOCUSED_WINDOW, null );
+        SwingUtilities.replaceUIInputMap ( component, JComponent.WHEN_FOCUSED, null );
+
+        // Uninstalling ActionMap
+        SwingUtilities.replaceUIActionMap ( component, null );
+
+        // Uninstalling listeners
+        component.removePropertyChangeListener ( this );
+        component.removeFocusListener ( this );
+        component.removeMouseMotionListener ( this );
+        component.removeMouseListener ( this );
+
+        super.uninstall ( component );
     }
 
     /**
-     * Installs default key actions.
+     * Resets the binding for the mnemonic in the WHEN_IN_FOCUSED_WINDOW UI {@link InputMap}.
      *
-     * @param button {@link AbstractButton} to install actions into
+     * @param button {@link AbstractButton} to update mnemonic binding for
      */
-    public void installKeyboardActions ( final AbstractButton button )
+    protected void updateMnemonicBinding ( final AbstractButton button )
     {
-        updateMnemonicBinding ( button );
-
-        final WButtonUI ui = LafUtils.getUI ( button );
-        LazyActionMap.installLazyActionMap ( button, WButtonListener.class, ui.getPropertyPrefix () + "actionMap" );
-
-        SwingUtilities.replaceUIInputMap ( button, JComponent.WHEN_FOCUSED, getInputMap ( JComponent.WHEN_FOCUSED, button ) );
-    }
-
-    /**
-     * Uninstalls default key actions.
-     *
-     * @param button {@link AbstractButton} to uninstall actions from
-     */
-    public void uninstallKeyboardActions ( final AbstractButton button )
-    {
-        SwingUtilities.replaceUIInputMap ( button, JComponent.WHEN_IN_FOCUSED_WINDOW, null );
-        SwingUtilities.replaceUIInputMap ( button, JComponent.WHEN_FOCUSED, null );
-        SwingUtilities.replaceUIActionMap ( button, null );
+        final int m = button.getMnemonic ();
+        if ( m != 0 )
+        {
+            InputMap map = SwingUtilities.getUIInputMap ( button, JComponent.WHEN_IN_FOCUSED_WINDOW );
+            if ( map == null )
+            {
+                map = new ComponentInputMapUIResource ( button );
+                SwingUtilities.replaceUIInputMap ( button, JComponent.WHEN_IN_FOCUSED_WINDOW, map );
+            }
+            map.clear ();
+            map.put ( KeyStroke.getKeyStroke ( m, SwingUtils.getFocusAcceleratorKeyMask (), false ), Action.PRESSED );
+            map.put ( KeyStroke.getKeyStroke ( m, SwingUtils.getFocusAcceleratorKeyMask (), true ), Action.RELEASED );
+            map.put ( KeyStroke.getKeyStroke ( m, 0, true ), Action.RELEASED );
+        }
+        else
+        {
+            final InputMap map = SwingUtilities.getUIInputMap ( button, JComponent.WHEN_IN_FOCUSED_WINDOW );
+            if ( map != null )
+            {
+                map.clear ();
+            }
+        }
     }
 
     @Override
@@ -263,115 +280,56 @@ public class WButtonListener implements MouseListener, MouseMotionListener, Focu
     }
 
     /**
-     * Resets the binding for the mnemonic in the WHEN_IN_FOCUSED_WINDOW UI {@link InputMap}.
+     * Actions for {@link AbstractButton}.
      *
-     * @param button {@link AbstractButton} to update mnemonic binding for
+     * @param <E> {@link AbstractButton} type
      */
-    protected void updateMnemonicBinding ( final AbstractButton button )
+    protected class Action<E extends AbstractButton> extends UIAction<E>
     {
-        final int m = button.getMnemonic ();
-        if ( m != 0 )
+        /**
+         * Supported actions.
+         */
+        public static final String PRESSED = "pressed";
+        public static final String RELEASED = "released";
+
+        /**
+         * Constructs new button {@link Action} with the specified name.
+         *
+         * @param button {@link AbstractButton}
+         * @param name   {@link Action} name
+         */
+        public Action ( final E button, final String name )
         {
-            InputMap map = SwingUtilities.getUIInputMap ( button, JComponent.WHEN_IN_FOCUSED_WINDOW );
-            if ( map == null )
-            {
-                map = new ComponentInputMapUIResource ( button );
-                SwingUtilities.replaceUIInputMap ( button, JComponent.WHEN_IN_FOCUSED_WINDOW, map );
-            }
-            map.clear ();
-            map.put ( KeyStroke.getKeyStroke ( m, SwingUtils.getFocusAcceleratorKeyMask (), false ), PRESSED );
-            map.put ( KeyStroke.getKeyStroke ( m, SwingUtils.getFocusAcceleratorKeyMask (), true ), RELEASED );
-            map.put ( KeyStroke.getKeyStroke ( m, 0, true ), "released" );
+            super ( button, name );
         }
-        else
+
+        @Override
+        public void actionPerformed ( final ActionEvent e )
         {
-            final InputMap map = SwingUtilities.getUIInputMap ( button, JComponent.WHEN_IN_FOCUSED_WINDOW );
-            if ( map != null )
+            final E button = getComponent ();
+            if ( CompareUtils.equals ( getName (), PRESSED ) )
             {
-                map.clear ();
+                final ButtonModel model = button.getModel ();
+                model.setArmed ( true );
+                model.setPressed ( true );
+                if ( !button.hasFocus () )
+                {
+                    button.requestFocus ();
+                }
             }
+            else if ( CompareUtils.equals ( getName (), RELEASED ) )
+            {
+                final ButtonModel model = button.getModel ();
+                model.setPressed ( false );
+                model.setArmed ( false );
+            }
+        }
+
+        @Override
+        public boolean isEnabled ()
+        {
+            final E button = getComponent ();
+            return button == null || button.getModel ().isEnabled ();
         }
     }
-
-    /**
-     * Returns {@link InputMap} for {@code condition}.
-     *
-     * @param condition event condition
-     * @param button    {@link AbstractButton} to return {@link InputMap} for
-     * @return {@link InputMap} for {@code condition}
-     */
-    protected InputMap getInputMap ( final int condition, final AbstractButton button )
-    {
-        if ( condition == JComponent.WHEN_FOCUSED )
-        {
-            final WButtonUI ui = LafUtils.getUI ( button );
-            if ( ui != null )
-            {
-                return ( InputMap ) LafLookup.get ( button, ui, ui.getPropertyPrefix () + "focusInputMap" );
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Disabled due to {@link sun.swing.UIAction} being proprietary Sun API.
-     * Since it is actually referenced within {@link SwingUtilities#notifyAction} we cannot simply use {@link Action}.
-     * Maybe it will be exposed as public API in the future JDK versions then we can use this implementation.
-     */
-    //    /**
-    //     * Actions for Buttons.
-    //     * Two types of action are supported:
-    //     * - pressed: Moves the button to a pressed state
-    //     * - released: Disarms the button.
-    //     */
-    //    protected static class Action extends UIAction
-    //    {
-    //        /**
-    //         * Pressed action name.
-    //         */
-    //        public static final String PRESSED = "pressed";
-    //
-    //        /**
-    //         * Released action name.
-    //         */
-    //        public static final String RELEASED = "released";
-    //
-    //        /**
-    //         * Constructs new button {@link Action} with the specified name.
-    //         *
-    //         * @param name {@link Action} name
-    //         */
-    //        public Action ( final String name )
-    //        {
-    //            super ( name );
-    //        }
-    //
-    //        @Override
-    //        public void actionPerformed ( final ActionEvent e )
-    //        {
-    //            final AbstractButton b = ( AbstractButton ) e.getSource ();
-    //            if ( CompareUtils.equals ( getName (), PRESSED ) )
-    //            {
-    //                final ButtonModel model = b.getModel ();
-    //                model.setArmed ( true );
-    //                model.setPressed ( true );
-    //                if ( !b.hasFocus () )
-    //                {
-    //                    b.requestFocus ();
-    //                }
-    //            }
-    //            else if ( CompareUtils.equals ( getName (), RELEASED ) )
-    //            {
-    //                final ButtonModel model = b.getModel ();
-    //                model.setPressed ( false );
-    //                model.setArmed ( false );
-    //            }
-    //        }
-    //
-    //        @Override
-    //        public boolean isEnabled ( final Object sender )
-    //        {
-    //            return sender == null || !( sender instanceof AbstractButton ) || ( ( AbstractButton ) sender ).getModel ().isEnabled ();
-    //        }
-    //    }
 }

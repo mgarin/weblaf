@@ -273,7 +273,7 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
         final Color c1 = getColor ( nextIndex - 1 );
         final Color c2 = getColor ( nextIndex );
 
-        return ColorUtils.getIntermediateColor ( c1, c2, progress );
+        return ColorUtils.intermediate ( c1, c2, progress );
     }
 
     /**

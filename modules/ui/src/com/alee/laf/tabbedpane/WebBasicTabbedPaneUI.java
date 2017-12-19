@@ -1,8 +1,8 @@
 package com.alee.laf.tabbedpane;
 
+import com.alee.laf.LazyActionMap;
+import com.alee.laf.UIAction;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.LazyActionMap;
-import com.alee.utils.swing.UIAction;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -165,7 +165,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
 
     // UI creation
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebBasicTabbedPaneUI ();
@@ -1131,7 +1131,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         textRect.y += yNudge;
     }
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintIcon ( final Graphics g, final int tabPlacement, final int tabIndex, final Icon icon, final Rectangle iconRect,
                                final boolean isSelected )
     {
@@ -1141,7 +1141,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         }
     }
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintText ( final Graphics g, final int tabPlacement, final Font font, final FontMetrics metrics, final int tabIndex,
                                final String title, final Rectangle textRect, final boolean isSelected )
     {
@@ -1228,7 +1228,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         }
     }
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintFocusIndicator ( final Graphics g, final int tabPlacement, final Rectangle[] rects, final int tabIndex,
                                          final Rectangle iconRect, final Rectangle textRect, final boolean isSelected )
     {
@@ -1276,7 +1276,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
      * note that this function does now draw the background of the tab.
      * that is done elsewhere
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintTabBorder ( final Graphics g, final int tabPlacement, final int tabIndex, final int x, final int y, final int w,
                                     final int h, final boolean isSelected )
     {
@@ -1430,7 +1430,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
 
     }
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintContentBorderTopEdge ( final Graphics g, final int tabPlacement, final int selectedIndex, final int x, final int y,
                                                final int w, final int h )
     {
@@ -1464,7 +1464,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         }
     }
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintContentBorderLeftEdge ( final Graphics g, final int tabPlacement, final int selectedIndex, final int x, final int y,
                                                 final int w, final int h )
     {
@@ -1614,7 +1614,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         return tabForCoordinate ( pane, x, y, true );
     }
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     private int tabForCoordinate ( final JTabbedPane pane, final int x, final int y, final boolean validateIfNecessary )
     {
         if ( validateIfNecessary )
@@ -2437,7 +2437,11 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
 
         public Actions ( final String key )
         {
-            super ( key );
+            /**
+             * {@code null} is a temporary workaround.
+             * Should be using {@link com.alee.laf.UIActionMap} in this class instead of {@link LazyActionMap}.
+             */
+            super ( null, key );
         }
 
         @Override
@@ -3102,7 +3106,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         /*
         * Rotates the run-index array so that the selected run is run[0]
         */
-        @SuppressWarnings ("UnusedParameters")
+        @SuppressWarnings ( "UnusedParameters" )
         protected void rotateTabRuns ( final int tabPlacement, final int selectedRun )
         {
             for ( int i = 0; i < selectedRun; i++ )
@@ -3713,7 +3717,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
 
         private final Point tabViewPosition = new Point ( 0, 0 );
 
-        @SuppressWarnings ("UnusedParameters")
+        @SuppressWarnings ( "UnusedParameters" )
         ScrollableTabSupport ( final int tabPlacement )
         {
             viewport = new ScrollableTabViewport ();

@@ -164,7 +164,7 @@ public final class BreadcrumbUtils
 
             // Border
             final Color bc = element.isEnabled () ? WebBreadcrumbStyle.borderColor : WebBreadcrumbStyle.disabledBorderColor;
-            final Color sideColor = ColorUtils.getTransparentColor ( bc, 20 );
+            final Color sideColor = ColorUtils.transparent ( bc, 20 );
             final Color[] borderColors = { sideColor, bc, bc, sideColor };
             g2d.setPaint ( new LinearGradientPaint ( 0, rect.y, 0, rect.y + rect.height, shadeFractions, borderColors ) );
             g2d.draw ( bs );

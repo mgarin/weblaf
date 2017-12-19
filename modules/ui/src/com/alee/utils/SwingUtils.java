@@ -2605,7 +2605,9 @@ public final class SwingUtils extends CoreSwingUtils
      * @param scrollPane scroll pane to scroll through
      * @param xValue     horizontal scroll bar value
      * @param yValue     vertical scroll bar value
+     * @deprecated this is a really bad method due to multiple reasons, get rid of it for good
      */
+    @Deprecated
     public static void scrollSmoothly ( final JScrollPane scrollPane, int xValue, int yValue )
     {
         // todo 1. Use single thread to scroll through
@@ -2709,6 +2711,7 @@ public final class SwingUtils extends CoreSwingUtils
      * @param underlinedIndex underlined character index
      * @param x               text X coordinate
      * @param y               text Y coordinate
+     * @deprecated usages should be replaced with any of {@link com.alee.painter.decoration.content.AbstractTextContent} implementations
      */
     @Deprecated
     public static void drawStringUnderlineCharAt ( final Graphics g, final String text, final int underlinedIndex, final int x,

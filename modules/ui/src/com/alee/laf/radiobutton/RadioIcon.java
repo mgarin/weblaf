@@ -17,7 +17,6 @@
 
 package com.alee.laf.radiobutton;
 
-import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractContent;
 import com.alee.utils.GraphicsUtils;
@@ -61,7 +60,7 @@ public class RadioIcon<E extends AbstractButton, D extends IDecoration<E, D>, I 
     @Override
     public String getId ()
     {
-        return DecorationState.selected;
+        return id != null ? id : "radio";
     }
 
     @Override

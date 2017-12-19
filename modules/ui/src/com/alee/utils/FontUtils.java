@@ -57,7 +57,7 @@ public final class FontUtils
     public static final int MAX_LAYOUT_CHARCODE = 0x206F;
 
     /**
-     * Temporary constants moved from CharToGlyphMapper.
+     * Temporary constants moved from {@link sun.font.CharToGlyphMapper}.
      */
     public static final int HI_SURROGATE_START = 55296;
     public static final int LO_SURROGATE_END = 57343;
@@ -171,7 +171,7 @@ public final class FontUtils
     @SuppressWarnings ( "JavaDoc" )
     private static boolean isNonSimpleChar ( final char ch )
     {
-        return isComplexCharCode ( ch ) || ( ch >= HI_SURROGATE_START && ch <= LO_SURROGATE_END );
+        return isComplexCharCode ( ch ) || ch >= HI_SURROGATE_START && ch <= LO_SURROGATE_END;
     }
 
     /**

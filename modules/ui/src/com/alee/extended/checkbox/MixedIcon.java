@@ -17,7 +17,6 @@
 
 package com.alee.extended.checkbox;
 
-import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractContent;
 import com.alee.utils.GraphicsUtils;
@@ -67,7 +66,7 @@ public class MixedIcon<E extends AbstractButton, D extends IDecoration<E, D>, I 
     @Override
     public String getId ()
     {
-        return DecorationState.mixed;
+        return id != null ? id : "mixed";
     }
 
     @Override

@@ -1,19 +1,46 @@
-package com.alee.utils.swing;
+/*
+ * This file is part of WebLookAndFeel library.
+ *
+ * WebLookAndFeel library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * WebLookAndFeel library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-import com.alee.laf.LookAndFeelException;
+package com.alee.laf;
+
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
-import javax.swing.plaf.ActionMapUIResource;
+import java.awt.event.KeyEvent;
 
 /**
- * An ActionMap that populates its contents as necessary.
+ * {@link ActionMap} that populates its contents as necessary.
  * The contents are populated by invoking the {@code loadActionMap} method on the passed in Object.
  *
+ * Note that this implementation is not used anymore as there are issues with using {@link com.alee.laf.UIAction} globally as replacement
+ * for {@link sun.swing.UIAction} which is proprietary API. The problem is that {@link sun.swing.UIAction#isEnabled(Object)} is being
+ * explicitely called by {@link javax.swing.SwingUtilities#notifyAction(Action, KeyStroke, KeyEvent, Object, int)} and there can be no
+ * workaround for that specific case except making all actions non-global (per component/UI instance).
+ *
  * @author Scott Violet
+ * @author Mikle Garin
+ * @see UIActionMap
+ * @see javax.swing.plaf.basic.LazyActionMap
+ * @see com.alee.laf.UIAction
+ * @see sun.swing.UIAction
  */
 
-public final class LazyActionMap extends ActionMapUIResource
+@Deprecated
+public final class LazyActionMap extends UIActionMap
 {
     /**
      * {@link Class} providing actions in static {@code loadActionMap} method return.
@@ -30,12 +57,7 @@ public final class LazyActionMap extends ActionMapUIResource
      */
     public static void installLazyActionMap ( final JComponent c, final Class loaderClass, final String defaultsKey )
     {
-        ActionMap map = ( ActionMap ) UIManager.get ( defaultsKey );
-        if ( map == null )
-        {
-            map = new LazyActionMap ( loaderClass );
-            UIManager.getLookAndFeelDefaults ().put ( defaultsKey, map );
-        }
+        final ActionMap map = getActionMap ( loaderClass, defaultsKey );
         SwingUtilities.replaceUIActionMap ( c, map );
     }
 
@@ -67,16 +89,6 @@ public final class LazyActionMap extends ActionMapUIResource
     {
         super ();
         this.loader = loader;
-    }
-
-    /**
-     * Adds specified {@link Action} into map.
-     *
-     * @param action {@link Action} to add
-     */
-    public void put ( final Action action )
-    {
-        put ( action.getValue ( Action.NAME ), action );
     }
 
     @Override

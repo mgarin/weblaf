@@ -1106,26 +1106,26 @@
                 </record>
                 <Dictionary prefix="basic">
                     <record key="title">
-                        <value lang="en">Simple panel</value>
-                        <value lang="ru">Простая панель</value>
-                    </record>
-                </Dictionary>
-                <Dictionary prefix="decorated">
-                    <record key="title">
-                        <value lang="en">Decorated panel</value>
-                        <value lang="ru">Декорированная панель</value>
+                        <value lang="en">Basic</value>
+                        <value lang="ru">Базовая</value>
                     </record>
                 </Dictionary>
                 <Dictionary prefix="transparent">
                     <record key="title">
-                        <value lang="en">Transparent panel</value>
-                        <value lang="ru">Прозрачная панель</value>
+                        <value lang="en">Transparent</value>
+                        <value lang="ru">Прозрачная</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="decorated">
+                    <record key="title">
+                        <value lang="en">Decorated</value>
+                        <value lang="ru">Декорированная</value>
                     </record>
                 </Dictionary>
                 <Dictionary prefix="focusable">
                     <record key="title">
-                        <value lang="en">Focusable panel</value>
-                        <value lang="ru">Фокусабельная панель</value>
+                        <value lang="en">Focusable</value>
+                        <value lang="ru">Фокусабельная</value>
                     </record>
                 </Dictionary>
             </Dictionary>
@@ -1136,26 +1136,26 @@
                 </record>
                 <Dictionary prefix="basic">
                     <record key="title">
-                        <value lang="en">Simple panel</value>
-                        <value lang="ru">Простая панель</value>
-                    </record>
-                </Dictionary>
-                <Dictionary prefix="decorated">
-                    <record key="title">
-                        <value lang="en">Decorated panel</value>
-                        <value lang="ru">Декорированная панель</value>
+                        <value lang="en">Basic</value>
+                        <value lang="ru">Базовая</value>
                     </record>
                 </Dictionary>
                 <Dictionary prefix="transparent">
                     <record key="title">
-                        <value lang="en">Transparent panel</value>
-                        <value lang="ru">Прозрачная панель</value>
+                        <value lang="en">Transparent</value>
+                        <value lang="ru">Прозрачная</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="decorated">
+                    <record key="title">
+                        <value lang="en">Decorated</value>
+                        <value lang="ru">Декорированная</value>
                     </record>
                 </Dictionary>
                 <Dictionary prefix="focusable">
                     <record key="title">
-                        <value lang="en">Focusable panel</value>
-                        <value lang="ru">Фокусабельная панель</value>
+                        <value lang="en">Focusable</value>
+                        <value lang="ru">Фокусабельная</value>
                     </record>
                 </Dictionary>
             </Dictionary>
@@ -1194,6 +1194,12 @@
                         <value lang="ru">Панель прокрутки</value>
                     </record>
                 </Dictionary>
+                <Dictionary prefix="undecorated.buttonless">
+                    <record key="title">
+                        <value lang="en">Undecorated buttonless</value>
+                        <value lang="ru">Без декораций и кнопок</value>
+                    </record>
+                </Dictionary>
                 <Dictionary prefix="transparent.buttonless">
                     <record key="title">
                         <value lang="en">Transparent buttonless</value>
@@ -1210,6 +1216,44 @@
                     <record key="title">
                         <value lang="en">Transparent hovering</value>
                         <value lang="ru">Прозрачная нависающая</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="jsplitpane">
+                <record key="title">
+                    <value lang="en">JSplitPane</value>
+                    <value lang="ru">JSplitPane</value>
+                </record>
+                <record key="left">
+                    <value lang="en">Left side</value>
+                    <value lang="ru">Левая сторона</value>
+                </record>
+                <record key="right">
+                    <value lang="en">Right side</value>
+                    <value lang="ru">Правая сторона</value>
+                </record>
+                <Dictionary prefix="basic">
+                    <record key="title">
+                        <value lang="en">Basic</value>
+                        <value lang="ru">Базовый</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="transparent">
+                    <record key="title">
+                        <value lang="en">Transparent</value>
+                        <value lang="ru">Прозрачный</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="decorated">
+                    <record key="title">
+                        <value lang="en">Decorated</value>
+                        <value lang="ru">Декорированный</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="focusable">
+                    <record key="title">
+                        <value lang="en">Focusable</value>
+                        <value lang="ru">Фокусабельный</value>
                     </record>
                 </Dictionary>
             </Dictionary>
@@ -2191,20 +2235,20 @@
                     </record>
                     <Dictionary prefix="basic">
                         <record key="title">
-                            <value lang="en">Basic:</value>
-                            <value lang="ru">Базовые:</value>
+                            <value lang="en">Basic</value>
+                            <value lang="ru">Базовая</value>
                         </record>
                     </Dictionary>
                     <Dictionary prefix="grayscale">
                         <record key="title">
-                            <value lang="en">Grayscale:</value>
-                            <value lang="ru">Оттенки серого:</value>
+                            <value lang="en">Grayscale</value>
+                            <value lang="ru">Оттенки серого</value>
                         </record>
                     </Dictionary>
                     <Dictionary prefix="modified">
                         <record key="title">
-                            <value lang="en">Modified:</value>
-                            <value lang="ru">Модифицированные:</value>
+                            <value lang="en">Modified</value>
+                            <value lang="ru">Модифицированная</value>
                         </record>
                     </Dictionary>
                 </Dictionary>

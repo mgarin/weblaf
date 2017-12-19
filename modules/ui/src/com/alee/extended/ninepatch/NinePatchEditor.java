@@ -22,6 +22,7 @@ import com.alee.extended.layout.TableLayout;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.managers.style.StyleId;
+import com.alee.painter.decoration.background.AlphaLayerBackground;
 import com.alee.utils.*;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.ninepatch.NinePatchInterval;
@@ -67,6 +68,11 @@ public class NinePatchEditor extends WebPanel
     public static final int MAX_ZOOM = 32;
     public static final Stroke GUIDELINE_STROKE =
             new BasicStroke ( 1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1, new float[]{ 4, 4 }, 0 );
+
+    /**
+     * Alpha background.
+     */
+    private final AlphaLayerBackground ALPHA_LAYER_BACKGROUND = new AlphaLayerBackground ();
 
     private final List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ( 1 );
     private final List<ZoomChangeListener> zoomChangeListeners = new ArrayList<ZoomChangeListener> ( 1 );
@@ -1520,7 +1526,8 @@ public class NinePatchEditor extends WebPanel
             final Map taa = SwingUtils.setupTextAntialias ( g2d );
 
             // Alpha-background
-            LafUtils.drawAlphaLayer ( g2d, imageStartX, imageStartY, iw, ih );
+            final Rectangle shape = new Rectangle ( imageStartX, imageStartY, iw, ih );
+            ALPHA_LAYER_BACKGROUND.paint ( g2d, shape, this, null, shape );
 
             // Border
             g2d.setPaint ( Color.DARK_GRAY );

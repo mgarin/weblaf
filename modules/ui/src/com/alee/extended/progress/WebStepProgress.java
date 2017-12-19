@@ -19,7 +19,10 @@ package com.alee.extended.progress;
 
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.managers.style.ShapeMethods;
-import com.alee.utils.*;
+import com.alee.utils.CollectionUtils;
+import com.alee.utils.ColorUtils;
+import com.alee.utils.GraphicsUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.extensions.SizeMethods;
 import com.alee.utils.swing.extensions.SizeMethodsImpl;
 
@@ -967,9 +970,23 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
 
         final Graphics2D g2d = ( Graphics2D ) g;
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
+        final Shape shape = getBorderShape ();
 
-        // Border and background
-        LafUtils.drawCustomWebBorder ( g2d, this, getBorderShape (), new Color ( 210, 210, 210 ), shadeWidth, true, true );
+        // Outer shadow
+        if ( isEnabled () )
+        {
+            GraphicsUtils.drawShade ( g2d, shape, ColorUtils.color ( 210, 210, 210 ), shadeWidth );
+        }
+
+        // Background
+        final Rectangle shapeBounds = shape.getBounds ();
+        g2d.setPaint ( new GradientPaint ( 0, shapeBounds.y, Color.WHITE, 0, shapeBounds.y + shapeBounds.height,
+                ColorUtils.color ( 223, 223, 223 ) ) );
+        g2d.fill ( shape );
+
+        // Border
+        g2d.setPaint ( isEnabled () ? Color.GRAY : Color.LIGHT_GRAY );
+        g2d.draw ( shape );
 
         // Progress line
         g2d.setPaint ( getFillPaint () );

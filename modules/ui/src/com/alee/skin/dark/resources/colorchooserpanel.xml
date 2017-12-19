@@ -1,0 +1,27 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.colorchooser.WebColorChooserPanel -->
+
+    <!-- Color chooser panel -->
+    <style type="panel" id="colorchooser" padding="2,5,2,5">
+
+        <!-- Field title labels -->
+        <style type="label" id="label" extends="shadow" />
+
+        <!-- Controls panel -->
+        <style type="panel" id="controls" padding="5,0,3,0">
+
+            <!-- Web-only color check -->
+            <style type="checkbox" id="webonly" padding="0,5,0,5" />
+
+            <!-- Control buttons -->
+            <style type="button" id="control" />
+            <style type="button" id="ok" extends="control" />
+            <style type="button" id="reset" extends="control" />
+            <style type="button" id="cancel" extends="control" />
+
+        </style>
+
+    </style>
+
+</skin>

@@ -15,19 +15,28 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.utils.collection;
+package com.alee.laf;
+
+import javax.swing.*;
+import javax.swing.plaf.ActionMapUIResource;
 
 /**
+ * {@link ActionMap} based on {@link ActionMapUIResource}.
+ * Provides a single extra {@link #put(Action)} method for convenience.
+ *
  * @author Mikle Garin
+ * @see UIAction
  */
 
-public interface IndexedSupplier<T>
+public class UIActionMap extends ActionMapUIResource
 {
     /**
-     * Returns a result.
+     * Adds specified {@link Action} into map.
      *
-     * @param index object index
-     * @return a result
+     * @param action {@link Action} to add
      */
-    public T get ( int index );
+    public void put ( final Action action )
+    {
+        put ( action.getValue ( Action.NAME ), action );
+    }
 }

@@ -83,7 +83,7 @@ public class SvgGrayscale implements IconAdjustment<SvgIcon>
             if ( normalColor != null )
             {
                 final Color grayscale = ColorUtils.grayscale ( normalColor );
-                icon.setAttribute ( element, attribute, ColorUtils.getHexColor ( grayscale ) );
+                icon.setAttribute ( element, attribute, ColorUtils.toHex ( grayscale ) );
             }
         }
     }

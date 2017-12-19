@@ -567,7 +567,7 @@ public class HeatMap extends JComponent
         if ( floor != ceil )
         {
             final float cp = ( float ) ( progress - Math.floor ( progress ) );
-            return ColorUtils.getIntermediateColor ( HEAT_COLORS[ floor ], HEAT_COLORS[ ceil ], cp );
+            return ColorUtils.intermediate ( HEAT_COLORS[ floor ], HEAT_COLORS[ ceil ], cp );
         }
         else
         {

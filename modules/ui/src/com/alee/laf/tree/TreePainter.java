@@ -235,72 +235,165 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
                     // Only left mouse button events
                     if ( SwingUtilities.isLeftMouseButton ( e ) )
                     {
-                        // Check that mouse did not hit actual tree cell
-                        if ( !SwingUtils.isCtrl ( e ) && ( !component.getDragEnabled () || component.getTransferHandler () == null ) ||
-                                ui.getExactRowForLocation ( e.getPoint (), false ) == -1 )
+                        // CTRL/SHIFT modifiers are not active
+                        final boolean ctrl = SwingUtils.isCtrl ( e );
+                        final boolean shift = SwingUtils.isShift ( e );
+
+                        // Drag is not available
+                        final boolean noDrag = !component.getDragEnabled () || component.getTransferHandler () == null;
+
+                        // Mouse did not hit actual tree node space
+                        final boolean notInNodeSpace = ui.getExactRowForLocation ( e.getPoint (), false ) == -1;
+
+                        // Handling additional events for full-line selection
+                        if ( notInNodeSpace && isFullLineSelection () )
                         {
-                            if ( isSelectorAvailable () )
+                            // Avoiding selection start when pressed on tree expand handle
+                            // todo Checkbox condition should be in a different ui/painter and not in basic one
+                            // todo Collapse node expansion on double-click if it is expanded and clicked on full line (on release)
+                            final TreePath path = ui.getClosestPathForLocation ( component, e.getX (), e.getY () );
+                            if ( path != null && !isLocationInExpandControl ( path, e.getX (), e.getY () ) &&
+                                    !ui.isLocationInCheckBoxControl ( path, e.getX (), e.getY () ) )
                             {
-                                // Avoiding selection start when pressed on tree expand handle
-                                final TreePath path = ui.getClosestPathForLocation ( component, e.getX (), e.getY () );
-                                if ( path == null || !isLocationInExpandControl ( path, e.getX (), e.getY () ) &&
-                                        !ui.isLocationInCheckBoxControl ( path, e.getX (), e.getY () ) )
+                                // Updating selection
+                                final int clickRow = ui.getExactRowForLocation ( e.getPoint (), true );
+                                switch ( component.getSelectionModel ().getSelectionMode () )
                                 {
-                                    // Avoid starting multiselection if row is selected and drag is possible
-                                    final int rowForPath = ui.getRowForPath ( component, path );
-                                    if ( isDragAvailable () && rowForPath != -1 &&
-                                            ui.getRowBounds ( rowForPath ).contains ( e.getX (), e.getY () ) &&
-                                            component.isRowSelected ( rowForPath ) )
+                                    case TreeSelectionModel.SINGLE_TREE_SELECTION:
                                     {
-                                        // Marking row to be dragged
-                                        draggablePath = path;
+                                        if ( ctrl && component.isRowSelected ( clickRow ) )
+                                        {
+                                            // Toggle selection
+                                            component.clearSelection ();
+                                        }
+                                        else
+                                        {
+                                            // Change selection to one row
+                                            component.setSelectionRow ( clickRow );
+                                        }
+                                        break;
                                     }
-                                    else
+                                    case TreeSelectionModel.CONTIGUOUS_TREE_SELECTION:
                                     {
-                                        // Selection
-                                        selectionStart = e.getPoint ();
-                                        selectionEnd = selectionStart;
+                                        if ( shift )
+                                        {
+                                            // Collecting new selection range
+                                            final int anchorRow = component.getRowForPath ( component.getAnchorSelectionPath () );
+                                            final List<Integer> selected = CollectionUtils.intRange ( anchorRow, clickRow );
 
-                                        // Initial tree selection
-                                        initialSelection = getSelectedRows ();
+                                            // Making sure we provide a proper lead selection row
+                                            selected.remove ( 0 );
+                                            selected.add ( anchorRow );
 
-                                        // Updating selection
-                                        validateSelection ( e );
+                                            // Updating selected rows
+                                            component.setSelectionRows ( CollectionUtils.toIntArray ( selected ) );
+                                        }
+                                        else if ( ctrl )
+                                        {
+                                            // Toggle selection
+                                            if ( component.isRowSelected ( clickRow ) )
+                                            {
+                                                component.removeSelectionRow ( clickRow );
+                                            }
+                                            else
+                                            {
+                                                component.addSelectionRow ( clickRow );
+                                            }
+                                        }
+                                        else
+                                        {
+                                            // Change selection to one row
+                                            component.setSelectionRow ( clickRow );
+                                        }
+                                        break;
+                                    }
+                                    case TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION:
+                                    {
+                                        if ( shift )
+                                        {
+                                            // Collecting new selection range
+                                            final int anchorRow = component.getRowForPath ( component.getAnchorSelectionPath () );
+                                            final List<Integer> selected = CollectionUtils.intRange ( anchorRow, clickRow );
 
-                                        // Repainting selection on the tree
-                                        repaintSelector ();
+                                            // Adding all previously selected rows whenever CTRL modifier is pressed
+                                            if ( ctrl )
+                                            {
+                                                CollectionUtils.addUnique ( selected, component.getSelectionRows () );
+                                            }
+
+                                            // Making sure we provide a proper lead selection row
+                                            selected.remove ( 0 );
+                                            selected.add ( anchorRow );
+
+                                            // Updating selected rows
+                                            component.setSelectionRows ( CollectionUtils.toIntArray ( selected ) );
+                                        }
+                                        else if ( ctrl )
+                                        {
+                                            // Toggle selection
+                                            if ( component.isRowSelected ( clickRow ) )
+                                            {
+                                                component.removeSelectionRow ( clickRow );
+                                            }
+                                            else
+                                            {
+                                                component.addSelectionRow ( clickRow );
+                                            }
+                                        }
+                                        else
+                                        {
+                                            // Change selection to one row
+                                            component.setSelectionRow ( clickRow );
+                                        }
+                                        break;
                                     }
                                 }
-                            }
-                            else if ( isFullLineSelection () )
-                            {
-                                // todo Start DnD on selected line here
-                                // Avoiding selection start when pressed on tree expand handle
-                                final TreePath path = ui.getClosestPathForLocation ( component, e.getX (), e.getY () );
-                                if ( path != null && !isLocationInExpandControl ( path, e.getX (), e.getY () ) &&
-                                        !ui.isLocationInCheckBoxControl ( path, e.getX (), e.getY () ) )
-                                {
-                                    // Single row selection
-                                    if ( component.getSelectionModel ().getSelectionMode () == TreeSelectionModel.SINGLE_TREE_SELECTION )
-                                    {
-                                        component.setSelectionRow ( ui.getExactRowForLocation ( e.getPoint (), true ) );
-                                    }
 
-                                    // Marking row to be dragged
-                                    final int rowForPath = ui.getRowForPath ( component, path );
-                                    if ( isDragAvailable () && ui.getRowBounds ( rowForPath ).contains ( e.getX (), e.getY () ) &&
-                                            component.isRowSelected ( rowForPath ) )
-                                    {
-                                        draggablePath = path;
-                                    }
+                                // Marking row to be dragged
+                                final int rowForPath = ui.getRowForPath ( component, path );
+                                if ( isDragAvailable () && ui.getRowBounds ( rowForPath ).contains ( e.getX (), e.getY () ) &&
+                                        component.isRowSelected ( rowForPath ) )
+                                {
+                                    draggablePath = path;
                                 }
                             }
                         }
-                        // else
-                        // {
-                        //     // todo Start DnD on selected row here
-                        //     // todo Also collapse node expansion on double-click if it is expanded and clicked on full line
-                        // }
+
+                        // Activating tree nodes selector
+                        if ( !ctrl && !shift && ( noDrag || notInNodeSpace ) && isSelectorAvailable () )
+                        {
+                            // Avoiding selection start when pressed on tree expand handle
+                            // todo This should occur on actual mouse drag, not press
+                            final TreePath path = ui.getClosestPathForLocation ( component, e.getX (), e.getY () );
+                            if ( path == null || !isLocationInExpandControl ( path, e.getX (), e.getY () ) &&
+                                    !ui.isLocationInCheckBoxControl ( path, e.getX (), e.getY () ) )
+                            {
+                                // Avoid starting multiselection if row is selected and drag is possible
+                                final int rowForPath = ui.getRowForPath ( component, path );
+                                if ( isDragAvailable () && rowForPath != -1 &&
+                                        ui.getRowBounds ( rowForPath ).contains ( e.getX (), e.getY () ) &&
+                                        component.isRowSelected ( rowForPath ) )
+                                {
+                                    // Marking row to be dragged
+                                    draggablePath = path;
+                                }
+                                else
+                                {
+                                    // Selection
+                                    selectionStart = e.getPoint ();
+                                    selectionEnd = selectionStart;
+
+                                    // Initial tree selection
+                                    initialSelection = getSelectedRows ();
+
+                                    // Updating selection
+                                    validateSelection ( e );
+
+                                    // Repainting selection on the tree
+                                    repaintSelector ();
+                                }
+                            }
+                        }
                     }
                 }
             }

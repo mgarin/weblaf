@@ -17,7 +17,7 @@
 
 package com.alee.utils;
 
-import com.alee.utils.collection.IndexedSupplier;
+import com.alee.api.jdk.Function;
 import com.alee.utils.compare.Filter;
 import com.alee.utils.text.TextProvider;
 
@@ -307,13 +307,12 @@ public final class CollectionUtils
      *
      * @param collection list to fill
      * @param objects    objects
-     * @param <T>        objects type
      * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
      */
-    public static <T> boolean addAll ( final Collection<T> collection, final T... objects )
+    public static boolean addUnique ( final Collection<Boolean> collection, final boolean[] objects )
     {
         boolean result = false;
-        for ( final T object : objects )
+        for ( final boolean object : objects )
         {
             if ( !collection.contains ( object ) )
             {
@@ -324,19 +323,138 @@ public final class CollectionUtils
     }
 
     /**
-     * Adds all non-null objects into the specified list.
+     * Adds all objects into the specified list.
      *
      * @param collection list to fill
      * @param objects    objects
-     * @param <T>        objects type
      * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
      */
-    public static <T> boolean addAllNonNull ( final Collection<T> collection, final T... objects )
+    public static boolean addUnique ( final Collection<Integer> collection, final int[] objects )
     {
         boolean result = false;
-        for ( final T object : objects )
+        for ( final int object : objects )
         {
-            if ( !collection.contains ( object ) && object != null )
+            if ( !collection.contains ( object ) )
+            {
+                result |= collection.add ( object );
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Adds all objects into the specified list.
+     *
+     * @param collection list to fill
+     * @param objects    objects
+     * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
+     */
+    public static boolean addUnique ( final Collection<Character> collection, final char[] objects )
+    {
+        boolean result = false;
+        for ( final char object : objects )
+        {
+            if ( !collection.contains ( object ) )
+            {
+                result |= collection.add ( object );
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Adds all objects into the specified list.
+     *
+     * @param collection list to fill
+     * @param objects    objects
+     * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
+     */
+    public static boolean addUnique ( final Collection<Byte> collection, final byte[] objects )
+    {
+        boolean result = false;
+        for ( final byte object : objects )
+        {
+            if ( !collection.contains ( object ) )
+            {
+                result |= collection.add ( object );
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Adds all objects into the specified list.
+     *
+     * @param collection list to fill
+     * @param objects    objects
+     * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
+     */
+    public static boolean addUnique ( final Collection<Short> collection, final short[] objects )
+    {
+        boolean result = false;
+        for ( final short object : objects )
+        {
+            if ( !collection.contains ( object ) )
+            {
+                result |= collection.add ( object );
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Adds all objects into the specified list.
+     *
+     * @param collection list to fill
+     * @param objects    objects
+     * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
+     */
+    public static boolean addUnique ( final Collection<Long> collection, final long[] objects )
+    {
+        boolean result = false;
+        for ( final long object : objects )
+        {
+            if ( !collection.contains ( object ) )
+            {
+                result |= collection.add ( object );
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Adds all objects into the specified list.
+     *
+     * @param collection list to fill
+     * @param objects    objects
+     * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
+     */
+    public static boolean addUnique ( final Collection<Float> collection, final float[] objects )
+    {
+        boolean result = false;
+        for ( final float object : objects )
+        {
+            if ( !collection.contains ( object ) )
+            {
+                result |= collection.add ( object );
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Adds all objects into the specified list.
+     *
+     * @param collection list to fill
+     * @param objects    objects
+     * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
+     */
+    public static boolean addUnique ( final Collection<Double> collection, final double[] objects )
+    {
+        boolean result = false;
+        for ( final double object : objects )
+        {
+            if ( !collection.contains ( object ) )
             {
                 result |= collection.add ( object );
             }
@@ -352,7 +470,28 @@ public final class CollectionUtils
      * @param <T>        objects type
      * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
      */
-    public static <T> boolean addAll ( final Collection<T> collection, final Collection<T> objects )
+    public static <T> boolean addUnique ( final Collection<T> collection, final T... objects )
+    {
+        boolean result = false;
+        for ( final T object : objects )
+        {
+            if ( !collection.contains ( object ) )
+            {
+                result |= collection.add ( object );
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Adds all objects into the specified list.
+     *
+     * @param collection list to fill
+     * @param objects    objects
+     * @param <T>        objects type
+     * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
+     */
+    public static <T> boolean addUnique ( final Collection<T> collection, final Collection<T> objects )
     {
         boolean result = false;
         for ( final T object : objects )
@@ -373,7 +512,28 @@ public final class CollectionUtils
      * @param <T>        objects type
      * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
      */
-    public static <T> boolean addAllNonNull ( final Collection<T> collection, final Collection<T> objects )
+    public static <T> boolean addUniqueNonNull ( final Collection<T> collection, final T... objects )
+    {
+        boolean result = false;
+        for ( final T object : objects )
+        {
+            if ( !collection.contains ( object ) && object != null )
+            {
+                result |= collection.add ( object );
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Adds all non-null objects into the specified list.
+     *
+     * @param collection list to fill
+     * @param objects    objects
+     * @param <T>        objects type
+     * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
+     */
+    public static <T> boolean addUniqueNonNull ( final Collection<T> collection, final Collection<T> objects )
     {
         boolean result = false;
         for ( final T object : objects )
@@ -395,6 +555,24 @@ public final class CollectionUtils
      * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
      */
     public static <T> boolean removeAll ( final Collection<T> collection, final T... objects )
+    {
+        boolean result = false;
+        for ( final T object : objects )
+        {
+            result |= collection.remove ( object );
+        }
+        return result;
+    }
+
+    /**
+     * Removes all objects from the specified list.
+     *
+     * @param collection list to fill
+     * @param objects    objects
+     * @param <T>        objects type
+     * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
+     */
+    public static <T> boolean removeAll ( final Collection<T> collection, final Collection<T> objects )
     {
         boolean result = false;
         for ( final T object : objects )
@@ -514,6 +692,13 @@ public final class CollectionUtils
                 for ( final Object object : list1 )
                 {
                     if ( !list2.contains ( object ) )
+                    {
+                        return false;
+                    }
+                }
+                for ( final Object object : list2 )
+                {
+                    if ( !list1.contains ( object ) )
                     {
                         return false;
                     }
@@ -651,6 +836,25 @@ public final class CollectionUtils
     }
 
     /**
+     * Sorts {@link List} using the specified {@link Comparator}.
+     *
+     * @param list       {@link List} to sort
+     * @param comparator {@link Comparator}
+     * @param <T>        elements type
+     */
+    public static <T> void sort ( final List<T> list, final Comparator<T> comparator )
+    {
+        final Object[] a = list.toArray ();
+        Arrays.sort ( a, ( Comparator ) comparator );
+        final ListIterator<T> i = list.listIterator ();
+        for ( final Object e : a )
+        {
+            i.next ();
+            i.set ( ( T ) e );
+        }
+    }
+
+    /**
      * Returns map keys list.
      *
      * @param map map to process
@@ -703,19 +907,19 @@ public final class CollectionUtils
     }
 
     /**
-     * Fills and returns list with data provided by supplier interface implementation.
+     * Returns {@link List} filled with data provided by index mapping {@link Function}.
      *
-     * @param amount   amount of list elements
-     * @param supplier data provider
-     * @param <T>      data type
-     * @return list filled with data provided by supplier interface implementation
+     * @param size        {@link List} size
+     * @param indexMapper index mapping {@link Function}
+     * @param <T>         elements type
+     * @return {@link List} filled with data provided by index mapping {@link Function}
      */
-    public static <T> List<T> fillList ( final int amount, final IndexedSupplier<T> supplier )
+    public static <T> List<T> fillList ( final int size, final Function<Integer, T> indexMapper )
     {
-        final List<T> list = new ArrayList<T> ( amount );
-        for ( int i = 0; i < amount; i++ )
+        final List<T> list = new ArrayList<T> ( size );
+        for ( int i = 0; i < size; i++ )
         {
-            list.add ( supplier.get ( i ) );
+            list.add ( indexMapper.apply ( i ) );
         }
         return list;
     }
@@ -744,5 +948,23 @@ public final class CollectionUtils
         final HashSet<T> set = new HashSet<T> ( data.length );
         Collections.addAll ( set, data );
         return set;
+    }
+
+    /**
+     * Returns new {@link List} filled with {@link Integer}s in the specified range.
+     *
+     * @param from first range integer, inclusive
+     * @param to   last range integer, inclusive
+     * @return new {@link List} filled with {@link Integer}s in the specified range
+     */
+    public static List<Integer> intRange ( final int from, final int to )
+    {
+        final List<Integer> range = new ArrayList<Integer> ( Math.max ( from, to ) - Math.min ( from, to ) + 1 );
+        for ( int i = from; i != to; i += from < to ? 1 : -1 )
+        {
+            range.add ( i );
+        }
+        range.add ( to );
+        return range;
     }
 }

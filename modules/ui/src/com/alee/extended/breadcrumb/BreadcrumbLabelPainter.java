@@ -49,16 +49,16 @@ public class BreadcrumbLabelPainter<E extends WebBreadcrumbLabel, U extends WebL
     protected WebBreadcrumb breadcrumb = null;
 
     @Override
-    public void install ( final E c, final U ui )
+    protected void installPropertiesAndListeners ()
     {
-        super.install ( c, ui );
+        super.installPropertiesAndListeners ();
 
         containerAdapter = new ContainerAdapter ()
         {
             @Override
             public void componentAdded ( final ContainerEvent e )
             {
-                if ( e.getChild () != c )
+                if ( e.getChild () != component )
                 {
                     updateAll ();
                 }
@@ -67,7 +67,7 @@ public class BreadcrumbLabelPainter<E extends WebBreadcrumbLabel, U extends WebL
             @Override
             public void componentRemoved ( final ContainerEvent e )
             {
-                if ( e.getChild () != c )
+                if ( e.getChild () != component )
                 {
                     updateAll ();
                 }
@@ -79,7 +79,7 @@ public class BreadcrumbLabelPainter<E extends WebBreadcrumbLabel, U extends WebL
             @Override
             public void ancestorAdded ( final AncestorEvent event )
             {
-                final Container container = c.getParent ();
+                final Container container = component.getParent ();
                 if ( container instanceof WebBreadcrumb )
                 {
                     breadcrumb = ( WebBreadcrumb ) container;
@@ -95,18 +95,18 @@ public class BreadcrumbLabelPainter<E extends WebBreadcrumbLabel, U extends WebL
                 updateAll ();
             }
         };
-        c.addAncestorListener ( ancestorAdapter );
+        component.addAncestorListener ( ancestorAdapter );
     }
 
     @Override
-    public void uninstall ( final E c, final U ui )
+    protected void uninstallPropertiesAndListeners ()
     {
         removeBreadcrumbAdapter ();
         containerAdapter = null;
-        c.removeAncestorListener ( ancestorAdapter );
+        component.removeAncestorListener ( ancestorAdapter );
         ancestorAdapter = null;
 
-        super.uninstall ( c, ui );
+        super.uninstallPropertiesAndListeners ();
     }
 
     /**

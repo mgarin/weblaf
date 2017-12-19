@@ -84,7 +84,7 @@
             <opaque>false</opaque>
         </component>
 
-        <!-- Transparent scrollbar -->
+        <!-- Undecorated scrollbar -->
         <style type="scrollbar" id="scrollbar" extends="undecorated" />
 
     </style>
@@ -93,6 +93,14 @@
     <style type="scrollpane" id="buttonless">
 
         <!-- Transparent scrollbar -->
+        <style type="scrollbar" id="scrollbar" extends="buttonless" />
+
+    </style>
+
+    <!-- Undecorated buttonless scroll pane -->
+    <style type="scrollpane" id="undecorated-buttonless" extends="undecorated">
+
+        <!-- Undecorated scrollbar -->
         <style type="scrollbar" id="scrollbar" extends="buttonless" />
 
     </style>

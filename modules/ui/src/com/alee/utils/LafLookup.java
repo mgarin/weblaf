@@ -17,6 +17,9 @@
 
 package com.alee.utils;
 
+import com.alee.laf.LookAndFeelException;
+import com.alee.laf.WebUI;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.plaf.ComponentUI;
@@ -31,6 +34,37 @@ import java.awt.*;
 
 public final class LafLookup
 {
+    /**
+     * Returns {@link InputMap} for {@code condition} from the specified {@link JComponent}.
+     *
+     * @param component {@link JComponent}
+     * @param condition event condition
+     * @return {@link InputMap} for {@code condition} from the specified {@link JComponent}
+     */
+    public static InputMap getInputMap ( final JComponent component, final int condition )
+    {
+        final ComponentUI ui = LafUtils.getUI ( component );
+        if ( ui != null && ui instanceof WebUI )
+        {
+            final WebUI webUI = ( WebUI ) ui;
+            final String key;
+            if ( condition == JComponent.WHEN_FOCUSED )
+            {
+                key = webUI.getPropertyPrefix () + "focusInputMap";
+            }
+            else if ( condition == JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT )
+            {
+                key = webUI.getPropertyPrefix () + "ancestorInputMap";
+            }
+            else
+            {
+                throw new LookAndFeelException ( "Unsupported InputMap condition: " + condition );
+            }
+            return ( InputMap ) LafLookup.get ( component, ui, key );
+        }
+        return null;
+    }
+
     /**
      * Returns default {@link int} value for the specified {@code key}.
      *
@@ -235,6 +269,7 @@ public final class LafLookup
      * @param key       value key
      * @return default {@link Object} value for the specified {@code key}
      */
+    @SuppressWarnings ( "unused" )
     public static Object get ( final JComponent component, final ComponentUI ui, final String key )
     {
         return UIManager.get ( key, component.getLocale () );

@@ -17,7 +17,6 @@
 
 package com.alee.laf.checkbox;
 
-import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractContent;
 import com.alee.utils.GraphicsUtils;
@@ -65,7 +64,7 @@ public class CheckIcon<E extends AbstractButton, D extends IDecoration<E, D>, I 
     @Override
     public String getId ()
     {
-        return DecorationState.checked;
+        return id != null ? id : "check";
     }
 
     @Override

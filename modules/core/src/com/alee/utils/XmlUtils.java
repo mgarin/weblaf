@@ -18,7 +18,6 @@
 package com.alee.utils;
 
 import com.alee.managers.log.Log;
-import com.alee.utils.collection.ValuesTable;
 import com.alee.utils.general.Pair;
 import com.alee.utils.xml.*;
 import com.thoughtworks.xstream.XStream;
@@ -157,7 +156,6 @@ public final class XmlUtils
             xStream.processAnnotations ( Resource.class );
 
             // Additional WebLaF data classes aliases
-            xStream.processAnnotations ( ValuesTable.class );
             xStream.processAnnotations ( Pair.class );
         }
         catch ( final Exception e )

@@ -46,16 +46,18 @@
 
         <!-- Central panel -->
         <style type="panel" id="center">
+            <component>
+                <background>229,233,238</background>
+            </component>
 
             <!-- Central split -->
-            <style type="splitpane" id="center">
+            <style type="splitpane" id="center" extends="undecorated">
                 <component>
-                    <background>229,233,238</background>
                     <dividerSize>8</dividerSize>
                 </component>
 
                 <!-- Files tree scrollpane -->
-                <style type="scrollpane" id="nav">
+                <style type="scrollpane" id="nav" extends="hovering">
                     <painter>
                         <decorations>
                             <decoration>
@@ -66,7 +68,7 @@
                     </painter>
 
                     <!-- Files tree -->
-                    <style type="tree" id="file" extends="filetree" />
+                    <style type="tree" id="file" extends="filetree-non-opaque" />
 
                 </style>
 

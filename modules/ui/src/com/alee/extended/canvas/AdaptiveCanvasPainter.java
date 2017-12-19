@@ -33,9 +33,9 @@ public final class AdaptiveCanvasPainter<E extends WebCanvas, U extends WCanvasU
         implements ICanvasPainter<E, U>
 {
     /**
-     * Constructs new {@link AdaptiveCanvasPainter} for the specified painter.
+     * Constructs new {@link AdaptiveCanvasPainter} for the specified {@link Painter}.
      *
-     * @param painter painter to adapt
+     * @param painter {@link Painter} to adapt
      */
     public AdaptiveCanvasPainter ( final Painter painter )
     {

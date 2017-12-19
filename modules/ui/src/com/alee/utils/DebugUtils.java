@@ -169,14 +169,14 @@ public final class DebugUtils
     public static void paintBorderDebugInfo ( final Graphics g, final JComponent c )
     {
         Rectangle bounds = new Rectangle ( 0, 0, c.getWidth () - 1, c.getHeight () - 1 );
-        g.setColor ( ColorUtils.removeAlpha ( ComponentHighlighter.marginColor ) );
+        g.setColor ( ColorUtils.opaque ( ComponentHighlighter.marginColor ) );
         g.drawRect ( bounds.x, bounds.y, bounds.width, bounds.height );
 
         final Insets margin = BoundsType.margin.insets ( c );
         if ( !SwingUtils.isEmpty ( margin ) )
         {
             bounds = SwingUtils.shrink ( bounds, margin );
-            g.setColor ( ColorUtils.removeAlpha ( ComponentHighlighter.borderColor ) );
+            g.setColor ( ColorUtils.opaque ( ComponentHighlighter.borderColor ) );
             g.drawRect ( bounds.x, bounds.y, bounds.width, bounds.height );
         }
 
@@ -184,7 +184,7 @@ public final class DebugUtils
         if ( !SwingUtils.isEmpty ( border ) )
         {
             bounds = SwingUtils.shrink ( bounds, border );
-            g.setColor ( ColorUtils.removeAlpha ( ComponentHighlighter.paddingColor ) );
+            g.setColor ( ColorUtils.opaque ( ComponentHighlighter.paddingColor ) );
             g.drawRect ( bounds.x, bounds.y, bounds.width, bounds.height );
         }
 
@@ -192,7 +192,7 @@ public final class DebugUtils
         if ( !SwingUtils.isEmpty ( padding ) )
         {
             bounds = SwingUtils.shrink ( bounds, padding );
-            g.setColor ( ColorUtils.removeAlpha ( ComponentHighlighter.contentColor ) );
+            g.setColor ( ColorUtils.opaque ( ComponentHighlighter.contentColor ) );
             g.drawRect ( bounds.x, bounds.y, bounds.width, bounds.height );
         }
     }

@@ -263,9 +263,21 @@ public final class StyleId implements Identifiable
      * {@link com.alee.laf.splitpane.WebSplitPane} style identifiers.
      */
     public static final StyleId splitpane = StyleId.of ( "splitpane" );
-    public static final ChildStyleId splitpaneOneTouchButton = ChildStyleId.of ( "onetouch" );
-    public static final ChildStyleId splitpaneOneTouchLeftButton = ChildStyleId.of ( "onetouch-left" );
-    public static final ChildStyleId splitpaneOneTouchRightButton = ChildStyleId.of ( "onetouch-right" );
+    public static final StyleId splitpaneNonOpaque = StyleId.of ( "non-opaque" );
+    public static final StyleId splitpaneTransparent = StyleId.of ( "transparent" );
+    public static final StyleId splitpaneUndecorated = StyleId.of ( "undecorated" );
+    public static final StyleId splitpaneDecorated = StyleId.of ( "decorated" );
+    public static final StyleId splitpaneFocusable = StyleId.of ( "focusable" );
+    public static final ChildStyleId splitpaneContinuousDivider = ChildStyleId.of ( "continuous" );
+    public static final ChildStyleId splitpaneNonContinuousDivider = ChildStyleId.of ( "non-continuous" );
+
+    /**
+     * {@link com.alee.laf.splitpane.WebSplitPaneDivider} style identifiers.
+     */
+    public static final StyleId splitpanedivider = StyleId.of ( "splitpanedivider" );
+    public static final ChildStyleId splitpanedividerOneTouchButton = ChildStyleId.of ( "onetouch" );
+    public static final ChildStyleId splitpanedividerOneTouchLeftButton = ChildStyleId.of ( "onetouch-left" );
+    public static final ChildStyleId splitpanedividerOneTouchRightButton = ChildStyleId.of ( "onetouch-right" );
 
     /**
      * {@link com.alee.laf.toolbar.WebToolBar} style identifiers.
@@ -306,6 +318,7 @@ public final class StyleId implements Identifiable
     public static final StyleId scrollpaneNoFocus = StyleId.of ( "nofocus" );
     public static final StyleId scrollpaneTransparent = StyleId.of ( "transparent" );
     public static final StyleId scrollpaneButtonless = StyleId.of ( "buttonless" );
+    public static final StyleId scrollpaneUndecoratedButtonless = StyleId.of ( "undecorated-buttonless" );
     public static final StyleId scrollpaneTransparentButtonless = StyleId.of ( "transparent-buttonless" );
     public static final StyleId scrollpaneHovering = StyleId.of ( "hovering" );
     public static final StyleId scrollpaneTransparentHovering = StyleId.of ( "transparent-hovering" );
@@ -533,11 +546,16 @@ public final class StyleId implements Identifiable
     public static final StyleId interfacetreeTransparent = StyleId.of ( "interfacetree-transparent" );
 
     /**
+     * {@link com.alee.laf.colorchooser.WebColorChooserPanel} style identifiers.
+     */
+    public static final StyleId colorchooserpanel = StyleId.of ( "colorchooser" );
+
+    /**
      * {@link com.alee.laf.colorchooser.WebColorChooser} style identifiers.
      */
     public static final StyleId colorchooser = StyleId.of ( "colorchooser" );
     public static final StyleId colorchooserDialog = StyleId.of ( "colorchooser" );
-    public static final StyleId colorchooserPanel = StyleId.of ( "colorchooser" );
+    public static final ChildStyleId colorchooserContent = ChildStyleId.of ( "content" );
     public static final ChildStyleId colorchooserLabel = ChildStyleId.of ( "label" );
     public static final ChildStyleId colorchooserControlsPanel = ChildStyleId.of ( "controls" );
     public static final ChildStyleId colorchooserWebonlyCheck = ChildStyleId.of ( "webonly" );

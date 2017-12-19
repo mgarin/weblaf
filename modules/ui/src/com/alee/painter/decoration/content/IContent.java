@@ -41,6 +41,10 @@ public interface IContent<E extends JComponent, D extends IDecoration<E, D>, I e
         extends Identifiable, IDecoratonElement<E, D, I>, MergeBehavior<I>, Overwriting, Cloneable, Serializable
 {
     /**
+     * todo 1. Remove {@link IDecoration} usage from all methods?
+     */
+
+    /**
      * Returns content bounds type.
      * Will affect bounds provided into "paint" method.
      *

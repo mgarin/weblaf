@@ -18,6 +18,7 @@
 package com.alee.painter.decoration.background;
 
 import com.alee.painter.decoration.IDecoration;
+import com.alee.utils.ColorUtils;
 import com.alee.utils.ImageUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -58,10 +59,41 @@ public class AlphaLayerBackground<E extends JComponent, D extends IDecoration<E,
     @XStreamAsAttribute
     protected Color lightColor;
 
+    /**
+     * Returns cells size.
+     *
+     * @return cells size
+     */
+    public Dimension getSize ()
+    {
+        return size != null ? size : new Dimension ( 10, 10 );
+    }
+
+    /**
+     * Returns dark cell color.
+     *
+     * @return dark cell color
+     */
+    public Color getDarkColor ()
+    {
+        return darkColor != null ? darkColor : ColorUtils.color ( 204, 204, 204 );
+    }
+
+    /**
+     * Returns light cell color.
+     *
+     * @return light cell color
+     */
+    public Color getLightColor ()
+    {
+        return lightColor != null ? lightColor : Color.WHITE;
+    }
+
     @Override
     protected boolean isPaintable ()
     {
-        return size != null && size.width > 0 && size.height > 0 && ( darkColor != null || lightColor != null );
+        final Dimension size = getSize ();
+        return size.width > 0 && size.height > 0;
     }
 
     @Override
@@ -79,6 +111,9 @@ public class AlphaLayerBackground<E extends JComponent, D extends IDecoration<E,
      */
     protected BufferedImage createTextureImage ()
     {
+        final Dimension size = getSize ();
+        final Color darkColor = getDarkColor ();
+        final Color lightColor = getLightColor ();
         final BufferedImage image = ImageUtils.createCompatibleImage ( size.width * 2, size.height * 2, Transparency.OPAQUE );
         final Graphics2D g2d = image.createGraphics ();
         if ( darkColor != null )

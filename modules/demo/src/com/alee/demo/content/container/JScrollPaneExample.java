@@ -68,6 +68,7 @@ public class JScrollPaneExample extends AbstractStylePreviewExample
                 new BasicScrollPane ( "undecorated", FeatureState.updated, StyleId.scrollpaneUndecorated ),
                 new BasicScrollPane ( "transparent", FeatureState.updated, StyleId.scrollpaneTransparent ),
                 new BasicScrollPane ( "buttonless", FeatureState.updated, StyleId.scrollpaneButtonless ),
+                new BasicScrollPane ( "undecorated.buttonless", FeatureState.updated, StyleId.scrollpaneUndecoratedButtonless ),
                 new BasicScrollPane ( "transparent.buttonless", FeatureState.updated, StyleId.scrollpaneTransparentButtonless ),
                 new BasicScrollPane ( "hovering", FeatureState.release, StyleId.scrollpaneHovering ),
                 new BasicScrollPane ( "transparent.hovering", FeatureState.release, StyleId.scrollpaneTransparentHovering )
@@ -102,7 +103,7 @@ public class JScrollPaneExample extends AbstractStylePreviewExample
         {
             final JScrollPane scrollPane = new JScrollPane ( new ExamplesTree () );
             scrollPane.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
-            scrollPane.setPreferredSize ( new Dimension ( 200, 100 ) );
+            scrollPane.setPreferredSize ( new Dimension ( 200, 160 ) );
             return CollectionUtils.asList ( scrollPane );
         }
     }

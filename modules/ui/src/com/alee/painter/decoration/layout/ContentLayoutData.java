@@ -31,7 +31,7 @@ public class ContentLayoutData extends HashMap<String, Rectangle>
     /**
      * Constructs new {@link ContentLayoutData}.
      *
-     * @param constraints total amount of layout constraints
+     * @param constraints approximate average amount of used layout constraints
      */
     public ContentLayoutData ( final int constraints )
     {

@@ -340,7 +340,7 @@ public class StyleEditor extends WebFrame
                             final Component actual = SwingUtils.getTopComponentAt ( c, click.x - cloc.x, click.y - cloc.y );
 
                             // todo GLASSPANE USAGE
-                            System.out.println ( actual );
+                            actual.repaint ();
                         }
                     }
                 }, AWTEvent.MOUSE_EVENT_MASK );
@@ -519,7 +519,6 @@ public class StyleEditor extends WebFrame
 
         final WebFileTree homeFileTree = new WebFileTree ( FileUtils.getUserHomePath () );
         homeFileTree.setExpandSelected ( false );
-        homeFileTree.setShowsRootHandles ( true );
         homeFileTree.setSelectionStyle ( TreeSelectionStyle.group );
         homeFileTree.onKeyRelease ( Hotkey.SPACE, new KeyEventRunnable ()
         {

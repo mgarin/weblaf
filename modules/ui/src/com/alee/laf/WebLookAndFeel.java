@@ -399,10 +399,10 @@ public class WebLookAndFeel extends BasicLookAndFeel
     {
         super.initSystemColorDefaults ( table );
 
-        final String menuColor = ColorUtils.getHexColor ( Color.WHITE );
-        final String textColor = ColorUtils.getHexColor ( Color.BLACK );
-        final String textHighlightColor = ColorUtils.getHexColor ( new Color ( 210, 210, 210 ) );
-        final String inactiveTextColor = ColorUtils.getHexColor ( new Color ( 160, 160, 160 ) );
+        final String menuColor = ColorUtils.toHex ( Color.WHITE );
+        final String textColor = ColorUtils.toHex ( Color.BLACK );
+        final String textHighlightColor = ColorUtils.toHex ( new Color ( 210, 210, 210 ) );
+        final String inactiveTextColor = ColorUtils.toHex ( new Color ( 160, 160, 160 ) );
 
         final String[] defaultSystemColors = {
                 "menu", menuColor,
@@ -452,6 +452,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
                 "SPACE", "pressed",
                 "released SPACE", "released"
         } ) );
+
+        // Split pane
+        table.put ( "SplitPane.dividerSize", 2 );
 
         // Option pane
         table.put ( "OptionPane.isYesLast", SystemUtils.isMac () ? Boolean.TRUE : Boolean.FALSE );

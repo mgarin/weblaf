@@ -28,12 +28,15 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * Popular {@link java.awt.BorderLayout} implementation of {@link com.alee.painter.decoration.layout.IContentLayout}.
+ * Popular {@link java.awt.BorderLayout} implementation of {@link IContentLayout}.
  *
  * @param <E> component type
  * @param <D> decoration type
  * @param <I> layout type
  * @author Mikle Garin
+ * @see java.awt.BorderLayout
+ * @see AbstractContentLayout
+ * @see IContentLayout
  */
 
 @XStreamAlias ( "BorderLayout" )

@@ -18,7 +18,7 @@
 package com.alee.extended.panel;
 
 import com.alee.laf.panel.WebPanel;
-import com.alee.utils.LafUtils;
+import com.alee.utils.SelectorUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -195,7 +195,9 @@ public class ResizablePanel extends WebPanel
     {
         super.paintComponent ( g );
 
-        LafUtils.drawWebIconedSelection ( ( Graphics2D ) g, new Rectangle ( 6, 6, getWidth () - 13, getHeight () - 13 ), true, true, true );
+        SelectorUtils.drawWebIconedSelection ( ( Graphics2D ) g,
+                new Rectangle ( 6, 6, getWidth () - 13, getHeight () - 13 ),
+                true, true, true );
     }
 
     @Override

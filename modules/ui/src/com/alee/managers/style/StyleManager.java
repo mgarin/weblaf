@@ -71,6 +71,7 @@ import com.alee.laf.separator.SeparatorStripes;
 import com.alee.laf.slider.SliderDescriptor;
 import com.alee.laf.spinner.SpinnerDescriptor;
 import com.alee.laf.splitpane.SplitPaneDescriptor;
+import com.alee.laf.splitpane.SplitPaneDividerDescriptor;
 import com.alee.laf.tabbedpane.TabbedPaneDescriptor;
 import com.alee.laf.table.TableDescriptor;
 import com.alee.laf.table.TableHeaderDescriptor;
@@ -95,6 +96,7 @@ import com.alee.painter.decoration.border.AbstractBorder;
 import com.alee.painter.decoration.border.LineBorder;
 import com.alee.painter.decoration.content.*;
 import com.alee.painter.decoration.layout.AbstractContentLayout;
+import com.alee.painter.decoration.layout.AlignLayout;
 import com.alee.painter.decoration.layout.BorderLayout;
 import com.alee.painter.decoration.layout.IconTextLayout;
 import com.alee.painter.decoration.shadow.AbstractShadow;
@@ -276,6 +278,7 @@ public final class StyleManager
         XmlUtils.processAnnotations ( Stripe.class );
         XmlUtils.processAnnotations ( Gripper.class );
         XmlUtils.processAnnotations ( BorderLayout.class );
+        XmlUtils.processAnnotations ( AlignLayout.class );
         XmlUtils.processAnnotations ( AbstractContentLayout.class );
         XmlUtils.processAnnotations ( IconTextLayout.class );
         XmlUtils.processAnnotations ( AbstractContent.class );
@@ -382,6 +385,7 @@ public final class StyleManager
          */
         registerComponentDescriptor ( new PanelDescriptor () );
         registerComponentDescriptor ( new TabbedPaneDescriptor () );
+        registerComponentDescriptor ( new SplitPaneDividerDescriptor () );
         registerComponentDescriptor ( new SplitPaneDescriptor () );
         registerComponentDescriptor ( new PopupDescriptor () );
 
@@ -674,7 +678,6 @@ public final class StyleManager
     {
         return getDescriptorImpl ( component.getClass () ) != null;
     }
-
 
     /**
      * Registers new {@link ComponentDescriptor}.
@@ -1036,11 +1039,12 @@ public final class StyleManager
      * It is not recommended to use it outside of that install behavior.
      *
      * @param component component to apply skin to
-     * @return previously applied skin
      */
-    public static Skin installSkin ( final JComponent component )
+    public static void installSkin ( final JComponent component )
     {
-        return getData ( component ).applySkin ( getSkin (), false );
+        final StyleData data = getData ( component );
+        data.install ();
+        data.applySkin ( getSkin (), false );
     }
 
     /**
@@ -1061,12 +1065,12 @@ public final class StyleManager
      * It is not recommended to use it outside of that uninstall behavior.
      *
      * @param component component to remove skin from
-     * @return previously applied skin
      */
-    public static Skin uninstallSkin ( final JComponent component )
+    public static void uninstallSkin ( final JComponent component )
     {
-        // todo Remove cached component data upon uninstallation
-        return getData ( component ).removeSkin ();
+        final StyleData data = getData ( component );
+        data.removeSkin ();
+        data.uninstall ();
     }
 
     /**

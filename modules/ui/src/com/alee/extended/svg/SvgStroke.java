@@ -47,6 +47,6 @@ public class SvgStroke extends AbstractSvgAttributeAdjustment
     @Override
     protected String getValue ( final SvgIcon icon )
     {
-        return color != null ? ColorUtils.getHexColor ( color ) : "none";
+        return color != null ? ColorUtils.toHex ( color ) : "none";
     }
 }

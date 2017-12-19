@@ -88,23 +88,29 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     protected transient Container ancestor;
 
     @Override
-    public void install ( final E c, final U ui )
+    protected void afterInstall ()
     {
-        super.install ( c, ui );
-
         // Determining initial decoration states
         // We should always update states last to ensure initial values are correct
         this.states = collectDecorationStates ();
+
+        super.afterInstall ();
     }
 
     @Override
-    public void uninstall ( final E c, final U ui )
+    protected void beforeUninstall ()
     {
         // Making sure last used decoration is properly deactivated
         // If we don't perform this here it will stay active and will keep recieving component updates
         deactivateLastDecoration ( component );
 
-        super.uninstall ( c, ui );
+        super.beforeUninstall ();
+    }
+
+    @Override
+    protected void afterUninstall ()
+    {
+        super.afterUninstall ();
 
         // Cleaning up decoration states and caches
         this.decorationCache = null;
@@ -116,6 +122,8 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     protected void installPropertiesAndListeners ()
     {
         super.installPropertiesAndListeners ();
+
+        // Installing various extra listeners
         installFocusListener ();
         installInFocusedParentListener ();
         installHoverListener ();
@@ -125,10 +133,12 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     @Override
     protected void uninstallPropertiesAndListeners ()
     {
+        // Uninstalling various extra listeners
         uninstallHierarchyListener ();
         uninstallHoverListener ();
         uninstallInFocusedParentListener ();
         uninstallFocusListener ();
+
         super.uninstallPropertiesAndListeners ();
     }
 

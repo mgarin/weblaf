@@ -91,9 +91,9 @@ public class ScrollBarPainter<E extends JScrollBar, U extends WScrollBarUI> exte
     protected transient Insets thumbMarginHR;
 
     @Override
-    public void install ( final E c, final U ui )
+    protected void installPropertiesAndListeners ()
     {
-        super.install ( c, ui );
+        super.installPropertiesAndListeners ();
 
         // This styling is animated
         animated = true;
@@ -136,13 +136,13 @@ public class ScrollBarPainter<E extends JScrollBar, U extends WScrollBarUI> exte
     }
 
     @Override
-    public void uninstall ( final E c, final U ui )
+    protected void uninstallPropertiesAndListeners ()
     {
         // Removing listeners
         component.removeMouseListener ( mouseAdapter );
         component.removeMouseMotionListener ( mouseAdapter );
 
-        super.uninstall ( c, ui );
+        super.uninstallPropertiesAndListeners ();
     }
 
     /**
@@ -400,7 +400,7 @@ public class ScrollBarPainter<E extends JScrollBar, U extends WScrollBarUI> exte
     protected Color getCurrentThumbBorderColor ( final E scrollbar )
     {
         return scrollbar.isEnabled () ? pressed || dragged ? thumbPressedBorderColor : rollover ? thumbRolloverBorderColor :
-                ColorUtils.getIntermediateColor ( thumbBorderColor, thumbRolloverBorderColor, rolloverState ) : thumbDisabledBorderColor;
+                ColorUtils.intermediate ( thumbBorderColor, thumbRolloverBorderColor, rolloverState ) : thumbDisabledBorderColor;
     }
 
     /**
@@ -412,7 +412,7 @@ public class ScrollBarPainter<E extends JScrollBar, U extends WScrollBarUI> exte
     protected Color getCurrentThumbBackgroundColor ( final E scrollbar )
     {
         return scrollbar.isEnabled () ? pressed || dragged ? thumbPressedBackgroundColor : rollover ? thumbRolloverBackgroundColor :
-                ColorUtils.getIntermediateColor ( thumbBackgroundColor, thumbRolloverBackgroundColor, rolloverState ) :
+                ColorUtils.intermediate ( thumbBackgroundColor, thumbRolloverBackgroundColor, rolloverState ) :
                 thumbDisabledBackgroundColor;
     }
 
