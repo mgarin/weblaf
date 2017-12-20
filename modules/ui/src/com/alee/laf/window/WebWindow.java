@@ -677,11 +677,11 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
     {
         /**
          * Constructs new root pane for this {@link WebWindow}.
-         * Providing {@link StyleId#rootpane} here is very important.
+         * Providing default {@link StyleId} here is very important to avoid calling any updates.
          */
         public WebWindowRootPane ()
         {
-            super ( StyleId.rootpane );
+            super ( StyleManager.getDescriptor ( JRootPane.class ).getDefaultStyleId () );
         }
 
         @Override

@@ -1251,11 +1251,11 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
     {
         /**
          * Constructs new root pane for this {@link WebDialog}.
-         * Providing {@link StyleId#rootpane} here is very important.
+         * Providing default {@link StyleId} here is very important to avoid calling any updates.
          */
         public WebDialogRootPane ()
         {
-            super ( StyleId.rootpane );
+            super ( StyleManager.getDescriptor ( JRootPane.class ).getDefaultStyleId () );
         }
 
         @Override

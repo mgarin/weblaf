@@ -21,6 +21,7 @@ import com.alee.api.data.CompassDirection;
 import com.alee.extended.behavior.ComponentMoveBehavior;
 import com.alee.laf.window.WebDialog;
 import com.alee.managers.animation.easing.Quadratic;
+import com.alee.managers.animation.framerate.FixedFrameRate;
 import com.alee.managers.animation.transition.AbstractTransition;
 import com.alee.managers.animation.transition.TimedTransition;
 import com.alee.managers.animation.transition.Transition;
@@ -88,7 +89,7 @@ public class WindowDecorationBehavior extends ComponentMoveBehavior
     {
         super ();
         this.rootPaneUI = rootPaneUI;
-        this.fadeIn = new TimedTransition<Float> ( 0f, 1f, new Quadratic.Out (), 120L );
+        this.fadeIn = new TimedTransition<Float> ( 0f, 1f, new FixedFrameRate ( 30 ), new Quadratic.Out (), 200L );
         this.fadeIn.addListener ( new TransitionAdapter<Float> ()
         {
             @Override

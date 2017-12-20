@@ -87,8 +87,8 @@
                     <decoration states="win">
                         <WebShape round="0" />
                         <WebShadow type="outer" opacity="0.8" width="10" />
-                        <LineBorder color="white" opacity="0.4" />
-                        <ColorBackground color="255,255,255" opacity="0.1" />
+                        <LineBorder color="black" opacity="0.6" />
+                        <ColorBackground color="255,255,255" opacity="0.2" />
                     </decoration>
                 </decorations>
             </painter>

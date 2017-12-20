@@ -809,11 +809,11 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
     {
         /**
          * Constructs new root pane for this {@link WebFrame}.
-         * Providing {@link StyleId#rootpane} here is very important.
+         * Providing default {@link StyleId} here is very important to avoid calling any updates.
          */
         public WebFrameRootPane ()
         {
-            super ( StyleId.rootpane );
+            super ( StyleManager.getDescriptor ( JRootPane.class ).getDefaultStyleId () );
         }
 
         @Override
