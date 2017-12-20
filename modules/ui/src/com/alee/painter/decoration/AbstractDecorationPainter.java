@@ -90,32 +90,48 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     @Override
     protected void afterInstall ()
     {
-        // Determining initial decoration states
-        // We should always update states last to ensure initial values are correct
+        /**
+         * Determining initial decoration states.
+         * We should always update states last to ensure initial values are correct.
+         * Although we still do it before updating border in {@link super#afterInstall()}.
+         */
         this.states = collectDecorationStates ();
 
+        /**
+         * Performing basic actions after installation ends.
+         */
         super.afterInstall ();
     }
 
     @Override
     protected void beforeUninstall ()
     {
-        // Making sure last used decoration is properly deactivated
-        // If we don't perform this here it will stay active and will keep recieving component updates
-        deactivateLastDecoration ( component );
-
+        /**
+         * Performing basic actions before uninstallation starts.
+         */
         super.beforeUninstall ();
+
+        /**
+         * Making sure last used decoration is properly deactivated.
+         * If we don't deactivate last decoration it will stay active and will keep recieving component updates.
+         */
+        deactivateLastDecoration ( component );
     }
 
     @Override
     protected void afterUninstall ()
     {
-        super.afterUninstall ();
-
-        // Cleaning up decoration states and caches
-        this.decorationCache = null;
+        /**
+         * Cleaning up decoration caches.
+         */
         this.stateDecorationCache = null;
+        this.decorationCache = null;
         this.states = null;
+
+        /**
+         * Performing basic actions after uninstallation ends.
+         */
+        super.afterUninstall ();
     }
 
     @Override

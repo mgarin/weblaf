@@ -78,7 +78,7 @@
         </style>
 
         <!-- Glass dialog -->
-        <style type="rootpane" id="glass-dialog">
+        <style type="rootpane" id="glass-dialog" extends="dialog">
             <ui>
                 <installComponents>false</installComponents>
             </ui>

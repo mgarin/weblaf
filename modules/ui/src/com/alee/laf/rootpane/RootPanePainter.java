@@ -42,10 +42,39 @@ public class RootPanePainter<E extends JRootPane, U extends WRootPaneUI, D exten
     protected transient boolean maximized = false;
 
     @Override
+    protected void afterInstall ()
+    {
+        /**
+         * Performing basic actions after installation ends.
+         */
+        super.afterInstall ();
+
+        /**
+         * It is very important to install decoration after all other updates.
+         * Otherwise we might be missing critically-important styles here.
+         */
+        installWindowDecoration ();
+    }
+
+    @Override
+    protected void beforeUninstall ()
+    {
+        /**
+         * It is important to uninstall decorations before anything else.
+         * Otherwise we are risking to cause issues within decoration elements.
+         */
+        uninstallWindowDecoration ();
+
+        /**
+         * Performing basic actions before uninstallation starts.
+         */
+        super.beforeUninstall ();
+    }
+
+    @Override
     protected void installPropertiesAndListeners ()
     {
         super.installPropertiesAndListeners ();
-        installWindowDecoration ();
         installWindowStateListener ();
     }
 
@@ -53,7 +82,6 @@ public class RootPanePainter<E extends JRootPane, U extends WRootPaneUI, D exten
     protected void uninstallPropertiesAndListeners ()
     {
         uninstallWindowStateListener ();
-        uninstallWindowDecoration ();
         super.uninstallPropertiesAndListeners ();
     }
 

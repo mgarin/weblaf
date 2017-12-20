@@ -133,27 +133,31 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     }
 
     /**
-     * Performs additional actions before installation ends.
+     * Performs additional actions before installation starts.
      * This is an additional method for override convenience.
      */
     protected void beforeInstall ()
     {
-        // Updating installation mark
+        /**
+         * Updating installation mark.
+         */
         this.installed = true;
     }
 
     /**
-     * Performs additional actions on installation ends.
+     * Performs additional actions after installation ends.
      * This is an additional method for override convenience.
      */
     protected void afterInstall ()
     {
-        // Updating initial border
+        /**
+         * Updating initial border.
+         */
         updateBorder ();
     }
 
     /**
-     * Performs additional actions before uninstallation ends.
+     * Performs additional actions before uninstallation starts.
      * This is an additional method for override convenience.
      */
     protected void beforeUninstall ()
@@ -169,7 +173,9 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      */
     protected void afterUninstall ()
     {
-        // Updating installation mark
+        /**
+         * Updating installation mark.
+         */
         this.installed = false;
     }
 

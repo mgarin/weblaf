@@ -677,6 +677,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
     {
         /**
          * Constructs new root pane for this {@link WebWindow}.
+         * Providing {@link StyleId#rootpane} here is very important.
          */
         public WebWindowRootPane ()
         {
