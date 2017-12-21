@@ -81,12 +81,6 @@
                             <SetIcon constraints="icon" icon="up-small" />
                         </ButtonLayout>
                     </decoration>
-                    <!--<decoration states="horizontal,ltr">
-                        <ButtonLayout />
-                    </decoration>
-                    <decoration states="horizontal,rtl">
-                        <ButtonLayout padding="1,1,1,2" />
-                    </decoration>-->
                 </decorations>
             </painter>
         </style>
@@ -110,12 +104,6 @@
                             <SetIcon constraints="icon" icon="down-small" />
                         </ButtonLayout>
                     </decoration>
-                    <!--<decoration states="horizontal,ltr">
-                        <ButtonLayout />
-                    </decoration>
-                    <decoration states="horizontal,rtl">
-                        <ButtonLayout padding="1,2,1,0" />
-                    </decoration>-->
                 </decorations>
             </painter>
         </style>

@@ -66,9 +66,15 @@
                 <decorations>
                     <decoration cursor="common" />
                     <decoration states="vertical">
-                        <ButtonLayout padding="2,1,1,0">
+                        <ButtonLayout>
                             <SetIcon constraints="icon" icon="left-small" />
                         </ButtonLayout>
+                    </decoration>
+                    <decoration states="vertical,ltr">
+                        <ButtonLayout padding="2,1,1,0" />
+                    </decoration>
+                    <decoration states="vertical,rtl">
+                        <ButtonLayout padding="2,0,1,1" />
                     </decoration>
                     <decoration states="horizontal">
                         <ButtonLayout padding="1,2,1,1">
@@ -83,9 +89,15 @@
                 <decorations>
                     <decoration cursor="common" />
                     <decoration states="vertical">
-                        <ButtonLayout padding="1,0,2,1">
+                        <ButtonLayout>
                             <SetIcon constraints="icon" icon="right-small" />
                         </ButtonLayout>
+                    </decoration>
+                    <decoration states="vertical,ltr">
+                        <ButtonLayout padding="1,0,2,1" />
+                    </decoration>
+                    <decoration states="vertical,rtl">
+                        <ButtonLayout padding="1,1,2,0" />
                     </decoration>
                     <decoration states="horizontal">
                         <ButtonLayout padding="1,0,1,2">
