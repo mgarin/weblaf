@@ -27,7 +27,7 @@ import com.alee.utils.ReflectUtils;
  * @author Mikle Garin
  */
 
-public final class PreparedInstance<T>
+public final class LazyInstance<T>
 {
     /**
      * Object {@link Class}.
@@ -40,12 +40,17 @@ public final class PreparedInstance<T>
     private final Object[] arguments;
 
     /**
-     * Constructs new {@link PreparedInstance}.
+     * Singleton instance.
+     */
+    private T instance;
+
+    /**
+     * Constructs new {@link LazyInstance}.
      *
      * @param clazz     object {@link Class}
      * @param arguments arguments for object constructor
      */
-    public PreparedInstance ( final Class<T> clazz, final Object... arguments )
+    public LazyInstance ( final Class<T> clazz, final Object... arguments )
     {
         this.clazz = clazz;
         this.arguments = arguments;
@@ -53,7 +58,7 @@ public final class PreparedInstance<T>
 
     /**
      * Returns new object instance.
-     * Can be called multiple times on the same instance of {@link PreparedInstance}.
+     * Can be called multiple times on the same instance of {@link LazyInstance}.
      *
      * @return new object instance
      */
@@ -68,5 +73,20 @@ public final class PreparedInstance<T>
             final String msg = "Unable to instantiate skin for class: %s";
             throw new ReflectionException ( String.format ( msg, clazz ), e );
         }
+    }
+
+    /**
+     * Returns singleton object instance.
+     * It will always return the same instance for the same {@link LazyInstance}.
+     *
+     * @return singleton object instance
+     */
+    public synchronized T get ()
+    {
+        if ( instance == null )
+        {
+            instance = create ();
+        }
+        return instance;
     }
 }

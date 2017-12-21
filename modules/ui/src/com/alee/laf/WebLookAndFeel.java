@@ -32,7 +32,7 @@ import com.alee.managers.style.StyleManager;
 import com.alee.skin.web.WebSkin;
 import com.alee.utils.*;
 import com.alee.utils.laf.WebBorder;
-import com.alee.utils.reflection.PreparedInstance;
+import com.alee.utils.reflection.LazyInstance;
 import com.alee.utils.swing.SwingLazyValue;
 
 import javax.swing.*;
@@ -910,16 +910,16 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     public static void install ( final Class<? extends Skin> skin, final Object... arguments ) throws LookAndFeelException
     {
-        install ( new PreparedInstance<Skin> ( ( Class<Skin> ) skin, arguments ) );
+        install ( new LazyInstance<Skin> ( ( Class<Skin> ) skin, arguments ) );
     }
 
     /**
      * Installs {@link WebLookAndFeel} in one call.
      *
-     * @param skin {@link PreparedInstance} for {@link Skin}
+     * @param skin {@link LazyInstance} for {@link Skin}
      * @throws LookAndFeelException when unable to install {@link WebLookAndFeel}
      */
-    public static void install ( final PreparedInstance<? extends Skin> skin ) throws LookAndFeelException
+    public static void install ( final LazyInstance<? extends Skin> skin ) throws LookAndFeelException
     {
         // Event Dispatch Thread check
         checkEventDispatchThread ();

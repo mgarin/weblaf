@@ -113,7 +113,7 @@ import com.alee.utils.TextUtils;
 import com.alee.utils.XmlUtils;
 import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.ninepatch.NinePatchIcon;
-import com.alee.utils.reflection.PreparedInstance;
+import com.alee.utils.reflection.LazyInstance;
 import com.alee.utils.swing.WeakComponentData;
 
 import javax.swing.*;
@@ -197,11 +197,11 @@ public final class StyleManager
     private static final Object skinLock = new Object ();
 
     /**
-     * {@link PreparedInstance} for default WebLaF {@link Skin}.
+     * {@link LazyInstance} for default WebLaF {@link Skin}.
      * It can be specified before WebLaF is installed or any managers are initialized.
      * It can be used to avoid extra loading time due to default skin or unnecessary UI updates later on.
      */
-    private static PreparedInstance<? extends Skin> defaultSkin = null;
+    private static LazyInstance<? extends Skin> defaultSkin = null;
 
     /**
      * Currently used skin.
@@ -756,13 +756,13 @@ public final class StyleManager
     }
 
     /**
-     * Returns {@link PreparedInstance} for default {@link Skin}.
+     * Returns {@link LazyInstance} for default {@link Skin}.
      *
-     * @return {@link PreparedInstance} for default {@link Skin}
+     * @return {@link LazyInstance} for default {@link Skin}
      */
-    public static PreparedInstance<? extends Skin> getDefaultSkin ()
+    public static LazyInstance<? extends Skin> getDefaultSkin ()
     {
-        return defaultSkin != null ? defaultSkin : new PreparedInstance<WebSkin> ( WebSkin.class );
+        return defaultSkin != null ? defaultSkin : new LazyInstance<WebSkin> ( WebSkin.class );
     }
 
     /**
@@ -777,7 +777,7 @@ public final class StyleManager
         try
         {
             final Class<? extends Skin> skinClass = ReflectUtils.getClass ( skin );
-            setDefaultSkin ( new PreparedInstance<Skin> ( ( Class<Skin> ) skinClass, arguments ) );
+            setDefaultSkin ( new LazyInstance<Skin> ( ( Class<Skin> ) skinClass, arguments ) );
         }
         catch ( final ClassNotFoundException e )
         {
@@ -795,7 +795,7 @@ public final class StyleManager
      */
     public static void setDefaultSkin ( final Class<? extends Skin> skin, final Object... arguments )
     {
-        setDefaultSkin ( new PreparedInstance<Skin> ( ( Class<Skin> ) skin, arguments ) );
+        setDefaultSkin ( new LazyInstance<Skin> ( ( Class<Skin> ) skin, arguments ) );
     }
 
     /**
@@ -804,7 +804,7 @@ public final class StyleManager
      *
      * @param skin default skin class
      */
-    public static void setDefaultSkin ( final PreparedInstance<? extends Skin> skin )
+    public static void setDefaultSkin ( final LazyInstance<? extends Skin> skin )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -859,17 +859,17 @@ public final class StyleManager
      */
     public static Skin setSkin ( final Class<? extends Skin> skin, final Object... arguments )
     {
-        return setSkin ( new PreparedInstance<Skin> ( ( Class<Skin> ) skin, arguments ) );
+        return setSkin ( new LazyInstance<Skin> ( ( Class<Skin> ) skin, arguments ) );
     }
 
     /**
-     * Applies {@link Skin} based on the {@link PreparedInstance} to all {@link Styleable} components.
+     * Applies {@link Skin} based on the {@link LazyInstance} to all {@link Styleable} components.
      * That {@link Skin} will also be applied to all {@link Styleable} components created afterwards.
      *
-     * @param skin {@link PreparedInstance} for {@link Skin}
+     * @param skin {@link LazyInstance} for {@link Skin}
      * @return previously applied {@link Skin}
      */
-    public static Skin setSkin ( final PreparedInstance<? extends Skin> skin )
+    public static Skin setSkin ( final LazyInstance<? extends Skin> skin )
     {
         return setSkin ( skin.create () );
     }
