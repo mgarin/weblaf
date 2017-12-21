@@ -30,8 +30,7 @@ import com.alee.utils.LafUtils;
 import javax.swing.*;
 import javax.swing.plaf.SplitPaneUI;
 import java.awt.*;
-import java.awt.event.ContainerEvent;
-import java.awt.event.ContainerListener;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
@@ -58,6 +57,11 @@ public abstract class WSplitPaneUI<C extends JSplitPane> extends SplitPaneUI imp
      * {@link WebSplitPaneDivider} instance used for the {@link JSplitPane}.
      */
     protected WebSplitPaneDivider divider;
+
+    /**
+     * {@link ComponentListener} for the side components of the {@link JSplitPane}.
+     */
+    protected ComponentListener componentListener;
 
     /**
      * {@link ContainerListener} for the {@link JSplitPane}.
@@ -236,6 +240,9 @@ public abstract class WSplitPaneUI<C extends JSplitPane> extends SplitPaneUI imp
      */
     protected void installListeners ()
     {
+        componentListener = createComponentListener ();
+        addSideComponentListener ( splitPane.getLeftComponent () );
+        addSideComponentListener ( splitPane.getRightComponent () );
         containerListener = createContainerListener ();
         splitPane.addContainerListener ( containerListener );
 
@@ -259,6 +266,32 @@ public abstract class WSplitPaneUI<C extends JSplitPane> extends SplitPaneUI imp
 
         splitPane.removeContainerListener ( containerListener );
         containerListener = null;
+        removeSideComponentListener ( splitPane.getRightComponent () );
+        removeSideComponentListener ( splitPane.getLeftComponent () );
+        componentListener = null;
+    }
+
+    /**
+     * Returns {@link ComponentListener} for the side components of the {@link JSplitPane}.
+     *
+     * @return {@link ComponentListener} for the side components of the {@link JSplitPane}
+     */
+    protected ComponentListener createComponentListener ()
+    {
+        return new ComponentAdapter ()
+        {
+            @Override
+            public void componentShown ( final ComponentEvent e )
+            {
+                updateDividerVisibility ();
+            }
+
+            @Override
+            public void componentHidden ( final ComponentEvent e )
+            {
+                updateDividerVisibility ();
+            }
+        };
     }
 
     /**
@@ -273,15 +306,51 @@ public abstract class WSplitPaneUI<C extends JSplitPane> extends SplitPaneUI imp
             @Override
             public void componentAdded ( final ContainerEvent e )
             {
+                final Component added = e.getChild ();
+                if ( added != getDivider () && added != getNonContinuousLayoutDivider () )
+                {
+                    addSideComponentListener ( added );
+                }
                 updateDividerVisibility ();
             }
 
             @Override
             public void componentRemoved ( final ContainerEvent e )
             {
+                final Component removed = e.getChild ();
+                if ( removed != getDivider () && removed != getNonContinuousLayoutDivider () )
+                {
+                    removeSideComponentListener ( removed );
+                }
                 updateDividerVisibility ();
             }
         };
+    }
+
+    /**
+     * Adds {@link ComponentListener} for the specified side {@link Component} of the {@link JSplitPane}.
+     *
+     * @param component side {@link Component}
+     */
+    protected void addSideComponentListener ( final Component component )
+    {
+        if ( component != null )
+        {
+            component.addComponentListener ( componentListener );
+        }
+    }
+
+    /**
+     * Removes {@link ComponentListener} from the specified side {@link Component} of the {@link JSplitPane}
+     *
+     * @param component side {@link Component}
+     */
+    protected void removeSideComponentListener ( final Component component )
+    {
+        if ( component != null )
+        {
+            component.removeComponentListener ( componentListener );
+        }
     }
 
     /**
@@ -291,7 +360,11 @@ public abstract class WSplitPaneUI<C extends JSplitPane> extends SplitPaneUI imp
     {
         if ( getDivider () != null )
         {
-            getDivider ().setVisible ( splitPane.getLeftComponent () != null && splitPane.getRightComponent () != null );
+            final Component left = splitPane.getLeftComponent ();
+            final Component right = splitPane.getRightComponent ();
+            getDivider ().setVisible ( left != null && left.isVisible () && right != null && right.isVisible () );
+            splitPane.revalidate ();
+            splitPane.repaint ();
         }
     }
 
