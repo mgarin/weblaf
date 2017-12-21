@@ -613,14 +613,16 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
     {
         for ( int i = startIndex; i < styles.size (); i++ )
         {
-            final ComponentStyle currentStyle = styles.get ( i );
+            ComponentStyle currentStyle = styles.get ( i );
             for ( int j = i + 1; j < styles.size (); j++ )
             {
                 final ComponentStyle style = styles.get ( j );
                 if ( CompareUtils.equals ( style.getType (), currentStyle.getType () ) &&
                         CompareUtils.equals ( style.getId (), currentStyle.getId () ) )
                 {
-                    styles.set ( i, currentStyle.clone ().merge ( styles.remove ( j-- ) ) );
+                    currentStyle = currentStyle.clone ().merge ( style );
+                    styles.set ( i, currentStyle );
+                    styles.remove ( j-- );
                 }
             }
         }
