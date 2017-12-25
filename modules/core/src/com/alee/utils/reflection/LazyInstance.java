@@ -32,7 +32,7 @@ public final class LazyInstance<T>
     /**
      * Object {@link Class}.
      */
-    private final Class<T> clazz;
+    private final Class<? extends T> clazz;
 
     /**
      * Arguments for object constructor.
@@ -50,7 +50,7 @@ public final class LazyInstance<T>
      * @param clazz     object {@link Class}
      * @param arguments arguments for object constructor
      */
-    public LazyInstance ( final Class<T> clazz, final Object... arguments )
+    public LazyInstance ( final Class<? extends T> clazz, final Object... arguments )
     {
         this.clazz = clazz;
         this.arguments = arguments;
