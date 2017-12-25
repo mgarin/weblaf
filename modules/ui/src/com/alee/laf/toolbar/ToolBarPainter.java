@@ -1,6 +1,5 @@
 package com.alee.laf.toolbar;
 
-import com.alee.api.data.Orientation;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.painter.decoration.AbstractContainerPainter;
 import com.alee.painter.decoration.DecorationState;
@@ -64,7 +63,7 @@ public class ToolBarPainter<E extends JToolBar, U extends WebToolBarUI, D extend
     public List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
-        states.add ( Orientation.get ( component.getOrientation () ).name () );
+        states.add ( component.getOrientation () == JToolBar.HORIZONTAL ? DecorationState.horizontal : DecorationState.vertical );
         states.add ( ui.isFloating () ? DecorationState.floating : DecorationState.attached );
         return states;
     }

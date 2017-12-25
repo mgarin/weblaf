@@ -656,6 +656,7 @@ public final class StyleId implements Identifiable
      * {@link com.alee.extended.window.WebPopup} style identifiers.
      */
     public static final StyleId popup = StyleId.of ( "popup" );
+    public static final StyleId popupTransparent = StyleId.of ( "transparent" );
     public static final StyleId popupUndecorated = StyleId.of ( "undecorated" );
 
     /**

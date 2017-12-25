@@ -23,6 +23,13 @@
         </painter>
     </style>
 
+    <!-- Transparent popup -->
+    <style type="popup" id="transparent">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
     <!-- Undecorated popup -->
     <style type="popup" id="undecorated">
         <component>

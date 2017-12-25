@@ -17,12 +17,16 @@
 
 package com.alee.extended.layout;
 
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.TextUtils;
+import com.alee.utils.swing.ZOrderComparator;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,6 +58,21 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
     public static final String END = "END";
 
     /**
+     * Special position for an element displayed at the end of the container whenever its size is less than preferred size.
+     */
+    public static final String TRIM = "TRIM";
+
+    /**
+     * Lazy instance of {@link ZOrderComparator}.
+     */
+    protected static final ZOrderComparator COMPONENTS_COMPARATOR = new ZOrderComparator ();
+
+    /**
+     * Bounds used to hide components.
+     */
+    protected static final Rectangle HIDE_BOUNDS = new Rectangle ( -1, -1, 0, 0 );
+
+    /**
      * Spacing between layout elements.
      */
     protected int spacing;
@@ -67,6 +86,11 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
      * Saved layout constraints.
      */
     protected transient Map<Component, String> constraints;
+
+    /**
+     * Mapped components.
+     */
+    protected transient Map<String, List<Component>> components;
 
     /**
      * Constructs new {@link AbstractLineLayout}.
@@ -97,257 +121,562 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
         super ();
         this.spacing = spacing;
         this.partsSpacing = partsSpacing;
-        this.constraints = new HashMap<Component, String> ();
+        this.constraints = new HashMap<Component, String> ( 10 );
+        this.components = new HashMap<String, List<Component>> ( 4 );
     }
 
     @Override
     public void addComponent ( final Component component, final Object constraints )
     {
         final String value = ( String ) constraints;
-        if ( !TextUtils.isBlank ( value ) && !CompareUtils.equals ( value, START, MIDDLE, FILL, END ) )
+        if ( !TextUtils.isBlank ( value ) && !CompareUtils.equals ( value, START, MIDDLE, FILL, END, TRIM ) )
         {
-            throw new IllegalArgumentException ( "Layout only supports 'null', empty, 'START', 'MIDDLE', 'FILL' or 'END' constraints" );
+            final String msg = "Layout only supports 'null', empty, 'START', 'MIDDLE', 'FILL', 'END' or 'TRIM' constraints";
+            throw new IllegalArgumentException ( msg );
         }
-        this.constraints.put ( component, value == null || value.trim ().equals ( "" ) ? START : value );
+
+        /**
+         * Resolving proper constraints.
+         */
+        final String actualConstraints = value == null || value.trim ().equals ( "" ) ? START : value;
+
+        /**
+         * Checking intersection to ensure layout doesn't get messy.
+         */
+        if ( CompareUtils.equals ( actualConstraints, MIDDLE ) &&
+                this.components.containsKey ( FILL ) )
+        {
+            throw new RuntimeException ( "Layout already contains element under `FILL` constraints" );
+        }
+        else if ( CompareUtils.equals ( actualConstraints, FILL ) &&
+                ( this.components.containsKey ( MIDDLE ) || this.components.containsKey ( FILL ) ) )
+        {
+            throw new RuntimeException ( "Layout already contains element under `MIDDLE` or `FILL` constraints" );
+        }
+        else if ( CompareUtils.equals ( actualConstraints, TRIM ) &&
+                this.components.containsKey ( TRIM ) )
+        {
+            throw new RuntimeException ( "Layout already contains element under `TRIM` constraints" );
+        }
+
+        /**
+         * Saving constraints per component.
+         */
+        this.constraints.put ( component, actualConstraints );
+
+        /**
+         * Saving components per constraints.
+         */
+        List<Component> components = this.components.get ( actualConstraints );
+        if ( components == null )
+        {
+            components = new ArrayList<Component> ( 1 );
+        }
+        components.add ( component );
+        this.components.put ( actualConstraints, components );
     }
 
     @Override
     public void removeComponent ( final Component component )
     {
-        constraints.remove ( component );
-    }
+        final String constraints = this.constraints.get ( component );
 
+        /**
+         * Removing constraints for component.
+         */
+        this.constraints.remove ( component );
 
-    @Override
-    public Dimension preferredLayoutSize ( final Container parent )
-    {
-        final int orientation = getOrientation ( parent );
-        final Insets insets = parent.getInsets ();
-        final Dimension ps = new Dimension ( insets.left + insets.right, insets.top + insets.bottom );
-        final int componentCount = parent.getComponentCount ();
-        for ( int i = 0; i < componentCount; i++ )
+        /**
+         * Removing component for constraints.
+         */
+        final List<Component> components = this.components.get ( constraints );
+        components.remove ( component );
+        if ( components.isEmpty () )
         {
-            final Component component = parent.getComponent ( i );
-            final Dimension cps = component.getPreferredSize ();
-            if ( orientation == HORIZONTAL )
-            {
-                ps.width += cps.width + ( i < componentCount - 1 ? spacing : 0 );
-                ps.height = Math.max ( ps.height, cps.height + insets.top + insets.bottom );
-            }
-            else
-            {
-                ps.width = Math.max ( ps.width, cps.width + insets.left + insets.right );
-                ps.height += cps.height + ( i < componentCount - 1 ? spacing : 0 );
-            }
+            this.components.remove ( constraints );
         }
-
-        // Additional spacing between start and end parts
-        final boolean addPartsSpacing = hasElement ( START ) && hasElement ( END ) && !hasElement ( MIDDLE ) && !hasElement ( FILL );
-        if ( orientation == HORIZONTAL )
-        {
-            // ps.height = insets.top + ps.height + insets.bottom;
-            if ( addPartsSpacing )
-            {
-                ps.width += partsSpacing;
-            }
-        }
-        else
-        {
-            // ps.width = insets.left + ps.width + insets.right;
-            if ( addPartsSpacing )
-            {
-                ps.height += partsSpacing;
-            }
-        }
-        return ps;
     }
 
     @Override
     public void layoutContainer ( final Container parent )
     {
         final int orientation = getOrientation ( parent );
+        final boolean horizontal = orientation == HORIZONTAL;
         final Insets insets = parent.getInsets ();
-        if ( orientation == HORIZONTAL )
+        final Dimension size = parent.getSize ();
+        final boolean ltr = parent.getComponentOrientation ().isLeftToRight ();
+        final int lineWidth = horizontal ? size.height - insets.top - insets.bottom : size.width - insets.left - insets.right;
+
+        /**
+         * Calculating preferred size of the whole layout.
+         * We will need this to decide how components should be placed.
+         * We also cache all component preferred sizes to avoid overhead calculations.
+         */
+        final Map<Component, Dimension> cache = new HashMap<Component, Dimension> ();
+        final Dimension preferredSize = preferredLayoutSize ( parent, cache );
+
+        /**
+         * Calculating {@link #TRIM} size separately.
+         * We will need this later for various calculations.
+         */
+        final Dimension trimSize = preferredPartSize ( TRIM, orientation, ltr, cache );
+
+        /**
+         * Bounds available within the container.
+         */
+        final Rectangle available = new Rectangle (
+                insets.left,
+                insets.top,
+                size.width - insets.left - insets.right,
+                size.height - insets.top - insets.bottom
+        );
+
+        /**
+         * There are two different placement cases.
+         * One is when we have enough space to place all elements in their preferred sizes.
+         * The other one is when we don't have enough space and need to make sure components don't overlap.
+         */
+        final boolean fit = horizontal ? preferredSize.width <= size.width : preferredSize.height <= size.height;
+        if ( fit )
         {
-            if ( parent.getComponentOrientation ().isLeftToRight () )
+            /**
+             * There is enough space to place all components.
+             * We can simplify calculations and assume positions.
+             */
+
+            /**
+             * Placing START components.
+             */
+            final Dimension startSize = preferredPartSize ( START, orientation, ltr, cache );
+            if ( startSize.width > 0 )
             {
-                // LTR component orientation
-
-                // Filling start with components
-                int startX = insets.left;
-                for ( int i = 0; i < parent.getComponentCount (); i++ )
-                {
-                    final Component component = parent.getComponent ( i );
-                    if ( constraints.get ( component ) == null ||
-                            constraints.get ( component ).trim ().equals ( "" ) ||
-                            constraints.get ( component ).equals ( START ) )
-                    {
-                        final Dimension ps = component.getPreferredSize ();
-                        component.setBounds ( startX, insets.top, ps.width, parent.getHeight () - insets.top - insets.bottom );
-                        startX += ps.width + spacing;
-                    }
-                }
-
-                // Filling end with components
-                int endX = parent.getWidth () - insets.right;
-                if ( hasElement ( END ) )
-                {
-                    for ( int i = parent.getComponentCount () - 1; i >= 0; i-- )
-                    {
-                        final Component component = parent.getComponent ( i );
-                        if ( constraints.get ( component ) != null && constraints.get ( component ).equals ( END ) )
-                        {
-                            final Dimension ps = component.getPreferredSize ();
-                            endX -= ps.width;
-                            component.setBounds ( endX, insets.top, ps.width, parent.getHeight () - insets.top - insets.bottom );
-                            endX -= spacing;
-                        }
-                    }
-                }
-
-                if ( endX > startX && ( hasElement ( MIDDLE ) || hasElement ( FILL ) ) )
-                {
-                    for ( final Component component : parent.getComponents () )
-                    {
-                        if ( constraints.get ( component ) != null )
-                        {
-                            if ( constraints.get ( component ).equals ( MIDDLE ) )
-                            {
-                                final Dimension ps = component.getPreferredSize ();
-                                component.setBounds ( Math.max ( startX, ( startX + endX ) / 2 - ps.width / 2 ), insets.top,
-                                        Math.min ( ps.width, endX - startX ), parent.getHeight () - insets.top - insets.bottom );
-                            }
-                            else if ( constraints.get ( component ).equals ( FILL ) )
-                            {
-                                component.setBounds ( startX, insets.top, Math.max ( 0, endX - startX ),
-                                        parent.getHeight () - insets.top - insets.bottom );
-                            }
-                        }
-                    }
-                }
+                final Point startPoint = new Point ( insets.left, insets.top );
+                placeComponents ( START, startPoint, orientation, ltr, lineWidth, available, cache );
             }
-            else
+
+            /**
+             * Placing END components.
+             */
+            final Dimension endSize = preferredPartSize ( END, orientation, ltr, cache );
+            if ( endSize.width > 0 )
             {
-                // RTL component orientation
+                final Point endPoint = new Point (
+                        horizontal ? size.width - insets.right - endSize.width : insets.left,
+                        horizontal ? insets.top : size.height - insets.bottom - endSize.height
+                );
+                placeComponents ( END, endPoint, orientation, ltr, lineWidth, available, cache );
+            }
 
-                // Filling start with components
-                int startX = insets.left;
-                if ( hasElement ( END ) )
+            /**
+             * Placing components at the middle.
+             */
+            final Dimension middleSize = preferredPartSize ( MIDDLE, orientation, ltr, cache );
+            final Dimension fillSize = preferredPartSize ( FILL, orientation, ltr, cache );
+            if ( middleSize.width > 0 || fillSize.width > 0 )
+            {
+                final int xStartLength = horizontal ? startSize.width + ( startSize.width > 0 ? partsSpacing : 0 ) : 0;
+                final int yStartLength = horizontal ? 0 : startSize.height + ( startSize.height > 0 ? partsSpacing : 0 );
+                final int xEndLength = horizontal ? endSize.width + ( endSize.width > 0 ? partsSpacing : 0 ) : 0;
+                final int yEndLength = horizontal ? 0 : endSize.height + ( endSize.height > 0 ? partsSpacing : 0 );
+                final Rectangle fillBounds = new Rectangle (
+                        insets.left + xStartLength,
+                        insets.top + yStartLength,
+                        size.width - insets.left - xStartLength - xEndLength - insets.right,
+                        size.height - insets.top - yStartLength - yEndLength - insets.bottom
+                );
+                if ( middleSize.width > 0 )
                 {
-                    for ( int i = parent.getComponentCount () - 1; i >= 0; i-- )
-                    {
-                        final Component component = parent.getComponent ( i );
-                        if ( constraints.get ( component ) != null && constraints.get ( component ).equals ( END ) )
-                        {
-                            final Dimension ps = component.getPreferredSize ();
-                            component.setBounds ( startX, insets.top, ps.width, parent.getHeight () - insets.top - insets.bottom );
-                            startX += ps.width + spacing;
-                        }
-                    }
+                    /**
+                     * Placing MIDDLE components.
+                     */
+                    final Point middlePoint = new Point (
+                            horizontal ? fillBounds.x + fillBounds.width / 2 - middleSize.width / 2 : fillBounds.x,
+                            horizontal ? fillBounds.y : fillBounds.y + fillBounds.height / 2 - middleSize.height / 2
+                    );
+                    placeComponents ( MIDDLE, middlePoint, orientation, ltr, lineWidth, available, cache );
                 }
-
-                // Filling end with components
-                int endX = parent.getWidth () - insets.right;
-                for ( int i = 0; i < parent.getComponentCount (); i++ )
+                else
                 {
-                    final Component component = parent.getComponent ( i );
-                    if ( constraints.get ( component ) == null ||
-                            constraints.get ( component ).trim ().equals ( "" ) ||
-                            constraints.get ( component ).equals ( START ) )
-                    {
-                        final Dimension ps = component.getPreferredSize ();
-                        endX -= ps.width;
-                        component.setBounds ( endX, insets.top, ps.width, parent.getHeight () - insets.top - insets.bottom );
-                        endX -= spacing;
-                    }
-                }
-
-                if ( endX > startX && ( hasElement ( MIDDLE ) || hasElement ( FILL ) ) )
-                {
-                    for ( final Component component : parent.getComponents () )
-                    {
-                        if ( constraints.get ( component ) != null )
-                        {
-                            if ( constraints.get ( component ).equals ( MIDDLE ) )
-                            {
-                                final Dimension ps = component.getPreferredSize ();
-                                component.setBounds ( Math.max ( startX, ( startX + endX ) / 2 - ps.width / 2 ), insets.top,
-                                        Math.min ( ps.width, endX - startX ), parent.getHeight () - insets.top - insets.bottom );
-                            }
-                            else if ( constraints.get ( component ).equals ( FILL ) )
-                            {
-                                component.setBounds ( startX, insets.top, Math.max ( 0, endX - startX ),
-                                        parent.getHeight () - insets.top - insets.bottom );
-                            }
-                        }
-                    }
+                    /**
+                     * Placing FILL component.
+                     */
+                    placeFillComponent ( fillBounds, available );
                 }
             }
         }
         else
         {
-            // Filling start with components
-            int startY = insets.top;
-            for ( int i = 0; i < parent.getComponentCount (); i++ )
+            /**
+             * There is not enough space to place all components.
+             * We have to carefully position them one by one from left to right or from right to left (depending on component orientation).
+             */
+
+            /**
+             * Bounds available for all container elements except {@link #TRIM}.
+             * It is necessary to hide all components that are staying outside of the bounds.
+             */
+            final Rectangle trimmed;
+            if ( trimSize.width > 0 )
             {
-                final Component component = parent.getComponent ( i );
-                if ( constraints.get ( component ) == null || constraints.get ( component ).equals ( START ) )
-                {
-                    final Dimension ps = component.getPreferredSize ();
-                    component.setBounds ( insets.left, startY, parent.getWidth () - insets.left - insets.right, ps.height );
-                    startY += ps.height + spacing;
-                }
+                /**
+                 * Only calculating trimmed size when {@link #TRIM} component is available.
+                 * This will slightly shrink available bounds by the {@link #TRIM} component size plus {@link #spacing}.
+                 */
+                trimmed = new Rectangle (
+                        available.x + ( horizontal && !ltr ? trimSize.width + spacing : 0 ),
+                        available.y,
+                        available.width - ( horizontal ? trimSize.width + spacing : 0 ),
+                        available.height - ( !horizontal ? trimSize.height + spacing : 0 )
+                );
+            }
+            else
+            {
+                trimmed = available;
             }
 
-            // Filling end with components
-            int endY = parent.getHeight () - insets.bottom;
-            if ( hasElement ( END ) )
+            /**
+             * Starting point for all components.
+             */
+            final Point point = new Point (
+                    insets.left + ( horizontal && !ltr ? size.width - preferredSize.width : 0 ),
+                    insets.top
+            );
+
+            /**
+             * Placing START components.
+             */
+            final Dimension startSize = preferredPartSize ( START, orientation, ltr, cache );
+            if ( startSize.width > 0 )
             {
-                for ( int i = parent.getComponentCount () - 1; i >= 0; i-- )
-                {
-                    final Component component = parent.getComponent ( i );
-                    if ( constraints.get ( component ) != null && constraints.get ( component ).equals ( END ) )
-                    {
-                        final Dimension ps = component.getPreferredSize ();
-                        endY -= ps.height;
-                        component.setBounds ( insets.left, endY, parent.getWidth () - insets.left - insets.right, ps.height );
-                        endY -= spacing;
-                    }
-                }
+                placeComponents ( START, point, orientation, ltr, lineWidth, trimmed, cache );
+                point.x += horizontal ? partsSpacing : 0;
+                point.y += horizontal ? 0 : partsSpacing;
             }
 
-            if ( endY > startY && ( hasElement ( MIDDLE ) || hasElement ( FILL ) ) )
+            /**
+             * Placing MIDDLE components.
+             */
+            final Dimension middleSize = preferredPartSize ( MIDDLE, orientation, ltr, cache );
+            if ( middleSize.width > 0 )
             {
-                for ( final Component component : parent.getComponents () )
-                {
-                    if ( constraints.get ( component ) != null )
-                    {
-                        if ( constraints.get ( component ).equals ( MIDDLE ) )
-                        {
-                            final Dimension ps = component.getPreferredSize ();
-                            component.setBounds ( insets.left, Math.max ( startY, ( startY + endY ) / 2 - ps.height / 2 ),
-                                    parent.getWidth () - insets.left - insets.right, Math.min ( ps.height, endY - startY ) );
-                        }
-                        else if ( constraints.get ( component ).equals ( FILL ) )
-                        {
-                            component.setBounds ( insets.left, startY, parent.getWidth () - insets.left - insets.right,
-                                    Math.max ( 0, endY - startY ) );
-                        }
-                    }
-                }
+                placeComponents ( MIDDLE, point, orientation, ltr, lineWidth, trimmed, cache );
+                point.x += horizontal ? partsSpacing : 0;
+                point.y += horizontal ? 0 : partsSpacing;
             }
+
+            /**
+             * Placing FILL components.
+             */
+            final Dimension fillSize = preferredPartSize ( FILL, orientation, ltr, cache );
+            if ( fillSize.width > 0 )
+            {
+                placeComponents ( FILL, point, orientation, ltr, lineWidth, trimmed, cache );
+                point.x += horizontal ? partsSpacing : 0;
+                point.y += horizontal ? 0 : partsSpacing;
+            }
+
+            /**
+             * Placing END components.
+             */
+            final Dimension endSize = preferredPartSize ( END, orientation, ltr, cache );
+            if ( endSize.width > 0 )
+            {
+                placeComponents ( END, point, orientation, ltr, lineWidth, trimmed, cache );
+            }
+        }
+
+        /**
+         * Placing TRIM component.
+         */
+        if ( trimSize.width > 0 )
+        {
+            placeTrimComponent ( trimSize, orientation, ltr, available, fit );
         }
     }
 
     /**
-     * Returns whether or not layout contains element under the specified constraints.
+     * Places {@link Component}s under specified constraints in a line starting at the specified {@link Point}.
      *
-     * @param consraints element constraints
-     * @return {@code true} if layout contains element under the specified constraints, {@code false} otherwise
+     * @param c           layout constraints
+     * @param point       starting {@link Point}
+     * @param orientation layout orientation
+     * @param ltr         layout component orientation
+     * @param lineWidth   layout line width
+     * @param available   available space bounds
+     * @param cache       {@link Map} containing {@link Component} size caches
      */
-    protected boolean hasElement ( final String consraints )
+    protected void placeComponents ( final String c, final Point point,
+                                     final int orientation, final boolean ltr, final int lineWidth,
+                                     final Rectangle available, final Map<Component, Dimension> cache )
     {
-        return constraints.containsValue ( consraints );
+        final String constraints = constraints ( c, orientation, ltr );
+        final boolean horizontal = orientation == HORIZONTAL;
+
+        /**
+         * Retrieving components for constraints.
+         * We need to sort them by Z-order to place them correctly.
+         */
+        final List<Component> components = this.components.get ( constraints );
+        CollectionUtils.sort ( components, COMPONENTS_COMPARATOR );
+
+        /**
+         * Placing components.
+         */
+        if ( ltr || !horizontal )
+        {
+            /**
+             * Direct components placement order.
+             */
+            for ( final Component component : components )
+            {
+                final Dimension cps = preferredSize ( component, cache );
+                final Rectangle bounds = new Rectangle (
+                        point.x,
+                        point.y,
+                        horizontal ? cps.width : lineWidth,
+                        horizontal ? lineWidth : cps.height
+                );
+                if ( available.contains ( bounds ) )
+                {
+                    component.setBounds ( bounds );
+                }
+                else
+                {
+                    component.setBounds ( HIDE_BOUNDS );
+                }
+                point.x += horizontal ? bounds.width + spacing : 0;
+                point.y += horizontal ? 0 : bounds.height + spacing;
+            }
+        }
+        else
+        {
+            /**
+             * Reversed (RTL) components placement order.
+             */
+            for ( int i = components.size () - 1; i >= 0; i-- )
+            {
+                final Component component = components.get ( i );
+                final Dimension cps = preferredSize ( component, cache );
+                final Rectangle bounds = new Rectangle (
+                        point.x,
+                        point.y,
+                        horizontal ? cps.width : lineWidth,
+                        horizontal ? lineWidth : cps.height
+                );
+                if ( available.contains ( bounds ) )
+                {
+                    component.setBounds ( bounds );
+                }
+                else
+                {
+                    component.setBounds ( HIDE_BOUNDS );
+                }
+                point.x += horizontal ? bounds.width + spacing : 0;
+                point.y += horizontal ? 0 : bounds.height + spacing;
+            }
+        }
+        point.x -= horizontal ? spacing : 0;
+        point.y -= horizontal ? 0 : spacing;
+    }
+
+    /**
+     * Places {@link #FILL} component at the specified bounds.
+     *
+     * @param bounds    {@link #FILL} bounds
+     * @param available available space bounds
+     */
+    protected void placeFillComponent ( final Rectangle bounds, final Rectangle available )
+    {
+        /**
+         * Placing single {@link #FILL} component.
+         * It will always be only one component and we will never call this method if there is none.
+         */
+        if ( available.contains ( bounds ) )
+        {
+            components.get ( FILL ).get ( 0 ).setBounds ( bounds );
+        }
+        else
+        {
+            components.get ( FILL ).get ( 0 ).setBounds ( HIDE_BOUNDS );
+        }
+    }
+
+    /**
+     * Places {@link #TRIM} component.
+     *
+     * @param trimSize    size of the {@link #TRIM} component
+     * @param orientation layout orientation
+     * @param ltr         layout component orientation
+     * @param available   available space bounds
+     * @param fit         whether or not layout size is larger or equal to its preferred
+     */
+    protected void placeTrimComponent ( final Dimension trimSize, final int orientation, final boolean ltr,
+                                        final Rectangle available, final boolean fit )
+    {
+        if ( !fit )
+        {
+            final boolean horizontal = orientation == HORIZONTAL;
+            final Rectangle trimBounds = new Rectangle (
+                    horizontal && ltr ? available.x + available.width - trimSize.width : available.x,
+                    horizontal ? available.y : available.y + available.height - trimSize.height,
+                    horizontal ? trimSize.width : available.width,
+                    horizontal ? available.height : trimSize.height
+            );
+            components.get ( TRIM ).get ( 0 ).setBounds ( trimBounds );
+        }
+        else
+        {
+            components.get ( TRIM ).get ( 0 ).setBounds ( HIDE_BOUNDS );
+        }
+    }
+
+    @Override
+    public Dimension preferredLayoutSize ( final Container parent )
+    {
+        return preferredLayoutSize ( parent, new HashMap<Component, Dimension> () );
+    }
+
+    /**
+     * Returns preferred layout size.
+     *
+     * @param parent layout container
+     * @param cache  {@link Map} containing {@link Component} size caches
+     * @return preferred layout size
+     */
+    protected Dimension preferredLayoutSize ( final Container parent, final Map<Component, Dimension> cache )
+    {
+        final Dimension ps = new Dimension ( 0, 0 );
+
+        /**
+         * Calculating content size.
+         * We don't need to differentiate {@link #MIDDLE} and {@link #FILL} constraints here.
+         * Whatever doesn't exist will simply be ignored by having zero sizes.
+         * Also {@link #TRIM} part is not included into preferred size at all as it only appears when size is not enough.
+         */
+        final int orientation = getOrientation ( parent );
+        final boolean ltr = parent.getComponentOrientation ().isLeftToRight ();
+        expandSizeFromPart ( ps, START, partsSpacing, orientation, ltr, cache );
+        expandSizeFromPart ( ps, MIDDLE, partsSpacing, orientation, ltr, cache );
+        expandSizeFromPart ( ps, FILL, partsSpacing, orientation, ltr, cache );
+        expandSizeFromPart ( ps, END, partsSpacing, orientation, ltr, cache );
+
+        /**
+         * Adding insets afterwards.
+         */
+        final Insets insets = parent.getInsets ();
+        ps.width += insets.left + insets.right;
+        ps.height += insets.top + insets.bottom;
+
+        return ps;
+    }
+
+    /**
+     * Expands provided {@link Dimension} by preferred size of {@link Component}s under specified constraints.
+     *
+     * @param size        {@link Dimension} to expand
+     * @param constraints layout constraints
+     * @param spacing     extra spacing between this and previous parts
+     * @param orientation layout orientation
+     * @param ltr         layout component orientation
+     * @param cache       {@link Map} containing {@link Component} size caches
+     */
+    protected void expandSizeFromPart ( final Dimension size, final String constraints, final int spacing,
+                                        final int orientation, final boolean ltr,
+                                        final Map<Component, Dimension> cache )
+    {
+        final Dimension partSize = preferredPartSize ( constraints, orientation, ltr, cache );
+        if ( partSize.width > 0 )
+        {
+            final boolean horizontal = orientation == HORIZONTAL;
+            size.width = horizontal ? size.width + ( size.width > 0 ? spacing : 0 ) + partSize.width :
+                    Math.max ( size.width, partSize.width );
+            size.height = horizontal ? Math.max ( size.height, partSize.height ) :
+                    size.height + ( size.height > 0 ? spacing : 0 ) + partSize.height;
+        }
+    }
+
+    /**
+     * Returns preferred size of {@link Component}s under the specified constraints.
+     *
+     * @param c           layout constraints
+     * @param orientation layout orientation
+     * @param ltr         layout component orientation
+     * @param cache       {@link Map} containing {@link Component} size caches
+     * @return preferred size of {@link Component}s under the specified constraints
+     */
+    protected Dimension preferredPartSize ( final String c, final int orientation, final boolean ltr,
+                                            final Map<Component, Dimension> cache )
+    {
+        final Dimension ps = new Dimension ( 0, 0 );
+        final String constraints = constraints ( c, orientation, ltr );
+
+        /**
+         * Retrieving components for constraints.
+         * We do not need to sort them for preferred size calculations.
+         */
+        final List<Component> components = this.components.get ( constraints );
+
+        /**
+         * Collecting component preferred sizes.
+         */
+        if ( CollectionUtils.notEmpty ( components ) )
+        {
+            final boolean horizontal = orientation == HORIZONTAL;
+            for ( final Component component : components )
+            {
+                final Dimension cps = preferredSize ( component, cache );
+                ps.width = horizontal ? ps.width + cps.width + spacing : Math.max ( ps.width, cps.width );
+                ps.height = horizontal ? Math.max ( ps.height, cps.height ) : ps.height + cps.height + spacing;
+            }
+            ps.width -= horizontal ? spacing : 0;
+            ps.height -= horizontal ? 0 : spacing;
+        }
+
+        return ps;
+    }
+
+    /**
+     * Returns cached {@link Component} preferred size.
+     *
+     * @param component {@link Component}
+     * @param cache     {@link Map} containing {@link Component} size caches
+     * @return cached {@link Component} preferred size
+     */
+    protected Dimension preferredSize ( final Component component, final Map<Component, Dimension> cache )
+    {
+        Dimension ps = cache.get ( component );
+        if ( ps == null )
+        {
+            ps = component.getPreferredSize ();
+            cache.put ( component, ps );
+        }
+        return ps;
+    }
+
+    /**
+     * Returns actual constraints based on the layout orientation and component orientation.
+     *
+     * @param constraints layout constraints
+     * @param orientation layout orientation
+     * @param ltr         layout component orientation
+     * @return actual constraints based on the layout orientation and component orientation
+     */
+    protected String constraints ( final String constraints, final int orientation, final boolean ltr )
+    {
+        final String c;
+        if ( CompareUtils.equals ( constraints, START ) )
+        {
+            c = ltr || orientation != HORIZONTAL ? START : END;
+        }
+        else if ( CompareUtils.equals ( constraints, END ) )
+        {
+            c = ltr || orientation != HORIZONTAL ? END : START;
+        }
+        else
+        {
+            c = constraints;
+        }
+        return c;
     }
 
     /**

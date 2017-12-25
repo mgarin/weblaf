@@ -10,10 +10,16 @@
                     <WebShape round="6" />
                     <WebShadow type="outer" width="2" />
                     <LineBorder color="170,170,170" />
-                    <GradientBackground from="0,0.5" to="0,1">
+                    <GradientBackground>
                         <color>white</color>
                         <color>229,233,238</color>
                     </GradientBackground>
+                </decoration>
+                <decoration states="horizontal">
+                    <GradientBackground from="0,0.5" to="0,1" />
+                </decoration>
+                <decoration states="vertical">
+                    <GradientBackground from="0.5,0" to="1,0" />
                 </decoration>
                 <decoration states="floating">
                     <WebShape sides="0,0,0,0" />
@@ -34,12 +40,6 @@
                     <WebShape round="0" />
                     <WebShadow type="outer" width="0" />
                 </decoration>
-                <decoration states="horizontal">
-                    <GradientBackground from="0,0.5" to="0,1" />
-                </decoration>
-                <decoration states="vertical">
-                    <GradientBackground from="0.5,0" to="1,0" />
-                </decoration>
             </decorations>
         </painter>
     </style>
@@ -57,6 +57,9 @@
             <decorations>
                 <decoration>
                     <WebShape sides="0,0,0,1" />
+                </decoration>
+                <decoration states="vertical">
+                    <GradientBackground from="0.5,0" to="1,0" />
                 </decoration>
             </decorations>
         </painter>
