@@ -56,8 +56,19 @@
         <!-- Icon cell renderer label -->
         <style type="styledlabel" id="icon-renderer" extends="renderer" padding="4,4,4,4" />
 
-        <!-- Default cell editor field -->
-        <style type="textfield" id="editor" extends="nofocus" />
+        <!-- Text cell editor -->
+        <style type="textfield" id="editor" extends="non-opaque" padding="3,5,3,3">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <LineBorder color="170,170,170" />
+                    </decoration>
+                    <decoration states="focused">
+                        <LineBorder color="85,130,190" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
 
     </style>
 

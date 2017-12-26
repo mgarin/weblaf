@@ -18,6 +18,7 @@
 package com.alee.laf.list.editor;
 
 import com.alee.laf.list.WebList;
+import com.alee.laf.list.WebListModel;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
@@ -25,6 +26,7 @@ import com.alee.utils.SwingUtils;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 /**
  * An abstract list cell editor that provides basic method implementations for list cell editor creation.
@@ -192,9 +194,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     @Override
     public E getCellEditor ( final JList list, final int index, final T value )
     {
-        // Creating editor component
         editor = createCellEditor ( list, index, value );
-        createCellEditorListeners ( list, index, value );
         return editor;
     }
 
@@ -207,53 +207,6 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
      * @return list cell editor created for the cell under specified index
      */
     protected abstract E createCellEditor ( JList list, int index, T value );
-
-    /**
-     * Creates listeners for list cell editor component.
-     *
-     * @param list  list to process
-     * @param index cell index
-     * @param value cell value
-     */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected void createCellEditorListeners ( final JList list, final int index, final T value )
-    {
-        // Editing stop on focus loss event
-        final FocusAdapter focusAdapter = new FocusAdapter ()
-        {
-            @Override
-            public void focusLost ( final FocusEvent e )
-            {
-                stopEdit ( list );
-            }
-        };
-        editor.addFocusListener ( focusAdapter );
-
-        // Editing stop and cancel on key events
-        editor.addKeyListener ( new KeyAdapter ()
-        {
-            @Override
-            public void keyReleased ( final KeyEvent e )
-            {
-                if ( Hotkey.ENTER.isTriggered ( e ) )
-                {
-                    // To avoid double-saving
-                    editor.removeFocusListener ( focusAdapter );
-
-                    stopEdit ( list );
-                    list.requestFocusInWindow ();
-                }
-                else if ( Hotkey.ESCAPE.isTriggered ( e ) )
-                {
-                    // To avoid saving
-                    editor.removeFocusListener ( focusAdapter );
-
-                    cancelEdit ( list );
-                    list.requestFocusInWindow ();
-                }
-            }
-        } );
-    }
 
     @Override
     public void startEdit ( final JList list, final int index )
@@ -333,6 +286,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
             // Notifying about editing cancel
             editCancelled ( list, editedCell );
         }
+
         return true;
     }
 
@@ -407,7 +361,13 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
 
         // Updating list model
         final ListModel model = list.getModel ();
-        if ( model instanceof DefaultListModel )
+        if ( model instanceof WebListModel )
+        {
+            final WebListModel webListModel = ( WebListModel ) model;
+            webListModel.setElementAt ( newValue, index );
+            return true;
+        }
+        else if ( model instanceof DefaultListModel )
         {
             final DefaultListModel defaultListModel = ( DefaultListModel ) model;
             defaultListModel.setElementAt ( newValue, index );
@@ -415,16 +375,16 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
         }
         else if ( model instanceof AbstractListModel )
         {
-            final Object[] values = new Object[ model.getSize () ];
+            final ArrayList<Object> values = new ArrayList<Object> ( model.getSize () );
             for ( int i = 0; i < model.getSize (); i++ )
             {
                 if ( editedCell != i )
                 {
-                    values[ i ] = model.getElementAt ( i );
+                    values.set ( i, model.getElementAt ( i ) );
                 }
                 else
                 {
-                    values[ i ] = newValue;
+                    values.set ( i, newValue );
                 }
             }
             list.setModel ( new AbstractListModel ()
@@ -432,13 +392,13 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
                 @Override
                 public int getSize ()
                 {
-                    return values.length;
+                    return values.size ();
                 }
 
                 @Override
                 public Object getElementAt ( final int index )
                 {
-                    return values[ index ];
+                    return values.get ( index );
                 }
             } );
             return true;
@@ -455,7 +415,8 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
         editedCell = index;
         if ( list instanceof WebList )
         {
-            ( ( WebList ) list ).fireEditStarted ( index );
+            final WebList webList = ( WebList ) list;
+            webList.fireEditStarted ( index );
         }
     }
 
@@ -465,7 +426,8 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
         editedCell = -1;
         if ( list instanceof WebList )
         {
-            ( ( WebList ) list ).fireEditFinished ( index, oldValue, newValue );
+            final WebList webList = ( WebList ) list;
+            webList.fireEditFinished ( index, oldValue, newValue );
         }
     }
 
@@ -475,7 +437,8 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
         editedCell = -1;
         if ( list instanceof WebList )
         {
-            ( ( WebList ) list ).fireEditCancelled ( index );
+            final WebList webList = ( WebList ) list;
+            webList.fireEditCancelled ( index );
         }
     }
 

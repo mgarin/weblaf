@@ -490,7 +490,7 @@ public final class StyleId implements Identifiable
     public static final ChildStyleId listCellRenderer = ChildStyleId.of ( "renderer" );
     public static final ChildStyleId listTextCellRenderer = ChildStyleId.of ( "text-renderer" );
     public static final ChildStyleId listIconCellRenderer = ChildStyleId.of ( "icon-renderer" );
-    public static final ChildStyleId listCellEditor = ChildStyleId.of ( "editor" );
+    public static final ChildStyleId listTextCellEditor = ChildStyleId.of ( "editor" );
 
     /**
      * {@link com.alee.laf.tree.WebTree} style identifiers.

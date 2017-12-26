@@ -19,9 +19,9 @@ package com.alee.laf.list;
 
 import com.alee.laf.list.behavior.ListHoverSelectionBehavior;
 import com.alee.laf.list.behavior.ListSelectionScrollBehavior;
-import com.alee.laf.list.editor.DefaultListCellEditor;
 import com.alee.laf.list.editor.ListCellEditor;
 import com.alee.laf.list.editor.ListEditListener;
+import com.alee.laf.list.editor.TextListCellEditor;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.DictionaryListener;
 import com.alee.managers.language.LanguageEventMethods;
@@ -42,8 +42,10 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * {@link JList} extension class.
@@ -72,11 +74,6 @@ public class WebList extends JList
     protected boolean editable = false;
 
     /**
-     * List cell editor.
-     */
-    protected ListCellEditor listCellEditor = null;
-
-    /**
      * Currently edited cell index or -1 if none edited at the moment.
      */
     protected int editedCell = -1;
@@ -88,9 +85,14 @@ public class WebList extends JList
     protected boolean emptySelectionAllowed = true;
 
     /**
+     * List cell editor.
+     */
+    protected transient ListCellEditor listCellEditor = null;
+
+    /**
      * Custom WebLaF tooltip provider.
      */
-    protected ToolTipProvider<? extends WebList> toolTipProvider = null;
+    protected transient ToolTipProvider<? extends WebList> toolTipProvider = null;
 
     /**
      * Constructs empty list.
@@ -334,7 +336,20 @@ public class WebList extends JList
      */
     protected ListCellEditor createDefaultCellEditor ()
     {
-        return new DefaultListCellEditor ();
+        return new TextListCellEditor<String> ()
+        {
+            @Override
+            protected String valueToText ( final JList list, final int index, final String value )
+            {
+                return value;
+            }
+
+            @Override
+            protected String textToValue ( final JList list, final int index, final String oldValue, final String text )
+            {
+                return text;
+            }
+        };
     }
 
     /**
