@@ -75,7 +75,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * Accordion collapsible pane state listeners.
      * These listeners required for some of accordion features.
      */
-    protected List<CollapsiblePaneListener> stateListeners = new ArrayList<CollapsiblePaneListener> ();
+    protected transient List<CollapsiblePaneListener> stateListeners = new ArrayList<CollapsiblePaneListener> ();
 
     /**
      * Index of last expanded collapsible pane.
@@ -346,7 +346,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * @param pane  collapsible pane to add
      * @return added collapsible pane
      */
-    protected WebCollapsiblePane addPane ( final int index, final WebCollapsiblePane pane )
+    public WebCollapsiblePane addPane ( final int index, final WebCollapsiblePane pane )
     {
         // Animation
         pane.setAnimate ( animate );
@@ -439,7 +439,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      *
      * @param pane collapsible pane to remove
      */
-    protected void removePane ( final WebCollapsiblePane pane )
+    public void removePane ( final WebCollapsiblePane pane )
     {
         final int index = panes.indexOf ( pane );
         if ( index == -1 )
@@ -473,17 +473,6 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     public List<WebCollapsiblePane> getPanes ()
     {
         return CollectionUtils.copy ( panes );
-    }
-
-    /**
-     * Returns actual list of available collapsible panes.
-     * Be aware that accordion might be corrupted if you modify this list directly.
-     *
-     * @return actual list of available collapsible panes
-     */
-    public List<WebCollapsiblePane> getActualPanesList ()
-    {
-        return panes;
     }
 
     /**

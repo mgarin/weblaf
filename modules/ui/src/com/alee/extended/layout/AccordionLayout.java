@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Custom layout for {@link com.alee.extended.panel.WebAccordion} component.
+ * Custom layout for {@link WebAccordion} component.
  *
  * @author Mikle Garin
  */
@@ -37,69 +37,10 @@ import java.util.List;
 public class AccordionLayout extends AbstractGroupingLayout
 {
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
-    {
-        return getLayoutSize ( parent, true );
-    }
-
-    @Override
-    public Dimension minimumLayoutSize ( final Container parent )
-    {
-        return getLayoutSize ( parent, false );
-    }
-
-    /**
-     * Returns either minimum or preferred container size.
-     *
-     * @param parent    container
-     * @param preferred whether preferred size should be returned or not
-     * @return either minimum or preferred container size
-     */
-    private Dimension getLayoutSize ( final Container parent, final boolean preferred )
-    {
-        final WebAccordion accordion = ( WebAccordion ) parent;
-        final List<WebCollapsiblePane> panes = accordion.getActualPanesList ();
-        final int gap = accordion.getGap ();
-        final Dimension ps = new Dimension ();
-        final boolean hor = accordion.getOrientation () == SwingConstants.HORIZONTAL;
-
-        for ( final WebCollapsiblePane pane : panes )
-        {
-            final Dimension cps = preferred || !accordion.isFillSpace () ? pane.getPreferredSize () : pane.getBasePreferredSize ();
-            if ( hor )
-            {
-                ps.width += cps.width;
-                ps.height = Math.max ( ps.height, cps.height );
-            }
-            else
-            {
-                ps.width = Math.max ( ps.width, cps.width );
-                ps.height += cps.height;
-            }
-        }
-        if ( panes.size () > 0 )
-        {
-            if ( hor )
-            {
-                ps.width += gap * ( panes.size () - 1 );
-            }
-            else
-            {
-                ps.height += gap * ( panes.size () - 1 );
-            }
-        }
-
-        final Insets insets = parent.getInsets ();
-        ps.width += insets.left + insets.right;
-        ps.height += insets.top + insets.bottom;
-        return ps;
-    }
-
-    @Override
     public void layoutContainer ( final Container parent )
     {
         final WebAccordion accordion = ( WebAccordion ) parent;
-        final List<WebCollapsiblePane> panes = accordion.getActualPanesList ();
+        final List<WebCollapsiblePane> panes = accordion.getPanes ();
         final int gap = accordion.getGap ();
         final Insets insets = parent.getInsets ();
         final Dimension size = parent.getSize ();
@@ -176,6 +117,65 @@ public class AccordionLayout extends AbstractGroupingLayout
                 }
             }
         }
+    }
+
+    @Override
+    public Dimension preferredLayoutSize ( final Container parent )
+    {
+        return getLayoutSize ( parent, true );
+    }
+
+    @Override
+    public Dimension minimumLayoutSize ( final Container parent )
+    {
+        return getLayoutSize ( parent, false );
+    }
+
+    /**
+     * Returns either minimum or preferred container size.
+     *
+     * @param parent    container
+     * @param preferred whether preferred size should be returned or not
+     * @return either minimum or preferred container size
+     */
+    protected Dimension getLayoutSize ( final Container parent, final boolean preferred )
+    {
+        final WebAccordion accordion = ( WebAccordion ) parent;
+        final List<WebCollapsiblePane> panes = accordion.getPanes ();
+        final int gap = accordion.getGap ();
+        final Dimension ps = new Dimension ();
+        final boolean hor = accordion.getOrientation () == SwingConstants.HORIZONTAL;
+
+        for ( final WebCollapsiblePane pane : panes )
+        {
+            final Dimension cps = preferred || !accordion.isFillSpace () ? pane.getPreferredSize () : pane.getBasePreferredSize ();
+            if ( hor )
+            {
+                ps.width += cps.width;
+                ps.height = Math.max ( ps.height, cps.height );
+            }
+            else
+            {
+                ps.width = Math.max ( ps.width, cps.width );
+                ps.height += cps.height;
+            }
+        }
+        if ( panes.size () > 0 )
+        {
+            if ( hor )
+            {
+                ps.width += gap * ( panes.size () - 1 );
+            }
+            else
+            {
+                ps.height += gap * ( panes.size () - 1 );
+            }
+        }
+
+        final Insets insets = parent.getInsets ();
+        ps.width += insets.left + insets.right;
+        ps.height += insets.top + insets.bottom;
+        return ps;
     }
 
     @Override
