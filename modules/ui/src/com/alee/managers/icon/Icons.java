@@ -48,6 +48,8 @@ public final class Icons
     public static final LazyIcon crossSmallHover = new LazyIcon ( "cross-small-hover" );
     public static final LazyIcon magnifier = new LazyIcon ( "magnifier" );
     public static final LazyIcon magnifierHover = new LazyIcon ( "magnifier-hover" );
+    public static final LazyIcon filter = new LazyIcon ( "filter" );
+    public static final LazyIcon filterHover = new LazyIcon ( "filter-hover" );
     public static final LazyIcon globe = new LazyIcon ( "globe" );
     public static final LazyIcon globeHover = new LazyIcon ( "globe-hover" );
     public static final LazyIcon email = new LazyIcon ( "email" );

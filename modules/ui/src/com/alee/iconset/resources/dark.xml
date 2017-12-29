@@ -66,6 +66,13 @@
         <SvgFill selector="svg" color="white" />
         <SvgTransform selector="svg" scale="1.15,1.15" />
     </SvgIcon>
+    <SvgIcon id="filter" path="filter.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+        <SvgTransform selector="svg" scale="0.85,0.85" />
+    </SvgIcon>
+    <SvgIcon id="filter-hover" path="filter.svg" size="16,16">
+        <SvgFill selector="svg" color="white" />
+    </SvgIcon>
     <SvgIcon id="globe" path="globe.svg" size="16,16">
         <SvgFill selector="svg" color="240,240,240" />
     </SvgIcon>

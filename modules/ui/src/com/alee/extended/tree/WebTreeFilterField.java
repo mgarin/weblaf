@@ -219,7 +219,7 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
      */
     protected void initFilterIcon ()
     {
-        filterIcon = new WebButton ( StyleId.treefilterfieldSettings.at ( this ), Icons.magnifier, Icons.magnifierHover );
+        filterIcon = new WebButton ( StyleId.treefilterfieldSettings.at ( this ), Icons.filter, Icons.filterHover );
         filterIcon.setCursor ( Cursor.getDefaultCursor () );
         filterIcon.addActionListener ( new ActionListener ()
         {
