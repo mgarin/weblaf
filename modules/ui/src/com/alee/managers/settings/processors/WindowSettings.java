@@ -141,7 +141,7 @@ public class WindowSettings implements Mergeable, Cloneable, Serializable
         }
 
         // Saving bounds only if window is not maximized or existing bounds are {@code null}
-        if ( state != null && ( state & Frame.MAXIMIZED_BOTH ) == 0 || size == null || location == null )
+        if ( state == null || ( state & Frame.MAXIMIZED_BOTH ) == 0 || size == null || location == null )
         {
             final Rectangle bounds = window.getBounds ();
             location = bounds.getLocation ();
