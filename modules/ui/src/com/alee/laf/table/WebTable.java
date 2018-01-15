@@ -23,7 +23,6 @@ import com.alee.managers.language.LanguageEventMethods;
 import com.alee.managers.language.LanguageListener;
 import com.alee.managers.language.UILanguageManager;
 import com.alee.managers.style.*;
-import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
 import com.alee.utils.GeometryUtils;
@@ -76,7 +75,7 @@ public class WebTable extends JTable
     /**
      * Custom WebLaF tooltip provider.
      */
-    protected ToolTipProvider<? extends WebTable> toolTipProvider = null;
+    protected transient TableToolTipProvider toolTipProvider = null;
 
     /**
      * Constructs new table.
@@ -251,21 +250,21 @@ public class WebTable extends JTable
     }
 
     /**
-     * Returns custom WebLaF tooltip provider.
+     * Returns {@link TableToolTipProvider}.
      *
-     * @return custom WebLaF tooltip provider
+     * @return {@link TableToolTipProvider}
      */
-    public ToolTipProvider<? extends WebTable> getToolTipProvider ()
+    public TableToolTipProvider getToolTipProvider ()
     {
         return toolTipProvider;
     }
 
     /**
-     * Sets custom WebLaF tooltip provider.
+     * Sets {@link TableToolTipProvider}.
      *
-     * @param provider custom WebLaF tooltip provider
+     * @param provider {@link TableToolTipProvider}
      */
-    public void setToolTipProvider ( final ToolTipProvider<? extends WebTable> provider )
+    public void setToolTipProvider ( final TableToolTipProvider provider )
     {
         this.toolTipProvider = provider;
     }

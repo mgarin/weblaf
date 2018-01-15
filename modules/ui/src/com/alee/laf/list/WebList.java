@@ -28,7 +28,6 @@ import com.alee.managers.language.LanguageEventMethods;
 import com.alee.managers.language.LanguageListener;
 import com.alee.managers.language.UILanguageManager;
 import com.alee.managers.style.*;
-import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
 import com.alee.utils.CollectionUtils;
@@ -92,7 +91,7 @@ public class WebList extends JList
     /**
      * Custom WebLaF tooltip provider.
      */
-    protected transient ToolTipProvider<? extends WebList> toolTipProvider = null;
+    protected transient ListToolTipProvider toolTipProvider = null;
 
     /**
      * Constructs empty list.
@@ -421,21 +420,21 @@ public class WebList extends JList
     }
 
     /**
-     * Returns custom WebLaF tooltip provider.
+     * Returns {@link ListToolTipProvider}.
      *
-     * @return custom WebLaF tooltip provider
+     * @return {@link ListToolTipProvider}
      */
-    public ToolTipProvider<? extends WebList> getToolTipProvider ()
+    public ListToolTipProvider getToolTipProvider ()
     {
         return toolTipProvider;
     }
 
     /**
-     * Sets custom WebLaF tooltip provider.
+     * Sets {@link ListToolTipProvider}.
      *
-     * @param provider custom WebLaF tooltip provider
+     * @param provider {@link ListToolTipProvider}
      */
-    public void setToolTipProvider ( final ToolTipProvider<? extends WebList> provider )
+    public void setToolTipProvider ( final ListToolTipProvider provider )
     {
         this.toolTipProvider = provider;
     }

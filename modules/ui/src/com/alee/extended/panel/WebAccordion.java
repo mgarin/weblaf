@@ -348,6 +348,16 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      */
     public WebCollapsiblePane addPane ( final int index, final WebCollapsiblePane pane )
     {
+        // Title position
+        if ( orientation == HORIZONTAL )
+        {
+            pane.setTitlePanePosition ( getComponentOrientation ().isLeftToRight () ? LEFT : RIGHT );
+        }
+        else
+        {
+            pane.setTitlePanePosition ( TOP );
+        }
+
         // Animation
         pane.setAnimate ( animate );
 

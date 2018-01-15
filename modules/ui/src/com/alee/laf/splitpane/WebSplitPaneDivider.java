@@ -26,7 +26,6 @@ import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
 import com.alee.utils.SwingUtils;
-import sun.swing.DefaultLookup;
 
 import javax.swing.*;
 import java.awt.*;
@@ -276,57 +275,51 @@ public class WebSplitPaneDivider extends WebContainer<WebSplitPaneDivider, WSpli
      */
     protected void updateOneTouchButtons ()
     {
-        /**
-         * Proceed only if look and feel supports one touch buttons.
-         */
-        if ( DefaultLookup.getBoolean ( splitPane, splitPaneUI, "SplitPane.supportsOneTouchButtons", true ) )
+        if ( splitPane.isOneTouchExpandable () )
         {
-            if ( splitPane.isOneTouchExpandable () )
+            if ( leftButton == null && rightButton == null )
             {
-                if ( leftButton == null && rightButton == null )
+                /**
+                 * Create the left button and add an action listener to expand/collapse it.
+                 */
+                leftButton = createLeftOneTouchButton ();
+                if ( leftButton != null )
                 {
-                    /**
-                     * Create the left button and add an action listener to expand/collapse it.
-                     */
-                    leftButton = createLeftOneTouchButton ();
-                    if ( leftButton != null )
-                    {
-                        leftButton.addActionListener ( new OneTouchActionHandler ( true ) );
-                    }
-
-                    /**
-                     * Create the right button and add an action listener to expand/collapse it.
-                     */
-                    rightButton = createRightOneTouchButton ();
-                    if ( rightButton != null )
-                    {
-                        rightButton.addActionListener ( new OneTouchActionHandler ( false ) );
-                    }
-
-                    /**
-                     * Add left and right buttons onto the divider.
-                     */
-                    if ( leftButton != null && rightButton != null )
-                    {
-                        add ( leftButton );
-                        add ( rightButton );
-                    }
+                    leftButton.addActionListener ( new OneTouchActionHandler ( true ) );
                 }
-                else
+
+                /**
+                 * Create the right button and add an action listener to expand/collapse it.
+                 */
+                rightButton = createRightOneTouchButton ();
+                if ( rightButton != null )
                 {
-                    /**
-                     * Updating button decoration states.
-                     */
-                    DecorationUtils.fireStatesChanged ( leftButton );
-                    DecorationUtils.fireStatesChanged ( rightButton );
+                    rightButton.addActionListener ( new OneTouchActionHandler ( false ) );
+                }
+
+                /**
+                 * Add left and right buttons onto the divider.
+                 */
+                if ( leftButton != null && rightButton != null )
+                {
+                    add ( leftButton );
+                    add ( rightButton );
                 }
             }
-
-            /**
-             * Revalidating divider.
-             */
-            revalidate ();
+            else
+            {
+                /**
+                 * Updating button decoration states.
+                 */
+                DecorationUtils.fireStatesChanged ( leftButton );
+                DecorationUtils.fireStatesChanged ( rightButton );
+            }
         }
+
+        /**
+         * Revalidating divider.
+         */
+        revalidate ();
     }
 
     /**

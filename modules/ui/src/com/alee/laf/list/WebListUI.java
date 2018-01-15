@@ -20,7 +20,6 @@ package com.alee.laf.list;
 import com.alee.api.jdk.Consumer;
 import com.alee.laf.list.behavior.ListItemHoverBehavior;
 import com.alee.managers.style.*;
-import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -103,10 +102,10 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
                 }
 
                 // Updating custom WebLaF tooltip display state
-                final ToolTipProvider provider = getToolTipProvider ();
+                final ListToolTipProvider provider = getToolTipProvider ();
                 if ( provider != null )
                 {
-                    provider.hoverCellChanged ( list, previousIndex, 0, hoverIndex, 0 );
+                    provider.hoverAreaChanged ( list, new ListCellArea ( previousIndex ), new ListCellArea ( hoverIndex ) );
                 }
 
                 // Informing {@link com.alee.laf.list.WebList} about hover index change
@@ -378,11 +377,11 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
     }
 
     /**
-     * Returns custom WebLaF tooltip provider.
+     * Returns {@link ListToolTipProvider} for {@link JList} that uses this {@link WebListUI}.
      *
-     * @return custom WebLaF tooltip provider
+     * @return {@link ListToolTipProvider} for {@link JList} that uses this {@link WebListUI}
      */
-    protected ToolTipProvider<? extends WebList> getToolTipProvider ()
+    protected ListToolTipProvider getToolTipProvider ()
     {
         return list != null && list instanceof WebList ? ( ( WebList ) list ).getToolTipProvider () : null;
     }

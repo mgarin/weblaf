@@ -23,7 +23,6 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.behavior.TreePathHoverBehavior;
 import com.alee.managers.icon.Icons;
 import com.alee.managers.style.*;
-import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -133,10 +132,10 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
                 }
 
                 // Updating custom WebLaF tooltip display state
-                final ToolTipProvider provider = getToolTipProvider ();
+                final TreeToolTipProvider provider = getToolTipProvider ();
                 if ( provider != null )
                 {
-                    provider.hoverCellChanged ( tree, previousRow, 0, hoverRow, 0 );
+                    provider.hoverAreaChanged ( tree, new TreeCellArea ( previousRow ), new TreeCellArea ( hoverRow ) );
                 }
 
                 // Informing {@link com.alee.laf.tree.WebTree} about hover node change
@@ -392,16 +391,6 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
         }
     }
 
-    /**
-     * Returns custom WebLaF tooltip provider.
-     *
-     * @return custom WebLaF tooltip provider
-     */
-    protected ToolTipProvider<? extends WebTree> getToolTipProvider ()
-    {
-        return tree instanceof WebTree ? ( ( WebTree ) tree ).getToolTipProvider () : null;
-    }
-
     @Override
     public Icon getExpandedIcon ()
     {
@@ -446,6 +435,16 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
     protected boolean isFullLineSelection ()
     {
         return selectionStyle == TreeSelectionStyle.line;
+    }
+
+    /**
+     * Returns {@link TreeToolTipProvider} for {@link JTree} that uses this {@link WebTreeUI}.
+     *
+     * @return {@link TreeToolTipProvider} for {@link JTree} that uses this {@link WebTreeUI}
+     */
+    protected TreeToolTipProvider getToolTipProvider ()
+    {
+        return tree instanceof WebTree ? ( ( WebTree ) tree ).getToolTipProvider () : null;
     }
 
     @Override

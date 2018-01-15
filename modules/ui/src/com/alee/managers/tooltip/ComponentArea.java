@@ -15,25 +15,35 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.table;
-
-import com.alee.managers.tooltip.AbstractToolTipProvider;
-import com.alee.managers.tooltip.TooltipWay;
+package com.alee.managers.tooltip;
 
 import javax.swing.*;
+import java.awt.*;
+import java.io.Serializable;
 
 /**
- * Abstract WebLaF tooltip provider for {@link JTable} component.
+ * Interface for any class that points at specific area on the {@link javax.swing.JComponent}.
  *
- * @param <V> cell value type
+ * @param <V> area value type
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public abstract class TableToolTipProvider<V> extends AbstractToolTipProvider<V, JTable, TableCellArea<V, JTable>>
+public interface ComponentArea<V, C extends JComponent> extends Serializable
 {
-    @Override
-    public TooltipWay getDirection ( final JTable component, final V value, final TableCellArea<V, JTable> area )
-    {
-        return TooltipWay.down;
-    }
+    /**
+     * Returns component area bounds in component coordinates system.
+     *
+     * @param component {@link JComponent}
+     * @return component area bounds in component coordinates system
+     */
+    public Rectangle getBounds ( C component );
+
+    /**
+     * Returns value for the specified component area.
+     *
+     * @param component {@link JComponent}
+     * @return value for the specified component area
+     */
+    public V getValue ( C component );
 }

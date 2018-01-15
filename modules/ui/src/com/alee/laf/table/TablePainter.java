@@ -4,7 +4,6 @@ import com.alee.managers.language.Language;
 import com.alee.managers.language.LanguageListener;
 import com.alee.managers.language.LanguageSensitive;
 import com.alee.managers.language.UILanguageManager;
-import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.SectionPainter;
 import com.alee.painter.decoration.AbstractDecorationPainter;
@@ -81,7 +80,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
     /**
      * Runtime variables.
      */
-    protected transient Point rolloverCell;
+    protected transient TableCellArea rolloverCell;
 
     /**
      * Painting variables.
@@ -158,9 +157,11 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
             private void updateMouseover ( final MouseEvent e )
             {
                 final Point point = e.getPoint ();
-                final Point cell = new Point ( component.columnAtPoint ( point ), component.rowAtPoint ( point ) );
-                if ( cell.x != -1 && cell.y != -1 )
+                final int row = component.rowAtPoint ( point );
+                final int column = component.columnAtPoint ( point );
+                if ( row != -1 && column != -1 )
                 {
+                    final TableCellArea cell = new TableCellArea ( row, column );
                     if ( !CompareUtils.equals ( rolloverCell, cell ) )
                     {
                         updateRolloverCell ( rolloverCell, cell );
@@ -189,20 +190,16 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
              * @param oldCell previous mouseover cell
              * @param newCell current mouseover cell
              */
-            private void updateRolloverCell ( final Point oldCell, final Point newCell )
+            private void updateRolloverCell ( final TableCellArea oldCell, final TableCellArea newCell )
             {
                 // Updating rollover cell
                 rolloverCell = newCell;
 
                 // Updating custom WebLaF tooltip display state
-                final ToolTipProvider provider = getToolTipProvider ();
+                final TableToolTipProvider provider = getToolTipProvider ();
                 if ( provider != null )
                 {
-                    final int oldIndex = oldCell != null ? oldCell.y : -1;
-                    final int oldColumn = oldCell != null ? oldCell.x : -1;
-                    final int newIndex = newCell != null ? newCell.y : -1;
-                    final int newColumn = newCell != null ? newCell.x : -1;
-                    provider.hoverCellChanged ( component, oldIndex, oldColumn, newIndex, newColumn );
+                    provider.hoverAreaChanged ( component, oldCell, newCell );
                 }
             }
         };
@@ -985,11 +982,11 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
     }
 
     /**
-     * Returns custom WebLaF tooltip provider.
+     * Returns {@link TableToolTipProvider} for {@link JTable} that uses this {@link TablePainter}.
      *
-     * @return custom WebLaF tooltip provider
+     * @return {@link TableToolTipProvider} for {@link JTable} that uses this {@link TablePainter}
      */
-    protected ToolTipProvider<? extends WebTable> getToolTipProvider ()
+    protected TableToolTipProvider getToolTipProvider ()
     {
         return component != null && component instanceof WebTable ? ( ( WebTable ) component ).getToolTipProvider () : null;
     }

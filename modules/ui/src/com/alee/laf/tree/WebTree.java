@@ -31,7 +31,6 @@ import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.UISettingsManager;
 import com.alee.managers.style.*;
-import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
 import com.alee.utils.GeometryUtils;
@@ -92,17 +91,17 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      * Listener that forces tree to scroll view to selection.
      * It is disabled by default and null in that case.
      */
-    protected TreeSelectionListener scrollToSelectionListener = null;
+    protected transient TreeSelectionListener scrollToSelectionListener = null;
 
     /**
      * Special state provider that can be set to check whether or not specific nodes are editable.
      */
-    protected Predicate<E> editableStateProvider = null;
+    protected transient Predicate<E> editableStateProvider = null;
 
     /**
      * Custom WebLaF tooltip provider.
      */
-    protected ToolTipProvider<? extends WebTree> toolTipProvider = null;
+    protected transient TreeToolTipProvider<E> toolTipProvider = null;
 
     /**
      * Constructs tree with default sample model.
@@ -347,21 +346,21 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     }
 
     /**
-     * Returns custom WebLaF tooltip provider.
+     * Returns {@link TreeToolTipProvider}.
      *
-     * @return custom WebLaF tooltip provider
+     * @return {@link TreeToolTipProvider}
      */
-    public ToolTipProvider<? extends WebTree> getToolTipProvider ()
+    public TreeToolTipProvider<E> getToolTipProvider ()
     {
         return toolTipProvider;
     }
 
     /**
-     * Sets custom WebLaF tooltip provider.
+     * Sets {@link TreeToolTipProvider}.
      *
-     * @param provider custom WebLaF tooltip provider
+     * @param provider {@link TreeToolTipProvider}
      */
-    public void setToolTipProvider ( final ToolTipProvider<? extends WebTree> provider )
+    public void setToolTipProvider ( final TreeToolTipProvider<E> provider )
     {
         this.toolTipProvider = provider;
     }
