@@ -156,24 +156,34 @@ public abstract class AbstractUnits
      */
     public String toString ( final long value )
     {
-        // Ensure value is not zero
-        if ( value <= 0 )
+        if ( value >= 0 )
         {
-            throw new UnitsParsingException ( "Invalid value provided: " + value );
-        }
-
-        // Resolve user-friendly unit-based text
-        final StringBuilder result = new StringBuilder ();
-        for ( final Unit units : this.units )
-        {
-            final String amount = units.toString ( value );
-            if ( amount != null )
+            if ( value > 0 )
             {
-                result.append ( result.length () > 0 ? " " : "" );
-                result.append ( amount );
+                // Resolving user-friendly unit-based text
+                final StringBuilder result = new StringBuilder ();
+                for ( final Unit units : this.units )
+                {
+                    final String amount = units.toString ( value );
+                    if ( amount != null )
+                    {
+                        result.append ( result.length () > 0 ? " " : "" );
+                        result.append ( amount );
+                    }
+                }
+                return result.toString ();
+            }
+            else
+            {
+                // Sepcial zero value case
+                final Unit smallest = units.get ( units.size () - 1 );
+                return "0" + smallest.names.get ( 0 );
             }
         }
-        return result.toString ();
+        else
+        {
+            throw new UnitsParsingException ( "Negative values are not supported yet: " + value );
+        }
     }
 
     /**
