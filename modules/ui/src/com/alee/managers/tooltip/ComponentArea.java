@@ -22,7 +22,7 @@ import java.awt.*;
 import java.io.Serializable;
 
 /**
- * Interface for any class that points at specific area on the {@link javax.swing.JComponent}.
+ * Interface for any class that points at specific area on the {@link JComponent}.
  *
  * @param <V> area value type
  * @param <C> component type

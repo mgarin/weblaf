@@ -17,9 +17,11 @@
 
 package com.alee.laf.table;
 
+import com.alee.managers.tooltip.AbstractComponentArea;
 import com.alee.managers.tooltip.ComponentArea;
 
 import javax.swing.*;
+import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 
 /**
@@ -30,7 +32,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class TableCellArea<V, C extends JTable> implements ComponentArea<V, C>
+public class TableCellArea<V, C extends JTable> extends AbstractComponentArea<V, C>
 {
     /**
      * Table cell row index.
@@ -78,7 +80,15 @@ public class TableCellArea<V, C extends JTable> implements ComponentArea<V, C>
     @Override
     public Rectangle getBounds ( final C component )
     {
-        return component.getCellRect ( row, column, false );
+        // Calculating cell bounds
+        final Rectangle bounds = component.getCellRect ( row, column, false );
+
+        // Adjusting tooltip location
+        final TableCellRenderer cellRenderer = component.getCellRenderer ( row, column );
+        final Component renderer = component.prepareRenderer ( cellRenderer, row, column );
+        adjustBounds ( component, renderer, bounds );
+
+        return bounds;
     }
 
     @Override

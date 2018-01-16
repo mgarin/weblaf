@@ -17,6 +17,7 @@
 
 package com.alee.laf.list;
 
+import com.alee.managers.tooltip.AbstractComponentArea;
 import com.alee.managers.tooltip.ComponentArea;
 
 import javax.swing.*;
@@ -30,7 +31,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class ListCellArea<V, C extends JList> implements ComponentArea<V, C>
+public class ListCellArea<V, C extends JList> extends AbstractComponentArea<V, C>
 {
     /**
      * List cell index.
@@ -61,7 +62,18 @@ public class ListCellArea<V, C extends JList> implements ComponentArea<V, C>
     @Override
     public Rectangle getBounds ( final C component )
     {
-        return component.getCellBounds ( index, index );
+        // Calculating cell bounds
+        final Rectangle bounds = component.getCellBounds ( index, index );
+
+        // Adjusting tooltip location
+        final V value = getValue ( component );
+        final boolean isSelected = component.isSelectedIndex ( index );
+        final boolean cellHasFocus = component.getLeadSelectionIndex () == index;
+        final ListCellRenderer cellRenderer = component.getCellRenderer ();
+        final Component renderer = cellRenderer.getListCellRendererComponent ( component, value, index, isSelected, cellHasFocus );
+        adjustBounds ( component, renderer, bounds );
+
+        return bounds;
     }
 
     @Override
