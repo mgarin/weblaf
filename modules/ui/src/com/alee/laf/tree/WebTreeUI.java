@@ -135,7 +135,9 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
                 final TreeToolTipProvider provider = getToolTipProvider ();
                 if ( provider != null )
                 {
-                    provider.hoverAreaChanged ( tree, new TreeCellArea ( previousRow ), new TreeCellArea ( hoverRow ) );
+                    final TreeCellArea oldArea = previousRow != -1 ? new TreeCellArea ( previousRow ) : null;
+                    final TreeCellArea newArea = hoverRow != -1 ? new TreeCellArea ( hoverRow ) : null;
+                    provider.hoverAreaChanged ( tree, oldArea, newArea );
                 }
 
                 // Informing {@link com.alee.laf.tree.WebTree} about hover node change
