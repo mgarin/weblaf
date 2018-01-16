@@ -105,7 +105,9 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
                 final ListToolTipProvider provider = getToolTipProvider ();
                 if ( provider != null )
                 {
-                    provider.hoverAreaChanged ( list, new ListCellArea ( previousIndex ), new ListCellArea ( hoverIndex ) );
+                    final ListCellArea oldArea = previousIndex != -1 ? new ListCellArea ( previousIndex ) : null;
+                    final ListCellArea newArea = hoverIndex != -1 ? new ListCellArea ( hoverIndex ) : null;
+                    provider.hoverAreaChanged ( list, oldArea, newArea );
                 }
 
                 // Informing {@link com.alee.laf.list.WebList} about hover index change
