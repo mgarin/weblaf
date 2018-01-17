@@ -25,14 +25,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
 /**
  * Custom {@link Behavior} that allows you to easily move window/component.
  * Install this behavior onto any component to make it move the window when dragged.
- * You can specify moved window/component or simply let the behavior detect it.
- * Use {@link #install(java.awt.Component)} and {@link #uninstall(java.awt.Component)} methods to setup and remove this behavior.
+ * You can specify moved component or window, or simply let the behavior detect it.
+ * Use {@link #install()} and {@link #uninstall()} methods to setup and remove this behavior.
  *
  * @author Mikle Garin
  */
@@ -44,6 +42,11 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
      */
 
     /**
+     * Component that acts as gripper.
+     */
+    protected final Component gripper;
+
+    /**
      * Component that should be dragged.
      * If set to null mouse events source component parent window will be dragged instead.
      */
@@ -52,22 +55,22 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
     /**
      * Whether or not this behavior is currently enabled.
      */
-    protected boolean enabled = true;
+    protected boolean enabled;
 
     /**
      * Whether component is being dragged or not.
      */
-    protected boolean dragging = false;
+    protected boolean dragging;
 
     /**
      * Currently dragged component.
      */
-    protected Component dragged = null;
+    protected Component dragged;
 
     /**
      * Drag start point.
      */
-    protected Point initialPoint = null;
+    protected Point initialPoint;
 
     /**
      * Dragged component initial bounds.
@@ -76,27 +79,54 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
 
     /**
      * Constructs new component move adapter that alows source component parent window dragging.
+     *
+     * @param gripper component that will act as gripper
      */
-    public ComponentMoveBehavior ()
+    public ComponentMoveBehavior ( final Component gripper )
     {
-        this ( null );
+        this ( gripper, null );
     }
 
     /**
      * Constructs new component move adapter that allows specified component dragging.
      *
-     * @param target component to drag
+     * @param gripper component that will act as gripper
+     * @param target  component to be moved by the gripper component
      */
-    public ComponentMoveBehavior ( final Component target )
+    public ComponentMoveBehavior ( final Component gripper, final Component target )
     {
         super ();
+        this.gripper = gripper;
         this.target = target;
+        this.enabled = true;
+        this.dragging = false;
+        this.dragged = null;
+        this.initialPoint = null;
+        this.initialBounds = null;
+    }
+
+    /**
+     * Installs behavior into component.
+     */
+    public void install ()
+    {
+        gripper.addMouseListener ( this );
+        gripper.addMouseMotionListener ( this );
+    }
+
+    /**
+     * Uninstalls behavior from the component.
+     */
+    public void uninstall ()
+    {
+        gripper.removeMouseMotionListener ( this );
+        gripper.removeMouseListener ( this );
     }
 
     /**
      * Returns whether or not this behavior is currently enabled.
      *
-     * @return true if this behavior is currently enabled, false otherwise
+     * @return {@code true} if this behavior is currently enabled, {@code false} otherwise
      */
     public boolean isEnabled ()
     {
@@ -116,25 +146,22 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
     @Override
     public void mousePressed ( final MouseEvent e )
     {
-        if ( isEnabled () && SwingUtilities.isLeftMouseButton ( e ) )
+        if ( e.getSource () == gripper && isEnabled () && gripper.isEnabled () && SwingUtilities.isLeftMouseButton ( e ) )
         {
-            if ( e.getSource () instanceof Component && ( ( Component ) e.getSource () ).isEnabled () )
+            dragged = getDraggedComponent ( e );
+            if ( dragged != null )
             {
-                dragged = getDraggedComponent ( e );
-                if ( dragged != null )
+                final Rectangle dragStartBounds = getDragStartBounds ( e );
+                if ( dragStartBounds != null && dragStartBounds.contains ( e.getPoint () ) )
                 {
-                    final Rectangle dragStartBounds = getDragStartBounds ( e );
-                    if ( dragStartBounds != null && dragStartBounds.contains ( e.getPoint () ) )
-                    {
-                        dragging = true;
-                        initialPoint = CoreSwingUtils.getMouseLocation ();
-                        initialBounds = dragged.getBounds ();
-                        componentMoveStarted ( initialPoint, initialBounds.getLocation () );
-                    }
-                    else
-                    {
-                        dragged = null;
-                    }
+                    dragging = true;
+                    initialPoint = CoreSwingUtils.getMouseLocation ();
+                    initialBounds = dragged.getBounds ();
+                    componentMoveStarted ( initialPoint, initialBounds.getLocation () );
+                }
+                else
+                {
+                    dragged = null;
                 }
             }
         }
@@ -213,7 +240,7 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
      */
     protected Component getDraggedComponent ( final MouseEvent e )
     {
-        return target == null ? SwingUtils.getWindowAncestor ( e.getComponent () ) : target;
+        return target == null ? SwingUtils.getWindowAncestor ( gripper ) : target;
     }
 
     /**
@@ -224,77 +251,6 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
      */
     protected Rectangle getDragStartBounds ( final MouseEvent e )
     {
-        return BoundsType.margin.bounds ( e.getComponent () ) ;
-    }
-
-    /**
-     * Installs window move adapter to the specified window component.
-     *
-     * @param gripper window component that will act as gripper
-     * @return installed behavior
-     */
-    public static ComponentMoveBehavior install ( final Component gripper )
-    {
-        return install ( gripper, null );
-    }
-
-    /**
-     * Installs behavior to the specified component.
-     *
-     * @param gripper component that will act as gripper
-     * @param target  component to be moved by the gripper component
-     * @return installed behavior
-     */
-    public static ComponentMoveBehavior install ( final Component gripper, final Component target )
-    {
-        // Uninstall old behavior first
-        uninstall ( gripper );
-
-        // Add new behavior
-        final ComponentMoveBehavior behavior = new ComponentMoveBehavior ( target );
-        gripper.addMouseListener ( behavior );
-        gripper.addMouseMotionListener ( behavior );
-        return behavior;
-    }
-
-    /**
-     * Uninstalls behavior from the specified gripper component.
-     *
-     * @param gripper gripper component
-     */
-    public static void uninstall ( final Component gripper )
-    {
-        for ( final MouseListener listener : gripper.getMouseListeners () )
-        {
-            if ( listener instanceof ComponentMoveBehavior )
-            {
-                gripper.removeMouseListener ( listener );
-            }
-        }
-        for ( final MouseMotionListener listener : gripper.getMouseMotionListeners () )
-        {
-            if ( listener instanceof ComponentMoveBehavior )
-            {
-                gripper.removeMouseMotionListener ( listener );
-            }
-        }
-    }
-
-    /**
-     * Returns whether or not the specified component has this behavior installed.
-     *
-     * @param gripper component that acts as gripper
-     * @return true if the specified component has this behavior installed, false otherwise
-     */
-    public static boolean isInstalled ( final Component gripper )
-    {
-        for ( final MouseMotionListener listener : gripper.getMouseMotionListeners () )
-        {
-            if ( listener instanceof ComponentMoveBehavior )
-            {
-                return true;
-            }
-        }
-        return false;
+        return BoundsType.margin.bounds ( gripper );
     }
 }

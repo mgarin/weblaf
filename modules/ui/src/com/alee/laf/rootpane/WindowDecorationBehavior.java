@@ -33,8 +33,6 @@ import com.alee.utils.SystemUtils;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
 /**
  * This is a special behavior for windows with custom decoration enabled.
@@ -87,7 +85,7 @@ public class WindowDecorationBehavior extends ComponentMoveBehavior
      */
     public WindowDecorationBehavior ( final WRootPaneUI rootPaneUI )
     {
-        super ();
+        super ( rootPaneUI.getTitleComponent () );
         this.rootPaneUI = rootPaneUI;
         this.fadeIn = new TimedTransition<Float> ( 0f, 1f, new FixedFrameRate ( 30 ), new Quadratic.Out (), 200L );
         this.fadeIn.addListener ( new TransitionAdapter<Float> ()
@@ -406,48 +404,5 @@ public class WindowDecorationBehavior extends ComponentMoveBehavior
     protected boolean isStickingAvailable ()
     {
         return SystemUtils.isWindows () && isMaximizable ();
-    }
-
-    /**
-     * Installs behavior to the specified UI.
-     *
-     * @param ui {@link WRootPaneUI} to install behavior into
-     * @return installed behavior
-     */
-    public static WindowDecorationBehavior install ( final WRootPaneUI ui )
-    {
-        // Uninstalling old behavior first
-        uninstall ( ui );
-
-        // Installing new behavior
-        final WindowDecorationBehavior behavior = new WindowDecorationBehavior ( ui );
-        final JComponent titleComponent = ui.getTitleComponent ();
-        titleComponent.addMouseListener ( behavior );
-        titleComponent.addMouseMotionListener ( behavior );
-        return behavior;
-    }
-
-    /**
-     * Uninstalls behavior from the specified gripper component.
-     *
-     * @param ui {@link WRootPaneUI} to uninstall behavior from
-     */
-    public static void uninstall ( final WRootPaneUI ui )
-    {
-        final JComponent titleComponent = ui.getTitleComponent ();
-        for ( final MouseListener listener : titleComponent.getMouseListeners () )
-        {
-            if ( listener instanceof ComponentMoveBehavior )
-            {
-                titleComponent.removeMouseListener ( listener );
-            }
-        }
-        for ( final MouseMotionListener listener : titleComponent.getMouseMotionListeners () )
-        {
-            if ( listener instanceof ComponentMoveBehavior )
-            {
-                titleComponent.removeMouseMotionListener ( listener );
-            }
-        }
     }
 }

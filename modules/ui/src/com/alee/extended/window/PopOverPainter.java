@@ -112,7 +112,7 @@ public class PopOverPainter<E extends JRootPane, U extends WRootPaneUI> extends 
         popOver.addWindowFocusListener ( focusListener );
 
         // Popover drag listener
-        moveAdapter = new ComponentMoveBehavior ()
+        moveAdapter = new ComponentMoveBehavior ( component )
         {
             @Override
             protected Rectangle getDragStartBounds ( final MouseEvent e )
@@ -143,8 +143,7 @@ public class PopOverPainter<E extends JRootPane, U extends WRootPaneUI> extends 
                 super.mouseDragged ( e );
             }
         };
-        component.addMouseListener ( moveAdapter );
-        component.addMouseMotionListener ( moveAdapter );
+        moveAdapter.install ();
 
         // Custom window shaping
         if ( !ProprietaryUtils.isWindowTransparencyAllowed () && ProprietaryUtils.isWindowShapeAllowed () )
@@ -178,8 +177,7 @@ public class PopOverPainter<E extends JRootPane, U extends WRootPaneUI> extends 
         }
 
         // Popover drag listener
-        component.removeMouseMotionListener ( moveAdapter );
-        component.removeMouseListener ( moveAdapter );
+        moveAdapter.uninstall ();
         moveAdapter = null;
 
         // Window focus listener
@@ -502,10 +500,10 @@ public class PopOverPainter<E extends JRootPane, U extends WRootPaneUI> extends 
             @Override
             public boolean isEnabled ()
             {
-                return !attached;
+                return !PopOverPainter.this.attached;
             }
         };
-        invokerWindow.addComponentListener ( windowFollowBehavior );
+        windowFollowBehavior.install ();
 
         // Invoker window state listener
         final WindowStateListener windowStateListener = new WindowStateListener ()
@@ -631,7 +629,7 @@ public class PopOverPainter<E extends JRootPane, U extends WRootPaneUI> extends 
             {
                 popOver.removePopOverListener ( this );
                 invokerWindow.removeComponentListener ( invokerWindowAdapter );
-                invokerWindow.removeComponentListener ( windowFollowBehavior );
+                windowFollowBehavior.uninstall ();
                 invoker.removeComponentListener ( invokerAdapter );
                 if ( invoker instanceof JComponent )
                 {

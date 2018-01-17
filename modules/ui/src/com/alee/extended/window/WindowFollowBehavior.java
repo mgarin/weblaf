@@ -22,16 +22,14 @@ import com.alee.extended.behavior.Behavior;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 
 /**
- * This behavior allows you to quickly attach one window to another window.
- * Window will always follow the other one it is attached by moving for the same distance window it is attached to was moved.
- * But window this one is attached to will not follow this window as it moves.
+ * Custom {@link Behavior} that allows you to quickly attach one {@link Window} to another {@link Window}.
+ * Attached {@link Window} will move for the same distance as {@link Window} it is attached to is moved.
  *
- * It is not recommended to use this behavior to completely lock two windows to each other as it will cause issues.
- * Another behavior will be available later-on to provide that kind of functionality.
  * This behavior is only intended for single-sided movement lock.
+ * You shouldn't use this behavior to lock two {@link Window}s to each other as it will cause issues.
+ * Another {@link Behavior} should be used to provide that kind of functionality.
  *
  * @author Mikle Garin
  */
@@ -39,56 +37,94 @@ import java.awt.event.ComponentListener;
 public class WindowFollowBehavior extends ComponentAdapter implements Behavior
 {
     /**
-     * Window that follows another one it is attached to.
+     * {@link Window} that follows another one it is attached to.
      */
-    protected final Window attachedWindow;
+    protected final Window attached;
 
     /**
-     * Followed window.
+     * {@link Window} to be followed by attached one.
      */
-    protected final Window followedWindow;
+    protected final Window followed;
 
     /**
-     * Whether or not this behavior is enabled.
+     * Whether or not this behavior is currently enabled.
      */
-    protected boolean enabled = true;
+    protected boolean enabled;
 
     /**
      * Last spotted location of the followed window.
      */
     protected Point lastLocation;
 
-    public WindowFollowBehavior ( final Window attachedWindow, final Window followedWindow )
+    /**
+     * Constructs new {@link WindowFollowBehavior}.
+     *
+     * @param attached {@link Window} that follows another one it is attached to
+     * @param followed {@link Window} to be followed by attached one
+     */
+    public WindowFollowBehavior ( final Window attached, final Window followed )
     {
         super ();
-        this.attachedWindow = attachedWindow;
-        this.followedWindow = followedWindow;
+        this.attached = attached;
+        this.followed = followed;
+        this.enabled = true;
         updateLastLocation ();
     }
 
+    /**
+     * Installs behavior into component.
+     */
+    public void install ()
+    {
+        followed.addComponentListener ( this );
+    }
+
+    /**
+     * Uninstalls behavior from the component.
+     */
+    public void uninstall ()
+    {
+        followed.removeComponentListener ( this );
+    }
+
+    /**
+     * Returns whether or not this behavior is currently enabled.
+     *
+     * @return {@code true} if this behavior is currently enabled, {@code false} otherwise
+     */
     public boolean isEnabled ()
     {
         return enabled;
     }
 
+    /**
+     * Sets whether or not this behavior is currently enabled.
+     *
+     * @param enabled whether or not this behavior is currently enabled
+     */
     public void setEnabled ( final boolean enabled )
     {
         this.enabled = enabled;
     }
 
-    public void updateLastLocation ()
+    /**
+     * Returns {@link Window} that follows another one it is attached to.
+     *
+     * @return {@link Window} that follows another one it is attached to
+     */
+    public Window getAttached ()
     {
-        this.lastLocation = followedWindow.getLocation ();
+        return attached;
     }
 
-    public Window getAttachedWindow ()
+    /**
+     * Returns {@link Window} to be followed by attached one.
+     *
+     * @return {@link Window} to be followed by attached one
+     */
+    public Window getFollowed ()
     {
-        return attachedWindow;
-    }
-
-    public Window getFollowedWindow ()
-    {
-        return followedWindow;
+        return followed;
     }
 
     @Override
@@ -100,46 +136,20 @@ public class WindowFollowBehavior extends ComponentAdapter implements Behavior
     @Override
     public void componentMoved ( final ComponentEvent e )
     {
-        if ( isEnabled () && attachedWindow != null && followedWindow != null )
+        if ( isEnabled () && attached != null && followed != null )
         {
-            final Point nl = followedWindow.getLocation ();
-            final Point fwl = attachedWindow.getLocation ();
-            attachedWindow.setLocation ( fwl.x + nl.x - lastLocation.x, fwl.y + nl.y - lastLocation.y );
+            final Point nl = followed.getLocation ();
+            final Point fwl = attached.getLocation ();
+            attached.setLocation ( fwl.x + nl.x - lastLocation.x, fwl.y + nl.y - lastLocation.y );
             this.lastLocation = nl;
         }
     }
 
     /**
-     * Installs behavior to the specified component.
-     *
-     * @param attachedWindow window that follows another one it is attached to
-     * @param followedWindow followed window to uninstall behavior from
-     * @return installed behavior
+     * Updates last spotted location of the followed window.
      */
-    public static WindowFollowBehavior install ( final Window attachedWindow, final Window followedWindow )
+    public void updateLastLocation ()
     {
-        final WindowFollowBehavior windowFollowBehavior = new WindowFollowBehavior ( attachedWindow, followedWindow );
-        followedWindow.addComponentListener ( windowFollowBehavior );
-        return windowFollowBehavior;
-    }
-
-    /**
-     * Uninstalls behavior from the specified followed window.
-     *
-     * @param attachedWindow window that follows another one it is attached to
-     * @param followedWindow followed window to uninstall behavior from
-     */
-    public static void uninstall ( final Window attachedWindow, final Window followedWindow )
-    {
-        for ( final ComponentListener listener : followedWindow.getComponentListeners () )
-        {
-            if ( listener instanceof WindowFollowBehavior )
-            {
-                if ( ( ( WindowFollowBehavior ) listener ).getAttachedWindow () == attachedWindow )
-                {
-                    followedWindow.removeComponentListener ( listener );
-                }
-            }
-        }
+        this.lastLocation = followed.getLocation ();
     }
 }

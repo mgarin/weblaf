@@ -82,7 +82,9 @@ public class LibraryInfoDialog extends WebFrame
     {
         super ( "weblaf.info.title" );
         setIconImages ( WebLookAndFeel.getImages () );
-        ComponentMoveBehavior.install ( this );
+
+        final ComponentMoveBehavior moveBehavior = new ComponentMoveBehavior ( this );
+        moveBehavior.install ();
 
         final WebDocumentPane documentPane = new WebDocumentPane ( StyleId.of ( "tabs" ) );
         documentPane.setClosable ( false );

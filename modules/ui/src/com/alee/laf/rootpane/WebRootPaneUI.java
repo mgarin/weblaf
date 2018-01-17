@@ -18,6 +18,7 @@
 package com.alee.laf.rootpane;
 
 import com.alee.api.data.CompassDirection;
+import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Function;
 import com.alee.extended.behavior.ComponentResizeBehavior;
 import com.alee.extended.image.WebImage;
@@ -32,7 +33,6 @@ import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.*;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -97,6 +97,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
      * Additional components used be the UI.
      */
     protected transient JComponent titleComponent;
+    protected transient WindowDecorationBehavior decorationBehavior;
     protected transient WebImage titleIcon;
     protected transient WebLabel titleLabel;
     protected transient GroupPane buttonsPanel;
@@ -600,7 +601,8 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
         window.addPropertyChangeListener ( windowTitleListener );
 
         // Installing window decoration behavior
-        WindowDecorationBehavior.install ( this );
+        decorationBehavior = new WindowDecorationBehavior ( this );
+        decorationBehavior.install ();
 
         root.add ( titleComponent );
     }
@@ -612,7 +614,8 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     {
         if ( titleComponent != null )
         {
-            // StyleManager.
+            decorationBehavior.uninstall ();
+            decorationBehavior = null;
             window.removePropertyChangeListener ( windowTitleListener );
             root.remove ( titleComponent );
             StyleManager.resetStyleId ( titleComponent );

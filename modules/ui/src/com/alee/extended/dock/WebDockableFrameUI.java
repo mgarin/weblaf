@@ -204,8 +204,10 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
      */
     protected void installActions ()
     {
-        dialogMoveBehavior = ComponentMoveBehavior.install ( titlePanel );
+        dialogMoveBehavior = new ComponentMoveBehavior ( titlePanel );
         dialogMoveBehavior.setEnabled ( frame.isFloating () );
+        dialogMoveBehavior.install ();
+
         titlePanel.onMousePress ( MouseButton.left, new MouseEventRunnable ()
         {
             @Override
@@ -240,6 +242,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
                 }
             }
         } );
+
         minimizeButton.addActionListener ( new ActionListener ()
         {
             @Override
@@ -248,6 +251,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
                 frame.minimize ();
             }
         } );
+
         dockButton.addActionListener ( new ActionListener ()
         {
             @Override
@@ -268,6 +272,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
                 }
             }
         } );
+
         floatButton.addActionListener ( new ActionListener ()
         {
             @Override
@@ -280,6 +285,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
                 frame.detach ();
             }
         } );
+
         maximizeButton.addActionListener ( new ActionListener ()
         {
             @Override
@@ -292,6 +298,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
                 frame.maximize ();
             }
         } );
+
         closeButton.addActionListener ( new ActionListener ()
         {
             @Override
@@ -301,6 +308,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
                 frame.close ();
             }
         } );
+
         focusTracker = new DefaultFocusTracker ( frame, true )
         {
             @Override
@@ -314,7 +322,9 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
             }
         };
         FocusManager.addFocusTracker ( frame, focusTracker );
+
         frame.addPropertyChangeListener ( this );
+
         frame.setTransferHandler ( new DockableFrameTransferHandler () );
     }
 
@@ -324,9 +334,14 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
     protected void uninstallActions ()
     {
         frame.setTransferHandler ( null );
+
         frame.removePropertyChangeListener ( this );
+
         FocusManager.removeFocusTracker ( frame, focusTracker );
-        ComponentMoveBehavior.uninstall ( titlePanel );
+        focusTracker = null;
+
+        dialogMoveBehavior.uninstall ();
+        dialogMoveBehavior = null;
     }
 
     @Override

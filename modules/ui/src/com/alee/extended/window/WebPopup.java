@@ -176,22 +176,27 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     /**
      * Default focus {@link Component}.
      */
-    protected WeakReference<Component> defaultFocus;
+    protected transient WeakReference<Component> defaultFocus;
 
     /**
      * Custom global mouse listener that closes popup.
      */
-    protected AWTEventListener mouseListener;
+    protected transient AWTEventListener mouseListener;
 
     /**
      * Custom global focus listener that closes popup.
      */
-    protected GlobalFocusListener focusListener;
+    protected transient GlobalFocusListener focusListener;
+
+    /**
+     * {@link ComponentMoveBehavior}.
+     */
+    protected transient ComponentMoveBehavior moveBehavior;
 
     /**
      * Invoker follow adapter.
      */
-    protected WindowFollowBehavior followAdapter;
+    protected transient WindowFollowBehavior followBehavior;
 
     /**
      * Constructs new popup.
@@ -493,17 +498,13 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
             this.draggable = draggable;
             if ( draggable )
             {
-                if ( !ComponentMoveBehavior.isInstalled ( this ) )
-                {
-                    ComponentMoveBehavior.install ( this );
-                }
+                moveBehavior = new ComponentMoveBehavior ( this );
+                moveBehavior.install ();
             }
             else
             {
-                if ( ComponentMoveBehavior.isInstalled ( this ) )
-                {
-                    ComponentMoveBehavior.uninstall ( this );
-                }
+                moveBehavior.uninstall ();
+                moveBehavior = null;
             }
         }
     }
@@ -530,17 +531,15 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
             this.followInvoker = followInvoker;
             if ( followInvoker )
             {
-                if ( window != null && followAdapter == null && invokerWindow != null )
+                if ( followBehavior == null && window != null && invokerWindow != null )
                 {
-                    // Adding follow adapter
                     installFollowAdapter ();
                 }
             }
             else
             {
-                if ( window != null && followAdapter != null && invokerWindow != null )
+                if ( followBehavior != null && window != null && invokerWindow != null )
                 {
-                    // Removing follow adapter
                     uninstallFollowAdapter ();
                 }
             }
@@ -548,20 +547,21 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     }
 
     /**
-     * Installs invoker follow behavior.
+     * Installs {@link WindowFollowBehavior}.
      */
     protected void installFollowAdapter ()
     {
-        followAdapter = WindowFollowBehavior.install ( window, invokerWindow );
+        followBehavior = new WindowFollowBehavior ( window, invokerWindow );
+        followBehavior.install ();
     }
 
     /**
-     * Uninstalls invoker follow behavior.
+     * Uninstalls {@link WindowFollowBehavior}.
      */
     protected void uninstallFollowAdapter ()
     {
-        WindowFollowBehavior.uninstall ( window, invokerWindow );
-        followAdapter = null;
+        followBehavior.uninstall ();
+        followBehavior = null;
     }
 
     /**
