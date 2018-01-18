@@ -35,6 +35,9 @@
                 <!-- Text shadow size -->
                 <xs:attribute name="shadowSize" type="xs:integer" />
 
+                <!-- Text shadow opacity -->
+                <xs:attribute name="shadowOpacity" type="xs:float" />
+
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>

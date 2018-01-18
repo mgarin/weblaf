@@ -52,7 +52,7 @@
                     <decorations>
                         <decoration>
                             <LabelLayout>
-                                <StyledLabelText shadow="true" shadowColor="180,180,180" shadowSize="2" />
+                                <StyledLabelText shadow="true" shadowColor="180,180,180" />
                             </LabelLayout>
                         </decoration>
                     </decorations>
@@ -116,7 +116,7 @@
                         </GradientBackground>
                         <IconTextLayout gap="3">
                             <ButtonIcon constraints="icon" />
-                            <ButtonText constraints="text" color="black" shadow="true" shadowColor="180,180,180" shadowSize="2" />
+                            <ButtonText constraints="text" color="black" shadow="true" shadowColor="180,180,180" />
                         </IconTextLayout>
                     </decoration>
                     <decoration states="west">

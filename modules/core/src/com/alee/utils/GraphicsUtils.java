@@ -103,7 +103,8 @@ public final class GraphicsUtils
 
         // Determining old composite alpha
         float currentComposite = 1f;
-        if ( composeWith != null && composeWith instanceof AlphaComposite )
+        if ( composeWith != null && composeWith instanceof AlphaComposite &&
+                ( ( AlphaComposite ) composeWith ).getRule () == AlphaComposite.SRC_OVER )
         {
             currentComposite = ( ( AlphaComposite ) composeWith ).getAlpha ();
         }
@@ -431,7 +432,7 @@ public final class GraphicsUtils
         // Saving composite
         final Composite oldComposite = g2d.getComposite ();
         float currentComposite = 1f;
-        if ( oldComposite instanceof AlphaComposite )
+        if ( oldComposite instanceof AlphaComposite && ( ( AlphaComposite ) oldComposite ).getRule () == AlphaComposite.SRC_OVER )
         {
             currentComposite = ( ( AlphaComposite ) oldComposite ).getAlpha ();
         }

@@ -43,7 +43,7 @@
             <decorations>
                 <decoration>
                     <LabelLayout>
-                        <StyledLabelText shadow="true" shadowColor="black" shadowSize="2" />
+                        <StyledLabelText shadow="true" shadowColor="black" />
                     </LabelLayout>
                 </decoration>
             </decorations>

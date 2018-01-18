@@ -38,7 +38,7 @@
             <decorations>
                 <decoration>
                     <LabelLayout>
-                        <LabelText shadow="true" shadowColor="200,200,200" shadowSize="2" />
+                        <LabelText shadow="true" shadowColor="200,200,200" />
                     </LabelLayout>
                 </decoration>
             </decorations>

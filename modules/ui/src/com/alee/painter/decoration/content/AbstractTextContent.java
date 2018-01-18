@@ -39,10 +39,13 @@ import java.util.Map;
  * @author Alexandr Zernov
  */
 
-@SuppressWarnings ( "UnusedParameters" )
 public abstract class AbstractTextContent<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractTextContent<E, D, I>>
         extends AbstractContent<E, D, I> implements SwingConstants
 {
+    /**
+     * todo 1. Move shadow settings into separate serializable object
+     */
+
     /**
      * Preferred text antialias option.
      */
@@ -90,6 +93,12 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      */
     @XStreamAsAttribute
     protected Integer shadowSize;
+
+    /**
+     * Text shadow opacity.
+     */
+    @XStreamAsAttribute
+    protected Float shadowOpacity;
 
     /**
      * Cached HTML {@link View} settings.
@@ -293,11 +302,19 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      */
     protected int getShadowSize ( final E c, final D d )
     {
-        if ( shadowSize != null )
-        {
-            return shadowSize;
-        }
-        throw new StyleException ( "Shadow size must be specified" );
+        return shadowSize !=null ? shadowSize : 2;
+    }
+
+    /**
+     * Returns shadow opacity.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return shadow opacity
+     */
+    public float getShadowOpacity ( final E c, final D d )
+    {
+        return shadowOpacity != null ? shadowOpacity : 0.8f;
     }
 
     /**
@@ -641,7 +658,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
             final RenderingHints rh = g2d.getRenderingHints ();
 
             // Shadow settings
-            final float opacity = 0.8f;
+            final float opacity = getShadowOpacity ( c, d );
             final int size = getShadowSize ( c, d );
             final Color color = getShadowColor ( c, d );
             final double tx = -size;
@@ -655,24 +672,32 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
 
             // Use a alpha blend smaller than 1 to prevent the effect from becoming too dark when multiple paints occur on top of each other
             float preAlpha = 0.4f;
-            if ( oldComposite instanceof AlphaComposite && ( ( AlphaComposite ) oldComposite ).getRule () == AlphaComposite.SRC_OVER )
+            if ( oldComposite instanceof AlphaComposite )
             {
-                preAlpha = Math.min ( ( ( AlphaComposite ) oldComposite ).getAlpha (), preAlpha );
+                final AlphaComposite alphaComposite = ( AlphaComposite ) oldComposite;
+                if ( alphaComposite.getRule () == AlphaComposite.SRC_OVER )
+                {
+                    // Make sure alpha blend is adjusted by composite passed from above
+                    preAlpha = alphaComposite.getAlpha () * preAlpha;
+                }
             }
             g2d.setPaint ( ColorUtils.opaque ( color ) );
 
             // If the effect is a shadow it looks better to stop painting a bit earlier - shadow will look softer
             final int maxSize = isShadow ? size - 1 : size;
-
             for ( int i = -size; i <= maxSize; i++ )
             {
                 for ( int j = -size; j <= maxSize; j++ )
                 {
                     final double distance = i * i + j * j;
-                    float alpha = opacity;
+                    float alpha;
                     if ( distance > 0.0d )
                     {
                         alpha = ( float ) ( 1.0f / ( distance * size * opacity ) );
+                    }
+                    else
+                    {
+                        alpha = opacity;
                     }
                     alpha *= preAlpha;
                     if ( alpha > 1.0f )

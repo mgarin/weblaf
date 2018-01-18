@@ -39,7 +39,6 @@ import java.awt.geom.AffineTransform;
  * @author Alexandr Zernov
  */
 
-@SuppressWarnings ( "UnusedParameters" )
 public abstract class AbstractContent<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractContent<E, D, I>>
         implements IContent<E, D, I>
 {
@@ -140,7 +139,6 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      * @param d painted decoration state
      * @return actual padding
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected Insets getPadding ( final E c, final D d )
     {
         if ( padding != null )
@@ -173,7 +171,6 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      * @param d painted decoration state
      * @return content rotation
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected Rotation getRotation ( final E c, final D d )
     {
         return rotation != null ? rotation : Rotation.none;
@@ -186,7 +183,6 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      * @param d painted decoration state
      * @return content opacity
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public float getOpacity ( final E c, final D d )
     {
         return opacity != null ? opacity : 1f;

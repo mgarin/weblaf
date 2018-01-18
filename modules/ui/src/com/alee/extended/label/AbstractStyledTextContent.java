@@ -47,6 +47,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
      * todo 1. Implement minimum rows count
      * todo 2. Implement custom colors for custom style elements
      * todo 3. Implement different fonts for text parts
+     * todo 4. Paint shadow for all different accessories
      */
 
     /**
