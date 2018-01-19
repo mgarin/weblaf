@@ -18,11 +18,11 @@
 package com.alee.extended.tree;
 
 import com.alee.managers.drag.transfer.FilesTransferHandler;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.compare.Filter;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
@@ -559,7 +559,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
         }
         catch ( final Exception e )
         {
-            Log.error ( this, e );
+            LoggerFactory.getLogger ( WebFileTree.class ).error ( e.toString (), e );
         }
     }
 

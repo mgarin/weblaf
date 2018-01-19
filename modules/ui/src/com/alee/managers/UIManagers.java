@@ -24,7 +24,6 @@ import com.alee.managers.focus.FocusManager;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.icon.IconManager;
 import com.alee.managers.language.UILanguageManager;
-import com.alee.managers.log.Log;
 import com.alee.managers.proxy.UIProxyManager;
 import com.alee.managers.settings.UISettingsManager;
 import com.alee.managers.style.StyleManager;
@@ -37,7 +36,6 @@ import com.alee.managers.version.VersionManager;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLaF">How to use WebLaF</a>
- * @see Log
  * @see VersionManager
  * @see UILanguageManager
  * @see UISettingsManager
@@ -64,7 +62,6 @@ public final class UIManagers
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Initializing managers
-        Log.initialize ();
         VersionManager.initialize ();
         UILanguageManager.initialize ();
         UISettingsManager.initialize ();

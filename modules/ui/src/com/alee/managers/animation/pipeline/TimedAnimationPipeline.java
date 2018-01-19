@@ -18,9 +18,9 @@
 package com.alee.managers.animation.pipeline;
 
 import com.alee.managers.animation.transition.Transition;
-import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.TimeUtils;
+import org.slf4j.LoggerFactory;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -67,7 +67,6 @@ public final class TimedAnimationPipeline extends AbstractAnimationPipeline impl
         animator.start ();
     }
 
-    @SuppressWarnings ("SynchronizationOnLocalVariableOrMethodParameter")
     @Override
     public void run ()
     {
@@ -159,7 +158,8 @@ public final class TimedAnimationPipeline extends AbstractAnimationPipeline impl
         }
         catch ( final Exception e )
         {
-            Log.get ().error ( "Unable to play transition: " + transition, e );
+            final String msg = "Unable to play transition: %s";
+            LoggerFactory.getLogger ( TimedAnimationPipeline.class ).error ( String.format ( msg, transition ), e );
         }
     }
 
@@ -179,7 +179,8 @@ public final class TimedAnimationPipeline extends AbstractAnimationPipeline impl
         }
         catch ( final Exception e )
         {
-            Log.get ().error ( "Unable to stop transition: " + transition, e );
+            final String msg = "Unable to stop transition: %s";
+            LoggerFactory.getLogger ( TimedAnimationPipeline.class ).error ( String.format ( msg, transition ), e );
         }
     }
 
@@ -200,7 +201,8 @@ public final class TimedAnimationPipeline extends AbstractAnimationPipeline impl
         }
         catch ( final Exception e )
         {
-            Log.get ().error ( "Unable to shutdown pipeline", e );
+            final String msg = "Unable to shutdown pipeline";
+            LoggerFactory.getLogger ( TimedAnimationPipeline.class ).error ( msg, e );
         }
     }
 

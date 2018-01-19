@@ -31,11 +31,11 @@ import com.alee.laf.window.WebWindow;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.BoundsType;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.*;
 import com.alee.utils.swing.ChooserListener;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -341,7 +341,7 @@ public class WebColorChooserField extends WebTextField
             }
             catch ( final AWTException e )
             {
-                Log.error ( this, e );
+                LoggerFactory.getLogger ( WebColorChooserField.class ).error ( e.toString (), e );
             }
             if ( robot != null )
             {

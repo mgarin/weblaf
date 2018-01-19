@@ -18,11 +18,11 @@
 package com.alee.utils;
 
 import com.alee.graphics.filters.ShadowFilter;
-import com.alee.managers.log.Log;
 import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.xml.Resource;
 import com.alee.utils.xml.ResourceLocation;
 import com.mortennobel.imagescaling.ResampleOp;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -1029,7 +1029,8 @@ public final class ImageUtils
             }
             catch ( final MalformedURLException e )
             {
-                Log.get ().error ( "Unable to load image from URL: " + location.getPath (), e );
+                final String msg = "Unable to load image from URL: %s";
+                LoggerFactory.getLogger ( ImageUtils.class ).error ( String.format ( msg, location.getPath () ), e );
                 return null;
             }
         }
@@ -1041,7 +1042,8 @@ public final class ImageUtils
             }
             catch ( final IOException e )
             {
-                Log.get ().error ( "Unable to load image from file: " + location.getPath (), e );
+                final String msg = "Unable to load image from file: %s";
+                LoggerFactory.getLogger ( ImageUtils.class ).error ( String.format ( msg, location.getPath () ), e );
                 return null;
             }
         }
@@ -1053,8 +1055,9 @@ public final class ImageUtils
             }
             catch ( final ClassNotFoundException e )
             {
-                final String msg = "Unable to load image from file: %s near class: %s";
-                Log.get ().error ( TextUtils.format ( msg, location.getPath (), location.getClassName () ), e );
+                final String msg = "Unable to load image from file '%s' near class: %s";
+                final String fmsg = TextUtils.format ( msg, location.getPath (), location.getClassName () );
+                LoggerFactory.getLogger ( ImageUtils.class ).error ( fmsg, e );
                 return null;
             }
         }
@@ -1418,10 +1421,10 @@ public final class ImageUtils
     /**
      * Returns shadow image based on provided shape.
      *
-     * @param width      shadow image width
-     * @param shape      shadow shape
+     * @param width       shadow image width
+     * @param shape       shadow shape
      * @param shadowWidth shadow width
-     * @param opacity    shadow opacity
+     * @param opacity     shadow opacity
      * @return shadow image based on provided shape
      */
     public static BufferedImage createInnerShadowImage ( final int width, final Shape shape, final int shadowWidth, final float opacity )
@@ -1473,7 +1476,8 @@ public final class ImageUtils
         }
         catch ( final Exception ex )
         {
-            Log.error ( "Unable to decode image icon", ex );
+            final String msg = "Unable to decode image icon";
+            LoggerFactory.getLogger ( ImageUtils.class ).error ( msg, ex );
             try
             {
                 bis.close ();
@@ -1508,7 +1512,8 @@ public final class ImageUtils
         }
         catch ( final IOException ex )
         {
-            Log.error ( "Unable to encode image icon", ex );
+            final String msg = "Unable to encode image icon";
+            LoggerFactory.getLogger ( ImageUtils.class ).error ( msg, ex );
             try
             {
                 bos.close ();

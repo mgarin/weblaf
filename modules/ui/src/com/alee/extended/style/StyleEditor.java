@@ -71,7 +71,6 @@ import com.alee.managers.animation.transition.*;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.managers.style.data.ComponentStyleConverter;
 import com.alee.managers.style.data.SkinInfo;
@@ -92,6 +91,7 @@ import com.thoughtworks.xstream.converters.ConversionException;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
 import net.htmlparser.jericho.StartTag;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
@@ -948,7 +948,7 @@ public class StyleEditor extends WebFrame
             }
             catch ( final IOException e )
             {
-                Log.error ( this, e );
+                LoggerFactory.getLogger ( StyleEditor.class ).error ( e.toString (), e );
             }
         }
     }
@@ -982,11 +982,11 @@ public class StyleEditor extends WebFrame
             // Stack trace for parse exceptions
             if ( completeStackTrace )
             {
-                Log.error ( this, ex );
+                LoggerFactory.getLogger ( StyleEditor.class ).error ( ex.toString (), ex );
             }
             else
             {
-                Log.error ( this, "Fix syntax problems within the XML to update styling" );
+                LoggerFactory.getLogger ( StyleEditor.class ).error ( "Fix syntax problems within the XML to update styling" );
             }
 
             // Information in status bar
@@ -1002,11 +1002,11 @@ public class StyleEditor extends WebFrame
             // Full stack trace for unknown exceptions
             if ( completeStackTrace )
             {
-                Log.error ( this, ex );
+                LoggerFactory.getLogger ( StyleEditor.class ).error ( ex.toString (), ex );
             }
             else
             {
-                Log.error ( this, "Unable to update skin due to internal issues" );
+                LoggerFactory.getLogger ( StyleEditor.class ).error ( "Unable to update skin due to internal issues" );
             }
 
             // Information in status bar

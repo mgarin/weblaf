@@ -20,12 +20,12 @@ package com.alee.laf.desktoppane;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
 import com.alee.managers.language.updaters.LanguageUpdater;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -215,7 +215,7 @@ public class WebInternalFrame extends JInternalFrame
         }
         catch ( final PropertyVetoException e )
         {
-            Log.error ( this, e );
+            LoggerFactory.getLogger ( WebInternalFrame.class ).error ( e.toString (), e );
         }
     }
 
@@ -230,7 +230,7 @@ public class WebInternalFrame extends JInternalFrame
         }
         catch ( final PropertyVetoException e )
         {
-            Log.error ( this, e );
+            LoggerFactory.getLogger ( WebInternalFrame.class ).error ( e.toString (), e );
         }
     }
 
@@ -246,7 +246,7 @@ public class WebInternalFrame extends JInternalFrame
         }
         catch ( final PropertyVetoException e )
         {
-            Log.error ( this, e );
+            LoggerFactory.getLogger ( WebInternalFrame.class ).error ( e.toString (), e );
         }
     }
 

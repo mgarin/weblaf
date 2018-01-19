@@ -24,7 +24,6 @@ import com.alee.laf.list.WebList;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.slider.WebSlider;
 import com.alee.managers.hotkey.Hotkey;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.ComponentDescriptor;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
@@ -39,6 +38,7 @@ import net.htmlparser.jericho.*;
 import org.fife.ui.rsyntaxtextarea.LinkGenerator;
 import org.fife.ui.rsyntaxtextarea.LinkGeneratorResult;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -202,7 +202,7 @@ public class CodeLinkGenerator implements LinkGenerator
                                 }
                                 catch ( final BadLocationException e )
                                 {
-                                    Log.error ( this, e );
+                                    LoggerFactory.getLogger ( CodeLinkGenerator.class ).error ( e.toString (), e );
                                     return null;
                                 }
                             }
@@ -285,7 +285,7 @@ public class CodeLinkGenerator implements LinkGenerator
                                 }
                                 catch ( final BadLocationException e )
                                 {
-                                    Log.error ( this, e );
+                                    LoggerFactory.getLogger ( CodeLinkGenerator.class ).error ( e.toString (), e );
                                     return null;
                                 }
                             }
@@ -344,7 +344,7 @@ public class CodeLinkGenerator implements LinkGenerator
                                 }
                                 catch ( final BadLocationException e )
                                 {
-                                    Log.error ( this, e );
+                                    LoggerFactory.getLogger ( CodeLinkGenerator.class ).error ( e.toString (), e );
                                     return null;
                                 }
                             }

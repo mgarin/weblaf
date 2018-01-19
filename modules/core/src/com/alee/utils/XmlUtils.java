@@ -17,7 +17,6 @@
 
 package com.alee.utils;
 
-import com.alee.managers.log.Log;
 import com.alee.utils.general.Pair;
 import com.alee.utils.xml.*;
 import com.thoughtworks.xstream.XStream;
@@ -27,6 +26,7 @@ import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider
 import com.thoughtworks.xstream.core.util.CompositeClassLoader;
 import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -464,7 +464,8 @@ public final class XmlUtils
                         {
                             final String src = resource.getPath ();
                             final String cn = resource.getClassName ();
-                            throw new RuntimeException ( "Unable to read XML file \"" + src + "\" near class \"" + cn + "\"" );
+                            final String msg = "Unable to read XML file '%s' near class: %s";
+                            throw new RuntimeException ( String.format ( msg, src, cn ) );
                         }
                         return fromXML ( is, context );
                     }
@@ -524,7 +525,8 @@ public final class XmlUtils
         }
         catch ( final IOException e )
         {
-            Log.get ().error ( TextUtils.format ( "Unable to serialize object %s into XML and write it into file: %s", obj, file ), e );
+            final String msg = "Unable to serialize object '%s' into XML and write it into file: %s";
+            LoggerFactory.getLogger ( XmlUtils.class ).error ( TextUtils.format ( msg, obj, file ), e );
         }
     }
 

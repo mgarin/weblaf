@@ -17,9 +17,9 @@
 
 package com.alee.api.clone;
 
-import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.reflection.ModifierType;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
@@ -202,7 +202,8 @@ public class Clone implements Serializable
         }
         catch ( final Exception e )
         {
-            Log.warn ( "Unable to clone object by its fields: " + object, e );
+            final String msg = "Unable to clone object by its fields: %s";
+            LoggerFactory.getLogger ( Clone.class ).warn ( String.format ( msg, object ), e );
             return null;
         }
     }

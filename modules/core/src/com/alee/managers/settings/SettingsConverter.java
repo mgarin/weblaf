@@ -17,7 +17,6 @@
 
 package com.alee.managers.settings;
 
-import com.alee.managers.log.Log;
 import com.alee.utils.xml.XMLChar;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
@@ -26,6 +25,7 @@ import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.mapper.Mapper;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -170,11 +170,9 @@ public class SettingsConverter extends ReflectionConverter
                 }
                 catch ( final Exception e )
                 {
-                    if ( SettingsManager.isLoggingEnabled () )
-                    {
-                        Log.error ( this, "Unable to load settings entry for group \"" +
-                                settingsGroup.getName () + "\" under key \"" + key + "\" due to unexpected exception:", e );
-                    }
+                    final String msg = "Unable to load settings entry for group '%s' under key '%s' due to unexpected exception";
+                    final String fmsg = String.format ( msg, settingsGroup.getName (), key );
+                    LoggerFactory.getLogger ( SettingsConverter.class ).error ( fmsg, e );
                 }
             }
             reader.moveUp ();

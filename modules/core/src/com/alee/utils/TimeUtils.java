@@ -17,7 +17,7 @@
 
 package com.alee.utils;
 
-import com.alee.managers.log.Log;
+import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -164,13 +164,13 @@ public final class TimeUtils
     {
         if ( pinnedTime == null )
         {
-            Log.info ( TimeUtils.class, prefix + "0" );
+            LoggerFactory.getLogger ( TimeUtils.class ).info ( prefix + "0" );
             pinTime ();
         }
         else
         {
             final long time = currentTime ();
-            Log.info ( TimeUtils.class, prefix + ( total ? time - pinnedTime : time - lastTime ) );
+            LoggerFactory.getLogger ( TimeUtils.class ).info ( prefix + ( total ? time - pinnedTime : time - lastTime ) );
             lastTime = time;
         }
     }
@@ -286,13 +286,13 @@ public final class TimeUtils
     {
         if ( pinnedNanoTime == null )
         {
-            Log.info ( TimeUtils.class, prefix + "0" );
+            LoggerFactory.getLogger ( TimeUtils.class ).info ( prefix + "0" );
             pinNanoTime ();
         }
         else
         {
             final long time = currentNanoTime ();
-            Log.info ( TimeUtils.class, prefix + ( total ? time - pinnedNanoTime : time - lastNanoTime ) );
+            LoggerFactory.getLogger ( TimeUtils.class ).info ( prefix + ( total ? time - pinnedNanoTime : time - lastNanoTime ) );
             lastNanoTime = time;
         }
     }

@@ -17,7 +17,7 @@
 
 package com.alee.managers.settings;
 
-import com.alee.managers.log.Log;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.io.Serializable;
@@ -94,11 +94,9 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
             }
             catch ( final Exception e )
             {
-                if ( SettingsManager.isLoggingEnabled () )
-                {
-                    Log.error ( this, "Unable to load initial component settings for group \"" + data.getGroup () +
-                            "\" and key \"" + data.getKey () + "\" due to unexpected exception:", e );
-                }
+                final String msg = "Unable to load initial component settings for group '%s' and key '%s' due to unexpected exception";
+                final String fmsg = String.format ( msg, data.getGroup (), data.getKey () );
+                LoggerFactory.getLogger ( SettingsProcessor.class ).error ( fmsg, e );
             }
         }
 
@@ -109,11 +107,10 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
         }
         catch ( final Exception e )
         {
-            if ( SettingsManager.isLoggingEnabled () )
-            {
-                Log.error ( this, "Unable to initialize specific processor settings for component with group \"" +
-                        data.getGroup () + "\" and key \"" + data.getKey () + "\" due to unexpected exception:", e );
-            }
+            final String msg = "Unable to initialize specific processor settings for component " +
+                    "with group '%s' and key '%s' due to unexpected exception";
+            final String fmsg = String.format ( msg, data.getGroup (), data.getKey () );
+            LoggerFactory.getLogger ( SettingsProcessor.class ).error ( fmsg, e );
         }
 
         // Apply settings changes to the component

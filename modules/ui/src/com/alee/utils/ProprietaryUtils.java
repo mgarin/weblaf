@@ -17,7 +17,7 @@
 
 package com.alee.utils;
 
-import com.alee.managers.log.Log;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -90,23 +90,23 @@ public final class ProprietaryUtils
         }
         catch ( final ClassNotFoundException e )
         {
-            Log.error ( ProprietaryUtils.class, e );
+            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
         }
         catch ( final NoSuchFieldException e )
         {
-            Log.error ( ProprietaryUtils.class, e );
+            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
         }
         catch ( final IllegalAccessException e )
         {
-            Log.error ( ProprietaryUtils.class, e );
+            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
         }
         catch ( final NoSuchMethodException e )
         {
-            Log.error ( ProprietaryUtils.class, e );
+            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
         }
         catch ( final InvocationTargetException e )
         {
-            Log.error ( ProprietaryUtils.class, e );
+            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
         }
     }
 
@@ -249,7 +249,7 @@ public final class ProprietaryUtils
             {
                 // Ignore any exceptions this native feature might cause
                 // Still, should inform that such actions cause an exception on the underlying system
-                Log.error ( ProprietaryUtils.class, e );
+                LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
             }
         }
     }
@@ -299,7 +299,7 @@ public final class ProprietaryUtils
             {
                 // Ignore any exceptions this native feature might cause
                 // Still, should inform that such actions cause an exception on the underlying system
-                Log.error ( ProprietaryUtils.class, e );
+                LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
             }
         }
         return true;
@@ -332,7 +332,7 @@ public final class ProprietaryUtils
             {
                 // Ignore any exceptions this native feature might cause
                 // Still, should inform that such actions cause an exception on the underlying system
-                Log.error ( ProprietaryUtils.class, e );
+                LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
             }
         }
     }
@@ -366,7 +366,7 @@ public final class ProprietaryUtils
             {
                 // Ignore any exceptions this native feature might cause
                 // Still, should inform that such actions cause an exception on the underlying system
-                Log.error ( ProprietaryUtils.class, e );
+                LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
             }
         }
         return 1f;
@@ -399,7 +399,7 @@ public final class ProprietaryUtils
             {
                 // Ignore any exceptions this native feature might cause
                 // Still, should inform that such actions cause an exception on the underlying system
-                Log.error ( ProprietaryUtils.class, e );
+                LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
             }
         }
     }
@@ -433,7 +433,7 @@ public final class ProprietaryUtils
             {
                 // Ignore any exceptions this native feature might cause
                 // Still, should inform that such actions cause an exception on the underlying system
-                Log.error ( ProprietaryUtils.class, e );
+                LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
             }
         }
         return null;
@@ -464,12 +464,14 @@ public final class ProprietaryUtils
             }
             catch ( final Exception e )
             {
-                Log.error ( ProprietaryUtils.class, "Unable to check and set window policy", e );
+                final String msg = "Unable to check and set window policy";
+                LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( msg, e );
             }
         }
         catch ( final Exception e )
         {
-            Log.error ( ProprietaryUtils.class, "Unable to find toolkit: " + toolkitClass, e );
+            final String msg = "Unable to find toolkit: %s";
+            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( String.format ( msg, toolkitClass ), e );
         }
     }
 
@@ -486,17 +488,20 @@ public final class ProprietaryUtils
         }
         catch ( final NoSuchMethodException e )
         {
-            Log.error ( ProprietaryUtils.class, "Unable to retrieve SharedOwnerFrame, it seems your JDK version doesn't support it", e );
+            final String msg = "Unable to retrieve SharedOwnerFrame, it seems your JDK version doesn't support it";
+            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( msg, e );
             return null;
         }
         catch ( final InvocationTargetException e )
         {
-            Log.error ( ProprietaryUtils.class, "Exception occured while retrieving SharedOwnerFrame", e );
+            final String msg = "Exception occured while retrieving SharedOwnerFrame";
+            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( msg, e );
             return null;
         }
         catch ( final IllegalAccessException e )
         {
-            Log.error ( ProprietaryUtils.class, "Unable to access SharedOwnerFrame", e );
+            final String msg = "Unable to access SharedOwnerFrame";
+            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( msg, e );
             return null;
         }
     }
@@ -514,18 +519,20 @@ public final class ProprietaryUtils
         }
         catch ( final NoSuchMethodException e )
         {
-            Log.error ( ProprietaryUtils.class,
-                    "Unable to retrieve SharedOwnerFrame shutdown listener, it seems your JDK version doesn't support it", e );
+            final String msg = "Unable to retrieve SharedOwnerFrame shutdown listener, it seems your JDK version doesn't support it";
+            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( msg, e );
             return null;
         }
         catch ( final InvocationTargetException e )
         {
-            Log.error ( ProprietaryUtils.class, "Exception occured while retrieving SharedOwnerFrame shutdown listener", e );
+            final String msg = "Exception occured while retrieving SharedOwnerFrame shutdown listener";
+            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( msg, e );
             return null;
         }
         catch ( final IllegalAccessException e )
         {
-            Log.error ( ProprietaryUtils.class, "Unable to access SharedOwnerFrame shutdown listener", e );
+            final String msg = "Unable to access SharedOwnerFrame shutdown listener";
+            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( msg, e );
             return null;
         }
     }

@@ -17,8 +17,8 @@
 
 package com.alee.utils;
 
-import com.alee.managers.log.Log;
 import com.alee.utils.zip.UnzipListener;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.Enumeration;
@@ -132,7 +132,7 @@ public final class ZipUtils
         }
         catch ( final Exception e )
         {
-            Log.error ( ZipUtils.class, e );
+            LoggerFactory.getLogger ( ZipUtils.class ).error ( e.toString (), e );
             return false;
         }
     }

@@ -21,10 +21,10 @@ import com.alee.api.jdk.BiConsumer;
 import com.alee.managers.drag.view.DragViewHandler;
 import com.alee.managers.glasspane.GlassPaneManager;
 import com.alee.managers.glasspane.WebGlassPane;
-import com.alee.managers.log.Log;
 import com.alee.utils.ArrayUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.WeakComponentDataList;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -144,7 +144,7 @@ public final class DragManager
                             }
                             catch ( final Exception e )
                             {
-                                Log.error ( DragManager.class, e );
+                                LoggerFactory.getLogger ( DragManager.class ).error ( e.toString (), e );
                             }
                         }
                     }

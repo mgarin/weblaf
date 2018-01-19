@@ -20,9 +20,9 @@ package com.alee.extended.tree;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.laf.tree.WebTree;
 import com.alee.laf.tree.WebTreeModel;
-import com.alee.managers.log.Log;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.tree.TreePath;
@@ -601,7 +601,7 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
     {
         // todo Think of a good way to process drop failure
         // Logging drop operation issues that have occurred
-        Log.get ().error ( "Unable to perform drop operation", cause );
+        LoggerFactory.getLogger ( AbstractTreeTransferHandler.class ).error ( "Unable to perform drop operation", cause );
 
         // Finish drop operation after logging cause
         finishDrop ( support, tree, model, destination, index, dropped );

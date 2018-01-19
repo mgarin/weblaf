@@ -17,11 +17,11 @@
 
 package com.alee.utils;
 
-import com.alee.managers.log.Log;
 import com.alee.utils.file.FileDownloadListener;
 import com.alee.utils.jar.JarEntry;
 import com.alee.utils.jar.JarEntryType;
 import com.alee.utils.jar.JarStructure;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -131,11 +131,11 @@ public final class JarUtils
         }
         catch ( final IOException e )
         {
-            Log.error ( ReflectUtils.class, e );
+            LoggerFactory.getLogger ( JarUtils.class ).error ( e.toString (), e );
         }
         catch ( final URISyntaxException e )
         {
-            Log.error ( ReflectUtils.class, e );
+            LoggerFactory.getLogger ( JarUtils.class ).error ( e.toString (), e );
         }
         return null;
     }
@@ -176,7 +176,7 @@ public final class JarUtils
         }
         catch ( final URISyntaxException e )
         {
-            Log.error ( ReflectUtils.class, e );
+            LoggerFactory.getLogger ( JarUtils.class ).error ( e.toString (), e );
         }
         return null;
     }

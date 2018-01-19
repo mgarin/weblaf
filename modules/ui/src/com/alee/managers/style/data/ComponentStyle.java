@@ -19,7 +19,6 @@ package com.alee.managers.style.data;
 
 import com.alee.api.clone.Clone;
 import com.alee.api.merge.Merge;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Painter;
 import com.alee.utils.CollectionUtils;
@@ -29,6 +28,7 @@ import com.alee.utils.ReflectUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -353,7 +353,7 @@ public final class ComponentStyle implements Serializable, Cloneable
         }
         catch ( final Exception e )
         {
-            Log.error ( this, e );
+            LoggerFactory.getLogger ( ComponentStyle.class ).error ( e.toString (), e );
             return false;
         }
     }
@@ -481,7 +481,7 @@ public final class ComponentStyle implements Serializable, Cloneable
         }
         catch ( final Exception e )
         {
-            Log.error ( this, e );
+            LoggerFactory.getLogger ( ComponentStyle.class ).error ( e.toString (), e );
             return false;
         }
     }
@@ -595,11 +595,11 @@ public final class ComponentStyle implements Serializable, Cloneable
         }
         catch ( final InvocationTargetException e )
         {
-            Log.error ( ComponentStyle.class, e );
+            LoggerFactory.getLogger ( ComponentStyle.class ).error ( e.toString (), e );
         }
         catch ( final IllegalAccessException e )
         {
-            Log.error ( ComponentStyle.class, e );
+            LoggerFactory.getLogger ( ComponentStyle.class ).error ( e.toString (), e );
         }
 
         // Retrieving field value directly
@@ -611,12 +611,12 @@ public final class ComponentStyle implements Serializable, Cloneable
         }
         catch ( final NoSuchFieldException e )
         {
-            Log.error ( ComponentStyle.class, e );
+            LoggerFactory.getLogger ( ComponentStyle.class ).error ( e.toString (), e );
             return null;
         }
         catch ( final IllegalAccessException e )
         {
-            Log.error ( ComponentStyle.class, e );
+            LoggerFactory.getLogger ( ComponentStyle.class ).error ( e.toString (), e );
             return null;
         }
     }
@@ -847,7 +847,7 @@ public final class ComponentStyle implements Serializable, Cloneable
             catch ( final Exception ex )
             {
                 final String msg = "Unable to merge property '%s' values: '%s' and '%s'";
-                Log.get ().error ( String.format ( msg, key, e, m ), ex );
+                LoggerFactory.getLogger ( ComponentStyle.class ).error ( String.format ( msg, key, e, m ), ex );
             }
         }
     }

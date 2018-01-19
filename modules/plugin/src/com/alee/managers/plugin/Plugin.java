@@ -17,9 +17,9 @@
 
 package com.alee.managers.plugin;
 
-import com.alee.managers.log.Log;
 import com.alee.managers.plugin.data.*;
 import com.alee.utils.SystemUtils;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.util.List;
@@ -258,12 +258,14 @@ public abstract class Plugin<T extends Plugin<T>>
             }
             else
             {
-                Log.warn ( this, "Plugin [ " + getInformation () + " ] is already disabled" );
+                final String msg = "Plugin [ %s ] is already disabled";
+                LoggerFactory.getLogger ( Plugin.class ).warn ( String.format ( msg, getInformation () ) );
             }
         }
         else
         {
-            Log.error ( this, "Plugin [ " + getInformation () + " ] cannot be disabled" );
+            final String msg = "Plugin [ %s ] cannot be disabled";
+            LoggerFactory.getLogger ( Plugin.class ).error ( String.format ( msg, getInformation () ) );
         }
     }
 
@@ -291,12 +293,14 @@ public abstract class Plugin<T extends Plugin<T>>
             }
             else
             {
-                Log.warn ( this, "Plugin [ " + getInformation () + " ] is already enabled" );
+                final String msg = "Plugin [ %s ] is already enabled";
+                LoggerFactory.getLogger ( Plugin.class ).warn ( String.format ( msg, getInformation () ) );
             }
         }
         else
         {
-            Log.error ( this, "Plugin [ " + getInformation () + " ] cannot be re-enabled" );
+            final String msg = "Plugin [ %s ] cannot be re-enabled";
+            LoggerFactory.getLogger ( Plugin.class ).error ( String.format ( msg, getInformation () ) );
         }
     }
 

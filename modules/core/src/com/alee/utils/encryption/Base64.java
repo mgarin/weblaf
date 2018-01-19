@@ -74,7 +74,7 @@
 
 package com.alee.utils.encryption;
 
-import com.alee.managers.log.Log;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class provides encode/decode for RFC 2045 Base64 as
@@ -207,7 +207,7 @@ public final class Base64
         int i = 0;
         if ( fDebug )
         {
-            Log.debug ( Base64.class, "number of triplets = " + numberTriplets );
+            LoggerFactory.getLogger ( Base64.class ).debug ( "number of triplets = " + numberTriplets );
         }
 
         for ( int line = 0; line < numberLines - 1; line++ )
@@ -220,27 +220,26 @@ public final class Base64
 
                 if ( fDebug )
                 {
-                    Log.debug ( Base64.class, "b1= " + b1 + ", b2= " + b2 + ", b3= " + b3 );
+                    LoggerFactory.getLogger ( Base64.class ).debug ( "b1= " + b1 + ", b2= " + b2 + ", b3= " + b3 );
                 }
 
                 l = ( byte ) ( b2 & 0x0f );
                 k = ( byte ) ( b1 & 0x03 );
 
-                final byte val1 = ( ( b1 & SIGN ) == 0 ) ? ( byte ) ( b1 >> 2 ) : ( byte ) ( b1 >> 2 ^ 0xc0 );
-
-                final byte val2 = ( ( b2 & SIGN ) == 0 ) ? ( byte ) ( b2 >> 4 ) : ( byte ) ( b2 >> 4 ^ 0xf0 );
-                final byte val3 = ( ( b3 & SIGN ) == 0 ) ? ( byte ) ( b3 >> 6 ) : ( byte ) ( b3 >> 6 ^ 0xfc );
+                final byte val1 = ( b1 & SIGN ) == 0 ? ( byte ) ( b1 >> 2 ) : ( byte ) ( b1 >> 2 ^ 0xc0 );
+                final byte val2 = ( b2 & SIGN ) == 0 ? ( byte ) ( b2 >> 4 ) : ( byte ) ( b2 >> 4 ^ 0xf0 );
+                final byte val3 = ( b3 & SIGN ) == 0 ? ( byte ) ( b3 >> 6 ) : ( byte ) ( b3 >> 6 ^ 0xfc );
 
                 if ( fDebug )
                 {
-                    Log.debug ( Base64.class, "val2 = " + val2 );
-                    Log.debug ( Base64.class, "k4   = " + ( k << 4 ) );
-                    Log.debug ( Base64.class, "vak  = " + ( val2 | ( k << 4 ) ) );
+                    LoggerFactory.getLogger ( Base64.class ).debug ( "val2 = " + val2 );
+                    LoggerFactory.getLogger ( Base64.class ).debug ( "k4   = " + ( k << 4 ) );
+                    LoggerFactory.getLogger ( Base64.class ).debug ( "vak  = " + ( val2 | k << 4 ) );
                 }
 
                 encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ val1 ];
-                encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ val2 | ( k << 4 ) ];
-                encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ ( l << 2 ) | val3 ];
+                encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ val2 | k << 4 ];
+                encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ l << 2 | val3 ];
                 encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ b3 & 0x3f ];
 
                 i++;
@@ -248,7 +247,7 @@ public final class Base64
             encodedData[ encodedIndex++ ] = 0xa;
         }
 
-        for (; i < numberTriplets; i++ )
+        for ( ; i < numberTriplets; i++ )
         {
             b1 = binaryData[ dataIndex++ ];
             b2 = binaryData[ dataIndex++ ];
@@ -256,27 +255,26 @@ public final class Base64
 
             if ( fDebug )
             {
-                Log.debug ( Base64.class, "b1= " + b1 + ", b2= " + b2 + ", b3= " + b3 );
+                LoggerFactory.getLogger ( Base64.class ).debug ( "b1= " + b1 + ", b2= " + b2 + ", b3= " + b3 );
             }
 
             l = ( byte ) ( b2 & 0x0f );
             k = ( byte ) ( b1 & 0x03 );
 
-            final byte val1 = ( ( b1 & SIGN ) == 0 ) ? ( byte ) ( b1 >> 2 ) : ( byte ) ( b1 >> 2 ^ 0xc0 );
-
-            final byte val2 = ( ( b2 & SIGN ) == 0 ) ? ( byte ) ( b2 >> 4 ) : ( byte ) ( b2 >> 4 ^ 0xf0 );
-            final byte val3 = ( ( b3 & SIGN ) == 0 ) ? ( byte ) ( b3 >> 6 ) : ( byte ) ( b3 >> 6 ^ 0xfc );
+            final byte val1 = ( b1 & SIGN ) == 0 ? ( byte ) ( b1 >> 2 ) : ( byte ) ( b1 >> 2 ^ 0xc0 );
+            final byte val2 = ( b2 & SIGN ) == 0 ? ( byte ) ( b2 >> 4 ) : ( byte ) ( b2 >> 4 ^ 0xf0 );
+            final byte val3 = ( b3 & SIGN ) == 0 ? ( byte ) ( b3 >> 6 ) : ( byte ) ( b3 >> 6 ^ 0xfc );
 
             if ( fDebug )
             {
-                Log.debug ( Base64.class, "val2 = " + val2 );
-                Log.debug ( Base64.class, "k4   = " + ( k << 4 ) );
-                Log.debug ( Base64.class, "vak  = " + ( val2 | ( k << 4 ) ) );
+                LoggerFactory.getLogger ( Base64.class ).debug ( "val2 = " + val2 );
+                LoggerFactory.getLogger ( Base64.class ).debug ( "k4   = " + ( k << 4 ) );
+                LoggerFactory.getLogger ( Base64.class ).debug ( "vak  = " + ( val2 | k << 4 ) );
             }
 
             encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ val1 ];
-            encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ val2 | ( k << 4 ) ];
-            encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ ( l << 2 ) | val3 ];
+            encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ val2 | k << 4 ];
+            encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ l << 2 | val3 ];
             encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ b3 & 0x3f ];
         }
 
@@ -287,10 +285,10 @@ public final class Base64
             k = ( byte ) ( b1 & 0x03 );
             if ( fDebug )
             {
-                Log.debug ( Base64.class, "b1=" + b1 );
-                Log.debug ( Base64.class, "b1<<2 = " + ( b1 >> 2 ) );
+                LoggerFactory.getLogger ( Base64.class ).debug ( "b1=" + b1 );
+                LoggerFactory.getLogger ( Base64.class ).debug ( "b1<<2 = " + ( b1 >> 2 ) );
             }
-            final byte val1 = ( ( b1 & SIGN ) == 0 ) ? ( byte ) ( b1 >> 2 ) : ( byte ) ( b1 >> 2 ^ 0xc0 );
+            final byte val1 = ( b1 & SIGN ) == 0 ? ( byte ) ( b1 >> 2 ) : ( byte ) ( b1 >> 2 ^ 0xc0 );
             encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ val1 ];
             encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ k << 4 ];
             encodedData[ encodedIndex++ ] = PAD;
@@ -303,11 +301,11 @@ public final class Base64
             l = ( byte ) ( b2 & 0x0f );
             k = ( byte ) ( b1 & 0x03 );
 
-            final byte val1 = ( ( b1 & SIGN ) == 0 ) ? ( byte ) ( b1 >> 2 ) : ( byte ) ( b1 >> 2 ^ 0xc0 );
-            final byte val2 = ( ( b2 & SIGN ) == 0 ) ? ( byte ) ( b2 >> 4 ) : ( byte ) ( b2 >> 4 ^ 0xf0 );
+            final byte val1 = ( b1 & SIGN ) == 0 ? ( byte ) ( b1 >> 2 ) : ( byte ) ( b1 >> 2 ^ 0xc0 );
+            final byte val2 = ( b2 & SIGN ) == 0 ? ( byte ) ( b2 >> 4 ) : ( byte ) ( b2 >> 4 ^ 0xf0 );
 
             encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ val1 ];
-            encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ val2 | ( k << 4 ) ];
+            encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ val2 | k << 4 ];
             encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ l << 2 ];
             encodedData[ encodedIndex++ ] = PAD;
         }
@@ -362,7 +360,7 @@ public final class Base64
         int dataIndex = 0;
         decodedData = new byte[ numberQuadruple * 3 ];
 
-        for (; i < numberQuadruple - 1; i++ )
+        for ( ; i < numberQuadruple - 1; i++ )
         {
 
             if ( !isData ( d1 = base64Data[ dataIndex++ ] ) ||
@@ -379,7 +377,7 @@ public final class Base64
             b4 = base64Alphabet[ d4 ];
 
             decodedData[ encodedIndex++ ] = ( byte ) ( b1 << 2 | b2 >> 4 );
-            decodedData[ encodedIndex++ ] = ( byte ) ( ( ( b2 & 0xf ) << 4 ) | ( ( b3 >> 2 ) & 0xf ) );
+            decodedData[ encodedIndex++ ] = ( byte ) ( ( b2 & 0xf ) << 4 | b3 >> 2 & 0xf );
             decodedData[ encodedIndex++ ] = ( byte ) ( b3 << 6 | b4 );
         }
 
@@ -416,7 +414,7 @@ public final class Base64
                 final byte[] tmp = new byte[ i * 3 + 2 ];
                 System.arraycopy ( decodedData, 0, tmp, 0, i * 3 );
                 tmp[ encodedIndex++ ] = ( byte ) ( b1 << 2 | b2 >> 4 );
-                tmp[ encodedIndex ] = ( byte ) ( ( ( b2 & 0xf ) << 4 ) | ( ( b3 >> 2 ) & 0xf ) );
+                tmp[ encodedIndex ] = ( byte ) ( ( b2 & 0xf ) << 4 | b3 >> 2 & 0xf );
                 return tmp;
             }
             else
@@ -429,7 +427,7 @@ public final class Base64
             b3 = base64Alphabet[ d3 ];
             b4 = base64Alphabet[ d4 ];
             decodedData[ encodedIndex++ ] = ( byte ) ( b1 << 2 | b2 >> 4 );
-            decodedData[ encodedIndex++ ] = ( byte ) ( ( ( b2 & 0xf ) << 4 ) | ( ( b3 >> 2 ) & 0xf ) );
+            decodedData[ encodedIndex++ ] = ( byte ) ( ( b2 & 0xf ) << 4 | b3 >> 2 & 0xf );
             decodedData[ encodedIndex++ ] = ( byte ) ( b3 << 6 | b4 );
 
         }

@@ -17,9 +17,9 @@
 
 package com.alee.utils;
 
-import com.alee.managers.log.Log;
 import com.alee.utils.system.JavaVersion;
 import com.alee.utils.system.SystemType;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -115,7 +115,7 @@ public final class SystemUtils
         }
         catch ( final Exception e )
         {
-            Log.error ( SystemUtils.class, e );
+            LoggerFactory.getLogger ( SystemUtils.class ).error ( e.toString (), e );
         }
     }
 

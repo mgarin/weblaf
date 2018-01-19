@@ -17,10 +17,10 @@
 
 package com.alee.utils;
 
-import com.alee.managers.log.Log;
 import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.reflection.ModifierType;
 import com.alee.utils.reflection.ReflectionException;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -92,7 +92,8 @@ public final class ReflectUtils
         {
             if ( safeMethodsLoggingEnabled )
             {
-                Log.warn ( "ReflectionUtils method failed: getClassSafely ( " + canonicalName + " )", e );
+                final String msg = "ReflectionUtils method failed: getClassSafely ( %s )";
+                LoggerFactory.getLogger ( ReflectUtils.class ).error ( String.format ( msg, canonicalName ), e );
             }
             return null;
         }
@@ -142,7 +143,8 @@ public final class ReflectUtils
         {
             if ( safeMethodsLoggingEnabled )
             {
-                Log.warn ( "ReflectionUtils method failed: getInnerClassSafely ( " + fromClassName + ", " + innerClassName + " )", e );
+                final String msg = "ReflectionUtils method failed: getInnerClassSafely ( %s, %s )";
+                LoggerFactory.getLogger ( ReflectUtils.class ).error ( String.format ( msg, fromClassName, innerClassName ), e );
             }
             return null;
         }
@@ -616,7 +618,8 @@ public final class ReflectUtils
         {
             if ( safeMethodsLoggingEnabled )
             {
-                Log.warn ( "ReflectionUtils method failed: getFieldSafely ( " + classType + ", " + fieldName + " )", e );
+                final String msg = "ReflectionUtils method failed: getFieldSafely ( %s, %s )";
+                LoggerFactory.getLogger ( ReflectUtils.class ).error ( String.format ( msg, classType, fieldName ), e );
             }
             return null;
         }
@@ -635,7 +638,8 @@ public final class ReflectUtils
     public static Field getField ( final Class classType, final String fieldName ) throws NoSuchFieldException
     {
         // Field key
-        final String key = classType.getCanonicalName () + "." + fieldName;
+        final String canonicalName = classType.getCanonicalName ();
+        final String key = canonicalName + "." + fieldName;
 
         // Checking cache existence
         Field field = null;
@@ -669,7 +673,8 @@ public final class ReflectUtils
             }
             else
             {
-                throw new NoSuchFieldException ( "Field \"" + fieldName + "\" not found in class: " + classType.getCanonicalName () );
+                final String msg = "Field '%s' not found in class: %s";
+                throw new NoSuchFieldException ( String.format ( msg, fieldName, canonicalName ) );
             }
 
             // Caching field
@@ -763,7 +768,8 @@ public final class ReflectUtils
         {
             if ( safeMethodsLoggingEnabled )
             {
-                Log.warn ( "ReflectionUtils method failed: getFieldTypeSafely ( " + classType + ", " + fieldName + " )", e );
+                final String msg = "ReflectionUtils method failed: getFieldTypeSafely ( %s, %s )";
+                LoggerFactory.getLogger ( ReflectUtils.class ).error ( String.format ( msg, classType, fieldName ), e );
             }
             return null;
         }
@@ -803,7 +809,8 @@ public final class ReflectUtils
         {
             if ( safeMethodsLoggingEnabled )
             {
-                Log.warn ( "ReflectionUtils method failed: setFieldValueSafely", e );
+                final String msg = "ReflectionUtils method failed: setFieldValueSafely";
+                LoggerFactory.getLogger ( ReflectUtils.class ).error ( msg, e );
             }
             return false;
         }
@@ -849,7 +856,8 @@ public final class ReflectUtils
         {
             if ( safeMethodsLoggingEnabled )
             {
-                Log.warn ( "ReflectionUtils method failed: setFieldValueSafely", e );
+                final String msg = "ReflectionUtils method failed: setFieldValueSafely";
+                LoggerFactory.getLogger ( ReflectUtils.class ).error ( msg, e );
             }
             return false;
         }
@@ -895,7 +903,8 @@ public final class ReflectUtils
         {
             if ( safeMethodsLoggingEnabled )
             {
-                Log.warn ( "ReflectionUtils method failed: setFieldValueSafely", e );
+                final String msg = "ReflectionUtils method failed: setFieldValueSafely";
+                LoggerFactory.getLogger ( ReflectUtils.class ).error ( msg, e );
             }
             return false;
         }
@@ -976,7 +985,8 @@ public final class ReflectUtils
         {
             if ( safeMethodsLoggingEnabled )
             {
-                Log.warn ( "ReflectionUtils method failed: getFieldValueSafely", e );
+                final String msg = "ReflectionUtils method failed: getFieldValueSafely";
+                LoggerFactory.getLogger ( ReflectUtils.class ).error ( msg, e );
             }
             return null;
         }
@@ -1017,7 +1027,8 @@ public final class ReflectUtils
         {
             if ( safeMethodsLoggingEnabled )
             {
-                Log.warn ( "ReflectionUtils method failed: getStaticFieldValueSafely", e );
+                final String msg = "ReflectionUtils method failed: getStaticFieldValueSafely";
+                LoggerFactory.getLogger ( ReflectUtils.class ).error ( msg, e );
             }
             return null;
         }
@@ -1159,7 +1170,8 @@ public final class ReflectUtils
         {
             if ( safeMethodsLoggingEnabled )
             {
-                Log.warn ( "ReflectionUtils method failed: createInstanceSafely", e );
+                final String msg = "ReflectionUtils method failed: createInstanceSafely";
+                LoggerFactory.getLogger ( ReflectUtils.class ).error ( msg, e );
             }
             return null;
         }
@@ -1200,7 +1212,8 @@ public final class ReflectUtils
         {
             if ( safeMethodsLoggingEnabled )
             {
-                Log.warn ( "ReflectionUtils method failed: createInstanceSafely", e );
+                final String msg = "ReflectionUtils method failed: createInstanceSafely";
+                LoggerFactory.getLogger ( ReflectUtils.class ).error ( msg, e );
             }
             return null;
         }
@@ -1346,7 +1359,8 @@ public final class ReflectUtils
         {
             if ( safeMethodsLoggingEnabled )
             {
-                Log.warn ( "ReflectionUtils method failed: callStaticMethodSafely", e );
+                final String msg = "ReflectionUtils method failed: callStaticMethodSafely";
+                LoggerFactory.getLogger ( ReflectUtils.class ).error ( msg, e );
             }
             return null;
         }
@@ -1390,7 +1404,8 @@ public final class ReflectUtils
         {
             if ( safeMethodsLoggingEnabled )
             {
-                Log.warn ( "ReflectionUtils method failed: callStaticMethodSafely", e );
+                final String msg = "ReflectionUtils method failed: callStaticMethodSafely";
+                LoggerFactory.getLogger ( ReflectUtils.class ).error ( msg, e );
             }
             return null;
         }
@@ -1433,7 +1448,8 @@ public final class ReflectUtils
         {
             if ( safeMethodsLoggingEnabled )
             {
-                Log.warn ( "ReflectionUtils method failed: callMethodsSafely", e );
+                final String msg = "ReflectionUtils method failed: callMethodsSafely";
+                LoggerFactory.getLogger ( ReflectUtils.class ).error ( msg, e );
             }
             return null;
         }
@@ -1479,7 +1495,8 @@ public final class ReflectUtils
         {
             if ( safeMethodsLoggingEnabled )
             {
-                Log.warn ( "ReflectionUtils method failed: callMethodsSafely", e );
+                final String msg = "ReflectionUtils method failed: callMethodsSafely";
+                LoggerFactory.getLogger ( ReflectUtils.class ).error ( msg, e );
             }
             return null;
         }
@@ -1525,7 +1542,8 @@ public final class ReflectUtils
         {
             if ( safeMethodsLoggingEnabled )
             {
-                Log.warn ( "ReflectionUtils method failed: callMethodSafely", e );
+                final String msg = "ReflectionUtils method failed: callMethodSafely";
+                LoggerFactory.getLogger ( ReflectUtils.class ).error ( msg, e );
             }
             return null;
         }
@@ -1691,7 +1709,8 @@ public final class ReflectUtils
         {
             if ( safeMethodsLoggingEnabled )
             {
-                Log.warn ( "ReflectionUtils method failed: getMethodSafely", e );
+                final String msg = "ReflectionUtils method failed: getMethodSafely";
+                LoggerFactory.getLogger ( ReflectUtils.class ).error ( msg, e );
             }
             return null;
         }

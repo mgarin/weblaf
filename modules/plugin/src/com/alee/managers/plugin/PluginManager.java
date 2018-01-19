@@ -17,13 +17,13 @@
 
 package com.alee.managers.plugin;
 
-import com.alee.managers.log.Log;
 import com.alee.managers.plugin.data.*;
 import com.alee.utils.*;
 import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.compare.Filter;
 import com.alee.utils.filefilter.DirectoriesFilter;
 import com.alee.utils.sort.GraphStructureProvider;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.io.File;
@@ -128,11 +128,6 @@ public abstract class PluginManager<T extends Plugin>
     protected boolean allowSimilarPlugins;
 
     /**
-     * Whether plugin manager logging is enabled or not.
-     */
-    protected boolean loggingEnabled;
-
-    /**
      * Recently initialized plugins list.
      * Contains plugins initialized while last plugins check.
      */
@@ -197,7 +192,6 @@ public abstract class PluginManager<T extends Plugin>
         // Default settings
         pluginFilter = null;
         allowSimilarPlugins = false;
-        loggingEnabled = true;
         classLoaderType = ClassLoaderType.context;
 
         // User settings
@@ -351,16 +345,6 @@ public abstract class PluginManager<T extends Plugin>
     }
 
     /**
-     * Returns whether plugin manager logging is enabled or not.
-     *
-     * @return true if plugin manager logging is enabled, false otherwise
-     */
-    public boolean isLoggingEnabled ()
-    {
-        return loggingEnabled;
-    }
-
-    /**
      * Returns name of the plugin descriptor file.
      * This file should contain serialized PluginInformation.
      *
@@ -468,14 +452,16 @@ public abstract class PluginManager<T extends Plugin>
                     // Warning about circular references
                     final String parentClass = ReflectUtils.getClassName ( manager.getClass () );
                     final String thisClass = ReflectUtils.getClassName ( PluginManager.this.getClass () );
-                    Log.get ().warn ( String.format ( "%s already have %s as parent", parentClass, thisClass ) );
+                    final String msg = "%s already have %s as parent";
+                    LoggerFactory.getLogger ( PluginManager.class ).warn ( String.format ( msg, parentClass, thisClass ) );
                 }
                 parentManagers.add ( manager );
             }
             else
             {
                 final String parentClass = ReflectUtils.getClassName ( manager.getClass () );
-                Log.get ().warn ( String.format ( "%s was already added as a parent", parentClass ) );
+                final String msg = "%s was already added as a parent";
+                LoggerFactory.getLogger ( PluginManager.class ).warn ( String.format ( msg, parentClass ) );
             }
         }
     }
@@ -496,7 +482,9 @@ public abstract class PluginManager<T extends Plugin>
             }
             else
             {
-                Log.get ().warn ( ReflectUtils.getClassName ( manager.getClass () ) + " was not added as a parent" );
+                final String parentName = ReflectUtils.getClassName ( manager.getClass () );
+                final String msg = "%s was not added as a parent";
+                LoggerFactory.getLogger ( PluginManager.class ).warn ( String.format ( msg, parentName ) );
             }
         }
     }
@@ -527,7 +515,7 @@ public abstract class PluginManager<T extends Plugin>
         synchronized ( checkLock )
         {
             final String prefix = "[" + information + "] ";
-            Log.info ( this, prefix + "Initializing pre-loaded plugin..." );
+            LoggerFactory.getLogger ( PluginManager.class ).info ( prefix + "Initializing pre-loaded plugin" );
 
             // Creating base detected plugin information
             final DetectedPlugin<T> detectedPlugin = new DetectedPlugin<T> ( null, null, information, logo );
@@ -542,7 +530,7 @@ public abstract class PluginManager<T extends Plugin>
             availablePluginsById.put ( plugin.getId (), plugin );
             availablePluginsByClass.put ( plugin.getClass (), plugin );
 
-            Log.info ( this, prefix + "Pre-loaded plugin initialized" );
+            LoggerFactory.getLogger ( PluginManager.class ).info ( prefix + "Pre-loaded plugin initialized" );
 
             // Informing everyone about plugin registration
             firePluginInitialized ( plugin );
@@ -567,11 +555,11 @@ public abstract class PluginManager<T extends Plugin>
         }
         catch ( final URISyntaxException e )
         {
-            Log.error ( this, "Unable to parse plugin URL", e );
+            LoggerFactory.getLogger ( PluginManager.class ).error ( "Unable to parse plugin URL", e );
         }
         catch ( final IOException e )
         {
-            Log.error ( this, "Unable to create local file to download plugin", e );
+            LoggerFactory.getLogger ( PluginManager.class ).error ( "Unable to create local file to download plugin", e );
         }
     }
 
@@ -598,7 +586,9 @@ public abstract class PluginManager<T extends Plugin>
     {
         synchronized ( checkLock )
         {
-            Log.info ( this, "Scanning plugin file: " + FileUtils.canonicalPath ( pluginFile ) );
+            final String scanPath = FileUtils.canonicalPath ( pluginFile );
+            final String msg = "Scanning plugin file: %s";
+            LoggerFactory.getLogger ( PluginManager.class ).info ( String.format ( msg, scanPath ) );
 
             // Resetting recently detected plugins list
             recentlyDetected = new ArrayList<DetectedPlugin<T>> ();
@@ -699,7 +689,8 @@ public abstract class PluginManager<T extends Plugin>
         }
         else
         {
-            Log.warn ( this, "Plugins directory is not yet specified" );
+            final String msg = "Plugins directory is not yet specified";
+            LoggerFactory.getLogger ( PluginManager.class ).warn ( msg );
             return false;
         }
     }
@@ -712,7 +703,9 @@ public abstract class PluginManager<T extends Plugin>
      */
     protected void collectPluginsInformationImpl ( final File dir, final boolean recursively )
     {
-        Log.info ( this, "Scanning plugins directory" + ( recursively ? " recursively" : "" ) + ": " + pluginsDirectoryPath );
+        final String scanType = recursively ? "recursive" : "flat";
+        final String msg = "Scanning plugins directory (%s): %s";
+        LoggerFactory.getLogger ( PluginManager.class ).info ( String.format ( msg, scanType, pluginsDirectoryPath ) );
 
         // Checking all files
         final File[] files = dir.listFiles ( getFileFilter () );
@@ -751,7 +744,10 @@ public abstract class PluginManager<T extends Plugin>
         if ( plugin != null )
         {
             recentlyDetected.add ( plugin );
-            Log.info ( this, "Plugin detected: " + plugin );
+
+            final String msg = "Plugin detected: %s";
+            LoggerFactory.getLogger ( PluginManager.class ).info ( String.format ( msg, plugin ) );
+
             return true;
         }
         else
@@ -773,7 +769,7 @@ public abstract class PluginManager<T extends Plugin>
         {
             try
             {
-                Log.info ( this, "Sorting detected plugins according to known dependencies" );
+                LoggerFactory.getLogger ( PluginManager.class ).info ( "Sorting detected plugins according to known dependencies" );
 
                 // Collecting plugins that doesn't have any dependencies or their dependencies are loaded
                 // Also mapping dependencies for quick access later
@@ -919,7 +915,7 @@ public abstract class PluginManager<T extends Plugin>
             }
             catch ( final Exception e )
             {
-                Log.warn ( this, "Unable to perform proper dependencies sorting", e );
+                LoggerFactory.getLogger ( PluginManager.class ).warn ( "Unable to perform proper dependencies sorting", e );
             }
         }
     }
@@ -1043,7 +1039,7 @@ public abstract class PluginManager<T extends Plugin>
         }
         catch ( final IOException e )
         {
-            Log.error ( this, e );
+            LoggerFactory.getLogger ( PluginManager.class ).error ( e.toString (), e );
         }
         return null;
     }
@@ -1107,7 +1103,7 @@ public abstract class PluginManager<T extends Plugin>
             // Informing about newly detected plugins
             firePluginsDetected ( recentlyDetected );
 
-            Log.info ( this, "Initializing plugins..." );
+            LoggerFactory.getLogger ( PluginManager.class ).info ( "Initializing plugins" );
 
             // Initializing plugins
             initializeDetectedPluginsImpl ();
@@ -1130,11 +1126,11 @@ public abstract class PluginManager<T extends Plugin>
             // Informing about new plugins initialization
             firePluginsInitialized ( recentlyInitialized );
 
-            Log.info ( this, "Plugins initialization finished" );
+            LoggerFactory.getLogger ( PluginManager.class ).info ( "Plugins initialization finished" );
         }
         else
         {
-            Log.info ( this, "No new plugins found" );
+            LoggerFactory.getLogger ( PluginManager.class ).info ( "No new plugins found" );
         }
     }
 
@@ -1170,18 +1166,20 @@ public abstract class PluginManager<T extends Plugin>
             try
             {
                 // Starting to load plugin now
-                Log.info ( this, prefix + "Initializing plugin..." );
+                LoggerFactory.getLogger ( PluginManager.class ).info ( prefix + "Initializing plugin" );
                 dp.setStatus ( PluginStatus.loading );
 
                 // Checking plugin type as we don't want (for example) to load server plugins on client side
                 if ( acceptedPluginType != null && ( info.getType () == null || !info.getType ().equals ( acceptedPluginType ) ) )
                 {
-                    Log.error ( this, prefix + "Plugin of type \"" + info.getType () + "\" cannot be loaded, " +
-                            "required plugin type is \"" + acceptedPluginType + "\"" );
+                    final String msg = "Plugin of type '%s' cannot be loaded, required type is: %s";
+                    final String fmsg = String.format ( msg, info.getType (), acceptedPluginType );
+                    LoggerFactory.getLogger ( PluginManager.class ).error ( prefix + fmsg );
+
                     dp.setStatus ( PluginStatus.failed );
                     dp.setFailureCause ( "Wrong type" );
-                    dp.setExceptionMessage ( "Detected plugin type: " + info.getType () + "\", " +
-                            "required plugin type: \"" + acceptedPluginType + "\"" );
+                    dp.setExceptionMessage ( fmsg );
+
                     continue;
                 }
 
@@ -1189,10 +1187,13 @@ public abstract class PluginManager<T extends Plugin>
                 // Usually there shouldn't be different versions of the same plugin but everyone make mistakes
                 if ( isDeprecatedVersion ( dp ) )
                 {
-                    Log.warn ( this, prefix + "This plugin is deprecated, newer version loaded instead" );
+                    final String msg = "This plugin is deprecated, newer version loaded instead";
+                    LoggerFactory.getLogger ( PluginManager.class ).warn ( prefix + msg );
+
                     dp.setStatus ( PluginStatus.failed );
                     dp.setFailureCause ( "Deprecated" );
-                    dp.setExceptionMessage ( "This plugin is deprecated, newer version loaded instead" );
+                    dp.setExceptionMessage ( msg );
+
                     continue;
                 }
 
@@ -1200,20 +1201,26 @@ public abstract class PluginManager<T extends Plugin>
                 // This might occur in case the same plugin appears more than once in different files
                 if ( isSameVersionAlreadyLoaded ( dp, detectedPlugins ) )
                 {
-                    Log.warn ( this, prefix + "Plugin is duplicate, it will be loaded from another file" );
+                    final String msg = "Plugin is duplicate, it will be loaded from another file";
+                    LoggerFactory.getLogger ( PluginManager.class ).warn ( prefix + msg );
+
                     dp.setStatus ( PluginStatus.failed );
                     dp.setFailureCause ( "Duplicate" );
-                    dp.setExceptionMessage ( "This plugin is duplicate, it will be loaded from another file" );
+                    dp.setExceptionMessage ( msg );
+
                     continue;
                 }
 
                 // Checking that plugin filter accepts this plugin
                 if ( getPluginFilter () != null && !getPluginFilter ().accept ( dp ) )
                 {
-                    Log.info ( this, prefix + "Plugin was not accepted by plugin filter" );
+                    final String msg = "Plugin was not accepted by plugin filter";
+                    LoggerFactory.getLogger ( PluginManager.class ).info ( prefix + msg );
+
                     dp.setStatus ( PluginStatus.failed );
                     dp.setFailureCause ( "Filtered" );
-                    dp.setExceptionMessage ( "Plugin was not accepted by plugin filter" );
+                    dp.setExceptionMessage ( msg );
+
                     continue;
                 }
 
@@ -1239,10 +1246,14 @@ public abstract class PluginManager<T extends Plugin>
                             }
                             if ( !available )
                             {
-                                Log.error ( this, prefix + "Mandatory plugin dependency was not found: " + did );
+                                final String msg = "Mandatory plugin dependency was not found: %s";
+                                final String fmsg = String.format ( msg, did );
+                                LoggerFactory.getLogger ( PluginManager.class ).error ( prefix + fmsg );
+
                                 dp.setStatus ( PluginStatus.failed );
                                 dp.setFailureCause ( "Incomplete" );
-                                dp.setExceptionMessage ( "Mandatory plugin dependency was not found: " + did );
+                                dp.setExceptionMessage ( fmsg );
+
                                 break;
                             }
                         }
@@ -1277,10 +1288,14 @@ public abstract class PluginManager<T extends Plugin>
                         }
                         else
                         {
-                            Log.error ( this, prefix + "Plugin library was not found: " + file.getAbsolutePath () );
+                            final String msg = "Plugin library was not found: %s";
+                            final String fmsg = String.format ( msg, file.getAbsolutePath () );
+                            LoggerFactory.getLogger ( PluginManager.class ).error ( prefix + fmsg );
+
                             dp.setStatus ( PluginStatus.failed );
                             dp.setFailureCause ( "Incomplete" );
-                            dp.setExceptionMessage ( "Plugin library was not found: " + file.getAbsolutePath () );
+                            dp.setExceptionMessage ( fmsg );
+
                             break;
                         }
                     }
@@ -1357,14 +1372,14 @@ public abstract class PluginManager<T extends Plugin>
                     recentlyInitialized.add ( plugin );
 
                     // Updating detected plugin status
-                    Log.info ( this, prefix + "Plugin initialized" );
+                    LoggerFactory.getLogger ( PluginManager.class ).info ( prefix + "Plugin initialized" );
                     dp.setStatus ( PluginStatus.loaded );
                     dp.setPlugin ( plugin );
                 }
                 catch ( final Throwable e )
                 {
                     // Something happened while performing plugin class load
-                    Log.error ( this, prefix + "Unable to initialize plugin", e );
+                    LoggerFactory.getLogger ( PluginManager.class ).error ( prefix + "Unable to initialize plugin", e );
                     dp.setStatus ( PluginStatus.failed );
                     dp.setFailureCause ( "Internal exception" );
                     dp.setException ( e );
@@ -1373,7 +1388,7 @@ public abstract class PluginManager<T extends Plugin>
             catch ( final Throwable e )
             {
                 // Something happened while checking plugin information
-                Log.error ( this, prefix + "Unable to initialize plugin data", e );
+                LoggerFactory.getLogger ( PluginManager.class ).error ( prefix + "Unable to initialize plugin data", e );
                 dp.setStatus ( PluginStatus.failed );
                 dp.setFailureCause ( "Data exception" );
                 dp.setException ( e );
@@ -1395,14 +1410,15 @@ public abstract class PluginManager<T extends Plugin>
                     final String libraryVersion = library.getKey ().getVersion ();
                     sb.append ( "[ " ).append ( plugin.toString () ).append ( ", version " ).append ( libraryVersion ).append ( " ] " );
                 }
-                Log.warn ( this, sb.toString () );
+                LoggerFactory.getLogger ( PluginManager.class ).warn ( sb.toString () );
                 sameLibrariesInPlugins = true;
                 break;
             }
         }
         if ( sameLibrariesInPlugins )
         {
-            Log.warn ( this, "Make sure that the same library usage within different plugins was actually your intent" );
+            final String msg = "Make sure that the same library usage within different plugins was actually your intent";
+            LoggerFactory.getLogger ( PluginManager.class ).warn ( msg );
         }
     }
 
@@ -1691,17 +1707,6 @@ public abstract class PluginManager<T extends Plugin>
         {
             return detectedPlugins.size () - availablePlugins.size ();
         }
-    }
-
-    /**
-     * Sets whether plugin manager logging is enabled or not.
-     *
-     * @param loggingEnabled whether plugin manager logging is enabled or not
-     */
-    public void setLoggingEnabled ( final boolean loggingEnabled )
-    {
-        this.loggingEnabled = loggingEnabled;
-        Log.setLoggingEnabled ( this, loggingEnabled );
     }
 
     /**

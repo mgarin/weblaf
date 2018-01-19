@@ -25,11 +25,11 @@ import com.alee.extended.pathfield.WebPathField;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyRunnable;
-import com.alee.managers.log.Log;
 import com.alee.painter.decoration.content.TextRasterization;
 import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.swing.WebTimer;
 import com.alee.utils.swing.extensions.SizeMethods;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.FocusManager;
@@ -141,7 +141,8 @@ public final class SwingUtils extends CoreSwingUtils
                 }
                 catch ( final Throwable e )
                 {
-                    Log.get ().error ( "Uncaught EventQueue exception: " + e, e );
+                    final String msg = "Uncaught EventQueue exception: %s";
+                    LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( String.format ( msg, e.toString () ), e );
                 }
             }
         } );
@@ -2923,15 +2924,15 @@ public final class SwingUtils extends CoreSwingUtils
         }
         catch ( final NoSuchMethodException e )
         {
-            Log.error ( LafUtils.class, e );
+            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
         }
         catch ( final InvocationTargetException e )
         {
-            Log.error ( LafUtils.class, e );
+            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
         }
         catch ( final IllegalAccessException e )
         {
-            Log.error ( LafUtils.class, e );
+            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
         }
     }
 

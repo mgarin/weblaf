@@ -17,9 +17,9 @@
 
 package com.alee.utils.jar;
 
-import com.alee.managers.log.Log;
 import com.alee.utils.FileUtils;
 import com.alee.utils.TextUtils;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -323,7 +323,7 @@ public class JarEntry
         }
         catch ( final IOException e )
         {
-            Log.error ( this, e );
+            LoggerFactory.getLogger ( JarEntry.class ).error ( e.toString (), e );
             return null;
         }
     }

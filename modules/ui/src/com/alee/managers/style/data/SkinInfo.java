@@ -22,13 +22,13 @@ import com.alee.api.TitleSupport;
 import com.alee.api.merge.Merge;
 import com.alee.managers.icon.IconManager;
 import com.alee.managers.icon.set.IconSet;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.io.Serializable;
@@ -460,7 +460,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
             {
                 // Required style cannot be found, using default style
                 final String warn = "Unable to find style '%s' for component: %s";
-                Log.warn ( this, String.format ( warn, styleId, component ) );
+                LoggerFactory.getLogger ( SkinInfo.class ).warn ( String.format ( warn, styleId, component ) );
 
                 // Trying to use default component style
                 final String defaultStyleId = StyleId.getDefault ( component ).getCompleteId ();

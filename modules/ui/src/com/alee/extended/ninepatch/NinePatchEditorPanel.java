@@ -38,7 +38,6 @@ import com.alee.laf.toolbar.WebToolBar;
 import com.alee.managers.drag.transfer.FilesTransferHandler;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.LM;
-import com.alee.managers.log.Log;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.style.BoundsType;
 import com.alee.managers.style.StyleId;
@@ -53,6 +52,7 @@ import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.ninepatch.NinePatchInterval;
 import com.alee.utils.ninepatch.NinePatchIntervalType;
 import com.alee.utils.swing.DialogOptions;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -251,9 +251,9 @@ public class NinePatchEditorPanel extends WebPanel
                     {
                         saveImage ( new File ( imageSrc ) );
                     }
-                    catch ( final IOException e1 )
+                    catch ( final IOException ex )
                     {
-                        Log.error ( this, e1 );
+                        LoggerFactory.getLogger ( NinePatchEditorPanel.class ).error ( ex.toString (), ex );
                     }
                 }
             }
@@ -288,9 +288,9 @@ public class NinePatchEditorPanel extends WebPanel
                         saveImage ( wfc.getSelectedFile () );
                         save.setEnabled ( true );
                     }
-                    catch ( final IOException e1 )
+                    catch ( final IOException ex )
                     {
-                        Log.error ( this, e1 );
+                        LoggerFactory.getLogger ( NinePatchEditorPanel.class ).error ( ex.toString (), ex );
                     }
                 }
             }

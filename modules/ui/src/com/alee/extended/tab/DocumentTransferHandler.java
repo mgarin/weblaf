@@ -18,8 +18,8 @@
 package com.alee.extended.tab;
 
 import com.alee.laf.tabbedpane.WebTabbedPane;
-import com.alee.managers.log.Log;
 import com.alee.utils.SwingUtils;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -171,7 +171,7 @@ public class DocumentTransferHandler extends TransferHandler
         }
         catch ( final Exception e )
         {
-            Log.error ( this, e );
+            LoggerFactory.getLogger ( DocumentTransferHandler.class ).error ( e.toString (), e );
             return false;
         }
     }
@@ -247,7 +247,7 @@ public class DocumentTransferHandler extends TransferHandler
         }
         catch ( final Exception e )
         {
-            Log.error ( this, e );
+            LoggerFactory.getLogger ( DocumentTransferHandler.class ).error ( e.toString (), e );
             return false;
         }
     }

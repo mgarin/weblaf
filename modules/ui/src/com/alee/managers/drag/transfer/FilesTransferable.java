@@ -17,8 +17,8 @@
 
 package com.alee.managers.drag.transfer;
 
-import com.alee.managers.log.Log;
 import com.alee.utils.CollectionUtils;
+import org.slf4j.LoggerFactory;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -289,7 +289,7 @@ public class FilesTransferable implements Transferable
             }
             catch ( final Exception e )
             {
-                Log.error ( FilesTransferHandler.class, e );
+                LoggerFactory.getLogger ( FilesTransferable.class ).error ( e.toString (), e );
             }
         }
         return uriListFlavor;

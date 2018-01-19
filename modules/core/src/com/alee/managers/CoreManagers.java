@@ -18,7 +18,6 @@
 package com.alee.managers;
 
 import com.alee.managers.language.LanguageManager;
-import com.alee.managers.log.Log;
 import com.alee.managers.proxy.ProxyManager;
 import com.alee.managers.settings.SettingsManager;
 
@@ -28,7 +27,6 @@ import com.alee.managers.settings.SettingsManager;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLaF">How to use WebLaF</a>
- * @see com.alee.managers.log.Log
  * @see com.alee.managers.language.LanguageManager
  * @see com.alee.managers.settings.SettingsManager
  * @see com.alee.managers.proxy.ProxyManager
@@ -43,7 +41,6 @@ public final class CoreManagers
      */
     public static synchronized void initialize ()
     {
-        Log.initialize ();
         LanguageManager.initialize ();
         SettingsManager.initialize ();
         ProxyManager.initialize ();

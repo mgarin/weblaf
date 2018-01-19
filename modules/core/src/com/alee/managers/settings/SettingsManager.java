@@ -18,12 +18,12 @@
 package com.alee.managers.settings;
 
 import com.alee.api.jdk.Supplier;
-import com.alee.managers.log.Log;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.XmlUtils;
 import com.alee.utils.swing.WebTimer;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -136,14 +136,7 @@ public final class SettingsManager
     private static final List<String> groupsToSaveOnChange = new ArrayList<String> ();
 
     /**
-     * Whether settings log is enabled or not.
-     * Log will display what settings are being loaded and saved and when that happens.
-     * Log might contain exceptions if settings cannot be read due to corrupted file or modified object structure.
-     */
-    private static boolean loggingEnabled = true;
-
-    /**
-     * Whether settings save log is enabled or not.
+     * Whether or not settings save logging is enabled.
      */
     private static boolean saveLoggingEnabled = false;
 
@@ -538,8 +531,9 @@ public final class SettingsManager
         }
         catch ( final ClassCastException e )
         {
-            Log.error ( SettingsManager.class, "Unable to load settings value for group \"" + group + "\" and key \"" + key +
-                    "\" because it has inappropriate class type", e );
+            final String msg = "Unable to load settings value for group '%s' and key '%s' because it has inappropriate class type";
+            final String fmsg = String.format ( msg, group, key );
+            LoggerFactory.getLogger ( SettingsManager.class ).error ( fmsg, e );
 
             // Saving default value if needed
             if ( saveDefaultValues )
@@ -757,12 +751,13 @@ public final class SettingsManager
                         groupState.put ( group, new SettingsGroupState ( readFromBackup ? ReadState.restored : ReadState.ok ) );
 
                         final String state = readFromBackup ? "restored from backup" : "loaded";
-                        Log.info ( SettingsManager.class, "Settings group \"" + group + "\" " + state + " successfully" );
+                        final String msg = "Settings group '%s' %s successfully";
+                        LoggerFactory.getLogger ( SettingsManager.class ).info ( String.format ( msg, group, state ) );
                     }
                     catch ( final Exception e )
                     {
-                        Log.error ( SettingsManager.class, "Unable to load settings group \"" + group +
-                                "\" due to unexpected exception", e );
+                        final String msg = "Unable to load settings group '%s' due to unexpected exception";
+                        LoggerFactory.getLogger ( SettingsManager.class ).error ( String.format ( msg, group ), e );
 
                         // Delete incorrect SettingsGroup file
                         FileUtils.deleteFile ( file );
@@ -777,7 +772,8 @@ public final class SettingsManager
                 // No group settings file or backup exists, new SettingsGroup will be created
                 groupState.put ( group, new SettingsGroupState ( ReadState.created ) );
 
-                Log.info ( SettingsManager.class, "Settings group \"" + group + "\" created successfully" );
+                final String msg = "Settings group '%s' created successfully";
+                LoggerFactory.getLogger ( SettingsManager.class ).info ( String.format ( msg, group ) );
             }
         }
         else
@@ -785,7 +781,8 @@ public final class SettingsManager
             // No group setting dir exists, new SettingsGroup will be created
             groupState.put ( group, new SettingsGroupState ( ReadState.created ) );
 
-            Log.info ( SettingsManager.class, "Settings group \"" + group + "\" created successfully" );
+            final String msg = "Settings group '%s' created successfully";
+            LoggerFactory.getLogger ( SettingsManager.class ).info ( String.format ( msg, group ) );
         }
 
         // Create new SettingsGroup
@@ -866,7 +863,8 @@ public final class SettingsManager
 
                     if ( saveLoggingEnabled )
                     {
-                        Log.info ( SettingsManager.class, "Settings group \"" + group + "\" saved successfully" );
+                        final String msg = "Settings group '%s' saved successfully";
+                        LoggerFactory.getLogger ( SettingsManager.class ).info ( String.format ( msg, group ) );
                     }
                 }
                 else
@@ -877,8 +875,8 @@ public final class SettingsManager
             }
             catch ( final Exception e )
             {
-                Log.error ( SettingsManager.class, "Unable to save settings group \"" + settingsGroup.getName () +
-                        "\" due to unexpected exception:", e );
+                final String msg = "Unable to save settings group '%s' due to unexpected exception";
+                LoggerFactory.getLogger ( SettingsManager.class ).error ( String.format ( msg, settingsGroup.getName () ), e );
             }
         }
     }
@@ -1040,8 +1038,8 @@ public final class SettingsManager
             }
             catch ( final Exception e )
             {
-                Log.error ( SettingsManager.class, "Unable to load settings file \"" + fileName +
-                        "\" due to unexpected exception", e );
+                final String msg = "Unable to load settings file '%s' due to unexpected exception";
+                LoggerFactory.getLogger ( SettingsManager.class ).error ( String.format ( msg, fileName ), e );
 
                 value = defaultValue != null ? defaultValue.get () : null;
             }
@@ -1307,27 +1305,6 @@ public final class SettingsManager
     public static void setSaveOnChangeDelay ( final long saveOnChangeDelay )
     {
         SettingsManager.saveOnChangeDelay = saveOnChangeDelay;
-    }
-
-    /**
-     * Returns whether should display settings load and save error messages or not.
-     *
-     * @return true if should display settings load and save error messages, false otherwise
-     */
-    public static boolean isLoggingEnabled ()
-    {
-        return loggingEnabled;
-    }
-
-    /**
-     * Sets whether should display settings load and save error messages or not.
-     *
-     * @param loggingEnabled whether should display settings load and save error messages or not
-     */
-    public static void setLoggingEnabled ( final boolean loggingEnabled )
-    {
-        SettingsManager.loggingEnabled = loggingEnabled;
-        Log.setLoggingEnabled ( SettingsManager.class, loggingEnabled );
     }
 
     /**

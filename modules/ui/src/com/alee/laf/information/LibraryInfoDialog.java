@@ -39,7 +39,6 @@ import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.icon.LazyIcon;
 import com.alee.managers.language.LM;
-import com.alee.managers.log.Log;
 import com.alee.managers.popup.WebInnerPopup;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
@@ -48,6 +47,7 @@ import com.alee.managers.version.VersionManager;
 import com.alee.utils.*;
 import com.alee.utils.jar.JarEntry;
 import com.alee.utils.jar.JarStructure;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -237,7 +237,7 @@ public class LibraryInfoDialog extends WebFrame
                                 }
                                 catch ( final IOException e )
                                 {
-                                    Log.error ( this, e );
+                                    LoggerFactory.getLogger ( LibraryInfoDialog.class ).error ( e.toString (), e );
                                 }
                             }
                         } );
@@ -262,7 +262,7 @@ public class LibraryInfoDialog extends WebFrame
         catch ( final Exception e )
         {
             // Logging exception
-            Log.error ( this, e );
+            LoggerFactory.getLogger ( LibraryInfoDialog.class ).error ( e.toString (), e );
 
             // Error label
             final WebLabel errorLabel = new WebLabel ( "weblaf.info.libraries.error", WebLabel.CENTER );

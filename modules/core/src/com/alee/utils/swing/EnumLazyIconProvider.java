@@ -17,7 +17,7 @@
 
 package com.alee.utils.swing;
 
-import com.alee.managers.log.Log;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.util.HashMap;
@@ -102,7 +102,8 @@ public final class EnumLazyIconProvider
             catch ( final Exception e )
             {
                 final String cn = enumeration.getClass ().getCanonicalName ();
-                Log.error ( EnumLazyIconProvider.class, "Unable to find icon \"" + path + "\" near class: " + cn );
+                final String msg = "Unable to find icon '%s' near class: %s";
+                LoggerFactory .getLogger ( EnumLazyIconProvider.class ).error ( String.format ( msg, path, cn ) );
                 stateIcons.put ( state, null );
             }
         }

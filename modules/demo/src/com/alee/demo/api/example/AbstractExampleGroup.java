@@ -19,8 +19,8 @@ package com.alee.demo.api.example;
 
 import com.alee.demo.skin.DemoIcons;
 import com.alee.demo.util.ExampleUtils;
-import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.net.URL;
@@ -81,7 +81,8 @@ public abstract class AbstractExampleGroup extends AbstractExampleElement implem
                 }
                 catch ( final Exception e )
                 {
-                    Log.get ().error ( "Unable to initialize group: " + groupClass, e );
+                    final String msg = "Unable to initialize group: %s";
+                    LoggerFactory.getLogger ( AbstractExampleGroup.class ).error ( String.format ( msg, groupClass ), e );
                 }
             }
         }
@@ -118,7 +119,8 @@ public abstract class AbstractExampleGroup extends AbstractExampleElement implem
                 }
                 catch ( final Exception e )
                 {
-                    Log.get ().error ( "Unable to initialize example: " + exampleClass, e );
+                    final String msg = "Unable to initialize example: %s";
+                    LoggerFactory.getLogger ( AbstractExampleGroup.class ).error ( String.format ( msg, exampleClass ), e );
                 }
             }
         }

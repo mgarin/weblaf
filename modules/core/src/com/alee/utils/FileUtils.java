@@ -18,7 +18,6 @@
 package com.alee.utils;
 
 import com.alee.managers.language.LM;
-import com.alee.managers.log.Log;
 import com.alee.managers.proxy.ProxyManager;
 import com.alee.utils.compare.Filter;
 import com.alee.utils.file.FileComparator;
@@ -30,6 +29,7 @@ import com.alee.utils.filefilter.AllFilesFilter;
 import com.alee.utils.filefilter.IOFileFilterAdapter;
 import com.alee.utils.filefilter.SwingFileFilterAdapter;
 import com.alee.utils.swing.WebTimer;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
@@ -345,7 +345,7 @@ public final class FileUtils
         }
         catch ( final Exception e )
         {
-            Log.error ( FileUtils.class, e );
+            LoggerFactory.getLogger ( FileUtils.class ).error ( e.toString (), e );
             return false;
         }
     }
@@ -1744,11 +1744,11 @@ public final class FileUtils
         }
         catch ( final FileNotFoundException e )
         {
-            Log.error ( FileUtils.class, e );
+            LoggerFactory.getLogger ( FileUtils.class ).error ( e.toString (), e );
         }
         catch ( final UnsupportedEncodingException e )
         {
-            Log.error ( FileUtils.class, e );
+            LoggerFactory.getLogger ( FileUtils.class ).error ( e.toString (), e );
         }
         finally
         {
@@ -2035,7 +2035,7 @@ public final class FileUtils
         }
         catch ( final Exception e )
         {
-            Log.error ( FileUtils.class, e );
+            LoggerFactory.getLogger ( FileUtils.class ).error ( e.toString (), e );
             return -1;
         }
     }
@@ -2059,7 +2059,7 @@ public final class FileUtils
         }
         catch ( final Exception e )
         {
-            Log.error ( FileUtils.class, e );
+            LoggerFactory.getLogger ( FileUtils.class ).error ( e.toString (), e );
             return -1;
         }
     }

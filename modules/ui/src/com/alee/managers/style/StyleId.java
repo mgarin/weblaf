@@ -1042,7 +1042,14 @@ public final class StyleId implements Identifiable
     @Override
     public String toString ()
     {
-        return this != auto ? "StyleId [ id: \"" + getCompleteId () + "\"; parent: " + parent + " ]" : "StyleId [ auto ]";
+        if ( this != auto )
+        {
+            return String.format ( "StyleId [ id: '%s'; parent: %s ]", getCompleteId (), parent );
+        }
+        else
+        {
+            return "StyleId [ auto ]";
+        }
     }
 
     /**
@@ -1162,7 +1169,7 @@ public final class StyleId implements Identifiable
         final JRootPane rootPane = SwingUtils.getRootPane ( window );
         if ( rootPane == null )
         {
-            final String msg = "Unable to retrieve root pane for Window '%s'";
+            final String msg = "Unable to retrieve root pane for Window: %s";
             throw new StyleException ( String.format ( msg, window ) );
         }
         return rootPane;

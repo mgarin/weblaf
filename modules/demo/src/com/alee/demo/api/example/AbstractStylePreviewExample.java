@@ -17,12 +17,12 @@
 
 package com.alee.demo.api.example;
 
-import com.alee.managers.log.Log;
 import com.alee.managers.style.Skin;
 import com.alee.utils.FileUtils;
 import com.alee.utils.NetUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.xml.Resource;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
@@ -72,7 +72,8 @@ public abstract class AbstractStylePreviewExample extends AbstractPreviewExample
         final Resource resource = new Resource ( skin.getClass (), path );
         if ( skin.getClass ().getResource ( path ) == null )
         {
-            Log.get ().warn ( "Unable to find style resource: " + path + " for skin: " + skin );
+            final String msg = "Unable to find style resource '%s' for skin: %s";
+            LoggerFactory.getLogger ( AbstractStylePreviewExample.class ).warn ( String.format ( msg, path, skin ) );
         }
         return resource;
     }
