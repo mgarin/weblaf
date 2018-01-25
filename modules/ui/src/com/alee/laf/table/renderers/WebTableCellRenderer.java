@@ -45,7 +45,7 @@ import java.util.List;
 public class WebTableCellRenderer extends WebStyledLabel implements TableCellRenderer, Stateful
 {
     /**
-     * todo 1. Add generic type for values
+     * todo 1. Add generic type for values?
      */
 
     /**

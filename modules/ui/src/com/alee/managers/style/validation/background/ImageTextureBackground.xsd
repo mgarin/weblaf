@@ -3,15 +3,14 @@
            elementFormDefault="qualified">
 
     <xs:include schemaLocation="AbstractImageTextureBackground.xsd" />
-    <xs:include schemaLocation="TextureType.xsd" />
 
-    <!-- com.alee.painter.decoration.background.PresetTextureBackground -->
-    <xs:complexType name="PresetTextureBackground">
+    <!-- com.alee.painter.decoration.background.ImageTextureBackground -->
+    <xs:complexType name="ImageTextureBackground">
         <xs:complexContent>
             <xs:extension base="AbstractImageTextureBackground">
 
-                <!-- Texture preset type -->
-                <xs:attribute name="preset" type="TextureType" />
+                <!-- Identifier of an Icon from IconManager -->
+                <xs:attribute name="iconId" type="xs:string" />
 
             </xs:extension>
         </xs:complexContent>

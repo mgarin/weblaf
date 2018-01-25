@@ -18,11 +18,11 @@
 package com.alee.extended.language;
 
 import com.alee.laf.combobox.WebComboBoxRenderer;
-import com.alee.laf.list.WebListCellRenderer;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.UILanguageManager;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Locale;
 
 /**
@@ -50,10 +50,10 @@ public class LanguageChooserRenderer extends WebComboBoxRenderer
     }
 
     @Override
-    public WebListCellRenderer getListCellRendererComponent ( final JList list, final Object value, final int index,
-                                                              final boolean isSelected, final boolean hasFocus )
+    public Component getListCellRendererComponent ( final JList list, final Object value, final int index,
+                                                    final boolean isSelected, final boolean hasFocus )
     {
-        final WebListCellRenderer renderer = super.getListCellRendererComponent ( list, value, index, isSelected, hasFocus );
+        final JComponent renderer = ( JComponent ) super.getListCellRendererComponent ( list, value, index, isSelected, hasFocus );
 
         // Special property for locale value
         renderer.putClientProperty ( LanguageItemLocale.LOCALE_VALUE_KEY, value );

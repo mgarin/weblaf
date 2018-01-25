@@ -36,7 +36,7 @@ import java.awt.*;
 public class WebComboBoxRenderer extends WebListCellRenderer
 {
     /**
-     * todo 1. Add generic type for values
+     * todo 1. Add generic type for values?
      */
 
     @Override

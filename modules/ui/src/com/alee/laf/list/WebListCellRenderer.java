@@ -45,7 +45,7 @@ import java.util.List;
 public class WebListCellRenderer extends WebStyledLabel implements ListCellRenderer, Stateful
 {
     /**
-     * todo 1. Add generic type for values
+     * todo 1. Add generic type for values?
      */
 
     /**
@@ -307,7 +307,7 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
      * @return list cell renderer component
      */
     @Override
-    public WebListCellRenderer getListCellRendererComponent ( final JList list, final Object value, final int index,
+    public Component getListCellRendererComponent ( final JList list, final Object value, final int index,
                                                     final boolean isSelected, final boolean hasFocus )
     {
         // Updating custom states

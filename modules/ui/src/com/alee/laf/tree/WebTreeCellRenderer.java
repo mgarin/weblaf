@@ -48,8 +48,8 @@ import java.util.List;
 public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRenderer, Stateful
 {
     /**
-     * todo 1. Get rid of the hardcoded icons within renderer
-     * todo 2. Add generic type for values
+     * todo 1. Add generic type for values?
+     * todo 2. Get rid of the hardcoded icons within renderer
      */
 
     /**
@@ -476,8 +476,8 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
      * @return cell renderer component
      */
     @Override
-    public WebStyledLabel getTreeCellRendererComponent ( final JTree tree, final Object value, final boolean isSelected,
-                                                         final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
+    public Component getTreeCellRendererComponent ( final JTree tree, final Object value, final boolean isSelected,
+                                                    final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         // Updating custom states
         updateStates ( tree, value, isSelected, expanded, leaf, row, hasFocus );

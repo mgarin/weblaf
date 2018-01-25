@@ -910,7 +910,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     public static void install ( final Class<? extends Skin> skin, final Object... arguments ) throws LookAndFeelException
     {
-        install ( new LazyInstance<Skin> ( ( Class<Skin> ) skin, arguments ) );
+        install ( new LazyInstance<Skin> ( skin, arguments ) );
     }
 
     /**
