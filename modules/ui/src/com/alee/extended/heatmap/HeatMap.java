@@ -19,7 +19,10 @@ package com.alee.extended.heatmap;
 
 import com.alee.extended.magnifier.MagnifierGlass;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.utils.*;
+import com.alee.utils.ColorUtils;
+import com.alee.utils.ImageUtils;
+import com.alee.utils.SwingUtils;
+import com.alee.utils.UtilityException;
 import com.alee.utils.concurrent.DaemonThreadFactory;
 import com.alee.utils.swing.WebTimer;
 
@@ -560,19 +563,10 @@ public class HeatMap extends JComponent
      */
     protected Color getHeatColor ( final long min, final long max, final long value )
     {
-        final long limited = MathUtils.limit ( min, value, max );
-        final double progress = ( HEAT_COLORS.length - 1 ) * ( limited - min ) / max;
-        final int floor = ( int ) Math.round ( Math.floor ( progress ) );
-        final int ceil = ( int ) Math.round ( Math.ceil ( progress ) );
-        if ( floor != ceil )
-        {
-            final float cp = ( float ) ( progress - Math.floor ( progress ) );
-            return ColorUtils.intermediate ( HEAT_COLORS[ floor ], HEAT_COLORS[ ceil ], cp );
-        }
-        else
-        {
-            return HEAT_COLORS[ floor ];
-        }
+        final float progress = ( float ) ( value - min ) / ( max - min );
+        final int floor = ( int ) Math.round ( Math.floor ( ( HEAT_COLORS.length - 1 ) * progress ) );
+        final int ceil = ( int ) Math.round ( Math.ceil ( ( HEAT_COLORS.length - 1 ) * progress ) );
+        return ColorUtils.intermediate ( HEAT_COLORS[ floor ], HEAT_COLORS[ ceil ], ( HEAT_COLORS.length - 1 ) * progress - floor );
     }
 
     /**
