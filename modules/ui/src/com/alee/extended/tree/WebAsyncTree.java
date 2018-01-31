@@ -296,7 +296,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      */
     public void filterAndSort ()
     {
-        getAsyncModel ().filterAndSort ( getRootNode (), false );
+        getAsyncModel ().filterAndSort ( getRootNode (), true );
     }
 
     /**

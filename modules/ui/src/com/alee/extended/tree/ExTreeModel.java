@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.TreeState;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.laf.tree.WebTree;
@@ -110,6 +111,9 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      */
     protected E loadRootNode ()
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Retrieving root node
         final ExTreeDataProvider<E> dataProvider = getDataProvider ();
         final E rootNode = dataProvider.getRoot ();
@@ -134,6 +138,9 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      */
     protected void loadTreeData ( final E parent )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Loading children
         final ExTreeDataProvider<E> dataProvider = getDataProvider ();
         final List<E> children = dataProvider.getChildren ( parent );
@@ -160,18 +167,29 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     @Override
     public E getRoot ()
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Returning root node
         return rootNode;
     }
 
     @Override
     public E getChild ( final Object parent, final int index )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Looking for child node
         return ( E ) super.getChild ( parent, index );
     }
 
     @Override
     public void reload ( final TreeNode node )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         final E reloadedNode = ( E ) node;
 
         // Cancels tree editing
@@ -239,6 +257,9 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     @Override
     public void insertNodeInto ( final MutableTreeNode child, final MutableTreeNode parent, final int index )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         final E childNode = ( E ) child;
         final E parentNode = ( E ) parent;
 
@@ -272,6 +293,9 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     @Override
     public void insertNodesInto ( final List<E> children, final E parent, final int index )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Caching nodes
         addRawChildren ( parent, children, index );
         cacheNodesById ( children );
@@ -305,6 +329,9 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     @Override
     public void insertNodesInto ( final E[] children, final E parent, final int index )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Caching nodes
         addRawChildren ( parent, children, index );
         cacheNodesById ( children );
@@ -330,6 +357,9 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     @Override
     public void removeNodeFromParent ( final MutableTreeNode node )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         final E child = ( E ) node;
         final E parent = findParent ( child.getId () );
 
@@ -369,6 +399,9 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     @Override
     public void removeNodesFromParent ( final List<E> nodes )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Removing node caches
         final List<E> visible = new ArrayList<E> ( nodes.size () );
         for ( final E child : nodes )
@@ -402,6 +435,9 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      */
     public void filterAndSort ( final E parent, final boolean recursively )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Saving tree state to restore it right after children update
         final TreeState treeState = tree.getTreeState ( parent );
 

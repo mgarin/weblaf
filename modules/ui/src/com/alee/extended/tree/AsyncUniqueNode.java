@@ -18,6 +18,7 @@
 package com.alee.extended.tree;
 
 import com.alee.api.IconSupport;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.swing.BroadcastImageObserver;
@@ -211,6 +212,10 @@ public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport,
      */
     public void attachLoadIconObserver ( final WebAsyncTree tree )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Proceed only if icon actually exists
         final Icon icon = getLoadIcon ();
         if ( icon != null && icon instanceof ImageIcon )
         {
@@ -257,6 +262,10 @@ public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport,
      */
     public void detachLoadIconObserver ( final WebAsyncTree tree )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Proceed only if icon actually exists
         final Icon icon = getLoadIcon ();
         if ( icon != null && icon instanceof ImageIcon )
         {
