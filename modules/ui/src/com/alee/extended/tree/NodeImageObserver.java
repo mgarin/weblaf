@@ -17,11 +17,13 @@
 
 package com.alee.extended.tree;
 
+import com.alee.utils.SwingUtils;
+
 import java.awt.*;
 import java.awt.image.ImageObserver;
 
 /**
- * Custom image observer for async tree loader icons.
+ * Custom image observer for {@link WebAsyncTree} loader icons.
  *
  * @author Mikle Garin
  */
@@ -29,12 +31,12 @@ import java.awt.image.ImageObserver;
 public class NodeImageObserver implements ImageObserver
 {
     /**
-     * Updated tree.
+     * {@link WebAsyncTree}.
      */
     protected WebAsyncTree tree;
 
     /**
-     * Observed node.
+     * Observed {@link AsyncUniqueNode}.
      */
     protected AsyncUniqueNode node;
 
@@ -59,18 +61,27 @@ public class NodeImageObserver implements ImageObserver
      * @param y     y coordinate
      * @param w     width
      * @param h     height
-     * @return false if the infoflags indicate that the image is completely loaded, true otherwise
+     * @return {@code false} if the infoflags indicate that the image is completely loaded, {@code true} otherwise
      */
     @Override
     public boolean imageUpdate ( final Image img, final int flags, final int x, final int y, final int w, final int h )
     {
         if ( node.isLoading () && ( flags & ( FRAMEBITS | ALLBITS ) ) != 0 )
         {
-            final Rectangle rect = tree.getPathBounds ( node.getTreePath () );
-            if ( rect != null )
+            // Extra layer of safety as tree path bounds retrieval might cause issues outside of EDT
+            // It can be the case since it asks renderer which might perform some internal UI updates on return
+            SwingUtils.invokeLater ( new Runnable ()
             {
-                tree.repaint ( rect );
-            }
+                @Override
+                public void run ()
+                {
+                    final Rectangle rect = tree.getPathBounds ( node.getTreePath () );
+                    if ( rect != null )
+                    {
+                        tree.repaint ( rect );
+                    }
+                }
+            } );
         }
         return ( flags & ( ALLBITS | ABORT ) ) == 0;
     }
