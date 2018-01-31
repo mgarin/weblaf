@@ -23,22 +23,27 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Abstract data provider with implemented comparator and filter getters and setters.
+ * Abstract {@link AsyncTreeDataProvider} that can contain single comparator and filter for child nodes.
  *
+ * @param <E> node type
  * @author Mikle Garin
  */
 
 public abstract class AbstractAsyncTreeDataProvider<E extends AsyncUniqueNode> implements AsyncTreeDataProvider<E>
 {
     /**
-     * Children comparator.
+     * {@link Comparator} for all child nodes.
+     * It is {@code transient} as it can only be set through code.
+     * Override {@link #getChildrenComparator(AsyncUniqueNode, List)} method to provide parent-related {@link Comparator}.
      */
-    protected Comparator<E> comparator = null;
+    protected transient Comparator<E> comparator = null;
 
     /**
-     * Children filter.
+     * {@link Filter} for all child nodes.
+     * It is {@code transient} as it can only be set through code.
+     * Override {@link #getChildrenFilter(AsyncUniqueNode, List)} method to provide parent-related {@link Filter}.
      */
-    protected Filter<E> filter = null;
+    protected transient Filter<E> filter = null;
 
     @Override
     public Comparator<E> getChildrenComparator ( final E parent, final List<E> children )
@@ -47,9 +52,9 @@ public abstract class AbstractAsyncTreeDataProvider<E extends AsyncUniqueNode> i
     }
 
     /**
-     * Sets children comparator for all nodes.
+     * Sets {@link Comparator} for all child nodes.
      *
-     * @param comparator children comparator for all nodes
+     * @param comparator {@link Comparator} for all child nodes
      */
     public void setChildrenComparator ( final Comparator<E> comparator )
     {
@@ -63,9 +68,9 @@ public abstract class AbstractAsyncTreeDataProvider<E extends AsyncUniqueNode> i
     }
 
     /**
-     * Sets children filter for all nodes.
+     * Sets {@link Filter} for all child nodes.
      *
-     * @param filter children filter for all nodes
+     * @param filter {@link Filter} for all child nodes
      */
     public void setChildrenFilter ( final Filter<E> filter )
     {
@@ -73,11 +78,11 @@ public abstract class AbstractAsyncTreeDataProvider<E extends AsyncUniqueNode> i
     }
 
     /**
-     * Returns false by default to allow children load requests.
+     * Returns {@code false} by default to allow children load requests to pass through for any node.
      * It is recommended to override this behavior if you can easily determine whether node is leaf or not.
      *
-     * @param node node
-     * @return false
+     * @param node {@link AsyncUniqueNode} to check
+     * @return {@code false}
      */
     @Override
     public boolean isLeaf ( final E node )

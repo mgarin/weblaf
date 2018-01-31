@@ -29,6 +29,10 @@ import javax.swing.tree.TreeNode;
 import java.util.*;
 
 /**
+ * {@link WebTreeModel} extension that is based on data from {@link ExTreeDataProvider}.
+ * All data is always instantly loaded based on the provided {@link ExTreeDataProvider} which allows sorting and filtering for all nodes.
+ *
+ * @param <E> node type
  * @author Mikle Garin
  * @see WebExTree
  * @see ExTreeDataProvider
@@ -37,12 +41,12 @@ import java.util.*;
 public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
 {
     /**
-     * Ex tree that uses this model.
+     * {@link WebTree} that uses this model
      */
     protected final WebTree<E> tree;
 
     /**
-     * Ex tree data provider.
+     * {@link ExTreeDataProvider} used by this model
      */
     protected final ExTreeDataProvider<E> dataProvider;
 
@@ -74,8 +78,8 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     /**
      * Constructs default ex tree model using custom data provider.
      *
-     * @param tree         asynchronous tree
-     * @param dataProvider data provider
+     * @param tree         {@link WebTree} that uses this model
+     * @param dataProvider {@link ExTreeDataProvider} this model should be based on
      */
     public ExTreeModel ( final WebTree<E> tree, final ExTreeDataProvider<E> dataProvider )
     {
@@ -457,11 +461,11 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     }
 
     /**
-     * Returns {@link List} of filtered and sorted {@link AsyncUniqueNode}s.
+     * Returns {@link List} of filtered and sorted {@link UniqueNode}s.
      *
      * @param parent   {@link UniqueNode} for which children filtering and sorting should be updated
-     * @param children {@link List} of {@link AsyncUniqueNode}s to filter and sort
-     * @return {@link List} of filtered and sorted {@link AsyncUniqueNode}s
+     * @param children {@link List} of {@link UniqueNode}s to filter and sort
+     * @return {@link List} of filtered and sorted {@link UniqueNode}s
      */
     protected List<E> filterAndSort ( final E parent, final List<E> children )
     {

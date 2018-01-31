@@ -24,22 +24,27 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Abstract data provider with implemented comparator and filter getters and setters.
+ * Abstract {@link ExTreeDataProvider} that can contain single comparator and filter for child nodes.
  *
+ * @param <E> node type
  * @author Mikle Garin
  */
 
 public abstract class AbstractExTreeDataProvider<E extends UniqueNode> implements ExTreeDataProvider<E>
 {
     /**
-     * Children comparator.
+     * {@link Comparator} for all child nodes.
+     * It is {@code transient} as it can only be set through code.
+     * Override {@link #getChildrenComparator(UniqueNode, List)} method to provide parent-related {@link Comparator}.
      */
-    protected Comparator<E> comparator = null;
+    protected transient Comparator<E> comparator = null;
 
     /**
-     * Children filter.
+     * {@link Filter} for all child nodes.
+     * It is {@code transient} as it can only be set through code.
+     * Override {@link #getChildrenFilter(UniqueNode, List)} method to provide parent-related {@link Filter}.
      */
-    protected Filter<E> filter = null;
+    protected transient Filter<E> filter = null;
 
     @Override
     public Comparator<E> getChildrenComparator ( final E parent, final List<E> children )

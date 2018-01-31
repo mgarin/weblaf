@@ -20,54 +20,65 @@ package com.alee.extended.tree;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.utils.compare.Filter;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.List;
 
 /**
- * This interface provides methods for ex tree data retrieval.
+ * This interface provides methods for synchronous tree nodes retrieval within {@link ExTreeModel}.
+ * It also extends {@link Serializable} as it is used within {@link ExTreeModel} which must also be {@link Serializable}.
  *
- * @param <E> custom node type
+ * @param <E> node type
  * @author Mikle Garin
  * @see WebExTree
  * @see ExTreeModel
  * @see UniqueNode
  */
 
-public interface ExTreeDataProvider<E extends UniqueNode>
+public interface ExTreeDataProvider<E extends UniqueNode> extends Serializable
 {
     /**
-     * Returns asynchronous tree root node.
-     * This request uses the EDT and should be processed quickly.
+     * Returns root {@link UniqueNode}.
+     * This operation is always performed on EDT and should not take excessive amounts of time.
      *
-     * @return root node
+     * @return root {@link UniqueNode}
+     * @see <a href="https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread">Event Dispatch Thread</a>
      */
     public E getRoot ();
 
     /**
-     * Returns child nodes for the specified asynchronous tree node.
+     * Returns child {@link UniqueNode}s for the specified parent {@link UniqueNode}.
+     * This operation is always performed on EDT and should not take excessive amounts of time.
      *
-     * @param parent parent node
-     * @return child nodes list
+     * @param parent {@link UniqueNode} to load children for
+     * @return child {@link UniqueNode}s for the specified parent {@link UniqueNode}
+     * @see <a href="https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread">Event Dispatch Thread</a>
      */
     public List<E> getChildren ( E parent );
 
     /**
-     * Returns child nodes filter for the specified asynchronous tree node.
-     * No filtering applied to children in case null is returned.
+     * Returns {@link Filter} that will be used for the specified {@link UniqueNode} children.
+     * Specific {@link List} of child {@link UniqueNode}s is given for every separate filter operation.
+     * No filtering applied to children in case {@code null} is returned.
+     * This operation is always performed on EDT and should not take excessive amounts of time.
      *
-     * @param parent   parent node
-     * @param children children to be filtered
-     * @return child nodes filter
+     * @param parent   {@link UniqueNode} which children will be filtered using returned {@link Filter}
+     * @param children {@link UniqueNode}s to be filtered
+     * @return {@link Filter} that will be used for the specified {@link UniqueNode} children
+     * @see <a href="https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread">Event Dispatch Thread</a>
      */
     public Filter<E> getChildrenFilter ( E parent, List<E> children );
 
     /**
-     * Returns child nodes comparator for the specified asynchronous tree node.
-     * No sorting applied to children in case null is returned.
+     * Returns {@link Comparator} that will be used for the specified {@link UniqueNode} children.
+     * Specific {@link List} of child {@link UniqueNode}s is given for every separate comparison operation.
+     * No sorting applied to children in case {@code null} is returned.
+     * This operation is always performed on EDT and should not take excessive amounts of time.
      *
-     * @param parent   parent node
-     * @param children children to be sorted
-     * @return child nodes comparator
+     * @param parent   {@link UniqueNode} which children will be sorted using returned {@link Comparator}
+     * @param children {@link UniqueNode}s to be sorted
+     * @return {@link Comparator} that will be used for the specified {@link UniqueNode} children
+     * @see <a href="https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread">Event Dispatch Thread</a>
      */
     public Comparator<E> getChildrenComparator ( E parent, List<E> children );
 }

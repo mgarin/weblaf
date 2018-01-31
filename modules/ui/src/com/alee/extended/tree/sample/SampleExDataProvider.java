@@ -27,7 +27,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class SampleExDataProvider extends AbstractExTreeDataProvider<SampleNode>
+public final class SampleExDataProvider extends AbstractExTreeDataProvider<SampleNode>
 {
     /**
      * Returns asynchronous tree sample root node.

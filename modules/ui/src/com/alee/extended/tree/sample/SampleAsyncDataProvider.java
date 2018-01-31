@@ -29,7 +29,7 @@ import java.util.Locale;
  * @author Mikle Garin
  */
 
-public class SampleAsyncDataProvider extends AbstractAsyncTreeDataProvider<SampleNode>
+public final class SampleAsyncDataProvider extends AbstractAsyncTreeDataProvider<SampleNode>
 {
     /**
      * Returns asynchronous tree sample root node.

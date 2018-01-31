@@ -28,13 +28,13 @@ import javax.swing.tree.TreeNode;
 import java.util.*;
 
 /**
- * Special model for asynchronous tree that provides asynchronous data loading.
- * This class also controls the loading animation in elements.
+ * {@link WebTreeModel} extension that is based on data from {@link AsyncTreeDataProvider}.
+ * It allows tree to load its data asynchronously but only supports sorting and filtering of loaded nodes.
  *
- * @param <E> custom node type
+ * @param <E> node type
  * @author Mikle Garin
- * @see com.alee.extended.tree.WebAsyncTree
- * @see com.alee.extended.tree.AsyncTreeDataProvider
+ * @see WebAsyncTree
+ * @see AsyncTreeDataProvider
  */
 
 public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
@@ -42,16 +42,6 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
     /**
      * todo 1. Add {@link AsyncTreeDataUpdater} support
      */
-
-    /**
-     * Lock object for asynchronous tree listeners.
-     */
-    protected final Object modelListenersLock = new Object ();
-
-    /**
-     * Asynchronous tree listeners.
-     */
-    protected final List<AsyncTreeModelListener> asyncTreeModelListeners = new ArrayList<AsyncTreeModelListener> ( 1 );
 
     /**
      * Asynchronous tree that uses this model.
@@ -66,42 +56,52 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
     /**
      * Whether to load children asynchronously or not.
      */
-    protected boolean asyncLoading = true;
+    protected boolean asyncLoading;
 
     /**
      * Root node cache.
      * Cached when root is requested for the first time.
      */
-    protected E rootNode = null;
+    protected E rootNode;
+
+    /**
+     * Lock object for asynchronous tree listeners.
+     */
+    protected transient final Object modelListenersLock = new Object ();
+
+    /**
+     * Asynchronous tree listeners.
+     */
+    protected transient final List<AsyncTreeModelListener> asyncTreeModelListeners = new ArrayList<AsyncTreeModelListener> ( 1 );
 
     /**
      * Lock object for cache changes.
      */
-    protected final Object cacheLock = new Object ();
+    protected transient final Object cacheLock = new Object ();
 
     /**
      * Nodes cached states (parent ID -&gt; children cached state).
      * If child nodes for some parent node are cached then this map contains "true" value under that parent node ID as a key.
      */
-    protected final Map<String, Boolean> nodeCached = new HashMap<String, Boolean> ();
+    protected transient final Map<String, Boolean> nodeCached = new HashMap<String, Boolean> ();
 
     /**
      * Cache for children nodes returned by data provider (parent ID -&gt; list of raw child nodes).
      * This map contains raw children which weren't affected by sorting and filtering operations.
      * If children needs to be re-sorted or re-filtered they are simply taken from the cache and re-organized once again.
      */
-    protected final Map<String, List<E>> rawNodeChildrenCache = new HashMap<String, List<E>> ();
+    protected transient final Map<String, List<E>> rawNodeChildrenCache = new HashMap<String, List<E>> ();
 
     /**
      * Direct nodes cache (node ID -&gt; node).
      * Used for quick node search within the tree.
      */
-    protected final Map<String, E> nodeById = new HashMap<String, E> ();
+    protected transient final Map<String, E> nodeById = new HashMap<String, E> ();
 
     /**
      * Lock object for busy state changes.
      */
-    protected final Object busyLock = new Object ();
+    protected transient final Object busyLock = new Object ();
 
     /**
      * Constructs default asynchronous tree model using custom data provider.
@@ -114,6 +114,8 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
         super ( null );
         this.tree = tree;
         this.dataProvider = dataProvider;
+        this.asyncLoading = true;
+        this.rootNode = null;
     }
 
     /**

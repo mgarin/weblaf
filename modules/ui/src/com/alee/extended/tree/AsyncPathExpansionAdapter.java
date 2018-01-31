@@ -27,13 +27,13 @@ package com.alee.extended.tree;
 public abstract class AsyncPathExpansionAdapter<E extends AsyncUniqueNode> implements AsyncPathExpansionListener<E>
 {
     @Override
-    public void pathFailedToExpand ()
+    public void pathNodeExpanded ( final E expandedNode )
     {
         // Do nothing by default
     }
 
     @Override
-    public void pathNodeExpanded ( final E expandedNode )
+    public void pathExpanded ( final E lastNode )
     {
         // Do nothing by default
     }
@@ -45,7 +45,7 @@ public abstract class AsyncPathExpansionAdapter<E extends AsyncUniqueNode> imple
     }
 
     @Override
-    public void pathExpanded ( final E lastNode )
+    public void pathFailedToExpand ()
     {
         // Do nothing by default
     }

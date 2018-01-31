@@ -27,18 +27,20 @@ package com.alee.extended.tree;
 public interface AsyncPathExpansionListener<E extends AsyncUniqueNode>
 {
     /**
-     * Notifies that path expansion has failed and did not find even a single node.
-     * This might happen in case there is no loaded nodes with an ID from the path in the moment when expansion is invoked.
-     */
-    public void pathFailedToExpand ();
-
-    /**
      * Notifies that one of path nodes was just expanded.
      * This might be called a few times per single path expansion depending on the length of the path and some other factors.
      *
      * @param expandedNode recently expanded node from the specified path
      */
     public void pathNodeExpanded ( E expandedNode );
+
+    /**
+     * Notifies that path expansion has finished succesfully.
+     * That means that the last path node was actually reached in the tree.
+     *
+     * @param lastNode last path node
+     */
+    public void pathExpanded ( E lastNode );
 
     /**
      * Notifies that path expansion was not fully finished and cannot be continued.
@@ -50,10 +52,8 @@ public interface AsyncPathExpansionListener<E extends AsyncUniqueNode>
     public void pathPartiallyExpanded ( E lastFoundNode );
 
     /**
-     * Notifies that path expansion has finished succesfully.
-     * That means that the last path node was actually reached in the tree.
-     *
-     * @param lastNode last path node
+     * Notifies that path expansion has failed and did not find even a single node.
+     * This might happen in case there is no loaded nodes with an ID from the path in the moment when expansion is invoked.
      */
-    public void pathExpanded ( E lastNode );
+    public void pathFailedToExpand ();
 }
