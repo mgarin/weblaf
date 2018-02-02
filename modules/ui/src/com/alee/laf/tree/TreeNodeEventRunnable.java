@@ -22,15 +22,16 @@ import javax.swing.tree.DefaultMutableTreeNode;
 /**
  * Custom runnable that provides single tree node.
  *
+ * @param <N> node type
  * @author Mikle Garin
  */
 
-public interface TreeNodeEventRunnable<E extends DefaultMutableTreeNode>
+public interface TreeNodeEventRunnable<N extends DefaultMutableTreeNode>
 {
     /**
      * Performs action according to node.
      *
      * @param node tree node
      */
-    public void run ( E node );
+    public void run ( N node );
 }

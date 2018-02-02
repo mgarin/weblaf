@@ -25,14 +25,14 @@ import javax.swing.*;
  * For example {@link com.alee.painter.decoration.shape.IShape} only provides {@link java.awt.Shape} for other elements.
  * As another example {@link com.alee.painter.decoration.background.IBackground} paints an actual background for any provided shape.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> element type
  * @author Mikle Garin
  */
 
 @SuppressWarnings ( "unused" )
-public interface IDecoratonElement<E extends JComponent, D extends IDecoration<E, D>, I extends IDecoratonElement<E, D, I>>
+public interface IDecoratonElement<C extends JComponent, D extends IDecoration<C, D>, I extends IDecoratonElement<C, D, I>>
 {
     /**
      * Called upon {@link IDecoration} activation.
@@ -41,7 +41,7 @@ public interface IDecoratonElement<E extends JComponent, D extends IDecoration<E
      * @param c {@link JComponent}
      * @param d {@link IDecoration}
      */
-    public void activate ( E c, D d );
+    public void activate ( C c, D d );
 
     /**
      * Called upon {@link IDecoration} deactivation.
@@ -50,5 +50,5 @@ public interface IDecoratonElement<E extends JComponent, D extends IDecoration<E
      * @param c {@link JComponent}
      * @param d {@link IDecoration}
      */
-    public void deactivate ( E c, D d );
+    public void deactivate ( C c, D d );
 }

@@ -29,11 +29,11 @@ import java.util.Map;
 /**
  * Abstract component information provider which provides style guidelines and some basic methods.
  *
- * @param <T> component type
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public abstract class AbstractComponentPreview<T extends Component> implements ComponentPreview<T>
+public abstract class AbstractComponentPreview<C extends Component> implements ComponentPreview<C>
 {
     /**
      * Opaque icon.
@@ -65,7 +65,7 @@ public abstract class AbstractComponentPreview<T extends Component> implements C
     protected static final String paddingColor = "0,150,70";
 
     @Override
-    public Icon getIcon ( final T component )
+    public Icon getIcon ( final C component )
     {
         // Retrieving component icon
         Icon icon = getIconImpl ( component );
@@ -94,7 +94,7 @@ public abstract class AbstractComponentPreview<T extends Component> implements C
      * @param component component to provide icon for
      * @return actual icon for the specified component
      */
-    protected abstract Icon getIconImpl ( T component );
+    protected abstract Icon getIconImpl ( C component );
 
     /**
      * Returns main title foreground color.
@@ -102,7 +102,7 @@ public abstract class AbstractComponentPreview<T extends Component> implements C
      * @param component inspected component
      * @return main title foreground color
      */
-    protected String getTitleColor ( final T component )
+    protected String getTitleColor ( final C component )
     {
         return component.isShowing () ? component instanceof JComponent ? visibleColor : visibleAwtColor : hiddenColor;
     }

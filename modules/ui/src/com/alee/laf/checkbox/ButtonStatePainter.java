@@ -26,14 +26,14 @@ import javax.swing.plaf.basic.BasicToggleButtonUI;
 /**
  * Custom button state painter based on {@link AbstractSectionDecorationPainter}.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public class ButtonStatePainter<E extends AbstractButton, U extends BasicToggleButtonUI, D extends IDecoration<E, D>>
-        extends AbstractSectionDecorationPainter<E, U, D> implements IButtonStatePainter<E, U>
+public class ButtonStatePainter<C extends AbstractButton, U extends BasicToggleButtonUI, D extends IDecoration<C, D>>
+        extends AbstractSectionDecorationPainter<C, U, D> implements IButtonStatePainter<C, U>
 {
     @Override
     public String getSectionId ()

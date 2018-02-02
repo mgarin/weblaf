@@ -24,12 +24,13 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import java.io.Serializable;
 
 /**
- * Plugin version data class.
+ * {@link com.alee.managers.plugin.Plugin} version data class.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
  * @see <a href="http://semver.org/">Semantic Versioning</a>
  * @see com.alee.managers.plugin.PluginManager
+ * @see com.alee.managers.plugin.Plugin
  */
 
 @XStreamAlias ( "PluginVersion" )
@@ -269,6 +270,6 @@ public class PluginVersion implements Serializable
     @Override
     public String toString ()
     {
-        return "v" + major + "." + minor + ( patch != null ? ( "." + patch ) : "" ) + ( build != null ? build : "" );
+        return "v" + major + "." + minor + ( patch != null ? "." + patch : "" ) + ( build != null ? build : "" );
     }
 }

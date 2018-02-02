@@ -36,16 +36,16 @@ import java.util.List;
 
 /**
  * Basic painter for {@link JTree} component.
- * It is used as {@link WebTreeUI} default painter.
+ * It is used as {@link WTreeUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
 
-public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecoration<E, D>> extends AbstractDecorationPainter<E, U, D>
-        implements ITreePainter<E, U>
+public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecoration<C, D>> extends AbstractDecorationPainter<C, U, D>
+        implements ITreePainter<C, U>
 {
     /**
      * Style settings.
@@ -121,7 +121,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
     protected transient int lastSelectionRow = -1;
 
     @Override
-    protected List<SectionPainter<E, U>> getSectionPainters ()
+    protected List<SectionPainter<C, U>> getSectionPainters ()
     {
         return asList ( rowPainter, nodePainter, selectionPainter, dropLocationPainter, selectorPainter );
     }
@@ -698,7 +698,7 @@ public class TreePainter<E extends JTree, U extends WTreeUI, D extends IDecorati
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final C c, final U ui )
     {
         // Updating tree layout cache
         treeLayoutCache = ui.getTreeLayoutCache ();

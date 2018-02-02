@@ -8,16 +8,16 @@ import java.awt.*;
 
 /**
  * Basic painter for {@link JFormattedTextField} component.
- * It is used as {@link WebFormattedTextFieldUI} default painter.
+ * It is used as {@link WFormattedTextFieldUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
 
-public class FormattedTextFieldPainter<E extends JFormattedTextField, U extends WFormattedTextFieldUI, D extends IDecoration<E, D>>
-        extends AbstractTextFieldPainter<E, U, D> implements IFormattedTextFieldPainter<E, U>, SwingConstants
+public class FormattedTextFieldPainter<C extends JFormattedTextField, U extends WFormattedTextFieldUI, D extends IDecoration<C, D>>
+        extends AbstractTextFieldPainter<C, U, D> implements IFormattedTextFieldPainter<C, U>, SwingConstants
 {
     @Override
     public String getInputPrompt ()

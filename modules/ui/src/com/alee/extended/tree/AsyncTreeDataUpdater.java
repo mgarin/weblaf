@@ -24,11 +24,11 @@ import java.util.List;
  * Basically these methods called when some tree node is renamed, moved or removed.
  * This interface will be informed about such changes so you can perform data update actions.
  *
- * @param <E> node type
+ * @param <N> node type
  * @author Mikle Garin
  */
 
-public interface AsyncTreeDataUpdater<E extends AsyncUniqueNode>
+public interface AsyncTreeDataUpdater<N extends AsyncUniqueNode>
 {
     /**
      * Called when nodes add operation performed.
@@ -38,7 +38,7 @@ public interface AsyncTreeDataUpdater<E extends AsyncUniqueNode>
      * @param parentNode parent node where specified nodes were added
      * @param rollback   runnable you should call in case data update failed, it will cancel changes
      */
-    public void nodesAdded ( List<E> nodes, E parentNode, Runnable rollback );
+    public void nodesAdded ( List<N> nodes, N parentNode, Runnable rollback );
 
     /**
      * Called when node rename operation performed.
@@ -49,7 +49,7 @@ public interface AsyncTreeDataUpdater<E extends AsyncUniqueNode>
      * @param newName  new node name
      * @param rollback runnable you should call in case data update failed, it will cancel changes
      */
-    public void nodeRenamed ( E node, String oldName, String newName, Runnable rollback );
+    public void nodeRenamed ( N node, String oldName, String newName, Runnable rollback );
 
     /**
      * Called when node move (D&amp;D or cut/paste) operation performed.
@@ -60,7 +60,7 @@ public interface AsyncTreeDataUpdater<E extends AsyncUniqueNode>
      * @param newParent new parent node
      * @param rollback  runnable you should call in case data update failed, it will cancel changes
      */
-    public void nodesMoved ( List<E> nodes, E oldParent, E newParent, Runnable rollback );
+    public void nodesMoved ( List<N> nodes, N oldParent, N newParent, Runnable rollback );
 
     /**
      * Called when node copy (D&amp;D or copy/paste) operation performed.
@@ -71,7 +71,7 @@ public interface AsyncTreeDataUpdater<E extends AsyncUniqueNode>
      * @param newParent new parent node
      * @param rollback  runnable you should call in case data update failed, it will cancel changes
      */
-    public void nodesCopied ( List<E> nodes, E oldParent, E newParent, Runnable rollback );
+    public void nodesCopied ( List<N> nodes, N oldParent, N newParent, Runnable rollback );
 
     /**
      * Called when nodes remove operation performed.
@@ -80,5 +80,5 @@ public interface AsyncTreeDataUpdater<E extends AsyncUniqueNode>
      * @param nodes    removed nodes list
      * @param rollback runnable you should call in case data update failed, it will cancel changes
      */
-    public void nodesRemoved ( List<E> nodes, Runnable rollback );
+    public void nodesRemoved ( List<N> nodes, Runnable rollback );
 }

@@ -33,15 +33,15 @@ import java.util.List;
 /**
  * Class representing a group of decorations.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @author Mikle Garin
  * @see IDecoration
  */
 
 @XStreamAlias ( "Decorations" )
-public final class Decorations<E extends JComponent, D extends IDecoration<E, D>>
-        implements Iterable<D>, MergeBehavior<Decorations<E, D>>, Cloneable, Serializable
+public final class Decorations<C extends JComponent, D extends IDecoration<C, D>>
+        implements Iterable<D>, MergeBehavior<Decorations<C, D>>, Cloneable, Serializable
 {
     /**
      * Whether or not these decorations should overwrite previous ones when merged.
@@ -82,7 +82,7 @@ public final class Decorations<E extends JComponent, D extends IDecoration<E, D>
     }
 
     @Override
-    public Decorations<E, D> merge ( final Decorations<E, D> object )
+    public Decorations<C, D> merge ( final Decorations<C, D> object )
     {
         overwrite = overwrite != null && overwrite || object.overwrite != null && object.overwrite;
         decorations = object.isOverwrite () ? object.decorations : Merge.COMMON.<List<D>>merge ( decorations, object.decorations );

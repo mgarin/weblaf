@@ -7,16 +7,16 @@ import javax.swing.*;
 
 /**
  * Basic painter for {@link JPopupMenu.Separator} component.
- * It is used as {@link WebPopupMenuSeparatorUI} default painter.
+ * It is used as {@link WPopupMenuSeparatorUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
 
-public class PopupMenuSeparatorPainter<E extends JPopupMenu.Separator, U extends WebPopupMenuSeparatorUI, D extends IDecoration<E, D>>
-        extends AbstractSeparatorPainter<E, U, D> implements IPopupMenuSeparatorPainter<E, U>
+public class PopupMenuSeparatorPainter<C extends JPopupMenu.Separator, U extends WPopupMenuSeparatorUI, D extends IDecoration<C, D>>
+        extends AbstractSeparatorPainter<C, U, D> implements IPopupMenuSeparatorPainter<C, U>
 {
     /**
      * Implementation is used completely from {@link AbstractSeparatorPainter}.

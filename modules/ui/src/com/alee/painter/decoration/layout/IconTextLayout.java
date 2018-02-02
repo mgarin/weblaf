@@ -32,15 +32,15 @@ import java.awt.*;
  * Main constraints are {@link #ICON} and {@link #TEXT} which are always placed in the middle of layout.
  * Side spacing constraints are also supported which place contents similar to {@link BorderLayout}.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> layout type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "IconTextLayout" )
-public class IconTextLayout<E extends JComponent, D extends IDecoration<E, D>, I extends IconTextLayout<E, D, I>>
-        extends AbstractContentLayout<E, D, I> implements SwingConstants
+public class IconTextLayout<C extends JComponent, D extends IDecoration<C, D>, I extends IconTextLayout<C, D, I>>
+        extends AbstractContentLayout<C, D, I> implements SwingConstants
 {
     /**
      * Layout constraints.
@@ -89,7 +89,7 @@ public class IconTextLayout<E extends JComponent, D extends IDecoration<E, D>, I
      * @param d painted decoration state
      * @return gap between icon and text contents
      */
-    protected int getIconTextGap ( final E c, final D d )
+    protected int getIconTextGap ( final C c, final D d )
     {
         return gap != null ? gap : 0;
     }
@@ -101,7 +101,7 @@ public class IconTextLayout<E extends JComponent, D extends IDecoration<E, D>, I
      * @param d painted decoration state
      * @return horizontal content alignment
      */
-    protected int getHorizontalAlignment ( final E c, final D d )
+    protected int getHorizontalAlignment ( final C c, final D d )
     {
         return halign != null ? halign.getValue () : CENTER;
     }
@@ -113,7 +113,7 @@ public class IconTextLayout<E extends JComponent, D extends IDecoration<E, D>, I
      * @param d painted decoration state
      * @return vertical content alignment
      */
-    protected int getVerticalAlignment ( final E c, final D d )
+    protected int getVerticalAlignment ( final C c, final D d )
     {
         return valign != null ? valign.getValue () : CENTER;
     }
@@ -125,7 +125,7 @@ public class IconTextLayout<E extends JComponent, D extends IDecoration<E, D>, I
      * @param d painted decoration state
      * @return horizontal text position
      */
-    protected int getHorizontalTextPosition ( final E c, final D d )
+    protected int getHorizontalTextPosition ( final C c, final D d )
     {
         return hpos != null ? hpos.getValue () : TRAILING;
     }
@@ -137,13 +137,13 @@ public class IconTextLayout<E extends JComponent, D extends IDecoration<E, D>, I
      * @param d painted decoration state
      * @return vertical text position
      */
-    protected int getVerticalTextPosition ( final E c, final D d )
+    protected int getVerticalTextPosition ( final C c, final D d )
     {
         return vpos != null ? vpos.getValue () : CENTER;
     }
 
     @Override
-    public ContentLayoutData layoutContent ( final E c, final D d, final Rectangle bounds )
+    public ContentLayoutData layoutContent ( final C c, final D d, final Rectangle bounds )
     {
         final ContentLayoutData layoutData = new ContentLayoutData ( 2 );
 
@@ -276,7 +276,7 @@ public class IconTextLayout<E extends JComponent, D extends IDecoration<E, D>, I
     }
 
     @Override
-    protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
     {
         final int halign = getHorizontalAlignment ( c, d );
         final int valign = getVerticalAlignment ( c, d );
@@ -312,7 +312,7 @@ public class IconTextLayout<E extends JComponent, D extends IDecoration<E, D>, I
      * @param available available space
      * @return icon and text preferred size
      */
-    protected Dimension getIconTextPreferredSize ( final E c, final D d, final Dimension available )
+    protected Dimension getIconTextPreferredSize ( final C c, final D d, final Dimension available )
     {
         final Dimension size;
         final boolean hasIcon = !isEmpty ( c, d, ICON );

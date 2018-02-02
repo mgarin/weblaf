@@ -10,14 +10,14 @@ import java.util.List;
  * Basic painter for {@link JCheckBox} component.
  * It is used as {@link WCheckBoxUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
 
-public class CheckBoxPainter<E extends JCheckBox, U extends WCheckBoxUI, D extends IDecoration<E, D>>
-        extends AbstractStateButtonPainter<E, U, D> implements ICheckBoxPainter<E, U>
+public class CheckBoxPainter<C extends JCheckBox, U extends WCheckBoxUI, D extends IDecoration<C, D>>
+        extends AbstractStateButtonPainter<C, U, D> implements ICheckBoxPainter<C, U>
 {
     @Override
     public List<String> getDecorationStates ()

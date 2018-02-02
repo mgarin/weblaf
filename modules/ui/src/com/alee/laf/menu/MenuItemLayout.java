@@ -30,7 +30,7 @@ import java.awt.*;
  * It only paints contents placed under {@link #ICON}, {@link #TEXT}, {@link #ACCELERATOR} and {@link #ARROW} constraints.
  * If you want to use a similar layout for non-{@link JMenuItem} component - use {@link SimpleMenuItemLayout} instead.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> layout type
  * @author Mikle Garin
@@ -38,8 +38,8 @@ import java.awt.*;
 
 @XStreamAlias ( "MenuItemLayout" )
 @SuppressWarnings ( "UnusedParameters" )
-public class MenuItemLayout<E extends JMenuItem, D extends IDecoration<E, D>, I extends MenuItemLayout<E, D, I>>
-        extends AbstractMenuItemLayout<E, D, I>
+public class MenuItemLayout<C extends JMenuItem, D extends IDecoration<C, D>, I extends MenuItemLayout<C, D, I>>
+        extends AbstractMenuItemLayout<C, D, I>
 {
     /**
      * Whether or not menu items text should be aligned by maximum icon size.
@@ -48,13 +48,13 @@ public class MenuItemLayout<E extends JMenuItem, D extends IDecoration<E, D>, I 
     protected Boolean alignTextByIcons;
 
     @Override
-    protected boolean isAlignTextByIcons ( final E c, final D d )
+    protected boolean isAlignTextByIcons ( final C c, final D d )
     {
         return alignTextByIcons == null || alignTextByIcons;
     }
 
     @Override
-    protected int getMaxIconWidth ( final E c, final D d )
+    protected int getMaxIconWidth ( final C c, final D d )
     {
         if ( isAlignTextByIcons ( c, d ) && c.getParent () instanceof JPopupMenu )
         {
@@ -82,13 +82,13 @@ public class MenuItemLayout<E extends JMenuItem, D extends IDecoration<E, D>, I 
     }
 
     @Override
-    protected int getIconTextGap ( final E c, final D d )
+    protected int getIconTextGap ( final C c, final D d )
     {
         return iconTextGap != null ? iconTextGap : c.getIconTextGap ();
     }
 
     @Override
-    public boolean isEmpty ( final E c, final D d, final String constraints )
+    public boolean isEmpty ( final C c, final D d, final String constraints )
     {
         // Checking default emptiness conditions
         boolean empty = super.isEmpty ( c, d, constraints );
@@ -118,7 +118,7 @@ public class MenuItemLayout<E extends JMenuItem, D extends IDecoration<E, D>, I 
      * @param d painted decoration state
      * @return true if the specified menu item is placed within popup menu, false otherwise
      */
-    protected boolean isInPopupMenu ( final E c, final D d )
+    protected boolean isInPopupMenu ( final C c, final D d )
     {
         return c.getParent () != null && c.getParent () instanceof JPopupMenu;
     }

@@ -24,7 +24,6 @@ import com.alee.utils.parsing.DurationUnits;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -973,32 +972,20 @@ public class WebTimer
                     // Check execution stop
                     if ( shouldContinue ( cycleCount, id ) )
                     {
-                        try
+                        // Merge all events into single call to event dispatch thread
+                        // This approach is handy when you need to fire all timer listeners at once
+                        // Thought it might diminish UI responsiveness when fires take a lot of processing time
+                        CoreSwingUtils.invokeAndWait ( new Runnable ()
                         {
-                            // Merge all events into single call to event dispatch thread
-                            // This approach is handy when you need to fire all timer listeners at once
-                            // Thought it might diminish UI responsiveness when fires take a lot of processing time
-                            CoreSwingUtils.invokeAndWait ( new Runnable ()
+                            @Override
+                            public void run ()
                             {
-                                @Override
-                                public void run ()
+                                for ( final ActionListener listener : listenerList )
                                 {
-                                    for ( final ActionListener listener : listenerList )
-                                    {
-                                        listener.actionPerformed ( actionEvent );
-                                    }
+                                    listener.actionPerformed ( actionEvent );
                                 }
-                            } );
-                        }
-                        catch ( final InvocationTargetException e )
-                        {
-                            // Re-throw wrapper exception
-                            throw new RuntimeException ( e );
-                        }
-                        catch ( final InterruptedException e )
-                        {
-                            // Ignore interruption
-                        }
+                            }
+                        }, true );
                     }
                 }
                 else
@@ -1011,26 +998,14 @@ public class WebTimer
                         // Check execution stop
                         if ( shouldContinue ( cycleCount, id ) )
                         {
-                            try
+                            CoreSwingUtils.invokeAndWait ( new Runnable ()
                             {
-                                CoreSwingUtils.invokeAndWait ( new Runnable ()
+                                @Override
+                                public void run ()
                                 {
-                                    @Override
-                                    public void run ()
-                                    {
-                                        listener.actionPerformed ( actionEvent );
-                                    }
-                                } );
-                            }
-                            catch ( final InvocationTargetException e )
-                            {
-                                // Re-throw wrapper exception
-                                throw new RuntimeException ( e );
-                            }
-                            catch ( final InterruptedException e )
-                            {
-                                // Ignore interruption
-                            }
+                                    listener.actionPerformed ( actionEvent );
+                                }
+                            }, true );
                         }
                     }
                 }

@@ -11,14 +11,14 @@ import java.util.List;
  * Basic painter for {@link JMenu} component.
  * It is used as {@link WebMenuUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
 
-public class MenuPainter<E extends JMenu, U extends WebMenuUI, D extends IDecoration<E, D>> extends AbstractMenuItemPainter<E, U, D>
-        implements IMenuPainter<E, U>
+public class MenuPainter<C extends JMenu, U extends WebMenuUI, D extends IDecoration<C, D>> extends AbstractMenuItemPainter<C, U, D>
+        implements IMenuPainter<C, U>
 {
     @Override
     protected void hierarchyChanged ( final HierarchyEvent e )

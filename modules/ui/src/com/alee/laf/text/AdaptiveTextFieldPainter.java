@@ -10,16 +10,18 @@ import java.awt.*;
  * Simple {@link TextFieldPainter} adapter class.
  * It is used to install simple non-specific painters into {@link WTextFieldUI}.
  *
+ * @param <C> component type
+ * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public final class AdaptiveTextFieldPainter<E extends JTextField, U extends WTextFieldUI> extends AdaptivePainter<E, U>
-        implements ITextFieldPainter<E, U>
+public final class AdaptiveTextFieldPainter<C extends JTextField, U extends WTextFieldUI> extends AdaptivePainter<C, U>
+        implements ITextFieldPainter<C, U>
 {
     /**
      * Constructs new {@link AdaptiveTextFieldPainter} for the specified painter.
      *
-     * @param painter painter to adapt
+     * @param painter {@link Painter} to adapt
      */
     public AdaptiveTextFieldPainter ( final Painter painter )
     {

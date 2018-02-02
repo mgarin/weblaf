@@ -25,15 +25,15 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 
 /**
- * Abstract {@link TreeWalker} that provides implementation for walking methods.
- * You only need to implement {@link #nextNode()} and {@link #reset()} methods in extending class to create a complete {@link TreeWalker}.
+ * Abstract {@link TreeWalker} implementation that provides basic methods to walking through the trees.
+ * You only need to implement {@link #nextNode()} and {@link #reset()} methods in extending class to create a working {@link TreeWalker}.
  *
- * @param <E> tree node type
+ * @param <N> node type
  * @param <M> tree model type
  * @author Mikle Garin
  */
 
-public abstract class AbstractTreeWalker<E extends TreeNode, M extends TreeModel> implements TreeWalker<E>
+public abstract class AbstractTreeWalker<N extends TreeNode, M extends TreeModel> implements TreeWalker<N>
 {
     /**
      * {@link JTree} to walk through.
@@ -43,7 +43,7 @@ public abstract class AbstractTreeWalker<E extends TreeNode, M extends TreeModel
     /**
      * Current parent within walking sequence.
      */
-    protected E parent;
+    protected N parent;
 
     /**
      * Current child index within walking sequence.
@@ -62,9 +62,9 @@ public abstract class AbstractTreeWalker<E extends TreeNode, M extends TreeModel
     }
 
     @Override
-    public void forEach ( final Consumer<E> action )
+    public void forEach ( final Consumer<N> action )
     {
-        E node;
+        N node;
         while ( ( node = nextNode () ) != null )
         {
             action.accept ( node );
@@ -73,10 +73,10 @@ public abstract class AbstractTreeWalker<E extends TreeNode, M extends TreeModel
     }
 
     @Override
-    public boolean anyMatch ( final Predicate<E> predicate )
+    public boolean anyMatch ( final Predicate<N> predicate )
     {
         boolean anyMatch = false;
-        E node;
+        N node;
         while ( ( node = nextNode () ) != null )
         {
             if ( predicate.test ( node ) )
@@ -89,10 +89,10 @@ public abstract class AbstractTreeWalker<E extends TreeNode, M extends TreeModel
     }
 
     @Override
-    public boolean allMatch ( final Predicate<E> predicate )
+    public boolean allMatch ( final Predicate<N> predicate )
     {
         boolean allMatch = true;
-        E node;
+        N node;
         while ( ( node = nextNode () ) != null )
         {
             if ( !predicate.test ( node ) )
@@ -105,10 +105,10 @@ public abstract class AbstractTreeWalker<E extends TreeNode, M extends TreeModel
     }
 
     @Override
-    public boolean noneMatch ( final Predicate<E> predicate )
+    public boolean noneMatch ( final Predicate<N> predicate )
     {
         boolean noneMatch = true;
-        E node;
+        N node;
         while ( ( node = nextNode () ) != null )
         {
             if ( predicate.test ( node ) )
@@ -125,9 +125,9 @@ public abstract class AbstractTreeWalker<E extends TreeNode, M extends TreeModel
      *
      * @return next tree node from the tree
      */
-    protected E nextNode ()
+    protected N nextNode ()
     {
-        final E node;
+        final N node;
         final M model = ( M ) tree.getModel ();
         if ( parent == null )
         {
@@ -145,8 +145,8 @@ public abstract class AbstractTreeWalker<E extends TreeNode, M extends TreeModel
             }
             else
             {
-                final E child = parent;
-                parent = ( E ) parent.getParent ();
+                final N child = parent;
+                parent = ( N ) parent.getParent ();
                 if ( parent != null )
                 {
                     final int childIndex = getIndexOfChild ( model, parent, child );
@@ -184,7 +184,7 @@ public abstract class AbstractTreeWalker<E extends TreeNode, M extends TreeModel
      * @param model {@link TreeModel}
      * @return tree root node
      */
-    protected abstract E getRootNode ( M model );
+    protected abstract N getRootNode ( M model );
 
     /**
      * Returns child count for the specified {@link TreeNode}.
@@ -193,7 +193,7 @@ public abstract class AbstractTreeWalker<E extends TreeNode, M extends TreeModel
      * @param parent {@link TreeNode} to return child count for
      * @return child count for the specified {@link TreeNode}
      */
-    protected abstract int getChildCount ( M model, E parent );
+    protected abstract int getChildCount ( M model, N parent );
 
     /**
      * Returns child {@link TreeNode} under parent {@link TreeNode} at the specified index.
@@ -203,7 +203,7 @@ public abstract class AbstractTreeWalker<E extends TreeNode, M extends TreeModel
      * @param index  child {@link TreeNode} index
      * @return child {@link TreeNode} under parent {@link TreeNode} at the specified index
      */
-    protected abstract E getChild ( M model, E parent, int index );
+    protected abstract N getChild ( M model, N parent, int index );
 
     /**
      * Returns child {@link TreeNode} index within specified parent {@link TreeNode}.
@@ -213,5 +213,5 @@ public abstract class AbstractTreeWalker<E extends TreeNode, M extends TreeModel
      * @param child  child {@link TreeNode}
      * @return child {@link TreeNode} index within specified parent {@link TreeNode}
      */
-    protected abstract int getIndexOfChild ( M model, E parent, E child );
+    protected abstract int getIndexOfChild ( M model, N parent, N child );
 }

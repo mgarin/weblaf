@@ -22,17 +22,18 @@ import com.alee.managers.plugin.data.DetectedPlugin;
 import java.util.List;
 
 /**
- * Custom functional interface for PluginManager methods.
+ * Custom functional interface for {@link PluginManager} methods.
  *
+ * @param <P> {@link Plugin} type
  * @author Mikle Garin
  */
 
-public interface DetectedPluginsRunnable<T extends Plugin>
+public interface DetectedPluginsRunnable<P extends Plugin>
 {
     /**
      * Performed operation.
      *
      * @param plugins detected plugins list
      */
-    public void run ( List<DetectedPlugin<T>> plugins );
+    public void run ( List<DetectedPlugin<P>> plugins );
 }

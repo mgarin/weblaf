@@ -24,14 +24,14 @@ import com.alee.painter.decoration.IDecoration;
  * Basic painter for {@link WebDockablePane} component.
  * It is used as {@link WDockableFrameUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public class DockablePanePainter<E extends WebDockablePane, U extends WDockablePaneUI, D extends IDecoration<E, D>>
-        extends AbstractContainerPainter<E, U, D> implements IDockablePanePainter<E, U>
+public class DockablePanePainter<C extends WebDockablePane, U extends WDockablePaneUI, D extends IDecoration<C, D>>
+        extends AbstractContainerPainter<C, U, D> implements IDockablePanePainter<C, U>
 {
     /**
      * Implementation is used completely from {@link AbstractContainerPainter}.

@@ -24,13 +24,13 @@ import com.alee.painter.Painter;
  * Simple {@link PopupPainter} adapter class.
  * It is used to install simple non-specific painters into {@link WPopupUI}.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public final class AdaptivePopupPainter<E extends WebPopup, U extends WPopupUI> extends AdaptivePainter<E, U>
-        implements IPopupPainter<E, U>
+public final class AdaptivePopupPainter<C extends WebPopup, U extends WPopupUI> extends AdaptivePainter<C, U>
+        implements IPopupPainter<C, U>
 {
     /**
      * Constructs new {@link AdaptivePopupPainter} for the specified painter.

@@ -7,15 +7,15 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Basic painter for JViewport component.
- * It is used as WebViewportUI default painter.
+ * Basic painter for {@link JViewport} component.
+ * It is used as {@link WViewportUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public class ViewportPainter<E extends JViewport, U extends WebViewportUI> extends AbstractPainter<E, U> implements IViewportPainter<E, U>
+public class ViewportPainter<C extends JViewport, U extends WViewportUI> extends AbstractPainter<C, U> implements IViewportPainter<C, U>
 {
     @Override
     public void updateBorder ()
@@ -24,7 +24,7 @@ public class ViewportPainter<E extends JViewport, U extends WebViewportUI> exten
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E c, final U ui, final Bounds bounds )
+    public void paint ( final Graphics2D g2d, final C c, final U ui, final Bounds bounds )
     {
         // Empty by default
     }

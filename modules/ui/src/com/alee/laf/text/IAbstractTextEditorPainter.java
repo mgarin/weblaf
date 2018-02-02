@@ -25,12 +25,12 @@ import javax.swing.text.JTextComponent;
 /**
  * Base interface for all text editor component painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface IAbstractTextEditorPainter<E extends JTextComponent, U extends BasicTextUI> extends SpecificPainter<E, U>
+public interface IAbstractTextEditorPainter<C extends JTextComponent, U extends BasicTextUI> extends SpecificPainter<C, U>
 {
     /**
      * Returns input prompt text.

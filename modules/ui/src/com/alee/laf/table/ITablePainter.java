@@ -5,14 +5,14 @@ import com.alee.painter.SpecificPainter;
 import javax.swing.*;
 
 /**
- * Base interface for JTable component painters.
+ * Base interface for {@link JTable} component painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public interface ITablePainter<E extends JTable, U extends WebTableUI> extends SpecificPainter<E, U>
+public interface ITablePainter<C extends JTable, U extends WebTableUI> extends SpecificPainter<C, U>
 {
     /**
      * Prepares painter to paint table.

@@ -30,6 +30,8 @@ import java.awt.*;
 /**
  * Custom painter for {@link com.alee.extended.syntax.WebSyntaxPanel} component.
  *
+ * @param <C> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  * @see com.alee.laf.panel.PanelPainter
  * @see com.alee.painter.AbstractPainter
@@ -37,7 +39,7 @@ import java.awt.*;
  */
 
 @XStreamAlias ( "SyntaxPanelPainter" )
-public class SyntaxPanelPainter<E extends JPanel, U extends WebPanelUI> extends AbstractPainter<E, U> implements IPanelPainter<E, U>
+public class SyntaxPanelPainter<C extends JPanel, U extends WebPanelUI> extends AbstractPainter<C, U> implements IPanelPainter<C, U>
 {
     /**
      * Used colors.
@@ -73,7 +75,7 @@ public class SyntaxPanelPainter<E extends JPanel, U extends WebPanelUI> extends 
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E panel, final U ui, final Bounds b )
+    public void paint ( final Graphics2D g2d, final C panel, final U ui, final Bounds b )
     {
         // Paint syntax panel styling
         final Object aa = GraphicsUtils.setupAntialias ( g2d );

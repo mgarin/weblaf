@@ -20,17 +20,18 @@ package com.alee.managers.plugin;
 import java.util.List;
 
 /**
- * Custom functional interface for PluginManager methods.
+ * Custom functional interface for {@link PluginManager} methods.
  *
+ * @param <P> {@link Plugin} type
  * @author Mikle Garin
  */
 
-public interface PluginsRunnable<T extends Plugin>
+public interface PluginsRunnable<P extends Plugin>
 {
     /**
-     * Performed operation.
+     * Performs operation.
      *
-     * @param plugins plugins list
+     * @param plugins {@link Plugin}s list
      */
-    public void run ( List<T> plugins );
+    public void run ( List<P> plugins );
 }

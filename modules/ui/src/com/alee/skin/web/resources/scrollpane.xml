@@ -40,7 +40,7 @@
                 <decorations>
                     <decoration>
                         <WebShape round="0" sides="0,0,0,0" />
-                        <LineBorder color="230,230,230" />
+                        <LineBorder color="170,170,170" />
                         <ColorBackground color="245,245,245" />
                     </decoration>
                     <decoration states="lowerLeading">
@@ -127,7 +127,7 @@
             <painter>
                 <thumbRound>0</thumbRound>
                 <thumbMargin>0,0,0,0</thumbMargin>
-                <scrollBarWidth>10</scrollBarWidth>
+                <scrollBarWidth>9</scrollBarWidth>
                 <thumbBorderColor>120,120,120,48</thumbBorderColor>
                 <thumbBackgroundColor>128,128,128,48</thumbBackgroundColor>
                 <thumbDisabledBorderColor>120,120,120,24</thumbDisabledBorderColor>
@@ -174,7 +174,7 @@
             <painter>
                 <thumbRound>2</thumbRound>
                 <thumbMargin>0,0,0,3</thumbMargin>
-                <scrollBarWidth>11</scrollBarWidth>
+                <scrollBarWidth>10</scrollBarWidth>
                 <thumbBorderColor>120,120,120,48</thumbBorderColor>
                 <thumbBackgroundColor>128,128,128,48</thumbBackgroundColor>
                 <thumbDisabledBorderColor>120,120,120,24</thumbDisabledBorderColor>

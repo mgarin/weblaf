@@ -25,13 +25,14 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Plugin information data class.
+ * {@link com.alee.managers.plugin.Plugin} information data class.
  * This data will be serialized into XML and placed within plugin as its descriptor.
  * It will be read each time PluginManager attempt to load its plugins.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
  * @see com.alee.managers.plugin.PluginManager
+ * @see com.alee.managers.plugin.Plugin
  */
 
 @XStreamAlias ( "PluginInformation" )

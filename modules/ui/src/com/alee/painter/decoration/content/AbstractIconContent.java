@@ -26,14 +26,14 @@ import java.awt.*;
  * Abstract icon {@link IContent} implementation.
  * Override {@link #getIcon(JComponent, IDecoration)} method to return displayed icon.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
  */
 
-public abstract class AbstractIconContent<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractIconContent<E, D, I>>
-        extends AbstractContent<E, D, I>
+public abstract class AbstractIconContent<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractIconContent<C, D, I>>
+        extends AbstractContent<C, D, I>
 {
     @Override
     public String getId ()
@@ -42,13 +42,13 @@ public abstract class AbstractIconContent<E extends JComponent, D extends IDecor
     }
 
     @Override
-    public boolean isEmpty ( final E c, final D d )
+    public boolean isEmpty ( final C c, final D d )
     {
         return getIcon ( c, d ) == null;
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final E c, final D d, final Rectangle bounds )
+    protected void paintContent ( final Graphics2D g2d, final C c, final D d, final Rectangle bounds )
     {
         final Icon icon = getIcon ( c, d );
         if ( icon != null )
@@ -60,7 +60,7 @@ public abstract class AbstractIconContent<E extends JComponent, D extends IDecor
     }
 
     @Override
-    protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
     {
         final Icon icon = getIcon ( c, d );
         return icon != null ? new Dimension ( icon.getIconWidth (), icon.getIconHeight () ) : new Dimension ( 0, 0 );
@@ -73,5 +73,5 @@ public abstract class AbstractIconContent<E extends JComponent, D extends IDecor
      * @param d painted decoration state
      * @return icon to paint
      */
-    protected abstract Icon getIcon ( E c, D d );
+    protected abstract Icon getIcon ( C c, D d );
 }

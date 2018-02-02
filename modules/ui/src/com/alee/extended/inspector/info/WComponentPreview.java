@@ -31,14 +31,14 @@ import java.awt.*;
 /**
  * Default styleable {@link JComponent} information provider.
  *
- * @param <T> component type
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public class WComponentPreview<T extends JComponent> extends AbstractComponentPreview<T>
+public class WComponentPreview<C extends JComponent> extends AbstractComponentPreview<C>
 {
     @Override
-    public Icon getIconImpl ( final T component )
+    public Icon getIconImpl ( final C component )
     {
         final JRootPane rootPane = SwingUtils.getRootPane ( component );
         if ( rootPane != null && rootPane.getGlassPane () == component )
@@ -47,13 +47,13 @@ public class WComponentPreview<T extends JComponent> extends AbstractComponentPr
         }
         else
         {
-            final ComponentDescriptor<T> descriptor = StyleManager.getDescriptor ( component );
+            final ComponentDescriptor<C> descriptor = StyleManager.getDescriptor ( component );
             return descriptor.getIcon ();
         }
     }
 
     @Override
-    public String getText ( final T component )
+    public String getText ( final C component )
     {
         final String title = "{" + ReflectUtils.getClassName ( component.getClass () ) + ":c(" + getTitleColor ( component ) + ")}";
 

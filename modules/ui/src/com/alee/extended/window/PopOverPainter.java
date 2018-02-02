@@ -40,14 +40,14 @@ import java.beans.PropertyChangeListener;
 /**
  * Basic painter for {@link WebPopOver} component.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "PopOverPainter" )
-public class PopOverPainter<E extends JRootPane, U extends WRootPaneUI> extends AbstractPopupPainter<E, U>
-        implements IPopOverPainter<E, U>
+public class PopOverPainter<C extends JRootPane, U extends WRootPaneUI> extends AbstractPopupPainter<C, U>
+        implements IPopOverPainter<C, U>
 {
     /**
      * Listeners.
@@ -902,7 +902,7 @@ public class PopOverPainter<E extends JRootPane, U extends WRootPaneUI> extends 
      * @param c root pane
      * @return popover instance for the specified root pane
      */
-    protected final WebPopOver getPopOver ( final E c )
+    protected final WebPopOver getPopOver ( final C c )
     {
         return ( WebPopOver ) c.getClientProperty ( WebPopOver.POPOVER_INSTANCE );
     }

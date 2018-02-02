@@ -622,7 +622,7 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
     protected void finishDrop ( final TransferSupport support, final T tree, final M model, final N destination, final int index,
                                 final List<N> dropped )
     {
-        SwingUtilities.invokeLater ( new Runnable ()
+        SwingUtils.invokeLater ( new Runnable ()
         {
             @Override
             public void run ()

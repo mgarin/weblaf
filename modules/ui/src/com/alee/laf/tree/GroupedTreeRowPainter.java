@@ -30,13 +30,13 @@ import java.util.List;
  * It provides separate even/odd states for first level groups and all sub-elements.
  * It also provides extra even/odd states for all elements within one group.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public class GroupedTreeRowPainter<E extends JTree, U extends WTreeUI, D extends IDecoration<E, D>> extends TreeRowPainter<E, U, D>
+public class GroupedTreeRowPainter<C extends JTree, U extends WTreeUI, D extends IDecoration<C, D>> extends TreeRowPainter<C, U, D>
 {
     @Override
     protected void addNumerationStates ( final List<String> states, final TreePath path )

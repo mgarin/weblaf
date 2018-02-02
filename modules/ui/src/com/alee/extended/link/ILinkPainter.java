@@ -22,13 +22,13 @@ import com.alee.extended.label.IStyledLabelPainter;
 /**
  * Base interface for {@link WebLink} component painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLink">How to use WebLink</a>
  */
 
-public interface ILinkPainter<E extends WebLink, U extends WLinkUI> extends IStyledLabelPainter<E, U>
+public interface ILinkPainter<C extends WebLink, U extends WLinkUI> extends IStyledLabelPainter<C, U>
 {
     /**
      * This interface doesn't offer any additional methods to implement.

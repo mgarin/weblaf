@@ -282,9 +282,9 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>>
     /**
      * Actions for {@link AbstractButton}.
      *
-     * @param <E> {@link AbstractButton} type
+     * @param <B> {@link AbstractButton} type
      */
-    protected class Action<E extends AbstractButton> extends UIAction<E>
+    protected class Action<B extends AbstractButton> extends UIAction<B>
     {
         /**
          * Supported actions.
@@ -298,7 +298,7 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>>
          * @param button {@link AbstractButton}
          * @param name   {@link Action} name
          */
-        public Action ( final E button, final String name )
+        public Action ( final B button, final String name )
         {
             super ( button, name );
         }
@@ -306,7 +306,7 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>>
         @Override
         public void actionPerformed ( final ActionEvent e )
         {
-            final E button = getComponent ();
+            final B button = getComponent ();
             if ( CompareUtils.equals ( getName (), PRESSED ) )
             {
                 final ButtonModel model = button.getModel ();
@@ -328,7 +328,7 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>>
         @Override
         public boolean isEnabled ()
         {
-            final E button = getComponent ();
+            final B button = getComponent ();
             return button == null || button.getModel ().isEnabled ();
         }
     }

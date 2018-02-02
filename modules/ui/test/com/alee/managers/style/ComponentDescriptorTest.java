@@ -47,7 +47,7 @@ public final class ComponentDescriptorTest
     @BeforeClass
     public static void initialize ()
     {
-        SwingUtils.invokeAndWaitSafely ( new Runnable ()
+        SwingUtils.invokeAndWait ( new Runnable ()
         {
             @Override
             public void run ()
@@ -64,7 +64,7 @@ public final class ComponentDescriptorTest
     @Test
     public void customDescriptor ()
     {
-        SwingUtils.invokeAndWaitSafely ( new Runnable ()
+        SwingUtils.invokeAndWait ( new Runnable ()
         {
             @Override
             public void run ()
@@ -148,7 +148,7 @@ public final class ComponentDescriptorTest
     @AfterClass
     public static void destroy ()
     {
-        SwingUtils.invokeAndWaitSafely ( new Runnable ()
+        SwingUtils.invokeAndWait ( new Runnable ()
         {
             @Override
             public void run ()

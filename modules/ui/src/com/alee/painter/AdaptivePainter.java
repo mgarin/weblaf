@@ -28,22 +28,22 @@ import java.awt.*;
  * To use it properly you should extend this class and implement UI painter interface methods.
  * In general cases those methods might have no effect since general-type painters do not know anything about component specifics.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public abstract class AdaptivePainter<E extends JComponent, U extends ComponentUI> implements SpecificPainter<E, U>
+public abstract class AdaptivePainter<C extends JComponent, U extends ComponentUI> implements SpecificPainter<C, U>
 {
     /**
-     * Adapted painter.
+     * Adapted {@link Painter}.
      */
     private final Painter painter;
 
     /**
-     * Constructs new AdaptivePainter to adapt specified painter.
+     * Constructs new {@link AdaptivePainter} to adapt specified {@link Painter}.
      *
-     * @param painter painter to adapt
+     * @param painter {@link Painter} to adapt
      */
     public AdaptivePainter ( final Painter painter )
     {
@@ -52,9 +52,9 @@ public abstract class AdaptivePainter<E extends JComponent, U extends ComponentU
     }
 
     /**
-     * Returns adapted painter.
+     * Returns adapted {@link Painter}.
      *
-     * @return adapted painter
+     * @return adapted {@link Painter}
      */
     public Painter getPainter ()
     {
@@ -62,13 +62,13 @@ public abstract class AdaptivePainter<E extends JComponent, U extends ComponentU
     }
 
     @Override
-    public void install ( final E c, final U ui )
+    public void install ( final C c, final U ui )
     {
         painter.install ( c, ui );
     }
 
     @Override
-    public void uninstall ( final E c, final U ui )
+    public void uninstall ( final C c, final U ui )
     {
         painter.uninstall ( c, ui );
     }
@@ -86,19 +86,19 @@ public abstract class AdaptivePainter<E extends JComponent, U extends ComponentU
     }
 
     @Override
-    public int getBaseline ( final E c, final U ui, final Bounds bounds )
+    public int getBaseline ( final C c, final U ui, final Bounds bounds )
     {
         return painter.getBaseline ( c, ui, bounds );
     }
 
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final E c, final U ui )
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final C c, final U ui )
     {
         return painter.getBaselineResizeBehavior ( c, ui );
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E c, final U ui, final Bounds bounds )
+    public void paint ( final Graphics2D g2d, final C c, final U ui, final Bounds bounds )
     {
         painter.paint ( g2d, c, ui, bounds );
     }

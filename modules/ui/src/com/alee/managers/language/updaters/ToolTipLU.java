@@ -28,13 +28,13 @@ import javax.swing.*;
  * Custom {@link LanguageUpdater} for any {@link JComponent} that provides tooltips only.
  * Most of default predefined language updaters extend this class.
  *
- * @param <E> component type
+ * @param <C> component type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>
  * @see com.alee.managers.language.LanguageManager
  */
 
-public class ToolTipLU<E extends JComponent> implements LanguageUpdater<E>, LanguageState
+public class ToolTipLU<C extends JComponent> implements LanguageUpdater<C>, LanguageState
 {
     @Override
     public Class getComponentClass ()
@@ -43,7 +43,7 @@ public class ToolTipLU<E extends JComponent> implements LanguageUpdater<E>, Lang
     }
 
     @Override
-    public void update ( final E component, final Language language, final String key, final Object... data )
+    public void update ( final C component, final Language language, final String key, final Object... data )
     {
         // Updating Swing component tooltips
         final LanguageUpdater swingTooltipUpdater = UILanguageManager.getLanguageUpdater ( JToolTip.class );

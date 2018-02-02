@@ -422,16 +422,16 @@
                 </Dictionary>
                 <Dictionary prefix="custom">
                     <record key="title">
-                        <value lang="en">Tooltip with hotkey</value>
-                        <value lang="ru">Подсказка с хоткеем</value>
+                        <value lang="en">Customized tooltip</value>
+                        <value lang="ru">Кастомизированная подсказка</value>
                     </record>
                     <record key="text">
                         <value lang="en">Hover to see tooltip</value>
                         <value lang="ru">Наведите для просмотра подсказки</value>
                     </record>
                     <record key="tip">
-                        <value lang="en">Custom {tooltip:u} with {styled:c(255,155,155)} text inside {tm:sup}{br}Based on {WebStyledLabel:b} component</value>
-                        <value lang="ru">Кастомная {подсказка:u} со {стилизованным:c(255,155,155)} текстом внутри {tm:sup}{br}Создана на основе {WebStyledLabel:b} компонента</value>
+                        <value lang="en">Customized {tooltip:u} with {styled:c(255,155,155)} text inside {tm:sup}{br}Based on {WebStyledLabel:b} component</value>
+                        <value lang="ru">Кастомизированная {подсказка:u} со {стилизованным:c(255,155,155)} текстом внутри {tm:sup}{br}Создана на основе {WebStyledLabel:b} компонента</value>
                     </record>
                 </Dictionary>
             </Dictionary>

@@ -8,14 +8,14 @@ import javax.swing.*;
  * Basic painter for {@link JRadioButtonMenuItem} component.
  * It is used as {@link WebRadioButtonMenuItemUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
 
-public class RadioButtonMenuItemPainter<E extends JRadioButtonMenuItem, U extends WebRadioButtonMenuItemUI, D extends IDecoration<E, D>>
-        extends AbstractStateMenuItemPainter<E, U, D> implements IRadioButtonMenuItemPainter<E, U>
+public class RadioButtonMenuItemPainter<C extends JRadioButtonMenuItem, U extends WebRadioButtonMenuItemUI, D extends IDecoration<C, D>>
+        extends AbstractStateMenuItemPainter<C, U, D> implements IRadioButtonMenuItemPainter<C, U>
 {
     /**
      * Implementation is used completely from {@link AbstractStateMenuItemPainter}.

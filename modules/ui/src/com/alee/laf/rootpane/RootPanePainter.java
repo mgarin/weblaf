@@ -20,15 +20,15 @@ import java.util.List;
  * Basic painter for {@link JRootPane} component.
  * It is used as {@link WebRootPaneUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
 
-public class RootPanePainter<E extends JRootPane, U extends WRootPaneUI, D extends IDecoration<E, D>>
-        extends AbstractContainerPainter<E, U, D> implements IRootPanePainter<E, U>
+public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D extends IDecoration<C, D>>
+        extends AbstractContainerPainter<C, U, D> implements IRootPanePainter<C, U>
 {
     /**
      * Listeners.

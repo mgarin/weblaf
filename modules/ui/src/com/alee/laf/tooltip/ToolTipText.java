@@ -26,24 +26,24 @@ import javax.swing.*;
 /**
  * Tooltip text content implementation.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "ToolTipText" )
-public class ToolTipText<E extends JToolTip, D extends IDecoration<E, D>, I extends ToolTipText<E, D, I>>
-        extends AbstractTextContent<E, D, I>
+public class ToolTipText<C extends JToolTip, D extends IDecoration<C, D>, I extends ToolTipText<C, D, I>>
+        extends AbstractTextContent<C, D, I>
 {
     @Override
-    protected String getText ( final E c, final D d )
+    protected String getText ( final C c, final D d )
     {
         return c.getTipText ();
     }
 
     @Override
-    protected int getMnemonicIndex ( final E c, final D d )
+    protected int getMnemonicIndex ( final C c, final D d )
     {
         return -1;
     }

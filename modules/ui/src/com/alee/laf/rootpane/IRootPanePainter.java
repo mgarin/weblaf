@@ -7,12 +7,12 @@ import javax.swing.*;
 /**
  * Base interface for {@link JRootPane} component painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public interface IRootPanePainter<E extends JRootPane, U extends WRootPaneUI> extends SpecificPainter<E, U>
+public interface IRootPanePainter<C extends JRootPane, U extends WRootPaneUI> extends SpecificPainter<C, U>
 {
     /**
      * Returns whether or not this painter will provide appropriate window decoration.

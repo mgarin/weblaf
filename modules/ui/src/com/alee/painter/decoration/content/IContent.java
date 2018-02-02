@@ -31,14 +31,14 @@ import java.io.Serializable;
 /**
  * Customizable component content interface.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
  */
 
-public interface IContent<E extends JComponent, D extends IDecoration<E, D>, I extends IContent<E, D, I>>
-        extends Identifiable, IDecoratonElement<E, D, I>, MergeBehavior<I>, Overwriting, Cloneable, Serializable
+public interface IContent<C extends JComponent, D extends IDecoration<C, D>, I extends IContent<C, D, I>>
+        extends Identifiable, IDecoratonElement<C, D, I>, MergeBehavior<I>, Overwriting, Cloneable, Serializable
 {
     /**
      * todo 1. Remove {@link IDecoration} usage from all methods?
@@ -67,7 +67,7 @@ public interface IContent<E extends JComponent, D extends IDecoration<E, D>, I e
      * @param d painted decoration state
      * @return true if this content is empty, false otherwise
      */
-    public boolean isEmpty ( E c, D d );
+    public boolean isEmpty ( C c, D d );
 
     /**
      * Returns whether or not this content has a reasonable baseline.
@@ -76,7 +76,7 @@ public interface IContent<E extends JComponent, D extends IDecoration<E, D>, I e
      * @param d aligned component decoration state
      * @return {@code true} if this content has a reasonable baseline, {@code false} otherwise
      */
-    public boolean hasBaseline ( E c, D d );
+    public boolean hasBaseline ( C c, D d );
 
     /**
      * Returns content baseline within the specified bounds, measured from the top of the bounds.
@@ -87,7 +87,7 @@ public interface IContent<E extends JComponent, D extends IDecoration<E, D>, I e
      * @param bounds bounds to get the baseline for
      * @return content baseline within the specified bounds, measured from the top of the bounds
      */
-    public int getBaseline ( E c, D d, Rectangle bounds );
+    public int getBaseline ( C c, D d, Rectangle bounds );
 
     /**
      * Returns enum indicating how the baseline of the content changes as the size changes.
@@ -96,7 +96,7 @@ public interface IContent<E extends JComponent, D extends IDecoration<E, D>, I e
      * @param d aligned component decoration state
      * @return enum indicating how the baseline of the content changes as the size changes
      */
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( E c, D d );
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( C c, D d );
 
     /**
      * Paints component's content.
@@ -106,7 +106,7 @@ public interface IContent<E extends JComponent, D extends IDecoration<E, D>, I e
      * @param d      painted decoration state
      * @param bounds painting bounds
      */
-    public void paint ( Graphics2D g2d, E c, D d, Rectangle bounds );
+    public void paint ( Graphics2D g2d, C c, D d, Rectangle bounds );
 
     /**
      * Returns content preferred size.
@@ -116,5 +116,5 @@ public interface IContent<E extends JComponent, D extends IDecoration<E, D>, I e
      * @param available theoretically available space for this content
      * @return content preferred size
      */
-    public Dimension getPreferredSize ( E c, D d, Dimension available );
+    public Dimension getPreferredSize ( C c, D d, Dimension available );
 }

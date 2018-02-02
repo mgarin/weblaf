@@ -28,7 +28,7 @@ import java.awt.image.BufferedImage;
  * Preset texure background.
  * Fills component shape with a texture based on the specified {@link #preset}.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> background type
  * @author Mikle Garin
@@ -36,8 +36,8 @@ import java.awt.image.BufferedImage;
  */
 
 @XStreamAlias ( "PresetTextureBackground" )
-public class PresetTextureBackground<E extends JComponent, D extends IDecoration<E, D>, I extends PresetTextureBackground<E, D, I>>
-        extends AbstractImageTextureBackground<E, D, I>
+public class PresetTextureBackground<C extends JComponent, D extends IDecoration<C, D>, I extends PresetTextureBackground<C, D, I>>
+        extends AbstractImageTextureBackground<C, D, I>
 {
     /**
      * Texture preset type.

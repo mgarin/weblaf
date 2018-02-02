@@ -25,12 +25,13 @@ import javax.swing.*;
  * This interface provides basic methods required for updating component language-dependant variables.
  * There is also a predefined set of language updaters registered in {@link com.alee.managers.language.LanguageManager}.
  *
+ * @param <C> component type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>
  * @see com.alee.managers.language.LanguageManager
  */
 
-public interface LanguageUpdater<E extends JComponent>
+public interface LanguageUpdater<C extends JComponent>
 {
     /**
      * Returns class which instance should be updated using this {@link LanguageUpdater}.
@@ -47,5 +48,5 @@ public interface LanguageUpdater<E extends JComponent>
      * @param key       language key
      * @param data      language data
      */
-    public void update ( E component, Language language, String key, Object... data );
+    public void update ( C component, Language language, String key, Object... data );
 }

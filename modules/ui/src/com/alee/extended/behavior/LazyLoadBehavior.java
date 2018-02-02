@@ -109,7 +109,7 @@ public class LazyLoadBehavior implements Behavior
                                      final UnsafeSupplier<D> dataSupplier, final Function<D, JComponent> dataHandler,
                                      final Function<Throwable, JComponent> errorHandler )
     {
-        SwingUtils.invokeAndWaitSafely ( new Runnable ()
+        SwingUtils.invokeAndWait ( new Runnable ()
         {
             @Override
             public void run ()

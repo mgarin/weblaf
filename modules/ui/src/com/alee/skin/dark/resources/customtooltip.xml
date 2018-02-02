@@ -3,7 +3,7 @@
     <!-- com.alee.managers.tooltip.WebCustomTooltip -->
 
     <!-- Tooltip label -->
-    <style type="styledlabel" id="customtooltip-label">
+    <style type="styledlabel" id="customtooltip-label" padding="0,3,0,3">
         <painter>
             <decorations>
                 <decoration>

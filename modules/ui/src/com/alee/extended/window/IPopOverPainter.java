@@ -27,12 +27,12 @@ import java.awt.*;
 /**
  * Base interface for {@link WebPopOver} component painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface IPopOverPainter<E extends JRootPane, U extends WRootPaneUI> extends IRootPanePainter<E, U>
+public interface IPopOverPainter<C extends JRootPane, U extends WRootPaneUI> extends IRootPanePainter<C, U>
 {
     /**
      * Configures popover to be displayed as unattached at the specified screen location.

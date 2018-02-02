@@ -22,11 +22,12 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import java.io.Serializable;
 
 /**
- * Plugin library information data class.
+ * {@link com.alee.managers.plugin.Plugin} library information data class.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
  * @see com.alee.managers.plugin.PluginManager
+ * @see com.alee.managers.plugin.Plugin
  */
 
 @XStreamAlias ( "PluginLibrary" )

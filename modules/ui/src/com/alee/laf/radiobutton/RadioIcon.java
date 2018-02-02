@@ -30,14 +30,14 @@ import java.awt.geom.Ellipse2D;
 /**
  * Checked state icon content for {@link AbstractButton} component.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "RadioIcon" )
-public class RadioIcon<E extends AbstractButton, D extends IDecoration<E, D>, I extends RadioIcon<E, D, I>> extends AbstractContent<E, D, I>
+public class RadioIcon<C extends AbstractButton, D extends IDecoration<C, D>, I extends RadioIcon<C, D, I>> extends AbstractContent<C, D, I>
 {
     /**
      * Preferred icon size.
@@ -64,13 +64,13 @@ public class RadioIcon<E extends AbstractButton, D extends IDecoration<E, D>, I 
     }
 
     @Override
-    public boolean isEmpty ( final E c, final D d )
+    public boolean isEmpty ( final C c, final D d )
     {
         return false;
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final E c, final D d, final Rectangle bounds )
+    protected void paintContent ( final Graphics2D g2d, final C c, final D d, final Rectangle bounds )
     {
         final int x = bounds.x;
         final int y = bounds.y;
@@ -89,7 +89,7 @@ public class RadioIcon<E extends AbstractButton, D extends IDecoration<E, D>, I 
     }
 
     @Override
-    protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
     {
         return size != null ? new Dimension ( size ) : new Dimension ( 0, 0 );
     }

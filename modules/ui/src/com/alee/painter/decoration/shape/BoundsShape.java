@@ -28,17 +28,17 @@ import java.awt.*;
  * Simple rectangular bounds shape implementation.
  * Since provided shape is quite simple it is not cached.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> shape type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "BoundsShape" )
-public class BoundsShape<E extends JComponent, D extends WebDecoration<E, D>, I extends BoundsShape<E, D, I>> extends AbstractShape<E, D, I>
+public class BoundsShape<C extends JComponent, D extends WebDecoration<C, D>, I extends BoundsShape<C, D, I>> extends AbstractShape<C, D, I>
 {
     @Override
-    public Shape getShape ( final ShapeType type, final Rectangle bounds, final E c, final D d )
+    public Shape getShape ( final ShapeType type, final Rectangle bounds, final C c, final D d )
     {
         final int bgShear = type.isBorder () ? -1 : 0;
         final int sw = d.getShadowWidth ( ShadowType.outer );

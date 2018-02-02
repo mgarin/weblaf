@@ -9,11 +9,13 @@ import javax.swing.*;
  * Simple DesktopPanePainter adapter class.
  * It is used to install simple non-specific painters into WebDesktopPaneUI.
  *
+ * @param <C> component type
+ * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public final class AdaptiveDesktopPanePainter<E extends JDesktopPane, U extends WebDesktopPaneUI> extends AdaptivePainter<E, U>
-        implements IDesktopPanePainter<E, U>
+public final class AdaptiveDesktopPanePainter<C extends JDesktopPane, U extends WebDesktopPaneUI> extends AdaptivePainter<C, U>
+        implements IDesktopPanePainter<C, U>
 {
     /**
      * Constructs new AdaptiveDesktopPanePainter for the specified painter.

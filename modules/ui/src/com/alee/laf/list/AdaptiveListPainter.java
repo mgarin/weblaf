@@ -9,10 +9,12 @@ import javax.swing.*;
  * Simple {@link ListPainter} adapter class.
  * It is used to install simple non-specific painters into {@link WListUI}.
  *
+ * @param <C> component type
+ * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public final class AdaptiveListPainter<E extends JList, U extends WListUI> extends AdaptivePainter<E, U> implements IListPainter<E, U>
+public final class AdaptiveListPainter<C extends JList, U extends WListUI> extends AdaptivePainter<C, U> implements IListPainter<C, U>
 {
     /**
      * Constructs new {@link AdaptiveListPainter} for the specified painter.

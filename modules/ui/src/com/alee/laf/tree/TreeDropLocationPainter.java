@@ -31,14 +31,14 @@ import java.util.List;
  * Simple tree drop location painter based on {@link AbstractSectionDecorationPainter}.
  * It is used within {@link TreePainter} to paint drop location on the tree.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public class TreeDropLocationPainter<E extends JTree, U extends WebTreeUI, D extends IDecoration<E, D>>
-        extends AbstractSectionDecorationPainter<E, U, D> implements ITreeDropLocationPainter<E, U>
+public class TreeDropLocationPainter<C extends JTree, U extends WTreeUI, D extends IDecoration<C, D>>
+        extends AbstractSectionDecorationPainter<C, U, D> implements ITreeDropLocationPainter<C, U>
 {
     /**
      * Tree drop location to paint visual representation for.

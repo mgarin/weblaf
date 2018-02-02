@@ -28,15 +28,15 @@ import java.util.Locale;
 /**
  * Custom content for {@link LanguageChooserRenderer} items locale.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "LanguageItemLocale" )
-public class LanguageItemLocale<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractTextContent<E, D, I>>
-        extends AbstractTextContent<E, D, I>
+public class LanguageItemLocale<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractTextContent<C, D, I>>
+        extends AbstractTextContent<C, D, I>
 {
     /**
      * Client property key locale is stored under in {@link JComponent}.
@@ -50,14 +50,14 @@ public class LanguageItemLocale<E extends JComponent, D extends IDecoration<E, D
     }
 
     @Override
-    protected String getText ( final E c, final D d )
+    protected String getText ( final C c, final D d )
     {
         final Locale locale = ( Locale ) c.getClientProperty ( LOCALE_VALUE_KEY );
         return locale != null ? LanguageUtils.toString ( locale ) : null;
     }
 
     @Override
-    protected int getMnemonicIndex ( final E c, final D d )
+    protected int getMnemonicIndex ( final C c, final D d )
     {
         return -1;
     }

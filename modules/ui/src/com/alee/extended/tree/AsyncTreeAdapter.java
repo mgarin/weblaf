@@ -22,26 +22,26 @@ import java.util.List;
 /**
  * This listener class provide various asynchronous tree events.
  *
- * @param <E> custom node type
+ * @param <N> custom node type
  * @author Mikle Garin
  */
 
-public abstract class AsyncTreeAdapter<E extends AsyncUniqueNode> implements AsyncTreeListener<E>
+public abstract class AsyncTreeAdapter<N extends AsyncUniqueNode> implements AsyncTreeListener<N>
 {
     @Override
-    public void loadStarted ( final E parent )
+    public void loadStarted ( final N parent )
     {
         // Do nothing by default
     }
 
     @Override
-    public void loadCompleted ( final E parent, final List<E> children )
+    public void loadCompleted ( final N parent, final List<N> children )
     {
         // Do nothing by default
     }
 
     @Override
-    public void loadFailed ( final E parent, final Throwable cause )
+    public void loadFailed ( final N parent, final Throwable cause )
     {
         // Do nothing by default
     }

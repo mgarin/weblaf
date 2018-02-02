@@ -28,14 +28,14 @@ import java.util.List;
  * This interface is a base for any custom component content layout.
  * Content layout is optional and will handle layout of {@link com.alee.painter.decoration.content.IContent} placed in it.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> layout type
  * @author Mikle Garin
  */
 
-public interface IContentLayout<E extends JComponent, D extends IDecoration<E, D>, I extends IContentLayout<E, D, I>>
-        extends IContent<E, D, I>
+public interface IContentLayout<C extends JComponent, D extends IDecoration<C, D>, I extends IContentLayout<C, D, I>>
+        extends IContent<C, D, I>
 {
     /**
      * Returns all contents of this layout.
@@ -44,7 +44,7 @@ public interface IContentLayout<E extends JComponent, D extends IDecoration<E, D
      * @param d painted decoration state
      * @return all contents of this layout
      */
-    public List<IContent> getContents ( E c, D d );
+    public List<IContent> getContents ( C c, D d );
 
     /**
      * Returns {@link ContentLayoutData} containing bounds for each of the layout constraints.
@@ -55,5 +55,5 @@ public interface IContentLayout<E extends JComponent, D extends IDecoration<E, D
      * @param bounds painting bounds
      * @return {@link ContentLayoutData} containing bounds for each of the layout constraints
      */
-    public ContentLayoutData layoutContent ( E c, D d, Rectangle bounds );
+    public ContentLayoutData layoutContent ( C c, D d, Rectangle bounds );
 }

@@ -27,23 +27,23 @@ import java.util.List;
 /**
  * Base class for any plugin.
  *
- * @param <T> {@link Plugin} implementation class type
+ * @param <P> {@link Plugin} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
- * @see com.alee.managers.plugin.PluginManager
+ * @see PluginManager
  */
 
-public abstract class Plugin<T extends Plugin<T>>
+public abstract class Plugin<P extends Plugin<P>>
 {
     /**
      * Plugin manager which loaded this plugin.
      */
-    protected PluginManager<T> pluginManager;
+    protected PluginManager<P> pluginManager;
 
     /**
      * Detected plugin information.
      */
-    protected DetectedPlugin<T> detectedPlugin;
+    protected DetectedPlugin<P> detectedPlugin;
 
     /**
      * Cached plugin initialization strategy.
@@ -60,7 +60,7 @@ public abstract class Plugin<T extends Plugin<T>>
      *
      * @return plugin manager which loaded this plugin
      */
-    public PluginManager<T> getPluginManager ()
+    public PluginManager<P> getPluginManager ()
     {
         return pluginManager;
     }
@@ -70,7 +70,7 @@ public abstract class Plugin<T extends Plugin<T>>
      *
      * @param pluginManager plugin manager which loaded this plugin
      */
-    protected void setPluginManager ( final PluginManager<T> pluginManager )
+    protected void setPluginManager ( final PluginManager<P> pluginManager )
     {
         this.pluginManager = pluginManager;
     }
@@ -80,7 +80,7 @@ public abstract class Plugin<T extends Plugin<T>>
      *
      * @return additional information about this plugin
      */
-    public DetectedPlugin<T> getDetectedPlugin ()
+    public DetectedPlugin<P> getDetectedPlugin ()
     {
         return detectedPlugin;
     }
@@ -90,7 +90,7 @@ public abstract class Plugin<T extends Plugin<T>>
      *
      * @param detectedPlugin additional information about this plugin
      */
-    protected void setDetectedPlugin ( final DetectedPlugin<T> detectedPlugin )
+    protected void setDetectedPlugin ( final DetectedPlugin<P> detectedPlugin )
     {
         this.detectedPlugin = detectedPlugin;
     }

@@ -9,13 +9,13 @@ import javax.swing.*;
  * Simple {@link ISplitPanePainter} adapter class.
  * It is used to install simple non-specific painters into {@link WSplitPaneUI}.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public final class AdaptiveSplitPanePainter<E extends JSplitPane, U extends WSplitPaneUI> extends AdaptivePainter<E, U>
-        implements ISplitPanePainter<E, U>
+public final class AdaptiveSplitPanePainter<C extends JSplitPane, U extends WSplitPaneUI> extends AdaptivePainter<C, U>
+        implements ISplitPanePainter<C, U>
 {
     /**
      * Constructs new {@link AdaptiveSplitPanePainter} for the specified {@link Painter}.

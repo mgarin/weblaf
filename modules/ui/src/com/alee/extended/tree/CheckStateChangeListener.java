@@ -23,11 +23,11 @@ import java.util.List;
 /**
  * Special listener for {@link WebCheckBoxTree} check state changes.
  *
- * @param <E> nodes type
+ * @param <N> nodes type
  * @author Mikle Garin
  */
 
-public interface CheckStateChangeListener<E extends DefaultMutableTreeNode>
+public interface CheckStateChangeListener<N extends DefaultMutableTreeNode>
 {
     /**
      * Informs about single or multiply check state changes.
@@ -35,5 +35,5 @@ public interface CheckStateChangeListener<E extends DefaultMutableTreeNode>
      * @param tree         {@link WebCheckBoxTree}
      * @param stateChanges check state changes list
      */
-    public void checkStateChanged ( WebCheckBoxTree<E> tree, List<CheckStateChange<E>> stateChanges );
+    public void checkStateChanged ( WebCheckBoxTree<N> tree, List<CheckStateChange<N>> stateChanges );
 }

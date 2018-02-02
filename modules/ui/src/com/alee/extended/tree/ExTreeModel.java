@@ -33,36 +33,36 @@ import java.util.*;
  * {@link WebTreeModel} extension that is based on data from {@link ExTreeDataProvider}.
  * All data is always instantly loaded based on the provided {@link ExTreeDataProvider} which allows sorting and filtering for all nodes.
  *
- * @param <E> node type
+ * @param <N> node type
  * @author Mikle Garin
  * @see WebExTree
  * @see ExTreeDataProvider
  */
 
-public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
+public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N>
 {
     /**
      * {@link WebTree} that uses this model
      */
-    protected final WebTree<E> tree;
+    protected final WebTree<N> tree;
 
     /**
      * {@link ExTreeDataProvider} used by this model
      */
-    protected final ExTreeDataProvider<E> dataProvider;
+    protected final ExTreeDataProvider<N> dataProvider;
 
     /**
      * Cache for children nodes returned by data provider (parent ID -&gt; list of raw child nodes).
      * This map contains raw children which weren't affected by sorting and filtering operations.
      * If children needs to be re-sorted or re-filtered they are simply taken from the cache and re-organized once again.
      */
-    protected final Map<String, List<E>> rawNodeChildrenCache;
+    protected final Map<String, List<N>> rawNodeChildrenCache;
 
     /**
      * Nodes cache.
      * Used for quick node search within the tree.
      */
-    protected final Map<String, E> nodeById;
+    protected final Map<String, N> nodeById;
 
     /**
      * Nodes parent cache.
@@ -74,7 +74,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * Root node cache.
      * Cached when root is requested for the first time.
      */
-    protected final E rootNode;
+    protected final N rootNode;
 
     /**
      * Constructs default ex tree model using custom data provider.
@@ -82,13 +82,13 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @param tree         {@link WebTree} that uses this model
      * @param dataProvider {@link ExTreeDataProvider} this model should be based on
      */
-    public ExTreeModel ( final WebTree<E> tree, final ExTreeDataProvider<E> dataProvider )
+    public ExTreeModel ( final WebTree<N> tree, final ExTreeDataProvider<N> dataProvider )
     {
         super ( null );
         this.tree = tree;
         this.dataProvider = dataProvider;
-        this.rawNodeChildrenCache = new HashMap<String, List<E>> ( 10 );
-        this.nodeById = new HashMap<String, E> ( 50 );
+        this.rawNodeChildrenCache = new HashMap<String, List<N>> ( 10 );
+        this.nodeById = new HashMap<String, N> ( 50 );
         this.parentById = new HashMap<String, String> ( 50 );
         this.rootNode = loadRootNode ();
         loadTreeData ( getRootNode () );
@@ -99,7 +99,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      *
      * @return {@link ExTreeDataProvider} used by this model
      */
-    public ExTreeDataProvider<E> getDataProvider ()
+    public ExTreeDataProvider<N> getDataProvider ()
     {
         return dataProvider;
     }
@@ -109,14 +109,14 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      *
      * @return root node provided by {@link ExTreeDataProvider}
      */
-    protected E loadRootNode ()
+    protected N loadRootNode ()
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Retrieving root node
-        final ExTreeDataProvider<E> dataProvider = getDataProvider ();
-        final E rootNode = dataProvider.getRoot ();
+        final ExTreeDataProvider<N> dataProvider = getDataProvider ();
+        final N rootNode = dataProvider.getRoot ();
 
         // Caching root node
         cacheNodeById ( rootNode );
@@ -136,14 +136,14 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      *
      * @param parent node to load children for
      */
-    protected void loadTreeData ( final E parent )
+    protected void loadTreeData ( final N parent )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Loading children
-        final ExTreeDataProvider<E> dataProvider = getDataProvider ();
-        final List<E> children = dataProvider.getChildren ( parent );
+        final ExTreeDataProvider<N> dataProvider = getDataProvider ();
+        final List<N> children = dataProvider.getChildren ( parent );
 
         // Caching nodes
         setRawChildren ( parent, children );
@@ -151,21 +151,21 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
         cacheParentId ( children, parent.getId () );
 
         // Inserting loaded nodes if any of them are displayed
-        final List<E> displayedChildren = filterAndSort ( parent, children );
+        final List<N> displayedChildren = filterAndSort ( parent, children );
         if ( displayedChildren != null && displayedChildren.size () > 0 )
         {
             super.insertNodesInto ( displayedChildren, parent, 0 );
         }
 
         // Forcing child nodes to load their structures
-        for ( final E child : children )
+        for ( final N child : children )
         {
             loadTreeData ( child );
         }
     }
 
     @Override
-    public E getRoot ()
+    public N getRoot ()
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -175,13 +175,13 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     }
 
     @Override
-    public E getChild ( final Object parent, final int index )
+    public N getChild ( final Object parent, final int index )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Looking for child node
-        return ( E ) super.getChild ( parent, index );
+        return ( N ) super.getChild ( parent, index );
     }
 
     @Override
@@ -190,7 +190,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
-        final E reloadedNode = ( E ) node;
+        final N reloadedNode = ( N ) node;
 
         // Cancels tree editing
         tree.cancelEditing ();
@@ -216,7 +216,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @param parent   node to process
      * @param children new node children
      */
-    public void setChildNodes ( final E parent, final List<E> children )
+    public void setChildNodes ( final N parent, final List<N> children )
     {
         removeNodesFromParent ( parent );
         addChildNodes ( parent, children );
@@ -229,7 +229,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @param parent node to process
      * @param child  new node child
      */
-    public void addChildNode ( final E parent, final E child )
+    public void addChildNode ( final N parent, final N child )
     {
         insertNodeInto ( child, parent, getRawChildrenCount ( parent ) );
     }
@@ -241,7 +241,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @param parent   node to process
      * @param children new node children
      */
-    public void addChildNodes ( final E parent, final List<E> children )
+    public void addChildNodes ( final N parent, final List<N> children )
     {
         insertNodesInto ( children, parent, getRawChildrenCount ( parent ) );
     }
@@ -260,8 +260,8 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
-        final E childNode = ( E ) child;
-        final E parentNode = ( E ) parent;
+        final N childNode = ( N ) child;
+        final N parentNode = ( N ) parent;
 
         // Caching node
         addRawChild ( parentNode, childNode, index );
@@ -291,7 +291,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @param index    insert index
      */
     @Override
-    public void insertNodesInto ( final List<E> children, final E parent, final int index )
+    public void insertNodesInto ( final List<N> children, final N parent, final int index )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -309,7 +309,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
         super.insertNodesInto ( children, parent, Math.min ( index, parent.getChildCount () ) );
 
         // Loading data for newly added nodes
-        for ( final E child : children )
+        for ( final N child : children )
         {
             loadTreeData ( child );
         }
@@ -327,7 +327,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @param index    insert index
      */
     @Override
-    public void insertNodesInto ( final E[] children, final E parent, final int index )
+    public void insertNodesInto ( final N[] children, final N parent, final int index )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -345,7 +345,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
         super.insertNodesInto ( children, parent, Math.min ( index, parent.getChildCount () ) );
 
         // Loading data for newly added nodes
-        for ( final E child : children )
+        for ( final N child : children )
         {
             loadTreeData ( child );
         }
@@ -360,8 +360,8 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
-        final E child = ( E ) node;
-        final E parent = findParent ( child.getId () );
+        final N child = ( N ) node;
+        final N parent = findParent ( child.getId () );
 
         // Clearing nodes children caches
         removeRawChild ( parent, child );
@@ -380,7 +380,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     }
 
     @Override
-    public void removeNodesFromParent ( final E parent )
+    public void removeNodesFromParent ( final N parent )
     {
         // Clearing node children caches
         clearRawChildren ( parent, false );
@@ -390,23 +390,23 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     }
 
     @Override
-    public void removeNodesFromParent ( final E[] nodes )
+    public void removeNodesFromParent ( final N[] nodes )
     {
         // Redirecting to another method
         removeNodesFromParent ( CollectionUtils.toList ( nodes ) );
     }
 
     @Override
-    public void removeNodesFromParent ( final List<E> nodes )
+    public void removeNodesFromParent ( final List<N> nodes )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Removing node caches
-        final List<E> visible = new ArrayList<E> ( nodes.size () );
-        for ( final E child : nodes )
+        final List<N> visible = new ArrayList<N> ( nodes.size () );
+        for ( final N child : nodes )
         {
-            final E parent = findParent ( child.getId () );
+            final N parent = findParent ( child.getId () );
 
             // Clearing nodes children caches
             removeRawChild ( parent, child );
@@ -433,7 +433,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @param parent      {@link UniqueNode} for which children filtering and sorting should be updated
      * @param recursively whether should update filtering and sorting for all {@link UniqueNode} children recursively
      */
-    public void filterAndSort ( final E parent, final boolean recursively )
+    public void filterAndSort ( final N parent, final boolean recursively )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -463,7 +463,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      *
      * @param parent {@link UniqueNode} for which children filtering and sorting should be updated
      */
-    protected void filterAndSortRecursively ( final E parent )
+    protected void filterAndSortRecursively ( final N parent )
     {
         // Filtering and sorting children of the specified parent first
         filterAndSort ( parent );
@@ -471,7 +471,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
         // Now performing the same for each of the remaining children (not raw anymore to avoid unnecessary operations)
         for ( int i = 0; i < parent.getChildCount (); i++ )
         {
-            filterAndSortRecursively ( ( E ) parent.getChildAt ( i ) );
+            filterAndSortRecursively ( ( N ) parent.getChildAt ( i ) );
         }
     }
 
@@ -480,17 +480,17 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      *
      * @param parent {@link UniqueNode} for which children filtering and sorting should be updated
      */
-    protected void filterAndSort ( final E parent )
+    protected void filterAndSort ( final N parent )
     {
         // Removing old children
         parent.removeAllChildren ();
 
         // Filtering and sorting raw children
-        final List<E> children = getRawChildren ( parent );
-        final List<E> realChildren = filterAndSort ( parent, children );
+        final List<N> children = getRawChildren ( parent );
+        final List<N> realChildren = filterAndSort ( parent, children );
 
         // Adding new children
-        for ( final E child : realChildren )
+        for ( final N child : realChildren )
         {
             parent.add ( child );
         }
@@ -503,20 +503,20 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @param children {@link List} of {@link UniqueNode}s to filter and sort
      * @return {@link List} of filtered and sorted {@link UniqueNode}s
      */
-    protected List<E> filterAndSort ( final E parent, final List<E> children )
+    protected List<N> filterAndSort ( final N parent, final List<N> children )
     {
-        final List<E> result;
+        final List<N> result;
         if ( CollectionUtils.notEmpty ( children ) )
         {
             // Data provider
-            final ExTreeDataProvider<E> dataProvider = getDataProvider ();
+            final ExTreeDataProvider<N> dataProvider = getDataProvider ();
 
             // Filtering children
-            final Filter<E> filter = dataProvider.getChildrenFilter ( parent, children );
+            final Filter<N> filter = dataProvider.getChildrenFilter ( parent, children );
             result = filter != null ? CollectionUtils.filter ( children, filter ) : CollectionUtils.copy ( children );
 
             // Sorting children
-            final Comparator<E> comparator = dataProvider.getChildrenComparator ( parent, result );
+            final Comparator<N> comparator = dataProvider.getChildrenComparator ( parent, result );
             if ( comparator != null )
             {
                 Collections.sort ( result, comparator );
@@ -525,7 +525,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
         else
         {
             // Simply return an empty array if there is no children
-            result = new ArrayList<E> ( 0 );
+            result = new ArrayList<N> ( 0 );
         }
         return result;
     }
@@ -536,7 +536,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @param nodeId {@link UniqueNode} identifier
      * @return {@link UniqueNode} with the specified identifier if it is in the model, {@code null} if it is not
      */
-    public E findNode ( final String nodeId )
+    public N findNode ( final String nodeId )
     {
         return nodeById.get ( nodeId );
     }
@@ -547,9 +547,9 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @param parent {@link UniqueNode} to return raw children for
      * @return raw children for the specified {@link UniqueNode}
      */
-    public List<E> getRawChildren ( final E parent )
+    public List<N> getRawChildren ( final N parent )
     {
-        final List<E> children = rawNodeChildrenCache.get ( parent.getId () );
+        final List<N> children = rawNodeChildrenCache.get ( parent.getId () );
         if ( children == null )
         {
             throw new RuntimeException ( "Raw children are not available for node: " + parent );
@@ -563,7 +563,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @param parent {@link UniqueNode} identifier to set raw children for
      * @param nodes  {@link List} of {@link UniqueNode}s to set as children
      */
-    protected void setRawChildren ( final E parent, final List<E> nodes )
+    protected void setRawChildren ( final N parent, final List<N> nodes )
     {
         rawNodeChildrenCache.put ( parent.getId (), nodes );
     }
@@ -574,7 +574,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @param parent {@link UniqueNode} to return raw children count for
      * @return raw children count for the specified {@link UniqueNode}
      */
-    public int getRawChildrenCount ( final E parent )
+    public int getRawChildrenCount ( final N parent )
     {
         return getRawChildren ( parent ).size ();
     }
@@ -586,7 +586,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @param node   {@link UniqueNode} child
      * @param index  index to add child at
      */
-    protected void addRawChild ( final E parent, final E node, final int index )
+    protected void addRawChild ( final N parent, final N node, final int index )
     {
         getRawChildren ( parent ).add ( index, node );
     }
@@ -598,7 +598,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @param nodes  {@link List} of {@link UniqueNode} children
      * @param index  index to add children at
      */
-    protected void addRawChildren ( final E parent, final List<E> nodes, final int index )
+    protected void addRawChildren ( final N parent, final List<N> nodes, final int index )
     {
         getRawChildren ( parent ).addAll ( index, nodes );
     }
@@ -610,9 +610,9 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @param nodes  {@link List} of {@link UniqueNode} children
      * @param index  index to add children at
      */
-    protected void addRawChildren ( final E parent, final E[] nodes, final int index )
+    protected void addRawChildren ( final N parent, final N[] nodes, final int index )
     {
-        final List<E> cachedChildren = getRawChildren ( parent );
+        final List<N> cachedChildren = getRawChildren ( parent );
         for ( int i = nodes.length - 1; i >= 0; i-- )
         {
             cachedChildren.add ( index, nodes[ i ] );
@@ -625,7 +625,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @param parent {@link UniqueNode} to remove child from
      * @param node   {@link UniqueNode} child to remove
      */
-    protected void removeRawChild ( final E parent, final E node )
+    protected void removeRawChild ( final N parent, final N node )
     {
         getRawChildren ( parent ).remove ( node );
     }
@@ -636,7 +636,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @param node      node to clear cache for
      * @param clearNode whether should clear node cache or not
      */
-    protected void clearRawChildren ( final E node, final boolean clearNode )
+    protected void clearRawChildren ( final N node, final boolean clearNode )
     {
         // Clears node cache
         if ( clearNode )
@@ -646,7 +646,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
         }
 
         // Clears node raw children cache
-        final List<E> children = rawNodeChildrenCache.remove ( node.getId () );
+        final List<N> children = rawNodeChildrenCache.remove ( node.getId () );
         if ( CollectionUtils.notEmpty ( children ) )
         {
             clearRawChildren ( children, true );
@@ -659,9 +659,9 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @param nodes      nodes to clear cache for
      * @param clearNodes whether should clear nodes cache or not
      */
-    protected void clearRawChildren ( final List<E> nodes, final boolean clearNodes )
+    protected void clearRawChildren ( final List<N> nodes, final boolean clearNodes )
     {
-        for ( final E node : nodes )
+        for ( final N node : nodes )
         {
             clearRawChildren ( node, clearNodes );
         }
@@ -673,9 +673,9 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @param nodes      nodes to clear cache for
      * @param clearNodes whether should clear nodes cache or not
      */
-    protected void clearRawChildren ( final E[] nodes, final boolean clearNodes )
+    protected void clearRawChildren ( final N[] nodes, final boolean clearNodes )
     {
-        for ( final E node : nodes )
+        for ( final N node : nodes )
         {
             clearRawChildren ( node, clearNodes );
         }
@@ -686,7 +686,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      *
      * @param node node to cache
      */
-    protected void cacheNodeById ( final E node )
+    protected void cacheNodeById ( final N node )
     {
         nodeById.put ( node.getId (), node );
     }
@@ -696,9 +696,9 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      *
      * @param nodes list of nodes to cache
      */
-    protected void cacheNodesById ( final List<E> nodes )
+    protected void cacheNodesById ( final List<N> nodes )
     {
-        for ( final E node : nodes )
+        for ( final N node : nodes )
         {
             cacheNodeById ( node );
         }
@@ -709,9 +709,9 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      *
      * @param nodes array of nodes to cache
      */
-    protected void cacheNodesById ( final E[] nodes )
+    protected void cacheNodesById ( final N[] nodes )
     {
-        for ( final E node : nodes )
+        for ( final N node : nodes )
         {
             cacheNodeById ( node );
         }
@@ -723,7 +723,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @param nodeId {@link UniqueNode} identifier
      * @return parent of the {@link UniqueNode} with the specified identifier, {@code null} if it cannot be found
      */
-    public E findParent ( final String nodeId )
+    public N findParent ( final String nodeId )
     {
         final String parentId = parentById.get ( nodeId );
         return findNode ( parentId );
@@ -735,7 +735,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @param node     {@link UniqueNode}
      * @param parentId {@link UniqueNode} parent identifier
      */
-    protected void cacheParentId ( final E node, final String parentId )
+    protected void cacheParentId ( final N node, final String parentId )
     {
         parentById.put ( node.getId (), parentId );
     }
@@ -746,9 +746,9 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @param nodes    {@link List} of {@link UniqueNode}s
      * @param parentId {@link UniqueNode} parent identifier
      */
-    protected void cacheParentId ( final List<E> nodes, final String parentId )
+    protected void cacheParentId ( final List<N> nodes, final String parentId )
     {
-        for ( final E node : nodes )
+        for ( final N node : nodes )
         {
             cacheParentId ( node, parentId );
         }
@@ -760,9 +760,9 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @param nodes    array of {@link UniqueNode}s
      * @param parentId {@link UniqueNode} parent identifier
      */
-    protected void cacheParentId ( final E[] nodes, final String parentId )
+    protected void cacheParentId ( final N[] nodes, final String parentId )
     {
-        for ( final E node : nodes )
+        for ( final N node : nodes )
         {
             cacheParentId ( node, parentId );
         }

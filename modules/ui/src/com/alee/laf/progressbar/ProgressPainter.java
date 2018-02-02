@@ -25,14 +25,14 @@ import javax.swing.*;
 /**
  * Simple {@link JProgressBar} progress line painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public class ProgressPainter<E extends JProgressBar, U extends WProgressBarUI, D extends IDecoration<E, D>>
-        extends AbstractSectionDecorationPainter<E, U, D> implements IProgressPainter<E, U>
+public class ProgressPainter<C extends JProgressBar, U extends WProgressBarUI, D extends IDecoration<C, D>>
+        extends AbstractSectionDecorationPainter<C, U, D> implements IProgressPainter<C, U>
 {
     @Override
     public String getSectionId ()

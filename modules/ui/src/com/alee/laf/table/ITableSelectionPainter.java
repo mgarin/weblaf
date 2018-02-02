@@ -22,14 +22,14 @@ import com.alee.painter.SectionPainter;
 import javax.swing.*;
 
 /**
- * Base interface for JTable component selection painters.
+ * Base interface for {@link JTable} component selection painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface ITableSelectionPainter<E extends JTable, U extends WebTableUI> extends SectionPainter<E, U>
+public interface ITableSelectionPainter<C extends JTable, U extends WebTableUI> extends SectionPainter<C, U>
 {
     /**
      * This interface has no methods so far.

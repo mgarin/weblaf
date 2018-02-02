@@ -27,14 +27,14 @@ import java.util.List;
 /**
  * Simple table column painter based on {@link AbstractSectionDecorationPainter}.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public class TableColumnPainter<E extends JTable, U extends WebTableUI, D extends IDecoration<E, D>>
-        extends AbstractSectionDecorationPainter<E, U, D> implements ITableColumnPainter<E, U>
+public class TableColumnPainter<C extends JTable, U extends WebTableUI, D extends IDecoration<C, D>>
+        extends AbstractSectionDecorationPainter<C, U, D> implements ITableColumnPainter<C, U>
 {
     /**
      * Painted column index.

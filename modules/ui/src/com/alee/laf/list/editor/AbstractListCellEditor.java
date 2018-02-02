@@ -31,12 +31,12 @@ import java.util.ArrayList;
 /**
  * An abstract list cell editor that provides basic method implementations for list cell editor creation.
  *
- * @param <E> Editor component type
+ * @param <C> Editor component type
  * @param <T> Editor value type
  * @author Mikle Garin
  */
 
-public abstract class AbstractListCellEditor<E extends Component, T> implements ListCellEditor<E, T>
+public abstract class AbstractListCellEditor<C extends Component, T> implements ListCellEditor<C, T>
 {
     /**
      * Last edited cell index.
@@ -51,7 +51,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     /**
      * Currently active editor.
      */
-    protected E editor;
+    protected C editor;
 
     /**
      * List resize adapter.
@@ -192,7 +192,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     }
 
     @Override
-    public E getCellEditor ( final JList list, final int index, final T value )
+    public C getCellEditor ( final JList list, final int index, final T value )
     {
         editor = createCellEditor ( list, index, value );
         return editor;
@@ -206,7 +206,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
      * @param value cell value
      * @return list cell editor created for the cell under specified index
      */
-    protected abstract E createCellEditor ( JList list, int index, T value );
+    protected abstract C createCellEditor ( JList list, int index, T value );
 
     @Override
     public void startEdit ( final JList list, final int index )

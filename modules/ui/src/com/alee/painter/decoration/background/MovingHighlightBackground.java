@@ -33,15 +33,15 @@ import java.awt.*;
 /**
  * Transparent background with a moving highlight.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> background type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "MovingHighlightBackground" )
-public class MovingHighlightBackground<E extends JComponent, D extends IDecoration<E, D>, I extends MovingHighlightBackground<E, D, I>>
-        extends AbstractBackground<E, D, I>
+public class MovingHighlightBackground<C extends JComponent, D extends IDecoration<C, D>, I extends MovingHighlightBackground<C, D, I>>
+        extends AbstractBackground<C, D, I>
 {
     /**
      * Movement orientation.
@@ -82,7 +82,7 @@ public class MovingHighlightBackground<E extends JComponent, D extends IDecorati
     /**
      * Visibility behavior that handles animation.
      */
-    protected transient ComponentVisibilityBehavior<E> visibilityBehavior;
+    protected transient ComponentVisibilityBehavior<C> visibilityBehavior;
 
     /**
      * Highlight position.
@@ -95,9 +95,9 @@ public class MovingHighlightBackground<E extends JComponent, D extends IDecorati
     protected transient QueueTransition transitionsQueue;
 
     @Override
-    public void activate ( final E c, final D d )
+    public void activate ( final C c, final D d )
     {
-        visibilityBehavior = new ComponentVisibilityBehavior<E> ( c, true )
+        visibilityBehavior = new ComponentVisibilityBehavior<C> ( c, true )
         {
             @Override
             public void displayed ()
@@ -115,7 +115,7 @@ public class MovingHighlightBackground<E extends JComponent, D extends IDecorati
     }
 
     @Override
-    public void deactivate ( final E c, final D d )
+    public void deactivate ( final C c, final D d )
     {
         visibilityBehavior.uninstall ();
         visibilityBehavior = null;
@@ -127,7 +127,7 @@ public class MovingHighlightBackground<E extends JComponent, D extends IDecorati
      *
      * @param c painted component
      */
-    protected void playAnimation ( final E c )
+    protected void playAnimation ( final C c )
     {
         if ( transitionsQueue == null )
         {
@@ -176,7 +176,7 @@ public class MovingHighlightBackground<E extends JComponent, D extends IDecorati
      * @param c painted component
      */
     @SuppressWarnings ( "unused" )
-    protected void stopAnimation ( final E c )
+    protected void stopAnimation ( final C c )
     {
         if ( transitionsQueue != null )
         {
@@ -192,7 +192,7 @@ public class MovingHighlightBackground<E extends JComponent, D extends IDecorati
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d, final Shape shape )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final C c, final D d, final Shape shape )
     {
         final float opacity = getOpacity ();
         if ( opacity > 0 )

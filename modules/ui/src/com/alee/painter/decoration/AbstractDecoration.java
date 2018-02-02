@@ -34,12 +34,12 @@ import java.util.List;
 /**
  * Abstract component state decoration providing basic settings.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <I> decoration type
  * @author Mikle Garin
  */
 
-public abstract class AbstractDecoration<E extends JComponent, I extends AbstractDecoration<E, I>> implements IDecoration<E, I>
+public abstract class AbstractDecoration<C extends JComponent, I extends AbstractDecoration<C, I>> implements IDecoration<C, I>
 {
     /**
      * Default component state ID.
@@ -109,7 +109,7 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
     }
 
     @Override
-    public void activate ( final E c )
+    public void activate ( final C c )
     {
         final Cursor customCursor = getCursor ();
         if ( customCursor != null )
@@ -120,7 +120,7 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
     }
 
     @Override
-    public void deactivate ( final E c )
+    public void deactivate ( final C c )
     {
         final Cursor customCursor = getCursor ();
         if ( customCursor != null )
@@ -212,25 +212,25 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
     }
 
     @Override
-    public Insets getBorderInsets ( final E c )
+    public Insets getBorderInsets ( final C c )
     {
         return new Insets ( 0, 0, 0, 0 );
     }
 
     @Override
-    public int getBaseline ( final E c, final Bounds bounds )
+    public int getBaseline ( final C c, final Bounds bounds )
     {
         return -1;
     }
 
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final E c )
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final C c )
     {
         return Component.BaselineResizeBehavior.OTHER;
     }
 
     @Override
-    public Dimension getPreferredSize ( final E c )
+    public Dimension getPreferredSize ( final C c )
     {
         return size;
     }

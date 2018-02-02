@@ -27,18 +27,18 @@ import javax.swing.*;
  * Button icon content implementation.
  * It provides appropriate {@link AbstractButton} state icon.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "ButtonIcon" )
-public class ButtonIcon<E extends AbstractButton, D extends IDecoration<E, D>, I extends ButtonIcon<E, D, I>>
-        extends AbstractIconContent<E, D, I>
+public class ButtonIcon<C extends AbstractButton, D extends IDecoration<C, D>, I extends ButtonIcon<C, D, I>>
+        extends AbstractIconContent<C, D, I>
 {
     @Override
-    protected Icon getIcon ( final E c, final D d )
+    protected Icon getIcon ( final C c, final D d )
     {
         Icon icon = c.getIcon ();
         if ( icon != null )

@@ -24,11 +24,11 @@ import javax.swing.tree.TreeNode;
 /**
  * Simple {@link TreeWalker} implementation for basic trees.
  *
- * @param <E> tree node type
+ * @param <N> node type
  * @author Mikle Garin
  */
 
-public class SimpleTreeWalker<E extends TreeNode> extends AbstractTreeWalker<E, TreeModel>
+public class SimpleTreeWalker<N extends TreeNode> extends AbstractTreeWalker<N, TreeModel>
 {
     /**
      * Constructs new {@link SimpleTreeWalker}.
@@ -41,25 +41,25 @@ public class SimpleTreeWalker<E extends TreeNode> extends AbstractTreeWalker<E, 
     }
 
     @Override
-    protected E getRootNode ( final TreeModel model )
+    protected N getRootNode ( final TreeModel model )
     {
-        return ( E ) model.getRoot ();
+        return ( N ) model.getRoot ();
     }
 
     @Override
-    protected int getChildCount ( final TreeModel model, final E parent )
+    protected int getChildCount ( final TreeModel model, final N parent )
     {
         return model.getChildCount ( parent );
     }
 
     @Override
-    protected E getChild ( final TreeModel model, final E parent, final int index )
+    protected N getChild ( final TreeModel model, final N parent, final int index )
     {
-        return ( E ) model.getChild ( parent, index );
+        return ( N ) model.getChild ( parent, index );
     }
 
     @Override
-    protected int getIndexOfChild ( final TreeModel model, final E parent, final E child )
+    protected int getIndexOfChild ( final TreeModel model, final N parent, final N child )
     {
         return model.getIndexOfChild ( parent, child );
     }

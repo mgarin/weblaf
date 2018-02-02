@@ -28,15 +28,15 @@ import java.util.List;
 /**
  * Abstract painter for stateful {@link JMenuItem} implementations.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
 
-public abstract class AbstractStateMenuItemPainter<E extends JMenuItem, U extends MenuItemUI, D extends IDecoration<E, D>>
-        extends AbstractStateButtonPainter<E, U, D> implements IAbstractMenuItemPainter<E, U>
+public abstract class AbstractStateMenuItemPainter<C extends JMenuItem, U extends MenuItemUI, D extends IDecoration<C, D>>
+        extends AbstractStateButtonPainter<C, U, D> implements IAbstractMenuItemPainter<C, U>
 {
     /**
      * Menu item change listener.

@@ -9,11 +9,13 @@ import javax.swing.*;
  * Simple {@link RootPanePainter} adapter class.
  * It is used to install simple non-specific painters into {@link WRootPaneUI}.
  *
+ * @param <C> component type
+ * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public final class AdaptiveRootPanePainter<E extends JRootPane, U extends WRootPaneUI> extends AdaptivePainter<E, U>
-        implements IRootPanePainter<E, U>
+public final class AdaptiveRootPanePainter<C extends JRootPane, U extends WRootPaneUI> extends AdaptivePainter<C, U>
+        implements IRootPanePainter<C, U>
 {
     /**
      * Constructs new {@link AdaptiveRootPanePainter} for the specified painter.

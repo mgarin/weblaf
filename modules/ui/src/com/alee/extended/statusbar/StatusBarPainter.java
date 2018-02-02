@@ -24,14 +24,14 @@ import com.alee.painter.decoration.IDecoration;
  * Basic painter for {@link WebStatusBar} component.
  * It is used as {@link WStatusBarUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public class StatusBarPainter<E extends WebStatusBar, U extends WStatusBarUI, D extends IDecoration<E, D>>
-        extends AbstractContainerPainter<E, U, D> implements IStatusBarPainter<E, U>
+public class StatusBarPainter<C extends WebStatusBar, U extends WStatusBarUI, D extends IDecoration<C, D>>
+        extends AbstractContainerPainter<C, U, D> implements IStatusBarPainter<C, U>
 {
     /**
      * Implementation is used completely from {@link AbstractContainerPainter}.

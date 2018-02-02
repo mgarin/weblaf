@@ -15,15 +15,15 @@ import java.awt.event.ComponentEvent;
 /**
  * Abstract painter for {@link JTextComponent}-based text field implementations.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
 
-public abstract class AbstractTextFieldPainter<E extends JTextComponent, U extends BasicTextUI, D extends IDecoration<E, D>>
-        extends AbstractTextEditorPainter<E, U, D> implements IAbstractTextFieldPainter<E, U>, SwingConstants
+public abstract class AbstractTextFieldPainter<C extends JTextComponent, U extends BasicTextUI, D extends IDecoration<C, D>>
+        extends AbstractTextEditorPainter<C, U, D> implements IAbstractTextFieldPainter<C, U>, SwingConstants
 {
     /**
      * Leading and trailing components resize listener.

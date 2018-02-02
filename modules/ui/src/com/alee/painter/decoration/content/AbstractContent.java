@@ -32,15 +32,15 @@ import java.awt.geom.AffineTransform;
 /**
  * Abstract content providing some general method implementations.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
 
-public abstract class AbstractContent<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractContent<E, D, I>>
-        implements IContent<E, D, I>
+public abstract class AbstractContent<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractContent<C, D, I>>
+        implements IContent<C, D, I>
 {
     /**
      * Content identifier.
@@ -109,13 +109,13 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
     }
 
     @Override
-    public void activate ( final E c, final D d )
+    public void activate ( final C c, final D d )
     {
         // Do nothing by default
     }
 
     @Override
-    public void deactivate ( final E c, final D d )
+    public void deactivate ( final C c, final D d )
     {
         // Do nothing by default
     }
@@ -139,7 +139,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      * @param d painted decoration state
      * @return actual padding
      */
-    protected Insets getPadding ( final E c, final D d )
+    protected Insets getPadding ( final C c, final D d )
     {
         if ( padding != null )
         {
@@ -159,7 +159,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      * @param d painted decoration state
      * @return preferred content size
      */
-    protected Dimension getSize ( final E c, final D d )
+    protected Dimension getSize ( final C c, final D d )
     {
         return size;
     }
@@ -171,7 +171,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      * @param d painted decoration state
      * @return content rotation
      */
-    protected Rotation getRotation ( final E c, final D d )
+    protected Rotation getRotation ( final C c, final D d )
     {
         return rotation != null ? rotation : Rotation.none;
     }
@@ -183,13 +183,13 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      * @param d painted decoration state
      * @return content opacity
      */
-    public float getOpacity ( final E c, final D d )
+    public float getOpacity ( final C c, final D d )
     {
         return opacity != null ? opacity : 1f;
     }
 
     @Override
-    public boolean hasBaseline ( final E c, final D d )
+    public boolean hasBaseline ( final C c, final D d )
     {
         final Rotation rotation = getActualRotation ( c, d );
         return ( rotation == Rotation.none || rotation == Rotation.upsideDown ) && hasContentBaseline ( c, d );
@@ -202,13 +202,13 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      * @param d aligned component decoration state
      * @return {@code true} if this content has a reasonable baseline, {@code false} otherwise
      */
-    protected boolean hasContentBaseline ( final E c, final D d )
+    protected boolean hasContentBaseline ( final C c, final D d )
     {
         return false;
     }
 
     @Override
-    public int getBaseline ( final E c, final D d, final Rectangle bounds )
+    public int getBaseline ( final C c, final D d, final Rectangle bounds )
     {
         final Rotation rotation = getActualRotation ( c, d );
         if ( rotation == Rotation.none || rotation == Rotation.upsideDown )
@@ -244,13 +244,13 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      * @param bounds bounds to get the baseline for
      * @return content baseline within the specified bounds, measured from the top of the bounds
      */
-    protected int getContentBaseline ( final E c, final D d, final Rectangle bounds )
+    protected int getContentBaseline ( final C c, final D d, final Rectangle bounds )
     {
         return -1;
     }
 
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final E c, final D d )
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final C c, final D d )
     {
         final Rotation rotation = getActualRotation ( c, d );
         if ( rotation == Rotation.none || rotation == Rotation.upsideDown )
@@ -268,13 +268,13 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      * @param d aligned component decoration state
      * @return enum indicating how the baseline of the content changes as the size changes
      */
-    public Component.BaselineResizeBehavior getContentBaselineResizeBehavior ( final E c, final D d )
+    public Component.BaselineResizeBehavior getContentBaselineResizeBehavior ( final C c, final D d )
     {
         return Component.BaselineResizeBehavior.OTHER;
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E c, final D d, final Rectangle bounds )
+    public void paint ( final Graphics2D g2d, final C c, final D d, final Rectangle bounds )
     {
         if ( bounds.width > 0 && bounds.height > 0 && !isEmpty ( c, d ) )
         {
@@ -342,10 +342,10 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      * @param d      painted decoration state
      * @param bounds painting bounds
      */
-    protected abstract void paintContent ( Graphics2D g2d, E c, D d, Rectangle bounds );
+    protected abstract void paintContent ( Graphics2D g2d, C c, D d, Rectangle bounds );
 
     @Override
-    public Dimension getPreferredSize ( final E c, final D d, final Dimension available )
+    public Dimension getPreferredSize ( final C c, final D d, final Dimension available )
     {
         // Actual padding
         final Insets padding = getPadding ( c, d );
@@ -385,7 +385,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      * @param available available space
      * @return content preferred size
      */
-    protected abstract Dimension getContentPreferredSize ( E c, D d, Dimension available );
+    protected abstract Dimension getContentPreferredSize ( C c, D d, Dimension available );
 
     /**
      * Returns actual content rotation.
@@ -394,7 +394,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      * @param d painted decoration state
      * @return actual content rotation
      */
-    protected Rotation getActualRotation ( final E c, final D d )
+    protected Rotation getActualRotation ( final C c, final D d )
     {
         final Rotation tr = getRotation ( c, d );
         return isLeftToRight ( c, d ) ? tr : tr.rightToLeft ();
@@ -407,7 +407,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      * @param d painted decoration state
      * @return {@code true} if component has LTR orientation, {@code false} if it has RTL orientation
      */
-    protected boolean isLeftToRight ( final E c, final D d )
+    protected boolean isLeftToRight ( final C c, final D d )
     {
         return c.getComponentOrientation ().isLeftToRight ();
     }

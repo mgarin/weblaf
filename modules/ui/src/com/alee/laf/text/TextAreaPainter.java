@@ -7,16 +7,16 @@ import javax.swing.*;
 
 /**
  * Basic painter for {@link JTextArea} component.
- * It is used as {@link WebTextAreaUI} default painter.
+ * It is used as {@link WTextAreaUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
 
-public class TextAreaPainter<E extends JTextArea, U extends WebTextAreaUI, D extends IDecoration<E, D>>
-        extends AbstractTextAreaPainter<E, U, D> implements ITextAreaPainter<E, U>
+public class TextAreaPainter<C extends JTextArea, U extends WTextAreaUI, D extends IDecoration<C, D>>
+        extends AbstractTextAreaPainter<C, U, D> implements ITextAreaPainter<C, U>
 {
     @Override
     public String getInputPrompt ()

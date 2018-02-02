@@ -33,14 +33,14 @@ import java.awt.image.BufferedImage;
  * Basic painter for {@link WebImage} component.
  * It is used as {@link WImageUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public class ImagePainter<E extends WebImage, U extends WImageUI, D extends IDecoration<E, D>> extends AbstractDecorationPainter<E, U, D>
-        implements IImagePainter<E, U>
+public class ImagePainter<C extends WebImage, U extends WImageUI, D extends IDecoration<C, D>> extends AbstractDecorationPainter<C, U, D>
+        implements IImagePainter<C, U>
 {
     /**
      * Last cached image size.
@@ -141,7 +141,7 @@ public class ImagePainter<E extends WebImage, U extends WImageUI, D extends IDec
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final C c, final U ui )
     {
         final float opacity = component.getOpacity ();
         if ( opacity > 0f )

@@ -20,7 +20,7 @@ import java.awt.geom.GeneralPath;
  * It provides rounded rectangular component shape.
  * Different sides of the shape can also be clipped to visually group components.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> shape type
  * @author nsofronov
@@ -28,8 +28,8 @@ import java.awt.geom.GeneralPath;
  */
 
 @XStreamAlias ( "WebShape" )
-public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I extends WebShape<E, D, I>> extends AbstractShape<E, D, I>
-        implements IPartialShape<E, D, I>
+public class WebShape<C extends JComponent, D extends WebDecoration<C, D>, I extends WebShape<C, D, I>> extends AbstractShape<C, D, I>
+        implements IPartialShape<C, D, I>
 {
     /**
      * Decoration corners rounding.
@@ -67,7 +67,7 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
      * @param c painted component
      * @return grouping layout used to place specified component if it exists, {@code null} otherwise
      */
-    protected GroupingLayout getGroupingLayout ( final E c )
+    protected GroupingLayout getGroupingLayout ( final C c )
     {
         final Container parent = c.getParent ();
         if ( parent != null )
@@ -88,7 +88,7 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
      * @param d painted decoration
      * @return descriptor for painted component sides
      */
-    protected String getSides ( final E c, final D d )
+    protected String getSides ( final C c, final D d )
     {
         if ( d.isSection () )
         {
@@ -102,28 +102,28 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
     }
 
     @Override
-    public boolean isPaintTop ( final E c, final D d )
+    public boolean isPaintTop ( final C c, final D d )
     {
         final String sides = getSides ( c, d );
         return sides == null || sides.charAt ( 0 ) != '0';
     }
 
     @Override
-    public boolean isPaintLeft ( final E c, final D d )
+    public boolean isPaintLeft ( final C c, final D d )
     {
         final String sides = getSides ( c, d );
         return sides == null || sides.charAt ( 2 ) != '0';
     }
 
     @Override
-    public boolean isPaintBottom ( final E c, final D d )
+    public boolean isPaintBottom ( final C c, final D d )
     {
         final String sides = getSides ( c, d );
         return sides == null || sides.charAt ( 4 ) != '0';
     }
 
     @Override
-    public boolean isPaintRight ( final E c, final D d )
+    public boolean isPaintRight ( final C c, final D d )
     {
         final String sides = getSides ( c, d );
         return sides == null || sides.charAt ( 6 ) != '0';
@@ -136,7 +136,7 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
      * @param d painted decoration
      * @return true if at least one of the sides should be painted, false otherwise
      */
-    public boolean isAnySide ( final E c, final D d )
+    public boolean isAnySide ( final C c, final D d )
     {
         final String sides = getSides ( c, d );
         return sides == null || sides.contains ( "1" );
@@ -149,7 +149,7 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
      * @param d painted decoration
      * @return descriptor for painted component lines
      */
-    protected String getLines ( final E c, final D d )
+    protected String getLines ( final C c, final D d )
     {
         if ( d.isSection () )
         {
@@ -163,28 +163,28 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
     }
 
     @Override
-    public boolean isPaintTopLine ( final E c, final D d )
+    public boolean isPaintTopLine ( final C c, final D d )
     {
         final String lines = getLines ( c, d );
         return !isPaintTop ( c, d ) && lines != null && lines.charAt ( 0 ) == '1';
     }
 
     @Override
-    public boolean isPaintLeftLine ( final E c, final D d )
+    public boolean isPaintLeftLine ( final C c, final D d )
     {
         final String lines = getLines ( c, d );
         return !isPaintLeft ( c, d ) && lines != null && lines.charAt ( 2 ) == '1';
     }
 
     @Override
-    public boolean isPaintBottomLine ( final E c, final D d )
+    public boolean isPaintBottomLine ( final C c, final D d )
     {
         final String lines = getLines ( c, d );
         return !isPaintBottom ( c, d ) && lines != null && lines.charAt ( 4 ) == '1';
     }
 
     @Override
-    public boolean isPaintRightLine ( final E c, final D d )
+    public boolean isPaintRightLine ( final C c, final D d )
     {
         final String lines = getLines ( c, d );
         return !isPaintRight ( c, d ) && lines != null && lines.charAt ( 6 ) == '1';
@@ -197,13 +197,13 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
      * @param d painted decoration
      * @return true if at least one of the side lines should be painted, false otherwise
      */
-    public boolean isAnyLine ( final E c, final D d )
+    public boolean isAnyLine ( final C c, final D d )
     {
         return isPaintTopLine ( c, d ) || isPaintLeftLine ( c, d ) || isPaintBottomLine ( c, d ) || isPaintRightLine ( c, d );
     }
 
     @Override
-    public boolean isVisible ( final ShapeType type, final Rectangle bounds, final E c, final D d )
+    public boolean isVisible ( final ShapeType type, final Rectangle bounds, final C c, final D d )
     {
         // Ensure that shape bounds are enough
         final int ow = d.getShadowWidth ( ShadowType.outer ) * 2;
@@ -229,7 +229,7 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
     }
 
     @Override
-    public Shape getShape ( final ShapeType type, final Rectangle bounds, final E c, final D d )
+    public Shape getShape ( final ShapeType type, final Rectangle bounds, final C c, final D d )
     {
         // Shape settings
         final Round r = getRound ();
@@ -367,7 +367,7 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
     }
 
     @Override
-    public Object[] getShapeSettings ( final Rectangle bounds, final E c, final D d )
+    public Object[] getShapeSettings ( final Rectangle bounds, final C c, final D d )
     {
         final Round r = getRound ();
         final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
@@ -379,7 +379,7 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
     }
 
     @Override
-    public StretchInfo getStretchInfo ( final Rectangle bounds, final E c, final D d )
+    public StretchInfo getStretchInfo ( final Rectangle bounds, final C c, final D d )
     {
         // todo This section should not take shade width into consideration
         // todo That should be done within the shadow implementation code instead

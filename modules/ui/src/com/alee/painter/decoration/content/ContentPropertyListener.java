@@ -24,17 +24,19 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * Convenient component property listener for {@link com.alee.painter.decoration.content.IContent} implementations.
+ * Convenient component property listener for {@link IContent} implementations.
  *
+ * @param <C> component type
+ * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public abstract class ContentPropertyListener<E extends JComponent, D extends IDecoration<E, D>> implements PropertyChangeListener
+public abstract class ContentPropertyListener<C extends JComponent, D extends IDecoration<C, D>> implements PropertyChangeListener
 {
     /**
      * Component this content is used for.
      */
-    protected transient E component;
+    protected transient C component;
 
     /**
      * Decoration this content is used for.
@@ -47,7 +49,7 @@ public abstract class ContentPropertyListener<E extends JComponent, D extends ID
      * @param component  component to listen
      * @param decoration active decoration
      */
-    public ContentPropertyListener ( final E component, final D decoration )
+    public ContentPropertyListener ( final C component, final D decoration )
     {
         super ();
         this.component = component;
@@ -69,5 +71,5 @@ public abstract class ContentPropertyListener<E extends JComponent, D extends ID
      * @param oldValue old property value
      * @param newValue new property value
      */
-    public abstract void propertyChange ( E c, D d, String property, Object oldValue, Object newValue );
+    public abstract void propertyChange ( C c, D d, String property, Object oldValue, Object newValue );
 }

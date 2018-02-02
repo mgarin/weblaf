@@ -26,6 +26,7 @@ import java.awt.image.BufferedImage;
 /**
  * Special interface that describes single object type drag representation.
  *
+ * @param <T> dragged object type
  * @author Mikle Garin
  * @see com.alee.managers.drag.DragManager
  */

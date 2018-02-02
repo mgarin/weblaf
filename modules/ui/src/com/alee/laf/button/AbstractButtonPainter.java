@@ -15,14 +15,14 @@ import java.util.List;
 /**
  * Abstract painter for button components.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public abstract class AbstractButtonPainter<E extends AbstractButton, U extends ButtonUI, D extends IDecoration<E, D>>
-        extends AbstractDecorationPainter<E, U, D> implements IAbstractButtonPainter<E, U>, ChangeListener
+public abstract class AbstractButtonPainter<C extends AbstractButton, U extends ButtonUI, D extends IDecoration<C, D>>
+        extends AbstractDecorationPainter<C, U, D> implements IAbstractButtonPainter<C, U>, ChangeListener
 {
     @Override
     protected void installPropertiesAndListeners ()

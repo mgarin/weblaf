@@ -8,14 +8,14 @@ import javax.swing.*;
  * Basic painter for {@link JMenuItem} component.
  * It is used as {@link WebMenuItemUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
 
-public class MenuItemPainter<E extends JMenuItem, U extends WebMenuItemUI, D extends IDecoration<E, D>>
-        extends AbstractMenuItemPainter<E, U, D> implements IMenuItemPainter<E, U>
+public class MenuItemPainter<C extends JMenuItem, U extends WebMenuItemUI, D extends IDecoration<C, D>>
+        extends AbstractMenuItemPainter<C, U, D> implements IMenuItemPainter<C, U>
 {
     /**
      * Implementation is used completely from {@link AbstractMenuItemPainter}.

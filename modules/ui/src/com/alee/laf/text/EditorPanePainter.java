@@ -7,16 +7,16 @@ import javax.swing.*;
 
 /**
  * Basic painter for {@link JEditorPane} component.
- * It is used as {@link WebEditorPaneUI} default painter.
+ * It is used as {@link WEditorPaneUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
 
-public class EditorPanePainter<E extends JEditorPane, U extends WEditorPaneUI, D extends IDecoration<E, D>>
-        extends AbstractTextAreaPainter<E, U, D> implements IEditorPanePainter<E, U>
+public class EditorPanePainter<C extends JEditorPane, U extends WEditorPaneUI, D extends IDecoration<C, D>>
+        extends AbstractTextAreaPainter<C, U, D> implements IEditorPanePainter<C, U>
 {
     @Override
     public String getInputPrompt ()

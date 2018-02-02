@@ -9,15 +9,15 @@ import javax.swing.plaf.MenuItemUI;
 /**
  * Abstract painter for {@link JMenuItem} implementations.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
 
-public abstract class AbstractMenuItemPainter<E extends JMenuItem, U extends MenuItemUI, D extends IDecoration<E, D>>
-        extends AbstractButtonPainter<E, U, D> implements IAbstractMenuItemPainter<E, U>
+public abstract class AbstractMenuItemPainter<C extends JMenuItem, U extends MenuItemUI, D extends IDecoration<C, D>>
+        extends AbstractButtonPainter<C, U, D> implements IAbstractMenuItemPainter<C, U>
 {
     /**
      * Menu item change listener.

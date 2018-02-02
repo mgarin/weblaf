@@ -31,13 +31,13 @@ import java.util.List;
 /**
  * Base interface for component state decorations.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <I> decoration type
  * @author Mikle Garin
  */
 
-public interface IDecoration<E extends JComponent, I extends IDecoration<E, I>>
-        extends Identifiable, PainterShapeProvider<E>, MergeBehavior<I>, Overwriting, Cloneable, Serializable
+public interface IDecoration<C extends JComponent, I extends IDecoration<C, I>>
+        extends Identifiable, PainterShapeProvider<C>, MergeBehavior<I>, Overwriting, Cloneable, Serializable
 {
     /**
      * States separator.
@@ -49,14 +49,14 @@ public interface IDecoration<E extends JComponent, I extends IDecoration<E, I>>
      *
      * @param c painted component
      */
-    public void activate ( E c );
+    public void activate ( C c );
 
     /**
      * Called upon decoration deactivation.
      *
      * @param c painted component
      */
-    public void deactivate ( E c );
+    public void deactivate ( C c );
 
     /**
      * Returns component states this decoration is describing.
@@ -109,7 +109,7 @@ public interface IDecoration<E extends JComponent, I extends IDecoration<E, I>>
      * @param c painted component
      * @return decoration borders size
      */
-    public Insets getBorderInsets ( E c );
+    public Insets getBorderInsets ( C c );
 
     /**
      * Returns whether or not decoration has its own content.
@@ -127,7 +127,7 @@ public interface IDecoration<E extends JComponent, I extends IDecoration<E, I>>
      * @param bounds bounds to get the baseline for
      * @return decoration baseline within the specified bounds, measured from the top of the bounds
      */
-    public int getBaseline ( E c, Bounds bounds );
+    public int getBaseline ( C c, Bounds bounds );
 
     /**
      * Returns enum indicating how the baseline of the decoration changes as the size changes.
@@ -135,7 +135,7 @@ public interface IDecoration<E extends JComponent, I extends IDecoration<E, I>>
      * @param c aligned component
      * @return enum indicating how the baseline of the decoration changes as the size changes
      */
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( E c );
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( C c );
 
     /**
      * Paints component decoration.
@@ -144,7 +144,7 @@ public interface IDecoration<E extends JComponent, I extends IDecoration<E, I>>
      * @param c      painted component
      * @param bounds painting bounds
      */
-    public void paint ( Graphics2D g2d, E c, Bounds bounds );
+    public void paint ( Graphics2D g2d, C c, Bounds bounds );
 
     /**
      * Returns decoration preferred size.
@@ -153,5 +153,5 @@ public interface IDecoration<E extends JComponent, I extends IDecoration<E, I>>
      * @param c painted component
      * @return decoration preferred size
      */
-    public Dimension getPreferredSize ( E c );
+    public Dimension getPreferredSize ( C c );
 }

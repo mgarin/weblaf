@@ -28,24 +28,24 @@ import javax.swing.*;
 /**
  * Custom separator content representing multiple parallel separator stripes.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "SeparatorStripes" )
-public class SeparatorStripes<E extends JSeparator, D extends IDecoration<E, D>, I extends SeparatorStripes<E, D, I>>
-        extends Stripes<E, D, I>
+public class SeparatorStripes<C extends JSeparator, D extends IDecoration<C, D>, I extends SeparatorStripes<C, D, I>>
+        extends Stripes<C, D, I>
 {
     @Override
-    public Orientation getOrientation ( final E c, final D d )
+    public Orientation getOrientation ( final C c, final D d )
     {
         return Orientation.get ( c.getOrientation () );
     }
 
     @Override
-    public BoxOrientation getAlign ( final E c, final D d )
+    public BoxOrientation getAlign ( final C c, final D d )
     {
         return BoxOrientation.center;
     }

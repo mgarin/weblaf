@@ -23,17 +23,19 @@ import com.alee.painter.Painter;
 import javax.swing.*;
 
 /**
- * Simple ScrollPanePainter adapter class.
- * It is used to install simple non-specific painters into WebScrollPaneUI.
+ * Simple {@link ScrollPanePainter} adapter class.
+ * It is used to install simple non-specific painters into {@link WebScrollPaneUI}.
  *
+ * @param <C> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public final class AdaptiveScrollPanePainter<E extends JScrollPane, U extends WebScrollPaneUI> extends AdaptivePainter<E, U>
-        implements IScrollPanePainter<E, U>
+public final class AdaptiveScrollPanePainter<C extends JScrollPane, U extends WebScrollPaneUI> extends AdaptivePainter<C, U>
+        implements IScrollPanePainter<C, U>
 {
     /**
-     * Constructs new AdaptiveScrollPanePainter for the specified painter.
+     * Constructs new {@link AdaptiveScrollPanePainter} for the specified painter.
      *
      * @param painter painter to adapt
      */

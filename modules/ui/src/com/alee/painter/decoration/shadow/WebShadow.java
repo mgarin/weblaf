@@ -46,14 +46,14 @@ import java.util.Map;
  * That happens only when {@link com.alee.painter.decoration.shape.IShape} implementation this shadow is based on provides stretch areas.
  * In that case {@link com.alee.utils.ninepatch.NinePatchIcon} is created based on the shadow image to stretch the shadow.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> shadow type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "WebShadow" )
-public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I extends WebShadow<E, D, I>> extends AbstractShadow<E, D, I>
+public class WebShadow<C extends JComponent, D extends WebDecoration<C, D>, I extends WebShadow<C, D, I>> extends AbstractShadow<C, D, I>
 {
     /**
      * Shadow icons cache.
@@ -83,7 +83,7 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
     protected transient BufferedImage shadowImage;
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d, final Shape shape )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final C c, final D d, final Shape shape )
     {
         final int width = getWidth ();
         final float opacity = getOpacity ();

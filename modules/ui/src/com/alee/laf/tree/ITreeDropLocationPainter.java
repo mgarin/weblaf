@@ -25,12 +25,12 @@ import java.awt.*;
 /**
  * Base interface for {@link JTree} drop location painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface ITreeDropLocationPainter<E extends JTree, U extends WTreeUI> extends SectionPainter<E, U>
+public interface ITreeDropLocationPainter<C extends JTree, U extends WTreeUI> extends SectionPainter<C, U>
 {
     /**
      * Prepares painter to paint tree drop location.

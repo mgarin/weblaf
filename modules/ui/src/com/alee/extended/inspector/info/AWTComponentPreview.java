@@ -25,13 +25,14 @@ import java.awt.*;
 /**
  * Default AWT Component information provider.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public class AWTComponentPreview<T extends Component> extends AbstractComponentPreview<T>
+public class AWTComponentPreview<C extends Component> extends AbstractComponentPreview<C>
 {
     @Override
-    public Icon getIconImpl ( final T component )
+    public Icon getIconImpl ( final C component )
     {
         if ( component instanceof Frame )
         {
@@ -52,7 +53,7 @@ public class AWTComponentPreview<T extends Component> extends AbstractComponentP
     }
 
     @Override
-    public String getText ( final T component )
+    public String getText ( final C component )
     {
         return "{" + ReflectUtils.getClassName ( component.getClass () ) + ":c(" + getTitleColor ( component ) + ")}";
     }

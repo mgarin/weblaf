@@ -23,11 +23,11 @@ import java.awt.*;
  * This interface provides a single method for requesting painted component shape.
  * This can be used by painters to provide their shape for various usage cases.
  *
- * @param <E> component type
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public interface PainterShapeProvider<E extends Component>
+public interface PainterShapeProvider<C extends Component>
 {
     /**
      * Returns painted component shape.
@@ -36,5 +36,5 @@ public interface PainterShapeProvider<E extends Component>
      * @param bounds    bounds for painter view
      * @return painted component shape
      */
-    public Shape provideShape ( E component, Rectangle bounds );
+    public Shape provideShape ( C component, Rectangle bounds );
 }

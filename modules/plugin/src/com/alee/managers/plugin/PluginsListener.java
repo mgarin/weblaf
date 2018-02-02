@@ -22,14 +22,15 @@ import com.alee.managers.plugin.data.DetectedPlugin;
 import java.util.List;
 
 /**
- * Special listener for PluginManager events.
+ * Special listener for {@link PluginManager} events.
  *
+ * @param <P> {@link Plugin} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
- * @see com.alee.managers.plugin.PluginManager
+ * @see PluginManager
  */
 
-public interface PluginsListener<T extends Plugin>
+public interface PluginsListener<P extends Plugin>
 {
     /**
      * Called when plugins check starts.
@@ -53,7 +54,7 @@ public interface PluginsListener<T extends Plugin>
      *
      * @param plugins recently detected plugins
      */
-    public void pluginsDetected ( List<DetectedPlugin<T>> plugins );
+    public void pluginsDetected ( List<DetectedPlugin<P>> plugins );
 
     /**
      * Called when new portion of plugins have been successfully initialized.
@@ -62,5 +63,5 @@ public interface PluginsListener<T extends Plugin>
      *
      * @param plugins recently initialized plugins
      */
-    public void pluginsInitialized ( List<T> plugins );
+    public void pluginsInitialized ( List<P> plugins );
 }

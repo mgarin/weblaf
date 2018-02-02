@@ -195,7 +195,7 @@ public class MagnifierGlass extends JComponent
                     // Forcing later update within EDT
                     // We are already within EDT here, but this is necessary
                     // UI update will look laggy due to event handling specifics without this
-                    SwingUtilities.invokeLater ( new Runnable ()
+                    SwingUtils.invokeLater ( new Runnable ()
                     {
                         @Override
                         public void run ()

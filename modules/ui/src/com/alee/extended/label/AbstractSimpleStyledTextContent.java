@@ -31,7 +31,7 @@ import java.util.List;
  * It keeps style ranges while component only stores its text containing style syntax.
  * All other common settings can be specified in the style referencing this content.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
@@ -39,8 +39,8 @@ import java.util.List;
  */
 
 @SuppressWarnings ( "UnusedParameters" )
-public abstract class AbstractSimpleStyledTextContent<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractSimpleStyledTextContent<E, D, I>>
-        extends AbstractStyledTextContent<E, D, I>
+public abstract class AbstractSimpleStyledTextContent<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractSimpleStyledTextContent<C, D, I>>
+        extends AbstractStyledTextContent<C, D, I>
 {
     /**
      * Text wrapping type.
@@ -67,10 +67,10 @@ public abstract class AbstractSimpleStyledTextContent<E extends JComponent, D ex
     /**
      * Component property change listener.
      */
-    protected transient ContentPropertyListener<E, D> contentListener;
+    protected transient ContentPropertyListener<C, D> contentListener;
 
     @Override
-    public void activate ( final E c, final D d )
+    public void activate ( final C c, final D d )
     {
         // Initializing caches
         initializeContentCache ( c, d );
@@ -83,7 +83,7 @@ public abstract class AbstractSimpleStyledTextContent<E extends JComponent, D ex
     }
 
     @Override
-    public void deactivate ( final E c, final D d )
+    public void deactivate ( final C c, final D d )
     {
         // Uninstalling content property listener
         uninstallContentPropertyListener ( c, d );
@@ -101,7 +101,7 @@ public abstract class AbstractSimpleStyledTextContent<E extends JComponent, D ex
      * @param c painted component
      * @param d painted decoration state
      */
-    protected void initializeContentCache ( final E c, final D d )
+    protected void initializeContentCache ( final C c, final D d )
     {
         // Updating styled text
         styleRanges = new StyleRanges ( getComponentText ( c, d ) );
@@ -117,7 +117,7 @@ public abstract class AbstractSimpleStyledTextContent<E extends JComponent, D ex
      * @param c painted component
      * @param d painted decoration state
      */
-    protected void destroyContentCache ( final E c, final D d )
+    protected void destroyContentCache ( final C c, final D d )
     {
         // Resetting mnemonic index
         mnemonicIndex = null;
@@ -132,16 +132,16 @@ public abstract class AbstractSimpleStyledTextContent<E extends JComponent, D ex
      * @param c painted component
      * @param d painted decoration state
      */
-    protected void installContentPropertyListener ( final E c, final D d )
+    protected void installContentPropertyListener ( final C c, final D d )
     {
         // Adding text change listener
         final String property = getStyledTextProperty ();
         if ( property != null )
         {
-            contentListener = new ContentPropertyListener<E, D> ( c, d )
+            contentListener = new ContentPropertyListener<C, D> ( c, d )
             {
                 @Override
-                public void propertyChange ( final E c, final D d, final String property, final Object oldValue, final Object newValue )
+                public void propertyChange ( final C c, final D d, final String property, final Object oldValue, final Object newValue )
                 {
                     updateContentCache ( c, d );
                 }
@@ -156,7 +156,7 @@ public abstract class AbstractSimpleStyledTextContent<E extends JComponent, D ex
      * @param c painted component
      * @param d painted decoration state
      */
-    protected void uninstallContentPropertyListener ( final E c, final D d )
+    protected void uninstallContentPropertyListener ( final C c, final D d )
     {
         // Removing text change listener
         final String property = getStyledTextProperty ();
@@ -181,7 +181,7 @@ public abstract class AbstractSimpleStyledTextContent<E extends JComponent, D ex
      * @param c painted component
      * @param d painted decoration state
      */
-    protected void updateContentCache ( final E c, final D d )
+    protected void updateContentCache ( final C c, final D d )
     {
         // Re-initializing content cache
         initializeContentCache ( c, d );
@@ -191,31 +191,31 @@ public abstract class AbstractSimpleStyledTextContent<E extends JComponent, D ex
     }
 
     @Override
-    protected List<StyleRange> getStyleRanges ( final E c, final D d )
+    protected List<StyleRange> getStyleRanges ( final C c, final D d )
     {
         return styleRanges != null ? styleRanges.getStyleRanges () : Collections.<StyleRange>emptyList ();
     }
 
     @Override
-    protected int getMaximumRows ( final E c, final D d )
+    protected int getMaximumRows ( final C c, final D d )
     {
         return maximumRows != null ? maximumRows : 0;
     }
 
     @Override
-    protected TextWrap getWrapType ( final E c, final D d )
+    protected TextWrap getWrapType ( final C c, final D d )
     {
         return wrap != null ? wrap : TextWrap.none;
     }
 
     @Override
-    protected String getText ( final E c, final D d )
+    protected String getText ( final C c, final D d )
     {
         return styleRanges != null ? styleRanges.getPlainText () : getComponentText ( c, d );
     }
 
     @Override
-    protected int getMnemonicIndex ( final E c, final D d )
+    protected int getMnemonicIndex ( final C c, final D d )
     {
         return mnemonicIndex != null ? mnemonicIndex : -1;
     }
@@ -227,7 +227,7 @@ public abstract class AbstractSimpleStyledTextContent<E extends JComponent, D ex
      * @param d painted decoration state
      * @return text to be painted
      */
-    protected abstract String getComponentText ( E c, D d );
+    protected abstract String getComponentText ( C c, D d );
 
     /**
      * Returns actual component mnemonic or {@code -1} if it shouldn't be displayed.
@@ -236,7 +236,7 @@ public abstract class AbstractSimpleStyledTextContent<E extends JComponent, D ex
      * @param d painted decoration state
      * @return actual component mnemonic or {@code -1} if it shouldn't be displayed
      */
-    protected abstract int getComponentMnemonic ( E c, D d );
+    protected abstract int getComponentMnemonic ( C c, D d );
 
     @Override
     public I merge ( final I content )

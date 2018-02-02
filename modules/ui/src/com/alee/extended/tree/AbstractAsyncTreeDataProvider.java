@@ -25,28 +25,28 @@ import java.util.List;
 /**
  * Abstract {@link AsyncTreeDataProvider} that can contain single comparator and filter for child nodes.
  *
- * @param <E> node type
+ * @param <N> node type
  * @author Mikle Garin
  */
 
-public abstract class AbstractAsyncTreeDataProvider<E extends AsyncUniqueNode> implements AsyncTreeDataProvider<E>
+public abstract class AbstractAsyncTreeDataProvider<N extends AsyncUniqueNode> implements AsyncTreeDataProvider<N>
 {
     /**
      * {@link Comparator} for all child nodes.
      * It is {@code transient} as it can only be set through code.
      * Override {@link #getChildrenComparator(AsyncUniqueNode, List)} method to provide parent-related {@link Comparator}.
      */
-    protected transient Comparator<E> comparator = null;
+    protected transient Comparator<N> comparator = null;
 
     /**
      * {@link Filter} for all child nodes.
      * It is {@code transient} as it can only be set through code.
      * Override {@link #getChildrenFilter(AsyncUniqueNode, List)} method to provide parent-related {@link Filter}.
      */
-    protected transient Filter<E> filter = null;
+    protected transient Filter<N> filter = null;
 
     @Override
-    public Comparator<E> getChildrenComparator ( final E parent, final List<E> children )
+    public Comparator<N> getChildrenComparator ( final N parent, final List<N> children )
     {
         return comparator;
     }
@@ -56,13 +56,13 @@ public abstract class AbstractAsyncTreeDataProvider<E extends AsyncUniqueNode> i
      *
      * @param comparator {@link Comparator} for all child nodes
      */
-    public void setChildrenComparator ( final Comparator<E> comparator )
+    public void setChildrenComparator ( final Comparator<N> comparator )
     {
         this.comparator = comparator;
     }
 
     @Override
-    public Filter<E> getChildrenFilter ( final E parent, final List<E> children )
+    public Filter<N> getChildrenFilter ( final N parent, final List<N> children )
     {
         return filter;
     }
@@ -72,7 +72,7 @@ public abstract class AbstractAsyncTreeDataProvider<E extends AsyncUniqueNode> i
      *
      * @param filter {@link Filter} for all child nodes
      */
-    public void setChildrenFilter ( final Filter<E> filter )
+    public void setChildrenFilter ( final Filter<N> filter )
     {
         this.filter = filter;
     }
@@ -85,7 +85,7 @@ public abstract class AbstractAsyncTreeDataProvider<E extends AsyncUniqueNode> i
      * @return {@code false}
      */
     @Override
-    public boolean isLeaf ( final E node )
+    public boolean isLeaf ( final N node )
     {
         return false;
     }

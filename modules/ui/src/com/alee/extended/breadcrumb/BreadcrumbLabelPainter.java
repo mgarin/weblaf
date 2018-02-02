@@ -31,11 +31,13 @@ import java.awt.event.ContainerEvent;
 /**
  * Custom painter for WebBreadcrumbLabel component.
  *
+ * @param <C> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public class BreadcrumbLabelPainter<E extends WebBreadcrumbLabel, U extends WebLabelUI, D extends IDecoration<E, D>>
-        extends LabelPainter<E, U, D>
+public class BreadcrumbLabelPainter<C extends WebBreadcrumbLabel, U extends WebLabelUI, D extends IDecoration<C, D>>
+        extends LabelPainter<C, U, D>
 {
     /**
      * Listeners.
@@ -128,7 +130,7 @@ public class BreadcrumbLabelPainter<E extends WebBreadcrumbLabel, U extends WebL
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E c, final U ui, final Bounds bounds )
+    public void paint ( final Graphics2D g2d, final C c, final U ui, final Bounds bounds )
     {
         // Painting background
         BreadcrumbUtils.paintElementBackground ( g2d, c );

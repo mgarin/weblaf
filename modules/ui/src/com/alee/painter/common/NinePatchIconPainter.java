@@ -30,7 +30,7 @@ import java.net.URL;
 /**
  * Custom painter for 9-patch icon.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  * @see com.alee.utils.ninepatch.NinePatchIcon
@@ -38,7 +38,7 @@ import java.net.URL;
  * @see com.alee.painter.Painter
  */
 
-public class NinePatchIconPainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>
+public class NinePatchIconPainter<C extends JComponent, U extends ComponentUI> extends AbstractPainter<C, U>
 {
     /**
      * 9-patch icon to paint.
@@ -186,7 +186,7 @@ public class NinePatchIconPainter<E extends JComponent, U extends ComponentUI> e
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E c, final U ui, final Bounds bounds )
+    public void paint ( final Graphics2D g2d, final C c, final U ui, final Bounds bounds )
     {
         if ( icon != null )
         {

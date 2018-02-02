@@ -25,12 +25,12 @@ import java.awt.*;
 /**
  * Base interface for {@link JScrollBar} component painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface IScrollBarPainter<E extends JScrollBar, U extends WScrollBarUI> extends SpecificPainter<E, U>
+public interface IScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> extends SpecificPainter<C, U>
 {
     /**
      * Sets whether scroll bar thumb is being dragged or not.

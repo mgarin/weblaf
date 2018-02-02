@@ -284,7 +284,7 @@ public class WebGlassPane extends WebPanel
         }
 
         final Rectangle finalRepaintRect = repaintRect != null ? repaintRect : oldRect;
-        SwingUtilities.invokeLater ( new Runnable ()
+        SwingUtils.invokeLater ( new Runnable ()
         {
             @Override
             public void run ()
@@ -314,7 +314,7 @@ public class WebGlassPane extends WebPanel
 
         if ( oldRect != null )
         {
-            SwingUtilities.invokeLater ( new Runnable ()
+            SwingUtils.invokeLater ( new Runnable ()
             {
                 @Override
                 public void run ()

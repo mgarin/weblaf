@@ -26,14 +26,14 @@ import javax.swing.*;
  * List selection painter based on {@link AbstractSectionDecorationPainter}.
  * It is used within {@link ListPainter} to paint selection.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public class ListSelectionPainter<E extends JList, U extends WebListUI, D extends IDecoration<E, D>>
-        extends AbstractSectionDecorationPainter<E, U, D> implements IListSelectionPainter<E, U>
+public class ListSelectionPainter<C extends JList, U extends WebListUI, D extends IDecoration<C, D>>
+        extends AbstractSectionDecorationPainter<C, U, D> implements IListSelectionPainter<C, U>
 {
     @Override
     public String getSectionId ()

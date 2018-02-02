@@ -29,8 +29,8 @@ import com.alee.painter.Painter;
  * @see WebStyledLabel
  */
 
-public final class AdaptiveStyledLabelPainter<E extends WebStyledLabel, U extends WStyledLabelUI> extends AdaptivePainter<E, U>
-        implements IStyledLabelPainter<E, U>
+public final class AdaptiveStyledLabelPainter<C extends WebStyledLabel, U extends WStyledLabelUI> extends AdaptivePainter<C, U>
+        implements IStyledLabelPainter<C, U>
 {
     /**
      * Constructs new {@link AdaptiveStyledLabelPainter} for the specified painter.

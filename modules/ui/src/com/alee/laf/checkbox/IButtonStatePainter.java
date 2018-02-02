@@ -25,12 +25,12 @@ import javax.swing.plaf.ButtonUI;
 /**
  * Base interface for various state button painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface IButtonStatePainter<E extends AbstractButton, U extends ButtonUI> extends SectionPainter<E, U>
+public interface IButtonStatePainter<C extends AbstractButton, U extends ButtonUI> extends SectionPainter<C, U>
 {
     /**
      * This interface doesn't offer any additional methods to implement.

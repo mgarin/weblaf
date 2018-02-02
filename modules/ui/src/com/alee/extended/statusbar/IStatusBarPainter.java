@@ -22,12 +22,12 @@ import com.alee.painter.SpecificPainter;
 /**
  * Base interface for {@link WebStatusBar} component painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface IStatusBarPainter<E extends WebStatusBar, U extends WStatusBarUI> extends SpecificPainter<E, U>
+public interface IStatusBarPainter<C extends WebStatusBar, U extends WStatusBarUI> extends SpecificPainter<C, U>
 {
     /**
      * This interface doesn't offer any additional methods to implement.

@@ -23,11 +23,11 @@ import java.awt.*;
 /**
  * Short component information provider interface.
  *
- * @param <T> component type
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public interface ComponentPreview<T extends Component>
+public interface ComponentPreview<C extends Component>
 {
     /**
      * Returns icon for the specified component.
@@ -35,7 +35,7 @@ public interface ComponentPreview<T extends Component>
      * @param component component to provide icon for
      * @return icon for the specified component
      */
-    public Icon getIcon ( T component );
+    public Icon getIcon ( C component );
 
     /**
      * Returns string value for the specified component.
@@ -43,5 +43,5 @@ public interface ComponentPreview<T extends Component>
      * @param component object to provide text for
      * @return string value for the specified component
      */
-    public String getText ( T component );
+    public String getText ( C component );
 }

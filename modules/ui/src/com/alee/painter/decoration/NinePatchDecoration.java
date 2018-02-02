@@ -29,13 +29,13 @@ import java.awt.*;
  * Configurable decoration state based on 9-patch image resource.
  * It uses single 9-patch image instead of complex combination of shape, shadow, border and background.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <I> decoration type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "ninepatch" )
-public class NinePatchDecoration<E extends JComponent, I extends NinePatchDecoration<E, I>> extends ContentDecoration<E, I>
+public class NinePatchDecoration<C extends JComponent, I extends NinePatchDecoration<C, I>> extends ContentDecoration<C, I>
 {
     /**
      * 9-patch icon used for this decoration.
@@ -53,7 +53,7 @@ public class NinePatchDecoration<E extends JComponent, I extends NinePatchDecora
     }
 
     @Override
-    public Insets getBorderInsets ( final E c )
+    public Insets getBorderInsets ( final C c )
     {
         final Insets insets = super.getBorderInsets ( c );
         if ( isVisible () )
@@ -68,7 +68,7 @@ public class NinePatchDecoration<E extends JComponent, I extends NinePatchDecora
     }
 
     @Override
-    public Shape provideShape ( final E component, final Rectangle bounds )
+    public Shape provideShape ( final C component, final Rectangle bounds )
     {
         // Unfortunately there is no good way to detect actual 9-patch decoration shape
         // This is why we simply return full painting bounds
@@ -76,7 +76,7 @@ public class NinePatchDecoration<E extends JComponent, I extends NinePatchDecora
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E c, final Bounds bounds )
+    public void paint ( final Graphics2D g2d, final C c, final Bounds bounds )
     {
         // Painting only if decoration is visible
         if ( isVisible () )

@@ -31,15 +31,15 @@ import java.awt.image.BufferedImage;
  * Alpha layer background.
  * Fills component shape with an alpha layer -like background.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> background type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "AlphaLayerBackground" )
-public class AlphaLayerBackground<E extends JComponent, D extends IDecoration<E, D>, I extends AlphaLayerBackground<E, D, I>>
-        extends AbstractTextureBackground<E, D, I>
+public class AlphaLayerBackground<C extends JComponent, D extends IDecoration<C, D>, I extends AlphaLayerBackground<C, D, I>>
+        extends AbstractTextureBackground<C, D, I>
 {
     /**
      * Cells size.

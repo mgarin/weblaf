@@ -35,12 +35,12 @@ import java.util.List;
  * Abstract component state decoration providing custom contents and layout for them.
  * It is separated as it might be useful in many kinds of decorations.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <I> decoration type
  * @author Mikle Garin
  */
 
-public abstract class ContentDecoration<E extends JComponent, I extends ContentDecoration<E, I>> extends AbstractDecoration<E, I>
+public abstract class ContentDecoration<C extends JComponent, I extends ContentDecoration<C, I>> extends AbstractDecoration<C, I>
 {
     /**
      * Optional decoration contents.
@@ -55,7 +55,7 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
     protected List<IContent> contents = new ArrayList<IContent> ( 1 );
 
     @Override
-    public void activate ( final E c )
+    public void activate ( final C c )
     {
         // Performing default actions
         super.activate ( c );
@@ -68,7 +68,7 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
     }
 
     @Override
-    public void deactivate ( final E c )
+    public void deactivate ( final C c )
     {
         // Performing default actions
         super.deactivate ( c );
@@ -97,7 +97,7 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
     }
 
     @Override
-    public int getBaseline ( final E c, final Bounds bounds )
+    public int getBaseline ( final C c, final Bounds bounds )
     {
         // Creating additional bounds
         final Bounds borderBounds = new Bounds ( bounds, BoundsType.border, c, this );
@@ -119,7 +119,7 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
     }
 
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final E c )
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final C c )
     {
         // Looking for the first available content with baseline
         for ( final IContent content : getContent () )
@@ -142,7 +142,7 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
      * @param bounds painting bounds
      * @param c      painted component
      */
-    protected void paintContent ( final Graphics2D g2d, final Bounds bounds, final E c )
+    protected void paintContent ( final Graphics2D g2d, final Bounds bounds, final C c )
     {
         // Creating additional bounds
         final Bounds borderBounds = new Bounds ( bounds, BoundsType.border, c, this );
@@ -162,7 +162,7 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
     }
 
     @Override
-    public Dimension getPreferredSize ( final E c )
+    public Dimension getPreferredSize ( final C c )
     {
         if ( size != null )
         {

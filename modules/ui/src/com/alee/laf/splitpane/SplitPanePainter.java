@@ -10,16 +10,16 @@ import java.util.List;
 
 /**
  * Basic painter for {@link JSplitPane} component.
- * It is used as {@link WebSplitPaneUI} default painter.
+ * It is used as {@link WSplitPaneUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
 
-public class SplitPanePainter<E extends JSplitPane, U extends WebSplitPaneUI, D extends IDecoration<E, D>>
-        extends AbstractContainerPainter<E, U, D> implements ISplitPanePainter<E, U>
+public class SplitPanePainter<C extends JSplitPane, U extends WSplitPaneUI, D extends IDecoration<C, D>>
+        extends AbstractContainerPainter<C, U, D> implements ISplitPanePainter<C, U>
 {
     @Override
     protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )

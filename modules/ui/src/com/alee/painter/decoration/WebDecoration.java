@@ -45,13 +45,13 @@ import java.util.List;
  * Configurable decoration state used for most WebLaF components.
  * It provides basic elements required to paint component parts.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <I> decoration type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "decoration" )
-public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> extends ContentDecoration<E, I>
+public class WebDecoration<C extends JComponent, I extends WebDecoration<C, I>> extends ContentDecoration<C, I>
 {
     /**
      * Decoration shape.
@@ -97,7 +97,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     protected List<IBackground> backgrounds = new ArrayList<IBackground> ( 1 );
 
     @Override
-    public void activate ( final E c )
+    public void activate ( final C c )
     {
         // Activating content
         super.activate ( c );
@@ -129,7 +129,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     }
 
     @Override
-    public void deactivate ( final E c )
+    public void deactivate ( final C c )
     {
         // Deactivating content
         super.deactivate ( c );
@@ -329,7 +329,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     }
 
     @Override
-    public Insets getBorderInsets ( final E c )
+    public Insets getBorderInsets ( final C c )
     {
         final Insets insets = super.getBorderInsets ( c );
         if ( isVisible () )
@@ -355,14 +355,14 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     }
 
     @Override
-    public Shape provideShape ( final E component, final Rectangle bounds )
+    public Shape provideShape ( final C component, final Rectangle bounds )
     {
         // todo Add ShapeType into PainterShapeProvider interface
         return isVisible () ? getShape ().getShape ( ShapeType.background, bounds, component, this ) : bounds;
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E c, final Bounds b )
+    public void paint ( final Graphics2D g2d, final C c, final Bounds b )
     {
         // Painting only if bounds are enough
         final Rectangle bounds = b.get ();
@@ -403,7 +403,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
      * @param c   painted component
      * @param b   painting bounds
      */
-    protected void paintDecoration ( final Graphics2D g2d, final E c, final Bounds b )
+    protected void paintDecoration ( final Graphics2D g2d, final C c, final Bounds b )
     {
         final Rectangle bounds = b.get ();
 

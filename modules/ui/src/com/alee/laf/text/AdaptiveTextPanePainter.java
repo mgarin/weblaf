@@ -9,16 +9,18 @@ import javax.swing.*;
  * Simple {@link TextPanePainter} adapter class.
  * It is used to install simple non-specific painters into {@link WTextPaneUI}.
  *
+ * @param <C> component type
+ * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public final class AdaptiveTextPanePainter<E extends JTextPane, U extends WTextPaneUI> extends AdaptivePainter<E, U>
-        implements ITextPanePainter<E, U>
+public final class AdaptiveTextPanePainter<C extends JTextPane, U extends WTextPaneUI> extends AdaptivePainter<C, U>
+        implements ITextPanePainter<C, U>
 {
     /**
      * Constructs new {@link AdaptiveTextPanePainter} for the specified painter.
      *
-     * @param painter painter to adapt
+     * @param painter {@link Painter} to adapt
      */
     public AdaptiveTextPanePainter ( final Painter painter )
     {

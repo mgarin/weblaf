@@ -5,13 +5,16 @@ import com.alee.painter.SpecificPainter;
 import javax.swing.*;
 
 /**
- * Base interface for JViewport component painters.
+ * Base interface for {@link JViewport} component painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public interface IViewportPainter<E extends JViewport, U extends WebViewportUI> extends SpecificPainter<E, U>
+public interface IViewportPainter<C extends JViewport, U extends WViewportUI> extends SpecificPainter<C, U>
 {
+    /**
+     * This interface doesn't offer any additional methods to implement.
+     */
 }

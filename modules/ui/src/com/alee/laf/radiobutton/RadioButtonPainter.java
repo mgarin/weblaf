@@ -11,14 +11,14 @@ import java.util.List;
  * Basic painter for {@link JRadioButton} component.
  * It is used as {@link WRadioButtonUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
 
-public class RadioButtonPainter<E extends JRadioButton, U extends WRadioButtonUI, D extends IDecoration<E, D>>
-        extends AbstractStateButtonPainter<E, U, D> implements IRadioButtonPainter<E, U>
+public class RadioButtonPainter<C extends JRadioButton, U extends WRadioButtonUI, D extends IDecoration<C, D>>
+        extends AbstractStateButtonPainter<C, U, D> implements IRadioButtonPainter<C, U>
 {
     @Override
     public List<String> getDecorationStates ()

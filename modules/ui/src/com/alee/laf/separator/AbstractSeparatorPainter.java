@@ -9,17 +9,17 @@ import javax.swing.plaf.SeparatorUI;
 import java.util.List;
 
 /**
- * Abstract painter for separator components.
+ * Abstract painter for {@link JSeparator} component.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
 
-public abstract class AbstractSeparatorPainter<E extends JSeparator, U extends SeparatorUI, D extends IDecoration<E, D>>
-        extends AbstractDecorationPainter<E, U, D> implements IAbstractSeparatorPainter<E, U>
+public abstract class AbstractSeparatorPainter<C extends JSeparator, U extends SeparatorUI, D extends IDecoration<C, D>>
+        extends AbstractDecorationPainter<C, U, D> implements IAbstractSeparatorPainter<C, U>
 {
     @Override
     public List<String> getDecorationStates ()

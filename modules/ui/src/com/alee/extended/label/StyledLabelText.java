@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Styled label text content implementation.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Alexandr Zernov
@@ -34,25 +34,25 @@ import java.util.List;
  */
 
 @XStreamAlias ( "StyledLabelText" )
-public class StyledLabelText<E extends WebStyledLabel, D extends IDecoration<E, D>, I extends StyledLabelText<E, D, I>>
-        extends AbstractStyledTextContent<E, D, I>
+public class StyledLabelText<C extends WebStyledLabel, D extends IDecoration<C, D>, I extends StyledLabelText<C, D, I>>
+        extends AbstractStyledTextContent<C, D, I>
 {
     /**
      * Component property change listener.
      */
-    protected transient ContentPropertyListener<E, D> listener;
+    protected transient ContentPropertyListener<C, D> listener;
 
     @Override
-    public void activate ( final E c, final D d )
+    public void activate ( final C c, final D d )
     {
         // Performing default actions
         super.activate ( c, d );
 
         // Adding style ranges change listener
-        listener = new ContentPropertyListener<E, D> ( c, d )
+        listener = new ContentPropertyListener<C, D> ( c, d )
         {
             @Override
-            public void propertyChange ( final E c, final D d, final String property, final Object oldValue, final Object newValue )
+            public void propertyChange ( final C c, final D d, final String property, final Object oldValue, final Object newValue )
             {
                 buildTextRanges ( c, d );
                 c.repaint ();
@@ -62,7 +62,7 @@ public class StyledLabelText<E extends WebStyledLabel, D extends IDecoration<E, 
     }
 
     @Override
-    public void deactivate ( final E c, final D d )
+    public void deactivate ( final C c, final D d )
     {
         // Removing style ranges change listener
         c.removePropertyChangeListener ( WebStyledLabel.STYLE_RANGES_PROPERTY, listener );
@@ -73,43 +73,43 @@ public class StyledLabelText<E extends WebStyledLabel, D extends IDecoration<E, 
     }
 
     @Override
-    protected List<StyleRange> getStyleRanges ( final E c, final D d )
+    protected List<StyleRange> getStyleRanges ( final C c, final D d )
     {
         return c.getStyleRanges ();
     }
 
     @Override
-    protected TextWrap getWrapType ( final E c, final D d )
+    protected TextWrap getWrapType ( final C c, final D d )
     {
         return c.getWrap ();
     }
 
     @Override
-    protected int getMaximumRows ( final E c, final D d )
+    protected int getMaximumRows ( final C c, final D d )
     {
         return c.getMaximumRows ();
     }
 
     @Override
-    protected String getText ( final E c, final D d )
+    protected String getText ( final C c, final D d )
     {
         return c.getText ();
     }
 
     @Override
-    protected int getMnemonicIndex ( final E c, final D d )
+    protected int getMnemonicIndex ( final C c, final D d )
     {
         return c.getDisplayedMnemonicIndex ();
     }
 
     @Override
-    protected int getHorizontalAlignment ( final E c, final D d )
+    protected int getHorizontalAlignment ( final C c, final D d )
     {
         return halign != null ? halign : c.getHorizontalTextAlignment ();
     }
 
     @Override
-    protected int getVerticalAlignment ( final E c, final D d )
+    protected int getVerticalAlignment ( final C c, final D d )
     {
         return valign != null ? valign : c.getVerticalTextAlignment ();
     }

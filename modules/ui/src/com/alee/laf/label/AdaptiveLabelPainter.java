@@ -26,10 +26,12 @@ import javax.swing.*;
  * Simple LabelPainter adapter class.
  * It is used to install simple non-specific painters into WebLabelUI.
  *
+ * @param <C> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public final class AdaptiveLabelPainter<E extends JLabel, U extends WebLabelUI> extends AdaptivePainter<E, U> implements ILabelPainter<E, U>
+public final class AdaptiveLabelPainter<C extends JLabel, U extends WebLabelUI> extends AdaptivePainter<C, U> implements ILabelPainter<C, U>
 {
     /**
      * Constructs new AdaptiveLabelPainter for the specified painter.

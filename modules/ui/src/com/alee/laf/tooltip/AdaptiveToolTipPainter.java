@@ -6,14 +6,16 @@ import com.alee.painter.Painter;
 import javax.swing.*;
 
 /**
- * Simple ToolTipPainter adapter class.
- * It is used to install simple non-specific painters into WebToolTipUI.
+ * Simple {@link ToolTipPainter} adapter class.
+ * It is used to install simple non-specific painters into {@link WToolTipUI}.
  *
+ * @param <C> component type
+ * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public final class AdaptiveToolTipPainter<E extends JToolTip, U extends WebToolTipUI> extends AdaptivePainter<E, U>
-        implements IToolTipPainter<E, U>
+public final class AdaptiveToolTipPainter<C extends JToolTip, U extends WToolTipUI> extends AdaptivePainter<C, U>
+        implements IToolTipPainter<C, U>
 {
     /**
      * Constructs new AdaptiveToolTipPainter for the specified painter.

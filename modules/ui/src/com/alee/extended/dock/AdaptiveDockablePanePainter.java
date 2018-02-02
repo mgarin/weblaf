@@ -24,13 +24,13 @@ import com.alee.painter.Painter;
  * Simple {@link IDockablePanePainter} adapter class.
  * It is used to install simple non-specific painters into {@link WDockablePaneUI}.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public final class AdaptiveDockablePanePainter<E extends WebDockablePane, U extends WDockablePaneUI> extends AdaptivePainter<E, U>
-        implements IDockablePanePainter<E, U>
+public final class AdaptiveDockablePanePainter<C extends WebDockablePane, U extends WDockablePaneUI> extends AdaptivePainter<C, U>
+        implements IDockablePanePainter<C, U>
 {
     /**
      * Constructs new {@link AdaptiveDockablePanePainter} for the specified painter.

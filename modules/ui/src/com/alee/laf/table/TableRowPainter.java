@@ -25,16 +25,16 @@ import javax.swing.*;
 import java.util.List;
 
 /**
- * Simple table row painter based on {@link com.alee.painter.decoration.AbstractSectionDecorationPainter}.
+ * Simple table row painter based on {@link AbstractSectionDecorationPainter}.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public class TableRowPainter<E extends JTable, U extends WebTableUI, D extends IDecoration<E, D>>
-        extends AbstractSectionDecorationPainter<E, U, D> implements ITableRowPainter<E, U>
+public class TableRowPainter<C extends JTable, U extends WebTableUI, D extends IDecoration<C, D>>
+        extends AbstractSectionDecorationPainter<C, U, D> implements ITableRowPainter<C, U>
 {
     /**
      * Painted row index.

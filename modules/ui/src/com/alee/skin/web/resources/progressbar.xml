@@ -41,10 +41,10 @@
                     <decoration states="progress,vertical,rtl">
                         <GradientBackground from="1,0" to="0,0" />
                     </decoration>
-                    <decoration states="enabled,progress">
+                    <decoration states="enabled,progress,intermediate">
                         <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="1" duration="1s" delay="2.5s" />
                     </decoration>
-                    <decoration states="enabled,progress,vertical">
+                    <decoration states="enabled,progress,intermediate,vertical">
                         <MovingHighlightBackground id="overlay" orientation="vertical" />
                     </decoration>
                     <decoration states="enabled,indeterminate">

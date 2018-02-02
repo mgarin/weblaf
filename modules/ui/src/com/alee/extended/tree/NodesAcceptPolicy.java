@@ -104,17 +104,17 @@ public enum NodesAcceptPolicy
      * Returns list of nodes filtered based on this {@link NodesAcceptPolicy}.
      *
      * @param nodes list of nodes to filter
-     * @param <E>   nodes type
+     * @param <N>   nodes type
      * @return list of nodes filtered based on this {@link NodesAcceptPolicy}
      */
-    public <E extends DefaultMutableTreeNode> List<E> filter ( final List<E> nodes )
+    public <N extends DefaultMutableTreeNode> List<N> filter ( final List<N> nodes )
     {
         if ( this != all )
         {
             for ( int i = nodes.size () - 1; i >= 0; i-- )
             {
-                final E node = nodes.get ( i );
-                for ( final E other : nodes )
+                final N node = nodes.get ( i );
+                for ( final N other : nodes )
                 {
                     if ( other != node )
                     {

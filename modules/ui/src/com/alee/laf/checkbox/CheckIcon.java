@@ -30,14 +30,14 @@ import java.awt.geom.GeneralPath;
 /**
  * Checked state icon content for {@link AbstractButton} component.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "CheckIcon" )
-public class CheckIcon<E extends AbstractButton, D extends IDecoration<E, D>, I extends CheckIcon<E, D, I>> extends AbstractContent<E, D, I>
+public class CheckIcon<C extends AbstractButton, D extends IDecoration<C, D>, I extends CheckIcon<C, D, I>> extends AbstractContent<C, D, I>
 {
     /**
      * todo 1. Move check shape into some kind of settings presented in XML
@@ -68,13 +68,13 @@ public class CheckIcon<E extends AbstractButton, D extends IDecoration<E, D>, I 
     }
 
     @Override
-    public boolean isEmpty ( final E c, final D d )
+    public boolean isEmpty ( final C c, final D d )
     {
         return false;
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final E c, final D d, final Rectangle bounds )
+    protected void paintContent ( final Graphics2D g2d, final C c, final D d, final Rectangle bounds )
     {
         final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke, stroke != null );
         final Paint op = GraphicsUtils.setupPaint ( g2d, color );
@@ -94,7 +94,7 @@ public class CheckIcon<E extends AbstractButton, D extends IDecoration<E, D>, I 
     }
 
     @Override
-    protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
     {
         return size != null ? new Dimension ( size ) : new Dimension ( 0, 0 );
     }

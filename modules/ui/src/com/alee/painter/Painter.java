@@ -26,11 +26,11 @@ import java.awt.*;
 /**
  * This interface provides basic methods for drawing components or sections of components.
  * Using painters you can easily change Swing and WebLaF components visual representation.
- * <p/>
+ *
  * Whether or not single painter can be used for multiply components exclusively depends on its implementation.
  * In most cases painters which does some animation won't work well with multiply components unless stated otherwise in JavaDoc.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  * @see SpecificPainter
@@ -40,11 +40,11 @@ import java.awt.*;
  * @see com.alee.painter.decoration.AbstractSectionDecorationPainter
  */
 
-public interface Painter<E extends JComponent, U extends ComponentUI>
+public interface Painter<C extends JComponent, U extends ComponentUI>
 {
     /**
-     * todo 1. Add "E c, U ui" parameters to methods missing them OR
-     * todo    Remove "E c, U ui" from all methods except {@link #install} and {@link #uninstall}
+     * todo 1. Add "C c, U ui" parameters to methods missing them OR
+     * todo    Remove "C c, U ui" from all methods except {@link #install} and {@link #uninstall}
      * todo    Probably second option is better to clarify painters usage
      */
 
@@ -55,7 +55,7 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
      * @param c  component this painter is being installed onto
      * @param ui component UI
      */
-    public void install ( E c, U ui );
+    public void install ( C c, U ui );
 
     /**
      * Called when painter is installed into some component.
@@ -64,7 +64,7 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
      * @param c  component this painter is being uninstalled from
      * @param ui component UI
      */
-    public void uninstall ( E c, U ui );
+    public void uninstall ( C c, U ui );
 
     /**
      * Returns whether or not this painter is installed onto some component.
@@ -92,7 +92,7 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
      * @param bounds bounds to get the baseline for
      * @return component baseline within the specified bounds, measured from the top of the bounds
      */
-    public int getBaseline ( E c, U ui, Bounds bounds );
+    public int getBaseline ( C c, U ui, Bounds bounds );
 
     /**
      * Returns enum indicating how the baseline of the component changes as the size changes.
@@ -101,7 +101,7 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
      * @param ui aligned component UI
      * @return enum indicating how the baseline of the component changes as the size changes
      */
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( E c, U ui );
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( C c, U ui );
 
     /**
      * Paints the view using component graphics context.
@@ -115,7 +115,7 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
      * @param ui     painted component UI
      * @param bounds painting bounds
      */
-    public void paint ( Graphics2D g2d, E c, U ui, Bounds bounds );
+    public void paint ( Graphics2D g2d, C c, U ui, Bounds bounds );
 
     /**
      * Returns preferred size required for proper painting of the view provided by this painter.

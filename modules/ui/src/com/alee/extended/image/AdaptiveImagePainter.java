@@ -24,13 +24,13 @@ import com.alee.painter.Painter;
  * Simple {@link IImagePainter} adapter class.
  * It is used to install simple non-specific painters into {@link WebImageUI}.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public final class AdaptiveImagePainter<E extends WebImage, U extends WebImageUI> extends AdaptivePainter<E, U>
-        implements IImagePainter<E, U>
+public final class AdaptiveImagePainter<C extends WebImage, U extends WebImageUI> extends AdaptivePainter<C, U>
+        implements IImagePainter<C, U>
 {
     /**
      * Constructs new {@link AdaptiveImagePainter} for the specified painter.

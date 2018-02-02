@@ -25,13 +25,13 @@ import javax.swing.*;
  * Partially decoratable component shape interface.
  * It must be implemented by any shape that provides partial decoration support.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> shape type
  * @author Mikle Garin
  */
 
-public interface IPartialShape<E extends JComponent, D extends IDecoration<E, D>, I extends IPartialShape<E, D, I>> extends IShape<E, D, I>
+public interface IPartialShape<C extends JComponent, D extends IDecoration<C, D>, I extends IPartialShape<C, D, I>> extends IShape<C, D, I>
 {
     /**
      * Returns whether or not top side should be painted.
@@ -40,7 +40,7 @@ public interface IPartialShape<E extends JComponent, D extends IDecoration<E, D>
      * @param d painted decoration
      * @return true if top side should be painted, false otherwise
      */
-    public boolean isPaintTop ( E c, D d );
+    public boolean isPaintTop ( C c, D d );
 
     /**
      * Returns whether or not left side should be painted.
@@ -49,7 +49,7 @@ public interface IPartialShape<E extends JComponent, D extends IDecoration<E, D>
      * @param d painted decoration
      * @return true if left side should be painted, false otherwise
      */
-    public boolean isPaintLeft ( E c, D d );
+    public boolean isPaintLeft ( C c, D d );
 
     /**
      * Returns whether or not bottom side should be painted.
@@ -58,7 +58,7 @@ public interface IPartialShape<E extends JComponent, D extends IDecoration<E, D>
      * @param d painted decoration
      * @return true if bottom side should be painted, false otherwise
      */
-    public boolean isPaintBottom ( E c, D d );
+    public boolean isPaintBottom ( C c, D d );
 
     /**
      * Returns whether or not right side should be painted.
@@ -67,7 +67,7 @@ public interface IPartialShape<E extends JComponent, D extends IDecoration<E, D>
      * @param d painted decoration
      * @return true if right side should be painted, false otherwise
      */
-    public boolean isPaintRight ( E c, D d );
+    public boolean isPaintRight ( C c, D d );
 
     /**
      * Returns whether or not top side line should be painted.
@@ -76,7 +76,7 @@ public interface IPartialShape<E extends JComponent, D extends IDecoration<E, D>
      * @param d painted decoration
      * @return true if top side line should be painted, false otherwise
      */
-    public boolean isPaintTopLine ( E c, D d );
+    public boolean isPaintTopLine ( C c, D d );
 
     /**
      * Returns whether or not left side line should be painted.
@@ -85,7 +85,7 @@ public interface IPartialShape<E extends JComponent, D extends IDecoration<E, D>
      * @param d painted decoration
      * @return true if left side line should be painted, false otherwise
      */
-    public boolean isPaintLeftLine ( E c, D d );
+    public boolean isPaintLeftLine ( C c, D d );
 
     /**
      * Returns whether or not bottom side line should be painted.
@@ -94,7 +94,7 @@ public interface IPartialShape<E extends JComponent, D extends IDecoration<E, D>
      * @param d painted decoration
      * @return true if bottom side line should be painted, false otherwise
      */
-    public boolean isPaintBottomLine ( E c, D d );
+    public boolean isPaintBottomLine ( C c, D d );
 
     /**
      * Returns whether or not right side line should be painted.
@@ -103,5 +103,5 @@ public interface IPartialShape<E extends JComponent, D extends IDecoration<E, D>
      * @param d painted decoration
      * @return true if right side line should be painted, false otherwise
      */
-    public boolean isPaintRightLine ( E c, D d );
+    public boolean isPaintRightLine ( C c, D d );
 }

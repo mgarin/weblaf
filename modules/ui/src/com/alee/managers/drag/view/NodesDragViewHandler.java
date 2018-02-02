@@ -35,10 +35,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Abstract {@link DragViewHandler} implementation for tree nodes.
+ * It can provide visual feedback for multiple tree nodes drag operation.
+ *
+ * @param <N> node type
  * @author Mikle Garin
  */
 
-public abstract class NodesDragViewHandler<E extends DefaultMutableTreeNode> implements DragViewHandler<List<E>>
+public abstract class NodesDragViewHandler<N extends DefaultMutableTreeNode> implements DragViewHandler<List<N>>
 {
     /**
      * Returns maximum amount of nodes displayed when dragged.
@@ -60,7 +64,7 @@ public abstract class NodesDragViewHandler<E extends DefaultMutableTreeNode> imp
     }
 
     @Override
-    public BufferedImage getView ( final List<E> nodes, final DragSourceDragEvent dragSourceDragEvent )
+    public BufferedImage getView ( final List<N> nodes, final DragSourceDragEvent dragSourceDragEvent )
     {
         if ( dragSourceDragEvent.getSource () instanceof DragSourceContext )
         {
@@ -68,26 +72,26 @@ public abstract class NodesDragViewHandler<E extends DefaultMutableTreeNode> imp
             if ( dsc.getComponent () instanceof WebTree )
             {
                 final WebTree tree = ( WebTree ) dsc.getComponent ();
-                final List<E> realNodes;
+                final List<N> realNodes;
                 if ( nodes.get ( 0 ) instanceof UniqueNode )
                 {
                     final List<UniqueNode> uniqueNodes = ( List<UniqueNode> ) nodes;
                     if ( tree instanceof WebExTree )
                     {
                         final WebExTree exTree = ( WebExTree ) tree;
-                        realNodes = new ArrayList<E> ();
+                        realNodes = new ArrayList<N> ();
                         for ( final UniqueNode node : uniqueNodes )
                         {
-                            realNodes.add ( ( E ) exTree.findNode ( node.getId () ) );
+                            realNodes.add ( ( N ) exTree.findNode ( node.getId () ) );
                         }
                     }
                     else if ( tree instanceof WebExTree )
                     {
                         final WebAsyncTree exTree = ( WebAsyncTree ) tree;
-                        realNodes = new ArrayList<E> ();
+                        realNodes = new ArrayList<N> ();
                         for ( final UniqueNode node : uniqueNodes )
                         {
-                            realNodes.add ( ( E ) exTree.findNode ( node.getId () ) );
+                            realNodes.add ( ( N ) exTree.findNode ( node.getId () ) );
                         }
                     }
                     else
@@ -133,7 +137,7 @@ public abstract class NodesDragViewHandler<E extends DefaultMutableTreeNode> imp
                 final Graphics2D g2d = image.createGraphics ();
                 int y = 0;
                 count = 0;
-                for ( final E node : realNodes )
+                for ( final N node : realNodes )
                 {
                     if ( limit <= 0 || limit > count )
                     {
@@ -164,13 +168,13 @@ public abstract class NodesDragViewHandler<E extends DefaultMutableTreeNode> imp
     }
 
     @Override
-    public Point getViewRelativeLocation ( final List<E> nodes, final DragSourceDragEvent dragSourceDragEvent, final BufferedImage view )
+    public Point getViewRelativeLocation ( final List<N> nodes, final DragSourceDragEvent dragSourceDragEvent, final BufferedImage view )
     {
         return new Point ( 25, 5 );
     }
 
     @Override
-    public void dragEnded ( final List<E> nodes, final DragSourceDropEvent event )
+    public void dragEnded ( final List<N> nodes, final DragSourceDropEvent event )
     {
         // Do nothing here
     }

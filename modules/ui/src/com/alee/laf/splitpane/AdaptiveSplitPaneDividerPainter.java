@@ -24,12 +24,13 @@ import com.alee.painter.Painter;
  * Simple {@link ISplitPaneDividerPainter} adapter class.
  * It is used to install simple non-specific painters into {@link WSplitPaneDividerUI}.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
-public final class AdaptiveSplitPaneDividerPainter<E extends WebSplitPaneDivider, U extends WSplitPaneDividerUI>
-        extends AdaptivePainter<E, U> implements ISplitPaneDividerPainter<E, U>
+
+public final class AdaptiveSplitPaneDividerPainter<C extends WebSplitPaneDivider, U extends WSplitPaneDividerUI>
+        extends AdaptivePainter<C, U> implements ISplitPaneDividerPainter<C, U>
 {
     /**
      * Constructs new {@link AdaptiveSplitPaneDividerPainter} for the specified {@link Painter}.

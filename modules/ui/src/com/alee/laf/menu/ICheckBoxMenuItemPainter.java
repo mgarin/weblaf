@@ -3,13 +3,16 @@ package com.alee.laf.menu;
 import javax.swing.*;
 
 /**
- * Base interface for JMenuItem component painters.
+ * Base interface for {@link JMenuItem} component painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public interface ICheckBoxMenuItemPainter<E extends JMenuItem, U extends WebCheckBoxMenuItemUI> extends IAbstractMenuItemPainter<E, U>
+public interface ICheckBoxMenuItemPainter<C extends JMenuItem, U extends WebCheckBoxMenuItemUI> extends IAbstractMenuItemPainter<C, U>
 {
+    /**
+     * This interface doesn't offer any additional methods to implement.
+     */
 }

@@ -32,7 +32,7 @@ import java.util.Map;
 /**
  * {@link com.alee.extended.layout.AlignLayout} implementation of {@link IContentLayout}.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> layout type
  * @author Mikle Garin
@@ -42,8 +42,8 @@ import java.util.Map;
  */
 
 @XStreamAlias ( "AlignLayout" )
-public class AlignLayout<E extends JComponent, D extends IDecoration<E, D>, I extends AlignLayout<E, D, I>>
-        extends AbstractContentLayout<E, D, I>
+public class AlignLayout<C extends JComponent, D extends IDecoration<C, D>, I extends AlignLayout<C, D, I>>
+        extends AbstractContentLayout<C, D, I>
 {
     /**
      * todo 1. Take orientation into account
@@ -139,7 +139,7 @@ public class AlignLayout<E extends JComponent, D extends IDecoration<E, D>, I ex
     }
 
     @Override
-    public ContentLayoutData layoutContent ( final E c, final D d, final Rectangle bounds )
+    public ContentLayoutData layoutContent ( final C c, final D d, final Rectangle bounds )
     {
         final ContentLayoutData layoutData = new ContentLayoutData ( 2 );
         final boolean hfill = isHorizontalFill ();
@@ -221,7 +221,7 @@ public class AlignLayout<E extends JComponent, D extends IDecoration<E, D>, I ex
     }
 
     @Override
-    protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
     {
         final Dimension ps;
         final List<IContent> contents = getContents ( c, d );
@@ -307,7 +307,7 @@ public class AlignLayout<E extends JComponent, D extends IDecoration<E, D>, I ex
      * @param vertical   vertical position
      * @return size for the area specified by horizontal and vertical alignments
      */
-    protected Dimension getAreaSize ( final E c, final D d, final Dimension available, final String horizontal, final String vertical )
+    protected Dimension getAreaSize ( final C c, final D d, final Dimension available, final String horizontal, final String vertical )
     {
         final Dimension size = new Dimension ( 0, 0 );
         for ( final IContent content : getContents ( c, d, constraints ( horizontal, vertical ) ) )
@@ -328,7 +328,7 @@ public class AlignLayout<E extends JComponent, D extends IDecoration<E, D>, I ex
      * @param contents  content elements to process
      * @return maximum content elements width
      */
-    protected int maxWidth ( final E c, final D d, final Dimension available, final List<IContent> contents )
+    protected int maxWidth ( final C c, final D d, final Dimension available, final List<IContent> contents )
     {
         int max = 0;
         for ( final IContent content : contents )
@@ -347,7 +347,7 @@ public class AlignLayout<E extends JComponent, D extends IDecoration<E, D>, I ex
      * @param contents  content elements to process
      * @return maximum content elements height
      */
-    protected int maxHeight ( final E c, final D d, final Dimension available, final List<IContent> contents )
+    protected int maxHeight ( final C c, final D d, final Dimension available, final List<IContent> contents )
     {
         int max = 0;
         for ( final IContent content : contents )

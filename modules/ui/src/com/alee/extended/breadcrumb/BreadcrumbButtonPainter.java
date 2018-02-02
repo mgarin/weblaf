@@ -30,10 +30,12 @@ import java.awt.event.ContainerEvent;
 /**
  * Custom painter for WebBreadcrumbButton component.
  *
+ * @param <C> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public class BreadcrumbButtonPainter<E extends WebBreadcrumbButton, U extends WebButtonUI> extends AbstractPainter<E, U>
+public class BreadcrumbButtonPainter<C extends WebBreadcrumbButton, U extends WebButtonUI> extends AbstractPainter<C, U>
 {
     /**
      * Listeners.
@@ -132,7 +134,7 @@ public class BreadcrumbButtonPainter<E extends WebBreadcrumbButton, U extends We
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E c, final U ui, final Bounds bounds )
+    public void paint ( final Graphics2D g2d, final C c, final U ui, final Bounds bounds )
     {
         // Painting background
         BreadcrumbUtils.paintElementBackground ( g2d, c );

@@ -24,14 +24,14 @@ import com.alee.painter.decoration.IDecoration;
  * Basic painter for {@link WebPopup} component.
  * It is used as {@link WPopupUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public class PopupPainter<E extends WebPopup, U extends WPopupUI, D extends IDecoration<E, D>> extends AbstractContainerPainter<E, U, D>
-        implements IPopupPainter<E, U>
+public class PopupPainter<C extends WebPopup, U extends WPopupUI, D extends IDecoration<C, D>> extends AbstractContainerPainter<C, U, D>
+        implements IPopupPainter<C, U>
 {
     /**
      * Implementation is used completely from {@link AbstractContainerPainter}.

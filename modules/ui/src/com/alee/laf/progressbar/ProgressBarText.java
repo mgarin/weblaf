@@ -26,30 +26,30 @@ import javax.swing.*;
 /**
  * Progress bar text content implementation.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "ProgressBarText" )
-public class ProgressBarText<E extends JProgressBar, D extends IDecoration<E, D>, I extends ProgressBarText<E, D, I>>
-        extends AbstractTextContent<E, D, I>
+public class ProgressBarText<C extends JProgressBar, D extends IDecoration<C, D>, I extends ProgressBarText<C, D, I>>
+        extends AbstractTextContent<C, D, I>
 {
     @Override
-    public boolean isEmpty ( final E c, final D d )
+    public boolean isEmpty ( final C c, final D d )
     {
         return !c.isStringPainted () || super.isEmpty ( c, d );
     }
 
     @Override
-    protected String getText ( final E c, final D d )
+    protected String getText ( final C c, final D d )
     {
         return c.getString ();
     }
 
     @Override
-    protected int getMnemonicIndex ( final E c, final D d )
+    protected int getMnemonicIndex ( final C c, final D d )
     {
         return -1;
     }

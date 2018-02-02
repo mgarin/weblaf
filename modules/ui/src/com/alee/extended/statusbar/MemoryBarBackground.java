@@ -29,7 +29,7 @@ import java.awt.geom.RoundRectangle2D;
 /**
  * Custom background implementation for {@link WebMemoryBar}.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> background type
  * @author Mikle Garin
@@ -37,8 +37,8 @@ import java.awt.geom.RoundRectangle2D;
  */
 
 @XStreamAlias ( "MemoryBarBackground" )
-public class MemoryBarBackground<E extends WebMemoryBar, D extends IDecoration<E, D>, I extends MemoryBarBackground<E, D, I>>
-        extends AbstractBackground<E, D, I>
+public class MemoryBarBackground<C extends WebMemoryBar, D extends IDecoration<C, D>, I extends MemoryBarBackground<C, D, I>>
+        extends AbstractBackground<C, D, I>
 {
     /**
      * Progress shape round.
@@ -68,7 +68,7 @@ public class MemoryBarBackground<E extends WebMemoryBar, D extends IDecoration<E
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d, final Shape shape )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final C c, final D d, final Shape shape )
     {
         final float opacity = getOpacity ();
         if ( opacity > 0 )

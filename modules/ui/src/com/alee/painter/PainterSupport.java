@@ -83,12 +83,12 @@ public final class PainterSupport
      * Used by component UIs to retrieve painters adapted for their specific needs.
      *
      * @param painter painter to process
-     * @param <T>     desired painter type
+     * @param <P>     desired painter type
      * @return either the specified painter if it is not an adapted painter or the adapted painter
      */
-    public static <T extends Painter> T getPainter ( final Painter painter )
+    public static <P extends Painter> P getPainter ( final Painter painter )
     {
-        return ( T ) ( painter != null && painter instanceof AdaptivePainter ? ( ( AdaptivePainter ) painter ).getPainter () : painter );
+        return ( P ) ( painter != null && painter instanceof AdaptivePainter ? ( ( AdaptivePainter ) painter ).getPainter () : painter );
     }
 
     /**
@@ -127,11 +127,11 @@ public final class PainterSupport
      * @param painter      processed painter
      * @param properClass  proper painter class
      * @param adapterClass adapter painter class
-     * @param <T>          proper painter type
+     * @param <P>          proper painter type
      * @return specified painter if it can be assigned to proper painter type, new painter adapter if it cannot be assigned
      */
-    private static <T extends SpecificPainter> T getApplicablePainter ( final Painter painter, final Class<T> properClass,
-                                                                        final Class<? extends T> adapterClass )
+    private static <P extends SpecificPainter> P getApplicablePainter ( final Painter painter, final Class<P> properClass,
+                                                                        final Class<? extends P> adapterClass )
     {
         if ( painter == null )
         {
@@ -141,11 +141,11 @@ public final class PainterSupport
         {
             if ( ReflectUtils.isAssignable ( properClass, painter.getClass () ) )
             {
-                return ( T ) painter;
+                return ( P ) painter;
             }
             else
             {
-                return ( T ) ReflectUtils.createInstanceSafely ( adapterClass, painter );
+                return ( P ) ReflectUtils.createInstanceSafely ( adapterClass, painter );
             }
         }
     }

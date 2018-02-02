@@ -41,6 +41,7 @@ import java.util.List;
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
+ * @param <N> node type
  * @author Mikle Garin
  * @see WebCheckBoxTree
  * @see com.alee.laf.tree.WebTreeUI
@@ -50,17 +51,17 @@ import java.util.List;
  * @see ExTreeDataProvider
  */
 
-public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
+public class WebExCheckBoxTree<N extends UniqueNode> extends WebCheckBoxTree<N>
 {
     /**
      * Tree nodes comparator.
      */
-    protected Comparator<E> comparator;
+    protected Comparator<N> comparator;
 
     /**
      * Tree nodes filter.
      */
-    protected Filter<E> filter;
+    protected Filter<N> filter;
 
     /**
      * Constructs sample ex checkbox tree.
@@ -125,7 +126,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      *
      * @return data provider
      */
-    public ExTreeDataProvider<E> getDataProvider ()
+    public ExTreeDataProvider<N> getDataProvider ()
     {
         final TreeModel model = getModel ();
         return model != null && model instanceof ExTreeModel ? getExModel ().getDataProvider () : null;
@@ -140,10 +141,10 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
     {
         if ( dataProvider != null )
         {
-            final ExTreeDataProvider<E> oldDataProvider = getDataProvider ();
+            final ExTreeDataProvider<N> oldDataProvider = getDataProvider ();
 
             // Updating model
-            setModel ( new ExTreeModel<E> ( this, dataProvider ) );
+            setModel ( new ExTreeModel<N> ( this, dataProvider ) );
 
             // Informing about data provider change
             firePropertyChange ( WebLookAndFeel.TREE_DATA_PROVIDER_PROPERTY, oldDataProvider, dataProvider );
@@ -155,7 +156,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      *
      * @return tree nodes comparator
      */
-    public Comparator<E> getComparator ()
+    public Comparator<N> getComparator ()
     {
         return comparator;
     }
@@ -166,9 +167,9 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      *
      * @param comparator tree nodes comparator
      */
-    public void setComparator ( final Comparator<E> comparator )
+    public void setComparator ( final Comparator<N> comparator )
     {
-        final Comparator<E> oldComparator = this.comparator;
+        final Comparator<N> oldComparator = this.comparator;
         this.comparator = comparator;
 
         final ExTreeDataProvider dataProvider = getDataProvider ();
@@ -194,7 +195,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      *
      * @return tree nodes filter
      */
-    public Filter<E> getFilter ()
+    public Filter<N> getFilter ()
     {
         return filter;
     }
@@ -205,9 +206,9 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      *
      * @param filter tree nodes filter
      */
-    public void setFilter ( final Filter<E> filter )
+    public void setFilter ( final Filter<N> filter )
     {
-        final Filter<E> oldFilter = this.filter;
+        final Filter<N> oldFilter = this.filter;
         this.filter = filter;
 
         final ExTreeDataProvider dataProvider = getDataProvider ();
@@ -241,7 +242,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      *
      * @param node node to update sorting and filtering for
      */
-    public void filterAndSort ( final E node )
+    public void filterAndSort ( final N node )
     {
         getExModel ().filterAndSort ( node, false );
     }
@@ -251,9 +252,9 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      *
      * @return ex tree model
      */
-    public ExTreeModel<E> getExModel ()
+    public ExTreeModel<N> getExModel ()
     {
-        return ( ExTreeModel<E> ) getModel ();
+        return ( ExTreeModel<N> ) getModel ();
     }
 
     /**
@@ -274,7 +275,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * @param parent   node to process
      * @param children new node children
      */
-    public void setChildNodes ( final E parent, final List<E> children )
+    public void setChildNodes ( final N parent, final List<N> children )
     {
         getExModel ().setChildNodes ( parent, children );
     }
@@ -286,7 +287,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * @param parent node to process
      * @param child  new node child
      */
-    public void addChildNode ( final E parent, final E child )
+    public void addChildNode ( final N parent, final N child )
     {
         getExModel ().addChildNode ( parent, child );
     }
@@ -298,7 +299,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * @param parent   node to process
      * @param children new node children
      */
-    public void addChildNodes ( final E parent, final List<E> children )
+    public void addChildNodes ( final N parent, final List<N> children )
     {
         getExModel ().addChildNodes ( parent, children );
     }
@@ -311,7 +312,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * @param parent   parent node
      * @param index    insert index
      */
-    public void insertChildNodes ( final List<E> children, final E parent, final int index )
+    public void insertChildNodes ( final List<N> children, final N parent, final int index )
     {
         getExModel ().insertNodesInto ( children, parent, index );
     }
@@ -324,7 +325,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * @param parent   parent node
      * @param index    insert index
      */
-    public void insertChildNodes ( final E[] children, final E parent, final int index )
+    public void insertChildNodes ( final N[] children, final N parent, final int index )
     {
         getExModel ().insertNodesInto ( children, parent, index );
     }
@@ -337,7 +338,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * @param parent parent node
      * @param index  insert index
      */
-    public void insertChildNode ( final E child, final E parent, final int index )
+    public void insertChildNode ( final N child, final N parent, final int index )
     {
         getExModel ().insertNodeInto ( child, parent, index );
     }
@@ -359,7 +360,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      *
      * @param node node to remove
      */
-    public void removeNode ( final E node )
+    public void removeNode ( final N node )
     {
         getExModel ().removeNodeFromParent ( node );
     }
@@ -370,7 +371,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      *
      * @param nodes list of nodes to remove
      */
-    public void removeNodes ( final List<E> nodes )
+    public void removeNodes ( final List<N> nodes )
     {
         getExModel ().removeNodesFromParent ( nodes );
     }
@@ -381,7 +382,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      *
      * @param nodes array of nodes to remove
      */
-    public void removeNodes ( final E[] nodes )
+    public void removeNodes ( final N[] nodes )
     {
         getExModel ().removeNodesFromParent ( nodes );
     }
@@ -392,7 +393,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * @param nodeId node ID
      * @return node with the specified ID or null if it was not found
      */
-    public E findNode ( final String nodeId )
+    public N findNode ( final String nodeId )
     {
         return getExModel ().findNode ( nodeId );
     }
@@ -422,7 +423,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      *
      * @param node tree node to be updated
      */
-    public void updateNodeStructure ( final E node )
+    public void updateNodeStructure ( final N node )
     {
         getExModel ().updateNodeStructure ( node );
     }
@@ -440,7 +441,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
             for ( final TreePath path : paths )
             {
                 // Checking if node is not null and not busy yet
-                final E node = getNodeForPath ( path );
+                final N node = getNodeForPath ( path );
                 if ( node != null )
                 {
                     // Reloading node children
@@ -456,7 +457,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * @param point point to look for node
      * @return reloaded node or null if none reloaded
      */
-    public E reloadNodeUnderPoint ( final Point point )
+    public N reloadNodeUnderPoint ( final Point point )
     {
         return reloadNodeUnderPoint ( point.x, point.y );
     }
@@ -468,7 +469,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * @param y point Y coordinate
      * @return reloaded node or null if none reloaded
      */
-    public E reloadNodeUnderPoint ( final int x, final int y )
+    public N reloadNodeUnderPoint ( final int x, final int y )
     {
         return reloadPath ( getPathForLocation ( x, y ) );
     }
@@ -478,7 +479,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      *
      * @return reloaded root node
      */
-    public E reloadRootNode ()
+    public N reloadRootNode ()
     {
         return reloadNode ( getRootNode () );
     }
@@ -489,7 +490,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * @param nodeId ID of the node to reload
      * @return reloaded node or null if none reloaded
      */
-    public E reloadNode ( final String nodeId )
+    public N reloadNode ( final String nodeId )
     {
         return reloadNode ( findNode ( nodeId ) );
     }
@@ -500,7 +501,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * @param node node to reload
      * @return reloaded node or null if none reloaded
      */
-    public E reloadNode ( final E node )
+    public N reloadNode ( final N node )
     {
         return reloadNode ( node, false );
     }
@@ -512,7 +513,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * @param select whether select the node or not
      * @return reloaded node or null if none reloaded
      */
-    public E reloadNode ( final E node, final boolean select )
+    public N reloadNode ( final N node, final boolean select )
     {
         // Checking that node is not null
         if ( node != null )
@@ -530,7 +531,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * @param path path of the node to reload
      * @return reloaded node or null if none reloaded
      */
-    public E reloadPath ( final TreePath path )
+    public N reloadPath ( final TreePath path )
     {
         return reloadPath ( path, false );
     }
@@ -542,13 +543,13 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * @param select whether select the node or not
      * @return reloaded node or null if none reloaded
      */
-    public E reloadPath ( final TreePath path, final boolean select )
+    public N reloadPath ( final TreePath path, final boolean select )
     {
         // Checking that path is not null
         if ( path != null )
         {
             // Checking if node is not null and not busy yet
-            final E node = getNodeForPath ( path );
+            final N node = getNodeForPath ( path );
             if ( node != null )
             {
                 // Reloading node children
@@ -566,7 +567,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * @param path   path to node
      * @param select whether select the node or not
      */
-    protected void performReload ( final E node, final TreePath path, final boolean select )
+    protected void performReload ( final N node, final TreePath path, final boolean select )
     {
         // Select node under the mouse
         if ( select && !isPathSelected ( path ) )
@@ -638,7 +639,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
         final List<String> ids = CollectionUtils.copy ( pathNodeIds );
         for ( int initial = 0; initial < ids.size (); initial++ )
         {
-            final E initialNode = findNode ( ids.get ( initial ) );
+            final N initialNode = findNode ( ids.get ( initial ) );
             if ( initialNode != null )
             {
                 for ( int i = 0; i <= initial; i++ )
@@ -663,7 +664,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * @param expandLastNode whether should expand last found path node or not
      * @param selectLastNode whether should select last found path node or not
      */
-    protected void expandPathImpl ( final E currentNode, final List<String> leftToExpand, final boolean expandLastNode,
+    protected void expandPathImpl ( final N currentNode, final List<String> leftToExpand, final boolean expandLastNode,
                                     final boolean selectLastNode )
     {
         // There is still more to load
@@ -673,7 +674,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
             expandNode ( currentNode );
 
             // Retrieving next node
-            final E nextNode = findNode ( leftToExpand.get ( 0 ) );
+            final N nextNode = findNode ( leftToExpand.get ( 0 ) );
             leftToExpand.remove ( 0 );
 
             // If node exists continue expanding path
@@ -699,7 +700,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * @param expandLastNode whether should expand last found path node or not
      * @param selectLastNode whether should select last found path node or not
      */
-    protected void expandPathEndImpl ( final E lastFoundNode, final boolean expandLastNode, final boolean selectLastNode )
+    protected void expandPathEndImpl ( final N lastFoundNode, final boolean expandLastNode, final boolean selectLastNode )
     {
         if ( selectLastNode )
         {

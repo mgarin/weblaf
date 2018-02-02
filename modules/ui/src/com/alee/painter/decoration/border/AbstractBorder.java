@@ -26,14 +26,14 @@ import javax.swing.*;
 /**
  * Abstract border providing some general method implementations.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> border type
  * @author Mikle Garin
  */
 
-public abstract class AbstractBorder<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractBorder<E, D, I>>
-        implements IBorder<E, D, I>
+public abstract class AbstractBorder<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractBorder<C, D, I>>
+        implements IBorder<C, D, I>
 {
     /**
      * Border identifier.
@@ -66,13 +66,13 @@ public abstract class AbstractBorder<E extends JComponent, D extends IDecoration
     }
 
     @Override
-    public void activate ( final E c, final D d )
+    public void activate ( final C c, final D d )
     {
         // Do nothing by default
     }
 
     @Override
-    public void deactivate ( final E c, final D d )
+    public void deactivate ( final C c, final D d )
     {
         // Do nothing by default
     }

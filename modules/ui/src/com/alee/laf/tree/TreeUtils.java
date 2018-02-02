@@ -224,10 +224,10 @@ public final class TreeUtils
      * Returns appropriate {@link TreeWalker} implementation for the specified {@link JTree}.
      *
      * @param tree {@link JTree} to return appropriate {@link TreeWalker} implementation for
-     * @param <E>  tree node type
+     * @param <N>  tree node type
      * @return appropriate {@link TreeWalker} implementation for the specified {@link JTree}
      */
-    public static <E extends TreeNode> TreeWalker<E> getTreeWalker ( final JTree tree )
+    public static <N extends TreeNode> TreeWalker<N> getTreeWalker ( final JTree tree )
     {
         final TreeWalker treeWalker;
         if ( tree.getModel () instanceof AsyncTreeModel )
@@ -238,6 +238,6 @@ public final class TreeUtils
         {
             treeWalker = new SimpleTreeWalker ( tree );
         }
-        return ( TreeWalker<E> ) treeWalker;
+        return ( TreeWalker<N> ) treeWalker;
     }
 }

@@ -27,14 +27,14 @@ import java.awt.*;
 /**
  * Abstract shadow providing some general method implementations.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> shadow type
  * @author Mikle Garin
  */
 
-public abstract class AbstractShadow<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractShadow<E, D, I>>
-        implements IShadow<E, D, I>
+public abstract class AbstractShadow<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractShadow<C, D, I>>
+        implements IShadow<C, D, I>
 {
     /**
      * Whether or not this shadow should overwrite previous one when merged.
@@ -79,13 +79,13 @@ public abstract class AbstractShadow<E extends JComponent, D extends IDecoration
     }
 
     @Override
-    public void activate ( final E c, final D d )
+    public void activate ( final C c, final D d )
     {
         // Do nothing by default
     }
 
     @Override
-    public void deactivate ( final E c, final D d )
+    public void deactivate ( final C c, final D d )
     {
         // Do nothing by default
     }

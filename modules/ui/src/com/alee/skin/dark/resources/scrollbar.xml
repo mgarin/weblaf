@@ -103,6 +103,7 @@
         <painter>
             <thumbRound>0</thumbRound>
             <thumbMargin>1,1,1,1</thumbMargin>
+            <scrollBarWidth>11</scrollBarWidth>
         </painter>
     </style>
 

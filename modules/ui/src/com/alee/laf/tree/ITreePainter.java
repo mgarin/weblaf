@@ -10,12 +10,12 @@ import java.util.Hashtable;
 /**
  * Base interface for {@link JTree} component painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> UI type
  * @author Alexandr Zernov
  */
 
-public interface ITreePainter<E extends JTree, U extends WTreeUI> extends SpecificPainter<E, U>
+public interface ITreePainter<C extends JTree, U extends WTreeUI> extends SpecificPainter<C, U>
 {
     /**
      * Returns whether or not row hover decoration is supported by this tree painter.

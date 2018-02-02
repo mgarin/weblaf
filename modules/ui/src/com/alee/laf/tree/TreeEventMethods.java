@@ -27,12 +27,13 @@ import java.awt.event.MouseAdapter;
  * This interface provides a set of methods that should be added into components that supports custom WebLaF events.
  * Basically all these methods are already implemented in EventUtils but it is much easier to call them directly from component.
  *
+ * @param <N> node type
  * @author Mikle Garin
  * @see com.alee.utils.swing.extensions.MethodExtension
  * @see com.alee.laf.tree.TreeEventMethodsImpl
  */
 
-public interface TreeEventMethods<E extends DefaultMutableTreeNode> extends MethodExtension
+public interface TreeEventMethods<N extends DefaultMutableTreeNode> extends MethodExtension
 {
     /**
      * Shortcut method for double-click mouse event on specific tree node.
@@ -40,8 +41,7 @@ public interface TreeEventMethods<E extends DefaultMutableTreeNode> extends Meth
      * @param runnable mouse event runnable
      * @return used mouse adapter
      */
-    public MouseAdapter onNodeDoubleClick ( TreeNodeEventRunnable<E> runnable );
-
+    public MouseAdapter onNodeDoubleClick ( TreeNodeEventRunnable<N> runnable );
 
     /**
      * Shortcut method for double-click mouse event on specific tree node with condition.
@@ -50,5 +50,5 @@ public interface TreeEventMethods<E extends DefaultMutableTreeNode> extends Meth
      * @param runnable  tree node event runnable
      * @return used mouse adapter
      */
-    public MouseAdapter onNodeDoubleClick ( Predicate<E> condition, TreeNodeEventRunnable<E> runnable );
+    public MouseAdapter onNodeDoubleClick ( Predicate<N> condition, TreeNodeEventRunnable<N> runnable );
 }

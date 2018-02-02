@@ -26,13 +26,14 @@ import javax.swing.*;
  * Basic painter for {@link JScrollPane} component.
  * It is used as {@link WebScrollPaneUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
+ * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public class ScrollPanePainter<E extends JScrollPane, U extends WebScrollPaneUI, D extends IDecoration<E, D>>
-        extends AbstractContainerPainter<E, U, D> implements IScrollPanePainter<E, U>
+public class ScrollPanePainter<C extends JScrollPane, U extends WebScrollPaneUI, D extends IDecoration<C, D>>
+        extends AbstractContainerPainter<C, U, D> implements IScrollPanePainter<C, U>
 {
     @Override
     protected void orientationChange ()

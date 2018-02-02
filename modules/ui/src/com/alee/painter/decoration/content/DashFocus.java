@@ -30,14 +30,14 @@ import java.awt.*;
  * Simple dash focus content implementation.
  * This is a temporary content implementation required due to inability to use decoration within another decoration structure.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "DashFocus" )
-public class DashFocus<E extends JComponent, D extends IDecoration<E, D>, I extends DashFocus<E, D, I>> extends AbstractContent<E, D, I>
+public class DashFocus<C extends JComponent, D extends IDecoration<C, D>, I extends DashFocus<C, D, I>> extends AbstractContent<C, D, I>
 {
     /**
      * todo 1. Remove this class in v1.3.0 update and replace with proper inner decoration
@@ -75,7 +75,7 @@ public class DashFocus<E extends JComponent, D extends IDecoration<E, D>, I exte
      * @return focus rounding
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected int getRound ( final E c, final D d )
+    protected int getRound ( final C c, final D d )
     {
         return round != null ? round : 0;
     }
@@ -88,7 +88,7 @@ public class DashFocus<E extends JComponent, D extends IDecoration<E, D>, I exte
      * @return focus stroke
      */
     @SuppressWarnings ( "UnusedParameters" )
-    public Stroke getStroke ( final E c, final D d )
+    public Stroke getStroke ( final C c, final D d )
     {
         return stroke;
     }
@@ -101,7 +101,7 @@ public class DashFocus<E extends JComponent, D extends IDecoration<E, D>, I exte
      * @return focus color
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected Color getColor ( final E c, final D d )
+    protected Color getColor ( final C c, final D d )
     {
         if ( color != null )
         {
@@ -111,13 +111,13 @@ public class DashFocus<E extends JComponent, D extends IDecoration<E, D>, I exte
     }
 
     @Override
-    public boolean isEmpty ( final E c, final D d )
+    public boolean isEmpty ( final C c, final D d )
     {
         return false;
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final E c, final D d, final Rectangle bounds )
+    protected void paintContent ( final Graphics2D g2d, final C c, final D d, final Rectangle bounds )
     {
         final Stroke stroke = getStroke ( c, d );
         final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke, stroke != null );
@@ -133,7 +133,7 @@ public class DashFocus<E extends JComponent, D extends IDecoration<E, D>, I exte
     }
 
     @Override
-    protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
     {
         return new Dimension ( 0, 0 );
     }

@@ -32,15 +32,15 @@ import java.util.Map;
 /**
  * Abstract implementation of simple text content.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
 
-public abstract class AbstractTextContent<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractTextContent<E, D, I>>
-        extends AbstractContent<E, D, I> implements SwingConstants
+public abstract class AbstractTextContent<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractTextContent<C, D, I>>
+        extends AbstractContent<C, D, I> implements SwingConstants
 {
     /**
      * todo 1. Move shadow settings into separate serializable object
@@ -127,13 +127,13 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     }
 
     @Override
-    public boolean isEmpty ( final E c, final D d )
+    public boolean isEmpty ( final C c, final D d )
     {
         return TextUtils.isEmpty ( getText ( c, d ) );
     }
 
     @Override
-    public void deactivate ( final E c, final D d )
+    public void deactivate ( final C c, final D d )
     {
         // Performing default actions
         super.deactivate ( c, d );
@@ -151,7 +151,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param d painted decoration state
      * @return preferred rasterization option
      */
-    public TextRasterization getRasterization ( final E c, final D d )
+    public TextRasterization getRasterization ( final C c, final D d )
     {
         return rasterization != null ? rasterization : TextRasterization.subpixel;
     }
@@ -163,7 +163,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param d painted decoration state
      * @return text font
      */
-    protected Font getFont ( final E c, final D d )
+    protected Font getFont ( final C c, final D d )
     {
         return c.getFont ();
     }
@@ -175,7 +175,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param d painted decoration state
      * @return text font metrics
      */
-    protected FontMetrics getFontMetrics ( final E c, final D d )
+    protected FontMetrics getFontMetrics ( final C c, final D d )
     {
         return c.getFontMetrics ( getFont ( c, d ) );
     }
@@ -187,7 +187,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param d painted decoration state
      * @return text foreground color
      */
-    protected Color getColor ( final E c, final D d )
+    protected Color getColor ( final C c, final D d )
     {
         // This {@link javax.swing.plaf.UIResource} check allows us to ignore such colors in favor of style ones
         // But this will not ignore any normal color set from the code as this component foreground
@@ -201,7 +201,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param d painted decoration state
      * @return text horizontal alignment
      */
-    protected int getHorizontalAlignment ( final E c, final D d )
+    protected int getHorizontalAlignment ( final C c, final D d )
     {
         final int alignment = halign != null ? halign : LEADING;
         if ( alignment == LEADING )
@@ -225,7 +225,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param d painted decoration state
      * @return text horizontal alignment
      */
-    protected int getAdjustedHorizontalAlignment ( final E c, final D d )
+    protected int getAdjustedHorizontalAlignment ( final C c, final D d )
     {
         final int alignment = getHorizontalAlignment ( c, d );
         switch ( alignment )
@@ -248,7 +248,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param d painted decoration state
      * @return text vertical alignment
      */
-    protected int getVerticalAlignment ( final E c, final D d )
+    protected int getVerticalAlignment ( final C c, final D d )
     {
         return valign != null ? valign : CENTER;
     }
@@ -260,7 +260,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param d painted decoration state
      * @return true if text should be truncated when it gets outside of the available bounds, false otherwise
      */
-    protected boolean isTruncate ( final E c, final D d )
+    protected boolean isTruncate ( final C c, final D d )
     {
         return truncate == null || truncate;
     }
@@ -272,7 +272,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param d painted decoration state
      * @return true if text shadow should be painted, false otherwise
      */
-    protected boolean isShadow ( final E c, final D d )
+    protected boolean isShadow ( final C c, final D d )
     {
         return shadow != null && shadow;
     }
@@ -284,7 +284,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param d painted decoration state
      * @return shadow color
      */
-    protected Color getShadowColor ( final E c, final D d )
+    protected Color getShadowColor ( final C c, final D d )
     {
         if ( shadowColor != null )
         {
@@ -300,7 +300,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param d painted decoration state
      * @return shadow size
      */
-    protected int getShadowSize ( final E c, final D d )
+    protected int getShadowSize ( final C c, final D d )
     {
         return shadowSize !=null ? shadowSize : 2;
     }
@@ -312,7 +312,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param d painted decoration state
      * @return shadow opacity
      */
-    public float getShadowOpacity ( final E c, final D d )
+    public float getShadowOpacity ( final C c, final D d )
     {
         return shadowOpacity != null ? shadowOpacity : 0.8f;
     }
@@ -324,7 +324,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param d painted decoration state
      * @return true if text contains HTML, false otherwise
      */
-    protected boolean isHtmlText ( final E c, final D d )
+    protected boolean isHtmlText ( final C c, final D d )
     {
         // Determining whether or not text contains HTML
         final String text = getText ( c, d );
@@ -346,7 +346,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param d painted decoration state
      * @return HTML text view to be painted
      */
-    protected View getHtml ( final E c, final D d )
+    protected View getHtml ( final C c, final D d )
     {
         // HTML content settings
         final String text = getText ( c, d );
@@ -373,7 +373,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param c painted component
      * @param d painted decoration state
      */
-    protected void cleanupHtml ( final E c, final D d )
+    protected void cleanupHtml ( final C c, final D d )
     {
         htmlSettings = null;
         htmlView = null;
@@ -386,7 +386,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param d painted decoration state
      * @return text to be painted
      */
-    protected abstract String getText ( E c, D d );
+    protected abstract String getText ( C c, D d );
 
     /**
      * Returns mnemonic index or {@code -1} if it shouldn't be displayed.
@@ -395,16 +395,16 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param d painted decoration state
      * @return mnemonic index or {@code -1} if it shouldn't be displayed
      */
-    protected abstract int getMnemonicIndex ( E c, D d );
+    protected abstract int getMnemonicIndex ( C c, D d );
 
     @Override
-    public boolean hasContentBaseline ( final E c, final D d )
+    public boolean hasContentBaseline ( final C c, final D d )
     {
         return !isHtmlText ( c, d );
     }
 
     @Override
-    public int getContentBaseline ( final E c, final D d, final Rectangle bounds )
+    public int getContentBaseline ( final C c, final D d, final Rectangle bounds )
     {
         if ( !isHtmlText ( c, d ) )
         {
@@ -415,7 +415,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     }
 
     @Override
-    public Component.BaselineResizeBehavior getContentBaselineResizeBehavior ( final E c, final D d )
+    public Component.BaselineResizeBehavior getContentBaselineResizeBehavior ( final C c, final D d )
     {
         if ( !isHtmlText ( c, d ) )
         {
@@ -435,7 +435,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final E c, final D d, final Rectangle bounds )
+    protected void paintContent ( final Graphics2D g2d, final C c, final D d, final Rectangle bounds )
     {
         // Ensure that text painting is allowed
         if ( !isEmpty ( c, d ) )
@@ -484,7 +484,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param c      painted component
      * @param d      painted decoration state
      */
-    protected void paintHtml ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    protected void paintHtml ( final Graphics2D g2d, final Rectangle bounds, final C c, final D d )
     {
         getHtml ( c, d ).paint ( g2d, bounds );
     }
@@ -497,7 +497,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param c      painted component
      * @param d      painted decoration state
      */
-    protected void paintText ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    protected void paintText ( final Graphics2D g2d, final Rectangle bounds, final C c, final D d )
     {
         // Painting settings
         final String text = getText ( c, d );
@@ -527,7 +527,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param alignment horizontal text alignment
      * @return text X coordinate within component bounds
      */
-    protected int getTextX ( final E c, final D d, final Rectangle bounds, final int width, final int alignment )
+    protected int getTextX ( final C c, final D d, final Rectangle bounds, final int width, final int alignment )
     {
         int textX = bounds.x;
         if ( width < bounds.width )
@@ -561,7 +561,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param fm     font metrics
      * @return text Y coordinate within component bounds
      */
-    protected int getTextY ( final E c, final D d, final Rectangle bounds, final FontMetrics fm )
+    protected int getTextY ( final C c, final D d, final Rectangle bounds, final FontMetrics fm )
     {
         int textY = bounds.y;
 
@@ -600,7 +600,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param alignment horizontal text alignment
      * @return text that will actually be painted
      */
-    protected String getPaintedText ( final E c, final D d, final Rectangle bounds, final String text, final FontMetrics fm,
+    protected String getPaintedText ( final C c, final D d, final Rectangle bounds, final String text, final FontMetrics fm,
                                       final int width, final int alignment )
     {
         if ( isTruncate ( c, d ) && bounds.width < width )
@@ -624,7 +624,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param textY         text Y coordinate
      * @param mnemonicIndex index of mnemonic
      */
-    protected void paintTextFragment ( final E c, final D d, final Graphics2D g2d, final String text, final int textX, final int textY,
+    protected void paintTextFragment ( final C c, final D d, final Graphics2D g2d, final String text, final int textX, final int textY,
                                        final int mnemonicIndex )
     {
         // Painting text shadow
@@ -650,7 +650,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param textX text X coordinate
      * @param textY text Y coordinate
      */
-    protected void paintTextShadow ( final E c, final D d, final Graphics2D g2d, final String text, final int textX, final int textY )
+    protected void paintTextShadow ( final C c, final D d, final Graphics2D g2d, final String text, final int textX, final int textY )
     {
         if ( isShadow ( c, d ) )
         {
@@ -729,7 +729,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param textX text X coordinate
      * @param textY text Y coordinate
      */
-    protected void paintTextString ( final E c, final D d, final Graphics2D g2d, final String text, final int textX, final int textY )
+    protected void paintTextString ( final C c, final D d, final Graphics2D g2d, final String text, final int textX, final int textY )
     {
         g2d.drawString ( text, textX, textY );
     }
@@ -745,7 +745,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param textX         text X coordinate
      * @param textY         text Y coordinate
      */
-    protected void paintMnemonic ( final E c, final D d, final Graphics2D g2d, final String text, final int mnemonicIndex, final int textX,
+    protected void paintMnemonic ( final C c, final D d, final Graphics2D g2d, final String text, final int mnemonicIndex, final int textX,
                                    final int textY )
     {
         if ( mnemonicIndex >= 0 && mnemonicIndex < text.length () )
@@ -757,7 +757,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     }
 
     @Override
-    protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
     {
         if ( !isEmpty ( c, d ) )
         {
@@ -791,7 +791,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param available theoretically available space for this content
      * @return preferred text size
      */
-    protected Dimension getPreferredTextSize ( final E c, final D d, final Dimension available )
+    protected Dimension getPreferredTextSize ( final C c, final D d, final Dimension available )
     {
         final String text = getText ( c, d );
         final FontMetrics fm = getFontMetrics ( c, d );

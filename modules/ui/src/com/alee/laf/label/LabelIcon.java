@@ -27,18 +27,18 @@ import javax.swing.*;
  * Label icon content implementation.
  * It provides appropriate {@link JLabel} state icon.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Alexandr Zernov
  */
 
 @XStreamAlias ( "LabelIcon" )
-public class LabelIcon<E extends JLabel, D extends IDecoration<E, D>, I extends LabelIcon<E, D, I>>
-        extends AbstractIconContent<E, D, I>
+public class LabelIcon<C extends JLabel, D extends IDecoration<C, D>, I extends LabelIcon<C, D, I>>
+        extends AbstractIconContent<C, D, I>
 {
     @Override
-    protected Icon getIcon ( final E c, final D d )
+    protected Icon getIcon ( final C c, final D d )
     {
         return c.isEnabled () ? c.getIcon () : c.getDisabledIcon ();
     }

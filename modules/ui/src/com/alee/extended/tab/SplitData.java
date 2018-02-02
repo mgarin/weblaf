@@ -102,7 +102,7 @@ public final class SplitData<T extends DocumentData> implements StructureData<T>
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
-                SwingUtilities.invokeLater ( new Runnable ()
+                SwingUtils.invokeLater ( new Runnable ()
                 {
                     @Override
                     public void run ()

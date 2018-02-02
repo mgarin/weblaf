@@ -27,15 +27,15 @@ import javax.swing.*;
 /**
  * Menu item accelerator text content implementation.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "AcceleratorText" )
-public class AcceleratorText<E extends JMenuItem, D extends IDecoration<E, D>, I extends AcceleratorText<E, D, I>>
-        extends AbstractTextContent<E, D, I>
+public class AcceleratorText<C extends JMenuItem, D extends IDecoration<C, D>, I extends AcceleratorText<C, D, I>>
+        extends AbstractTextContent<C, D, I>
 {
     @Override
     public String getId ()
@@ -44,21 +44,21 @@ public class AcceleratorText<E extends JMenuItem, D extends IDecoration<E, D>, I
     }
 
     @Override
-    public boolean hasContentBaseline ( final E c, final D d )
+    public boolean hasContentBaseline ( final C c, final D d )
     {
         // Return false not to interfere with menu item text
         return false;
     }
 
     @Override
-    protected String getText ( final E c, final D d )
+    protected String getText ( final C c, final D d )
     {
         final KeyStroke accelerator = c.getAccelerator ();
         return accelerator != null ? SwingUtils.hotkeyToString ( accelerator ) : null;
     }
 
     @Override
-    protected int getMnemonicIndex ( final E c, final D d )
+    protected int getMnemonicIndex ( final C c, final D d )
     {
         return -1;
     }

@@ -36,15 +36,15 @@ import java.util.List;
  * Simple round rectangle shape content implementation.
  * This is a temporary content implementation required due to inability to use decoration within another decoration structure.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "RoundRectangle" )
-public class RoundRectangle<E extends JComponent, D extends IDecoration<E, D>, I extends RoundRectangle<E, D, I>>
-        extends AbstractContent<E, D, I>
+public class RoundRectangle<C extends JComponent, D extends IDecoration<C, D>, I extends RoundRectangle<C, D, I>>
+        extends AbstractContent<C, D, I>
 {
     /**
      * todo 1. Remove this class in v1.3.0 update and replace with proper inner decoration
@@ -76,7 +76,7 @@ public class RoundRectangle<E extends JComponent, D extends IDecoration<E, D>, I
      * @return background rounding
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected int getRound ( final E c, final D d )
+    protected int getRound ( final C c, final D d )
     {
         return round != null ? round : 0;
     }
@@ -96,13 +96,13 @@ public class RoundRectangle<E extends JComponent, D extends IDecoration<E, D>, I
     }
 
     @Override
-    public boolean isEmpty ( final E c, final D d )
+    public boolean isEmpty ( final C c, final D d )
     {
         return false;
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final E c, final D d, final Rectangle bounds )
+    protected void paintContent ( final Graphics2D g2d, final C c, final D d, final Rectangle bounds )
     {
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
 
@@ -117,7 +117,7 @@ public class RoundRectangle<E extends JComponent, D extends IDecoration<E, D>, I
     }
 
     @Override
-    protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
     {
         final Insets padding = getPadding ( c, d );
         final int round = getRound ( c, d );

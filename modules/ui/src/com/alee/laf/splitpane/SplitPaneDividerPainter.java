@@ -31,14 +31,14 @@ import java.util.List;
  * Basic painter for {@link WebSplitPaneDivider} component.
  * It is used as {@link WSplitPaneDividerUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public class SplitPaneDividerPainter<E extends WebSplitPaneDivider, U extends WSplitPaneDividerUI, D extends IDecoration<E, D>>
-        extends AbstractDecorationPainter<E, U, D> implements ISplitPaneDividerPainter<E, U>
+public class SplitPaneDividerPainter<C extends WebSplitPaneDivider, U extends WSplitPaneDividerUI, D extends IDecoration<C, D>>
+        extends AbstractDecorationPainter<C, U, D> implements ISplitPaneDividerPainter<C, U>
 {
     /**
      * {@link PropertyChangeListener} for {@link JSplitPane} divider is used for.

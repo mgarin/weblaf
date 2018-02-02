@@ -26,24 +26,24 @@ import javax.swing.*;
 /**
  * Button text content implementation.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "ButtonText" )
-public class ButtonText<E extends AbstractButton, D extends IDecoration<E, D>, I extends ButtonText<E, D, I>>
-        extends AbstractTextContent<E, D, I>
+public class ButtonText<C extends AbstractButton, D extends IDecoration<C, D>, I extends ButtonText<C, D, I>>
+        extends AbstractTextContent<C, D, I>
 {
     @Override
-    protected String getText ( final E c, final D d )
+    protected String getText ( final C c, final D d )
     {
         return c.getText ();
     }
 
     @Override
-    protected int getMnemonicIndex ( final E c, final D d )
+    protected int getMnemonicIndex ( final C c, final D d )
     {
         return c.getDisplayedMnemonicIndex ();
     }

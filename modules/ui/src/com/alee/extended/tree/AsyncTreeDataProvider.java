@@ -27,14 +27,14 @@ import java.util.List;
  * This interface provides methods for asynchronous tree nodes retrieval within {@link AsyncTreeModel}.
  * It also extends {@link Serializable} as it is used within {@link AsyncTreeModel} which must also be {@link Serializable}.
  *
- * @param <E> node type
+ * @param <N> node type
  * @author Mikle Garin
  * @see WebAsyncTree
  * @see AsyncTreeModel
  * @see AsyncUniqueNode
  */
 
-public interface AsyncTreeDataProvider<E extends AsyncUniqueNode> extends Serializable
+public interface AsyncTreeDataProvider<N extends AsyncUniqueNode> extends Serializable
 {
     /**
      * Returns root {@link AsyncUniqueNode}.
@@ -43,7 +43,7 @@ public interface AsyncTreeDataProvider<E extends AsyncUniqueNode> extends Serial
      * @return root {@link AsyncUniqueNode}
      * @see <a href="https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread">Event Dispatch Thread</a>
      */
-    public E getRoot ();
+    public N getRoot ();
 
     /**
      * Starts loading child {@link AsyncUniqueNode}s for the specified parent {@link AsyncUniqueNode}.
@@ -53,7 +53,7 @@ public interface AsyncTreeDataProvider<E extends AsyncUniqueNode> extends Serial
      * @param parent   {@link AsyncUniqueNode} to load children for
      * @param listener {@link NodesLoadCallback} for informing tree about operation result
      */
-    public void loadChildren ( E parent, NodesLoadCallback<E> listener );
+    public void loadChildren ( N parent, NodesLoadCallback<N> listener );
 
     /**
      * Returns whether or not specified {@link AsyncUniqueNode} doesn't have any children.
@@ -65,7 +65,7 @@ public interface AsyncTreeDataProvider<E extends AsyncUniqueNode> extends Serial
      * @return {@code true} if the specified {@link AsyncUniqueNode} doesn't have any children, {@code false} otherwise
      * @see <a href="https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread">Event Dispatch Thread</a>
      */
-    public boolean isLeaf ( E node );
+    public boolean isLeaf ( N node );
 
     /**
      * Returns {@link Filter} that will be used for the specified {@link AsyncUniqueNode} children.
@@ -78,7 +78,7 @@ public interface AsyncTreeDataProvider<E extends AsyncUniqueNode> extends Serial
      * @return {@link Filter} that will be used for the specified {@link AsyncUniqueNode} children
      * @see <a href="https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread">Event Dispatch Thread</a>
      */
-    public Filter<E> getChildrenFilter ( E parent, List<E> children );
+    public Filter<N> getChildrenFilter ( N parent, List<N> children );
 
     /**
      * Returns {@link Comparator} that will be used for the specified {@link AsyncUniqueNode} children.
@@ -91,5 +91,5 @@ public interface AsyncTreeDataProvider<E extends AsyncUniqueNode> extends Serial
      * @return {@link Comparator} that will be used for the specified {@link AsyncUniqueNode} children
      * @see <a href="https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread">Event Dispatch Thread</a>
      */
-    public Comparator<E> getChildrenComparator ( E parent, List<E> children );
+    public Comparator<N> getChildrenComparator ( N parent, List<N> children );
 }

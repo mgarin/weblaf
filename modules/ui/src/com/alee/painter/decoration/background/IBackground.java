@@ -29,14 +29,14 @@ import java.io.Serializable;
 /**
  * Interface for any custom background.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> background type
  * @author Mikle Garin
  */
 
-public interface IBackground<E extends JComponent, D extends IDecoration<E, D>, I extends IBackground<E, D, I>>
-        extends IShapedElement<E, D, I>, Identifiable, MergeBehavior<I>, Overwriting, Cloneable, Serializable
+public interface IBackground<C extends JComponent, D extends IDecoration<C, D>, I extends IBackground<C, D, I>>
+        extends IShapedElement<C, D, I>, Identifiable, MergeBehavior<I>, Overwriting, Cloneable, Serializable
 {
     /**
      * This interface doesn't offer any additional methods to implement.

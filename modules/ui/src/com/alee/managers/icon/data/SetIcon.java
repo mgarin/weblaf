@@ -30,7 +30,7 @@ import javax.swing.*;
 /**
  * {@link IconManager} set icon content implementation.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
@@ -38,7 +38,7 @@ import javax.swing.*;
  */
 
 @XStreamAlias ( "SetIcon" )
-public class SetIcon<E extends JComponent, D extends IDecoration<E, D>, I extends SetIcon<E, D, I>> extends AbstractIconContent<E, D, I>
+public class SetIcon<C extends JComponent, D extends IDecoration<C, D>, I extends SetIcon<C, D, I>> extends AbstractIconContent<C, D, I>
 {
     /**
      * Unique set icon ID.
@@ -64,7 +64,7 @@ public class SetIcon<E extends JComponent, D extends IDecoration<E, D>, I extend
     }
 
     @Override
-    protected Icon getIcon ( final E c, final D d )
+    protected Icon getIcon ( final C c, final D d )
     {
         return IconManager.getIcon ( getIconId () );
     }

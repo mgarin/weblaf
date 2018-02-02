@@ -27,7 +27,7 @@ import java.awt.*;
 /**
  * Custom background implementation for {@link WebHotkeyLabel}.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> background type
  * @author Mikle Garin
@@ -35,8 +35,8 @@ import java.awt.*;
  */
 
 @XStreamAlias ( "HotkeyLabelBackground" )
-public class HotkeyLabelBackground<E extends WebHotkeyLabel, D extends IDecoration<E, D>, I extends HotkeyLabelBackground<E, D, I>>
-        extends AbstractBackground<E, D, I>
+public class HotkeyLabelBackground<C extends WebHotkeyLabel, D extends IDecoration<C, D>, I extends HotkeyLabelBackground<C, D, I>>
+        extends AbstractBackground<C, D, I>
 {
     /**
      * todo 1. Replace with proper border/background-based implementations later when different borders are supported
@@ -73,7 +73,7 @@ public class HotkeyLabelBackground<E extends WebHotkeyLabel, D extends IDecorati
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d, final Shape shape )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final C c, final D d, final Shape shape )
     {
         // White spacer
         g2d.setPaint ( spacing );

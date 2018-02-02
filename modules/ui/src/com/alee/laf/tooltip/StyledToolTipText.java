@@ -27,15 +27,15 @@ import javax.swing.*;
 /**
  * Abstract tooltip styled text content implementation.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "StyledToolTipText" )
-public class StyledToolTipText<E extends JToolTip, D extends IDecoration<E, D>, I extends StyledToolTipText<E, D, I>>
-        extends AbstractSimpleStyledTextContent<E, D, I>
+public class StyledToolTipText<C extends JToolTip, D extends IDecoration<C, D>, I extends StyledToolTipText<C, D, I>>
+        extends AbstractSimpleStyledTextContent<C, D, I>
 {
     @Override
     protected String getStyledTextProperty ()
@@ -44,13 +44,13 @@ public class StyledToolTipText<E extends JToolTip, D extends IDecoration<E, D>, 
     }
 
     @Override
-    protected String getComponentText ( final E c, final D d )
+    protected String getComponentText ( final C c, final D d )
     {
         return c.getTipText ();
     }
 
     @Override
-    protected int getComponentMnemonic ( final E c, final D d )
+    protected int getComponentMnemonic ( final C c, final D d )
     {
         return -1;
     }

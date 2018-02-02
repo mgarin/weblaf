@@ -34,15 +34,15 @@ import java.util.Map;
 /**
  * Shadow that grows larger to the south part of the component.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> shadow type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "ExpandingShadow" )
-public class ExpandingShadow<E extends JComponent, D extends IDecoration<E, D>, I extends ExpandingShadow<E, D, I>>
-        extends AbstractShadow<E, D, I>
+public class ExpandingShadow<C extends JComponent, D extends IDecoration<C, D>, I extends ExpandingShadow<C, D, I>>
+        extends AbstractShadow<C, D, I>
 {
     /**
      * Shadow images cache.
@@ -61,7 +61,7 @@ public class ExpandingShadow<E extends JComponent, D extends IDecoration<E, D>, 
     protected transient NinePatchIcon shadowImage;
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d, final Shape shape )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final C c, final D d, final Shape shape )
     {
         final int width = getWidth ();
         final float opacity = getOpacity ();

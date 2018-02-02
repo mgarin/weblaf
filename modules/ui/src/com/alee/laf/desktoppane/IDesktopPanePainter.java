@@ -5,13 +5,16 @@ import com.alee.painter.SpecificPainter;
 import javax.swing.*;
 
 /**
- * Base interface for JDesktopPane component painters.
+ * Base interface for {@link JDesktopPane} component painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public interface IDesktopPanePainter<E extends JDesktopPane, U extends WebDesktopPaneUI> extends SpecificPainter<E, U>
+public interface IDesktopPanePainter<C extends JDesktopPane, U extends WebDesktopPaneUI> extends SpecificPainter<C, U>
 {
+    /**
+     * This interface doesn't offer any additional methods to implement.
+     */
 }

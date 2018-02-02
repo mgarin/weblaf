@@ -26,41 +26,41 @@ import javax.swing.*;
 /**
  * Label icon and text layout implementation.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> layout type
  * @author Alexandr Zernov
  */
 
 @XStreamAlias ( "LabelLayout" )
-public class LabelLayout<E extends JLabel, D extends IDecoration<E, D>, I extends IconTextLayout<E, D, I>> extends IconTextLayout<E, D, I>
+public class LabelLayout<C extends JLabel, D extends IDecoration<C, D>, I extends IconTextLayout<C, D, I>> extends IconTextLayout<C, D, I>
 {
     @Override
-    protected int getIconTextGap ( final E c, final D d )
+    protected int getIconTextGap ( final C c, final D d )
     {
         return gap != null ? gap : c.getIconTextGap ();
     }
 
     @Override
-    protected int getHorizontalAlignment ( final E c, final D d )
+    protected int getHorizontalAlignment ( final C c, final D d )
     {
         return halign != null ? halign.getValue () : c.getHorizontalAlignment ();
     }
 
     @Override
-    protected int getVerticalAlignment ( final E c, final D d )
+    protected int getVerticalAlignment ( final C c, final D d )
     {
         return valign != null ? valign.getValue () : c.getVerticalAlignment ();
     }
 
     @Override
-    protected int getHorizontalTextPosition ( final E c, final D d )
+    protected int getHorizontalTextPosition ( final C c, final D d )
     {
         return hpos != null ? hpos.getValue () : c.getHorizontalTextPosition ();
     }
 
     @Override
-    protected int getVerticalTextPosition ( final E c, final D d )
+    protected int getVerticalTextPosition ( final C c, final D d )
     {
         return vpos != null ? vpos.getValue () : c.getVerticalTextPosition ();
     }

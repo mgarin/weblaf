@@ -32,14 +32,14 @@ import java.awt.geom.RoundRectangle2D;
  * Simple border painter.
  * This painter might be used instead of {@link javax.swing.border.LineBorder} in any component that supports painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  * @see AbstractPainter
  * @see com.alee.painter.Painter
  */
 
-public class BorderPainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>
+public class BorderPainter<C extends JComponent, U extends ComponentUI> extends AbstractPainter<C, U>
 {
     /**
      * Border round.
@@ -155,7 +155,7 @@ public class BorderPainter<E extends JComponent, U extends ComponentUI> extends 
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E c, final U ui, final Bounds bounds )
+    public void paint ( final Graphics2D g2d, final C c, final U ui, final Bounds bounds )
     {
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
         final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke, stroke != null );

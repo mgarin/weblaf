@@ -30,14 +30,14 @@ import java.util.List;
  * Simple tree row painter based on {@link AbstractSectionDecorationPainter}.
  * It is used within {@link TreePainter} to paint rows background.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public class TreeRowPainter<E extends JTree, U extends WTreeUI, D extends IDecoration<E, D>>
-        extends AbstractSectionDecorationPainter<E, U, D> implements ITreeRowPainter<E, U>
+public class TreeRowPainter<C extends JTree, U extends WTreeUI, D extends IDecoration<C, D>>
+        extends AbstractSectionDecorationPainter<C, U, D> implements ITreeRowPainter<C, U>
 {
     /**
      * Painted row index.

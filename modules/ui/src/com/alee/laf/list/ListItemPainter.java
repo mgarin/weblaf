@@ -29,14 +29,14 @@ import java.util.List;
  * Simple list item painter based on {@link com.alee.painter.decoration.AbstractSectionDecorationPainter}.
  * It is used within {@link com.alee.laf.list.ListPainter} to paint items background.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public class ListItemPainter<E extends JList, U extends WebListUI, D extends IDecoration<E, D>>
-        extends AbstractSectionDecorationPainter<E, U, D> implements IListItemPainter<E, U>
+public class ListItemPainter<C extends JList, U extends WebListUI, D extends IDecoration<C, D>>
+        extends AbstractSectionDecorationPainter<C, U, D> implements IListItemPainter<C, U>
 {
     /**
      * Painted item index.

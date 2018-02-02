@@ -24,10 +24,8 @@ import com.alee.extended.panel.WebCollapsiblePane;
 import com.alee.extended.pathfield.WebPathField;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
-import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.painter.decoration.content.TextRasterization;
 import com.alee.utils.collection.ImmutableList;
-import com.alee.utils.swing.WebTimer;
 import com.alee.utils.swing.extensions.SizeMethods;
 import org.slf4j.LoggerFactory;
 
@@ -92,10 +90,9 @@ public final class SwingUtils extends CoreSwingUtils
     private static Font[] fonts;
 
     /**
-     * Threads for smooth component scrolling.
+     * Thread used for smooth component scrolling.
      */
-    private static Thread scrollThread1;
-    private static Thread scrollThread2;
+    private static Thread scrollThread;
 
     /**
      * Access to  charsBuffer is to be synchronized on charsBufferLock.
@@ -768,17 +765,17 @@ public final class SwingUtils extends CoreSwingUtils
      *
      * @param component   component to look parent for
      * @param parentClass parent component class
-     * @param <T>         parent component class type
+     * @param <C>         parent component class type
      * @return first parent which is instance of specified class type or null if none found
      */
-    public static <T extends Container> T getFirstParent ( final Component component, final Class<T> parentClass )
+    public static <C extends Container> C getFirstParent ( final Component component, final Class<C> parentClass )
     {
         Component parent = component.getParent ();
         while ( !parentClass.isInstance ( parent ) && parent != null )
         {
             parent = parent.getParent ();
         }
-        return ( T ) parent;
+        return ( C ) parent;
     }
 
     /**
@@ -786,10 +783,10 @@ public final class SwingUtils extends CoreSwingUtils
      *
      * @param container      container to look for component in
      * @param componentClass component class
-     * @param <T>            component class type
+     * @param <C>            component class type
      * @return first component placed in the specified container which is instance of specified class type or null if none found
      */
-    public static <T extends Component> T getFirst ( final Container container, final Class<T> componentClass )
+    public static <C extends Component> C getFirst ( final Container container, final Class<C> componentClass )
     {
         return getFirst ( container, componentClass, false );
     }
@@ -800,23 +797,23 @@ public final class SwingUtils extends CoreSwingUtils
      * @param container      container to look for component in
      * @param componentClass component class
      * @param recursive      whether to check all sub-containers or not
-     * @param <T>            component class type
+     * @param <C>            component class type
      * @return first component placed in the specified container which is instance of specified class type or null if none found
      */
-    public static <T extends Component> T getFirst ( final Container container, final Class<T> componentClass, final boolean recursive )
+    public static <C extends Component> C getFirst ( final Container container, final Class<C> componentClass, final boolean recursive )
     {
         for ( int i = 0; i < container.getComponentCount (); i++ )
         {
             final Component component = container.getComponent ( i );
             if ( componentClass.isInstance ( component ) )
             {
-                return ( T ) component;
+                return ( C ) component;
             }
             if ( recursive )
             {
                 if ( component instanceof Container )
                 {
-                    final T first = getFirst ( ( Container ) component, componentClass, recursive );
+                    final C first = getFirst ( ( Container ) component, componentClass, recursive );
                     if ( first != null )
                     {
                         return first;
@@ -831,10 +828,10 @@ public final class SwingUtils extends CoreSwingUtils
      * Returns first parent component which supports drag and drop actions.
      *
      * @param component component to look parent supporting drop for
-     * @param <T>       parent supporting drop component class type
+     * @param <C>       parent supporting drop component class type
      * @return first parent component which supports drag and drop actions
      */
-    public static <T extends JComponent> T getFirstParentSupportingDrop ( final Component component )
+    public static <C extends JComponent> C getFirstParentSupportingDrop ( final Component component )
     {
         final Container parent = component.getParent ();
         if ( parent instanceof JComponent )
@@ -842,7 +839,7 @@ public final class SwingUtils extends CoreSwingUtils
             final JComponent c = ( JComponent ) parent;
             if ( c.getTransferHandler () != null )
             {
-                return ( T ) c;
+                return ( C ) c;
             }
         }
         return getFirstParentSupportingDrop ( parent );
@@ -2536,60 +2533,6 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Returns whether or not current thread is an AWT event dispatching thread.
-     *
-     * @return true if the current thread is an AWT event dispatching thread, false otherwise
-     */
-    public static boolean isEventDispatchThread ()
-    {
-        return EventQueue.isDispatchThread ();
-    }
-
-    /**
-     * Will perform an "invokeLater" call when the specified delay time passes.
-     *
-     * @param delay    delay time in milliseconds
-     * @param runnable runnable
-     */
-    public static void delayInvokeLater ( final long delay, final Runnable runnable )
-    {
-        WebTimer.delay ( "delayInvokeLater", delay, false, new ActionListener ()
-        {
-            @Override
-            public void actionPerformed ( final ActionEvent e )
-            {
-                invokeLater ( runnable );
-            }
-        } );
-    }
-
-    /**
-     * Will invoke the specified action later in EDT in case it is called from non-EDT thread.
-     * Otherwise action will be performed immediately.
-     *
-     * @param runnable hotkey runnable
-     * @param e        key event
-     */
-    public static void invokeLater ( final HotkeyRunnable runnable, final KeyEvent e )
-    {
-        if ( SwingUtilities.isEventDispatchThread () )
-        {
-            runnable.run ( e );
-        }
-        else
-        {
-            SwingUtilities.invokeLater ( new Runnable ()
-            {
-                @Override
-                public void run ()
-                {
-                    runnable.run ( e );
-                }
-            } );
-        }
-    }
-
-    /**
      * Returns insets converted into RTL orientation.
      *
      * @param insets insets to convert
@@ -2606,14 +2549,13 @@ public final class SwingUtils extends CoreSwingUtils
      * @param scrollPane scroll pane to scroll through
      * @param xValue     horizontal scroll bar value
      * @param yValue     vertical scroll bar value
-     * @deprecated this is a really bad method due to multiple reasons, get rid of it for good
+     * @deprecated replace this implementation with a separate feature
      */
     @Deprecated
     public static void scrollSmoothly ( final JScrollPane scrollPane, int xValue, int yValue )
     {
-        // todo 1. Use single thread to scroll through
-        // todo 2. Make this method multiply usage possible
-        // todo 3. Use timer instead of thread
+        // todo 1. Make this method multiply usage possible
+        // todo 2. Use timer instead of thread
 
         final JScrollBar hor = scrollPane.getHorizontalScrollBar ();
         final JScrollBar ver = scrollPane.getVerticalScrollBar ();
@@ -2624,28 +2566,28 @@ public final class SwingUtils extends CoreSwingUtils
         final int x = xValue < 0 ? 0 : xValue;
         final int y = yValue < 0 ? 0 : yValue;
 
-
         final int xSign = hor.getValue () > x ? -1 : 1;
         final int ySign = ver.getValue () > y ? -1 : 1;
 
-        final Thread scroller1 = new Thread ( new Runnable ()
+        final Thread scroller = new Thread ( new Runnable ()
         {
             @Override
             public void run ()
             {
-                scrollThread1 = Thread.currentThread ();
-                int lastValue = hor.getValue ();
-                while ( lastValue != x )
+                scrollThread = Thread.currentThread ();
+                int lastHorValue = hor.getValue ();
+                int lastVerValue = ver.getValue ();
+                while ( lastHorValue != x )
                 {
-                    if ( scrollThread1 != Thread.currentThread () )
+                    if ( scrollThread != Thread.currentThread () )
                     {
                         Thread.currentThread ().interrupt ();
                     }
-                    if ( lastValue != x )
+                    if ( lastHorValue != x )
                     {
-                        final int value = lastValue + xSign * Math.max ( Math.abs ( lastValue - x ) / 4, 1 );
-                        lastValue = value;
-                        SwingUtilities.invokeLater ( new Runnable ()
+                        final int value = lastHorValue + xSign * Math.max ( Math.abs ( lastHorValue - x ) / 4, 1 );
+                        lastHorValue = value;
+                        invokeLater ( new Runnable ()
                         {
                             @Override
                             public void run ()
@@ -2658,30 +2600,11 @@ public final class SwingUtils extends CoreSwingUtils
                             break;
                         }
                     }
-                    ThreadUtils.sleepSafely ( 25 );
-                }
-            }
-        } );
-        scroller1.setDaemon ( true );
-
-        final Thread scroller2 = new Thread ( new Runnable ()
-        {
-            @Override
-            public void run ()
-            {
-                scrollThread2 = Thread.currentThread ();
-                int lastValue = ver.getValue ();
-                while ( lastValue != y )
-                {
-                    if ( scrollThread2 != Thread.currentThread () )
+                    if ( lastVerValue != y )
                     {
-                        Thread.currentThread ().interrupt ();
-                    }
-                    if ( lastValue != y )
-                    {
-                        final int value = lastValue + ySign * Math.max ( Math.abs ( lastValue - y ) / 4, 1 );
-                        lastValue = value;
-                        SwingUtilities.invokeLater ( new Runnable ()
+                        final int value = lastVerValue + ySign * Math.max ( Math.abs ( lastVerValue - y ) / 4, 1 );
+                        lastVerValue = value;
+                        invokeLater ( new Runnable ()
                         {
                             @Override
                             public void run ()
@@ -2698,10 +2621,8 @@ public final class SwingUtils extends CoreSwingUtils
                 }
             }
         } );
-        scroller2.setDaemon ( true );
-
-        scroller1.start ();
-        scroller2.start ();
+        scroller.setDaemon ( true );
+        scroller.start ();
     }
 
     /**

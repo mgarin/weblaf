@@ -224,7 +224,7 @@ public final class HotkeyManager
             if ( hotkeyInfo.getHotkeyData ().isTriggered ( e ) && hotkeyInfo.getAction () != null )
             {
                 // Performing hotkey action
-                SwingUtils.invokeLater ( hotkeyInfo.getAction (), e );
+                invokeLater ( hotkeyInfo.getAction (), e );
             }
         }
         else
@@ -249,10 +249,36 @@ public final class HotkeyManager
                         }
 
                         // Performing hotkey action
-                        SwingUtils.invokeLater ( hotkeyInfo.getAction (), e );
+                        invokeLater ( hotkeyInfo.getAction (), e );
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Will invoke {@link HotkeyRunnable} later in EDT in case it is called from non-EDT thread.
+     * todo This shouldn't be needed anymore after {@link HotkeyManager} rework
+     *
+     * @param runnable hotkey runnable
+     * @param e        key event
+     */
+    private static void invokeLater ( final HotkeyRunnable runnable, final KeyEvent e )
+    {
+        if ( SwingUtilities.isEventDispatchThread () )
+        {
+            runnable.run ( e );
+        }
+        else
+        {
+            SwingUtils.invokeLater ( new Runnable ()
+            {
+                @Override
+                public void run ()
+                {
+                    runnable.run ( e );
+                }
+            } );
         }
     }
 

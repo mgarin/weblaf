@@ -70,10 +70,10 @@ public final class LafUtils
      * Returns {@link ComponentUI} or {@code null} if UI cannot be retrieved.
      *
      * @param component {@link JComponent} to retrieve UI from
-     * @param <T>       {@link ComponentUI} class type
+     * @param <U>       {@link ComponentUI} class type
      * @return {@link ComponentUI} or {@code null} if UI cannot be retrieved
      */
-    public static <T extends ComponentUI> T getUI ( final JComponent component )
+    public static <U extends ComponentUI> U getUI ( final JComponent component )
     {
         try
         {

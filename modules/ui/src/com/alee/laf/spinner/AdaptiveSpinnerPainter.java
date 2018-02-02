@@ -6,19 +6,21 @@ import com.alee.painter.Painter;
 import javax.swing.*;
 
 /**
- * Simple SpinnerPainter adapter class.
- * It is used to install simple non-specific painters into WebSpinnerUI.
+ * Simple {@link SpinnerPainter} adapter class.
+ * It is used to install simple non-specific painters into {@link WebSpinnerUI}.
  *
+ * @param <C> component type
+ * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public final class AdaptiveSpinnerPainter<E extends JSpinner, U extends WebSpinnerUI> extends AdaptivePainter<E, U>
-        implements ISpinnerPainter<E, U>
+public final class AdaptiveSpinnerPainter<C extends JSpinner, U extends WebSpinnerUI> extends AdaptivePainter<C, U>
+        implements ISpinnerPainter<C, U>
 {
     /**
-     * Constructs new AdaptiveSpinnerPainter for the specified painter.
+     * Constructs new {@link AdaptiveSpinnerPainter} for the specified painter.
      *
-     * @param painter painter to adapt
+     * @param painter {@link Painter} to adapt
      */
     public AdaptiveSpinnerPainter ( final Painter painter )
     {

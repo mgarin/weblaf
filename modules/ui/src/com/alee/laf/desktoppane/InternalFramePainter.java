@@ -11,18 +11,18 @@ import java.util.List;
 import static javax.swing.JInternalFrame.*;
 
 /**
- * Basic painter for JInternalFrame component.
- * It is used as WebInternalFrameUI default painter.
+ * Basic painter for {@link JInternalFrame} component.
+ * It is used as {@link WebInternalFrameUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
 
-public class InternalFramePainter<E extends JInternalFrame, U extends WebInternalFrameUI, D extends IDecoration<E, D>>
-        extends AbstractContainerPainter<E, U, D> implements IInternalFramePainter<E, U>
+public class InternalFramePainter<C extends JInternalFrame, U extends WebInternalFrameUI, D extends IDecoration<C, D>>
+        extends AbstractContainerPainter<C, U, D> implements IInternalFramePainter<C, U>
 {
     @Override
     protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )

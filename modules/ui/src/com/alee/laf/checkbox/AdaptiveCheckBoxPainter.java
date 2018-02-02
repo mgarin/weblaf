@@ -10,11 +10,13 @@ import java.awt.*;
  * Simple {@link CheckBoxPainter} adapter class.
  * It is used to install simple non-specific painters into {@link WCheckBoxUI}.
  *
+ * @param <C> component type
+ * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public final class AdaptiveCheckBoxPainter<E extends JCheckBox, U extends WCheckBoxUI> extends AdaptivePainter<E, U>
-        implements ICheckBoxPainter<E, U>
+public final class AdaptiveCheckBoxPainter<C extends JCheckBox, U extends WCheckBoxUI> extends AdaptivePainter<C, U>
+        implements ICheckBoxPainter<C, U>
 {
     /**
      * Constructs new {@link AdaptiveCheckBoxPainter} for the specified painter.

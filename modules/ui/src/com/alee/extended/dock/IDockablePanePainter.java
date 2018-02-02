@@ -22,12 +22,12 @@ import com.alee.painter.SpecificPainter;
 /**
  * Base interface for {@link WebDockablePane} component painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface IDockablePanePainter<E extends WebDockablePane, U extends WDockablePaneUI> extends SpecificPainter<E, U>
+public interface IDockablePanePainter<C extends WebDockablePane, U extends WDockablePaneUI> extends SpecificPainter<C, U>
 {
     /**
      * This interface doesn't offer any additional methods to implement.

@@ -18,7 +18,7 @@
 package com.alee.managers.plugin;
 
 /**
- * Custom functional interface for PluginManager methods.
+ * Custom functional interface for {@link PluginManager} methods.
  *
  * @author Mikle Garin
  */

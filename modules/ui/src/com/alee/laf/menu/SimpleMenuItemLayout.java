@@ -27,24 +27,24 @@ import javax.swing.*;
  * It only paints contents placed under {@link #ICON}, {@link #TEXT}, {@link #ACCELERATOR} and {@link #ARROW} constraints.
  * Do not use this layout for any {@link JMenuItem}, use {@link MenuItemLayout} instead as it contains some important features.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> layout type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "SimpleMenuItemLayout" )
-public class SimpleMenuItemLayout<E extends JComponent, D extends IDecoration<E, D>, I extends SimpleMenuItemLayout<E, D, I>>
-        extends AbstractMenuItemLayout<E, D, I>
+public class SimpleMenuItemLayout<C extends JComponent, D extends IDecoration<C, D>, I extends SimpleMenuItemLayout<C, D, I>>
+        extends AbstractMenuItemLayout<C, D, I>
 {
     @Override
-    protected boolean isAlignTextByIcons ( final E c, final D d )
+    protected boolean isAlignTextByIcons ( final C c, final D d )
     {
         return false;
     }
 
     @Override
-    protected int getMaxIconWidth ( final E c, final D d )
+    protected int getMaxIconWidth ( final C c, final D d )
     {
         final Icon icon;
         if ( c instanceof AbstractButton )
@@ -63,7 +63,7 @@ public class SimpleMenuItemLayout<E extends JComponent, D extends IDecoration<E,
     }
 
     @Override
-    protected int getIconTextGap ( final E c, final D d )
+    protected int getIconTextGap ( final C c, final D d )
     {
         final int gap;
         if ( iconTextGap != null )

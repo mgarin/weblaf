@@ -23,12 +23,12 @@ import javax.swing.plaf.ComponentUI;
 /**
  * This interface is implemented by painters which are designed to draw a small section for component-specific painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface SectionPainter<E extends JComponent, U extends ComponentUI> extends Painter<E, U>
+public interface SectionPainter<C extends JComponent, U extends ComponentUI> extends Painter<C, U>
 {
     /**
      * Returns section identifier that is be unique within its parent {@link Painter}.
@@ -43,7 +43,7 @@ public interface SectionPainter<E extends JComponent, U extends ComponentUI> ext
      *
      * @return origin {@link Painter}
      */
-    public Painter<E, U> getOrigin ();
+    public Painter<C, U> getOrigin ();
 
     /**
      * Installs this {@link SectionPainter} into specified {@link Painter}.
@@ -53,7 +53,7 @@ public interface SectionPainter<E extends JComponent, U extends ComponentUI> ext
      * @param ui     component UI
      * @param origin origin {@link Painter}
      */
-    public void install ( E c, U ui, Painter<E, U> origin );
+    public void install ( C c, U ui, Painter<C, U> origin );
 
     /**
      * Uninstalls this {@link SectionPainter} from specified {@link Painter}.
@@ -63,5 +63,5 @@ public interface SectionPainter<E extends JComponent, U extends ComponentUI> ext
      * @param ui     component UI
      * @param origin origin {@link Painter}
      */
-    public void uninstall ( E c, U ui, Painter<E, U> origin );
+    public void uninstall ( C c, U ui, Painter<C, U> origin );
 }

@@ -15,15 +15,15 @@ import java.util.List;
 /**
  * Abstract painter for stateful {@link AbstractButton} implementations.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
 
-public abstract class AbstractStateButtonPainter<E extends AbstractButton, U extends ButtonUI, D extends IDecoration<E, D>>
-        extends AbstractButtonPainter<E, U, D> implements IAbstractStateButtonPainter<E, U>
+public abstract class AbstractStateButtonPainter<C extends AbstractButton, U extends ButtonUI, D extends IDecoration<C, D>>
+        extends AbstractButtonPainter<C, U, D> implements IAbstractStateButtonPainter<C, U>
 {
     /**
      * State icon painter.
@@ -37,7 +37,7 @@ public abstract class AbstractStateButtonPainter<E extends AbstractButton, U ext
     protected transient Rectangle iconBounds;
 
     @Override
-    protected List<SectionPainter<E, U>> getSectionPainters ()
+    protected List<SectionPainter<C, U>> getSectionPainters ()
     {
         return asList ( checkStatePainter );
     }

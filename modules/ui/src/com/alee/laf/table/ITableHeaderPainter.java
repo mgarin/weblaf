@@ -6,14 +6,14 @@ import javax.swing.*;
 import javax.swing.table.JTableHeader;
 
 /**
- * Base interface for JTableHeader component painters.
+ * Base interface for {@link JTableHeader} component painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public interface ITableHeaderPainter<E extends JTableHeader, U extends WebTableHeaderUI> extends SpecificPainter<E, U>
+public interface ITableHeaderPainter<C extends JTableHeader, U extends WebTableHeaderUI> extends SpecificPainter<C, U>
 {
     /**
      * Prepares painter to paint table header.

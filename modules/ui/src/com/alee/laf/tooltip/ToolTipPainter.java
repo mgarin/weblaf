@@ -9,12 +9,14 @@ import javax.swing.*;
  * Basic painter for {@link JToolTip} component.
  * It is used as {@link WToolTipUI} default painter.
  *
+ * @param <C> component type
+ * @param <U> component UI type
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
 
-public class ToolTipPainter<E extends JToolTip, U extends WToolTipUI, D extends IDecoration<E, D>>
-        extends AbstractDecorationPainter<E, U, D> implements IToolTipPainter<E, U>
+public class ToolTipPainter<C extends JToolTip, U extends WToolTipUI, D extends IDecoration<C, D>>
+        extends AbstractDecorationPainter<C, U, D> implements IToolTipPainter<C, U>
 {
     /**
      * Implementation is used completely from {@link AbstractDecorationPainter}.

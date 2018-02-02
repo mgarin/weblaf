@@ -13,14 +13,14 @@ import java.awt.event.MouseEvent;
  * Basic painter for {@link WebSplitButton} component.
  * It is used as {@link WSplitButtonUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public class SplitButtonPainter<E extends WebSplitButton, U extends WSplitButtonUI, D extends IDecoration<E, D>>
-        extends AbstractButtonPainter<E, U, D> implements ISplitButtonPainter<E, U>
+public class SplitButtonPainter<C extends WebSplitButton, U extends WSplitButtonUI, D extends IDecoration<C, D>>
+        extends AbstractButtonPainter<C, U, D> implements ISplitButtonPainter<C, U>
 {
     /**
      * todo 1. Replace custom split button painting with button component
@@ -200,7 +200,7 @@ public class SplitButtonPainter<E extends WebSplitButton, U extends WSplitButton
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final C c, final U ui )
     {
         // Painting split button
         paintSplitButton ( g2d, bounds, c );
@@ -213,7 +213,7 @@ public class SplitButtonPainter<E extends WebSplitButton, U extends WSplitButton
      * @param bounds painting bounds
      * @param c      split button
      */
-    protected void paintSplitButton ( final Graphics2D g2d, final Rectangle bounds, final E c )
+    protected void paintSplitButton ( final Graphics2D g2d, final Rectangle bounds, final C c )
     {
         // Painting split button icon
         final Icon splitIcon = component.getSplitIcon ();
@@ -235,7 +235,7 @@ public class SplitButtonPainter<E extends WebSplitButton, U extends WSplitButton
      * @param c split button
      * @return bounds of the split button part
      */
-    protected Rectangle getSplitButtonBounds ( final Rectangle b, final E c )
+    protected Rectangle getSplitButtonBounds ( final Rectangle b, final C c )
     {
         final Insets i = c.getInsets ();
         final int x = b.x + ( ltr ? b.width - i.right + contentGap + 1 + splitIconGap : i.left - contentGap - 1 - splitIconGap );
@@ -249,7 +249,7 @@ public class SplitButtonPainter<E extends WebSplitButton, U extends WSplitButton
      * @param c split button
      * @return bounds of the split line part
      */
-    protected Rectangle getSplitLineBounds ( final Rectangle b, final E c )
+    protected Rectangle getSplitLineBounds ( final Rectangle b, final C c )
     {
         final Insets i = c.getInsets ();
         final int x = b.x + ( ltr ? b.width - i.right + contentGap : i.left - contentGap );
@@ -262,7 +262,7 @@ public class SplitButtonPainter<E extends WebSplitButton, U extends WSplitButton
      * @param c split button
      * @return split button part hitbox
      */
-    protected Rectangle getSplitButtonHitbox ( final E c )
+    protected Rectangle getSplitButtonHitbox ( final C c )
     {
         final Insets i = c.getInsets ();
         return new Rectangle ( ltr ? c.getWidth () - i.right : 0, 0, ltr ? i.right : i.left, c.getHeight () );

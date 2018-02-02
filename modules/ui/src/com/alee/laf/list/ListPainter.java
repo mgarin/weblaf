@@ -27,14 +27,14 @@ import java.util.List;
  * Basic painter for {@link JList} component.
  * It is used as {@link WebListUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
 
-public class ListPainter<E extends JList, U extends WListUI, D extends IDecoration<E, D>> extends AbstractDecorationPainter<E, U, D>
-        implements IListPainter<E, U>
+public class ListPainter<C extends JList, U extends WListUI, D extends IDecoration<C, D>> extends AbstractDecorationPainter<C, U, D>
+        implements IListPainter<C, U>
 {
     /**
      * {@link SectionPainter} that can be used to customize list items background.
@@ -71,7 +71,7 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
     protected transient int[] cellHeights = null;
 
     @Override
-    protected List<SectionPainter<E, U>> getSectionPainters ()
+    protected List<SectionPainter<C, U>> getSectionPainters ()
     {
         return asList ( itemPainter, selectionPainter );
     }
@@ -248,7 +248,7 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final C c, final U ui )
     {
         // Painting hover cell background
         paintBackground ( g2d );
@@ -675,7 +675,7 @@ public class ListPainter<E extends JList, U extends WListUI, D extends IDecorati
      * @param list  painted list
      * @return corrected item index
      */
-    protected int adjustIndex ( final int index, final E list )
+    protected int adjustIndex ( final int index, final C list )
     {
         return index < list.getModel ().getSize () ? index : -1;
     }

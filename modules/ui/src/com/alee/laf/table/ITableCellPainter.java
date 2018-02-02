@@ -22,14 +22,14 @@ import com.alee.painter.SectionPainter;
 import javax.swing.*;
 
 /**
- * Base interface for JTable component cell painters.
+ * Base interface for {@link JTable} component cell painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface ITableCellPainter<E extends JTable, U extends WebTableUI> extends SectionPainter<E, U>
+public interface ITableCellPainter<C extends JTable, U extends WebTableUI> extends SectionPainter<C, U>
 {
     /**
      * Prepares painter to pain table cell.

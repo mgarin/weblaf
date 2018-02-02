@@ -23,14 +23,14 @@ import java.awt.*;
 /**
  * Interface for component decoration elements based on custom shapes.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> element type
  * @author Mikle Garin
  */
 
-public interface IShapedElement<E extends JComponent, D extends IDecoration<E, D>, I extends IShapedElement<E, D, I>>
-        extends IDecoratonElement<E, D, I>
+public interface IShapedElement<C extends JComponent, D extends IDecoration<C, D>, I extends IShapedElement<C, D, I>>
+        extends IDecoratonElement<C, D, I>
 {
     /**
      * Paints element using the specified shape.
@@ -41,5 +41,5 @@ public interface IShapedElement<E extends JComponent, D extends IDecoration<E, D
      * @param d      painted decoration state
      * @param shape  element shape
      */
-    public void paint ( Graphics2D g2d, Rectangle bounds, E c, D d, Shape shape );
+    public void paint ( Graphics2D g2d, Rectangle bounds, C c, D d, Shape shape );
 }

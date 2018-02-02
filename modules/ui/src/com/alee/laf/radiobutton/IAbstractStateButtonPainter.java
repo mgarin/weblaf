@@ -7,14 +7,14 @@ import javax.swing.plaf.ButtonUI;
 import java.awt.*;
 
 /**
- * Base interface for JCheckBox and JRadioButton component painters.
+ * Base interface for {@link JCheckBox}, {@link JRadioButton} and {@link com.alee.extended.checkbox.WebTristateCheckBox} component painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public interface IAbstractStateButtonPainter<E extends AbstractButton, U extends ButtonUI> extends IAbstractButtonPainter<E, U>
+public interface IAbstractStateButtonPainter<C extends AbstractButton, U extends ButtonUI> extends IAbstractButtonPainter<C, U>
 {
     /**
      * Returns icon bounds.

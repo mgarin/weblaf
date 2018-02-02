@@ -38,6 +38,7 @@ import java.util.List;
 /**
  * Pluggable look and feel interface for {@link JSplitPane} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 

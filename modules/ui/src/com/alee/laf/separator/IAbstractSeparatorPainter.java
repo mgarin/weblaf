@@ -6,13 +6,16 @@ import javax.swing.*;
 import javax.swing.plaf.SeparatorUI;
 
 /**
- * Base interface for JSeparator component painters.
+ * Base interface for {@link JSeparator} component painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public interface IAbstractSeparatorPainter<E extends JSeparator, U extends SeparatorUI> extends SpecificPainter<E, U>
+public interface IAbstractSeparatorPainter<C extends JSeparator, U extends SeparatorUI> extends SpecificPainter<C, U>
 {
+    /**
+     * This interface doesn't offer any additional methods to implement.
+     */
 }

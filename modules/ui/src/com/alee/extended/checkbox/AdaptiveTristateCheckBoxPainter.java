@@ -9,11 +9,13 @@ import java.awt.*;
  * Simple {@link TristateCheckBoxPainter} adapter class.
  * It is used to install simple non-specific painters into {@link WebTristateCheckBoxUI}.
  *
+ * @param <C> component type
+ * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public final class AdaptiveTristateCheckBoxPainter<E extends WebTristateCheckBox, U extends WebTristateCheckBoxUI>
-        extends AdaptivePainter<E, U> implements ITristateCheckBoxPainter<E, U>
+public final class AdaptiveTristateCheckBoxPainter<C extends WebTristateCheckBox, U extends WebTristateCheckBoxUI>
+        extends AdaptivePainter<C, U> implements ITristateCheckBoxPainter<C, U>
 {
     /**
      * Constructs new AdaptiveTristateCheckBoxPainter for the specified painter.

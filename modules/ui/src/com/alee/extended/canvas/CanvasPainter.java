@@ -24,14 +24,14 @@ import com.alee.painter.decoration.IDecoration;
  * Basic painter for {@link WebCanvas} component.
  * It is used as {@link WCanvasUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public class CanvasPainter<E extends WebCanvas, U extends WCanvasUI, D extends IDecoration<E, D>>
-        extends AbstractDecorationPainter<E, U, D> implements ICanvasPainter<E, U>
+public class CanvasPainter<C extends WebCanvas, U extends WCanvasUI, D extends IDecoration<C, D>>
+        extends AbstractDecorationPainter<C, U, D> implements ICanvasPainter<C, U>
 {
     /**
      * Implementation is used completely from {@link AbstractDecorationPainter}.

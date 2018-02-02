@@ -27,18 +27,18 @@ import javax.swing.tree.TreeNode;
  * Using a {@link TreeWalker} you can quickly iterate through {@link javax.swing.JTree} nodes to perform actions or check conditions.
  * Common {@link TreeWalker} implementations will only iterate through nodes that currently exist within {@link javax.swing.tree.TreeModel}.
  *
- * @param <E> tree node type
+ * @param <N> node type
  * @author Mikle Garin
  */
 
-public interface TreeWalker<E extends TreeNode>
+public interface TreeWalker<N extends TreeNode>
 {
     /**
      * Performs specified action for each node this walker passes.
      *
      * @param action {@link Consumer} containing action to perform on each node
      */
-    public void forEach ( Consumer<E> action );
+    public void forEach ( Consumer<N> action );
 
     /**
      * Returns whether or not any of nodes walker passes match specified predicate.
@@ -46,7 +46,7 @@ public interface TreeWalker<E extends TreeNode>
      * @param predicate {@link Predicate} containin condition for nodes
      * @return {@code true} if any of nodes walker passes match specified predicate, {@code false} otherwise
      */
-    public boolean anyMatch ( Predicate<E> predicate );
+    public boolean anyMatch ( Predicate<N> predicate );
 
     /**
      * Returns whether or not all of nodes walker passes match specified predicate.
@@ -54,7 +54,7 @@ public interface TreeWalker<E extends TreeNode>
      * @param predicate {@link Predicate} containin condition for nodes
      * @return {@code true} if all of nodes walker passes match specified predicate, {@code false} otherwise
      */
-    public boolean allMatch ( Predicate<E> predicate );
+    public boolean allMatch ( Predicate<N> predicate );
 
     /**
      * Returns whether or not none of nodes walker passes match specified predicate.
@@ -62,5 +62,5 @@ public interface TreeWalker<E extends TreeNode>
      * @param predicate {@link Predicate} containin condition for nodes
      * @return {@code true} if none of nodes walker passes match specified predicate, {@code false} otherwise
      */
-    public boolean noneMatch ( Predicate<E> predicate );
+    public boolean noneMatch ( Predicate<N> predicate );
 }

@@ -30,14 +30,14 @@ import java.awt.image.BufferedImage;
  * Note that in the current implementation this background can only handle static images.
  * Any animated images (like gif or apng) will be displayed as a signle static frame, usually first one.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> background type
  * @author Mikle Garin
  */
 
-public abstract class AbstractImageTextureBackground<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractImageTextureBackground<E, D, I>>
-        extends AbstractTextureBackground<E, D, I>
+public abstract class AbstractImageTextureBackground<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractImageTextureBackground<C, D, I>>
+        extends AbstractTextureBackground<C, D, I>
 {
     /**
      * Cached texture image.

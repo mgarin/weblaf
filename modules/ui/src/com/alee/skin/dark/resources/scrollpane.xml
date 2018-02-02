@@ -127,7 +127,7 @@
             <painter>
                 <thumbRound>0</thumbRound>
                 <thumbMargin>0,0,0,0</thumbMargin>
-                <scrollBarWidth>10</scrollBarWidth>
+                <scrollBarWidth>9</scrollBarWidth>
                 <thumbBorderColor>20,20,20</thumbBorderColor>
                 <thumbBackgroundColor>210,210,210,48</thumbBackgroundColor>
                 <thumbDisabledBorderColor>68,72,74</thumbDisabledBorderColor>
@@ -174,7 +174,7 @@
             <painter>
                 <thumbRound>2</thumbRound>
                 <thumbMargin>0,0,0,3</thumbMargin>
-                <scrollBarWidth>11</scrollBarWidth>
+                <scrollBarWidth>10</scrollBarWidth>
                 <thumbBorderColor>20,20,20</thumbBorderColor>
                 <thumbBackgroundColor>210,210,210,48</thumbBackgroundColor>
                 <thumbDisabledBorderColor>68,72,74</thumbDisabledBorderColor>

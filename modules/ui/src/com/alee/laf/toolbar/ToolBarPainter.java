@@ -17,15 +17,15 @@ import java.util.List;
  * Basic painter for {@link JToolBar} component.
  * It is used as {@link WebToolBarUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
 
-public class ToolBarPainter<E extends JToolBar, U extends WebToolBarUI, D extends IDecoration<E, D>>
-        extends AbstractContainerPainter<E, U, D> implements IToolBarPainter<E, U>
+public class ToolBarPainter<C extends JToolBar, U extends WebToolBarUI, D extends IDecoration<C, D>>
+        extends AbstractContainerPainter<C, U, D> implements IToolBarPainter<C, U>
 {
     /**
      * Listener used for various updates upon entering floating mode.
@@ -94,7 +94,7 @@ public class ToolBarPainter<E extends JToolBar, U extends WebToolBarUI, D extend
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final C c, final U ui )
     {
         //        // Painting gripper
         //        paintGripper ( g2d, c );

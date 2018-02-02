@@ -40,13 +40,13 @@ import java.awt.geom.GeneralPath;
  * Base painter for any type of popup components.
  * It is generally used for {@link WebPopupMenuUI} default styling but might also be used in other cases.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public abstract class AbstractPopupPainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>
-        implements PainterShapeProvider<E>, SwingConstants
+public abstract class AbstractPopupPainter<C extends JComponent, U extends ComponentUI> extends AbstractPainter<C, U>
+        implements PainterShapeProvider<C>, SwingConstants
 {
     /**
      * todo 1. Replace with a decoration paainter and custom shape implementation for popups
@@ -296,7 +296,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
     }
 
     @Override
-    public Shape provideShape ( final E component, final Rectangle bounds )
+    public Shape provideShape ( final C component, final Rectangle bounds )
     {
         return getBorderShape ( component, bounds.getSize (), false );
     }
@@ -324,7 +324,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E popup, final U ui, final Bounds bounds )
+    public void paint ( final Graphics2D g2d, final C popup, final U ui, final Bounds bounds )
     {
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
         if ( shaped )
@@ -345,7 +345,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      * @param g2d   graphics context
      * @param popup popup component
      */
-    protected void paintTransparentPopup ( final Graphics2D g2d, final E popup )
+    protected void paintTransparentPopup ( final Graphics2D g2d, final C popup )
     {
         final Dimension popupSize = popup.getSize ();
 
@@ -366,7 +366,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      * @param g2d   graphics context
      * @param popup popup component
      */
-    protected void paintSimplePopup ( final Graphics2D g2d, final E popup )
+    protected void paintSimplePopup ( final Graphics2D g2d, final C popup )
     {
         // Background
         g2d.setPaint ( getBackgroundColor ( popup ) );
@@ -384,7 +384,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      * @param popup     popup component
      * @param popupSize popup size
      */
-    protected void paintShade ( final Graphics2D g2d, final E popup, final Dimension popupSize )
+    protected void paintShade ( final Graphics2D g2d, final C popup, final Dimension popupSize )
     {
         if ( shadeWidth > 0 )
         {
@@ -421,7 +421,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      * @param popup     popup component
      * @param popupSize popup size
      */
-    protected void paintBackground ( final Graphics2D g2d, final E popup, final Dimension popupSize )
+    protected void paintBackground ( final Graphics2D g2d, final C popup, final Dimension popupSize )
     {
         final Color backgroundColor = getBackgroundColor ( popup );
         if ( backgroundColor != null )
@@ -438,7 +438,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      * @param popup     popup component
      * @param popupSize popup size
      */
-    protected void paintBorder ( final Graphics2D g2d, final E popup, final Dimension popupSize )
+    protected void paintBorder ( final Graphics2D g2d, final C popup, final Dimension popupSize )
     {
         if ( borderColor != null )
         {
@@ -453,7 +453,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      * @param popup popup component
      * @return popup background color
      */
-    protected Color getBackgroundColor ( final E popup )
+    protected Color getBackgroundColor ( final C popup )
     {
         final Color bg = getComponentBackground ( popup );
         return !shaped || opacity >= 1f ? bg :
@@ -467,7 +467,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      * @param popup popup component
      * @return popup background color
      */
-    protected Color getComponentBackground ( final E popup )
+    protected Color getComponentBackground ( final C popup )
     {
         return background;
     }
@@ -506,7 +506,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      * @param fill      whether it is a fill shape or not
      * @return popup border shape
      */
-    protected Shape getBorderShape ( final E popup, final Dimension popupSize, final boolean fill )
+    protected Shape getBorderShape ( final C popup, final Dimension popupSize, final boolean fill )
     {
         switch ( popupStyle )
         {
@@ -546,7 +546,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      * @param popupSize popup size
      * @return an array of shape settings cached along with the shape
      */
-    protected Object[] getCachedShapeSettings ( final E popup, final Dimension popupSize )
+    protected Object[] getCachedShapeSettings ( final C popup, final Dimension popupSize )
     {
         return new Object[]{ round, shadeWidth, cornerWidth, cornerSide, relativeCorner, cornerAlignment, popupSize, ltr };
     }
@@ -559,7 +559,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      * @param fill      whether it is a fill shape or not
      * @return simple popup shape
      */
-    protected GeneralPath createSimpleShape ( final E popup, final Dimension popupSize, final boolean fill )
+    protected GeneralPath createSimpleShape ( final C popup, final Dimension popupSize, final boolean fill )
     {
         final int shear = fill ? 1 : 0;
         final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
@@ -588,7 +588,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      * @return dropdown style shape
      */
     @SuppressWarnings ( "ConstantConditions" )
-    protected GeneralPath createDropdownShape ( final E popup, final Dimension popupSize, final boolean fill )
+    protected GeneralPath createDropdownShape ( final C popup, final Dimension popupSize, final boolean fill )
     {
         final boolean topCorner = cornerSide == TOP;
         final boolean bottomCorner = cornerSide == BOTTOM;
@@ -684,7 +684,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      * @param fill      whether it is a fill shape or not
      * @return dropdown style corner shape
      */
-    protected Shape getDropdownCornerShape ( final E popupMenu, final Dimension menuSize, final boolean fill )
+    protected Shape getDropdownCornerShape ( final C popupMenu, final Dimension menuSize, final boolean fill )
     {
         return ShapeUtils.getShape ( popupMenu, fill ? "dropdown-corner-fill" : "dropdown-corner-border", new Supplier<Shape> ()
         {
@@ -706,7 +706,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      * @return dropdown style corner shape
      */
     @SuppressWarnings ( "ConstantConditions" )
-    protected GeneralPath createDropdownCornerShape ( final E popupMenu, final Dimension menuSize, final boolean fill )
+    protected GeneralPath createDropdownCornerShape ( final C popupMenu, final Dimension menuSize, final boolean fill )
     {
         final boolean topCorner = cornerSide == TOP;
         final boolean bottomCorner = cornerSide == BOTTOM;

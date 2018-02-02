@@ -22,12 +22,12 @@ import java.util.Enumeration;
  * Basic painter for {@link JSlider} component.
  * It is used as {@link WebSliderUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends AbstractPainter<E, U> implements ISliderPainter<E, U>
+public class SliderPainter<C extends JSlider, U extends WebSliderUI> extends AbstractPainter<C, U> implements ISliderPainter<C, U>
 {
     /**
      * todo 1. Split into proper AbstractDecorationPainter & AbstractSectionDecorationPainter implementations
@@ -226,7 +226,7 @@ public class SliderPainter<E extends JSlider, U extends WebSliderUI> extends Abs
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E c, final U ui, final Bounds bounds )
+    public void paint ( final Graphics2D g2d, final C c, final U ui, final Bounds bounds )
     {
         calculateGeometry ();
 

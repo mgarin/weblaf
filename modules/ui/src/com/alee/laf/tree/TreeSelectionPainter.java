@@ -26,14 +26,14 @@ import javax.swing.*;
  * Simple tree selection painter based on {@link AbstractSectionDecorationPainter}.
  * It is used within {@link TreePainter} to paint cells selection.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public class TreeSelectionPainter<E extends JTree, U extends WebTreeUI, D extends IDecoration<E, D>>
-        extends AbstractSectionDecorationPainter<E, U, D> implements ITreeSelectionPainter<E, U>
+public class TreeSelectionPainter<C extends JTree, U extends WTreeUI, D extends IDecoration<C, D>>
+        extends AbstractSectionDecorationPainter<C, U, D> implements ITreeSelectionPainter<C, U>
 {
     @Override
     public String getSectionId ()

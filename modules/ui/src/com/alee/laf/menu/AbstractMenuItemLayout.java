@@ -30,15 +30,15 @@ import java.awt.*;
  * Abstract implementation of simple menu item layout.
  * It only paints contents placed under {@link #ICON}, {@link #TEXT}, {@link #ACCELERATOR} and {@link #ARROW} constraints.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> layout type
  * @author Mikle Garin
  */
 
 @SuppressWarnings ( "UnusedParameters" )
-public abstract class AbstractMenuItemLayout<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractMenuItemLayout<E, D, I>>
-        extends AbstractContentLayout<E, D, I>
+public abstract class AbstractMenuItemLayout<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractMenuItemLayout<C, D, I>>
+        extends AbstractContentLayout<C, D, I>
 {
     /**
      * Layout constraints.
@@ -73,7 +73,7 @@ public abstract class AbstractMenuItemLayout<E extends JComponent, D extends IDe
      * @param d painted decoration state
      * @return true if menu items text should be aligned by maximum icon size, false otherwise
      */
-    protected abstract boolean isAlignTextByIcons ( E c, D d );
+    protected abstract boolean isAlignTextByIcons ( C c, D d );
 
     /**
      * Returns maximum icon width for the specified menu item.
@@ -83,7 +83,7 @@ public abstract class AbstractMenuItemLayout<E extends JComponent, D extends IDe
      * @param d painted decoration state
      * @return maximum icon width for the specified menu item
      */
-    protected abstract int getMaxIconWidth ( E c, D d );
+    protected abstract int getMaxIconWidth ( C c, D d );
 
     /**
      * Returns gap between icon and text contents.
@@ -92,7 +92,7 @@ public abstract class AbstractMenuItemLayout<E extends JComponent, D extends IDe
      * @param d painted decoration state
      * @return gap between icon and text contents
      */
-    protected int getIconTextGap ( final E c, final D d )
+    protected int getIconTextGap ( final C c, final D d )
     {
         return iconTextGap != null ? iconTextGap : 0;
     }
@@ -104,7 +104,7 @@ public abstract class AbstractMenuItemLayout<E extends JComponent, D extends IDe
      * @param d painted decoration state
      * @return between text and accelerator contents
      */
-    protected int getTextAcceleratorGap ( final E c, final D d )
+    protected int getTextAcceleratorGap ( final C c, final D d )
     {
         return textAcceleratorGap != null ? textAcceleratorGap : 0;
     }
@@ -116,13 +116,13 @@ public abstract class AbstractMenuItemLayout<E extends JComponent, D extends IDe
      * @param d painted decoration state
      * @return between text and arrow contents
      */
-    protected int getTextArrowGap ( final E c, final D d )
+    protected int getTextArrowGap ( final C c, final D d )
     {
         return textArrowGap != null ? textArrowGap : 0;
     }
 
     @Override
-    public ContentLayoutData layoutContent ( final E c, final D d, final Rectangle bounds )
+    public ContentLayoutData layoutContent ( final C c, final D d, final Rectangle bounds )
     {
         final ContentLayoutData layoutData = new ContentLayoutData ( 4 );
         final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
@@ -169,7 +169,7 @@ public abstract class AbstractMenuItemLayout<E extends JComponent, D extends IDe
     }
 
     @Override
-    protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
     {
         final Dimension ps = new Dimension ();
         if ( !isEmpty ( c, d, ICON ) || isAlignTextByIcons ( c, d ) )

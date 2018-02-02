@@ -29,7 +29,7 @@ import java.awt.*;
 /**
  * Gripper content implementation.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
@@ -37,8 +37,8 @@ import java.awt.*;
 
 @XStreamAlias ( "Gripper" )
 @SuppressWarnings ( "UnusedParameters" )
-public class Gripper<E extends JComponent, D extends IDecoration<E, D>, I extends Gripper<E, D, I>>
-        extends AbstractContent<E, D, I>
+public class Gripper<C extends JComponent, D extends IDecoration<C, D>, I extends Gripper<C, D, I>>
+        extends AbstractContent<C, D, I>
 {
     /**
      * todo 1. Make one-directional grippers have cone shape
@@ -81,7 +81,7 @@ public class Gripper<E extends JComponent, D extends IDecoration<E, D>, I extend
     }
 
     @Override
-    public boolean isEmpty ( final E c, final D d )
+    public boolean isEmpty ( final C c, final D d )
     {
         return false;
     }
@@ -93,7 +93,7 @@ public class Gripper<E extends JComponent, D extends IDecoration<E, D>, I extend
      * @param d painted decoration state
      * @return gripper direction
      */
-    public CompassDirection getDirection ( final E c, final D d )
+    public CompassDirection getDirection ( final C c, final D d )
     {
         return direction != null ? direction : CompassDirection.southEast;
     }
@@ -105,7 +105,7 @@ public class Gripper<E extends JComponent, D extends IDecoration<E, D>, I extend
      * @param d painted decoration state
      * @return gripper parts size
      */
-    public Dimension getPart ( final E c, final D d )
+    public Dimension getPart ( final C c, final D d )
     {
         return part != null ? part : new Dimension ( 2, 2 );
     }
@@ -117,7 +117,7 @@ public class Gripper<E extends JComponent, D extends IDecoration<E, D>, I extend
      * @param d painted decoration state
      * @return spacing between gripper parts
      */
-    public Integer getSpacing ( final E c, final D d )
+    public Integer getSpacing ( final C c, final D d )
     {
         return spacing != null ? spacing : 1;
     }
@@ -129,7 +129,7 @@ public class Gripper<E extends JComponent, D extends IDecoration<E, D>, I extend
      * @param d painted decoration state
      * @return gripper parts color
      */
-    public Color getColor ( final E c, final D d )
+    public Color getColor ( final C c, final D d )
     {
         return color != null ? color : Color.WHITE;
     }
@@ -141,13 +141,13 @@ public class Gripper<E extends JComponent, D extends IDecoration<E, D>, I extend
      * @param d painted decoration state
      * @return gripper parts shadow color
      */
-    public Color getShadow ( final E c, final D d )
+    public Color getShadow ( final C c, final D d )
     {
         return shadow != null ? shadow : Color.LIGHT_GRAY;
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final E c, final D d, final Rectangle bounds )
+    protected void paintContent ( final Graphics2D g2d, final C c, final D d, final Rectangle bounds )
     {
         final Dimension gs = getGripSize ();
         int x;
@@ -208,7 +208,7 @@ public class Gripper<E extends JComponent, D extends IDecoration<E, D>, I extend
      * @param x   grip element X coordinate
      * @param y   grip element Y coordinate
      */
-    protected void paintGrip ( final Graphics2D g2d, final E c, final D d, final int col, final int row, final int x, final int y )
+    protected void paintGrip ( final Graphics2D g2d, final C c, final D d, final int col, final int row, final int x, final int y )
     {
         boolean paint = false;
         switch ( direction )
@@ -274,7 +274,7 @@ public class Gripper<E extends JComponent, D extends IDecoration<E, D>, I extend
      * @param x   grip element X coordinate
      * @param y   grip element Y coordinate
      */
-    protected void paintGripPart ( final Graphics2D g2d, final E c, final D d, final int x, final int y )
+    protected void paintGripPart ( final Graphics2D g2d, final C c, final D d, final int x, final int y )
     {
         final int w = Math.round ( part.width * 1.5f );
         final int h = Math.round ( part.height * 1.5f );
@@ -285,7 +285,7 @@ public class Gripper<E extends JComponent, D extends IDecoration<E, D>, I extend
     }
 
     @Override
-    protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
     {
         return getGripSize ();
     }

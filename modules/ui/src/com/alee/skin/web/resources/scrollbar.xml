@@ -17,7 +17,7 @@
             <thumbRound>8</thumbRound>
             <thumbMargin>1,2,1,2</thumbMargin>
             <scrollBarWidth>13</scrollBarWidth>
-            <trackBorderColor>230,230,230</trackBorderColor>
+            <trackBorderColor>170,170,170</trackBorderColor>
             <trackBackgroundColor>245,245,245</trackBackgroundColor>
             <thumbBorderColor>189,189,189</thumbBorderColor>
             <thumbBackgroundColor>217,217,217</thumbBackgroundColor>
@@ -103,6 +103,7 @@
         <painter>
             <thumbRound>0</thumbRound>
             <thumbMargin>1,1,1,1</thumbMargin>
+            <scrollBarWidth>11</scrollBarWidth>
         </painter>
     </style>
 

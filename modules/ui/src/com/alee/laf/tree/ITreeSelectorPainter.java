@@ -24,12 +24,12 @@ import javax.swing.*;
 /**
  * Base interface for {@link JTree} nodes selector painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface ITreeSelectorPainter<E extends JTree, U extends WTreeUI> extends SectionPainter<E, U>
+public interface ITreeSelectorPainter<C extends JTree, U extends WTreeUI> extends SectionPainter<C, U>
 {
     /**
      * This interface doesn't offer any additional methods to implement.

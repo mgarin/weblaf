@@ -24,12 +24,12 @@ import javax.swing.plaf.ComponentUI;
  * This interface is implemented by painters which are designed to draw specific components.
  * For an example look at {@link com.alee.laf.label.ILabelPainter} and {@link com.alee.laf.label.LabelPainter}.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface SpecificPainter<E extends JComponent, U extends ComponentUI> extends Painter<E, U>
+public interface SpecificPainter<C extends JComponent, U extends ComponentUI> extends Painter<C, U>
 {
     /**
      * This interface has no methods so far.

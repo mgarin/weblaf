@@ -508,7 +508,7 @@ public class HeatMap extends JComponent
         {
             // Performing and waiting for rendering in EDT
             // This is necessary to ensure we do not cause any damage for the component's painting flow
-            final long[] time = new long[ 1 ];
+            final long[] time = new long[]{ 0 };
             SwingUtils.invokeAndWait ( new Runnable ()
             {
                 @Override
@@ -532,13 +532,8 @@ public class HeatMap extends JComponent
                     // Reset measurment process marker
                     measuring = false;
                 }
-            } );
+            }, false );
             return time[ 0 ];
-        }
-        catch ( final InterruptedException e )
-        {
-            // UI thread been interrupted
-            return 0;
         }
         catch ( final Exception e )
         {

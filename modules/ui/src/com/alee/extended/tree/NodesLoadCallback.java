@@ -22,11 +22,11 @@ import java.util.List;
 /**
  * Custom callback used within {@link com.alee.extended.tree.AsyncTreeModel} to receive loaded nodes.
  *
- * @param <E> nodes type
+ * @param <N> node type
  * @author Mikle Garin
  */
 
-public interface NodesLoadCallback<E extends AsyncUniqueNode>
+public interface NodesLoadCallback<N extends AsyncUniqueNode>
 {
     /**
      * todo 1. Add some methods for progress feedback?
@@ -37,7 +37,7 @@ public interface NodesLoadCallback<E extends AsyncUniqueNode>
      *
      * @param children list of loaded children
      */
-    public void completed ( List<E> children );
+    public void completed ( List<N> children );
 
     /**
      * Informs model that children load failed due to the specified exception.

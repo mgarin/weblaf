@@ -28,20 +28,21 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Extended Swing DefaultTreeModel.
- * This model contains multiply elements add/remove methods and works with typed elements.
+ * Swing {@link DefaultTreeModel} extension.
+ * This model works with specific known node type and contains additional methods to affect multiple model elements at once.
  *
+ * @param <N> node type
  * @author Mikle Garin
  */
 
-public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeModel
+public class WebTreeModel<N extends DefaultMutableTreeNode> extends DefaultTreeModel
 {
     /**
      * Constructs tree model with a specified node as root.
      *
      * @param root TreeNode object that is the root of the tree
      */
-    public WebTreeModel ( final E root )
+    public WebTreeModel ( final N root )
     {
         super ( root );
     }
@@ -52,7 +53,7 @@ public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeM
      * @param root               TreeNode object that is the root of the tree
      * @param asksAllowsChildren false if any node can have children, true if each node is asked to see if it can have children
      */
-    public WebTreeModel ( final E root, final boolean asksAllowsChildren )
+    public WebTreeModel ( final N root, final boolean asksAllowsChildren )
     {
         super ( root, asksAllowsChildren );
     }
@@ -62,9 +63,9 @@ public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeM
      *
      * @return root node
      */
-    public E getRootNode ()
+    public N getRootNode ()
     {
-        return ( E ) getRoot ();
+        return ( N ) getRoot ();
     }
 
     @Override
@@ -84,7 +85,7 @@ public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeM
      * @param parent   parent node
      * @param index    insert index
      */
-    public void insertNodesInto ( final List<E> children, final E parent, final int index )
+    public void insertNodesInto ( final List<N> children, final N parent, final int index )
     {
         final int count = children.size ();
         if ( count > 0 )
@@ -110,7 +111,7 @@ public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeM
      * @param parent   parent node
      * @param index    insert index
      */
-    public void insertNodesInto ( final E[] children, final E parent, final int index )
+    public void insertNodesInto ( final N[] children, final N parent, final int index )
     {
         final int count = children.length;
         if ( count > 0 )
@@ -133,7 +134,7 @@ public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeM
     public void removeNodeFromParent ( final MutableTreeNode node )
     {
         // Removing nodes and collecting information on the operation
-        final E parent = ( E ) node.getParent ();
+        final N parent = ( N ) node.getParent ();
         if ( parent == null )
         {
             throw new IllegalArgumentException ( "Removed node does not have a parent" );
@@ -150,7 +151,7 @@ public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeM
      *
      * @param parent node to remove children from
      */
-    public void removeNodesFromParent ( final E parent )
+    public void removeNodesFromParent ( final N parent )
     {
         final int count = parent.getChildCount ();
         if ( count > 0 )
@@ -175,7 +176,7 @@ public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeM
      *
      * @param nodes nodes to remove
      */
-    public void removeNodesFromParent ( final E[] nodes )
+    public void removeNodesFromParent ( final N[] nodes )
     {
         removeNodesFromParent ( CollectionUtils.toList ( nodes ) );
     }
@@ -185,23 +186,23 @@ public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeM
      *
      * @param nodes nodes to remove
      */
-    public void removeNodesFromParent ( final List<E> nodes )
+    public void removeNodesFromParent ( final List<N> nodes )
     {
         if ( nodes.size () > 0 )
         {
             // Removing nodes and collecting information on the operation
-            final Map<E, Map<E, Integer>> removedNodes = new HashMap<E, Map<E, Integer>> ();
-            for ( final E node : nodes )
+            final Map<N, Map<N, Integer>> removedNodes = new HashMap<N, Map<N, Integer>> ();
+            for ( final N node : nodes )
             {
                 // Empty parents are ignored as they might have been removed just now
-                final E parent = ( E ) node.getParent ();
+                final N parent = ( N ) node.getParent ();
                 if ( parent != null )
                 {
                     final int index = parent.getIndex ( node );
-                    Map<E, Integer> indices = removedNodes.get ( parent );
+                    Map<N, Integer> indices = removedNodes.get ( parent );
                     if ( indices == null )
                     {
-                        indices = new HashMap<E, Integer> ( nodes.size () );
+                        indices = new HashMap<N, Integer> ( nodes.size () );
                         removedNodes.put ( parent, indices );
                     }
                     parent.remove ( index );
@@ -210,9 +211,9 @@ public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeM
             }
 
             // Firing nodes removal
-            for ( final Map.Entry<E, Map<E, Integer>> perParent : removedNodes.entrySet () )
+            for ( final Map.Entry<N, Map<N, Integer>> perParent : removedNodes.entrySet () )
             {
-                final E parent = perParent.getKey ();
+                final N parent = perParent.getKey ();
                 final int[] indices = CollectionUtils.toIntArray ( perParent.getValue ().values () );
                 final Object[] removed = CollectionUtils.toObjectArray ( perParent.getValue ().keySet () );
                 nodesWereRemoved ( parent, indices, removed );
@@ -233,7 +234,7 @@ public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeM
      *
      * @param node tree node to be updated
      */
-    public void updateNode ( final E node )
+    public void updateNode ( final N node )
     {
         if ( node != null )
         {
@@ -246,11 +247,11 @@ public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeM
      *
      * @param nodes tree nodes to be updated
      */
-    public void updateNodes ( final E... nodes )
+    public void updateNodes ( final N... nodes )
     {
         if ( nodes != null && nodes.length > 0 )
         {
-            for ( final E node : nodes )
+            for ( final N node : nodes )
             {
                 fireTreeNodesChanged ( WebTreeModel.this, getPathToRoot ( node ), null, null );
             }
@@ -262,11 +263,11 @@ public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeM
      *
      * @param nodes tree nodes to be updated
      */
-    public void updateNodes ( final List<E> nodes )
+    public void updateNodes ( final List<N> nodes )
     {
         if ( CollectionUtils.notEmpty ( nodes ) )
         {
-            for ( final E node : nodes )
+            for ( final N node : nodes )
             {
                 fireTreeNodesChanged ( WebTreeModel.this, getPathToRoot ( node ), null, null );
             }
@@ -278,7 +279,7 @@ public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeM
      *
      * @param node tree node to be updated
      */
-    public void updateNodeStructure ( final E node )
+    public void updateNodeStructure ( final N node )
     {
         if ( node != null )
         {

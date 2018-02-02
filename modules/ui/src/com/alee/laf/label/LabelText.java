@@ -26,23 +26,23 @@ import javax.swing.*;
 /**
  * Label text content implementation.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Alexandr Zernov
  */
 
 @XStreamAlias ( "LabelText" )
-public class LabelText<E extends JLabel, D extends IDecoration<E, D>, I extends LabelText<E, D, I>> extends AbstractTextContent<E, D, I>
+public class LabelText<C extends JLabel, D extends IDecoration<C, D>, I extends LabelText<C, D, I>> extends AbstractTextContent<C, D, I>
 {
     @Override
-    protected String getText ( final E c, final D d )
+    protected String getText ( final C c, final D d )
     {
         return c.getText ();
     }
 
     @Override
-    protected int getMnemonicIndex ( final E c, final D d )
+    protected int getMnemonicIndex ( final C c, final D d )
     {
         return c.getDisplayedMnemonicIndex ();
     }

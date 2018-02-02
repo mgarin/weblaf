@@ -24,15 +24,16 @@ import javax.swing.tree.DefaultMutableTreeNode;
 /**
  * WebCheckBoxTree node state change information object.
  *
+ * @param <N> node type
  * @author Mikle Garin
  */
 
-public final class CheckStateChange<E extends DefaultMutableTreeNode>
+public final class CheckStateChange<N extends DefaultMutableTreeNode>
 {
     /**
      * Node which state was changed.
      */
-    private final E node;
+    private final N node;
 
     /**
      * Old node check state.
@@ -51,7 +52,7 @@ public final class CheckStateChange<E extends DefaultMutableTreeNode>
      * @param oldState old node check state
      * @param newState new node check state
      */
-    public CheckStateChange ( final E node, final CheckState oldState, final CheckState newState )
+    public CheckStateChange ( final N node, final CheckState oldState, final CheckState newState )
     {
         super ();
         this.node = node;
@@ -64,7 +65,7 @@ public final class CheckStateChange<E extends DefaultMutableTreeNode>
      *
      * @return node which state was changed
      */
-    public E getNode ()
+    public N getNode ()
     {
         return node;
     }

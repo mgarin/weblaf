@@ -8,14 +8,14 @@ import javax.swing.*;
  * Basic painter for {@link JButton} component.
  * It is used as {@link WButtonUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public class ButtonPainter<E extends JButton, U extends WButtonUI, D extends IDecoration<E, D>> extends AbstractButtonPainter<E, U, D>
-        implements IButtonPainter<E, U>
+public class ButtonPainter<C extends JButton, U extends WButtonUI, D extends IDecoration<C, D>> extends AbstractButtonPainter<C, U, D>
+        implements IButtonPainter<C, U>
 {
     /**
      * Implementation is used completely from {@link AbstractButtonPainter}.

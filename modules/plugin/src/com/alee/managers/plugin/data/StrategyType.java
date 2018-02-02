@@ -22,11 +22,12 @@ import com.alee.utils.swing.EnumLazyIconProvider;
 import javax.swing.*;
 
 /**
- * Plugin initialization strategy type.
+ * {@link com.alee.managers.plugin.Plugin} initialization strategy type.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
  * @see com.alee.managers.plugin.PluginManager
+ * @see com.alee.managers.plugin.Plugin
  */
 
 public enum StrategyType

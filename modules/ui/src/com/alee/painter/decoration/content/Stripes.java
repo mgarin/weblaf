@@ -34,14 +34,14 @@ import java.util.List;
 /**
  * Abstract content representing multiple parallel stripes.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "Stripes" )
-public class Stripes<E extends JComponent, D extends IDecoration<E, D>, I extends Stripes<E, D, I>> extends AbstractContent<E, D, I>
+public class Stripes<C extends JComponent, D extends IDecoration<C, D>, I extends Stripes<C, D, I>> extends AbstractContent<C, D, I>
 {
     /**
      * Stripes orientation.
@@ -76,7 +76,7 @@ public class Stripes<E extends JComponent, D extends IDecoration<E, D>, I extend
      * @param d painted decoration state
      * @return stripes orientation
      */
-    public Orientation getOrientation ( final E c, final D d )
+    public Orientation getOrientation ( final C c, final D d )
     {
         if ( orientation != null )
         {
@@ -95,7 +95,7 @@ public class Stripes<E extends JComponent, D extends IDecoration<E, D>, I extend
      * @param d painted decoration state
      * @return stripes alignment within provided bounds
      */
-    public BoxOrientation getAlign ( final E c, final D d )
+    public BoxOrientation getAlign ( final C c, final D d )
     {
         if ( align != null )
         {
@@ -139,13 +139,13 @@ public class Stripes<E extends JComponent, D extends IDecoration<E, D>, I extend
     }
 
     @Override
-    public boolean isEmpty ( final E c, final D d )
+    public boolean isEmpty ( final C c, final D d )
     {
         return getStripesCount () == 0;
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final E c, final D d, final Rectangle bounds )
+    protected void paintContent ( final Graphics2D g2d, final C c, final D d, final Rectangle bounds )
     {
         // Display settings
         final boolean ltr = isLeftToRight ( c, d );
@@ -208,7 +208,7 @@ public class Stripes<E extends JComponent, D extends IDecoration<E, D>, I extend
     }
 
     @Override
-    protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
     {
         final int stripes = getStripesCount ();
         final Orientation orientation = getOrientation ( c, d );

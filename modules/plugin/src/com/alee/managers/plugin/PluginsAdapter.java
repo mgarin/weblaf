@@ -22,14 +22,15 @@ import com.alee.managers.plugin.data.DetectedPlugin;
 import java.util.List;
 
 /**
- * Special listener adapter for PluginManager events.
+ * Special listener adapter for {@link PluginManager} events.
  *
+ * @param <P> {@link Plugin} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
- * @see com.alee.managers.plugin.PluginManager
+ * @see PluginManager
  */
 
-public abstract class PluginsAdapter<T extends Plugin> implements PluginsListener<T>
+public abstract class PluginsAdapter<P extends Plugin> implements PluginsListener<P>
 {
     @Override
     public void pluginsCheckStarted ( final String directory, final boolean recursive )
@@ -44,13 +45,13 @@ public abstract class PluginsAdapter<T extends Plugin> implements PluginsListene
     }
 
     @Override
-    public void pluginsDetected ( final List<DetectedPlugin<T>> plugins )
+    public void pluginsDetected ( final List<DetectedPlugin<P>> plugins )
     {
         // Do nothing by default
     }
 
     @Override
-    public void pluginsInitialized ( final List<T> plugins )
+    public void pluginsInitialized ( final List<P> plugins )
     {
         // Do nothing by default
     }

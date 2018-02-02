@@ -28,14 +28,14 @@ import java.util.List;
  * Basic painter for {@link JTable} component.
  * It is used as {@link WebTableUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
 
-public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDecoration<E, D>> extends AbstractDecorationPainter<E, U, D>
-        implements ITablePainter<E, U>
+public class TablePainter<C extends JTable, U extends WebTableUI, D extends IDecoration<C, D>> extends AbstractDecorationPainter<C, U, D>
+        implements ITablePainter<C, U>
 {
     /**
      * Table rows background painter.
@@ -88,7 +88,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
     protected transient CellRendererPane rendererPane = null;
 
     @Override
-    protected List<SectionPainter<E, U>> getSectionPainters ()
+    protected List<SectionPainter<C, U>> getSectionPainters ()
     {
         return asList ( rowPainter, columnPainter, cellPainter, selectionPainter, draggedColumnPainter );
     }
@@ -331,7 +331,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final C c, final U ui )
     {
         final Rectangle clip = g2d.getClipBounds ();
 

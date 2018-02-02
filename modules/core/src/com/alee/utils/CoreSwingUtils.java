@@ -341,15 +341,25 @@ public class CoreSwingUtils
         catch ( final IllegalComponentStateException e )
         {
             // Re-throwing exception with more information on the component
-            throw new RuntimeException ( "Component must be showing on the screen to determine its location: " + component );
+            throw new UtilityException ( "Component must be showing on the screen to determine its location: " + component );
         }
     }
 
     /**
-     * Will invoke the specified action later in EDT in case it is called from non-EDT thread.
-     * Otherwise action will be performed immediately.
+     * Returns whether or not current thread is an AWT event dispatching thread.
      *
-     * @param runnable runnable
+     * @return {@code true} if the current thread is an AWT event dispatching thread, {@code false} otherwise
+     */
+    public static boolean isEventDispatchThread ()
+    {
+        return SwingUtilities.isEventDispatchThread ();
+    }
+
+    /**
+     * Will invoke specified {@link Runnable} later in EDT.
+     * It is highly recommended to perform all UI-related operations within EDT by invoking them through this method.
+     *
+     * @param runnable {@link Runnable} to execute
      */
     public static void invokeLater ( final Runnable runnable )
     {
@@ -357,39 +367,52 @@ public class CoreSwingUtils
     }
 
     /**
-     * Will invoke the specified action in EDT in case it is called from non-EDT thread.
+     * Will invoke the specified {@link Runnable} in EDT in case it is called from non-EDT thread.
+     * It will catch any exceptions thrown by {@link SwingUtilities#invokeAndWait(Runnable)} and wrap them in {@link UtilityException}.
+     * It is generally recommended to use {@link #invokeLater(Runnable)} instead whenever it is possible to avoid stalling EDT.
      *
-     * @param runnable {@link Runnable}
-     * @throws InterruptedException      if we're interrupted while waiting for the EDT to finish excecuting {@code doRun.run()}
-     * @throws InvocationTargetException if an exception is thrown while running {@code doRun}
+     * @param runnable {@link Runnable} to execute
      */
-    public static void invokeAndWait ( final Runnable runnable ) throws InterruptedException, InvocationTargetException
+    public static void invokeAndWait ( final Runnable runnable )
     {
-        if ( SwingUtilities.isEventDispatchThread () )
-        {
-            runnable.run ();
-        }
-        else
-        {
-            SwingUtilities.invokeAndWait ( runnable );
-        }
+        invokeAndWait ( runnable, false );
     }
 
     /**
-     * Will invoke the specified action in EDT in case it is called from non-EDT thread.
-     * It will catch any exceptions thrown by {@link #invokeAndWait(Runnable)} method and wrap it within {@link RuntimeException}.
+     * Will invoke the specified {@link Runnable} in EDT in case it is called from non-EDT thread.
+     * It will catch any exceptions thrown by {@link SwingUtilities#invokeAndWait(Runnable)} and wrap them in {@link UtilityException}.
+     * It is generally recommended to use {@link #invokeLater(Runnable)} instead whenever it is possible to avoid stalling EDT.
      *
-     * @param runnable {@link Runnable}
+     * @param runnable         {@link Runnable} to execute
+     * @param ignoreInterrupts whether or not {@link InterruptedException}s should be ignored
      */
-    public static void invokeAndWaitSafely ( final Runnable runnable )
+    public static void invokeAndWait ( final Runnable runnable, final boolean ignoreInterrupts )
     {
         try
         {
-            invokeAndWait ( runnable );
+            if ( SwingUtilities.isEventDispatchThread () )
+            {
+                // This is reasonable since we can't invoke and wait if we are already on EDT
+                runnable.run ();
+            }
+            else
+            {
+                // If we aren't on EDT we should queue runnable execution
+                SwingUtilities.invokeAndWait ( runnable );
+            }
         }
-        catch ( final Exception e )
+        catch ( final InvocationTargetException e )
         {
-            throw new RuntimeException ( e );
+            // Re-throw wrapped exception
+            throw new UtilityException ( e );
+        }
+        catch ( final InterruptedException e )
+        {
+            if ( !ignoreInterrupts )
+            {
+                // Re-throw wrapped exception
+                throw new UtilityException ( e );
+            }
         }
     }
 }

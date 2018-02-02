@@ -40,14 +40,14 @@ import java.net.URL;
  * {@link WebMenu} - {@link MenuGenerator}
  * {@link WebPopupMenu} - {@link PopupMenuGenerator}
  *
- * @param <E> menu component type
+ * @param <C> menu component type
  * @author Mikle Garin
  * @see MenuBarGenerator
  * @see MenuGenerator
  * @see PopupMenuGenerator
  */
 
-public abstract class AbstractMenuGenerator<E extends JComponent>
+public abstract class AbstractMenuGenerator<C extends JComponent>
 {
     /**
      * Default constants used within generator methods.
@@ -88,14 +88,14 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
     /**
      * Menu component.
      */
-    protected E menu;
+    protected C menu;
 
     /**
      * Constructs new menu generator with the specified menu component.
      *
      * @param menu base menu component
      */
-    public AbstractMenuGenerator ( final E menu )
+    public AbstractMenuGenerator ( final C menu )
     {
         super ();
         this.menu = menu;
@@ -1321,7 +1321,7 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
      */
     public void addSeparator ()
     {
-        final E menuComponent = getMenu ();
+        final C menuComponent = getMenu ();
         if ( menuComponent instanceof WebMenu )
         {
             ( ( WebMenu ) menuComponent ).addSeparator ();
@@ -1387,7 +1387,7 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
      *
      * @return menu component
      */
-    public E getMenu ()
+    public C getMenu ()
     {
         return menu;
     }

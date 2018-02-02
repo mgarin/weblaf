@@ -23,16 +23,18 @@ import com.alee.painter.Painter;
 import javax.swing.*;
 
 /**
- * Simple PanelPainter adapter class.
- * It is used to install simple non-specific painters into WebPanelUI.
+ * Simple {@link PanelPainter} adapter class.
+ * It is used to install simple non-specific painters into {@link WebPanelUI}.
  *
+ * @param <C> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public final class AdaptivePanelPainter<E extends JPanel, U extends WebPanelUI> extends AdaptivePainter<E, U> implements IPanelPainter<E, U>
+public final class AdaptivePanelPainter<C extends JPanel, U extends WebPanelUI> extends AdaptivePainter<C, U> implements IPanelPainter<C, U>
 {
     /**
-     * Constructs new AdaptivePanelPainter for the specified painter.
+     * Constructs new {@link AdaptivePanelPainter} for the specified painter.
      *
      * @param painter painter to adapt
      */

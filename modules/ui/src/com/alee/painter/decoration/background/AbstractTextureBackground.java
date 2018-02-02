@@ -27,14 +27,14 @@ import java.awt.*;
 /**
  * Convenient base class for any texture-based {@link IBackground} implementation.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> background type
  * @author Mikle Garin
  */
 
-public abstract class AbstractTextureBackground<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractTextureBackground<E, D, I>>
-        extends AbstractBackground<E, D, I>
+public abstract class AbstractTextureBackground<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractTextureBackground<C, D, I>>
+        extends AbstractBackground<C, D, I>
 {
     /**
      * Cached texture paint.
@@ -58,7 +58,7 @@ public abstract class AbstractTextureBackground<E extends JComponent, D extends 
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d, final Shape shape )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final C c, final D d, final Shape shape )
     {
         final float opacity = getOpacity ();
         if ( opacity > 0 )

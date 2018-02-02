@@ -18,14 +18,14 @@ import java.awt.*;
  * Basic painter for {@link JTableHeader} component.
  * It is used as {@link WebTableHeaderUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
 
-public class TableHeaderPainter<E extends JTableHeader, U extends WebTableHeaderUI> extends AbstractPainter<E, U>
-        implements ITableHeaderPainter<E, U>
+public class TableHeaderPainter<C extends JTableHeader, U extends WebTableHeaderUI> extends AbstractPainter<C, U>
+        implements ITableHeaderPainter<C, U>
 {
     /**
      * Listeners.
@@ -151,7 +151,7 @@ public class TableHeaderPainter<E extends JTableHeader, U extends WebTableHeader
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E c, final U ui, final Bounds bounds )
+    public void paint ( final Graphics2D g2d, final C c, final U ui, final Bounds bounds )
     {
         // Creating background paint
         final Paint bgPaint = getBackgroundPaint ( 0, 0, 0, component.getHeight () - 1 );
@@ -257,7 +257,7 @@ public class TableHeaderPainter<E extends JTableHeader, U extends WebTableHeader
      * @param draggedColumn currently dragged table column
      * @param columnModel   table column model
      */
-    protected void paintCell ( final Graphics2D g2d, final E c, final Rectangle rect, final int columnIndex, final TableColumn column,
+    protected void paintCell ( final Graphics2D g2d, final C c, final Rectangle rect, final int columnIndex, final TableColumn column,
                                final TableColumn draggedColumn, final TableColumnModel columnModel )
     {
         // Table reference

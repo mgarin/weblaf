@@ -25,6 +25,7 @@ import com.alee.managers.style.ShapeMethods;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.*;
 import com.alee.utils.laf.ShadeType;
+import com.alee.utils.laf.WebBorder;
 import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.FadeStateType;
 import com.alee.utils.swing.WebTimer;
@@ -570,21 +571,17 @@ public class WebCustomTooltip extends JComponent implements ShapeMethods
         final TooltipWay displayWay = getActualDisplayWay ();
 
         // Default margins
-        final int leftSpacing = shadeWidth + contentSpacing + leftRightSpacing +
-                ( displayWay == TooltipWay.right ? cornerLength : 0 );
-        final int rightSpacing = shadeWidth + contentSpacing + leftRightSpacing +
-                ( displayWay == TooltipWay.left ? cornerLength : 0 );
-        final int topSpacing = shadeWidth +
-                contentSpacing + ( displayWay == TooltipWay.down ? cornerLength : 0 );
-        final int bottomSpacing = shadeWidth +
-                contentSpacing + ( displayWay == TooltipWay.up ? cornerLength : 0 );
+        final int leftSpacing = shadeWidth + contentSpacing + leftRightSpacing + ( displayWay == TooltipWay.right ? cornerLength : 0 );
+        final int rightSpacing = shadeWidth + contentSpacing + leftRightSpacing + ( displayWay == TooltipWay.left ? cornerLength : 0 );
+        final int topSpacing = shadeWidth + contentSpacing + ( displayWay == TooltipWay.down ? cornerLength : 0 );
+        final int bottomSpacing = shadeWidth + contentSpacing + ( displayWay == TooltipWay.up ? cornerLength : 0 );
 
         // Additional hotkey margins
         final Insets hm = getHotkeyMargins ();
 
         // Updating border
-        setBorder ( BorderFactory
-                .createEmptyBorder ( topSpacing + hm.top, leftSpacing + hm.left, bottomSpacing + hm.bottom, rightSpacing + hm.right ) );
+        setBorder ( new WebBorder ( topSpacing + hm.top, leftSpacing + hm.left,
+                bottomSpacing + hm.bottom, rightSpacing + hm.right ) );
         revalidate ();
     }
 

@@ -28,7 +28,7 @@ import java.util.List;
  * Basic painter for {@link WebLink} component.
  * It is used as {@link WLinkUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
@@ -36,8 +36,8 @@ import java.util.List;
  * @see WebLink
  */
 
-public class LinkPainter<E extends WebLink, U extends WLinkUI, D extends IDecoration<E, D>>
-        extends AbstractDecorationPainter<E, U, D> implements ILinkPainter<E, U>
+public class LinkPainter<C extends WebLink, U extends WLinkUI, D extends IDecoration<C, D>>
+        extends AbstractDecorationPainter<C, U, D> implements ILinkPainter<C, U>
 {
     @Override
     protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )

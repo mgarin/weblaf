@@ -7,12 +7,12 @@ import javax.swing.*;
 /**
  * Base interface for {@link JToolTip} component painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public interface IToolTipPainter<E extends JToolTip, U extends WToolTipUI> extends SpecificPainter<E, U>
+public interface IToolTipPainter<C extends JToolTip, U extends WToolTipUI> extends SpecificPainter<C, U>
 {
     /**
      * This interface doesn't offer any additional methods to implement.

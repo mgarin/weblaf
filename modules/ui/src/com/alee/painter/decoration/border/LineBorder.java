@@ -30,14 +30,14 @@ import java.awt.*;
 /**
  * Simple line border implementation.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> border type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "LineBorder" )
-public class LineBorder<E extends JComponent, D extends IDecoration<E, D>, I extends LineBorder<E, D, I>> extends AbstractBorder<E, D, I>
+public class LineBorder<C extends JComponent, D extends IDecoration<C, D>, I extends LineBorder<C, D, I>> extends AbstractBorder<C, D, I>
         implements ColorSupport, StrokeSupport
 {
     /**
@@ -75,7 +75,7 @@ public class LineBorder<E extends JComponent, D extends IDecoration<E, D>, I ext
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d, final Shape shape )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final C c, final D d, final Shape shape )
     {
         final float opacity = getOpacity ();
         if ( opacity > 0 && !getWidth ().isEmpty () )

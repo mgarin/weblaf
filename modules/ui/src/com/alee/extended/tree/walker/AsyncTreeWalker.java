@@ -28,11 +28,11 @@ import javax.swing.*;
  * {@link TreeWalker} implementation for async trees.
  * It contains workaround allowing to avoid child nodes loading when walking the tree.
  *
- * @param <E> tree node type
+ * @param <N> node type
  * @author Mikle Garin
  */
 
-public class AsyncTreeWalker<E extends AsyncUniqueNode> extends AbstractTreeWalker<E, AsyncTreeModel<E>>
+public class AsyncTreeWalker<N extends AsyncUniqueNode> extends AbstractTreeWalker<N, AsyncTreeModel<N>>
 {
     /**
      * Constructs new {@link AsyncTreeWalker}.
@@ -45,25 +45,25 @@ public class AsyncTreeWalker<E extends AsyncUniqueNode> extends AbstractTreeWalk
     }
 
     @Override
-    protected E getRootNode ( final AsyncTreeModel<E> model )
+    protected N getRootNode ( final AsyncTreeModel<N> model )
     {
         return model.getRoot ();
     }
 
     @Override
-    protected int getChildCount ( final AsyncTreeModel<E> model, final E parent )
+    protected int getChildCount ( final AsyncTreeModel<N> model, final N parent )
     {
         return model.areChildrenLoaded ( parent ) ? model.getChildCount ( parent ) : 0;
     }
 
     @Override
-    protected E getChild ( final AsyncTreeModel<E> model, final E parent, final int index )
+    protected N getChild ( final AsyncTreeModel<N> model, final N parent, final int index )
     {
         return model.getChild ( parent, index );
     }
 
     @Override
-    protected int getIndexOfChild ( final AsyncTreeModel<E> model, final E parent, final E child )
+    protected int getIndexOfChild ( final AsyncTreeModel<N> model, final N parent, final N child )
     {
         return model.getIndexOfChild ( parent, child );
     }

@@ -24,14 +24,15 @@ import javax.swing.*;
 import java.io.File;
 
 /**
- * Initial information gathered about existing plugin.
+ * Initial information gathered about existing {@link Plugin}.
  *
+ * @param <P> {@link Plugin} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
  * @see com.alee.managers.plugin.PluginManager
  */
 
-public class DetectedPlugin<T extends Plugin>
+public class DetectedPlugin<P extends Plugin>
 {
     /**
      * Path to plugin folder.
@@ -76,7 +77,7 @@ public class DetectedPlugin<T extends Plugin>
     /**
      * Loaded plugin.
      */
-    private T plugin;
+    private P plugin;
 
     /**
      * Constructs new information object about existing plugin.
@@ -243,7 +244,7 @@ public class DetectedPlugin<T extends Plugin>
      *
      * @return loaded plugin instance
      */
-    public T getPlugin ()
+    public P getPlugin ()
     {
         return plugin;
     }
@@ -253,7 +254,7 @@ public class DetectedPlugin<T extends Plugin>
      *
      * @param plugin new loaded plugin instance
      */
-    public void setPlugin ( final T plugin )
+    public void setPlugin ( final P plugin )
     {
         this.plugin = plugin;
     }
@@ -261,6 +262,6 @@ public class DetectedPlugin<T extends Plugin>
     @Override
     public String toString ()
     {
-        return information + ", Status: " + status + ( status == PluginStatus.failed ? ( ", Cause: " + failureCause ) : "" );
+        return information + ", Status: " + status + ( status == PluginStatus.failed ? ", Cause: " + failureCause : "" );
     }
 }

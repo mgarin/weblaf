@@ -6,16 +6,16 @@ import javax.swing.*;
 
 /**
  * Basic painter for {@link JSeparator} component.
- * It is used as {@link WebSeparatorUI} default painter.
+ * It is used as {@link WSeparatorUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
 
-public class SeparatorPainter<E extends JSeparator, U extends WebSeparatorUI, D extends IDecoration<E, D>>
-        extends AbstractSeparatorPainter<E, U, D> implements ISeparatorPainter<E, U>
+public class SeparatorPainter<C extends JSeparator, U extends WSeparatorUI, D extends IDecoration<C, D>>
+        extends AbstractSeparatorPainter<C, U, D> implements ISeparatorPainter<C, U>
 {
     /**
      * Implementation is used completely from {@link AbstractSeparatorPainter}.

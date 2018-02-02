@@ -27,15 +27,15 @@ import javax.swing.*;
 /**
  * Abstract button styled text content implementation.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "StyledButtonText" )
-public class StyledButtonText<E extends AbstractButton, D extends IDecoration<E, D>, I extends StyledButtonText<E, D, I>>
-        extends AbstractSimpleStyledTextContent<E, D, I>
+public class StyledButtonText<C extends AbstractButton, D extends IDecoration<C, D>, I extends StyledButtonText<C, D, I>>
+        extends AbstractSimpleStyledTextContent<C, D, I>
 {
     @Override
     protected String getStyledTextProperty ()
@@ -44,13 +44,13 @@ public class StyledButtonText<E extends AbstractButton, D extends IDecoration<E,
     }
 
     @Override
-    protected String getComponentText ( final E c, final D d )
+    protected String getComponentText ( final C c, final D d )
     {
         return c.getText ();
     }
 
     @Override
-    protected int getComponentMnemonic ( final E c, final D d )
+    protected int getComponentMnemonic ( final C c, final D d )
     {
         return c.getMnemonic ();
     }

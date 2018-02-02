@@ -28,14 +28,14 @@ import java.util.List;
  * This interface provides methods for synchronous tree nodes retrieval within {@link ExTreeModel}.
  * It also extends {@link Serializable} as it is used within {@link ExTreeModel} which must also be {@link Serializable}.
  *
- * @param <E> node type
+ * @param <N> node type
  * @author Mikle Garin
  * @see WebExTree
  * @see ExTreeModel
  * @see UniqueNode
  */
 
-public interface ExTreeDataProvider<E extends UniqueNode> extends Serializable
+public interface ExTreeDataProvider<N extends UniqueNode> extends Serializable
 {
     /**
      * Returns root {@link UniqueNode}.
@@ -44,7 +44,7 @@ public interface ExTreeDataProvider<E extends UniqueNode> extends Serializable
      * @return root {@link UniqueNode}
      * @see <a href="https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread">Event Dispatch Thread</a>
      */
-    public E getRoot ();
+    public N getRoot ();
 
     /**
      * Returns child {@link UniqueNode}s for the specified parent {@link UniqueNode}.
@@ -54,7 +54,7 @@ public interface ExTreeDataProvider<E extends UniqueNode> extends Serializable
      * @return child {@link UniqueNode}s for the specified parent {@link UniqueNode}
      * @see <a href="https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread">Event Dispatch Thread</a>
      */
-    public List<E> getChildren ( E parent );
+    public List<N> getChildren ( N parent );
 
     /**
      * Returns {@link Filter} that will be used for the specified {@link UniqueNode} children.
@@ -67,7 +67,7 @@ public interface ExTreeDataProvider<E extends UniqueNode> extends Serializable
      * @return {@link Filter} that will be used for the specified {@link UniqueNode} children
      * @see <a href="https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread">Event Dispatch Thread</a>
      */
-    public Filter<E> getChildrenFilter ( E parent, List<E> children );
+    public Filter<N> getChildrenFilter ( N parent, List<N> children );
 
     /**
      * Returns {@link Comparator} that will be used for the specified {@link UniqueNode} children.
@@ -80,5 +80,5 @@ public interface ExTreeDataProvider<E extends UniqueNode> extends Serializable
      * @return {@link Comparator} that will be used for the specified {@link UniqueNode} children
      * @see <a href="https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread">Event Dispatch Thread</a>
      */
-    public Comparator<E> getChildrenComparator ( E parent, List<E> children );
+    public Comparator<N> getChildrenComparator ( N parent, List<N> children );
 }

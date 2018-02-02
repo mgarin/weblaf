@@ -30,14 +30,14 @@ import java.io.Serializable;
 /**
  * Interface for providing custom element shape.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> shape type
  * @author Mikle Garin
  */
 
-public interface IShape<E extends JComponent, D extends IDecoration<E, D>, I extends IShape<E, D, I>>
-        extends IDecoratonElement<E, D, I>, Serializable, Cloneable, MergeBehavior<I>, Overwriting, Identifiable
+public interface IShape<C extends JComponent, D extends IDecoration<C, D>, I extends IShape<C, D, I>>
+        extends IDecoratonElement<C, D, I>, Serializable, Cloneable, MergeBehavior<I>, Overwriting, Identifiable
 {
     /**
      * Returns whether shape is visible within component bounds.
@@ -49,7 +49,7 @@ public interface IShape<E extends JComponent, D extends IDecoration<E, D>, I ext
      * @param d      painted decoration state
      * @return true if shape is visible within component bounds, false otherwise
      */
-    public boolean isVisible ( ShapeType type, Rectangle bounds, E c, D d );
+    public boolean isVisible ( ShapeType type, Rectangle bounds, C c, D d );
 
     /**
      * Returns shape provided for shade painting.
@@ -61,7 +61,7 @@ public interface IShape<E extends JComponent, D extends IDecoration<E, D>, I ext
      * @param d      painted decoration state
      * @return component shape of the specified type
      */
-    public Shape getShape ( ShapeType type, Rectangle bounds, E c, D d );
+    public Shape getShape ( ShapeType type, Rectangle bounds, C c, D d );
 
     /**
      * Returns exclusive shape settings used to cache the shape itself.
@@ -73,7 +73,7 @@ public interface IShape<E extends JComponent, D extends IDecoration<E, D>, I ext
      * @param d      painted decoration state
      * @return shape settings used to cache the shape itself
      */
-    public Object[] getShapeSettings ( Rectangle bounds, E c, D d );
+    public Object[] getShapeSettings ( Rectangle bounds, C c, D d );
 
     /**
      * Returns shape stretch information.
@@ -88,5 +88,5 @@ public interface IShape<E extends JComponent, D extends IDecoration<E, D>, I ext
      * @param d      painted decoration state
      * @return shape stretch information
      */
-    public StretchInfo getStretchInfo ( Rectangle bounds, E c, D d );
+    public StretchInfo getStretchInfo ( Rectangle bounds, C c, D d );
 }

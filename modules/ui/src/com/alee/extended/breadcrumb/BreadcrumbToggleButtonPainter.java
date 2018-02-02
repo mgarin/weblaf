@@ -30,11 +30,13 @@ import java.awt.event.ContainerEvent;
 /**
  * Custom painter for WebBreadcrumbToggleButton component.
  *
+ * @param <C> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public class BreadcrumbToggleButtonPainter<E extends WebBreadcrumbToggleButton, U extends WebToggleButtonUI>
-        extends AbstractPainter<E, U>
+public class BreadcrumbToggleButtonPainter<C extends WebBreadcrumbToggleButton, U extends WebToggleButtonUI>
+        extends AbstractPainter<C, U>
 {
     /**
      * Listeners.
@@ -133,7 +135,7 @@ public class BreadcrumbToggleButtonPainter<E extends WebBreadcrumbToggleButton, 
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E c, final U ui, final Bounds bounds )
+    public void paint ( final Graphics2D g2d, final C c, final U ui, final Bounds bounds )
     {
         // Painting background
         BreadcrumbUtils.paintElementBackground ( g2d, c );

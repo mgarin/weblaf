@@ -26,14 +26,14 @@ import javax.swing.*;
 /**
  * Convenient base class for any {@link IBackground} implementation.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> background type
  * @author Mikle Garin
  */
 
-public abstract class AbstractBackground<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractBackground<E, D, I>>
-        implements IBackground<E, D, I>
+public abstract class AbstractBackground<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractBackground<C, D, I>>
+        implements IBackground<C, D, I>
 {
     /**
      * Background ID.
@@ -66,13 +66,13 @@ public abstract class AbstractBackground<E extends JComponent, D extends IDecora
     }
 
     @Override
-    public void activate ( final E c, final D d )
+    public void activate ( final C c, final D d )
     {
         // Do nothing by default
     }
 
     @Override
-    public void deactivate ( final E c, final D d )
+    public void deactivate ( final C c, final D d )
     {
         // Do nothing by default
     }

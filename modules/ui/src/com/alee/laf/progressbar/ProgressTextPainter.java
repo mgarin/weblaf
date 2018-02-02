@@ -23,16 +23,16 @@ import com.alee.painter.decoration.IDecoration;
 import javax.swing.*;
 
 /**
- * Simple {@link javax.swing.JProgressBar} text painter.
+ * Simple {@link JProgressBar} text painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public class ProgressTextPainter<E extends JProgressBar, U extends WebProgressBarUI, D extends IDecoration<E, D>>
-        extends AbstractSectionDecorationPainter<E, U, D> implements IProgressTextPainter<E, U>
+public class ProgressTextPainter<C extends JProgressBar, U extends WebProgressBarUI, D extends IDecoration<C, D>>
+        extends AbstractSectionDecorationPainter<C, U, D> implements IProgressTextPainter<C, U>
 {
     @Override
     public String getSectionId ()

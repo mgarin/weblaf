@@ -22,12 +22,12 @@ import com.alee.painter.SpecificPainter;
 /**
  * Base interface for {@link WebImage} component painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface IImagePainter<E extends WebImage, U extends WImageUI> extends SpecificPainter<E, U>
+public interface IImagePainter<C extends WebImage, U extends WImageUI> extends SpecificPainter<C, U>
 {
     /**
      * This interface doesn't offer any additional methods to implement.

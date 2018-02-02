@@ -17,7 +17,7 @@
 
 package com.alee.managers.animation.event;
 
-import javax.swing.*;
+import com.alee.utils.SwingUtils;
 
 /**
  * Event handler that sends tasks into Swing Event Dispatch Thread.
@@ -56,6 +56,6 @@ public final class EventDispatchThreadHandler implements EventHandler
     @Override
     public void handle ( final Runnable event )
     {
-        SwingUtilities.invokeLater ( event );
+        SwingUtils.invokeLater ( event );
     }
 }

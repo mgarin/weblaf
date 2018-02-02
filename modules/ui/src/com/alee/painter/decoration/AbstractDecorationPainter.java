@@ -46,14 +46,14 @@ import java.util.List;
 /**
  * Abstract decoration painter that can be used by any custom and specific painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public abstract class AbstractDecorationPainter<E extends JComponent, U extends ComponentUI, D extends IDecoration<E, D>>
-        extends AbstractPainter<E, U> implements IDecorationPainter<E, U, D>, PainterShapeProvider<E>
+public abstract class AbstractDecorationPainter<C extends JComponent, U extends ComponentUI, D extends IDecoration<C, D>>
+        extends AbstractPainter<C, U> implements IDecorationPainter<C, U, D>, PainterShapeProvider<C>
 {
     /**
      * Decoratable states property.
@@ -64,14 +64,14 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      * Available decorations.
      * Each decoration provides a visual representation of specific component state.
      */
-    protected Decorations<E, D> decorations;
+    protected Decorations<C, D> decorations;
 
     /**
      * Listeners.
      */
     protected transient FocusTracker focusStateTracker;
     protected transient GlobalFocusListener inFocusedParentTracker;
-    protected transient AbstractHoverBehavior<E> hoverStateTracker;
+    protected transient AbstractHoverBehavior<C> hoverStateTracker;
     protected transient HierarchyListener hierarchyTracker;
     protected transient ContainerListener neighboursTracker;
 
@@ -428,7 +428,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         if ( usesHoverView () )
         {
             hover = SwingUtils.isHovered ( component );
-            hoverStateTracker = new AbstractHoverBehavior<E> ( component, false )
+            hoverStateTracker = new AbstractHoverBehavior<C> ( component, false )
             {
                 @Override
                 public void hoverChanged ( final boolean hover )
@@ -690,10 +690,10 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         // Checking whether or not section painters used by this painter use it
         if ( !usesState )
         {
-            final List<SectionPainter<E, U>> sectionPainters = getInstalledSectionPainters ();
+            final List<SectionPainter<C, U>> sectionPainters = getInstalledSectionPainters ();
             if ( CollectionUtils.notEmpty ( sectionPainters ) )
             {
-                for ( final SectionPainter<E, U> section : sectionPainters )
+                for ( final SectionPainter<C, U> section : sectionPainters )
                 {
                     if ( section instanceof IDecorationPainter )
                     {
@@ -717,7 +717,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      * @param state       decoration state
      * @return {@code true} if specified decorations are associated with specified state, {@code false} otherwise
      */
-    protected final boolean usesState ( final Decorations<E, D> decorations, final String state )
+    protected final boolean usesState ( final Decorations<C, D> decorations, final String state )
     {
         if ( decorations != null && decorations.size () > 0 )
         {
@@ -917,7 +917,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      *
      * @param c painted component
      */
-    protected final void deactivateLastDecoration ( final E c )
+    protected final void deactivateLastDecoration ( final C c )
     {
         final D decoration = getDecoration ();
         if ( decoration != null )
@@ -938,10 +938,10 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
             // Updating section painters decoration states
             // This is required to provide state changes into section painters used within this painter
             // Section painters that use default states collection mechanism are dependant on origin painter states
-            final List<SectionPainter<E, U>> sectionPainters = getInstalledSectionPainters ();
+            final List<SectionPainter<C, U>> sectionPainters = getInstalledSectionPainters ();
             if ( CollectionUtils.notEmpty ( sectionPainters ) )
             {
-                for ( final SectionPainter<E, U> section : sectionPainters )
+                for ( final SectionPainter<C, U> section : sectionPainters )
                 {
                     if ( section instanceof IDecorationPainter )
                     {
@@ -973,7 +973,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     @Override
-    public Shape provideShape ( final E component, final Rectangle bounds )
+    public Shape provideShape ( final C component, final Rectangle bounds )
     {
         final D decoration = getDecoration ();
         if ( isDecorationAvailable ( decoration ) )
@@ -1032,7 +1032,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     @Override
-    public int getBaseline ( final E c, final U ui, final Bounds bounds )
+    public int getBaseline ( final C c, final U ui, final Bounds bounds )
     {
         final D decoration = getDecoration ();
         if ( isDecorationAvailable ( decoration ) )
@@ -1051,7 +1051,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final E c, final U ui )
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final C c, final U ui )
     {
         final D decoration = getDecoration ();
         if ( isDecorationAvailable ( decoration ) )
@@ -1067,7 +1067,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E c, final U ui, final Bounds bounds )
+    public void paint ( final Graphics2D g2d, final C c, final U ui, final Bounds bounds )
     {
         // Checking whether plain background is required
         if ( isPlainBackgroundRequired ( c ) )
@@ -1102,7 +1102,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      * @param c      painted component
      * @param ui     painted component UI
      */
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final C c, final U ui )
     {
         // No content by default
     }
@@ -1115,7 +1115,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      * @param c component to paint background for
      * @return {@code true} if painting plain component background is required, {@code false} otherwise
      */
-    protected boolean isPlainBackgroundRequired ( final E c )
+    protected boolean isPlainBackgroundRequired ( final C c )
     {
         return c.isOpaque ();
     }

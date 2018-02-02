@@ -22,12 +22,12 @@ import com.alee.painter.SpecificPainter;
 /**
  * Base interface for {@link WebPopup} component painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface IPopupPainter<E extends WebPopup, U extends WPopupUI> extends SpecificPainter<E, U>
+public interface IPopupPainter<C extends WebPopup, U extends WPopupUI> extends SpecificPainter<C, U>
 {
     /**
      * This interface doesn't offer any additional methods to implement.

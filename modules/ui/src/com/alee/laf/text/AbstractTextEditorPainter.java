@@ -40,15 +40,15 @@ import java.util.Map;
 /**
  * Abstract painter for {@link JTextComponent} implementations.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
 
-public abstract class AbstractTextEditorPainter<E extends JTextComponent, U extends BasicTextUI, D extends IDecoration<E, D>>
-        extends AbstractDecorationPainter<E, U, D> implements IAbstractTextEditorPainter<E, U>, SwingConstants
+public abstract class AbstractTextEditorPainter<C extends JTextComponent, U extends BasicTextUI, D extends IDecoration<C, D>>
+        extends AbstractDecorationPainter<C, U, D> implements IAbstractTextEditorPainter<C, U>, SwingConstants
 {
     /**
      * Input prompt text horizontal position.
@@ -85,7 +85,7 @@ public abstract class AbstractTextEditorPainter<E extends JTextComponent, U exte
     /**
      * Listeners.
      */
-    protected transient DocumentChangeBehavior<E> documentChangeBehavior;
+    protected transient DocumentChangeBehavior<C> documentChangeBehavior;
 
     @Override
     protected void installPropertiesAndListeners ()
@@ -134,10 +134,10 @@ public abstract class AbstractTextEditorPainter<E extends JTextComponent, U exte
      */
     protected void installDocumentChangeListener ()
     {
-        documentChangeBehavior = new DocumentChangeBehavior<E> ( component )
+        documentChangeBehavior = new DocumentChangeBehavior<C> ( component )
         {
             @Override
-            public void documentChanged ( final E component, final DocumentEvent event )
+            public void documentChanged ( final C component, final DocumentEvent event )
             {
                 updateDecorationState ();
             }
@@ -154,7 +154,7 @@ public abstract class AbstractTextEditorPainter<E extends JTextComponent, U exte
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final C c, final U ui )
     {
         // Paints text highligher
         final Highlighter highlighter = component.getHighlighter ();

@@ -40,8 +40,8 @@ public final class TreeEventMethodsImpl
      * @param runnable tree node event runnable
      * @return used mouse adapter
      */
-    public static <E extends DefaultMutableTreeNode> MouseAdapter onNodeDoubleClick ( final WebTree<E> tree,
-                                                                                      final TreeNodeEventRunnable<E> runnable )
+    public static <N extends DefaultMutableTreeNode> MouseAdapter onNodeDoubleClick ( final WebTree<N> tree,
+                                                                                      final TreeNodeEventRunnable<N> runnable )
     {
         return onNodeDoubleClick ( tree, null, runnable );
     }
@@ -54,8 +54,8 @@ public final class TreeEventMethodsImpl
      * @param runnable  tree node event runnable
      * @return used mouse adapter
      */
-    public static <E extends DefaultMutableTreeNode> MouseAdapter onNodeDoubleClick ( final WebTree<E> tree, final Predicate<E> condition,
-                                                                                      final TreeNodeEventRunnable<E> runnable )
+    public static <N extends DefaultMutableTreeNode> MouseAdapter onNodeDoubleClick ( final WebTree<N> tree, final Predicate<N> condition,
+                                                                                      final TreeNodeEventRunnable<N> runnable )
     {
         final MouseAdapter mouseAdapter = new MouseAdapter ()
         {
@@ -67,7 +67,7 @@ public final class TreeEventMethodsImpl
                     final int row = tree.getUI ().getExactRowForLocation ( e.getPoint () );
                     if ( row != -1 )
                     {
-                        final E node = tree.getNodeForRow ( row );
+                        final N node = tree.getNodeForRow ( row );
                         if ( condition == null || condition.test ( node ) )
                         {
                             runnable.run ( node );

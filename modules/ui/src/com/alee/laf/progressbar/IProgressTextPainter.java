@@ -25,11 +25,14 @@ import javax.swing.*;
  * Base interface for {@link JProgressBar} component text painters.
  * Text painter was separated to place text properly on top of the progress line.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface IProgressTextPainter<E extends JProgressBar, U extends WebProgressBarUI> extends SectionPainter<E, U>
+public interface IProgressTextPainter<C extends JProgressBar, U extends WebProgressBarUI> extends SectionPainter<C, U>
 {
+    /**
+     * This interface doesn't offer any additional methods to implement.
+     */
 }

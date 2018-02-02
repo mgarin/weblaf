@@ -30,13 +30,13 @@ import javax.swing.*;
  * This class provides language updates for custom WebLaF tooltips of any component.
  * This {@link LanguageUpdater} shouldn't be used directly for {@link JToolTip} but instead it is used by {@link ToolTipLU}.
  *
- * @param <E> component type
+ * @param <C> component type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>
  * @see com.alee.managers.language.LanguageManager
  */
 
-public class CustomToolTipLanguage<E extends JComponent> extends AbstractToolTipLanguage<E>
+public class CustomToolTipLanguage<C extends JComponent> extends AbstractToolTipLanguage<C>
 {
     /**
      * Custom {@link com.alee.managers.tooltip.WebCustomTooltip}.
@@ -55,7 +55,7 @@ public class CustomToolTipLanguage<E extends JComponent> extends AbstractToolTip
     }
 
     @Override
-    public void update ( final E component, final Language language, final String key, final Object... data )
+    public void update ( final C component, final Language language, final String key, final Object... data )
     {
         // todo Data that is passed in this method cannot be used
         // todo Some new multi-data system is required to do that

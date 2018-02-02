@@ -37,14 +37,14 @@ import java.util.Map;
  * This abstract {@link Painter} implementation provides a few basic commonly used features.
  * You might want to extended this class instead of implementing {@link Painter} interface directly.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  * @author Alexandr Zernov
  * @see Painter
  */
 
-public abstract class AbstractPainter<E extends JComponent, U extends ComponentUI> implements Painter<E, U>
+public abstract class AbstractPainter<C extends JComponent, U extends ComponentUI> implements Painter<C, U>
 {
     /**
      * Painter listeners.
@@ -64,7 +64,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     /**
      * Component reference.
      */
-    protected transient E component;
+    protected transient C component;
 
     /**
      * Component UI reference.
@@ -74,7 +74,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     /**
      * Installed section painters.
      */
-    protected transient Map<String, SectionPainter<E, U>> sectionPainters;
+    protected transient Map<String, SectionPainter<C, U>> sectionPainters;
 
     /**
      * Whether or not painted component has LTR orientation.
@@ -91,7 +91,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     }
 
     @Override
-    public void install ( final E c, final U ui )
+    public void install ( final C c, final U ui )
     {
         // Saving references
         this.component = c;
@@ -112,7 +112,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     }
 
     @Override
-    public void uninstall ( final E c, final U ui )
+    public void uninstall ( final C c, final U ui )
     {
         // Additional actions before uninstallation
         beforeUninstall ();
@@ -218,10 +218,10 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      */
     protected final void installSectionPainters ()
     {
-        final List<SectionPainter<E, U>> sectionPainters = getSectionPainters ();
+        final List<SectionPainter<C, U>> sectionPainters = getSectionPainters ();
         if ( CollectionUtils.notEmpty ( sectionPainters ) )
         {
-            for ( final SectionPainter<E, U> sectionPainter : sectionPainters )
+            for ( final SectionPainter<C, U> sectionPainter : sectionPainters )
             {
                 installSectionPainter ( sectionPainter );
             }
@@ -233,10 +233,10 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      */
     protected final void uninstallSectionPainters ()
     {
-        final List<SectionPainter<E, U>> sectionPainters = getInstalledSectionPainters ();
+        final List<SectionPainter<C, U>> sectionPainters = getInstalledSectionPainters ();
         if ( CollectionUtils.notEmpty ( sectionPainters ) )
         {
-            for ( final SectionPainter<E, U> sectionPainter : sectionPainters )
+            for ( final SectionPainter<C, U> sectionPainter : sectionPainters )
             {
                 uninstallSectionPainter ( sectionPainter );
             }
@@ -250,7 +250,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      *
      * @return {@link SectionPainter}s used by this painter or {@code null} if none are used
      */
-    protected List<SectionPainter<E, U>> getSectionPainters ()
+    protected List<SectionPainter<C, U>> getSectionPainters ()
     {
         return null;
     }
@@ -262,18 +262,18 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      * @param sections section painters, some or all of them can be {@code null}
      * @return section painters list in a most optimal way
      */
-    protected final List<SectionPainter<E, U>> asList ( final SectionPainter<E, U>... sections )
+    protected final List<SectionPainter<C, U>> asList ( final SectionPainter<C, U>... sections )
     {
-        ArrayList<SectionPainter<E, U>> list = null;
+        ArrayList<SectionPainter<C, U>> list = null;
         if ( sections != null )
         {
-            for ( final SectionPainter<E, U> section : sections )
+            for ( final SectionPainter<C, U> section : sections )
             {
                 if ( section != null )
                 {
                     if ( list == null )
                     {
-                        list = new ArrayList<SectionPainter<E, U>> ( sections.length );
+                        list = new ArrayList<SectionPainter<C, U>> ( sections.length );
                     }
                     list.add ( section );
                 }
@@ -288,9 +288,9 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      *
      * @return {@link SectionPainter}s installed within this painter or {@code null} if none are installed
      */
-    protected final List<SectionPainter<E, U>> getInstalledSectionPainters ()
+    protected final List<SectionPainter<C, U>> getInstalledSectionPainters ()
     {
-        return MapUtils.notEmpty ( sectionPainters ) ? new ArrayList<SectionPainter<E, U>> ( sectionPainters.values () ) : null;
+        return MapUtils.notEmpty ( sectionPainters ) ? new ArrayList<SectionPainter<C, U>> ( sectionPainters.values () ) : null;
     }
 
     /**
@@ -298,7 +298,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      *
      * @param painter {@link SectionPainter} to install
      */
-    protected final void installSectionPainter ( final SectionPainter<E, U> painter )
+    protected final void installSectionPainter ( final SectionPainter<C, U> painter )
     {
         // Ensure painter exists
         if ( painter == null )
@@ -309,14 +309,14 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         // Initializing cache map
         if ( sectionPainters == null )
         {
-            sectionPainters = new HashMap<String, SectionPainter<E, U>> ( 3 );
+            sectionPainters = new HashMap<String, SectionPainter<C, U>> ( 3 );
         }
 
         // Section identifier
         final String sectionId = painter.getSectionId ();
 
         // Uninstalling previous section painter under same section identifier
-        final SectionPainter<E, U> old = sectionPainters.get ( sectionId );
+        final SectionPainter<C, U> old = sectionPainters.get ( sectionId );
         if ( old != null )
         {
             old.uninstall ( component, ui, AbstractPainter.this );
@@ -334,7 +334,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      *
      * @param painter {@link SectionPainter} to uninstall
      */
-    protected final void uninstallSectionPainter ( final SectionPainter<E, U> painter )
+    protected final void uninstallSectionPainter ( final SectionPainter<C, U> painter )
     {
         // Ensure painter exists
         if ( painter == null )
@@ -613,13 +613,13 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     }
 
     @Override
-    public int getBaseline ( final E c, final U ui, final Bounds bounds )
+    public int getBaseline ( final C c, final U ui, final Bounds bounds )
     {
         return -1;
     }
 
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final E c, final U ui )
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final C c, final U ui )
     {
         return Component.BaselineResizeBehavior.OTHER;
     }

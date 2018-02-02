@@ -6,19 +6,21 @@ import com.alee.painter.Painter;
 import javax.swing.*;
 
 /**
- * Simple TextAreaPainter adapter class.
- * It is used to install simple non-specific painters into WebTextAreaUI.
+ * Simple {@link TextAreaPainter} adapter class.
+ * It is used to install simple non-specific painters into {@link WTextAreaUI}.
  *
+ * @param <C> component type
+ * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public final class AdaptiveTextAreaPainter<E extends JTextArea, U extends WebTextAreaUI> extends AdaptivePainter<E, U>
-        implements ITextAreaPainter<E, U>
+public final class AdaptiveTextAreaPainter<C extends JTextArea, U extends WTextAreaUI> extends AdaptivePainter<C, U>
+        implements ITextAreaPainter<C, U>
 {
     /**
-     * Constructs new AdaptiveTextAreaPainter for the specified painter.
+     * Constructs new {@link AdaptiveTextAreaPainter} for the specified painter.
      *
-     * @param painter painter to adapt
+     * @param painter {@link Painter} to adapt
      */
     public AdaptiveTextAreaPainter ( final Painter painter )
     {

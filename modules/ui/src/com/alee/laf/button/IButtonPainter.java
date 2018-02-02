@@ -5,12 +5,12 @@ import javax.swing.*;
 /**
  * Base interface for {@link JButton} component painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface IButtonPainter<E extends JButton, U extends WButtonUI> extends IAbstractButtonPainter<E, U>
+public interface IButtonPainter<C extends JButton, U extends WButtonUI> extends IAbstractButtonPainter<C, U>
 {
     /**
      * This interface doesn't offer any additional methods to implement.

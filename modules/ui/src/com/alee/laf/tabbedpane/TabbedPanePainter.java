@@ -25,17 +25,17 @@ import java.util.Vector;
 
 /**
  * Basic painter for {@link JTabbedPane} component.
- * It is used as {@link WebTabbedPaneUI} default painter.
+ * It is used as {@link WTabbedPaneUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
 
 @SuppressWarnings ( "JavaDoc" )
-public class TabbedPanePainter<E extends JTabbedPane, U extends WTabbedPaneUI> extends AbstractPainter<E, U>
-        implements ITabbedPanePainter<E, U>
+public class TabbedPanePainter<C extends JTabbedPane, U extends WTabbedPaneUI> extends AbstractPainter<C, U>
+        implements ITabbedPanePainter<C, U>
 {
     /**
      * Style settings.
@@ -295,7 +295,7 @@ public class TabbedPanePainter<E extends JTabbedPane, U extends WTabbedPaneUI> e
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E c, final U ui, final Bounds bounds )
+    public void paint ( final Graphics2D g2d, final C c, final U ui, final Bounds bounds )
     {
         final Map hints = SwingUtils.setupTextAntialias ( g2d );
 

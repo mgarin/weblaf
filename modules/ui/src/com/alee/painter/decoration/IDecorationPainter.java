@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Interface that defines main methods for any {@link Painter} based on {@link Decorations}.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
@@ -35,8 +35,8 @@ import java.util.List;
  * @see Painter
  */
 
-public interface IDecorationPainter<E extends JComponent, U extends ComponentUI, D extends IDecoration<E, D>>
-        extends Painter<E, U>
+public interface IDecorationPainter<C extends JComponent, U extends ComponentUI, D extends IDecoration<C, D>>
+        extends Painter<C, U>
 {
     /**
      * Returns current component decoration states.

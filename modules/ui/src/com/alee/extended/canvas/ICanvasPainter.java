@@ -22,12 +22,12 @@ import com.alee.painter.SpecificPainter;
 /**
  * Base interface for {@link WebCanvas} component painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface ICanvasPainter<E extends WebCanvas, U extends WCanvasUI> extends SpecificPainter<E, U>
+public interface ICanvasPainter<C extends WebCanvas, U extends WCanvasUI> extends SpecificPainter<C, U>
 {
     /**
      * This interface doesn't offer any additional methods to implement.

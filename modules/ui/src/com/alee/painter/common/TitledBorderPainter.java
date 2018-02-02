@@ -31,7 +31,7 @@ import java.util.Map;
 /**
  * Titled border painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  * @see com.alee.painter.common.BorderPainter
@@ -39,7 +39,7 @@ import java.util.Map;
  * @see com.alee.painter.Painter
  */
 
-public class TitledBorderPainter<E extends JComponent, U extends ComponentUI> extends BorderPainter<E, U> implements SwingConstants
+public class TitledBorderPainter<C extends JComponent, U extends ComponentUI> extends BorderPainter<C, U> implements SwingConstants
 {
     /**
      * todo 1. Left/Right title position
@@ -265,7 +265,7 @@ public class TitledBorderPainter<E extends JComponent, U extends ComponentUI> ex
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final E c, final U ui, final Bounds bounds )
+    public void paint ( final Graphics2D g2d, final C c, final U ui, final Bounds bounds )
     {
         // Initializing values
         w = c.getWidth ();
@@ -407,7 +407,7 @@ public class TitledBorderPainter<E extends JComponent, U extends ComponentUI> ex
         }
     }
 
-    protected int getTitleAreaHeight ( final E c )
+    protected int getTitleAreaHeight ( final C c )
     {
         if ( isEmptyTitle () )
         {

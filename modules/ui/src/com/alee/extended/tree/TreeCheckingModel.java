@@ -24,12 +24,13 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Special checking model for WebCheckBoxTree.
+ * Special checking model for {@link WebCheckBoxTree}.
  *
+ * @param <N> node type
  * @author Mikle Garin
  */
 
-public interface TreeCheckingModel<E extends DefaultMutableTreeNode>
+public interface TreeCheckingModel<N extends DefaultMutableTreeNode>
 {
     /**
      * Returns list of nodes for the specified state.
@@ -38,7 +39,7 @@ public interface TreeCheckingModel<E extends DefaultMutableTreeNode>
      * @param policy {@link NodesAcceptPolicy} that defines a way to filter nodes
      * @return list of nodes for the specified state
      */
-    public List<E> getNodes ( CheckState state, NodesAcceptPolicy policy );
+    public List<N> getNodes ( CheckState state, NodesAcceptPolicy policy );
 
     /**
      * Returns specified tree node check state.
@@ -46,7 +47,7 @@ public interface TreeCheckingModel<E extends DefaultMutableTreeNode>
      * @param node tree node to process
      * @return specified tree node check state
      */
-    public CheckState getCheckState ( E node );
+    public CheckState getCheckState ( N node );
 
     /**
      * Sets whether the specified tree node is checked or not.
@@ -54,7 +55,7 @@ public interface TreeCheckingModel<E extends DefaultMutableTreeNode>
      * @param node    tree node to process
      * @param checked whether the specified tree node should be checked or not
      */
-    public void setChecked ( E node, boolean checked );
+    public void setChecked ( N node, boolean checked );
 
     /**
      * Sets specified nodes state to checked.
@@ -62,21 +63,21 @@ public interface TreeCheckingModel<E extends DefaultMutableTreeNode>
      * @param nodes   nodes to check
      * @param checked whether the specified tree nodes should be checked or not
      */
-    public void setChecked ( Collection<E> nodes, boolean checked );
+    public void setChecked ( Collection<N> nodes, boolean checked );
 
     /**
      * Inverts tree node check.
      *
      * @param node tree node to process
      */
-    public void invertCheck ( E node );
+    public void invertCheck ( N node );
 
     /**
      * Inverts tree nodes check.
      *
      * @param nodes list of tree nodes to process
      */
-    public void invertCheck ( Collection<E> nodes );
+    public void invertCheck ( Collection<N> nodes );
 
     /**
      * Checks all tree nodes.

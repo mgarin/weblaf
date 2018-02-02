@@ -160,9 +160,9 @@ public class WSplitPaneListener<C extends JSplitPane, U extends WSplitPaneUI<C>>
     /**
      * Actions for {@link JSplitPane}.
      *
-     * @param <E> {@link JSplitPane} type
+     * @param <S> {@link JSplitPane} type
      */
-    protected class Action<E extends JSplitPane> extends UIAction<E>
+    protected class Action<S extends JSplitPane> extends UIAction<S>
     {
         /**
          * Supported actions.
@@ -182,7 +182,7 @@ public class WSplitPaneListener<C extends JSplitPane, U extends WSplitPaneUI<C>>
          * @param splitPane {@link JSplitPane}
          * @param name      {@link Action} name
          */
-        public Action ( final E splitPane, final String name )
+        public Action ( final S splitPane, final String name )
         {
             super ( splitPane, name );
         }
@@ -190,7 +190,7 @@ public class WSplitPaneListener<C extends JSplitPane, U extends WSplitPaneUI<C>>
         @Override
         public void actionPerformed ( final ActionEvent event )
         {
-            final E splitPane = getComponent ();
+            final S splitPane = getComponent ();
             final WSplitPaneUI splitPaneUI = LafUtils.getUI ( splitPane );
             final String key = getName ();
             if ( key.equals ( NEGATIVE_INCREMENT ) )
@@ -267,7 +267,7 @@ public class WSplitPaneListener<C extends JSplitPane, U extends WSplitPaneUI<C>>
          * @param splitPane {@link JSplitPane}
          * @param direction focus move direction
          */
-        protected void moveFocus ( final E splitPane, final int direction )
+        protected void moveFocus ( final S splitPane, final int direction )
         {
             Container rootAncestor = splitPane.getFocusCycleRootAncestor ();
             FocusTraversalPolicy policy = rootAncestor.getFocusTraversalPolicy ();
@@ -299,7 +299,7 @@ public class WSplitPaneListener<C extends JSplitPane, U extends WSplitPaneUI<C>>
          *
          * @param splitPane {@link JSplitPane}
          */
-        protected void toggleFocus ( final E splitPane )
+        protected void toggleFocus ( final S splitPane )
         {
             final Component left = splitPane.getLeftComponent ();
             final Component right = splitPane.getRightComponent ();

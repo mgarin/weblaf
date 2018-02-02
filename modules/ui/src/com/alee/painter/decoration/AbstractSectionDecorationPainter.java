@@ -29,44 +29,44 @@ import java.util.List;
 /**
  * Abstract decoration painter that can be used by any section painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public abstract class AbstractSectionDecorationPainter<E extends JComponent, U extends ComponentUI, D extends IDecoration<E, D>>
-        extends AbstractDecorationPainter<E, U, D> implements SectionPainter<E, U>
+public abstract class AbstractSectionDecorationPainter<C extends JComponent, U extends ComponentUI, D extends IDecoration<C, D>>
+        extends AbstractDecorationPainter<C, U, D> implements SectionPainter<C, U>
 {
     /**
      * Origin {@link Painter}.
      * It is mainly used to provide origin decoration state duplication behavior.
      * It is kept within {@link WeakReference} to avoid memory leaks as section painters might be easily replaced.
      */
-    protected transient WeakReference<Painter<E, U>> origin;
+    protected transient WeakReference<Painter<C, U>> origin;
 
     @Override
-    public void install ( final E c, final U ui, final Painter<E, U> origin )
+    public void install ( final C c, final U ui, final Painter<C, U> origin )
     {
-        this.origin = new WeakReference<Painter<E, U>> ( origin );
+        this.origin = new WeakReference<Painter<C, U>> ( origin );
         super.install ( c, ui );
     }
 
     @Override
-    public void uninstall ( final E c, final U ui, final Painter<E, U> origin )
+    public void uninstall ( final C c, final U ui, final Painter<C, U> origin )
     {
         super.uninstall ( c, ui );
         this.origin = null;
     }
 
     @Override
-    public Painter<E, U> getOrigin ()
+    public Painter<C, U> getOrigin ()
     {
         if ( origin == null )
         {
             throw new PainterException ( "Origin Painter was not specified for painter: " + this );
         }
-        final Painter<E, U> originPainter = origin.get ();
+        final Painter<C, U> originPainter = origin.get ();
         if ( originPainter == null )
         {
             throw new PainterException ( "Origin Painter was destroyed before its SectionPainter: " + this );
@@ -132,7 +132,7 @@ public abstract class AbstractSectionDecorationPainter<E extends JComponent, U e
     public List<String> getDecorationStates ()
     {
         final List<String> states;
-        final Painter<E, U> origin = getOrigin ();
+        final Painter<C, U> origin = getOrigin ();
         if ( origin != null && origin instanceof IDecorationPainter )
         {
             // Retrieving origin decoration states
@@ -155,7 +155,7 @@ public abstract class AbstractSectionDecorationPainter<E extends JComponent, U e
      * @return always {@code false}
      */
     @Override
-    protected boolean isPlainBackgroundRequired ( final E c )
+    protected boolean isPlainBackgroundRequired ( final C c )
     {
         return false;
     }

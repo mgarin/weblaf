@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * Popular {@link java.awt.BorderLayout} implementation of {@link IContentLayout}.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> layout type
  * @author Mikle Garin
@@ -40,8 +40,8 @@ import java.util.List;
  */
 
 @XStreamAlias ( "BorderLayout" )
-public class BorderLayout<E extends JComponent, D extends IDecoration<E, D>, I extends BorderLayout<E, D, I>>
-        extends AbstractContentLayout<E, D, I>
+public class BorderLayout<C extends JComponent, D extends IDecoration<C, D>, I extends BorderLayout<C, D, I>>
+        extends AbstractContentLayout<C, D, I>
 {
     /**
      * Layout constraints.
@@ -85,7 +85,7 @@ public class BorderLayout<E extends JComponent, D extends IDecoration<E, D>, I e
     }
 
     @Override
-    public List<IContent> getContents ( final E c, final D d, String constraints )
+    public List<IContent> getContents ( final C c, final D d, String constraints )
     {
         // Handling constraints depending on component orientation
         final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
@@ -106,7 +106,7 @@ public class BorderLayout<E extends JComponent, D extends IDecoration<E, D>, I e
     }
 
     @Override
-    public ContentLayoutData layoutContent ( final E c, final D d, final Rectangle bounds )
+    public ContentLayoutData layoutContent ( final C c, final D d, final Rectangle bounds )
     {
         final ContentLayoutData layoutData = new ContentLayoutData ( 5 );
         final int hgap = getHorizontalGap ();
@@ -149,7 +149,7 @@ public class BorderLayout<E extends JComponent, D extends IDecoration<E, D>, I e
     }
 
     @Override
-    protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
     {
         final int hgap = getHorizontalGap ();
         final int vgap = getVerticalGap ();

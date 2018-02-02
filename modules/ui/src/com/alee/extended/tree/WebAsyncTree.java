@@ -45,7 +45,7 @@ import java.util.List;
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
- * @param <E> tree nodes type
+ * @param <N> node type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebAsyncTree">How to use WebAsyncTree</a>
  * @see WebTree
@@ -55,7 +55,7 @@ import java.util.List;
  * @see AsyncTreeDataProvider
  */
 
-public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implements AsyncTreeModelListener<E>
+public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N> implements AsyncTreeModelListener<N>
 {
     /**
      * todo 1. Allow adding async tree listener for specific node/nodeId listening
@@ -89,12 +89,12 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     /**
      * Tree nodes comparator.
      */
-    protected Comparator<E> comparator;
+    protected Comparator<N> comparator;
 
     /**
      * Tree nodes filter.
      */
-    protected Filter<E> filter;
+    protected Filter<N> filter;
 
     /**
      * Special cell editor listener.
@@ -192,7 +192,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      *
      * @return data provider
      */
-    public AsyncTreeDataProvider<E> getDataProvider ()
+    public AsyncTreeDataProvider<N> getDataProvider ()
     {
         final TreeModel model = getModel ();
         return model != null && model instanceof AsyncTreeModel ? getAsyncModel ().getDataProvider () : null;
@@ -207,8 +207,8 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     {
         if ( dataProvider != null )
         {
-            final AsyncTreeDataProvider<E> oldDataProvider = getDataProvider ();
-            setModel ( new AsyncTreeModel<E> ( this, dataProvider ) );
+            final AsyncTreeDataProvider<N> oldDataProvider = getDataProvider ();
+            setModel ( new AsyncTreeModel<N> ( this, dataProvider ) );
             firePropertyChange ( WebLookAndFeel.TREE_DATA_PROVIDER_PROPERTY, oldDataProvider, dataProvider );
         }
     }
@@ -218,7 +218,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      *
      * @return tree nodes comparator
      */
-    public Comparator<E> getComparator ()
+    public Comparator<N> getComparator ()
     {
         return comparator;
     }
@@ -229,9 +229,9 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      *
      * @param comparator tree nodes comparator
      */
-    public void setComparator ( final Comparator<E> comparator )
+    public void setComparator ( final Comparator<N> comparator )
     {
-        final Comparator<E> oldComparator = this.comparator;
+        final Comparator<N> oldComparator = this.comparator;
         this.comparator = comparator;
 
         final AsyncTreeDataProvider dataProvider = getDataProvider ();
@@ -257,7 +257,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      *
      * @return tree nodes filter
      */
-    public Filter<E> getFilter ()
+    public Filter<N> getFilter ()
     {
         return filter;
     }
@@ -268,9 +268,9 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      *
      * @param filter tree nodes filter
      */
-    public void setFilter ( final Filter<E> filter )
+    public void setFilter ( final Filter<N> filter )
     {
-        final Filter<E> oldFilter = this.filter;
+        final Filter<N> oldFilter = this.filter;
         this.filter = filter;
 
         final AsyncTreeDataProvider dataProvider = getDataProvider ();
@@ -304,7 +304,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      *
      * @param node node to update sorting and filter for
      */
-    public void filterAndSort ( final E node )
+    public void filterAndSort ( final N node )
     {
         getAsyncModel ().filterAndSort ( node, false );
     }
@@ -392,8 +392,8 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
                         public void run ()
                         {
                             // Updating tree sorting and filtering for parent of the edited node
-                            final E node = ( E ) cellEditor.getCellEditorValue ();
-                            filterAndSort ( ( E ) node.getParent () );
+                            final N node = ( N ) cellEditor.getCellEditorValue ();
+                            filterAndSort ( ( N ) node.getParent () );
                         }
                     } );
                 }
@@ -407,9 +407,9 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      *
      * @return asynchronous tree model
      */
-    public AsyncTreeModel<E> getAsyncModel ()
+    public AsyncTreeModel<N> getAsyncModel ()
     {
-        return ( AsyncTreeModel<E> ) getModel ();
+        return ( AsyncTreeModel<N> ) getModel ();
     }
 
     /**
@@ -442,7 +442,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param parent   node to process
      * @param children new node children
      */
-    public void setChildNodes ( final E parent, final List<E> children )
+    public void setChildNodes ( final N parent, final List<N> children )
     {
         getAsyncModel ().setChildNodes ( parent, children );
     }
@@ -455,7 +455,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param parent node to process
      * @param child  new node child
      */
-    public void addChildNode ( final E parent, final E child )
+    public void addChildNode ( final N parent, final N child )
     {
         getAsyncModel ().addChildNode ( parent, child );
     }
@@ -468,7 +468,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param parent   node to process
      * @param children new node children
      */
-    public void addChildNodes ( final E parent, final List<E> children )
+    public void addChildNodes ( final N parent, final List<N> children )
     {
         getAsyncModel ().addChildNodes ( parent, children );
     }
@@ -482,7 +482,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param parent   parent node
      * @param index    insert index
      */
-    public void insertChildNodes ( final List<E> children, final E parent, final int index )
+    public void insertChildNodes ( final List<N> children, final N parent, final int index )
     {
         getAsyncModel ().insertNodesInto ( children, parent, index );
     }
@@ -496,7 +496,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param parent   parent node
      * @param index    insert index
      */
-    public void insertChildNodes ( final E[] children, final E parent, final int index )
+    public void insertChildNodes ( final N[] children, final N parent, final int index )
     {
         getAsyncModel ().insertNodesInto ( children, parent, index );
     }
@@ -509,7 +509,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param parent parent node
      * @param index  insert index
      */
-    public void insertChildNode ( final E child, final E parent, final int index )
+    public void insertChildNode ( final N child, final N parent, final int index )
     {
         getAsyncModel ().insertNodeInto ( child, parent, index );
     }
@@ -531,7 +531,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      *
      * @param node node to remove
      */
-    public void removeNode ( final E node )
+    public void removeNode ( final N node )
     {
         getAsyncModel ().removeNodeFromParent ( node );
     }
@@ -542,7 +542,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      *
      * @param nodes list of nodes to remove
      */
-    public void removeNodes ( final List<E> nodes )
+    public void removeNodes ( final List<N> nodes )
     {
         getAsyncModel ().removeNodesFromParent ( nodes );
     }
@@ -553,7 +553,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      *
      * @param nodes array of nodes to remove
      */
-    public void removeNodes ( final E[] nodes )
+    public void removeNodes ( final N[] nodes )
     {
         getAsyncModel ().removeNodesFromParent ( nodes );
     }
@@ -564,7 +564,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param parent node to process
      * @return true if children for the specified node are already loaded, false otherwise
      */
-    public boolean areChildrenLoaded ( final E parent )
+    public boolean areChildrenLoaded ( final N parent )
     {
         return getAsyncModel ().areChildrenLoaded ( parent );
     }
@@ -575,7 +575,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param nodeId node ID
      * @return node with the specified ID or null if it was not found
      */
-    public E findNode ( final String nodeId )
+    public N findNode ( final String nodeId )
     {
         return getAsyncModel ().findNode ( nodeId );
     }
@@ -605,7 +605,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      *
      * @param node tree node to be updated
      */
-    public void updateNodeStructure ( final E node )
+    public void updateNodeStructure ( final N node )
     {
         getAsyncModel ().updateNodeStructure ( node );
     }
@@ -638,7 +638,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
             for ( final TreePath path : paths )
             {
                 // Checking if node is not null and not busy yet
-                final E node = getNodeForPath ( path );
+                final N node = getNodeForPath ( path );
                 if ( node != null && !node.isLoading () )
                 {
                     // Reloading node children
@@ -654,7 +654,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param point point to look for node
      * @return reloaded node or null if none reloaded
      */
-    public E reloadNodeUnderPoint ( final Point point )
+    public N reloadNodeUnderPoint ( final Point point )
     {
         return reloadNodeUnderPoint ( point.x, point.y );
     }
@@ -666,7 +666,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param y point Y coordinate
      * @return reloaded node or null if none reloaded
      */
-    public E reloadNodeUnderPoint ( final int x, final int y )
+    public N reloadNodeUnderPoint ( final int x, final int y )
     {
         return reloadPath ( getPathForLocation ( x, y ) );
     }
@@ -678,7 +678,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param nodeId ID of the node to reload
      * @return reloaded node or null if none reloaded
      */
-    public E reloadNodeSync ( final String nodeId )
+    public N reloadNodeSync ( final String nodeId )
     {
         return reloadNodeSync ( findNode ( nodeId ) );
     }
@@ -690,7 +690,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param node node to reload
      * @return reloaded node or null if none reloaded
      */
-    public E reloadNodeSync ( final E node )
+    public N reloadNodeSync ( final N node )
     {
         return reloadNodeSync ( node, false );
     }
@@ -703,7 +703,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param select whether select the node or not
      * @return reloaded node or null if none reloaded
      */
-    public E reloadNodeSync ( final E node, final boolean select )
+    public N reloadNodeSync ( final N node, final boolean select )
     {
         synchronized ( syncLoadingLock != null ? syncLoadingLock : lock )
         {
@@ -720,7 +720,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      *
      * @return reloaded root node
      */
-    public E reloadRootNode ()
+    public N reloadRootNode ()
     {
         return reloadNode ( getRootNode () );
     }
@@ -731,7 +731,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param nodeId ID of the node to reload
      * @return reloaded node or null if none reloaded
      */
-    public E reloadNode ( final String nodeId )
+    public N reloadNode ( final String nodeId )
     {
         return reloadNode ( findNode ( nodeId ) );
     }
@@ -742,7 +742,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param node node to reload
      * @return reloaded node or null if none reloaded
      */
-    public E reloadNode ( final E node )
+    public N reloadNode ( final N node )
     {
         return reloadNode ( node, false );
     }
@@ -754,7 +754,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param select whether select the node or not
      * @return reloaded node or null if none reloaded
      */
-    public E reloadNode ( final E node, final boolean select )
+    public N reloadNode ( final N node, final boolean select )
     {
         // Checking that node is not null
         if ( node != null && !node.isLoading () )
@@ -773,7 +773,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param path path of the node to reload
      * @return reloaded node or null if none reloaded
      */
-    public E reloadPathSync ( final TreePath path )
+    public N reloadPathSync ( final TreePath path )
     {
         return reloadPathSync ( path, false );
     }
@@ -786,13 +786,13 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param select whether select the node or not
      * @return reloaded node or null if none reloaded
      */
-    public E reloadPathSync ( final TreePath path, final boolean select )
+    public N reloadPathSync ( final TreePath path, final boolean select )
     {
         synchronized ( syncLoadingLock != null ? syncLoadingLock : lock )
         {
             final boolean async = isAsyncLoading ();
             setAsyncLoading ( false );
-            final E node = reloadPath ( path, select );
+            final N node = reloadPath ( path, select );
             setAsyncLoading ( async );
             return node;
         }
@@ -804,7 +804,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param path path of the node to reload
      * @return reloaded node or null if none reloaded
      */
-    public E reloadPath ( final TreePath path )
+    public N reloadPath ( final TreePath path )
     {
         return reloadPath ( path, false );
     }
@@ -816,13 +816,13 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param select whether select the node or not
      * @return reloaded node or null if none reloaded
      */
-    public E reloadPath ( final TreePath path, final boolean select )
+    public N reloadPath ( final TreePath path, final boolean select )
     {
         // Checking that path is not null
         if ( path != null )
         {
             // Checking if node is not null and not busy yet
-            final E node = getNodeForPath ( path );
+            final N node = getNodeForPath ( path );
             if ( node != null && !node.isLoading () )
             {
                 // Reloading node children
@@ -840,7 +840,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param path   path to node
      * @param select whether select the node or not
      */
-    protected void performReload ( final E node, final TreePath path, final boolean select )
+    protected void performReload ( final N node, final TreePath path, final boolean select )
     {
         // Select node under the mouse
         if ( select && !isPathSelected ( path ) )
@@ -955,7 +955,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
         final List<String> ids = CollectionUtils.copy ( pathNodeIds );
         for ( int initial = 0; initial < ids.size (); initial++ )
         {
-            final E initialNode = findNode ( ids.get ( initial ) );
+            final N initialNode = findNode ( ids.get ( initial ) );
             if ( initialNode != null )
             {
                 for ( int i = 0; i <= initial; i++ )
@@ -987,7 +987,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param selectLastNode whether should select last found path node or not
      * @param listener       async path expansion listener
      */
-    protected void expandPathImpl ( final E currentNode, final List<String> leftToExpand, final boolean expandLastNode,
+    protected void expandPathImpl ( final N currentNode, final List<String> leftToExpand, final boolean expandLastNode,
                                     final boolean selectLastNode, final AsyncPathExpansionListener listener )
     {
         // There is still more to load
@@ -1005,7 +1005,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
                 }
 
                 // Retrieving next node
-                final E nextNode = findNode ( leftToExpand.get ( 0 ) );
+                final N nextNode = findNode ( leftToExpand.get ( 0 ) );
                 leftToExpand.remove ( 0 );
 
                 // If node exists continue expanding path
@@ -1043,7 +1043,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
                             }
 
                             // Retrieving next node
-                            final E nextNode = findNode ( leftToExpand.get ( 0 ) );
+                            final N nextNode = findNode ( leftToExpand.get ( 0 ) );
                             leftToExpand.remove ( 0 );
 
                             // If node exists continue expanding path
@@ -1103,7 +1103,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param expandLastNode whether should expand last found path node or not
      * @param selectLastNode whether should select last found path node or not
      */
-    protected void expandPathEndImpl ( final E lastFoundNode, final boolean expandLastNode, final boolean selectLastNode )
+    protected void expandPathEndImpl ( final N lastFoundNode, final boolean expandLastNode, final boolean selectLastNode )
     {
         if ( selectLastNode )
         {
@@ -1169,10 +1169,10 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
         expandPath ( path );
 
         // Expand sub-paths
-        final E node = getNodeForPath ( path );
+        final N node = getNodeForPath ( path );
         for ( int i = 0; i < node.getChildCount (); i++ )
         {
-            performFullPathExpand ( getPathForNode ( ( E ) node.getChildAt ( i ) ) );
+            performFullPathExpand ( getPathForNode ( ( N ) node.getChildAt ( i ) ) );
         }
     }
 
@@ -1184,14 +1184,14 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     protected void performFullAsyncPathExpand ( final TreePath path )
     {
         // Add path expand listener first to get notified when this path will be expanded
-        addAsyncTreeListener ( new AsyncTreeAdapter<E> ()
+        addAsyncTreeListener ( new AsyncTreeAdapter<N> ()
         {
             @Override
-            public void loadCompleted ( final E parent, final List<E> children )
+            public void loadCompleted ( final N parent, final List<N> children )
             {
                 if ( parent == getNodeForPath ( path ) )
                 {
-                    for ( final E child : children )
+                    for ( final N child : children )
                     {
                         performFullPathExpand ( child.getTreePath () );
                     }
@@ -1200,7 +1200,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
             }
 
             @Override
-            public void loadFailed ( final E parent, final Throwable cause )
+            public void loadFailed ( final N parent, final Throwable cause )
             {
                 if ( parent == getNodeForPath ( path ) )
                 {
@@ -1258,7 +1258,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param parent node which children are being loaded
      */
     @Override
-    public void loadStarted ( final E parent )
+    public void loadStarted ( final N parent )
     {
         fireChildrenLoadStarted ( parent );
     }
@@ -1268,7 +1268,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      *
      * @param parent node which children are being loaded
      */
-    protected void fireChildrenLoadStarted ( final E parent )
+    protected void fireChildrenLoadStarted ( final N parent )
     {
         final List<AsyncTreeListener> listeners;
         synchronized ( listenersLock )
@@ -1288,7 +1288,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param children loaded child nodes
      */
     @Override
-    public void loadCompleted ( final E parent, final List<E> children )
+    public void loadCompleted ( final N parent, final List<N> children )
     {
         fireChildrenLoadCompleted ( parent, children );
     }
@@ -1299,7 +1299,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param parent   node which children were loaded
      * @param children loaded child nodes
      */
-    protected void fireChildrenLoadCompleted ( final E parent, final List<E> children )
+    protected void fireChildrenLoadCompleted ( final N parent, final List<N> children )
     {
         final List<AsyncTreeListener> listeners;
         synchronized ( listenersLock )
@@ -1319,7 +1319,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param cause  children load failure cause
      */
     @Override
-    public void loadFailed ( final E parent, final Throwable cause )
+    public void loadFailed ( final N parent, final Throwable cause )
     {
         fireChildrenLoadFailed ( parent, cause );
     }
@@ -1330,7 +1330,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param parent node which children were loaded
      * @param cause  children load failure cause
      */
-    protected void fireChildrenLoadFailed ( final E parent, final Throwable cause )
+    protected void fireChildrenLoadFailed ( final N parent, final Throwable cause )
     {
         final List<AsyncTreeListener> listeners;
         synchronized ( listenersLock )

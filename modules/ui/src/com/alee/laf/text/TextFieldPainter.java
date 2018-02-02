@@ -8,16 +8,16 @@ import java.awt.*;
 
 /**
  * Basic painter for {@link JTextField} component.
- * It is used as {@link WebTextFieldUI} default painter.
+ * It is used as {@link WTextFieldUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
 
-public class TextFieldPainter<E extends JTextField, U extends WTextFieldUI, D extends IDecoration<E, D>>
-        extends AbstractTextFieldPainter<E, U, D> implements ITextFieldPainter<E, U>, SwingConstants
+public class TextFieldPainter<C extends JTextField, U extends WTextFieldUI, D extends IDecoration<C, D>>
+        extends AbstractTextFieldPainter<C, U, D> implements ITextFieldPainter<C, U>, SwingConstants
 {
     @Override
     public String getInputPrompt ()

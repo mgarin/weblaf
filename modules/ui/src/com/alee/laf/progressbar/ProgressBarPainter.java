@@ -20,15 +20,15 @@ import java.util.List;
  * Basic painter for {@link JProgressBar} component.
  * It is used as {@link WProgressBarUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
 
-public class ProgressBarPainter<E extends JProgressBar, U extends WProgressBarUI, D extends IDecoration<E, D>>
-        extends AbstractDecorationPainter<E, U, D> implements IProgressBarPainter<E, U>, ChangeListener
+public class ProgressBarPainter<C extends JProgressBar, U extends WProgressBarUI, D extends IDecoration<C, D>>
+        extends AbstractDecorationPainter<C, U, D> implements IProgressBarPainter<C, U>, ChangeListener
 {
     /**
      * Style settings.
@@ -54,7 +54,7 @@ public class ProgressBarPainter<E extends JProgressBar, U extends WProgressBarUI
     protected transient int value;
 
     @Override
-    protected List<SectionPainter<E, U>> getSectionPainters ()
+    protected List<SectionPainter<C, U>> getSectionPainters ()
     {
         return asList ( progressPainter, progressTextPainter );
     }
@@ -160,7 +160,7 @@ public class ProgressBarPainter<E extends JProgressBar, U extends WProgressBarUI
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final C c, final U ui )
     {
         // Painting progress line
         paintProgress ( g2d, BoundsType.border.bounds ( c ) );

@@ -20,14 +20,14 @@ import java.util.List;
  * Basic painter for {@link JComboBox} component.
  * It is used as {@link WebComboBoxUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
 
-public class ComboBoxPainter<E extends JComboBox, U extends WComboBoxUI, D extends IDecoration<E, D>>
-        extends AbstractDecorationPainter<E, U, D> implements IComboBoxPainter<E, U>, EditabilityListener, VisibilityListener
+public class ComboBoxPainter<C extends JComboBox, U extends WComboBoxUI, D extends IDecoration<C, D>>
+        extends AbstractDecorationPainter<C, U, D> implements IComboBoxPainter<C, U>, EditabilityListener, VisibilityListener
 {
     /**
      * Listeners.
@@ -177,7 +177,7 @@ public class ComboBoxPainter<E extends JComboBox, U extends WComboBoxUI, D exten
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final C c, final U ui )
     {
         // Selected non-editable value
         paintCurrentValue ( g2d, ui.getValueBounds () );

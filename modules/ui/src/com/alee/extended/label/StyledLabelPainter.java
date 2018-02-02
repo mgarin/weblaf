@@ -24,15 +24,15 @@ import com.alee.painter.decoration.IDecoration;
  * Basic painter for {@link WebStyledLabel} component.
  * It is used as {@link WStyledLabelUI} default painter.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  */
 
-public class StyledLabelPainter<E extends WebStyledLabel, U extends WStyledLabelUI, D extends IDecoration<E, D>>
-        extends AbstractLabelPainter<E, U, D> implements IStyledLabelPainter<E, U>
+public class StyledLabelPainter<C extends WebStyledLabel, U extends WStyledLabelUI, D extends IDecoration<C, D>>
+        extends AbstractLabelPainter<C, U, D> implements IStyledLabelPainter<C, U>
 {
     /**
      * Implementation is used completely from {@link AbstractLabelPainter}.

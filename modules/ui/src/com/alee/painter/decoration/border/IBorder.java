@@ -29,14 +29,14 @@ import java.io.Serializable;
 /**
  * Interface for any custom borders.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> border type
  * @author Mikle Garin
  */
 
-public interface IBorder<E extends JComponent, D extends IDecoration<E, D>, I extends IBorder<E, D, I>>
-        extends IShapedElement<E, D, I>, Serializable, Cloneable, MergeBehavior<I>, Overwriting, Identifiable
+public interface IBorder<C extends JComponent, D extends IDecoration<C, D>, I extends IBorder<C, D, I>>
+        extends IShapedElement<C, D, I>, Serializable, Cloneable, MergeBehavior<I>, Overwriting, Identifiable
 {
     /**
      * Returns border opacity.

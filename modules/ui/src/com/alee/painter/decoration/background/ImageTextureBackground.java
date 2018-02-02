@@ -30,7 +30,7 @@ import java.awt.image.BufferedImage;
  * Image texure background.
  * Fills component shape with a texture based on the specified {@link #iconId} of an {@link Icon} from {@link IconManager}.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> background type
  * @author Mikle Garin
@@ -38,8 +38,8 @@ import java.awt.image.BufferedImage;
  */
 
 @XStreamAlias ( "ImageTextureBackground" )
-public class ImageTextureBackground<E extends JComponent, D extends IDecoration<E, D>, I extends ImageTextureBackground<E, D, I>>
-        extends AbstractImageTextureBackground<E, D, I>
+public class ImageTextureBackground<C extends JComponent, D extends IDecoration<C, D>, I extends ImageTextureBackground<C, D, I>>
+        extends AbstractImageTextureBackground<C, D, I>
 {
     /**
      * Identifier of an {@link Icon} from {@link IconManager}.

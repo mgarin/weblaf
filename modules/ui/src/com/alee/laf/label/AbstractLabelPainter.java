@@ -25,14 +25,14 @@ import javax.swing.*;
 /**
  * Abstract painter for label components.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public abstract class AbstractLabelPainter<E extends JLabel, U extends WLabelUI, D extends IDecoration<E, D>>
-        extends AbstractDecorationPainter<E, U, D> implements IAbstractLabelPainter<E, U>
+public abstract class AbstractLabelPainter<C extends JLabel, U extends WLabelUI, D extends IDecoration<C, D>>
+        extends AbstractDecorationPainter<C, U, D> implements IAbstractLabelPainter<C, U>
 {
     /**
      * Implementation is used completely from {@link AbstractDecorationPainter}.

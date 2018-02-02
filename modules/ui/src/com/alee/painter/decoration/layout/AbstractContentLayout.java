@@ -32,14 +32,14 @@ import java.util.List;
 /**
  * Abstract {@link IContentLayout} implementations providing basic content definitions and methods to work with layout content.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <D> decoration type
  * @param <I> layout type
  * @author Mikle Garin
  */
 
-public abstract class AbstractContentLayout<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractContentLayout<E, D, I>>
-        extends AbstractContent<E, D, I> implements IContentLayout<E, D, I>
+public abstract class AbstractContentLayout<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractContentLayout<C, D, I>>
+        extends AbstractContent<C, D, I> implements IContentLayout<C, D, I>
 {
     /**
      * Optional layout contents.
@@ -66,7 +66,7 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
     }
 
     @Override
-    public void activate ( final E c, final D d )
+    public void activate ( final C c, final D d )
     {
         // Performing default actions
         super.activate ( c, d );
@@ -79,7 +79,7 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
     }
 
     @Override
-    public void deactivate ( final E c, final D d )
+    public void deactivate ( final C c, final D d )
     {
         // Performing default actions
         super.deactivate ( c, d );
@@ -92,7 +92,7 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
     }
 
     @Override
-    public boolean isEmpty ( final E c, final D d )
+    public boolean isEmpty ( final C c, final D d )
     {
         for ( final IContent content : getContents ( c, d ) )
         {
@@ -112,7 +112,7 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
      * @param constraints content constraints
      * @return true if specified content is empty, false otherwise
      */
-    public boolean isEmpty ( final E c, final D d, final String constraints )
+    public boolean isEmpty ( final C c, final D d, final String constraints )
     {
         for ( final IContent content : getContents ( c, d, constraints ) )
         {
@@ -125,7 +125,7 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
     }
 
     @Override
-    public List<IContent> getContents ( final E c, final D d )
+    public List<IContent> getContents ( final C c, final D d )
     {
         return CollectionUtils.notEmpty ( contents ) ? contents : Collections.<IContent>emptyList ();
     }
@@ -138,7 +138,7 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
      * @param constraints content constraints
      * @return contents placed under the specified constraints
      */
-    protected List<IContent> getContents ( final E c, final D d, final String constraints )
+    protected List<IContent> getContents ( final C c, final D d, final String constraints )
     {
         if ( CollectionUtils.notEmpty ( contents ) )
         {
@@ -156,7 +156,7 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
      * @param d painted decoration state
      * @return contents cache for existing constraints
      */
-    protected Map<String, List<IContent>> getContentsCache ( final E c, final D d )
+    protected Map<String, List<IContent>> getContentsCache ( final C c, final D d )
     {
         if ( contentsCache == null )
         {
@@ -178,7 +178,7 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
     }
 
     @Override
-    public boolean hasContentBaseline ( final E c, final D d )
+    public boolean hasContentBaseline ( final C c, final D d )
     {
         // Simply whether or not any of the contents have meaningful baseline
         // If this behavior is not sufficient it can be overriden in specific layout implementation
@@ -196,7 +196,7 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
     }
 
     @Override
-    public int getContentBaseline ( final E c, final D d, final Rectangle bounds )
+    public int getContentBaseline ( final C c, final D d, final Rectangle bounds )
     {
         // Simply return baseline of the first content that has it
         // If this behavior is not sufficient it can be overriden in specific layout implementation
@@ -216,7 +216,7 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
     }
 
     @Override
-    public Component.BaselineResizeBehavior getContentBaselineResizeBehavior ( final E c, final D d )
+    public Component.BaselineResizeBehavior getContentBaselineResizeBehavior ( final C c, final D d )
     {
         // Simply return OTHER behavior type as it is simply impossible to "guess" how specific layout acts
         // It is up to layout to override this method and provide an appropriate baseline resize behavior
@@ -224,7 +224,7 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final E c, final D d, final Rectangle bounds )
+    protected void paintContent ( final Graphics2D g2d, final C c, final D d, final Rectangle bounds )
     {
         // Painting only if there is something to paint
         // This global check is added to avoid running full layout
@@ -258,7 +258,7 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
      * @param available   theoretically available space for this content
      * @return preferred size of contents placed under the specified constraints
      */
-    protected Dimension getPreferredSize ( final E c, final D d, final String constraints, final Dimension available )
+    protected Dimension getPreferredSize ( final C c, final D d, final String constraints, final Dimension available )
     {
         final Dimension ps = new Dimension ( 0, 0 );
         for ( final IContent content : getContents ( c, d, constraints ) )

@@ -24,10 +24,11 @@ import javax.swing.*;
 /**
  * Default {@link JComponent} information provider.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
-public class JComponentPreview<T extends JComponent> extends AWTComponentPreview<T>
+public class JComponentPreview<C extends JComponent> extends AWTComponentPreview<C>
 {
     /**
      * Additional type icons.
@@ -36,7 +37,7 @@ public class JComponentPreview<T extends JComponent> extends AWTComponentPreview
     public static final ImageIcon heatMapType = new ImageIcon ( AbstractComponentPreview.class.getResource ( "icons/heatmap.png" ) );
 
     @Override
-    public Icon getIconImpl ( final T component )
+    public Icon getIconImpl ( final C component )
     {
         if ( component instanceof JLayeredPane )
         {

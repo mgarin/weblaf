@@ -5,12 +5,12 @@ import javax.swing.*;
 /**
  * Base interface for {@link JToggleButton} component painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface IToggleButtonPainter<E extends JToggleButton, U extends WToggleButtonUI> extends IAbstractButtonPainter<E, U>
+public interface IToggleButtonPainter<C extends JToggleButton, U extends WToggleButtonUI> extends IAbstractButtonPainter<C, U>
 {
     /**
      * This interface doesn't offer any additional methods to implement.

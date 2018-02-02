@@ -22,13 +22,16 @@ import com.alee.painter.SectionPainter;
 import javax.swing.*;
 
 /**
- * Base interface for {@link javax.swing.JList} selection painters.
+ * Base interface for {@link JList} selection painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface IListSelectionPainter<E extends JList, U extends WebListUI> extends SectionPainter<E, U>
+public interface IListSelectionPainter<C extends JList, U extends WebListUI> extends SectionPainter<C, U>
 {
+    /**
+     * This interface doesn't offer any additional methods to implement.
+     */
 }

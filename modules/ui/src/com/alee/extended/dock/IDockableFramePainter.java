@@ -22,12 +22,12 @@ import com.alee.painter.SpecificPainter;
 /**
  * Base interface for {@link WebDockableFrame} component painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface IDockableFramePainter<E extends WebDockableFrame, U extends WDockableFrameUI> extends SpecificPainter<E, U>
+public interface IDockableFramePainter<C extends WebDockableFrame, U extends WDockableFrameUI> extends SpecificPainter<C, U>
 {
     /**
      * This interface doesn't offer any additional methods to implement.

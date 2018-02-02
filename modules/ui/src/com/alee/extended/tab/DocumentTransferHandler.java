@@ -261,7 +261,7 @@ public class DocumentTransferHandler extends TransferHandler
     {
         // We have to perform focus transfer AFTER the drag ends, otherwise focus may be lost again
         // That happens due to splits/tabbed panes removal in the process
-        SwingUtilities.invokeLater ( new Runnable ()
+        SwingUtils.invokeLater ( new Runnable ()
         {
             @Override
             public void run ()

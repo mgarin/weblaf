@@ -22,12 +22,12 @@ import com.alee.painter.SpecificPainter;
 /**
  * Base interface for {@link WebSplitPaneDivider} component painters.
  *
- * @param <E> component type
+ * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface ISplitPaneDividerPainter<E extends WebSplitPaneDivider, U extends WSplitPaneDividerUI> extends SpecificPainter<E, U>
+public interface ISplitPaneDividerPainter<C extends WebSplitPaneDivider, U extends WSplitPaneDividerUI> extends SpecificPainter<C, U>
 {
     /**
      * This interface doesn't offer any additional methods to implement.

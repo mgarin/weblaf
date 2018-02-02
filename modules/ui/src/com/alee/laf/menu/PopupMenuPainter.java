@@ -28,11 +28,13 @@ import java.awt.*;
  * Base painter for {@link JPopupMenu} component.
  * It is used as {@link WebPopupMenuUI} default styling.
  *
+ * @param <C> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public class PopupMenuPainter<E extends JPopupMenu, U extends WPopupMenuUI> extends AbstractPopupPainter<E, U>
-        implements IPopupMenuPainter<E, U>
+public class PopupMenuPainter<C extends JPopupMenu, U extends WPopupMenuUI> extends AbstractPopupPainter<C, U>
+        implements IPopupMenuPainter<C, U>
 {
     /**
      * todo 1. Incorrect menu placement when corner is off (spacing == shade)
@@ -195,7 +197,7 @@ public class PopupMenuPainter<E extends JPopupMenu, U extends WPopupMenuUI> exte
     }
 
     @Override
-    protected void paintTransparentPopup ( final Graphics2D g2d, final E popupMenu )
+    protected void paintTransparentPopup ( final Graphics2D g2d, final C popupMenu )
     {
         final Dimension menuSize = popupMenu.getSize ();
 
@@ -220,7 +222,7 @@ public class PopupMenuPainter<E extends JPopupMenu, U extends WPopupMenuUI> exte
      * @param popupMenu popup menu
      * @param menuSize  menu size
      */
-    protected void paintDropdownCornerFill ( final Graphics2D g2d, final E popupMenu, final Dimension menuSize )
+    protected void paintDropdownCornerFill ( final Graphics2D g2d, final C popupMenu, final Dimension menuSize )
     {
         // Checking whether corner should be filled or not
         if ( popupStyle == PopupStyle.dropdown && round == 0 )
@@ -297,14 +299,14 @@ public class PopupMenuPainter<E extends JPopupMenu, U extends WPopupMenuUI> exte
      * @param popupMenu popup menu to retrieve combobox UI for
      * @return combobox UI for the specified combobox popup menu
      */
-    protected WebComboBoxUI geComboBoxUI ( final E popupMenu )
+    protected WebComboBoxUI geComboBoxUI ( final C popupMenu )
     {
         final JComboBox comboBox = ReflectUtils.getFieldValueSafely ( popupMenu, "comboBox" );
         return comboBox != null && comboBox.getUI () instanceof WebComboBoxUI ? ( WebComboBoxUI ) comboBox.getUI () : null;
     }
 
     @Override
-    public Point preparePopupMenu ( final E popupMenu, final Component invoker, int x, int y )
+    public Point preparePopupMenu ( final C popupMenu, final Component invoker, int x, int y )
     {
         // Updating popup location according to popup menu UI settings
         if ( invoker != null )
@@ -455,7 +457,7 @@ public class PopupMenuPainter<E extends JPopupMenu, U extends WPopupMenuUI> exte
     }
 
     @Override
-    public void configurePopup ( final E popupMenu, final Component invoker, final int x, final int y, final Popup popup )
+    public void configurePopup ( final C popupMenu, final Component invoker, final int x, final int y, final Popup popup )
     {
         // Retrieve component directly from the popup
         final Component window = ReflectUtils.callMethodSafely ( popup, "getComponent" );
@@ -472,7 +474,7 @@ public class PopupMenuPainter<E extends JPopupMenu, U extends WPopupMenuUI> exte
      * @param window    popup menu window
      * @param popupMenu popup menu
      */
-    protected void installPopupSettings ( final Window window, final E popupMenu )
+    protected void installPopupSettings ( final Window window, final C popupMenu )
     {
         if ( window != null && shaped && SwingUtils.isHeavyWeightWindow ( window ) )
         {
@@ -512,7 +514,7 @@ public class PopupMenuPainter<E extends JPopupMenu, U extends WPopupMenuUI> exte
      * @param popupMenu popup menu
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected void uninstallPopupSettings ( final Window window, final E popupMenu )
+    protected void uninstallPopupSettings ( final Window window, final C popupMenu )
     {
         if ( window != null && shaped && SwingUtils.isHeavyWeightWindow ( window ) )
         {
