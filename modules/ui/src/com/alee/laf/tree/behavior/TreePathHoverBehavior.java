@@ -26,7 +26,7 @@ import javax.swing.tree.TreePath;
 import java.awt.*;
 
 /**
- * Abstract behavior that provides hover events for {@link javax.swing.JTree} paths.
+ * Abstract behavior that provides hover events for {@link JTree} paths.
  * For a simple installation and uninstallation you can call {@link #install()} and {@link #uninstall()} methods.
  *
  * @param <C> component type
@@ -36,7 +36,7 @@ import java.awt.*;
 public abstract class TreePathHoverBehavior<C extends JTree> extends AbstractObjectHoverBehavior<C, TreePath>
 {
     /**
-     * Constructs behavior for the specified tree.
+     * Constructs behavior for the specified {@link JTree}.
      *
      * @param tree tree into which this behavior is installed
      */
@@ -46,9 +46,9 @@ public abstract class TreePathHoverBehavior<C extends JTree> extends AbstractObj
     }
 
     /**
-     * Constructs behavior for the specified tree.
+     * Constructs behavior for the specified {@link JTree}.
      *
-     * @param tree        tree into which this behavior is installed
+     * @param tree        {@link JTree} into which this behavior is installed
      * @param enabledOnly whether or not behavior should only track hover events when tree is enabled
      */
     public TreePathHoverBehavior ( final C tree, final boolean enabledOnly )

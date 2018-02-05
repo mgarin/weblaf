@@ -436,6 +436,7 @@ public final class StyleId implements Identifiable
     public static final ChildStyleId tableCellRenderer = ChildStyleId.of ( "renderer" );
     public static final ChildStyleId tableCellRendererNumber = ChildStyleId.of ( "renderer-number" );
     public static final ChildStyleId tableCellRendererDouble = ChildStyleId.of ( "renderer-double" );
+    public static final ChildStyleId tableCellRendererFloat = ChildStyleId.of ( "renderer-float" );
     public static final ChildStyleId tableCellRendererDate = ChildStyleId.of ( "renderer-date" );
     public static final ChildStyleId tableCellRendererIcon = ChildStyleId.of ( "renderer-icon" );
     public static final ChildStyleId tableCellRendererBoolean = ChildStyleId.of ( "renderer-boolean" );

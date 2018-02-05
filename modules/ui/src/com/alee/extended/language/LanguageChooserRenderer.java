@@ -22,7 +22,6 @@ import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.UILanguageManager;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.Locale;
 
 /**
@@ -31,33 +30,30 @@ import java.util.Locale;
  * @author Mikle Garin
  */
 
-public class LanguageChooserRenderer extends WebComboBoxRenderer
+public class LanguageChooserRenderer extends WebComboBoxRenderer<Locale, JList>
 {
     @Override
-    protected Icon iconForValue ( final JList list, final Object value, final int index, final boolean isSelected,
-                                  final boolean hasFocus )
+    protected Icon iconForValue ( final JList list, final Locale value, final int index,
+                                  final boolean isSelected, final boolean hasFocus )
     {
-        final Locale locale = ( Locale ) value;
-        return UILanguageManager.getLocaleIcon ( locale );
+        return UILanguageManager.getLocaleIcon ( value );
     }
 
     @Override
-    protected String textForValue ( final JList list, final Object value, final int index, final boolean isSelected,
-                                    final boolean hasFocus )
+    protected String textForValue ( final JList list, final Locale value, final int index,
+                                    final boolean isSelected, final boolean hasFocus )
     {
-        final Locale locale = ( Locale ) value;
-        return LanguageManager.getLocaleTitle ( locale );
+        return LanguageManager.getLocaleTitle ( value );
     }
 
     @Override
-    public Component getListCellRendererComponent ( final JList list, final Object value, final int index,
-                                                    final boolean isSelected, final boolean hasFocus )
+    protected void updateView ( final JList list, final Locale value, final int index, final boolean isSelected, final boolean hasFocus )
     {
-        final JComponent renderer = ( JComponent ) super.getListCellRendererComponent ( list, value, index, isSelected, hasFocus );
-
         // Special property for locale value
-        renderer.putClientProperty ( LanguageItemLocale.LOCALE_VALUE_KEY, value );
+        // todo Maybe use setLocale ( locale ) instead?
+        putClientProperty ( LanguageItemLocale.LOCALE_VALUE_KEY, value );
 
-        return renderer;
+        // Updating view
+        super.updateView ( list, value, index, isSelected, hasFocus );
     }
 }

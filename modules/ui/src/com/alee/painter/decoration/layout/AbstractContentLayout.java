@@ -181,7 +181,7 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
     public boolean hasContentBaseline ( final C c, final D d )
     {
         // Simply whether or not any of the contents have meaningful baseline
-        // If this behavior is not sufficient it can be overriden in specific layout implementation
+        // If this behavior is not sufficient it can be overridden in specific layout implementation
         for ( final IContent content : getContents ( c, d ) )
         {
             // We are only interested in non-empty contents which provide reasonable baseline
@@ -199,7 +199,7 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
     public int getContentBaseline ( final C c, final D d, final Rectangle bounds )
     {
         // Simply return baseline of the first content that has it
-        // If this behavior is not sufficient it can be overriden in specific layout implementation
+        // If this behavior is not sufficient it can be overridden in specific layout implementation
         for ( final IContent content : getContents ( c, d ) )
         {
             // We are only interested in non-empty contents which provide reasonable baseline

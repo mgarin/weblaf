@@ -17,11 +17,15 @@
 
 package com.alee.laf.table.renderers;
 
+import com.alee.extended.label.WebStyledLabel;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.managers.style.StyleId;
+import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
+import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
@@ -30,12 +34,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Default boolean table cell renderer for WebLaF tables.
+ * Default {@link TableCellRenderer} implementation for {@link Boolean} values.
  *
+ * @param <C> table type
  * @author Mikle Garin
  */
 
-public class WebTableBooleanCellRenderer extends WebCheckBox implements TableCellRenderer, Stateful
+public class WebTableBooleanCellRenderer<C extends JTable> extends WebCheckBox implements TableCellRenderer, Stateful
 {
     /**
      * Additional renderer decoration states.
@@ -43,7 +48,7 @@ public class WebTableBooleanCellRenderer extends WebCheckBox implements TableCel
     protected final List<String> states;
 
     /**
-     * Constructs default boolean table cell renderer.
+     * Constructs new {@link WebTableBooleanCellRenderer}.
      */
     public WebTableBooleanCellRenderer ()
     {
@@ -68,36 +73,36 @@ public class WebTableBooleanCellRenderer extends WebCheckBox implements TableCel
      * @param row        cell row number
      * @param column     cell column number
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected void updateStates ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row,
-                                  final int column )
+    protected void updateStates ( final C table, final Boolean value, final boolean isSelected,
+                                  final boolean hasFocus, final int row, final int column )
     {
         states.clear ();
 
         // Basic states
         states.add ( isSelected ? DecorationState.selected : DecorationState.unselected );
+
+        // Focus state
         if ( hasFocus )
         {
             states.add ( DecorationState.focused );
         }
 
-        // Extra states provided by value
-        states.addAll ( DecorationUtils.getExtraStates ( value ) );
+        // todo Add hover state when WTableUI is available
+        // states.add ( DecorationState.hover );
     }
 
     /**
      * Updates table cell renderer component style ID.
      *
-     * @param table      table
+     * @param table      {@link JTable}
      * @param value      cell value
      * @param isSelected whether or not cell is selected
      * @param hasFocus   whether or not cell has focus
      * @param row        cell row number
      * @param column     cell column number
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected void updateStyleId ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row,
-                                   final int column )
+    protected void updateStyleId ( final C table, final Boolean value, final boolean isSelected,
+                                   final boolean hasFocus, final int row, final int column )
     {
         setStyleId ( StyleId.tableCellRendererBoolean.at ( table ) );
     }
@@ -105,24 +110,106 @@ public class WebTableBooleanCellRenderer extends WebCheckBox implements TableCel
     /**
      * Updating renderer based on the provided settings.
      *
-     * @param table      table
+     * @param table      {@link JTable}
      * @param value      cell value
      * @param isSelected whether or not cell is selected
      * @param hasFocus   whether or not cell has focus
      * @param row        cell row number
      * @param column     cell column number
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected void updateView ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row,
-                                final int column )
+    protected void updateView ( final C table, final Boolean value, final boolean isSelected,
+                                final boolean hasFocus, final int row, final int column )
     {
-        // Updating renderer visual settings
-        setEnabled ( table.isEnabled () );
-        setFont ( table.getFont () );
-        setComponentOrientation ( table.getComponentOrientation () );
+        setEnabled ( enabledForValue ( table, value, isSelected, hasFocus, row, column ) );
+        setComponentOrientation ( orientationForValue ( table, value, isSelected, hasFocus, row, column ) );
+        setFont ( fontForValue ( table, value, isSelected, hasFocus, row, column ) );
+        setForeground ( foregroundForValue ( table, value, isSelected, hasFocus, row, column ) );
+        setSelected ( selectedForValue ( table, value, isSelected, hasFocus, row, column ) );
+    }
 
-        // Updating selection
-        setSelected ( value != null && ( Boolean ) value );
+    /**
+     * Returns whether or not renderer for the specified cell value should be enabled.
+     *
+     * @param table      {@link JTable}
+     * @param value      cell value
+     * @param isSelected whether or not cell is selected
+     * @param hasFocus   whether or not cell has focus
+     * @param row        cell row number
+     * @param column     cell column number
+     * @return {@code true} if renderer for the specified cell value should be enabled, {@code false} otherwise
+     */
+    protected boolean enabledForValue ( final C table, final Boolean value, final boolean isSelected,
+                                        final boolean hasFocus, final int row, final int column )
+    {
+        return table.isEnabled ();
+    }
+
+    /**
+     * Returns renderer {@link ComponentOrientation} for the specified cell value.
+     *
+     * @param table      {@link JTable}
+     * @param value      cell value
+     * @param isSelected whether or not cell is selected
+     * @param hasFocus   whether or not cell has focus
+     * @param row        cell row number
+     * @param column     cell column number
+     * @return renderer {@link ComponentOrientation} for the specified cell value
+     */
+    protected ComponentOrientation orientationForValue ( final C table, final Boolean value, final boolean isSelected,
+                                                         final boolean hasFocus, final int row, final int column )
+    {
+        return table.getComponentOrientation ();
+    }
+
+    /**
+     * Returns renderer {@link Font} for the specified cell value.
+     *
+     * @param table      {@link JTable}
+     * @param value      cell value
+     * @param isSelected whether or not cell is selected
+     * @param hasFocus   whether or not cell has focus
+     * @param row        cell row number
+     * @param column     cell column number
+     * @return renderer {@link Font} for the specified cell value
+     */
+    protected Font fontForValue ( final C table, final Boolean value, final boolean isSelected,
+                                  final boolean hasFocus, final int row, final int column )
+    {
+        return table.getFont ();
+    }
+
+    /**
+     * Returns renderer foreground color for the specified cell value.
+     *
+     * @param table      {@link JTable}
+     * @param value      cell value
+     * @param isSelected whether or not cell is selected
+     * @param hasFocus   whether or not cell has focus
+     * @param row        cell row number
+     * @param column     cell column number
+     * @return renderer foreground color for the specified cell value
+     */
+    protected Color foregroundForValue ( final C table, final Boolean value, final boolean isSelected,
+                                         final boolean hasFocus, final int row, final int column )
+    {
+        return isSelected ? table.getSelectionForeground () : table.getForeground ();
+    }
+
+    /**
+     * Returns renderer value for the specified cell.
+     *
+     * @param table      {@link JTable}
+     * @param value      cell value
+     * @param isSelected whether or not cell is selected
+     * @param hasFocus   whether or not cell has focus
+     * @param row        cell row number
+     * @param column     cell column number
+     * @return renderer value for the specified cell
+     */
+    protected boolean selectedForValue ( final C table, final Boolean value, final boolean isSelected,
+                                         final boolean hasFocus, final int row, final int column )
+    {
+        return value != null && value;
     }
 
     @Override
@@ -130,13 +217,13 @@ public class WebTableBooleanCellRenderer extends WebCheckBox implements TableCel
                                                      final boolean hasFocus, final int row, final int column )
     {
         // Updating custom states
-        updateStates ( table, value, isSelected, hasFocus, row, column );
+        updateStates ( ( C ) table, ( Boolean ) value, isSelected, hasFocus, row, column );
 
         // Updating style ID
-        updateStyleId ( table, value, isSelected, hasFocus, row, column );
+        updateStyleId ( ( C ) table, ( Boolean ) value, isSelected, hasFocus, row, column );
 
         // Updating renderer view
-        updateView ( table, value, isSelected, hasFocus, row, column );
+        updateView ( ( C ) table, ( Boolean ) value, isSelected, hasFocus, row, column );
 
         // Updating decoration states for this render cycle
         DecorationUtils.fireStatesChanged ( this );
@@ -144,11 +231,144 @@ public class WebTableBooleanCellRenderer extends WebCheckBox implements TableCel
         return this;
     }
 
+    @Override
+    public void validate ()
+    {
+        /**
+         * Overridden for performance reasons.
+         */
+    }
+
+    @Override
+    public void invalidate ()
+    {
+        /**
+         * Overridden for performance reasons.
+         */
+    }
+
+    @Override
+    public void revalidate ()
+    {
+        /**
+         * Overridden for performance reasons.
+         */
+    }
+
+    @Override
+    public void repaint ( final long tm, final int x, final int y, final int width, final int height )
+    {
+        /**
+         * Overridden for performance reasons.
+         */
+    }
+
+    @Override
+    public void repaint ( final Rectangle r )
+    {
+        /**
+         * Overridden for performance reasons.
+         */
+    }
+
+    @Override
+    public void repaint ()
+    {
+        /**
+         * Overridden for performance reasons.
+         */
+    }
+
+    @Override
+    protected void firePropertyChange ( final String pn, final Object oldValue, final Object newValue )
+    {
+        /**
+         * Overridden for performance reasons.
+         */
+        if ( CompareUtils.equals ( pn, StyleId.STYLE_PROPERTY, StyleId.PARENT_STYLE_PROPERTY, WebLookAndFeel.TEXT_PROPERTY,
+                AbstractDecorationPainter.DECORATION_STATES_PROPERTY, WebStyledLabel.STYLE_RANGES_PROPERTY,
+                WebLookAndFeel.MODEL_PROPERTY ) )
+        {
+            super.firePropertyChange ( pn, oldValue, newValue );
+        }
+        else if ( CompareUtils.equals ( pn, WebLookAndFeel.FONT_PROPERTY, WebLookAndFeel.FOREGROUND_PROPERTY ) &&
+                oldValue != newValue && getClientProperty ( javax.swing.plaf.basic.BasicHTML.propertyKey ) != null )
+        {
+            super.firePropertyChange ( pn, oldValue, newValue );
+        }
+    }
+
+    @Override
+    public void firePropertyChange ( final String propertyName, final byte oldValue, final byte newValue )
+    {
+        /**
+         * Overridden for performance reasons.
+         */
+    }
+
+    @Override
+    public void firePropertyChange ( final String propertyName, final char oldValue, final char newValue )
+    {
+        /**
+         * Overridden for performance reasons.
+         */
+    }
+
+    @Override
+    public void firePropertyChange ( final String propertyName, final short oldValue, final short newValue )
+    {
+        /**
+         * Overridden for performance reasons.
+         */
+    }
+
+    @Override
+    public void firePropertyChange ( final String propertyName, final int oldValue, final int newValue )
+    {
+        /**
+         * Overridden for performance reasons.
+         */
+    }
+
+    @Override
+    public void firePropertyChange ( final String propertyName, final long oldValue, final long newValue )
+    {
+        /**
+         * Overridden for performance reasons.
+         */
+    }
+
+    @Override
+    public void firePropertyChange ( final String propertyName, final float oldValue, final float newValue )
+    {
+        /**
+         * Overridden for performance reasons.
+         */
+    }
+
+    @Override
+    public void firePropertyChange ( final String propertyName, final double oldValue, final double newValue )
+    {
+        /**
+         * Overridden for performance reasons.
+         */
+    }
+
+    @Override
+    public void firePropertyChange ( final String propertyName, final boolean oldValue, final boolean newValue )
+    {
+        /**
+         * Overridden for performance reasons.
+         */
+    }
+
     /**
      * A subclass of {@link WebTableBooleanCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
+     *
+     * @param <C> table type
      */
-    public static class UIResource extends WebTableBooleanCellRenderer implements javax.swing.plaf.UIResource
+    public static class UIResource<C extends JTable> extends WebTableBooleanCellRenderer<C> implements javax.swing.plaf.UIResource
     {
         /**
          * Implementation is used completely from {@link WebTableBooleanCellRenderer}.

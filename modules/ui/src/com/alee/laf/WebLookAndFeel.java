@@ -511,7 +511,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
             @Override
             public Object createValue ( final UIDefaults table )
             {
-                return new WebListCellRenderer.UIResource ();
+                return new WebListCellRenderer.UIResource<Object,JList> ();
             }
         } );
 

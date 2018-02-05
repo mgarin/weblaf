@@ -32,6 +32,7 @@ import com.alee.utils.TextUtils;
 
 import javax.swing.*;
 import javax.swing.plaf.TreeUI;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
 import java.util.ArrayList;
@@ -39,17 +40,20 @@ import java.util.List;
 
 /**
  * Default {@link TreeCellRenderer} implementation based on {@link WebStyledLabel}.
- * Unlike {@link javax.swing.tree.DefaultTreeCellRenderer} it contains multiple methods for convenient renderer customization.
- * Also since it is based on {@link WebStyledLabel} it retains all of its extra features.
+ * Unlike {@link javax.swing.tree.DefaultTreeCellRenderer} it has generics for node and tree types.
+ * It also contains multiple methods for convenient renderer customization that can be overridden.
+ * And since it is based on {@link WebStyledLabel} it retains all of its extra features.
  *
+ * @param <N> node type
+ * @param <C> tree type
  * @author Mikle Garin
  */
 
-public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRenderer, Stateful
+public class WebTreeCellRenderer<N extends DefaultMutableTreeNode, C extends JTree> extends WebStyledLabel
+        implements TreeCellRenderer, Stateful
 {
     /**
-     * todo 1. Add generic type for values?
-     * todo 2. Get rid of the hardcoded icons within renderer
+     * todo 1. Get rid of the hardcoded icons within renderer
      */
 
     /**
@@ -88,7 +92,7 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
     protected ImageIcon leafIcon = WebTreeUI.LEAF_ICON;
 
     /**
-     * Constructs default tree cell renderer.
+     * Constructs new {@link WebTreeCellRenderer}.
      */
     public WebTreeCellRenderer ()
     {
@@ -99,12 +103,12 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
     }
 
     /**
-     * Returns icon type key for this cell renderer.
+     * Returns icon type key for this renderer.
      *
      * @param type icon type
-     * @return icon type key for this cell renderer
+     * @return icon type key for this renderer
      */
-    private String getIconTypeKey ( final String type )
+    protected String getIconTypeKey ( final String type )
     {
         return "WebTreeCellRenderer." + id + "." + type;
     }
@@ -202,16 +206,15 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
     /**
      * Updates custom renderer states based on render cycle settings.
      *
-     * @param tree       tree
-     * @param value      cell value
-     * @param isSelected whether or not cell is selected
-     * @param expanded   whether or not cell is expanded
-     * @param leaf       whether or not cell is leaf
-     * @param row        cell row number
-     * @param hasFocus   whether or not cell has focus
+     * @param tree       {@link JTree}
+     * @param node       {@link DefaultMutableTreeNode}
+     * @param isSelected whether or not {@link DefaultMutableTreeNode} is selected
+     * @param expanded   whether or not {@link DefaultMutableTreeNode} is expanded
+     * @param leaf       whether or not {@link DefaultMutableTreeNode} is leaf
+     * @param row        {@link DefaultMutableTreeNode} row number
+     * @param hasFocus   whether or not {@link DefaultMutableTreeNode} has focus
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected void updateStates ( final JTree tree, final Object value, final boolean isSelected,
+    protected void updateStates ( final C tree, final N node, final boolean isSelected,
                                   final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         // Resetting states
@@ -245,37 +248,36 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
             }
         }
 
-        // Extra states provided by value
-        states.addAll ( DecorationUtils.getExtraStates ( value ) );
+        // Extra states provided by node
+        states.addAll ( DecorationUtils.getExtraStates ( node ) );
     }
 
     /**
-     * Updates tree cell renderer component style ID.
+     * Updates renderer component style identifier.
      *
-     * @param tree       tree
-     * @param value      cell value
-     * @param isSelected whether or not cell is selected
-     * @param expanded   whether or not cell is expanded
-     * @param leaf       whether or not cell is leaf
-     * @param row        cell row number
-     * @param hasFocus   whether or not cell has focus
+     * @param tree       {@link JTree}
+     * @param node       {@link DefaultMutableTreeNode}
+     * @param isSelected whether or not {@link DefaultMutableTreeNode} is selected
+     * @param expanded   whether or not {@link DefaultMutableTreeNode} is expanded
+     * @param leaf       whether or not {@link DefaultMutableTreeNode} is leaf
+     * @param row        {@link DefaultMutableTreeNode} row number
+     * @param hasFocus   whether or not {@link DefaultMutableTreeNode} has focus
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected void updateStyleId ( final JTree tree, final Object value, final boolean isSelected,
+    protected void updateStyleId ( final C tree, final N node, final boolean isSelected,
                                    final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         StyleId id = null;
-        if ( value instanceof ChildStyleSupport )
+        if ( node instanceof ChildStyleSupport )
         {
-            final ChildStyleId childStyleId = ( ( ChildStyleSupport ) value ).getChildStyleId ();
+            final ChildStyleId childStyleId = ( ( ChildStyleSupport ) node ).getChildStyleId ();
             if ( childStyleId != null )
             {
                 id = childStyleId.at ( tree );
             }
         }
-        else if ( value instanceof StyleSupport )
+        else if ( node instanceof StyleSupport )
         {
-            final StyleId styleId = ( ( StyleSupport ) value ).getStyleId ();
+            final StyleId styleId = ( ( StyleSupport ) node ).getStyleId ();
             if ( styleId != null )
             {
                 id = styleId;
@@ -291,103 +293,98 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
     /**
      * Updating renderer based on the provided settings.
      *
-     * @param tree       tree
-     * @param value      cell value
-     * @param isSelected whether or not cell is selected
-     * @param expanded   whether or not cell is expanded
-     * @param leaf       whether or not cell is leaf
-     * @param row        cell row number
-     * @param hasFocus   whether or not cell has focus
+     * @param tree       {@link JTree}
+     * @param node       {@link DefaultMutableTreeNode}
+     * @param isSelected whether or not {@link DefaultMutableTreeNode} is selected
+     * @param expanded   whether or not {@link DefaultMutableTreeNode} is expanded
+     * @param leaf       whether or not {@link DefaultMutableTreeNode} is leaf
+     * @param row        {@link DefaultMutableTreeNode} row number
+     * @param hasFocus   whether or not {@link DefaultMutableTreeNode} has focus
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected void updateView ( final JTree tree, final Object value, final boolean isSelected,
+    protected void updateView ( final C tree, final N node, final boolean isSelected,
                                 final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
-        setEnabled ( enabledForValue ( tree, value, isSelected, expanded, leaf, row, hasFocus ) );
-        setComponentOrientation ( orientationForValue ( tree, value, isSelected, expanded, leaf, row, hasFocus ) );
-        setFont ( fontForValue ( tree, value, isSelected, expanded, leaf, row, hasFocus ) );
-        setForeground ( foregroundForValue ( tree, value, isSelected, expanded, leaf, row, hasFocus ) );
-        setIcon ( iconForValue ( tree, value, isSelected, expanded, leaf, row, hasFocus ) );
-        setText ( textForValue ( tree, value, isSelected, expanded, leaf, row, hasFocus ) );
+        setEnabled ( enabledForValue ( tree, node, isSelected, expanded, leaf, row, hasFocus ) );
+        setComponentOrientation ( orientationForValue ( tree, node, isSelected, expanded, leaf, row, hasFocus ) );
+        setFont ( fontForValue ( tree, node, isSelected, expanded, leaf, row, hasFocus ) );
+        setForeground ( foregroundForValue ( tree, node, isSelected, expanded, leaf, row, hasFocus ) );
+        setIcon ( iconForValue ( tree, node, isSelected, expanded, leaf, row, hasFocus ) );
+        setText ( textForValue ( tree, node, isSelected, expanded, leaf, row, hasFocus ) );
     }
 
     /**
-     * Returns whether or not renderer for the specified cell value should be enabled.
+     * Returns whether or not renderer for the specified {@link DefaultMutableTreeNode} should be enabled.
      *
-     * @param tree       tree
-     * @param value      cell value
-     * @param isSelected whether or not cell is selected
-     * @param expanded   whether or not cell is expanded
-     * @param leaf       whether or not cell is leaf
-     * @param row        cell row number
-     * @param hasFocus   whether or not cell has focus
-     * @return {@code true} if renderer for the specified cell value should be enabled, {@code false} otherwise
+     * @param tree       {@link JTree}
+     * @param node       {@link DefaultMutableTreeNode}
+     * @param isSelected whether or not {@link DefaultMutableTreeNode} is selected
+     * @param expanded   whether or not {@link DefaultMutableTreeNode} is expanded
+     * @param leaf       whether or not {@link DefaultMutableTreeNode} is leaf
+     * @param row        {@link DefaultMutableTreeNode} row number
+     * @param hasFocus   whether or not {@link DefaultMutableTreeNode} has focus
+     * @return {@code true} if renderer for the specified {@link DefaultMutableTreeNode} should be enabled, {@code false} otherwise
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected boolean enabledForValue ( final JTree tree, final Object value, final boolean isSelected,
+    protected boolean enabledForValue ( final C tree, final N node, final boolean isSelected,
                                         final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         return tree.isEnabled ();
     }
 
     /**
-     * Returns renderer {@link ComponentOrientation} for the specified cell value.
+     * Returns renderer {@link ComponentOrientation} for the specified {@link DefaultMutableTreeNode}.
      *
-     * @param tree       tree
-     * @param value      cell value
-     * @param isSelected whether or not cell is selected
-     * @param expanded   whether or not cell is expanded
-     * @param leaf       whether or not cell is leaf
-     * @param row        cell row number
-     * @param hasFocus   whether or not cell has focus
-     * @return renderer {@link ComponentOrientation} for the specified cell value
+     * @param tree       {@link JTree}
+     * @param node       {@link DefaultMutableTreeNode}
+     * @param isSelected whether or not {@link DefaultMutableTreeNode} is selected
+     * @param expanded   whether or not {@link DefaultMutableTreeNode} is expanded
+     * @param leaf       whether or not {@link DefaultMutableTreeNode} is leaf
+     * @param row        {@link DefaultMutableTreeNode} row number
+     * @param hasFocus   whether or not {@link DefaultMutableTreeNode} has focus
+     * @return renderer {@link ComponentOrientation} for the specified {@link DefaultMutableTreeNode}
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    private ComponentOrientation orientationForValue ( final JTree tree, final Object value, final boolean isSelected,
-                                                       final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
+    protected ComponentOrientation orientationForValue ( final C tree, final N node, final boolean isSelected,
+                                                         final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         return tree.getComponentOrientation ();
     }
 
     /**
-     * Returns renderer {@link Font} for the specified cell value.
+     * Returns renderer {@link Font} for the specified {@link DefaultMutableTreeNode}.
      *
-     * @param tree       tree
-     * @param value      cell value
-     * @param isSelected whether or not cell is selected
-     * @param expanded   whether or not cell is expanded
-     * @param leaf       whether or not cell is leaf
-     * @param row        cell row number
-     * @param hasFocus   whether or not cell has focus
-     * @return renderer {@link Font} for the specified cell value
+     * @param tree       {@link JTree}
+     * @param node       {@link DefaultMutableTreeNode}
+     * @param isSelected whether or not {@link DefaultMutableTreeNode} is selected
+     * @param expanded   whether or not {@link DefaultMutableTreeNode} is expanded
+     * @param leaf       whether or not {@link DefaultMutableTreeNode} is leaf
+     * @param row        {@link DefaultMutableTreeNode} row number
+     * @param hasFocus   whether or not {@link DefaultMutableTreeNode} has focus
+     * @return renderer {@link Font} for the specified {@link DefaultMutableTreeNode}
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected Font fontForValue ( final JTree tree, final Object value, final boolean isSelected,
+    protected Font fontForValue ( final C tree, final N node, final boolean isSelected,
                                   final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         return tree.getFont ();
     }
 
     /**
-     * Returns renderer foreground color for the specified cell value.
+     * Returns renderer foreground color for the specified {@link DefaultMutableTreeNode}.
      *
-     * @param tree       tree
-     * @param value      cell value
-     * @param isSelected whether or not cell is selected
-     * @param expanded   whether or not cell is expanded
-     * @param leaf       whether or not cell is leaf
-     * @param row        cell row number
-     * @param hasFocus   whether or not cell has focus
-     * @return renderer foreground color for the specified cell value
+     * @param tree       {@link JTree}
+     * @param node       {@link DefaultMutableTreeNode}
+     * @param isSelected whether or not {@link DefaultMutableTreeNode} is selected
+     * @param expanded   whether or not {@link DefaultMutableTreeNode} is expanded
+     * @param leaf       whether or not {@link DefaultMutableTreeNode} is leaf
+     * @param row        {@link DefaultMutableTreeNode} row number
+     * @param hasFocus   whether or not {@link DefaultMutableTreeNode} has focus
+     * @return renderer foreground color for the specified {@link DefaultMutableTreeNode}
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected Color foregroundForValue ( final JTree tree, final Object value, final boolean isSelected,
+    protected Color foregroundForValue ( final C tree, final N node, final boolean isSelected,
                                          final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         final Color foreground;
-        if ( value instanceof ColorSupport )
+        if ( node instanceof ColorSupport )
         {
-            final Color color = ( ( ColorSupport ) value ).getColor ();
+            final Color color = ( ( ColorSupport ) node ).getColor ();
             foreground = color != null ? color : tree.getForeground ();
         }
         else
@@ -398,37 +395,36 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
     }
 
     /**
-     * Returns renderer icon for the specified cell value.
+     * Returns renderer icon for the specified {@link DefaultMutableTreeNode}.
      *
-     * @param tree       tree
-     * @param value      cell value
-     * @param isSelected whether or not cell is selected
-     * @param expanded   whether or not cell is expanded
-     * @param leaf       whether or not cell is leaf
-     * @param row        cell row number
-     * @param hasFocus   whether or not cell has focus
-     * @return renderer icon for the specified cell value
+     * @param tree       {@link JTree}
+     * @param node       {@link DefaultMutableTreeNode}
+     * @param isSelected whether or not {@link DefaultMutableTreeNode} is selected
+     * @param expanded   whether or not {@link DefaultMutableTreeNode} is expanded
+     * @param leaf       whether or not {@link DefaultMutableTreeNode} is leaf
+     * @param row        {@link DefaultMutableTreeNode} row number
+     * @param hasFocus   whether or not {@link DefaultMutableTreeNode} has focus
+     * @return renderer icon for the specified {@link DefaultMutableTreeNode}
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected Icon iconForValue ( final JTree tree, final Object value, final boolean isSelected,
+    protected Icon iconForValue ( final C tree, final N node, final boolean isSelected,
                                   final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         Icon icon;
-        if ( value instanceof IconSupport )
+        if ( node instanceof IconSupport )
         {
-            icon = ( ( IconSupport ) value ).getIcon ();
+            icon = ( ( IconSupport ) node ).getIcon ();
             if ( !tree.isEnabled () )
             {
-                final String id = value instanceof UniqueNode ? ( ( UniqueNode ) value ).getId () : "" + value.hashCode ();
+                final String id = node instanceof UniqueNode ? ( ( UniqueNode ) node ).getId () : "" + node.hashCode ();
                 icon = ImageUtils.getDisabledCopy ( getIconTypeKey ( id ), icon );
             }
         }
         else
         {
-            icon = leaf ? leafIcon : tree.getModel ().getRoot () == value ? rootIcon : expanded ? openIcon : closedIcon;
+            icon = leaf ? leafIcon : tree.getModel ().getRoot () == node ? rootIcon : expanded ? openIcon : closedIcon;
             if ( !tree.isEnabled () )
             {
-                final String type = leaf ? "leaf" : tree.getModel ().getRoot () == value ? "root" : expanded ? "open" : "closed";
+                final String type = leaf ? "leaf" : tree.getModel ().getRoot () == node ? "root" : expanded ? "open" : "closed";
                 icon = ImageUtils.getDisabledCopy ( getIconTypeKey ( type ), icon );
             }
         }
@@ -436,57 +432,58 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
     }
 
     /**
-     * Returns renderer text for the specified cell value.
+     * Returns renderer text for the specified {@link DefaultMutableTreeNode}.
      *
-     * @param tree       tree
-     * @param value      cell value
-     * @param isSelected whether or not cell is selected
-     * @param expanded   whether or not cell is expanded
-     * @param leaf       whether or not cell is leaf
-     * @param row        cell row number
-     * @param hasFocus   whether or not cell has focus
-     * @return renderer text for the specified cell value
+     * @param tree       {@link JTree}
+     * @param node       {@link DefaultMutableTreeNode}
+     * @param isSelected whether or not {@link DefaultMutableTreeNode} is selected
+     * @param expanded   whether or not {@link DefaultMutableTreeNode} is expanded
+     * @param leaf       whether or not {@link DefaultMutableTreeNode} is leaf
+     * @param row        {@link DefaultMutableTreeNode} row number
+     * @param hasFocus   whether or not {@link DefaultMutableTreeNode} has focus
+     * @return renderer text for the specified {@link DefaultMutableTreeNode}
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected String textForValue ( final JTree tree, final Object value, final boolean isSelected,
+    protected String textForValue ( final C tree, final N node, final boolean isSelected,
                                     final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         final String text;
-        if ( value instanceof TitleSupport )
+        if ( node instanceof TitleSupport )
         {
-            text = ( ( TitleSupport ) value ).getTitle ();
+            text = ( ( TitleSupport ) node ).getTitle ();
         }
         else
         {
-            text = tree.convertValueToText ( value, isSelected, expanded, leaf, row, hasFocus );
+            text = tree.convertValueToText ( node, isSelected, expanded, leaf, row, hasFocus );
         }
         return text;
     }
 
     /**
-     * Returns tree cell renderer component.
+     * Returns renderer component for the specified {@link DefaultMutableTreeNode}.
+     * Even though {@link TreeCellRenderer} mentions that it is responsible for rendering DnD drop location - this renderer is not.
+     * DnD is handled differently in WebLaF and there are separate tools that do better job at handling DnD operation and its view.
      *
-     * @param tree       tree
-     * @param value      cell value
-     * @param isSelected whether or not cell is selected
-     * @param expanded   whether or not cell is expanded
-     * @param leaf       whether or not cell is leaf
-     * @param row        cell row number
-     * @param hasFocus   whether or not cell has focus
-     * @return cell renderer component
+     * @param tree       {@link JTree}
+     * @param node       {@link DefaultMutableTreeNode}
+     * @param isSelected whether or not {@link DefaultMutableTreeNode} is selected
+     * @param expanded   whether or not {@link DefaultMutableTreeNode} is expanded
+     * @param leaf       whether or not {@link DefaultMutableTreeNode} is leaf
+     * @param row        {@link DefaultMutableTreeNode} row number
+     * @param hasFocus   whether or not {@link DefaultMutableTreeNode} has focus
+     * @return renderer component for the specified {@link DefaultMutableTreeNode}
      */
     @Override
-    public Component getTreeCellRendererComponent ( final JTree tree, final Object value, final boolean isSelected,
+    public Component getTreeCellRendererComponent ( final JTree tree, final Object node, final boolean isSelected,
                                                     final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         // Updating custom states
-        updateStates ( tree, value, isSelected, expanded, leaf, row, hasFocus );
+        updateStates ( ( C ) tree, ( N ) node, isSelected, expanded, leaf, row, hasFocus );
 
         // Updating style ID
-        updateStyleId ( tree, value, isSelected, expanded, leaf, row, hasFocus );
+        updateStyleId ( ( C ) tree, ( N ) node, isSelected, expanded, leaf, row, hasFocus );
 
         // Updating renderer view
-        updateView ( tree, value, isSelected, expanded, leaf, row, hasFocus );
+        updateView ( ( C ) tree, ( N ) node, isSelected, expanded, leaf, row, hasFocus );
 
         // Updating decoration states for this render cycle
         DecorationUtils.fireStatesChanged ( this );
@@ -626,9 +623,13 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
 
     /**
      * A subclass of {@link WebTreeCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
-     * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
+     * It is used to determine renderer provided by the UI class to properly uninstall it on UI uninstall.
+     *
+     * @param <N> node type
+     * @param <C> tree type
      */
-    public static class UIResource extends WebTreeCellRenderer implements javax.swing.plaf.UIResource
+    public static class UIResource<N extends DefaultMutableTreeNode, C extends JTree> extends WebTreeCellRenderer<N, C>
+            implements javax.swing.plaf.UIResource
     {
         /**
          * Implementation is used completely from {@link WebTreeCellRenderer}.

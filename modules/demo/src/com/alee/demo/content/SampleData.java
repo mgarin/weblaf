@@ -24,6 +24,7 @@ import com.alee.utils.CollectionUtils;
 
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -37,21 +38,23 @@ public final class SampleData
     /**
      * Returns sample short table model.
      *
+     * @param editable whether or not model data should be editable
      * @return sample short table model
      */
-    public static TableModel createShortTableModel ()
+    public static TableModel createShortTableModel ( final boolean editable )
     {
-        return new SampleTableModel ( 5 );
+        return new SampleTableModel ( editable, 5 );
     }
 
     /**
      * Returns sample long table model.
      *
+     * @param editable whether or not model data should be editable
      * @return sample long table model
      */
-    public static TableModel createLongTableModel ()
+    public static TableModel createLongTableModel ( final boolean editable )
     {
-        return new SampleTableModel ( 12 );
+        return new SampleTableModel ( editable, 12 );
     }
 
     /**
@@ -60,12 +63,9 @@ public final class SampleData
     private static class SampleTableModel extends AbstractTableModel implements LanguageSensitive
     {
         /**
-         * Table data.
+         * Whether or not model data should be editable.
          */
-        private static final Object[][] data = new Object[][]{
-                { 19, false }, { 32, true }, { 56, false }, { 20, true }, { 14, false }, { 36, false },
-                { 18, true }, { 27, false }, { 35, false }, { 26, false }, { 22, false }, { 38, false }
-        };
+        private final boolean editable;
 
         /**
          * Amount of rows.
@@ -73,18 +73,34 @@ public final class SampleData
         private final int rows;
 
         /**
+         * Table data.
+         */
+        private final Serializable[][] data;
+
+        /**
          * Constructs new {@link SampleTableModel}.
          *
-         * @param rows rows
+         * @param editable whether or not model data should be editable
+         * @param rows     rows
          */
-        public SampleTableModel ( final int rows )
+        public SampleTableModel ( final boolean editable, final int rows )
         {
             super ();
-            if ( rows > data.length )
+            this.editable = editable;
+            if ( rows > 12 )
             {
                 throw new RuntimeException ( "Unsupported amount of rows: " + rows );
             }
             this.rows = rows;
+            this.data = new Serializable[ rows ][ 5 ];
+            for ( int row = 0; row < rows; row++ )
+            {
+                this.data[ row ][ 0 ] = LM.getState ( "demo.example.data.grids.data.row." + row, "first.name" );
+                this.data[ row ][ 1 ] = LM.getState ( "demo.example.data.grids.data.row." + row, "last.name" );
+                this.data[ row ][ 2 ] = LM.getState ( "demo.example.data.grids.data.row." + row, "hobby" );
+                this.data[ row ][ 3 ] = Integer.parseInt ( LM.getState ( "demo.example.data.grids.data.row." + row, "age" ) );
+                this.data[ row ][ 4 ] = Boolean.parseBoolean ( LM.getState ( "demo.example.data.grids.data.row." + row, "vegeterian" ) );
+            }
         }
 
         @Override
@@ -146,19 +162,11 @@ public final class SampleData
             switch ( columnIndex )
             {
                 case 0:
-                    return LM.getState ( "demo.example.data.grids.data.row." + rowIndex, "first.name" );
-
                 case 1:
-                    return LM.getState ( "demo.example.data.grids.data.row." + rowIndex, "last.name" );
-
                 case 2:
-                    return LM.getState ( "demo.example.data.grids.data.row." + rowIndex, "hobby" );
-
                 case 3:
-                    return data[ rowIndex ][ 0 ];
-
                 case 4:
-                    return data[ rowIndex ][ 1 ];
+                    return data[ rowIndex ][ columnIndex ];
 
                 default:
                     throw new RuntimeException ( "There is no column data for index: " + columnIndex );
@@ -168,13 +176,13 @@ public final class SampleData
         @Override
         public boolean isCellEditable ( final int rowIndex, final int columnIndex )
         {
-            return true;
+            return editable;
         }
 
         @Override
         public void setValueAt ( final Object aValue, final int rowIndex, final int columnIndex )
         {
-            data[ rowIndex ][ columnIndex ] = aValue;
+            data[ rowIndex ][ columnIndex ] = ( Serializable ) aValue;
         }
     }
 

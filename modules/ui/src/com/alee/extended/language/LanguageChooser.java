@@ -166,6 +166,12 @@ public class LanguageChooser extends WebComboBox
         addDictionaryListener ( ( LanguageChooserModel ) model );
     }
 
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.languagechooser;
+    }
+
     /**
      * Returns {@link List} of {@link Locale}s to choice is limited to.
      *
@@ -194,11 +200,5 @@ public class LanguageChooser extends WebComboBox
     public void setLocales ( final Collection<Locale> locales )
     {
         getModel ().setLocales ( locales );
-    }
-
-    @Override
-    public StyleId getDefaultStyleId ()
-    {
-        return StyleId.languagechooser;
     }
 }

@@ -85,7 +85,7 @@ public class JTableExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final JTable table = new JTable ( SampleData.createShortTableModel () );
+            final JTable table = new JTable ( SampleData.createShortTableModel ( false ) );
             table.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
             return CollectionUtils.asList ( table );
         }
@@ -109,7 +109,7 @@ public class JTableExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final JTable table = new JTable ( SampleData.createLongTableModel () );
+            final JTable table = new JTable ( SampleData.createLongTableModel ( false ) );
             table.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
             table.setAutoResizeMode ( JTable.AUTO_RESIZE_OFF );
             return CollectionUtils.asList ( new WebScrollPane ( table ).setPreferredSize ( 300, 100 ) );
@@ -134,7 +134,7 @@ public class JTableExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final JTable table = new JTable ( SampleData.createLongTableModel () );
+            final JTable table = new JTable ( SampleData.createLongTableModel ( true ) );
             table.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
             table.setAutoResizeMode ( JTable.AUTO_RESIZE_OFF );
             return CollectionUtils.asList ( new WebScrollPane ( table ).setPreferredSize ( 300, 100 ) );

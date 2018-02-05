@@ -386,30 +386,29 @@ public class WebFileChooserPanel extends WebPanel
                 historyList.setOpaque ( false );
                 historyList.setVisibleRowCount ( Math.min ( 10, navigationHistory.size () ) );
                 historyList.setSelectOnHover ( true );
-                historyList.setCellRenderer ( new WebListCellRenderer ()
+                historyList.setCellRenderer ( new WebListCellRenderer<File, WebList> ()
                 {
                     @Override
-                    protected void updateView ( final JList list, final Object value, final int index, final boolean isSelected,
-                                                final boolean hasFocus )
+                    protected Font fontForValue ( final WebList list, final File value, final int index, final boolean isSelected,
+                                                  final boolean hasFocus )
                     {
-                        // Preserving super settings
-                        super.updateView ( list, value, index, isSelected, hasFocus );
+                        final Font font = super.fontForValue ( list, value, index, isSelected, hasFocus );
+                        return index == currentHistoryIndex ? font.deriveFont ( Font.BOLD ) : font;
+                    }
 
-                        // Updating font
-                        setBoldFont ( index == currentHistoryIndex );
+                    @Override
+                    protected Icon iconForValue ( final WebList list, final File value, final int index, final boolean isSelected,
+                                                  final boolean hasFocus )
+                    {
+                        return value != null ? FileUtils.getFileIcon ( value ) : Icons.computer;
+                    }
 
-                        // Updating icon and text
-                        final File file = ( File ) value;
-                        if ( file == null )
-                        {
-                            setIcon ( Icons.computer );
-                            setText ( LM.get ( "weblaf.filechooser.root" ) );
-                        }
-                        else
-                        {
-                            setIcon ( FileUtils.getFileIcon ( file ) );
-                            setText ( TextUtils.shortenText ( FileUtils.getDisplayFileName ( file ), 40, true ) );
-                        }
+                    @Override
+                    protected String textForValue ( final WebList list, final File value, final int index, final boolean isSelected,
+                                                    final boolean hasFocus )
+                    {
+                        return value != null ? TextUtils.shortenText ( FileUtils.getDisplayFileName ( value ), 40, true ) :
+                                LM.get ( "weblaf.filechooser.root" );
                     }
                 } );
                 historyList.addMouseListener ( new MouseAdapter ()

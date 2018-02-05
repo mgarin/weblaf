@@ -270,7 +270,7 @@ public final class BasicHTML
         private static StyleSheet defaultStyles;
 
         /**
-         * Overriden to return our own slimmed down style sheet.
+         * Overridden to return our own slimmed down style sheet.
          */
         @Override
         public StyleSheet getStyleSheet ()

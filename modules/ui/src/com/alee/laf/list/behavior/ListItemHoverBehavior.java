@@ -23,7 +23,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Abstract behavior that provides hover events for {@link javax.swing.JList} items.
+ * Abstract behavior that provides hover events for {@link JList} items.
  * For a simple installation and uninstallation you can call {@link #install()} and {@link #uninstall()} methods.
  *
  * @param <C> component type
@@ -33,7 +33,7 @@ import java.awt.*;
 public abstract class ListItemHoverBehavior<C extends JList> extends AbstractObjectHoverBehavior<C, Integer>
 {
     /**
-     * Constructs behavior for the specified list.
+     * Constructs behavior for the specified {@link JList}.
      *
      * @param list list into which this behavior is installed
      */
@@ -43,9 +43,9 @@ public abstract class ListItemHoverBehavior<C extends JList> extends AbstractObj
     }
 
     /**
-     * Constructs behavior for the specified list.
+     * Constructs behavior for the specified {@link JList}.
      *
-     * @param list        list into which this behavior is installed
+     * @param list        {@link JList} into which this behavior is installed
      * @param enabledOnly whether or not behavior should only track hover events when list is enabled
      */
     public ListItemHoverBehavior ( final C list, final boolean enabledOnly )

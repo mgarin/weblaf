@@ -111,7 +111,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N>
         setDataProvider ( dataProvider );
 
         // Tree cell renderer & editor
-        setCellRenderer ( new WebTreeCellRenderer () );
+        setCellRenderer ( new WebTreeCellRenderer.UIResource<N, WebExTree<N>> () );
         setCellEditor ( new WebTreeCellEditor () );
     }
 

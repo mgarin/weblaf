@@ -23,6 +23,7 @@ import java.util.EventListener;
  * Custom listener that informs about hover object changes.
  * This listener provides ready-to-use functionality in components where it is supported.
  *
+ * @param <E> object type
  * @author Mikle Garin
  */
 

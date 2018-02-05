@@ -1545,11 +1545,15 @@
                                 <text state="first.name">Kathy</text>
                                 <text state="last.name">Smith</text>
                                 <text state="hobby">Snowboarding</text>
+                                <text state="age">19</text>
+                                <text state="vegeterian">false</text>
                             </value>
                             <value lang="ru">
                                 <text state="first.name">Кэти</text>
                                 <text state="last.name">Смитт</text>
                                 <text state="hobby">Сноубординг</text>
+                                <text state="age">19</text>
+                                <text state="vegeterian">false</text>
                             </value>
                         </record>
                         <record key="1">
@@ -1557,11 +1561,15 @@
                                 <text state="first.name">John</text>
                                 <text state="last.name">Doe</text>
                                 <text state="hobby">Rowing</text>
+                                <text state="age">32</text>
+                                <text state="vegeterian">true</text>
                             </value>
                             <value lang="ru">
                                 <text state="first.name">Джон</text>
                                 <text state="last.name">Доэ</text>
                                 <text state="hobby">Гребля</text>
+                                <text state="age">32</text>
+                                <text state="vegeterian">true</text>
                             </value>
                         </record>
                         <record key="2">
@@ -1569,11 +1577,15 @@
                                 <text state="first.name">Sue</text>
                                 <text state="last.name">Black</text>
                                 <text state="hobby">Knitting</text>
+                                <text state="age">56</text>
+                                <text state="vegeterian">false</text>
                             </value>
                             <value lang="ru">
                                 <text state="first.name">Сью</text>
                                 <text state="last.name">Блэк</text>
                                 <text state="hobby">Вязание</text>
+                                <text state="age">56</text>
+                                <text state="vegeterian">false</text>
                             </value>
                         </record>
                         <record key="3">
@@ -1581,11 +1593,15 @@
                                 <text state="first.name">Jane</text>
                                 <text state="last.name">White</text>
                                 <text state="hobby">Skydiving</text>
+                                <text state="age">20</text>
+                                <text state="vegeterian">true</text>
                             </value>
                             <value lang="ru">
                                 <text state="first.name">Джейн</text>
                                 <text state="last.name">Вайт</text>
                                 <text state="hobby">Прыжки с парашютом</text>
+                                <text state="age">20</text>
+                                <text state="vegeterian">true</text>
                             </value>
                         </record>
                         <record key="4">
@@ -1593,11 +1609,15 @@
                                 <text state="first.name">Joe</text>
                                 <text state="last.name">Brown</text>
                                 <text state="hobby">Swimming</text>
+                                <text state="age">14</text>
+                                <text state="vegeterian">false</text>
                             </value>
                             <value lang="ru">
                                 <text state="first.name">Джо</text>
                                 <text state="last.name">Браун</text>
                                 <text state="hobby">Плавание</text>
+                                <text state="age">14</text>
+                                <text state="vegeterian">false</text>
                             </value>
                         </record>
                         <record key="5">
@@ -1605,11 +1625,15 @@
                                 <text state="first.name">Sven</text>
                                 <text state="last.name">Alister</text>
                                 <text state="hobby">Boxing</text>
+                                <text state="age">36</text>
+                                <text state="vegeterian">false</text>
                             </value>
                             <value lang="ru">
                                 <text state="first.name">Свэн</text>
                                 <text state="last.name">Алистер</text>
                                 <text state="hobby">Бокс</text>
+                                <text state="age">36</text>
+                                <text state="vegeterian">false</text>
                             </value>
                         </record>
                         <record key="6">
@@ -1617,11 +1641,15 @@
                                 <text state="first.name">Allen</text>
                                 <text state="last.name">Snow</text>
                                 <text state="hobby">Diving</text>
+                                <text state="age">18</text>
+                                <text state="vegeterian">true</text>
                             </value>
                             <value lang="ru">
                                 <text state="first.name">Аллен</text>
                                 <text state="last.name">Сноу</text>
                                 <text state="hobby">Дайвинг</text>
+                                <text state="age">18</text>
+                                <text state="vegeterian">true</text>
                             </value>
                         </record>
                         <record key="7">
@@ -1629,11 +1657,15 @@
                                 <text state="first.name">Mikle</text>
                                 <text state="last.name">Garin</text>
                                 <text state="hobby">Judo</text>
+                                <text state="age">28</text>
+                                <text state="vegeterian">false</text>
                             </value>
                             <value lang="ru">
                                 <text state="first.name">Михаил</text>
                                 <text state="last.name">Гарин</text>
                                 <text state="hobby">Дзюдо</text>
+                                <text state="age">28</text>
+                                <text state="vegeterian">false</text>
                             </value>
                         </record>
                         <record key="8">
@@ -1641,11 +1673,15 @@
                                 <text state="first.name">Jake</text>
                                 <text state="last.name">Alduin</text>
                                 <text state="hobby">Fencing</text>
+                                <text state="age">35</text>
+                                <text state="vegeterian">false</text>
                             </value>
                             <value lang="ru">
                                 <text state="first.name">Джейк</text>
                                 <text state="last.name">Алдуин</text>
                                 <text state="hobby">Фехтование</text>
+                                <text state="age">35</text>
+                                <text state="vegeterian">false</text>
                             </value>
                         </record>
                         <record key="9">
@@ -1653,11 +1689,15 @@
                                 <text state="first.name">Andrew</text>
                                 <text state="last.name">Garfild</text>
                                 <text state="hobby">Programming</text>
+                                <text state="age">26</text>
+                                <text state="vegeterian">false</text>
                             </value>
                             <value lang="ru">
                                 <text state="first.name">Эндрю</text>
                                 <text state="last.name">Гарфилд</text>
                                 <text state="hobby">Программирование</text>
+                                <text state="age">26</text>
+                                <text state="vegeterian">false</text>
                             </value>
                         </record>
                         <record key="10">
@@ -1665,11 +1705,15 @@
                                 <text state="first.name">Kate</text>
                                 <text state="last.name">Matthew</text>
                                 <text state="hobby">Bowling</text>
+                                <text state="age">22</text>
+                                <text state="vegeterian">false</text>
                             </value>
                             <value lang="ru">
                                 <text state="first.name">Кэйт</text>
                                 <text state="last.name">Мэтью</text>
                                 <text state="hobby">Боулинг</text>
+                                <text state="age">22</text>
+                                <text state="vegeterian">false</text>
                             </value>
                         </record>
                         <record key="11">
@@ -1677,11 +1721,15 @@
                                 <text state="first.name">Paul</text>
                                 <text state="last.name">Johnson</text>
                                 <text state="hobby">Modelling</text>
+                                <text state="age">38</text>
+                                <text state="vegeterian">false</text>
                             </value>
                             <value lang="ru">
                                 <text state="first.name">Пол</text>
                                 <text state="last.name">Джонсон</text>
                                 <text state="hobby">Моделирование</text>
+                                <text state="age">38</text>
+                                <text state="vegeterian">false</text>
                             </value>
                         </record>
                     </Dictionary>

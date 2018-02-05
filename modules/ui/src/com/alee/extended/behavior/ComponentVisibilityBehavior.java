@@ -22,6 +22,11 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 
 /**
+ * Custom {@link Behavior} that allows you to track component visibility.
+ * You need to specify {@link Component} for which visibility state will be tracked.
+ * Use {@link #install()} and {@link #uninstall()} methods to setup and remove this behavior.
+ *
+ * @param <C> component type
  * @author Mikle Garin
  */
 

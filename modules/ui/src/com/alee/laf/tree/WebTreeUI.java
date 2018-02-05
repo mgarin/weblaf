@@ -351,7 +351,7 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
     @Override
     protected TreeCellRenderer createDefaultCellRenderer ()
     {
-        return new WebTreeCellRenderer ();
+        return new WebTreeCellRenderer.UIResource<DefaultMutableTreeNode, JTree> ();
     }
 
     @Override

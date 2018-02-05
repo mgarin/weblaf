@@ -295,18 +295,20 @@ public class WebPathField extends WebPanel
                     list.setFocusable ( false );
                     list.setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
                     list.setSelectOnHover ( true );
-                    list.setCellRenderer ( new WebListCellRenderer ()
+                    list.setCellRenderer ( new WebListCellRenderer<File, WebList> ()
                     {
                         @Override
-                        protected void updateView ( final JList list, final Object value, final int index, final boolean isSelected,
-                                                    final boolean hasFocus )
+                        protected Icon iconForValue ( final WebList list, final File value, final int index,
+                                                      final boolean isSelected, final boolean hasFocus )
                         {
-                            // Preserving super settings
-                            super.updateView ( list, value, index, isSelected, hasFocus );
+                            return FileUtils.getFileIcon ( value );
+                        }
 
-                            // Updating icon and text
-                            setIcon ( FileUtils.getFileIcon ( ( File ) value ) );
-                            setText ( FileUtils.getDisplayFileName ( ( File ) value ) );
+                        @Override
+                        protected String textForValue ( final WebList list, final File value, final int index,
+                                                        final boolean isSelected, final boolean hasFocus )
+                        {
+                            return FileUtils.getDisplayFileName ( value );
                         }
                     } );
                     list.addMouseListener ( new MouseAdapter ()

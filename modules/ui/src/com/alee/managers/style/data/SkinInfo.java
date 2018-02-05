@@ -683,7 +683,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
             }
         }
 
-        // Searching for overriden style
+        // Searching for overridden style
         // This allows us to provide default or existing styles overrides
         if ( extendedStyle == null )
         {
@@ -707,7 +707,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
         }
 
         // Processing extended style
-        // This will be either extended style, overriden style or default style
+        // This will be either extended style, overridden style or default style
         // It might also receive {@code null} in case we are working with default style itself
         if ( extendedStyle != null )
         {
@@ -718,11 +718,11 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
     }
 
     /**
-     * Returns overriden style if one exists.
+     * Returns overridden style if one exists.
      *
      * @param globalStyles all available global styles
-     * @param style        style to look overriden one for
-     * @return overriden style if one exists
+     * @param style        style to look overridden one for
+     * @return overridden style if one exists
      */
     private ComponentStyle findOverrideStyle ( final List<ComponentStyle> globalStyles, final ComponentStyle style )
     {

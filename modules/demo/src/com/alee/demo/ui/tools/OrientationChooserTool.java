@@ -57,18 +57,18 @@ public final class OrientationChooserTool extends WebPanel
         final WebComboBox orientation = new WebComboBox ( DemoStyles.toolCombobox, new OrientationModel () );
         orientation.setLanguage ( "demo.tool.orientation" );
         orientation.setSelectedItem ( WebLookAndFeel.getOrientation () );
-        orientation.setRenderer ( new WebComboBoxRenderer ()
+        orientation.setRenderer ( new WebComboBoxRenderer<ComponentOrientation, JList> ()
         {
             @Override
-            protected Icon iconForValue ( final JList list, final Object value, final int index, final boolean isSelected,
-                                          final boolean hasFocus )
+            protected Icon iconForValue ( final JList list, final ComponentOrientation value, final int index,
+                                          final boolean isSelected, final boolean hasFocus )
             {
                 return value == LEFT_TO_RIGHT ? DemoIcons.ltr16 : DemoIcons.rtl16;
             }
 
             @Override
-            protected String textForValue ( final JList list, final Object value, final int index, final boolean isSelected,
-                                            final boolean hasFocus )
+            protected String textForValue ( final JList list, final ComponentOrientation value, final int index,
+                                            final boolean isSelected, final boolean hasFocus )
             {
                 return LM.get ( "demo.tool.orientation." + ( value == LEFT_TO_RIGHT ? "ltr" : "rtl" ) );
             }

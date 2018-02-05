@@ -21,51 +21,60 @@ import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import java.text.DateFormat;
+import java.util.Date;
 
 /**
- * Default date table cell renderer for WebLaF tables.
+ * Default {@link javax.swing.table.TableCellRenderer} implementation for {@link Date} values.
  *
+ * @param <V> cell value type
+ * @param <C> table type
  * @author Mikle Garin
  */
 
-public class WebTableDateCellRenderer extends WebTableCellRenderer
+public class WebTableDateCellRenderer<V extends Date, C extends JTable> extends WebTableCellRenderer<V, C>
 {
     /**
-     * Date formatter.
+     * {@link DateFormat}.
      */
-    protected DateFormat formatter;
+    protected DateFormat dateFormat;
 
     @Override
-    protected void updateStyleId ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row,
-                                   final int column )
+    protected void updateStyleId ( final C table, final V value, final boolean isSelected,
+                                   final boolean hasFocus, final int row, final int column )
     {
         setStyleId ( StyleId.tableCellRendererDate.at ( table ) );
     }
 
     @Override
-    protected void updateView ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row,
-                                final int column )
+    protected String textForValue ( final C table, final V value, final boolean isSelected,
+                                    final boolean hasFocus, final int row, final int column )
     {
-        initializeFormatter ();
-        setText ( value != null ? formatter.format ( value ) : "" );
+        return value != null ? getDateFormat ().format ( value ) : "";
     }
 
     /**
-     * Initializes date formatter.
+     * Returns {@link DateFormat}.
+     *
+     * @return {@link DateFormat}
      */
-    protected void initializeFormatter ()
+    protected DateFormat getDateFormat ()
     {
-        if ( formatter == null )
+        if ( dateFormat == null )
         {
-            formatter = DateFormat.getDateInstance ();
+            dateFormat = DateFormat.getDateInstance ();
         }
+        return dateFormat;
     }
 
     /**
      * A subclass of {@link WebTableDateCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
+     *
+     * @param <V> cell value type
+     * @param <C> table type
      */
-    public static class UIResource extends WebTableDateCellRenderer implements javax.swing.plaf.UIResource
+    public static class UIResource<V extends Date, C extends JTable> extends WebTableDateCellRenderer<V, C>
+            implements javax.swing.plaf.UIResource
     {
         /**
          * Implementation is used completely from {@link WebTableDateCellRenderer}.

@@ -214,28 +214,6 @@ public class WebList extends JList
     }
 
     /**
-     * Returns specific web list cell renderer or null if a custom non-web renderer is installed.
-     *
-     * @return specific web list cell renderer or null if a custom non-web renderer is installed
-     */
-    public WebListCellRenderer getWebListCellRenderer ()
-    {
-        final ListCellRenderer renderer = getCellRenderer ();
-        return renderer instanceof WebListCellRenderer ? ( WebListCellRenderer ) renderer : null;
-    }
-
-    /**
-     * Returns specific web list model or null if another type of model is used.
-     *
-     * @return specific web list model or null if another type of model is used
-     */
-    public WebListModel getWebModel ()
-    {
-        final ListModel model = getModel ();
-        return model instanceof WebListModel ? ( WebListModel ) model : null;
-    }
-
-    /**
      * Sets selected value and scrolls view to its cell.
      *
      * @param element element to select

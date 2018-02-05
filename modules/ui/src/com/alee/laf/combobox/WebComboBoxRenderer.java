@@ -26,21 +26,19 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Default {@link ListCellRenderer} implementation based on {@link com.alee.extended.label.WebStyledLabel}.
- * Unlike {@link javax.swing.plaf.basic.BasicComboBoxRenderer} it contains multiple methods for convenient renderer customization.
- * Also since it is based on {@link com.alee.extended.label.WebStyledLabel} it retains all of its extra features.
+ * Default {@link ListCellRenderer} implementation based on {@link WebListCellRenderer} for {@link JComboBox}.
+ * Unlike {@link javax.swing.plaf.basic.BasicComboBoxRenderer} it has generics for value and list types.
+ * It also retains all of the {@link WebListCellRenderer} methods that can be overridden for renderer customization.
  *
+ * @param <V> cell value type
+ * @param <C> list type
  * @author Mikle Garin
  */
 
-public class WebComboBoxRenderer extends WebListCellRenderer
+public class WebComboBoxRenderer<V, C extends JList> extends WebListCellRenderer<V, C>
 {
-    /**
-     * todo 1. Add generic type for values?
-     */
-
     @Override
-    protected void updateStates ( final JList list, final Object value, final int index,
+    protected void updateStates ( final C list, final V value, final int index,
                                   final boolean isSelected, final boolean hasFocus )
     {
         // Adding base states
@@ -63,7 +61,7 @@ public class WebComboBoxRenderer extends WebListCellRenderer
     }
 
     @Override
-    protected void updateStyleId ( final JList list, final Object value, final int index,
+    protected void updateStyleId ( final C list, final V value, final int index,
                                    final boolean isSelected, final boolean cellHasFocus )
     {
         setStyleId ( index == -1 ? StyleId.comboboxBoxRenderer.at ( list ) : StyleId.comboboxListRenderer.at ( list ) );
@@ -117,8 +115,11 @@ public class WebComboBoxRenderer extends WebListCellRenderer
     /**
      * A subclass of {@link WebComboBoxRenderer} that implements {@link javax.swing.plaf.UIResource}.
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
+     *
+     * @param <V> cell value type
+     * @param <C> list type
      */
-    public static final class UIResource extends WebComboBoxRenderer implements javax.swing.plaf.UIResource
+    public static final class UIResource<V, C extends JList> extends WebComboBoxRenderer<V, C> implements javax.swing.plaf.UIResource
     {
         /**
          * Implementation is used completely from {@link WebComboBoxRenderer}.

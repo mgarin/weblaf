@@ -58,7 +58,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     /**
      * Client property key for referencing {@link JComboBox} within its popup {@link JList}.
      */
-    protected static final Object COMBOBOX_INSTANCE = "combobox.instance";
+    protected static final Object COMBOBOX_INSTANCE = "JComboBox.instance";
 
     /**
      * Default combobox renderer.
@@ -320,7 +320,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     @Override
     protected ListCellRenderer createRenderer ()
     {
-        return new WebComboBoxRenderer.UIResource ();
+        return new WebComboBoxRenderer.UIResource<Object, JList> ();
     }
 
     @Override
@@ -919,7 +919,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     {
         if ( DEFAULT_RENDERER == null )
         {
-            DEFAULT_RENDERER = new WebComboBoxRenderer ();
+            DEFAULT_RENDERER = new WebComboBoxRenderer.UIResource<Object, JList> ();
         }
         return DEFAULT_RENDERER;
     }

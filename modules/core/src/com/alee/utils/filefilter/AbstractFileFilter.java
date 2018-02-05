@@ -45,7 +45,7 @@ public abstract class AbstractFileFilter extends javax.swing.filechooser.FileFil
 
     /**
      * Returns file filter title.
-     * Uses its description but can be overriden.
+     * Uses its description but can be overridden.
      *
      * @return file filter title
      */

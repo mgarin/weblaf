@@ -22,16 +22,18 @@ import com.alee.managers.style.StyleId;
 import javax.swing.*;
 
 /**
- * Default numbers table cell renderer for WebLaF tables.
+ * Default {@link javax.swing.table.TableCellRenderer} implementation for {@link Number} values.
  *
+ * @param <V> cell value type
+ * @param <C> table type
  * @author Mikle Garin
  */
 
-public class WebTableNumberCellRenderer extends WebTableCellRenderer
+public class WebTableNumberCellRenderer<V extends Number, C extends JTable> extends WebTableCellRenderer<V, C>
 {
     @Override
-    protected void updateStyleId ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row,
-                                   final int column )
+    protected void updateStyleId ( final C table, final V value, final boolean isSelected,
+                                   final boolean hasFocus, final int row, final int column )
     {
         setStyleId ( StyleId.tableCellRendererNumber.at ( table ) );
     }
@@ -39,8 +41,12 @@ public class WebTableNumberCellRenderer extends WebTableCellRenderer
     /**
      * A subclass of {@link WebTableNumberCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
+     *
+     * @param <V> cell value type
+     * @param <C> table type
      */
-    public static class UIResource extends WebTableNumberCellRenderer implements javax.swing.plaf.UIResource
+    public static class UIResource<V extends Number, C extends JTable> extends WebTableNumberCellRenderer<V, C>
+            implements javax.swing.plaf.UIResource
     {
         /**
          * Implementation is used completely from {@link WebTableNumberCellRenderer}.

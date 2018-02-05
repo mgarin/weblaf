@@ -120,7 +120,7 @@ public class JInternalFrameExample extends AbstractPreviewExample
             internalFrame.setFrameIcon ( loadExampleIcon ( "frame16.png" ) );
             UILanguageManager.registerComponent ( internalFrame, getExampleLanguagePrefix () + "frame.title", index );
 
-            final JTable table = new JTable ( SampleData.createLongTableModel () );
+            final JTable table = new JTable ( SampleData.createLongTableModel ( true ) );
             final JScrollPane scrollPane = new JScrollPane ( table );
             scrollPane.setPreferredSize ( new Dimension ( 300, 150 ) );
             internalFrame.add ( scrollPane );

@@ -18,6 +18,7 @@
 package com.alee.laf.table;
 
 import com.alee.api.data.Corner;
+import com.alee.api.jdk.Consumer;
 import com.alee.extended.canvas.WebCanvas;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.scroll.ScrollPaneCornerProvider;
@@ -30,7 +31,6 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -79,14 +79,14 @@ public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupp
         super.installUI ( c );
 
         // Configuring default renderers
-        table.setDefaultRenderer ( Object.class, new WebTableCellRenderer.UIResource () );
-        table.setDefaultRenderer ( Number.class, new WebTableNumberCellRenderer.UIResource () );
-        table.setDefaultRenderer ( Double.class, new WebTableDoubleCellRenderer.UIResource () );
-        table.setDefaultRenderer ( Float.class, new WebTableDoubleCellRenderer.UIResource () );
-        table.setDefaultRenderer ( Date.class, new WebTableDateCellRenderer.UIResource () );
-        table.setDefaultRenderer ( Icon.class, new WebTableIconCellRenderer.UIResource () );
-        table.setDefaultRenderer ( ImageIcon.class, new WebTableIconCellRenderer.UIResource () );
-        table.setDefaultRenderer ( Boolean.class, new WebTableBooleanCellRenderer.UIResource () );
+        table.setDefaultRenderer ( Object.class, new WebTableCellRenderer.UIResource<Object, JTable> () );
+        table.setDefaultRenderer ( Number.class, new WebTableNumberCellRenderer.UIResource<Number, JTable> () );
+        table.setDefaultRenderer ( Double.class, new WebTableDoubleCellRenderer.UIResource<Double, JTable> () );
+        table.setDefaultRenderer ( Float.class, new WebTableFloatCellRenderer.UIResource<Float, JTable> () );
+        table.setDefaultRenderer ( Date.class, new WebTableDateCellRenderer.UIResource<Date, JTable> () );
+        table.setDefaultRenderer ( Icon.class, new WebTableIconCellRenderer.UIResource<Icon, JTable> () );
+        table.setDefaultRenderer ( ImageIcon.class, new WebTableIconCellRenderer.UIResource<ImageIcon, JTable> () );
+        table.setDefaultRenderer ( Boolean.class, new WebTableBooleanCellRenderer.UIResource<JTable> () );
         // todo Additional renderers:
         // table.setDefaultRenderer ( Dimension.class,  );
         // table.setDefaultRenderer ( Point.class,  );

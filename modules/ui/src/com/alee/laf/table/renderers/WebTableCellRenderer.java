@@ -36,25 +36,24 @@ import java.util.List;
 
 /**
  * Default {@link TableCellRenderer} implementation based on {@link WebStyledLabel}.
- * Unlike {@link javax.swing.table.DefaultTableCellRenderer} it contains multiple methods for convenient renderer customization.
- * Also since it is based on {@link WebStyledLabel} it retains all of its extra features.
+ * Unlike {@link javax.swing.table.DefaultTableCellRenderer} it has generic for table type.
+ * It also contains multiple methods for convenient renderer customization that can be overridden.
+ * And since it is based on {@link WebStyledLabel} it retains all of its extra features.
  *
+ * @param <V> cell value type
+ * @param <C> table type
  * @author Mikle Garin
  */
 
-public class WebTableCellRenderer extends WebStyledLabel implements TableCellRenderer, Stateful
+public class WebTableCellRenderer<V, C extends JTable> extends WebStyledLabel implements TableCellRenderer, Stateful
 {
-    /**
-     * todo 1. Add generic type for values?
-     */
-
     /**
      * Additional renderer decoration states.
      */
     protected final List<String> states;
 
     /**
-     * Constructs default table cell renderer.
+     * Constructs new {@link WebTableCellRenderer}.
      */
     public WebTableCellRenderer ()
     {
@@ -72,15 +71,14 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
     /**
      * Updates custom renderer states based on render cycle settings.
      *
-     * @param table      table
+     * @param table      {@link JTable}
      * @param value      cell value
      * @param isSelected whether or not cell is selected
      * @param hasFocus   whether or not cell has focus
      * @param row        cell row number
      * @param column     cell column number
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected void updateStates ( final JTable table, final Object value, final boolean isSelected,
+    protected void updateStates ( final C table, final V value, final boolean isSelected,
                                   final boolean hasFocus, final int row, final int column )
     {
         // Resetting states
@@ -103,17 +101,16 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
     }
 
     /**
-     * Updates table cell renderer component style ID.
+     * Updates renderer component style identifier.
      *
-     * @param table      table
+     * @param table      {@link JTable}
      * @param value      cell value
      * @param isSelected whether or not cell is selected
      * @param hasFocus   whether or not cell has focus
      * @param row        cell row number
      * @param column     cell column number
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected void updateStyleId ( final JTable table, final Object value, final boolean isSelected,
+    protected void updateStyleId ( final C table, final V value, final boolean isSelected,
                                    final boolean hasFocus, final int row, final int column )
     {
         StyleId id = null;
@@ -143,18 +140,16 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
     /**
      * Updating renderer based on the provided settings.
      *
-     * @param table      table
+     * @param table      {@link JTable}
      * @param value      cell value
      * @param isSelected whether or not cell is selected
      * @param hasFocus   whether or not cell has focus
      * @param row        cell row number
      * @param column     cell column number
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected void updateView ( final JTable table, final Object value, final boolean isSelected,
+    protected void updateView ( final C table, final V value, final boolean isSelected,
                                 final boolean hasFocus, final int row, final int column )
     {
-        // Updating renderer visual settings
         setEnabled ( enabledForValue ( table, value, isSelected, hasFocus, row, column ) );
         setComponentOrientation ( orientationForValue ( table, value, isSelected, hasFocus, row, column ) );
         setFont ( fontForValue ( table, value, isSelected, hasFocus, row, column ) );
@@ -166,7 +161,7 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
     /**
      * Returns whether or not renderer for the specified cell value should be enabled.
      *
-     * @param table      table
+     * @param table      {@link JTable}
      * @param value      cell value
      * @param isSelected whether or not cell is selected
      * @param hasFocus   whether or not cell has focus
@@ -174,8 +169,7 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
      * @param column     cell column number
      * @return {@code true} if renderer for the specified cell value should be enabled, {@code false} otherwise
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected boolean enabledForValue ( final JTable table, final Object value, final boolean isSelected,
+    protected boolean enabledForValue ( final C table, final V value, final boolean isSelected,
                                         final boolean hasFocus, final int row, final int column )
     {
         return table.isEnabled ();
@@ -184,7 +178,7 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
     /**
      * Returns renderer {@link ComponentOrientation} for the specified cell value.
      *
-     * @param table      table
+     * @param table      {@link JTable}
      * @param value      cell value
      * @param isSelected whether or not cell is selected
      * @param hasFocus   whether or not cell has focus
@@ -192,8 +186,7 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
      * @param column     cell column number
      * @return renderer {@link ComponentOrientation} for the specified cell value
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected ComponentOrientation orientationForValue ( final JTable table, final Object value, final boolean isSelected,
+    protected ComponentOrientation orientationForValue ( final C table, final V value, final boolean isSelected,
                                                          final boolean hasFocus, final int row, final int column )
     {
         return table.getComponentOrientation ();
@@ -202,7 +195,7 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
     /**
      * Returns renderer {@link Font} for the specified cell value.
      *
-     * @param table      table
+     * @param table      {@link JTable}
      * @param value      cell value
      * @param isSelected whether or not cell is selected
      * @param hasFocus   whether or not cell has focus
@@ -210,8 +203,7 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
      * @param column     cell column number
      * @return renderer {@link Font} for the specified cell value
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected Font fontForValue ( final JTable table, final Object value, final boolean isSelected,
+    protected Font fontForValue ( final C table, final V value, final boolean isSelected,
                                   final boolean hasFocus, final int row, final int column )
     {
         return table.getFont ();
@@ -220,7 +212,7 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
     /**
      * Returns renderer foreground color for the specified cell value.
      *
-     * @param table      table
+     * @param table      {@link JTable}
      * @param value      cell value
      * @param isSelected whether or not cell is selected
      * @param hasFocus   whether or not cell has focus
@@ -228,8 +220,7 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
      * @param column     cell column number
      * @return renderer foreground color for the specified cell value
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected Color foregroundForValue ( final JTable table, final Object value, final boolean isSelected,
+    protected Color foregroundForValue ( final C table, final V value, final boolean isSelected,
                                          final boolean hasFocus, final int row, final int column )
     {
         final Color foreground;
@@ -248,7 +239,7 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
     /**
      * Returns renderer icon for the specified cell value.
      *
-     * @param table      table
+     * @param table      {@link JTable}
      * @param value      cell value
      * @param isSelected whether or not cell is selected
      * @param hasFocus   whether or not cell has focus
@@ -256,8 +247,7 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
      * @param column     cell column number
      * @return renderer icon for the specified cell value
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected Icon iconForValue ( final JTable table, final Object value, final boolean isSelected,
+    protected Icon iconForValue ( final C table, final V value, final boolean isSelected,
                                   final boolean hasFocus, final int row, final int column )
     {
         final Icon icon;
@@ -275,7 +265,7 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
     /**
      * Returns renderer text for the specified cell value.
      *
-     * @param table      table
+     * @param table      {@link JTable}
      * @param value      cell value
      * @param isSelected whether or not cell is selected
      * @param hasFocus   whether or not cell has focus
@@ -283,8 +273,7 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
      * @param column     cell column number
      * @return renderer text for the specified cell value
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected String textForValue ( final JTable table, final Object value, final boolean isSelected,
+    protected String textForValue ( final C table, final V value, final boolean isSelected,
                                     final boolean hasFocus, final int row, final int column )
     {
         final String text;
@@ -302,7 +291,7 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
     /**
      * Returns table cell renderer component.
      *
-     * @param table      table
+     * @param table      {@link JTable}
      * @param value      cell value
      * @param isSelected whether or not cell is selected
      * @param hasFocus   whether or not cell has focus
@@ -315,13 +304,13 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
                                                      final boolean hasFocus, final int row, final int column )
     {
         // Updating custom states
-        updateStates ( table, value, isSelected, hasFocus, row, column );
+        updateStates ( ( C ) table, ( V ) value, isSelected, hasFocus, row, column );
 
         // Updating style ID
-        updateStyleId ( table, value, isSelected, hasFocus, row, column );
+        updateStyleId ( ( C ) table, ( V ) value, isSelected, hasFocus, row, column );
 
         // Updating renderer view
-        updateView ( table, value, isSelected, hasFocus, row, column );
+        updateView ( ( C ) table, ( V ) value, isSelected, hasFocus, row, column );
 
         // Updating decoration states for this render cycle
         DecorationUtils.fireStatesChanged ( this );
@@ -462,8 +451,11 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
     /**
      * A subclass of {@link WebTableCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
+     *
+     * @param <V> cell value type
+     * @param <C> table type
      */
-    public static class UIResource extends WebTableCellRenderer implements javax.swing.plaf.UIResource
+    public static class UIResource<V, C extends JTable> extends WebTableCellRenderer<V, C> implements javax.swing.plaf.UIResource
     {
         /**
          * Implementation is used completely from {@link WebTableCellRenderer}.

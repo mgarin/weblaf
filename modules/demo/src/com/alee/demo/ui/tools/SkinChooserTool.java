@@ -52,11 +52,11 @@ public final class SkinChooserTool extends WebPanel
         final WebComboBox skin = new WebComboBox ( DemoStyles.toolCombobox, DemoApplication.skins );
         skin.setLanguage ( "demo.tool.skin" );
         skin.setSelectedItem ( StyleManager.getSkin () );
-        skin.setRenderer ( new WebComboBoxRenderer ()
+        skin.setRenderer ( new WebComboBoxRenderer<Skin, JList> ()
         {
             @Override
-            protected Icon iconForValue ( final JList list, final Object value, final int index, final boolean isSelected,
-                                          final boolean hasFocus )
+            protected Icon iconForValue ( final JList list, final Skin value, final int index,
+                                          final boolean isSelected, final boolean hasFocus )
             {
                 return index == -1 ? DemoIcons.brush16 : super.iconForValue ( list, value, index, isSelected, hasFocus );
             }

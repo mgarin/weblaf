@@ -533,7 +533,7 @@ public final class MergeTest
         }
 
         /**
-         * Overriden to properly compare all data within {@link MergeTest#checkMergeResult(Object, Object)}.
+         * Overridden to properly compare all data within {@link MergeTest#checkMergeResult(Object, Object)}.
          */
         @Override
         public boolean equals ( final Object object )
@@ -572,7 +572,7 @@ public final class MergeTest
         }
 
         /**
-         * Overriden to properly compare all data within {@link MergeTest#checkMergeResult(Object, Object)}.
+         * Overridden to properly compare all data within {@link MergeTest#checkMergeResult(Object, Object)}.
          */
         @Override
         public boolean equals ( final Object object )

@@ -111,7 +111,7 @@ public class WebExCheckBoxTree<N extends UniqueNode> extends WebCheckBoxTree<N>
         setDataProvider ( dataProvider );
 
         // Tree cell renderer & editor
-        setCellRenderer ( new WebTreeCellRenderer () );
+        setCellRenderer ( new WebTreeCellRenderer.UIResource<N, WebExCheckBoxTree<N>> () );
         setCellEditor ( new WebTreeCellEditor () );
     }
 

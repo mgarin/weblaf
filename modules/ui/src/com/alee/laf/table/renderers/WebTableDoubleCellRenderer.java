@@ -23,49 +23,57 @@ import javax.swing.*;
 import java.text.NumberFormat;
 
 /**
- * Default floating point numbers table cell renderer for WebLaF tables.
+ * Default {@link javax.swing.table.TableCellRenderer} implementation for {@link Double} values.
  *
+ * @param <V> cell value type
+ * @param <C> table type
  * @author Mikle Garin
  */
 
-public class WebTableDoubleCellRenderer extends WebTableNumberCellRenderer
+public class WebTableDoubleCellRenderer<V extends Double, C extends JTable> extends WebTableNumberCellRenderer<V, C>
 {
     /**
      * Number formatter.
      */
-    protected NumberFormat formatter;
+    protected NumberFormat numberFormat;
 
     @Override
-    protected void updateStyleId ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row,
-                                   final int column )
+    protected void updateStyleId ( final C table, final V value, final boolean isSelected,
+                                   final boolean hasFocus, final int row, final int column )
     {
         setStyleId ( StyleId.tableCellRendererDouble.at ( table ) );
     }
 
     @Override
-    protected void updateView ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row,
-                                final int column )
+    protected String textForValue ( final C table, final V value, final boolean isSelected,
+                                    final boolean hasFocus, final int row, final int column )
     {
-        initializeFormatter ();
-        setText ( value != null ? formatter.format ( value ) : "" );
+        return value != null ? getNumberFormat ().format ( value ) : "";
     }
 
     /**
-     * Initializes number formatter.
+     * Returns {@link NumberFormat}.
+     *
+     * @return {@link NumberFormat}
      */
-    protected void initializeFormatter ()
+    protected NumberFormat getNumberFormat ()
     {
-        if ( formatter == null )
+        if ( numberFormat == null )
         {
-            formatter = NumberFormat.getInstance ();
+            numberFormat = NumberFormat.getInstance ();
         }
+        return numberFormat;
     }
 
     /**
      * A subclass of {@link WebTableDoubleCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
+     *
+     * @param <V> cell value type
+     * @param <C> table type
      */
-    public static class UIResource extends WebTableDoubleCellRenderer implements javax.swing.plaf.UIResource
+    public static class UIResource<V extends Double, C extends JTable> extends WebTableDoubleCellRenderer<V, C>
+            implements javax.swing.plaf.UIResource
     {
         /**
          * Implementation is used completely from {@link WebTableDoubleCellRenderer}.

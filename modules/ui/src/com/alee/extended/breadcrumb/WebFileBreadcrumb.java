@@ -318,23 +318,21 @@ public class WebFileBreadcrumb extends WebBreadcrumb
         list.setSelectOnHover ( true );
         list.setSelectedIndex ( 0 );
         list.setVisibleRowCount ( Math.min ( maxVisibleListFiles, files.length ) );
-        list.setCellRenderer ( new WebListCellRenderer ()
+        list.setCellRenderer ( new WebListCellRenderer<File, WebList> ()
         {
             @Override
-            protected void updateView ( final JList list, final Object value, final int index, final boolean isSelected,
-                                        final boolean hasFocus )
+            protected Icon iconForValue ( final WebList list, final File value, final int index,
+                                          final boolean isSelected, final boolean hasFocus )
             {
-                // Preserving super settings
-                super.updateView ( list, value, index, isSelected, hasFocus );
+                return FileUtils.getFileIcon ( value );
+            }
 
-                // Updating icon
-                final File child = ( File ) value;
-                setIcon ( FileUtils.getFileIcon ( child ) );
-
-                // Updating text
-                final String fileName = FileUtils.getDisplayFileName ( child );
-                final String shortFileName = FileUtils.getShortFileName ( fileName, listFileNameLength );
-                setText ( shortFileName );
+            @Override
+            protected String textForValue ( final WebList list, final File value, final int index,
+                                            final boolean isSelected, final boolean hasFocus )
+            {
+                final String fileName = FileUtils.getDisplayFileName ( value );
+                return FileUtils.getShortFileName ( fileName, listFileNameLength );
             }
         } );
 
@@ -378,7 +376,9 @@ public class WebFileBreadcrumb extends WebBreadcrumb
         window.pack ();
 
         final Point los = CoreSwingUtils.locationOnScreen ( fileButton );
-        final Insets bi = list.getWebListCellRenderer ().getBorder ().getBorderInsets ( list );
+        final ListCellRenderer cellRenderer = list.getCellRenderer ();
+        final Insets bi = cellRenderer instanceof JComponent ? ( ( JComponent ) cellRenderer ).getBorder ().getBorderInsets ( list ) :
+                new Insets ( 0, 0, 0, 0 );
         if ( getComponentOrientation ().isLeftToRight () )
         {
             window.setLocation ( los.x + fileButton.getInsets ().left - listScroll.getInsets ().left -

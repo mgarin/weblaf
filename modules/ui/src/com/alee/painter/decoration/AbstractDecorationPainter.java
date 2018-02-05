@@ -187,7 +187,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     }
 
     /**
-     * Overriden to provide decoration states update instead of simple view updates.
+     * Overridden to provide decoration states update instead of simple view updates.
      */
     @Override
     protected void orientationChange ()

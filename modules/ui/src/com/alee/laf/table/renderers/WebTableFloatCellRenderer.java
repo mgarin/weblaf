@@ -20,50 +20,63 @@ package com.alee.laf.table.renderers;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
+import java.text.NumberFormat;
 
 /**
- * Default {@link javax.swing.table.TableCellRenderer} implementation for {@link Icon} values.
+ * Default {@link javax.swing.table.TableCellRenderer} implementation for {@link Float} values.
  *
  * @param <V> cell value type
  * @param <C> table type
  * @author Mikle Garin
  */
 
-public class WebTableIconCellRenderer<V extends Icon, C extends JTable> extends WebTableCellRenderer<V, C>
+public class WebTableFloatCellRenderer<V extends Float, C extends JTable> extends WebTableNumberCellRenderer<V, C>
 {
-    @Override
-    protected void updateStyleId ( final C table, final V value, final boolean isSelected, final boolean hasFocus, final int row,
-                                   final int column )
-    {
-        setStyleId ( StyleId.tableCellRendererIcon.at ( table ) );
-    }
+    /**
+     * Number formatter.
+     */
+    protected NumberFormat numberFormat;
 
     @Override
-    protected Icon iconForValue ( final C table, final V value, final boolean isSelected,
-                                  final boolean hasFocus, final int row, final int column )
+    protected void updateStyleId ( final C table, final V value, final boolean isSelected,
+                                   final boolean hasFocus, final int row, final int column )
     {
-        return value;
+        setStyleId ( StyleId.tableCellRendererFloat.at ( table ) );
     }
 
     @Override
     protected String textForValue ( final C table, final V value, final boolean isSelected,
                                     final boolean hasFocus, final int row, final int column )
     {
-        return null;
+        return value != null ? getNumberFormat ().format ( value ) : "";
     }
 
     /**
-     * A subclass of {@link WebTableIconCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
+     * Returns {@link NumberFormat}.
+     *
+     * @return {@link NumberFormat}
+     */
+    protected NumberFormat getNumberFormat ()
+    {
+        if ( numberFormat == null )
+        {
+            numberFormat = NumberFormat.getInstance ();
+        }
+        return numberFormat;
+    }
+
+    /**
+     * A subclass of {@link WebTableFloatCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
      *
      * @param <V> cell value type
      * @param <C> table type
      */
-    public static class UIResource<V extends Icon, C extends JTable> extends WebTableIconCellRenderer<V, C>
+    public static class UIResource<V extends Float, C extends JTable> extends WebTableFloatCellRenderer<V, C>
             implements javax.swing.plaf.UIResource
     {
         /**
-         * Implementation is used completely from {@link WebTableIconCellRenderer}.
+         * Implementation is used completely from {@link WebTableFloatCellRenderer}.
          */
     }
 }

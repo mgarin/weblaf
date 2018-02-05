@@ -36,25 +36,24 @@ import java.util.List;
 
 /**
  * Default {@link ListCellRenderer} implementation based on {@link WebStyledLabel}.
- * Unlike {@link DefaultListCellRenderer} it contains multiple methods for convenient renderer customization.
- * Also since it is based on {@link WebStyledLabel} it retains all of its extra features.
+ * Unlike {@link DefaultListCellRenderer} it has generics for value and list types.
+ * It also contains multiple methods for convenient renderer customization that can be overridden.
+ * And since it is based on {@link WebStyledLabel} it retains all of its extra features.
  *
+ * @param <V> cell value type
+ * @param <C> list type
  * @author Mikle Garin
  */
 
-public class WebListCellRenderer extends WebStyledLabel implements ListCellRenderer, Stateful
+public class WebListCellRenderer<V, C extends JList> extends WebStyledLabel implements ListCellRenderer, Stateful
 {
-    /**
-     * todo 1. Add generic type for values?
-     */
-
     /**
      * Additional renderer decoration states.
      */
     protected final List<String> states;
 
     /**
-     * Constructs default list cell renderer.
+     * Constructs new {@link WebListCellRenderer}.
      */
     public WebListCellRenderer ()
     {
@@ -78,8 +77,7 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
      * @param isSelected whether or not cell is selected
      * @param hasFocus   whether or not cell has focus
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected void updateStates ( final JList list, final Object value, final int index,
+    protected void updateStates ( final C list, final V value, final int index,
                                   final boolean isSelected, final boolean hasFocus )
     {
         // Resetting states
@@ -109,7 +107,7 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
     }
 
     /**
-     * Updates list cell renderer component style ID.
+     * Updates renderer component style identifier.
      *
      * @param list         {@link JList}
      * @param value        cell value
@@ -117,8 +115,7 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
      * @param isSelected   whether or not cell is selected
      * @param cellHasFocus whether or not cell has focus
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected void updateStyleId ( final JList list, final Object value, final int index,
+    protected void updateStyleId ( final C list, final V value, final int index,
                                    final boolean isSelected, final boolean cellHasFocus )
     {
         StyleId id = null;
@@ -154,8 +151,7 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
      * @param isSelected whether or not cell is selected
      * @param hasFocus   whether or not cell has focus
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected void updateView ( final JList list, final Object value, final int index,
+    protected void updateView ( final C list, final V value, final int index,
                                 final boolean isSelected, final boolean hasFocus )
     {
         setEnabled ( enabledForValue ( list, value, index, isSelected, hasFocus ) );
@@ -176,8 +172,7 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
      * @param hasFocus   whether or not cell has focus
      * @return {@code true} if renderer for the specified cell value should be enabled, {@code false} otherwise
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected boolean enabledForValue ( final JList list, final Object value, final int index,
+    protected boolean enabledForValue ( final C list, final V value, final int index,
                                         final boolean isSelected, final boolean hasFocus )
     {
         return list.isEnabled ();
@@ -193,8 +188,7 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
      * @param hasFocus   whether or not cell has focus
      * @return renderer {@link ComponentOrientation} for the specified cell value
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected ComponentOrientation orientationForValue ( final JList list, final Object value, final int index,
+    protected ComponentOrientation orientationForValue ( final C list, final V value, final int index,
                                                          final boolean isSelected, final boolean hasFocus )
     {
         return list.getComponentOrientation ();
@@ -210,8 +204,7 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
      * @param hasFocus   whether or not cell has focus
      * @return renderer {@link Font} for the specified cell value
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected Font fontForValue ( final JList list, final Object value, final int index,
+    protected Font fontForValue ( final C list, final V value, final int index,
                                   final boolean isSelected, final boolean hasFocus )
     {
         return list.getFont ();
@@ -227,8 +220,7 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
      * @param hasFocus   whether or not cell has focus
      * @return renderer foreground color for the specified cell value
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected Color foregroundForValue ( final JList list, final Object value, final int index,
+    protected Color foregroundForValue ( final C list, final V value, final int index,
                                          final boolean isSelected, final boolean hasFocus )
     {
         final Color foreground;
@@ -254,8 +246,7 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
      * @param hasFocus   whether or not cell has focus
      * @return renderer icon for the specified cell value
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected Icon iconForValue ( final JList list, final Object value, final int index,
+    protected Icon iconForValue ( final C list, final V value, final int index,
                                   final boolean isSelected, final boolean hasFocus )
     {
         final Icon icon;
@@ -280,8 +271,7 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
      * @param hasFocus   whether or not cell has focus
      * @return renderer text for the specified cell value
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected String textForValue ( final JList list, final Object value, final int index,
+    protected String textForValue ( final C list, final V value, final int index,
                                     final boolean isSelected, final boolean hasFocus )
     {
         final String text;
@@ -311,13 +301,13 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
                                                     final boolean isSelected, final boolean hasFocus )
     {
         // Updating custom states
-        updateStates ( list, value, index, isSelected, hasFocus );
+        updateStates ( ( C ) list, ( V ) value, index, isSelected, hasFocus );
 
         // Updating style ID
-        updateStyleId ( list, value, index, isSelected, hasFocus );
+        updateStyleId ( ( C ) list, ( V ) value, index, isSelected, hasFocus );
 
         // Updating renderer view
-        updateView ( list, value, index, isSelected, hasFocus );
+        updateView ( ( C ) list, ( V ) value, index, isSelected, hasFocus );
 
         // Updating decoration states for this render cycle
         DecorationUtils.fireStatesChanged ( this );
@@ -458,8 +448,11 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
     /**
      * A subclass of {@link WebListCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
+     *
+     * @param <V> cell value type
+     * @param <C> list type
      */
-    public static class UIResource extends WebListCellRenderer implements javax.swing.plaf.UIResource
+    public static class UIResource<V, C extends JList> extends WebListCellRenderer<V, C> implements javax.swing.plaf.UIResource
     {
         /**
          * Implementation is used completely from {@link WebListCellRenderer}.

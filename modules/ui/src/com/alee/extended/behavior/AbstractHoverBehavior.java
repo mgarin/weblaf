@@ -36,9 +36,10 @@ import java.beans.PropertyChangeListener;
 
 /**
  * Custom {@link Behavior} that allows you to track component mouse hover.
- * You need to specify {@link JComponent} which mouse hover state will be tracked.
+ * You need to specify {@link JComponent} for which mouse hover state will be tracked.
  * Use {@link #install()} and {@link #uninstall()} methods to setup and remove this behavior.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
 
