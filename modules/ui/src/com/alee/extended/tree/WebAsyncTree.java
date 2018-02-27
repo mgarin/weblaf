@@ -958,7 +958,7 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N> implemen
             final N initialNode = findNode ( ids.get ( initial ) );
             if ( initialNode != null )
             {
-                for ( int i = 0; i <= initial; i++ )
+                for ( int i = initial; i >= 0; i-- )
                 {
                     ids.remove ( i );
                 }
