@@ -32,6 +32,7 @@ import com.alee.utils.TextUtils;
 
 import javax.swing.*;
 import javax.swing.plaf.TreeUI;
+import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
@@ -544,14 +545,16 @@ public class WebTreeCellRenderer<N extends DefaultMutableTreeNode, C extends JTr
     {
         /**
          * Overridden for performance reasons.
+         * {@link WebLookAndFeel#BORDER_PROPERTY} is listened to ensure that custom borders are preserved.
          */
-        if ( CompareUtils.equals ( pn, StyleId.STYLE_PROPERTY, StyleId.PARENT_STYLE_PROPERTY, WebLookAndFeel.TEXT_PROPERTY,
-                AbstractDecorationPainter.DECORATION_STATES_PROPERTY, WebStyledLabel.STYLE_RANGES_PROPERTY ) )
+        if ( CompareUtils.equals ( pn, StyleId.STYLE_PROPERTY, StyleId.PARENT_STYLE_PROPERTY,
+                AbstractDecorationPainter.DECORATION_STATES_PROPERTY, WebStyledLabel.STYLE_RANGES_PROPERTY,
+                WebLookAndFeel.TEXT_PROPERTY, WebLookAndFeel.BORDER_PROPERTY, WebLookAndFeel.MODEL_PROPERTY ) )
         {
             super.firePropertyChange ( pn, oldValue, newValue );
         }
         else if ( CompareUtils.equals ( pn, WebLookAndFeel.FONT_PROPERTY, WebLookAndFeel.FOREGROUND_PROPERTY ) &&
-                oldValue != newValue && getClientProperty ( javax.swing.plaf.basic.BasicHTML.propertyKey ) != null )
+                oldValue != newValue && getClientProperty ( BasicHTML.propertyKey ) != null )
         {
             super.firePropertyChange ( pn, oldValue, newValue );
         }

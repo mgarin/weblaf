@@ -30,6 +30,7 @@ import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
 import javax.swing.plaf.ListUI;
+import javax.swing.plaf.basic.BasicHTML;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -368,14 +369,16 @@ public class WebListCellRenderer<V, C extends JList> extends WebStyledLabel impl
     {
         /**
          * Overridden for performance reasons.
+         * {@link WebLookAndFeel#BORDER_PROPERTY} is listened to ensure that custom borders are preserved.
          */
-        if ( CompareUtils.equals ( pn, StyleId.STYLE_PROPERTY, StyleId.PARENT_STYLE_PROPERTY, WebLookAndFeel.TEXT_PROPERTY,
-                AbstractDecorationPainter.DECORATION_STATES_PROPERTY, WebStyledLabel.STYLE_RANGES_PROPERTY ) )
+        if ( CompareUtils.equals ( pn, StyleId.STYLE_PROPERTY, StyleId.PARENT_STYLE_PROPERTY,
+                AbstractDecorationPainter.DECORATION_STATES_PROPERTY, WebStyledLabel.STYLE_RANGES_PROPERTY,
+                WebLookAndFeel.TEXT_PROPERTY, WebLookAndFeel.BORDER_PROPERTY, WebLookAndFeel.MODEL_PROPERTY ) )
         {
             super.firePropertyChange ( pn, oldValue, newValue );
         }
         else if ( CompareUtils.equals ( pn, WebLookAndFeel.FONT_PROPERTY, WebLookAndFeel.FOREGROUND_PROPERTY ) &&
-                oldValue != newValue && getClientProperty ( javax.swing.plaf.basic.BasicHTML.propertyKey ) != null )
+                oldValue != newValue && getClientProperty ( BasicHTML.propertyKey ) != null )
         {
             super.firePropertyChange ( pn, oldValue, newValue );
         }

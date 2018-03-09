@@ -326,7 +326,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     @Override
     protected ComboBoxEditor createEditor ()
     {
-        final ComboBoxEditor editor = super.createEditor ();
+        final ComboBoxEditor editor = new WebComboBoxEditor.UIResource ();
         updateEditor ( editor );
         return editor;
     }
@@ -430,6 +430,17 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
             }
 
             @Override
+            protected void configureList ()
+            {
+                list.setFocusable ( false );
+                list.setFont ( comboBox.getFont () );
+                list.setCellRenderer ( comboBox.getRenderer () );
+                list.setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+                setListSelection ( comboBox.getSelectedIndex () );
+                installListListeners ();
+            }
+
+            @Override
             protected JScrollPane createScroller ()
             {
                 final WebScrollPane scroll = new WebScrollPane ( StyleId.comboboxPopupScrollPane.at ( comboBox ), list );
@@ -439,6 +450,13 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
                 StyleId.comboboxPopupList.at ( scroll ).set ( list );
 
                 return scroll;
+            }
+
+            @Override
+            protected void configureScroller ()
+            {
+                scroller.setFocusable ( false );
+                scroller.getVerticalScrollBar ().setFocusable ( false );
             }
 
             @Override

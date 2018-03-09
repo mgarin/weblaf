@@ -532,12 +532,22 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
      */
     protected void borderChange ( final Border border )
     {
-        // First of all checking that it is not a UI resource
-        // If it is not that means new component border was set from outside
-        // We might want to keep that border and avoid automated WebLaF border to be set in future until old border is removed
-        if ( !SwingUtils.isUIResource ( border ) )
+        /**
+         * Managing {@link JComponent}'s client property to preserve customized component {@link Border}s.
+         * Any {@link Border} that is not {@code null} and not a {@link javax.swing.plaf.UIResource} is considered to be custom.
+         * This is necessary to prevent WebLaF from overwriting those custom borders.
+         */
+        final boolean oldHonor = SwingUtils.getHonorUserBorders ( component );
+        final boolean newHonor = !SwingUtils.isUIResource ( border );
+        if ( oldHonor != newHonor )
         {
-            SwingUtils.setHonorUserBorders ( component, true );
+            // Updating client property
+            SwingUtils.setHonorUserBorders ( component, newHonor );
+        }
+        if ( !newHonor && !( border instanceof WebBorder ) )
+        {
+            // Restoring WebLaF's border
+            updateBorder ();
         }
     }
 

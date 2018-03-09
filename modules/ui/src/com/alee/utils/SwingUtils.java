@@ -235,7 +235,14 @@ public final class SwingUtils extends CoreSwingUtils
      */
     public static void setHonorUserBorders ( final JComponent component, final boolean honor )
     {
-        component.putClientProperty ( WebLookAndFeel.PROPERTY_HONOR_USER_BORDER, honor );
+        if ( honor )
+        {
+            component.putClientProperty ( WebLookAndFeel.PROPERTY_HONOR_USER_BORDER, Boolean.TRUE );
+        }
+        else
+        {
+            component.putClientProperty ( WebLookAndFeel.PROPERTY_HONOR_USER_BORDER, null );
+        }
     }
 
     /**
