@@ -18,6 +18,7 @@
 package com.alee.utils;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * This class provides a set of utilities to compare various objects.
@@ -49,6 +50,30 @@ public final class CompareUtils
             }
         }
         return false;
+    }
+
+    /**
+     * Returns whether the first Object equals to any Object from the specified array.
+     * This method will compare objects even if they are null without throwing any exceptions.
+     * This method should not be called from any method that overrides object default "equals" method.
+     *
+     * @param object      object to compare
+     * @param compareWith objects to compare with
+     * @return true if the first Object equals to any Object from the specified array, false otherwise
+     */
+    public static boolean notEquals ( final Object object, final Object... compareWith )
+    {
+        if ( compareWith != null && compareWith.length > 0 )
+        {
+            for ( final Object o : compareWith )
+            {
+                if ( !equalsImpl ( object, o ) )
+                {
+                    return true;
+                }
+            }
+        }
+        return true;
     }
 
     /**
@@ -93,64 +118,110 @@ public final class CompareUtils
      */
     public static int compareNames ( final String name1, final String name2 )
     {
-        final int n1 = name1.length ();
-        final int n2 = name2.length ();
-        final int min = Math.min ( n1, n2 );
-
-        for ( int i = 0; i < min; i++ )
+        if ( name1 != null && name2 != null )
         {
-            char c1 = name1.charAt ( i );
-            char c2 = name2.charAt ( i );
-            boolean d1 = Character.isDigit ( c1 );
-            boolean d2 = Character.isDigit ( c2 );
-
-            if ( d1 && d2 )
+            final String lower1 = name1.toLowerCase ( Locale.ROOT );
+            final String lower2 = name2.toLowerCase ( Locale.ROOT );
+            int thisMarker = 0;
+            int thatMarker = 0;
+            final int s1Length = lower1.length ();
+            final int s2Length = lower2.length ();
+            while ( thisMarker < s1Length && thatMarker < s2Length )
             {
-                // Enter numerical comparison
-                char c3, c4;
-                do
-                {
-                    i++;
-                    c3 = i < n1 ? name1.charAt ( i ) : 'x';
-                    c4 = i < n2 ? name2.charAt ( i ) : 'x';
-                    d1 = Character.isDigit ( c3 );
-                    d2 = Character.isDigit ( c4 );
-                }
-                while ( d1 && d2 && c3 == c4 );
+                final String thisChunk = getChunk ( lower1, s1Length, thisMarker );
+                thisMarker += thisChunk.length ();
 
-                if ( d1 != d2 )
-                {
-                    return d1 ? 1 : -1;
-                }
-                if ( c1 != c2 )
-                {
-                    return c1 - c2;
-                }
-                if ( c3 != c4 )
-                {
-                    return c3 - c4;
-                }
-                i--;
+                final String thatChunk = getChunk ( lower2, s2Length, thatMarker );
+                thatMarker += thatChunk.length ();
 
-            }
-            else if ( c1 != c2 )
-            {
-                c1 = Character.toUpperCase ( c1 );
-                c2 = Character.toUpperCase ( c2 );
-
-                if ( c1 != c2 )
+                // If both chunks contain numeric characters, sort them numerically
+                int result;
+                if ( isDigit ( thisChunk.charAt ( 0 ) ) && isDigit ( thatChunk.charAt ( 0 ) ) )
                 {
-                    c1 = Character.toLowerCase ( c1 );
-                    c2 = Character.toLowerCase ( c2 );
+                    // Simple chunk comparison by length.
+                    final int thisChunkLength = thisChunk.length ();
+                    result = thisChunkLength - thatChunk.length ();
 
-                    if ( c1 != c2 )
+                    // If equal, the first different number counts
+                    if ( result == 0 )
                     {
-                        // No overflow because of numeric promotion
-                        return c1 - c2;
+                        for ( int i = 0; i < thisChunkLength; i++ )
+                        {
+                            result = thisChunk.charAt ( i ) - thatChunk.charAt ( i );
+                            if ( result != 0 )
+                            {
+                                return result;
+                            }
+                        }
                     }
                 }
+                else
+                {
+                    result = thisChunk.compareTo ( thatChunk );
+                }
+
+                if ( result != 0 )
+                {
+                    return result;
+                }
+            }
+            return s1Length - s2Length;
+        }
+        return 0;
+    }
+
+    /**
+     * Returns name chunk starting from marker position.
+     * Length of string is passed in for improved efficiency (only need to calculate it once)
+     *
+     * @param name    full name
+     * @param slength full name length
+     * @param marker  chunk starting position
+     * @return name chunk starting from marker position
+     */
+    private static String getChunk ( final String name, final int slength, int marker )
+    {
+        final StringBuilder chunk = new StringBuilder ();
+        char c = name.charAt ( marker );
+        chunk.append ( c );
+        marker++;
+        if ( isDigit ( c ) )
+        {
+            while ( marker < slength )
+            {
+                c = name.charAt ( marker );
+                if ( !isDigit ( c ) )
+                {
+                    break;
+                }
+                chunk.append ( c );
+                marker++;
             }
         }
-        return n1 - n2;
+        else
+        {
+            while ( marker < slength )
+            {
+                c = name.charAt ( marker );
+                if ( isDigit ( c ) )
+                {
+                    break;
+                }
+                chunk.append ( c );
+                marker++;
+            }
+        }
+        return chunk.toString ();
+    }
+
+    /**
+     * Returns whether or not specified character is digit.
+     *
+     * @param character character to check
+     * @return {@code true} if specified character is digit, {@code false} otherwise
+     */
+    private static boolean isDigit ( final char character )
+    {
+        return character >= 48 && character <= 57;
     }
 }

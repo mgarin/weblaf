@@ -36,32 +36,32 @@ public class FileComparator implements Comparator<File>, Serializable
     /**
      * Compares two files by their names and type.
      *
-     * @param f1 first file to be compared
-     * @param f2 second file to be compared
+     * @param file1 first file to be compared
+     * @param file2 second file to be compared
      * @return a negative integer, zero, or a positive integer as the first argument is less than, equal to, or greater than the second
      */
     @Override
-    public int compare ( final File f1, final File f2 )
+    public int compare ( final File file1, final File file2 )
     {
-        if ( FileUtils.isDirectory ( f1 ) && !FileUtils.isDirectory ( f2 ) )
+        if ( FileUtils.isDirectory ( file1 ) && !FileUtils.isDirectory ( file2 ) )
         {
             return -1;
         }
-        else if ( !FileUtils.isDirectory ( f1 ) && FileUtils.isDirectory ( f2 ) )
+        else if ( !FileUtils.isDirectory ( file1 ) && FileUtils.isDirectory ( file2 ) )
         {
             return 1;
         }
-        else if ( FileUtils.isHidden ( f1 ) && !FileUtils.isHidden ( f2 ) )
+        else if ( FileUtils.isHidden ( file1 ) && !FileUtils.isHidden ( file2 ) )
         {
             return -1;
         }
-        else if ( !FileUtils.isHidden ( f1 ) && FileUtils.isHidden ( f2 ) )
+        else if ( !FileUtils.isHidden ( file1 ) && FileUtils.isHidden ( file2 ) )
         {
             return 1;
         }
         else
         {
-            return CompareUtils.compareNames ( f1.getName (), f2.getName () );
+            return CompareUtils.compareNames ( file1.getName (), file2.getName () );
         }
     }
 }
