@@ -17,9 +17,7 @@
 
 package com.alee.managers.style;
 
-import com.alee.api.IconSupport;
 import com.alee.api.Identifiable;
-import com.alee.api.TitleSupport;
 import com.alee.managers.icon.set.IconSet;
 import com.alee.managers.style.data.ComponentStyle;
 
@@ -40,7 +38,7 @@ import java.util.List;
  * @see com.alee.managers.style.StyleManager
  */
 
-public interface Skin extends IconSupport, TitleSupport, Identifiable
+public interface Skin extends Identifiable
 {
     /**
      * Returns unique skin ID.
@@ -52,11 +50,10 @@ public interface Skin extends IconSupport, TitleSupport, Identifiable
     public String getId ();
 
     /**
-     * Returns skin icon.
+     * Returns skin {@link Icon}.
      *
-     * @return skin icon
+     * @return skin {@link Icon}
      */
-    @Override
     public Icon getIcon ();
 
     /**
@@ -64,7 +61,6 @@ public interface Skin extends IconSupport, TitleSupport, Identifiable
      *
      * @return skin title
      */
-    @Override
     public String getTitle ();
 
     /**

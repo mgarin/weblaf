@@ -20,46 +20,62 @@ package com.alee.extended.behavior;
 import com.alee.api.data.CompassDirection;
 import com.alee.api.jdk.Function;
 import com.alee.utils.CoreSwingUtils;
-import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
 /**
- * This listener allows you to simplify window/component resize action.
+ * This {@link Behavior} enables resizing and/or dragging {@link Component} or {@link Window} around using {@link #gripper}.
+ * You can explicitely specify {@link #target} {@link Component} or {@link Window} to be resized/dragged.
+ * Otherwise behavior will use {@link #gripper}'s ancestor {@link Window}.
+ *
+ * Special {@link Function} is used to determine whether resize or drag should be performed and to determine resize direction.
+ * If {@link Function} returns {@link CompassDirection#center} - drag operation should take place.
+ * Any other {@link CompassDirection} literal means that resize operation should take place.
+ * Whenever {@code null} is returned - no operations will be performed.
+ *
+ * Use {@link #install()} and {@link #uninstall()} methods to setup and remove this behavior.
+ * You don't need to explicitely store this behavior if your only intent is to install it once and keep forever.
+ * Although if you want to uninstall this behavior at some point you might want to keep its instance.
  *
  * @author Mikle Garin
+ * @see #install()
+ * @see #uninstall()
  */
 
 public class ComponentResizeBehavior extends MouseAdapter implements Behavior, SwingConstants
 {
     /**
-     * Component that can be resized through this behavior.
+     * {@link Component} that controls resize.
      */
-    protected final Component resized;
+    protected final Component gripper;
+
+    /**
+     * {@link Component} that is resized using this behavior.
+     * If set to {@code null} - {@link #gripper}'s parent {@link Window} will be used instead.
+     */
+    protected final Component target;
 
     /**
      * Function providing resize direction.
-     * This way we could provide multiple resize directions for single control component.
+     * This way we could provide multiple resize directions for single control {@link Component}.
      */
     protected Function<Point, CompassDirection> direction;
 
     /**
-     * Whether or not component is being resized right now.
+     * Whether or not {@link Component} is being resized right now.
      */
     protected boolean resizing = false;
 
     /**
-     * Resize starting point on the component.
+     * Resize starting point on the {@link Component}.
      */
     protected Point initialPoint = null;
 
     /**
-     * Initial component bounds.
+     * Initial {@link Component} bounds.
      */
     protected Rectangle initialBounds = null;
 
@@ -74,27 +90,70 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
     protected Cursor initialCursor = null;
 
     /**
-     * Constructs new component resize behavior.
+     * Constructs new {@link ComponentResizeBehavior}.
      *
-     * @param resized   component that can be resized through this behavior
-     * @param direction function providing resize direction
+     * @param gripper   {@link Component} that controls resize
+     * @param direction resize {@link CompassDirection}
      */
-    public ComponentResizeBehavior ( final Component resized, final Function<Point, CompassDirection> direction )
+    public ComponentResizeBehavior ( final Component gripper, final CompassDirection direction )
     {
-        super ();
-        this.direction = direction;
-        this.resized = resized;
+        this ( gripper, null, new SingleResizeDirection ( direction ) );
     }
 
     /**
-     * Returns component currently being resized.
+     * Constructs new {@link ComponentResizeBehavior}.
      *
-     * @param e mouse event
-     * @return component currently being resized
+     * @param gripper   {@link Component} that controls resize
+     * @param target    {@link Component} that can be resized through this behavior
+     * @param direction resize {@link CompassDirection}
      */
-    protected Component getResized ( final MouseEvent e )
+    public ComponentResizeBehavior ( final Component gripper, final Component target, final CompassDirection direction )
     {
-        return resized != null ? resized : SwingUtils.getWindowAncestor ( e.getComponent () );
+        this ( gripper, target, new SingleResizeDirection ( direction ) );
+    }
+
+    /**
+     * Constructs new {@link ComponentResizeBehavior}.
+     *
+     * @param gripper   {@link Component} that controls resize
+     * @param direction {@link Function} providing resize direction
+     */
+    public ComponentResizeBehavior ( final Component gripper, final Function<Point, CompassDirection> direction )
+    {
+        this ( gripper, null, direction );
+    }
+
+    /**
+     * Constructs new {@link ComponentResizeBehavior}.
+     *
+     * @param gripper   {@link Component} that controls resize
+     * @param target    {@link Component} that can be resized through this behavior
+     * @param direction {@link Function} providing resize direction
+     */
+    public ComponentResizeBehavior ( final Component gripper, final Component target, final Function<Point, CompassDirection> direction )
+    {
+        super ();
+        this.gripper = gripper;
+        this.target = target;
+        this.direction = direction;
+    }
+
+    /**
+     * Installs behavior into the {@link #gripper}.
+     */
+    public void install ()
+    {
+        gripper.addMouseListener ( this );
+        gripper.addMouseMotionListener ( this );
+    }
+
+    /**
+     * Uninstalls behavior from the {@link #gripper}.
+     */
+    public void uninstall ()
+    {
+        gripper.removeMouseMotionListener ( this );
+        gripper.removeMouseListener ( this );
     }
 
     @Override
@@ -129,7 +188,7 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
     @Override
     public void mousePressed ( final MouseEvent e )
     {
-        if ( SwingUtilities.isLeftMouseButton ( e ) )
+        if ( !e.isConsumed () && SwingUtilities.isLeftMouseButton ( e ) )
         {
             final CompassDirection d = direction.apply ( e.getPoint () );
             if ( d != null )
@@ -139,8 +198,184 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
                 initialPoint = new Point ( los.x + e.getX (), los.y + e.getY () );
                 initialBounds = getResized ( e ).getBounds ();
                 currentDirection = d;
+
+                // Consume event
+                e.consume ();
             }
         }
+    }
+
+    @Override
+    public void mouseDragged ( final MouseEvent e )
+    {
+        if ( !e.isConsumed () && SwingUtilities.isLeftMouseButton ( e ) && resizing )
+        {
+            final Component resized = getResized ( e );
+            if ( currentDirection == CompassDirection.center )
+            {
+                // Moving component
+                final Point mouse = CoreSwingUtils.getMouseLocation ();
+                final int x = initialBounds.x + mouse.x - initialPoint.x;
+                final int y = initialBounds.y + mouse.y - initialPoint.y;
+                final Point location = new Point ( x, y );
+                resized.setLocation ( location );
+            }
+            else
+            {
+                // Retrieving component minimum size
+                // It will only be used for components and undecorated windows
+                final Dimension ms;
+                final boolean undecorated;
+                if ( resized instanceof JDialog )
+                {
+                    ms = ( ( JDialog ) resized ).getRootPane ().getMinimumSize ();
+                    undecorated = ( ( JDialog ) resized ).isUndecorated ();
+                }
+                else if ( resized instanceof JFrame )
+                {
+                    ms = ( ( JFrame ) resized ).getRootPane ().getMinimumSize ();
+                    undecorated = ( ( JFrame ) resized ).isUndecorated ();
+                }
+                else if ( resized instanceof JWindow )
+                {
+                    ms = ( ( JWindow ) resized ).getRootPane ().getMinimumSize ();
+                    undecorated = true;
+                }
+                else
+                {
+                    ms = resized.getMinimumSize ();
+                    undecorated = true;
+                }
+
+                // Calculating new resulting bounds
+                final Point ml = CoreSwingUtils.getMouseLocation ();
+                final Point shift = new Point ( ml.x - initialPoint.x, ml.y - initialPoint.y );
+                final Rectangle newBounds = new Rectangle ( initialBounds );
+                switch ( currentDirection )
+                {
+                    case northWest:
+                    {
+                        newBounds.x += shift.x;
+                        newBounds.width -= shift.x;
+                        newBounds.y += shift.y;
+                        newBounds.height -= shift.y;
+                        break;
+                    }
+                    case north:
+                    {
+                        newBounds.y += shift.y;
+                        newBounds.height -= shift.y;
+                        break;
+                    }
+                    case northEast:
+                    {
+                        newBounds.width += shift.x;
+                        newBounds.y += shift.y;
+                        newBounds.height -= shift.y;
+                        break;
+                    }
+                    case west:
+                    {
+                        newBounds.x += shift.x;
+                        newBounds.width -= shift.x;
+                        break;
+                    }
+                    case east:
+                    {
+                        newBounds.width += shift.x;
+                        break;
+                    }
+                    case southWest:
+                    {
+                        newBounds.x += shift.x;
+                        newBounds.width -= shift.x;
+                        newBounds.height += shift.y;
+                        break;
+                    }
+                    case south:
+                    {
+                        newBounds.height += shift.y;
+                        break;
+                    }
+                    case southEast:
+                    default:
+                    {
+                        newBounds.width += shift.x;
+                        newBounds.height += shift.y;
+                        break;
+                    }
+                }
+
+                // Correcting resulting bounds with minimum values
+                if ( undecorated )
+                {
+                    if ( newBounds.width < ms.width )
+                    {
+                        final int diff = ms.width - newBounds.width;
+                        if ( currentDirection == CompassDirection.northWest || currentDirection == CompassDirection.west ||
+                                currentDirection == CompassDirection.southWest )
+                        {
+                            newBounds.x -= diff;
+                        }
+                        newBounds.width += diff;
+                    }
+                    if ( newBounds.height < ms.height )
+                    {
+                        final int diff = ms.height - newBounds.height;
+                        if ( currentDirection == CompassDirection.northWest || currentDirection == CompassDirection.north ||
+                                currentDirection == CompassDirection.northEast )
+                        {
+                            newBounds.y -= diff;
+                        }
+                        newBounds.height += diff;
+                    }
+                }
+
+                // Updating resized component bounds
+                // We don't need to check whether they have changed here since it is done inside this call
+                resized.setBounds ( newBounds );
+            }
+
+            // Consume event
+            e.consume ();
+        }
+    }
+
+    @Override
+    public void mouseReleased ( final MouseEvent e )
+    {
+        if ( !e.isConsumed () && SwingUtilities.isLeftMouseButton ( e ) && resizing )
+        {
+            final int cursor = getCursor ( e.getPoint () );
+            if ( cursor != -1 )
+            {
+                e.getComponent ().setCursor ( Cursor.getPredefinedCursor ( cursor ) );
+            }
+            else if ( initialCursor != null )
+            {
+                e.getComponent ().setCursor ( initialCursor );
+                initialCursor = null;
+            }
+
+            resizing = false;
+            initialPoint = null;
+            initialBounds = null;
+            currentDirection = null;
+
+            // Consume event
+            e.consume ();
+        }
+    }
+
+    /**
+     * Returns {@link Component} currently being resized.
+     *
+     * @param e {@link MouseEvent}
+     * @return {@link Component} currently being resized
+     */
+    protected Component getResized ( final MouseEvent e )
+    {
+        return target != null ? target : CoreSwingUtils.getWindowAncestor ( e.getComponent () );
     }
 
     /**
@@ -180,6 +415,9 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
                 case southEast:
                     return Cursor.SE_RESIZE_CURSOR;
 
+                case center:
+                    return Cursor.MOVE_CURSOR;
+
                 default:
                     return -1;
             }
@@ -190,252 +428,31 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
         }
     }
 
-    @Override
-    public void mouseDragged ( final MouseEvent e )
+    /**
+     * {@link Function} providing single resize {@link CompassDirection}.
+     */
+    public static class SingleResizeDirection implements Function<Point, CompassDirection>
     {
-        if ( resizing )
+        /**
+         * Resize {@link CompassDirection}.
+         */
+        private final CompassDirection direction;
+
+        /**
+         * Constructs new {@link SingleResizeDirection}.
+         *
+         * @param direction resize {@link CompassDirection}
+         */
+        public SingleResizeDirection ( final CompassDirection direction )
         {
-            final Component resized = getResized ( e );
-
-            // Retrieving component minimum size
-            // It will only be used for components and undecorated windows
-            final Dimension ms;
-            final boolean undecorated;
-            if ( resized instanceof JDialog )
-            {
-                ms = ( ( JDialog ) resized ).getRootPane ().getMinimumSize ();
-                undecorated = ( ( JDialog ) resized ).isUndecorated ();
-            }
-            else if ( resized instanceof JFrame )
-            {
-                ms = ( ( JFrame ) resized ).getRootPane ().getMinimumSize ();
-                undecorated = ( ( JFrame ) resized ).isUndecorated ();
-            }
-            else if ( resized instanceof JWindow )
-            {
-                ms = ( ( JWindow ) resized ).getRootPane ().getMinimumSize ();
-                undecorated = true;
-            }
-            else
-            {
-                ms = resized.getMinimumSize ();
-                undecorated = true;
-            }
-
-            // Calculating new resulting bounds
-            final Point ml = CoreSwingUtils.getMouseLocation ();
-            final Point shift = new Point ( ml.x - initialPoint.x, ml.y - initialPoint.y );
-            final Rectangle newBounds = new Rectangle ( initialBounds );
-            switch ( currentDirection )
-            {
-                case northWest:
-                {
-                    newBounds.x += shift.x;
-                    newBounds.width -= shift.x;
-                    newBounds.y += shift.y;
-                    newBounds.height -= shift.y;
-                    break;
-                }
-                case north:
-                {
-                    newBounds.y += shift.y;
-                    newBounds.height -= shift.y;
-                    break;
-                }
-                case northEast:
-                {
-                    newBounds.width += shift.x;
-                    newBounds.y += shift.y;
-                    newBounds.height -= shift.y;
-                    break;
-                }
-                case west:
-                {
-                    newBounds.x += shift.x;
-                    newBounds.width -= shift.x;
-                    break;
-                }
-                case east:
-                {
-                    newBounds.width += shift.x;
-                    break;
-                }
-                case southWest:
-                {
-                    newBounds.x += shift.x;
-                    newBounds.width -= shift.x;
-                    newBounds.height += shift.y;
-                    break;
-                }
-                case south:
-                {
-                    newBounds.height += shift.y;
-                    break;
-                }
-                case southEast:
-                default:
-                {
-                    newBounds.width += shift.x;
-                    newBounds.height += shift.y;
-                    break;
-                }
-            }
-
-            // Correcting resulting bounds with minimum values
-            if ( undecorated )
-            {
-                if ( newBounds.width < ms.width )
-                {
-                    final int diff = ms.width - newBounds.width;
-                    if ( currentDirection == CompassDirection.northWest || currentDirection == CompassDirection.west ||
-                            currentDirection == CompassDirection.southWest )
-                    {
-                        newBounds.x -= diff;
-                    }
-                    newBounds.width += diff;
-                }
-                if ( newBounds.height < ms.height )
-                {
-                    final int diff = ms.height - newBounds.height;
-                    if ( currentDirection == CompassDirection.northWest || currentDirection == CompassDirection.north ||
-                            currentDirection == CompassDirection.northEast )
-                    {
-                        newBounds.y -= diff;
-                    }
-                    newBounds.height += diff;
-                }
-            }
-
-            // Updating resized component bounds
-            // We don't need to check whether they have changed here since it is done inside this call
-            resized.setBounds ( newBounds );
+            super ();
+            this.direction = direction;
         }
-    }
 
-    @Override
-    public void mouseReleased ( final MouseEvent e )
-    {
-        if ( SwingUtilities.isLeftMouseButton ( e ) && resizing )
+        @Override
+        public CompassDirection apply ( final Point point )
         {
-            e.getComponent ().setCursor ( initialCursor );
-            resizing = false;
-            initialPoint = null;
-            initialBounds = null;
-            currentDirection = null;
-            initialCursor = null;
+            return direction;
         }
-    }
-
-    /**
-     * Installs behavior onto the specified gripper component.
-     *
-     * @param gripper   component in control of the resize
-     * @param direction resize direction
-     * @return installed behavior
-     */
-    public static ComponentResizeBehavior install ( final Component gripper, final CompassDirection direction )
-    {
-        return install ( gripper, null, getSingleDirection ( direction ) );
-    }
-
-    /**
-     * Installs behavior onto the specified gripper component.
-     *
-     * @param gripper   component in control of the resize
-     * @param resized   resized component
-     * @param direction resize direction
-     * @return installed behavior
-     */
-    public static ComponentResizeBehavior install ( final Component gripper, final Component resized, final CompassDirection direction )
-    {
-        return install ( gripper, resized, getSingleDirection ( direction ) );
-    }
-
-    /**
-     * Installs behavior onto the specified gripper component.
-     *
-     * @param gripper   component in control of the resize
-     * @param direction function providing resize direction
-     * @return installed behavior
-     */
-    public static ComponentResizeBehavior install ( final Component gripper, final Function<Point, CompassDirection> direction )
-    {
-        return install ( gripper, null, direction );
-    }
-
-    /**
-     * Installs behavior onto the specified gripper component.
-     *
-     * @param gripper   component in control of the resize
-     * @param resized   resized component
-     * @param direction function providing resize direction
-     * @return installed behavior
-     */
-    public static ComponentResizeBehavior install ( final Component gripper, final Component resized,
-                                                    final Function<Point, CompassDirection> direction )
-    {
-        final ComponentResizeBehavior wra = new ComponentResizeBehavior ( resized, direction );
-        gripper.addMouseListener ( wra );
-        gripper.addMouseMotionListener ( wra );
-        return wra;
-    }
-
-    /**
-     * Returns function providing single resize direction.
-     *
-     * @param direction resize direction
-     * @return function providing single resize direction
-     */
-    protected static Function<Point, CompassDirection> getSingleDirection ( final CompassDirection direction )
-    {
-        return new Function<Point, CompassDirection> ()
-        {
-            @Override
-            public CompassDirection apply ( final Point point )
-            {
-                return direction;
-            }
-        };
-    }
-
-    /**
-     * Uninstalls behavior from the specified gripper component.
-     *
-     * @param gripper gripper component
-     */
-    public static void uninstall ( final Component gripper )
-    {
-        for ( final MouseListener listener : gripper.getMouseListeners () )
-        {
-            if ( listener instanceof ComponentResizeBehavior )
-            {
-                gripper.removeMouseListener ( listener );
-            }
-        }
-        for ( final MouseMotionListener listener : gripper.getMouseMotionListeners () )
-        {
-            if ( listener instanceof ComponentResizeBehavior )
-            {
-                gripper.removeMouseMotionListener ( listener );
-            }
-        }
-    }
-
-    /**
-     * Returns whether or not the specified component has this behavior installed.
-     *
-     * @param gripper component that acts as gripper
-     * @return true if the specified component has this behavior installed, false otherwise
-     */
-    public static boolean isInstalled ( final Component gripper )
-    {
-        for ( final MouseMotionListener listener : gripper.getMouseMotionListeners () )
-        {
-            if ( listener instanceof ComponentResizeBehavior )
-            {
-                return true;
-            }
-        }
-        return false;
     }
 }

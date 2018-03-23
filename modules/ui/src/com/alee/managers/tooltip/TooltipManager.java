@@ -25,7 +25,7 @@ import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.swing.WeakComponentData;
 import com.alee.utils.swing.WeakComponentDataList;
 import com.alee.utils.swing.WebTimer;
@@ -277,7 +277,7 @@ public final class TooltipManager
                 @Override
                 public void actionPerformed ( final ActionEvent e )
                 {
-                    final Window window = SwingUtils.getWindowAncestor ( component );
+                    final Window window = CoreSwingUtils.getWindowAncestor ( component );
                     if ( window != null && window.isActive () )
                     {
                         showTooltips ( component, false );
@@ -319,7 +319,7 @@ public final class TooltipManager
                  */
                 private void displayTooltips ()
                 {
-                    final Window window = SwingUtils.getWindowAncestor ( component );
+                    final Window window = CoreSwingUtils.getWindowAncestor ( component );
                     if ( window.isShowing () && window.isActive () )
                     {
                         showTips.start ();
@@ -405,7 +405,7 @@ public final class TooltipManager
         TooltipManager.hideAllTooltips ();
 
         // Displaying tooltips
-        showAllTooltips ( SwingUtils.getWindowAncestor ( component ) );
+        showAllTooltips ( CoreSwingUtils.getWindowAncestor ( component ) );
     }
 
     private static void showAllTooltips ( final Window window )
@@ -417,7 +417,7 @@ public final class TooltipManager
                 @Override
                 public void accept ( final JComponent component, final WebCustomTooltip webCustomTooltip )
                 {
-                    if ( SwingUtils.getWindowAncestor ( component ) == window && component.isShowing () )
+                    if ( CoreSwingUtils.getWindowAncestor ( component ) == window && component.isShowing () )
                     {
                         showOneTimeTooltip ( webCustomTooltip, false );
                     }
@@ -592,7 +592,7 @@ public final class TooltipManager
         }
 
         // Checking if glass pane is available
-        final Window window = SwingUtils.getWindowAncestor ( customTooltip.getComponent () );
+        final Window window = CoreSwingUtils.getWindowAncestor ( customTooltip.getComponent () );
         final WebGlassPane webGlassPane = GlassPaneManager.getGlassPane ( window );
         if ( webGlassPane == null )
         {

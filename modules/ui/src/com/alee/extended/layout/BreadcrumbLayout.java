@@ -49,40 +49,40 @@ public class BreadcrumbLayout extends AbstractLayoutManager
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
+    public Dimension preferredLayoutSize ( final Container container )
     {
-        final Insets insets = parent.getInsets ();
+        final Insets insets = container.getInsets ();
         final Dimension maxSize = new Dimension ( insets.left + insets.right, insets.top + insets.bottom );
-        for ( int i = 0; i < parent.getComponentCount (); i++ )
+        for ( int i = 0; i < container.getComponentCount (); i++ )
         {
-            final Dimension ps = parent.getComponent ( i ).getPreferredSize ();
-            maxSize.width += ps.width - ( i < parent.getComponentCount () - 1 ? overlap : 0 );
+            final Dimension ps = container.getComponent ( i ).getPreferredSize ();
+            maxSize.width += ps.width - ( i < container.getComponentCount () - 1 ? overlap : 0 );
             maxSize.height = Math.max ( maxSize.height, insets.top + ps.height + insets.bottom );
         }
         return maxSize;
     }
 
     @Override
-    public void layoutContainer ( final Container parent )
+    public void layoutContainer ( final Container container )
     {
-        final Insets insets = parent.getInsets ();
-        if ( parent.getComponentOrientation ().isLeftToRight () )
+        final Insets insets = container.getInsets ();
+        if ( container.getComponentOrientation ().isLeftToRight () )
         {
             int x = insets.left;
-            for ( final Component component : parent.getComponents () )
+            for ( final Component component : container.getComponents () )
             {
                 final Dimension ps = component.getPreferredSize ();
-                component.setBounds ( x, insets.top, ps.width, parent.getHeight () - insets.top - insets.bottom );
+                component.setBounds ( x, insets.top, ps.width, container.getHeight () - insets.top - insets.bottom );
                 x += ps.width - overlap;
             }
         }
         else
         {
-            int x = parent.getWidth () - insets.right;
-            for ( final Component component : parent.getComponents () )
+            int x = container.getWidth () - insets.right;
+            for ( final Component component : container.getComponents () )
             {
                 final Dimension ps = component.getPreferredSize ();
-                component.setBounds ( x - ps.width, insets.top, ps.width, parent.getHeight () - insets.top - insets.bottom );
+                component.setBounds ( x - ps.width, insets.top, ps.width, container.getHeight () - insets.top - insets.bottom );
                 x += overlap - ps.width;
             }
         }

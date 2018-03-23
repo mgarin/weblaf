@@ -273,12 +273,9 @@ public class WebDynamicMenu extends WebPopup
      */
     public void showMenu ( final Component invoker, final int x, final int y )
     {
-        synchronized ( sync )
-        {
-            // Displaying menu
-            final Point displayPoint = getActualLayout ().getDisplayPoint ( this, x, y );
-            super.showPopup ( invoker, displayPoint.x, displayPoint.y );
-        }
+        // Displaying menu
+        final Point displayPoint = getActualLayout ().getDisplayPoint ( this, x, y );
+        super.showPopup ( invoker, displayPoint.x, displayPoint.y );
     }
 
     @Override
@@ -327,7 +324,6 @@ public class WebDynamicMenu extends WebPopup
         {
             hidingCause = -1;
             revalidate ();
-            fullyHidden ();
         }
     }
 

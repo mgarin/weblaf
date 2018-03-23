@@ -113,12 +113,12 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
     }
 
     @Override
-    public void layoutContainer ( final Container parent )
+    public void layoutContainer ( final Container container )
     {
         /**
          * Retrieving various {@link JScrollPane} settings.
          */
-        final JScrollPane scrollPane = ( JScrollPane ) parent;
+        final JScrollPane scrollPane = ( JScrollPane ) container;
         final JViewport viewport = scrollPane.getViewport ();
         final JScrollBar vsb = scrollPane.getVerticalScrollBar ();
         final JScrollBar hsb = scrollPane.getHorizontalScrollBar ();
@@ -134,7 +134,7 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
         final Rectangle availR = scrollPane.getBounds ();
         availR.x = availR.y = 0;
 
-        final Insets insets = parent.getInsets ();
+        final Insets insets = container.getInsets ();
         availR.x = insets.left;
         availR.y = insets.top;
         availR.width -= insets.left + insets.right;
@@ -186,7 +186,7 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
         final Insets viewInsets;
         if ( viewportBorder != null )
         {
-            viewInsets = viewportBorder.getBorderInsets ( parent );
+            viewInsets = viewportBorder.getBorderInsets ( container );
             availR.x += viewInsets.left;
             availR.y += viewInsets.top;
             availR.width -= viewInsets.left + viewInsets.right;
@@ -409,7 +409,7 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
                 /**
                  * Moving horizontal scroll bar to the top-most position to ensure it is painted on top of everything else.
                  */
-                parent.setComponentZOrder ( vsb, 0 );
+                container.setComponentZOrder ( vsb, 0 );
             }
             else
             {
@@ -441,7 +441,7 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
                 /**
                  * Moving horizontal scroll bar to the second top-most position to ensure it is painted right below vertical scrollbar.
                  */
-                parent.setComponentZOrder ( hsb, vsbNeeded ? 1 : 0 );
+                container.setComponentZOrder ( hsb, vsbNeeded ? 1 : 0 );
             }
             else
             {
@@ -554,12 +554,12 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
+    public Dimension preferredLayoutSize ( final Container container )
     {
         /**
          * Retrieving various {@link JScrollPane} settings.
          */
-        final JScrollPane scrollPane = ( JScrollPane ) parent;
+        final JScrollPane scrollPane = ( JScrollPane ) container;
         final JViewport viewport = scrollPane.getViewport ();
         final JScrollBar vsb = scrollPane.getVerticalScrollBar ();
         final JScrollBar hsb = scrollPane.getHorizontalScrollBar ();
@@ -568,7 +568,7 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
         final int vsbPolicy = scrollPane.getVerticalScrollBarPolicy ();
         final int hsbPolicy = scrollPane.getHorizontalScrollBarPolicy ();
 
-        final Insets insets = parent.getInsets ();
+        final Insets insets = container.getInsets ();
         int prefWidth = insets.left + insets.right;
         int prefHeight = insets.top + insets.bottom;
 
@@ -602,7 +602,7 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
         final Border viewportBorder = scrollPane.getViewportBorder ();
         if ( viewportBorder != null )
         {
-            final Insets vpbInsets = viewportBorder.getBorderInsets ( parent );
+            final Insets vpbInsets = viewportBorder.getBorderInsets ( container );
             prefWidth += vpbInsets.left + vpbInsets.right;
             prefHeight += vpbInsets.top + vpbInsets.bottom;
         }
@@ -682,16 +682,16 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
      * viewportBorder insets, plus the minimum size of the visible headers, plus the minimum size of the scrollbars whose displayPolicy
      * isn't {@link JScrollPane#VERTICAL_SCROLLBAR_NEVER} or {@link JScrollPane#HORIZONTAL_SCROLLBAR_NEVER}.
      *
-     * @param parent the {@link Container} that will be laid out
+     * @param container the {@link Container} that will be laid out
      * @return a {@link Dimension} object specifying the minimum size
      */
     @Override
-    public Dimension minimumLayoutSize ( final Container parent )
+    public Dimension minimumLayoutSize ( final Container container )
     {
         /**
          * Retrieving various {@link JScrollPane} settings.
          */
-        final JScrollPane scrollPane = ( JScrollPane ) parent;
+        final JScrollPane scrollPane = ( JScrollPane ) container;
         final JViewport viewport = scrollPane.getViewport ();
         final JScrollBar vsb = scrollPane.getVerticalScrollBar ();
         final JScrollBar hsb = scrollPane.getHorizontalScrollBar ();
@@ -700,7 +700,7 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
         final int vsbPolicy = scrollPane.getVerticalScrollBarPolicy ();
         final int hsbPolicy = scrollPane.getHorizontalScrollBarPolicy ();
 
-        final Insets insets = parent.getInsets ();
+        final Insets insets = container.getInsets ();
         int minWidth = insets.left + insets.right;
         int minHeight = insets.top + insets.bottom;
 
@@ -720,7 +720,7 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
         final Border viewportBorder = scrollPane.getViewportBorder ();
         if ( viewportBorder != null )
         {
-            final Insets vpbInsets = viewportBorder.getBorderInsets ( parent );
+            final Insets vpbInsets = viewportBorder.getBorderInsets ( container );
             minWidth += vpbInsets.left + vpbInsets.right;
             minHeight += vpbInsets.top + vpbInsets.bottom;
         }

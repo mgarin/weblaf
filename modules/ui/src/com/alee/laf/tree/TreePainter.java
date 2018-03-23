@@ -607,35 +607,25 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
 
     /**
      * Returns whether or not tree is language-sensitive.
+     * Tree is language-sensitive if either tree, its renderer, model, data provider or any of the nodes are language-sensitive.
      *
      * @return {@code true} if tree is language-sensitive, {@code false} otherwise
      */
-    @SuppressWarnings ( "SimplifiableIfStatement" )
     protected boolean isLanguageSensitive ()
     {
-        final boolean sensitive;
-        if ( component instanceof LanguageSensitive ||
+        return component instanceof LanguageSensitive ||
                 component.getCellRenderer () instanceof LanguageSensitive ||
                 component.getModel () instanceof LanguageSensitive ||
                 component instanceof WebExTree && ( ( WebExTree ) component ).getDataProvider () instanceof LanguageSensitive ||
-                component instanceof WebAsyncTree && ( ( WebAsyncTree ) component ).getDataProvider () instanceof LanguageSensitive )
-        {
-            // Either tree, its renderer, model or data provider is language-sensitive
-            sensitive = true;
-        }
-        else
-        {
-            // Checking existing model nodes for being language-sensitive
-            sensitive = TreeUtils.getTreeWalker ( component ).anyMatch ( new Predicate<TreeNode> ()
-            {
-                @Override
-                public boolean test ( final TreeNode treeNode )
+                component instanceof WebAsyncTree && ( ( WebAsyncTree ) component ).getDataProvider () instanceof LanguageSensitive ||
+                TreeUtils.getTreeWalker ( component ).anyMatch ( new Predicate<TreeNode> ()
                 {
-                    return treeNode instanceof LanguageSensitive;
-                }
-            } );
-        }
-        return sensitive;
+                    @Override
+                    public boolean test ( final TreeNode treeNode )
+                    {
+                        return treeNode instanceof LanguageSensitive;
+                    }
+                } );
     }
 
     /**
@@ -1072,10 +1062,9 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      * @param path   tree path
      * @param mouseX mouse X location
      * @param mouseY mouse Y location
-     * @return true if {@code mouseX} and {@code mouseY} fall in the area of row that is used to expand/collapse the node and the node at
-     * {@code row} does not represent a leaf, false otherwise
+     * @return {@code true} if {@code mouseX} and {@code mouseY} fall in the area of row that is used to expand/collapse the node and the
+     * node at {@code row} does not represent a leaf, {@code false} otherwise
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected boolean isLocationInExpandControl ( final TreePath path, final int mouseX, final int mouseY )
     {
         if ( path != null && !component.getModel ().isLeaf ( path.getLastPathComponent () ) )
@@ -1109,7 +1098,6 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      * @param hasBeenExpanded whether row has been expanded once before or not
      * @param isLeaf          whether node is leaf or not
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected void paintExpandControl ( final Graphics2D g2d, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
                                         final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
                                         final boolean isLeaf )
@@ -1164,7 +1152,6 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      * @param hasBeenExpanded whether row has been expanded once before or not
      * @param isLeaf          whether node is leaf or not
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected void paintRow ( final Graphics2D g2d, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
                               final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
                               final boolean isLeaf )
@@ -1194,9 +1181,8 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      * @param isExpanded      whether row is expanded or not
      * @param hasBeenExpanded whether row has been expanded once before or not
      * @param isLeaf          whether node is leaf or not
-     * @return true if the expand (toggle) control should be painted for the specified row, false otherwise
+     * @return {@code true} if the expand (toggle) control should be painted for the specified row, {@code false} otherwise
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected boolean shouldPaintExpandControl ( final TreePath path, final int row, final boolean isExpanded,
                                                  final boolean hasBeenExpanded, final boolean isLeaf )
     {
@@ -1212,7 +1198,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
     /**
      * Returns whether or not root is visible.
      *
-     * @return true if root is visible, false otherwise
+     * @return {@code true} if root is visible, {@code false} otherwise
      */
     protected boolean isRootVisible ()
     {
@@ -1222,7 +1208,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
     /**
      * Returns whether or not root handles should be displayed.
      *
-     * @return true if root handles should be displayed, false otherwise
+     * @return {@code true} if root handles should be displayed, {@code false} otherwise
      */
     protected boolean getShowsRootHandles ()
     {
@@ -1242,7 +1228,6 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      * @param hasBeenExpanded whether row has been expanded once before or not
      * @param isLeaf          whether node is leaf or not
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected void paintHorizontalPartOfLeg ( final Graphics2D g2d, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
                                               final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
                                               final boolean isLeaf )
@@ -1501,7 +1486,6 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      * @param depth Depth of the row
      * @return amount to indent the given row.
      */
-    @SuppressWarnings ( "unused" )
     protected int getRowX ( final int row, final int depth )
     {
         return totalChildIndent * ( depth + depthOffset );
@@ -1590,7 +1574,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
     /**
      * Returns whether selector is available for current tree or not.
      *
-     * @return true if selector is available for current tree, false otherwise
+     * @return {@code true} if selector is available for current tree, {@code false} otherwise
      */
     protected boolean isSelectorAvailable ()
     {
@@ -1643,7 +1627,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
     /**
      * Returns whether tree selection style points that the whole line is a single cell or not.
      *
-     * @return true if tree selection style points that the whole line is a single cell, false otherwise
+     * @return {@code true} if tree selection style points that the whole line is a single cell, {@code false} otherwise
      */
     protected boolean isFullLineSelection ()
     {
@@ -1653,7 +1637,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
     /**
      * Returns whether tree nodes drag available or not.
      *
-     * @return true if tree nodes drag available, false otherwise
+     * @return {@code true} if tree nodes drag available, {@code false} otherwise
      */
     protected boolean isDragAvailable ()
     {

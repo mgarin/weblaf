@@ -20,7 +20,7 @@ package com.alee.laf.tree;
 import com.alee.managers.tooltip.AbstractToolTipProvider;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
 
 /**
  * Abstract WebLaF tooltip provider for {@link WebTree} component.
@@ -29,7 +29,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * @author Mikle Garin
  */
 
-public abstract class TreeToolTipProvider<V extends DefaultMutableTreeNode>
+public abstract class TreeToolTipProvider<V extends MutableTreeNode>
         extends AbstractToolTipProvider<V, JTree, TreeCellArea<V, JTree>>
 {
     /**

@@ -40,9 +40,12 @@ import java.util.List;
  * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
- * @see WebComponent
+ * @see CanvasDescriptor
+ * @see WCanvasUI
  * @see WebCanvasUI
+ * @see ICanvasPainter
  * @see CanvasPainter
+ * @see WebComponent
  */
 
 public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Stateful

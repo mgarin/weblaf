@@ -33,8 +33,8 @@ public class JComponentPreview<C extends JComponent> extends AWTComponentPreview
     /**
      * Additional type icons.
      */
-    public static final ImageIcon layeredPaneType = new ImageIcon ( AbstractComponentPreview.class.getResource ( "icons/layeredpane.png" ) );
-    public static final ImageIcon heatMapType = new ImageIcon ( AbstractComponentPreview.class.getResource ( "icons/heatmap.png" ) );
+    public static final ImageIcon layeredPaneType = new ImageIcon ( JComponentPreview.class.getResource ( "icons/layeredpane.png" ) );
+    public static final ImageIcon heatMapType = new ImageIcon ( JComponentPreview.class.getResource ( "icons/heatmap.png" ) );
 
     @Override
     public Icon getIconImpl ( final C component )

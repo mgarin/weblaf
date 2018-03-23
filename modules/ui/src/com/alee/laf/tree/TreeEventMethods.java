@@ -20,7 +20,7 @@ package com.alee.laf.tree;
 import com.alee.api.jdk.Predicate;
 import com.alee.utils.swing.extensions.MethodExtension;
 
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
 import java.awt.event.MouseAdapter;
 
 /**
@@ -33,7 +33,7 @@ import java.awt.event.MouseAdapter;
  * @see com.alee.laf.tree.TreeEventMethodsImpl
  */
 
-public interface TreeEventMethods<N extends DefaultMutableTreeNode> extends MethodExtension
+public interface TreeEventMethods<N extends MutableTreeNode> extends MethodExtension
 {
     /**
      * Shortcut method for double-click mouse event on specific tree node.

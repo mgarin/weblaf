@@ -168,6 +168,21 @@
         <SvgFill selector=".bg" color="80,80,80" />
         <SvgFill selector=".shape" color="180,180,180" />
     </SvgIcon>
+    <SvgIcon id="root" path="folder.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="root-open" path="folder-open.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="folder" path="folder.svg" size="16,16">
+        <SvgFill selector="svg" color="120,120,120" />
+    </SvgIcon>
+    <SvgIcon id="folder-open" path="folder-open.svg" size="16,16">
+        <SvgFill selector="svg" color="120,120,120" />
+    </SvgIcon>
+    <SvgIcon id="leaf" path="leaf.svg" size="16,16">
+        <SvgFill selector="svg" color="120,120,120" />
+    </SvgIcon>
 
     <!-- File Chooser icons -->
     <SvgIcon id="backward" path="arrow-left.svg" size="16,16">
@@ -185,7 +200,13 @@
     <SvgIcon id="folder-home" path="home.svg" size="16,16">
         <SvgFill selector="svg" color="80,80,80" />
     </SvgIcon>
+    <SvgIcon id="folder-desktop" path="desktop.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
     <SvgIcon id="folder-new" path="folder-plus.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="drive" path="drive.svg" size="16,16">
         <SvgFill selector="svg" color="80,80,80" />
     </SvgIcon>
     <SvgIcon id="refresh" path="refresh.svg" size="16,16">

@@ -102,13 +102,13 @@ public class PopupMenuPainter<C extends JPopupMenu, U extends WPopupMenuUI> exte
                 if ( !SystemUtils.isUnix () )
                 {
                     // Install custom popup window settings
-                    installPopupSettings ( SwingUtils.getWindowAncestor ( component ), component );
+                    installPopupSettings ( CoreSwingUtils.getWindowAncestor ( component ), component );
                 }
             }
             else
             {
                 // Uninstall custom popup window settings
-                uninstallPopupSettings ( SwingUtils.getWindowAncestor ( component ), component );
+                uninstallPopupSettings ( CoreSwingUtils.getWindowAncestor ( component ), component );
             }
         }
     }
@@ -513,7 +513,6 @@ public class PopupMenuPainter<C extends JPopupMenu, U extends WPopupMenuUI> exte
      * @param window    popup menu window
      * @param popupMenu popup menu
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected void uninstallPopupSettings ( final Window window, final C popupMenu )
     {
         if ( window != null && shaped && SwingUtils.isHeavyWeightWindow ( window ) )

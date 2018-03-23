@@ -43,15 +43,6 @@ import java.util.Enumeration;
 public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
-     * Default node icons.
-     * todo Replace with SVG icons and move into manager for lazy-initialization
-     */
-    public static ImageIcon ROOT_ICON = new ImageIcon ( WebTreeUI.class.getResource ( "icons/root.png" ) );
-    public static ImageIcon CLOSED_ICON = new ImageIcon ( WebTreeUI.class.getResource ( "icons/closed.png" ) );
-    public static ImageIcon OPEN_ICON = new ImageIcon ( WebTreeUI.class.getResource ( "icons/open.png" ) );
-    public static ImageIcon LEAF_ICON = new ImageIcon ( WebTreeUI.class.getResource ( "icons/leaf.png" ) );
-
-    /**
      * Style settings.
      */
     protected TreeSelectionStyle selectionStyle;
@@ -79,7 +70,6 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
      * @param c component that will use UI instance
      * @return instance of the {@link WebTreeUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTreeUI ();
@@ -144,8 +134,8 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
                 // This is performed here to avoid excessive listeners usage for the same purpose
                 if ( tree instanceof WebTree )
                 {
-                    final DefaultMutableTreeNode p = previous != null ? ( DefaultMutableTreeNode ) previous.getLastPathComponent () : null;
-                    final DefaultMutableTreeNode c = current != null ? ( DefaultMutableTreeNode ) current.getLastPathComponent () : null;
+                    final MutableTreeNode p = previous != null ? ( MutableTreeNode ) previous.getLastPathComponent () : null;
+                    final MutableTreeNode c = current != null ? ( MutableTreeNode ) current.getLastPathComponent () : null;
                     ( ( WebTree ) tree ).fireHoverChanged ( p, c );
                 }
             }
@@ -351,7 +341,7 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
     @Override
     protected TreeCellRenderer createDefaultCellRenderer ()
     {
-        return new WebTreeCellRenderer.UIResource<DefaultMutableTreeNode, JTree> ();
+        return new WebTreeCellRenderer.UIResource<TreeNode, JTree, TreeNodeParameters<TreeNode, JTree>> ();
     }
 
     @Override
@@ -371,7 +361,7 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
             final WebCheckBoxTree checkBoxTree = ( WebCheckBoxTree ) tree;
             if ( checkBoxTree.isCheckingByUserEnabled () )
             {
-                final DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) path.getLastPathComponent ();
+                final MutableTreeNode node = ( MutableTreeNode ) path.getLastPathComponent ();
                 if ( checkBoxTree.isCheckBoxVisible ( node ) && checkBoxTree.isCheckBoxEnabled ( node ) )
                 {
                     final Rectangle checkBoxBounds = checkBoxTree.getCheckBoxBounds ( path );

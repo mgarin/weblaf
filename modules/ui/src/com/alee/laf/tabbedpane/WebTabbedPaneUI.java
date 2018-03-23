@@ -73,7 +73,6 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
      * @param c component that will use UI instance
      * @return instance of the {@link WebTabbedPaneUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTabbedPaneUI ();

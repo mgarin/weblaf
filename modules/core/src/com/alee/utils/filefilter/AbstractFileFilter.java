@@ -17,8 +17,9 @@
 
 package com.alee.utils.filefilter;
 
-import com.alee.api.IconSupport;
-import com.alee.api.TitleSupport;
+import com.alee.api.ui.IconBridge;
+import com.alee.api.ui.RenderingParameters;
+import com.alee.api.ui.TextBridge;
 import com.alee.utils.compare.Filter;
 
 import javax.swing.*;
@@ -33,24 +34,26 @@ import java.io.FileFilter;
  */
 
 public abstract class AbstractFileFilter extends javax.swing.filechooser.FileFilter
-        implements FileFilter, Filter<File>, IconSupport, TitleSupport
+        implements FileFilter, Filter<File>, IconBridge<RenderingParameters>, TextBridge<RenderingParameters>
 {
     /**
-     * Returns file filter icon.
+     * Returns file filter {@link Icon}.
      *
-     * @return file filter icon
+     * @param parameters {@link RenderingParameters}
+     * @return file filter {@link Icon}
      */
     @Override
-    public abstract ImageIcon getIcon ();
+    public abstract Icon getIcon ( RenderingParameters parameters );
 
     /**
      * Returns file filter title.
      * Uses its description but can be overridden.
      *
+     * @param parameters {@link RenderingParameters}
      * @return file filter title
      */
     @Override
-    public String getTitle ()
+    public String getText ( final RenderingParameters parameters )
     {
         return getDescription ();
     }

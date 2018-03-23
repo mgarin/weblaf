@@ -93,7 +93,6 @@ import org.slf4j.LoggerFactory;
  * @version $Id: Base64.java,v 1.7 2002/11/18 23:10:10 sandygao Exp $
  */
 
-@SuppressWarnings ( "SpellCheckingInspection" )
 public final class Base64
 {
     static private final int BASELENGTH = 255;

@@ -19,7 +19,7 @@ package com.alee.extended.tree;
 
 import com.alee.laf.checkbox.CheckState;
 
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
 import java.util.Collection;
 import java.util.List;
 
@@ -30,7 +30,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public interface TreeCheckingModel<N extends DefaultMutableTreeNode>
+public interface TreeCheckingModel<N extends MutableTreeNode>
 {
     /**
      * Returns list of nodes for the specified state.

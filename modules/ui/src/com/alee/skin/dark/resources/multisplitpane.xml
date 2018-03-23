@@ -1,0 +1,113 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.split.WebMultiSplitPane -->
+
+    <!-- Multi split pane -->
+    <style type="multisplitpane">
+        <component>
+            <opaque>true</opaque>
+            <background>68,68,68</background>
+        </component>
+        <painter />
+
+        <!-- Continuous divider -->
+        <style type="multisplitpanedivider" id="continuous" />
+
+        <!-- Non-continuous divider -->
+        <style type="canvas" id="non-continuous">
+            <painter>
+                <decorations>
+                    <decoration opacity="0.7">
+                        <WebShape />
+                        <ColorBackground color="60,60,60,200" />
+                        <LineBorder color="20,20,20" />
+                    </decoration>
+                    <decoration states="vertical">
+                        <WebShape sides="0,1,0,1" />
+                    </decoration>
+                    <decoration states="horizontal">
+                        <WebShape sides="1,0,1,0" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+    </style>
+
+    <!-- Non-opaque multi split pane -->
+    <style type="multisplitpane" id="non-opaque">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <BoundsShape />
+                    <ColorBackground color="68,68,68" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Transparent multi split pane -->
+    <style type="multisplitpane" id="transparent" extends="non-opaque">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
+    <!-- Undecorated multi split pane -->
+    <style type="multisplitpane" id="undecorated" extends="transparent">
+
+        <!-- Continuous divider -->
+        <style type="splitpanedivider" id="continuous">
+            <component>
+                <opaque>false</opaque>
+            </component>
+            <painter>
+                <decorations>
+                    <decoration visible="false" />
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Non-continuous divider -->
+        <style type="canvas" id="non-continuous">
+            <painter>
+                <decorations overwrite="true">
+                    <decoration opacity="0.7">
+                        <BoundsShape />
+                        <ColorBackground color="60,60,60,200" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+    </style>
+
+    <!-- Decorated multi split pane -->
+    <style type="multisplitpane" id="decorated" extends="non-opaque">
+        <painter>
+            <decorations overwrite="true">
+                <decoration>
+                    <WebShape round="2" />
+                    <WebShadow type="outer" width="2" />
+                    <LineBorder color="20,20,20" />
+                    <ColorBackground color="68,68,68" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Decorated multi split pane -->
+    <style type="multisplitpane" id="focusable" extends="decorated">
+        <painter>
+            <decorations>
+                <decoration states="focused">
+                    <LineBorder color="black" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

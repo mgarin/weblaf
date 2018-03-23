@@ -22,6 +22,7 @@ import java.awt.*;
 /**
  * Simple interface for simple stroke XML conversion implementations.
  *
+ * @param <T> {@link Stroke} type
  * @author Mikle Garin
  */
 

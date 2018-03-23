@@ -20,18 +20,18 @@ package com.alee.extended.tree;
 import com.alee.laf.checkbox.CheckState;
 import com.alee.utils.CollectionUtils;
 
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import java.util.*;
 
 /**
- * Default checking model for WebCheckBoxTree.
+ * Default checking model for {@link WebCheckBoxTree}.
  *
  * @param <N> node type
  * @author Mikle Garin
  */
 
-public class DefaultTreeCheckingModel<N extends DefaultMutableTreeNode> implements TreeCheckingModel<N>
+public class DefaultTreeCheckingModel<N extends MutableTreeNode> implements TreeCheckingModel<N>
 {
     /**
      * Checkbox tree which uses this checking model.

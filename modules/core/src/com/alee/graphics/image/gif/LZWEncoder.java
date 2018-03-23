@@ -26,7 +26,6 @@ import java.io.OutputStream;
  * @author K Weiner 12/00
  */
 
-@SuppressWarnings ( "SpellCheckingInspection" )
 public class LZWEncoder
 {
 

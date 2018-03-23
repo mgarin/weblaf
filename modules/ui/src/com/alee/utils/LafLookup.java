@@ -269,7 +269,6 @@ public final class LafLookup
      * @param key       value key
      * @return default {@link Object} value for the specified {@code key}
      */
-    @SuppressWarnings ( "unused" )
     public static Object get ( final JComponent component, final ComponentUI ui, final String key )
     {
         return UIManager.get ( key, component.getLocale () );

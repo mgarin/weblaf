@@ -50,7 +50,6 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeSupport
      * @param c component that will use UI instance
      * @return instance of the {@link WebTableHeaderUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTableHeaderUI ();
@@ -65,7 +64,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeSupport
         StyleManager.installSkin ( header );
 
         // Default renderer
-        header.setDefaultRenderer ( new WebTableHeaderCellRenderer () );
+        header.setDefaultRenderer ( new WebTableHeaderCellRenderer.UIResource () );
     }
 
     @Override

@@ -39,6 +39,8 @@
     <include>resources/progressbar.xml</include>
     <include>resources/splitpanedivider.xml</include>
     <include>resources/splitpane.xml</include>
+    <include>resources/multisplitpanedivider.xml</include>
+    <include>resources/multisplitpane.xml</include>
     <include>resources/separator.xml</include>
     <!--<include>resources/slider.xml</include>-->
     <include>resources/menubar.xml</include>
@@ -103,7 +105,7 @@
     <include>resources/syntaxarea.xml</include>
     <include>resources/syntaxpanel.xml</include>
     <!--<include>resources/componentpane.xml</include>-->
-    <!--<include>resources/directorychooser.xml</include>-->
+    <include>resources/directorychooser.xml</include>
     <include>resources/dockablepane.xml</include>
     <include>resources/dockableframe.xml</include>
     <include>resources/interfacetree.xml</include>

@@ -37,7 +37,7 @@ import java.util.Set;
  *
  * Note that stored data cannot be {@code null} at any point as {@code null} is considered to be no data case.
  *
- * @param <C> component type
+ * @param <C> {@link JComponent} type
  * @param <D> data type
  * @author Mikle Garin
  */

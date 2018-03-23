@@ -52,9 +52,12 @@ import java.util.List;
  * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
- * @see JToggleButton
+ * @see ToggleButtonDescriptor
+ * @see WToggleButtonUI
  * @see WebToggleButtonUI
+ * @see IToggleButtonPainter
  * @see ToggleButtonPainter
+ * @see JToggleButton
  */
 
 public class WebToggleButton extends JToggleButton
@@ -62,7 +65,7 @@ public class WebToggleButton extends JToggleButton
         LanguageEventMethods, SettingsMethods, FontMethods<WebToggleButton>, SizeMethods<WebToggleButton>
 {
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      */
     public WebToggleButton ()
     {
@@ -70,9 +73,9 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
-     * @param action button action
+     * @param action button {@link Action}
      */
     public WebToggleButton ( final Action action )
     {
@@ -80,9 +83,9 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
-     * @param icon button icon
+     * @param icon button {@link Icon}
      */
     public WebToggleButton ( final Icon icon )
     {
@@ -90,9 +93,9 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
-     * @param icon     button icon
+     * @param icon     button {@link Icon}
      * @param selected whether or not button is selected
      */
     public WebToggleButton ( final Icon icon, final boolean selected )
@@ -101,7 +104,7 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
      * @param text button text
      */
@@ -111,7 +114,7 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
      * @param text     button text
      * @param selected whether or not button is selected
@@ -122,10 +125,10 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
      * @param text button text
-     * @param icon button icon
+     * @param icon button {@link Icon}
      */
     public WebToggleButton ( final String text, final Icon icon )
     {
@@ -133,10 +136,10 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
      * @param text     button text
-     * @param icon     button icon
+     * @param icon     button {@link Icon}
      * @param selected whether or not button is selected
      */
     public WebToggleButton ( final String text, final Icon icon, final boolean selected )
@@ -145,9 +148,9 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
-     * @param listener button action listener
+     * @param listener button {@link ActionListener}
      */
     public WebToggleButton ( final ActionListener listener )
     {
@@ -155,10 +158,10 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
-     * @param icon     button icon
-     * @param listener button action listener
+     * @param icon     button {@link Icon}
+     * @param listener button {@link ActionListener}
      */
     public WebToggleButton ( final Icon icon, final ActionListener listener )
     {
@@ -166,11 +169,11 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
-     * @param icon     button icon
+     * @param icon     button {@link Icon}
      * @param selected whether or not button is selected
-     * @param listener button action listener
+     * @param listener button {@link ActionListener}
      */
     public WebToggleButton ( final Icon icon, final boolean selected, final ActionListener listener )
     {
@@ -178,10 +181,10 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
      * @param text     button text
-     * @param listener button action listener
+     * @param listener button {@link ActionListener}
      */
     public WebToggleButton ( final String text, final ActionListener listener )
     {
@@ -189,11 +192,11 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
      * @param text     button text
      * @param selected whether or not button is selected
-     * @param listener button action listener
+     * @param listener button {@link ActionListener}
      */
     public WebToggleButton ( final String text, final boolean selected, final ActionListener listener )
     {
@@ -201,11 +204,11 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
      * @param text     button text
-     * @param icon     button icon
-     * @param listener button action listener
+     * @param icon     button {@link Icon}
+     * @param listener button {@link ActionListener}
      */
     public WebToggleButton ( final String text, final Icon icon, final ActionListener listener )
     {
@@ -213,12 +216,12 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
      * @param text     button text
-     * @param icon     button icon
+     * @param icon     button {@link Icon}
      * @param selected whether or not button is selected
-     * @param listener button action listener
+     * @param listener button {@link ActionListener}
      */
     public WebToggleButton ( final String text, final Icon icon, final boolean selected, final ActionListener listener )
     {
@@ -226,9 +229,9 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebToggleButton ( final StyleId id )
     {
@@ -236,10 +239,10 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
-     * @param id     style ID
-     * @param action button action
+     * @param id     {@link StyleId}
+     * @param action button {@link Action}
      */
     public WebToggleButton ( final StyleId id, final Action action )
     {
@@ -248,10 +251,10 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
-     * @param id   style ID
-     * @param icon button icon
+     * @param id   {@link StyleId}
+     * @param icon button {@link Icon}
      */
     public WebToggleButton ( final StyleId id, final Icon icon )
     {
@@ -259,10 +262,10 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
-     * @param id       style ID
-     * @param icon     button icon
+     * @param id       {@link StyleId}
+     * @param icon     button {@link Icon}
      * @param selected whether or not button is selected
      */
     public WebToggleButton ( final StyleId id, final Icon icon, final boolean selected )
@@ -271,9 +274,9 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text button text
      */
     public WebToggleButton ( final StyleId id, final String text )
@@ -282,9 +285,9 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param text     button text
      * @param selected whether or not button is selected
      */
@@ -294,11 +297,11 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text button text
-     * @param icon button icon
+     * @param icon button {@link Icon}
      */
     public WebToggleButton ( final StyleId id, final String text, final Icon icon )
     {
@@ -306,11 +309,11 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param text     button text
-     * @param icon     button icon
+     * @param icon     button {@link Icon}
      * @param selected whether or not button is selected
      */
     public WebToggleButton ( final StyleId id, final String text, final Icon icon, final boolean selected )
@@ -319,10 +322,10 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
-     * @param id       style ID
-     * @param listener button action listener
+     * @param id       {@link StyleId}
+     * @param listener button {@link ActionListener}
      */
     public WebToggleButton ( final StyleId id, final ActionListener listener )
     {
@@ -330,11 +333,11 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
-     * @param id       style ID
-     * @param icon     button icon
-     * @param listener button action listener
+     * @param id       {@link StyleId}
+     * @param icon     button {@link Icon}
+     * @param listener button {@link ActionListener}
      */
     public WebToggleButton ( final StyleId id, final Icon icon, final ActionListener listener )
     {
@@ -342,12 +345,12 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
-     * @param id       style ID
-     * @param icon     button icon
+     * @param id       {@link StyleId}
+     * @param icon     button {@link Icon}
      * @param selected whether or not button is selected
-     * @param listener button action listener
+     * @param listener button {@link ActionListener}
      */
     public WebToggleButton ( final StyleId id, final Icon icon, final boolean selected, final ActionListener listener )
     {
@@ -355,11 +358,11 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param text     button text
-     * @param listener button action listener
+     * @param listener button {@link ActionListener}
      */
     public WebToggleButton ( final StyleId id, final String text, final ActionListener listener )
     {
@@ -367,12 +370,12 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param text     button text
      * @param selected whether or not button is selected
-     * @param listener button action listener
+     * @param listener button {@link ActionListener}
      */
     public WebToggleButton ( final StyleId id, final String text, final boolean selected, final ActionListener listener )
     {
@@ -380,12 +383,12 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param text     button text
-     * @param icon     button icon
-     * @param listener button action listener
+     * @param icon     button {@link Icon}
+     * @param listener button {@link ActionListener}
      */
     public WebToggleButton ( final StyleId id, final String text, final Icon icon, final ActionListener listener )
     {
@@ -393,13 +396,13 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Constructs new toggle button
+     * Constructs new {@link JToggleButton}.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param text     button text
-     * @param icon     button icon
+     * @param icon     button {@link Icon}
      * @param selected whether or not button is selected
-     * @param listener button action listener
+     * @param listener button {@link ActionListener}
      */
     public WebToggleButton ( final StyleId id, final String text, final Icon icon, final boolean selected, final ActionListener listener )
     {

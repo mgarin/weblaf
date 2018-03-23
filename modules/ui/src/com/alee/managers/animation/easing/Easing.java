@@ -17,8 +17,6 @@
 
 package com.alee.managers.animation.easing;
 
-import com.alee.api.TitleSupport;
-
 /**
  * Base interface for all kinds of transition easing.
  * For calculation convenience all values have `double` type.
@@ -32,8 +30,15 @@ import com.alee.api.TitleSupport;
  * @author Mikle Garin
  */
 
-public interface Easing extends TitleSupport
+public interface Easing
 {
+    /**
+     * Returns easing implementation title.
+     *
+     * @return easing implementation title
+     */
+    public String getTitle ();
+
     /**
      * Returns value eased according to implementation algorithm, usually between {@code start} and {@code start + distance}.
      * To understand how provided values are used you can look at the most simple implementation - {@link Linear} easing.

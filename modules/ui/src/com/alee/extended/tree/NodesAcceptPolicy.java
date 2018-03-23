@@ -17,7 +17,9 @@
 
 package com.alee.extended.tree;
 
-import javax.swing.tree.DefaultMutableTreeNode;
+import com.alee.laf.tree.TreeUtils;
+
+import javax.swing.tree.TreeNode;
 import java.util.List;
 
 /**
@@ -107,7 +109,7 @@ public enum NodesAcceptPolicy
      * @param <N>   nodes type
      * @return list of nodes filtered based on this {@link NodesAcceptPolicy}
      */
-    public <N extends DefaultMutableTreeNode> List<N> filter ( final List<N> nodes )
+    public <N extends TreeNode> List<N> filter ( final List<N> nodes )
     {
         if ( this != all )
         {
@@ -118,12 +120,12 @@ public enum NodesAcceptPolicy
                 {
                     if ( other != node )
                     {
-                        if ( this == ancestors && node.isNodeAncestor ( other ) )
+                        if ( this == ancestors && TreeUtils.isNodeAncestor ( node, other ) )
                         {
                             nodes.remove ( i );
                             break;
                         }
-                        else if ( this == descendants && node.isNodeDescendant ( other ) )
+                        else if ( this == descendants && TreeUtils.isNodeAncestor ( node, other ) )
                         {
                             nodes.remove ( i );
                             break;

@@ -39,7 +39,8 @@ public class DialogChoosersGroup extends AbstractExampleGroup
     {
         return CollectionUtils.<Class>asList (
                 JColorChooserExample.class,
-                JFileChooserExample.class
+                JFileChooserExample.class,
+                WebDirectoryChooserExample.class
         );
     }
 }

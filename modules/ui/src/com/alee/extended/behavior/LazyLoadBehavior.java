@@ -27,6 +27,7 @@ import com.alee.extended.window.PopOverDirection;
 import com.alee.extended.window.WebPopOver;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.style.StyleId;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.ExceptionUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.TextUtils;
@@ -109,7 +110,7 @@ public class LazyLoadBehavior implements Behavior
                                      final UnsafeSupplier<D> dataSupplier, final Function<D, JComponent> dataHandler,
                                      final Function<Throwable, JComponent> errorHandler )
     {
-        SwingUtils.invokeAndWait ( new Runnable ()
+        CoreSwingUtils.invokeAndWait ( new Runnable ()
         {
             @Override
             public void run ()
@@ -131,7 +132,7 @@ public class LazyLoadBehavior implements Behavior
                         try
                         {
                             final D data = dataSupplier.get ();
-                            SwingUtils.invokeLater ( new Runnable ()
+                            CoreSwingUtils.invokeLater ( new Runnable ()
                             {
                                 @Override
                                 public void run ()
@@ -145,7 +146,7 @@ public class LazyLoadBehavior implements Behavior
                         }
                         catch ( final Exception e )
                         {
-                            SwingUtils.invokeLater ( new Runnable ()
+                            CoreSwingUtils.invokeLater ( new Runnable ()
                             {
                                 @Override
                                 public void run ()

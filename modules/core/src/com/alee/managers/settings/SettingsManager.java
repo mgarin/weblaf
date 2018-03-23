@@ -1074,7 +1074,7 @@ public final class SettingsManager
         if ( allowSave )
         {
             final File settingsFile = getSettingsFile ( fileName );
-            final File dir = settingsFile.getParentFile ();
+            final File dir = FileUtils.getParent ( settingsFile );
             if ( FileUtils.ensureDirectoryExists ( dir ) )
             {
                 XmlUtils.toXML ( settings, settingsFile );

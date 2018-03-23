@@ -17,6 +17,7 @@
 
 package com.alee.extended.language;
 
+import com.alee.laf.combobox.ComboBoxCellParameters;
 import com.alee.laf.combobox.WebComboBoxRenderer;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.UILanguageManager;
@@ -28,32 +29,30 @@ import java.util.Locale;
  * Custom {@link ListCellRenderer} for {@link LanguageChooser} component.
  *
  * @author Mikle Garin
+ * @see com.alee.painter.decoration.content.LocaleTextContent
  */
 
-public class LanguageChooserRenderer extends WebComboBoxRenderer<Locale, JList>
+public class LanguageChooserRenderer extends WebComboBoxRenderer<Locale, JList, ComboBoxCellParameters<Locale, JList>>
 {
     @Override
-    protected Icon iconForValue ( final JList list, final Locale value, final int index,
-                                  final boolean isSelected, final boolean hasFocus )
+    protected void updateView ( final ComboBoxCellParameters<Locale, JList> parameters )
     {
-        return UILanguageManager.getLocaleIcon ( value );
-    }
-
-    @Override
-    protected String textForValue ( final JList list, final Locale value, final int index,
-                                    final boolean isSelected, final boolean hasFocus )
-    {
-        return LanguageManager.getLocaleTitle ( value );
-    }
-
-    @Override
-    protected void updateView ( final JList list, final Locale value, final int index, final boolean isSelected, final boolean hasFocus )
-    {
-        // Special property for locale value
-        // todo Maybe use setLocale ( locale ) instead?
-        putClientProperty ( LanguageItemLocale.LOCALE_VALUE_KEY, value );
+        // Changing locale for LocaleTextContent usage
+        setLocale ( parameters.value () );
 
         // Updating view
-        super.updateView ( list, value, index, isSelected, hasFocus );
+        super.updateView ( parameters );
+    }
+
+    @Override
+    protected Icon iconForValue ( final ComboBoxCellParameters<Locale, JList> parameters )
+    {
+        return UILanguageManager.getLocaleIcon ( parameters.value () );
+    }
+
+    @Override
+    protected String textForValue ( final ComboBoxCellParameters<Locale, JList> parameters )
+    {
+        return LanguageManager.getLocaleTitle ( parameters.value () );
     }
 }

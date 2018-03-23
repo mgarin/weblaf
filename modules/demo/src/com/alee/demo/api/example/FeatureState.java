@@ -17,7 +17,6 @@
 
 package com.alee.demo.api.example;
 
-import com.alee.api.TitleSupport;
 import com.alee.managers.language.LM;
 
 /**
@@ -26,7 +25,7 @@ import com.alee.managers.language.LM;
  * @author Mikle Garin
  */
 
-public enum FeatureState implements TitleSupport
+public enum FeatureState
 {
     /**
      * Beta feature.
@@ -58,16 +57,20 @@ public enum FeatureState implements TitleSupport
      */
     deprecated;
 
-    @Override
+    /**
+     * Returns {@link FeatureState} title.
+     *
+     * @return {@link FeatureState} title
+     */
     public String getTitle ()
     {
         return LM.get ( "demo.state." + this );
     }
 
     /**
-     * Returns feature state description.
+     * Returns {@link FeatureState} description.
      *
-     * @return feature state description
+     * @return {@link FeatureState} description
      */
     public String geDescription ()
     {

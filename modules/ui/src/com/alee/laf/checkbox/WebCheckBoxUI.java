@@ -49,7 +49,6 @@ public class WebCheckBoxUI<C extends JCheckBox> extends WCheckBoxUI<C> implement
      * @param c component that will use UI instance
      * @return instance of the {@link WebCheckBoxUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebCheckBoxUI ();

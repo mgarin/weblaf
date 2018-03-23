@@ -170,20 +170,20 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
     @Override
     public void addComponent ( final Component component, final Object constraints )
     {
-        String name = ( String ) constraints;
-        if ( name != null && !name.trim ().equals ( "" ) )
+        String align = ( String ) constraints;
+        if ( align != null && !align.trim ().equals ( "" ) )
         {
             try
             {
                 // Checking halign for validity
-                final int halign = getHalign ( name );
+                final int halign = getHalign ( align );
                 if ( !horizontals.contains ( halign ) )
                 {
                     illegalArgument ();
                 }
 
                 // Checking valign for validity
-                final int valign = getValign ( name );
+                final int valign = getValign ( align );
                 if ( !verticals.contains ( valign ) )
                 {
                     illegalArgument ();
@@ -197,9 +197,9 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
         else
         {
             // Default position
-            name = CENTER + SEPARATOR + CENTER;
+            align = CENTER + SEPARATOR + CENTER;
         }
-        this.constraints.put ( component, name );
+        this.constraints.put ( component, align );
     }
 
     @Override
@@ -209,12 +209,12 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
     }
 
     @Override
-    public void layoutContainer ( final Container parent )
+    public void layoutContainer ( final Container container )
     {
-        final Insets insets = parent.getInsets ();
-        final int cw = parent.getWidth () - insets.left - insets.right;
-        final int ch = parent.getHeight () - insets.top - insets.bottom;
-        for ( final Component component : parent.getComponents () )
+        final Insets insets = container.getInsets ();
+        final int cw = container.getWidth () - insets.left - insets.right;
+        final int ch = container.getHeight () - insets.top - insets.bottom;
+        for ( final Component component : container.getComponents () )
         {
             // Component constraints
             final String align = constraints.get ( component );
@@ -240,11 +240,11 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
                 }
                 else if ( halign == CENTER )
                 {
-                    x = parent.getWidth () / 2 - ps.width / 2;
+                    x = container.getWidth () / 2 - ps.width / 2;
                 }
                 else if ( halign == RIGHT )
                 {
-                    x = parent.getWidth () - ps.width - insets.right;
+                    x = container.getWidth () - ps.width - insets.right;
                 }
                 else
                 {
@@ -266,11 +266,11 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
                 }
                 else if ( valign == CENTER )
                 {
-                    y = parent.getHeight () / 2 - ps.height / 2;
+                    y = container.getHeight () / 2 - ps.height / 2;
                 }
                 else if ( valign == BOTTOM )
                 {
-                    y = parent.getHeight () - ps.height - insets.bottom;
+                    y = container.getHeight () - ps.height - insets.bottom;
                 }
                 else
                 {
@@ -288,10 +288,10 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
+    public Dimension preferredLayoutSize ( final Container container )
     {
         final Dimension ps;
-        if ( parent.getComponentCount () > 1 )
+        if ( container.getComponentCount () > 1 )
         {
             // Counting size for each block
             final Map<Integer, Integer> widths = new HashMap<Integer, Integer> ();
@@ -302,7 +302,7 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
                 {
                     for ( final int valign : verticals )
                     {
-                        final Dimension size = getAreaSize ( parent, halign, valign );
+                        final Dimension size = getAreaSize ( container, halign, valign );
                         if ( size != null )
                         {
                             if ( !isHfill () )
@@ -324,7 +324,7 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
             ps = new Dimension ( 0, 0 );
             if ( isHfill () )
             {
-                ps.width = SwingUtils.maxWidth ( parent.getComponents () );
+                ps.width = SwingUtils.maxWidth ( container.getComponents () );
             }
             else
             {
@@ -335,7 +335,7 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
             }
             if ( isVfill () )
             {
-                ps.height = SwingUtils.maxHeight ( parent.getComponents () );
+                ps.height = SwingUtils.maxHeight ( container.getComponents () );
             }
             else
             {
@@ -345,10 +345,10 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
                 }
             }
         }
-        else if ( parent.getComponentCount () == 1 )
+        else if ( container.getComponentCount () == 1 )
         {
             // Separate case for single component
-            ps = parent.getComponent ( 0 ).getPreferredSize ();
+            ps = container.getComponent ( 0 ).getPreferredSize ();
         }
         else
         {
@@ -357,7 +357,7 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
         }
 
         // Adding insets
-        final Insets insets = parent.getInsets ();
+        final Insets insets = container.getInsets ();
         ps.width += insets.left + insets.right;
         ps.height += insets.top + insets.bottom;
 
@@ -367,15 +367,15 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
     /**
      * Returns size for the area specified by horizontal and vertical alignments.
      *
-     * @param parent container
-     * @param halign horizontal alignment
-     * @param valign vertical alignment
+     * @param container container
+     * @param halign    horizontal alignment
+     * @param valign    vertical alignment
      * @return size for the area specified by horizontal and vertical alignments
      */
-    protected Dimension getAreaSize ( final Container parent, final int halign, final int valign )
+    protected Dimension getAreaSize ( final Container container, final int halign, final int valign )
     {
         final Dimension size = new Dimension ( 0, 0 );
-        for ( final Component component : parent.getComponents () )
+        for ( final Component component : container.getComponents () )
         {
             final String align = constraints.get ( component );
             if ( getHalign ( align ) == halign && getValign ( align ) == valign )
@@ -391,23 +391,25 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
     /**
      * Returns horizontal alignment for the specified constraint.
      *
-     * @param name constraint
+     * @param constraints constraints
      * @return horizontal alignment
      */
-    protected int getHalign ( final String name )
+    protected int getHalign ( final String constraints )
     {
-        return name == null ? CENTER : Integer.parseInt ( name.substring ( 0, name.indexOf ( SEPARATOR ) ) );
+        return constraints == null ? CENTER :
+                Integer.parseInt ( constraints.substring ( 0, constraints.indexOf ( SEPARATOR ) ) );
     }
 
     /**
      * Returns vertical alignment for the specified constraint.
      *
-     * @param name constraint
+     * @param constraints constraints
      * @return vertical alignment
      */
-    protected int getValign ( final String name )
+    protected int getValign ( final String constraints )
     {
-        return name == null ? CENTER : Integer.parseInt ( name.substring ( name.indexOf ( SEPARATOR ) + SEPARATOR.length () ) );
+        return constraints == null ? CENTER :
+                Integer.parseInt ( constraints.substring ( constraints.indexOf ( SEPARATOR ) + SEPARATOR.length () ) );
     }
 
     /**

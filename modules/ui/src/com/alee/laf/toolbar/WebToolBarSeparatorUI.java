@@ -50,7 +50,6 @@ public class WebToolBarSeparatorUI<C extends JToolBar.Separator> extends WToolBa
      * @param c component that will use UI instance
      * @return instance of the {@link WebToolBarSeparatorUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebToolBarSeparatorUI ();

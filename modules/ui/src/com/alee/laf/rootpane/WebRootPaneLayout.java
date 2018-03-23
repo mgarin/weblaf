@@ -32,24 +32,24 @@ import java.awt.*;
 public class WebRootPaneLayout extends AbstractLayoutManager
 {
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
+    public Dimension preferredLayoutSize ( final Container container )
     {
-        return calculateSize ( parent, true );
+        return calculateSize ( container, true );
     }
 
     @Override
-    public Dimension minimumLayoutSize ( final Container parent )
+    public Dimension minimumLayoutSize ( final Container container )
     {
-        return calculateSize ( parent, false );
+        return calculateSize ( container, false );
     }
 
     @Override
-    public void layoutContainer ( final Container parent )
+    public void layoutContainer ( final Container container )
     {
-        final JRootPane root = ( JRootPane ) parent;
+        final JRootPane root = ( JRootPane ) container;
         final WebRootPaneUI rootUI = ( WebRootPaneUI ) root.getUI ();
-        final Insets i = parent.getInsets ();
-        final Dimension s = parent.getSize ();
+        final Insets i = container.getInsets ();
+        final Dimension s = container.getSize ();
         final int w = s.width - i.right - i.left;
         final int h = s.height - i.top - i.bottom;
         final boolean ltr = root.getComponentOrientation ().isLeftToRight ();
@@ -70,7 +70,7 @@ public class WebRootPaneLayout extends AbstractLayoutManager
         if ( showWindowButtons )
         {
             // Moving buttons to top layer
-            parent.setComponentZOrder ( windowButtons, 0 );
+            container.setComponentZOrder ( windowButtons, 0 );
 
             // Placing buttons properly
             final Dimension ps = windowButtons.getPreferredSize ();
@@ -127,7 +127,7 @@ public class WebRootPaneLayout extends AbstractLayoutManager
         if ( contentPane != null )
         {
             final int contentHeight = h > extraHeight ? h - extraHeight : 0;
-            contentPane.setBounds ( i.left,  i.top +extraHeight, w, contentHeight );
+            contentPane.setBounds ( i.left, i.top + extraHeight, w, contentHeight );
         }
 
         // Placing glass pane
@@ -141,14 +141,14 @@ public class WebRootPaneLayout extends AbstractLayoutManager
     /**
      * Returns layout size for various cases.
      *
-     * @param parent    layout container
+     * @param container layout container
      * @param preferred whether return preferred size or not
      * @return layout size for various cases
      */
-    private Dimension calculateSize ( final Container parent, final boolean preferred )
+    private Dimension calculateSize ( final Container container, final boolean preferred )
     {
-        final Insets i = parent.getInsets ();
-        final JRootPane root = ( JRootPane ) parent;
+        final Insets i = container.getInsets ();
+        final JRootPane root = ( JRootPane ) container;
         final WebRootPaneUI rootUI = ( WebRootPaneUI ) root.getUI ();
 
         final JComponent windowButtons = rootUI.getButtonsPanel ();

@@ -21,7 +21,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.TreeState;
 import com.alee.laf.tree.WebTreeModel;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.compare.Filter;
 
 import javax.swing.tree.MutableTreeNode;
@@ -315,7 +315,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N>
                             @Override
                             public void completed ( final List<N> children )
                             {
-                                SwingUtils.invokeLater ( new Runnable ()
+                                CoreSwingUtils.invokeLater ( new Runnable ()
                                 {
                                     @Override
                                     public void run ()
@@ -329,7 +329,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N>
                             @Override
                             public void failed ( final Throwable cause )
                             {
-                                SwingUtils.invokeLater ( new Runnable ()
+                                CoreSwingUtils.invokeLater ( new Runnable ()
                                 {
                                     @Override
                                     public void run ()

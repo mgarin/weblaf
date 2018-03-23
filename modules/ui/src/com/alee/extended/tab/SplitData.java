@@ -18,6 +18,7 @@
 package com.alee.extended.tab;
 
 import com.alee.laf.splitpane.WebSplitPane;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.Customizer;
 
@@ -102,7 +103,7 @@ public final class SplitData<T extends DocumentData> implements StructureData<T>
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
-                SwingUtils.invokeLater ( new Runnable ()
+                CoreSwingUtils.invokeLater ( new Runnable ()
                 {
                     @Override
                     public void run ()

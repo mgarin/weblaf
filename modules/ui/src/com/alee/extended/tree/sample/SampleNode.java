@@ -17,111 +17,37 @@
 
 package com.alee.extended.tree.sample;
 
-import com.alee.api.IconSupport;
-import com.alee.api.TitleSupport;
+import com.alee.api.ui.TextBridge;
 import com.alee.extended.tree.AsyncUniqueNode;
-import com.alee.laf.tree.WebTreeUI;
+import com.alee.extended.tree.WebAsyncTree;
+import com.alee.laf.tree.TreeNodeParameters;
+import com.alee.managers.icon.Icons;
 
 import javax.swing.*;
 
 /**
- * Sample node.
+ * Sample {@link AsyncUniqueNode} usage.
  *
  * @author Mikle Garin
  */
 
-public class SampleNode extends AsyncUniqueNode implements Cloneable, IconSupport, TitleSupport
+public class SampleNode extends AsyncUniqueNode<SampleNode, SampleObject>
+        implements TextBridge<TreeNodeParameters<SampleNode, WebAsyncTree>>
 {
-    /**
-     * Node type.
-     */
-    protected SampleNodeType type;
-
-    /**
-     * Node title to display.
-     */
-    protected String title;
-
     /**
      * Time spent to load node children.
      */
     protected long time;
 
     /**
-     * Constructs sample node.
+     * Constructs new {@link SampleNode}.
      *
-     * @param type  node type
-     * @param title node name
+     * @param userObject node {@link Object}
      */
-    public SampleNode ( final SampleNodeType type, final String title )
+    public SampleNode ( final SampleObject userObject )
     {
-        super ();
-        this.type = type;
-        this.title = title;
+        super ( userObject );
         this.time = 0;
-    }
-
-    /**
-     * Returns node type.
-     *
-     * @return node type
-     */
-    public SampleNodeType getType ()
-    {
-        return type;
-    }
-
-    /**
-     * Changes node type.
-     *
-     * @param type new node type
-     */
-    public void setType ( final SampleNodeType type )
-    {
-        this.type = type;
-    }
-
-    @Override
-    public Icon getNodeIcon ()
-    {
-        switch ( getType () )
-        {
-            case root:
-            {
-                return WebTreeUI.ROOT_ICON;
-            }
-            case folder:
-            {
-                // todo expanded ? WebTreeUI.OPEN_ICON : WebTreeUI.CLOSED_ICON;
-                return WebTreeUI.CLOSED_ICON;
-            }
-            case leaf:
-            default:
-            {
-                return WebTreeUI.LEAF_ICON;
-            }
-        }
-    }
-
-    /**
-     * Returns node name.
-     *
-     * @return node name
-     */
-    @Override
-    public String getTitle ()
-    {
-        return title;
-    }
-
-    /**
-     * Changes node name.
-     *
-     * @param title new node name
-     */
-    public void setTitle ( final String title )
-    {
-        this.title = title;
     }
 
     /**
@@ -145,6 +71,46 @@ public class SampleNode extends AsyncUniqueNode implements Cloneable, IconSuppor
     }
 
     @Override
+    public Icon getNodeIcon ( final TreeNodeParameters<SampleNode, WebAsyncTree> parameters )
+    {
+        switch ( getUserObject ().getType () )
+        {
+            case root:
+            {
+                return parameters.isExpanded () ? Icons.rootOpen : Icons.root;
+            }
+            case folder:
+            {
+                return parameters.isExpanded () ? Icons.folderOpen : Icons.folder;
+            }
+            case leaf:
+            {
+                return Icons.leaf;
+            }
+            default:
+            {
+                throw new RuntimeException ( "Unknown node type" );
+            }
+        }
+    }
+
+    @Override
+    public String getText ( final TreeNodeParameters<SampleNode, WebAsyncTree> parameters )
+    {
+        return getTitle ();
+    }
+
+    /**
+     * Returns node title.
+     *
+     * @return node title
+     */
+    public String getTitle ()
+    {
+        return getUserObject ().getTitle ();
+    }
+
+    @Override
     public String toString ()
     {
         return getTitle ();
@@ -153,13 +119,14 @@ public class SampleNode extends AsyncUniqueNode implements Cloneable, IconSuppor
     @Override
     public SampleNode clone ()
     {
-        // Cannot use this yet as it will enforce full nodes structure cloning
-        // It will also get stuck and eventually throw stackoverflow due to current clone issues
-        // return MergeUtils.cloneByFieldsSafely ( this );
+        // Cloning object and node
+        final SampleObject object = getUserObject ().clone ();
+        final SampleNode clone = new SampleNode ( object );
 
-        final SampleNode clone = new SampleNode ( getType (), getTitle () );
+        // Copying settings
         clone.setId ( getId () );
         clone.setTime ( getTime () );
+
         return clone;
     }
 }

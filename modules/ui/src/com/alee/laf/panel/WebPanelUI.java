@@ -49,7 +49,6 @@ public class WebPanelUI<C extends JPanel> extends WPanelUI<C> implements ShapeSu
      * @param c component that will use UI instance
      * @return instance of the {@link WebPanelUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebPanelUI ();

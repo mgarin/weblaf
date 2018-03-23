@@ -25,6 +25,7 @@ import java.util.EventListener;
  * {@link com.alee.extended.dock.WebDockableFrame} events listener.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  * @see com.alee.extended.dock.WebDockableFrame
  */
 

@@ -29,6 +29,7 @@ import com.alee.laf.panel.WebPanel;
 import com.alee.laf.window.WebDialog;
 import com.alee.managers.language.LM;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.collection.ImmutableList;
 
@@ -87,7 +88,7 @@ public class WebExtendedOptionPane extends WebDialog
     public WebExtendedOptionPane ( final Component parentComponent, final Object message, final Object special, final String title,
                                    final int optionType, final int messageType )
     {
-        super ( SwingUtils.getWindowAncestor ( parentComponent ), title );
+        super ( CoreSwingUtils.getWindowAncestor ( parentComponent ), title );
         setIconImages ( getDialogIcons ( messageType ) );
         setLayout ( new BorderLayout () );
 
@@ -190,7 +191,7 @@ public class WebExtendedOptionPane extends WebDialog
         setResizable ( false );
         setDefaultCloseOperation ( JDialog.DISPOSE_ON_CLOSE );
         pack ();
-        setLocationRelativeTo ( SwingUtils.getWindowAncestor ( parentComponent ) );
+        setLocationRelativeTo ( CoreSwingUtils.getWindowAncestor ( parentComponent ) );
     }
 
     protected ImageIcon getLargeIcon ( final int messageType )
@@ -280,7 +281,7 @@ public class WebExtendedOptionPane extends WebDialog
         if ( updateWindow )
         {
             pack ();
-            setLocationRelativeTo ( SwingUtils.getWindowAncestor ( parentComponent ) );
+            setLocationRelativeTo ( CoreSwingUtils.getWindowAncestor ( parentComponent ) );
         }
     }
 

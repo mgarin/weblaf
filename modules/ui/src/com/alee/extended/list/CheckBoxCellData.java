@@ -30,30 +30,30 @@ public class CheckBoxCellData
     /**
      * Checkbox cell data ID prefix.
      */
-    private static final String ID_PREFIX = "CBCD";
+    protected static final String ID_PREFIX = "CBCD";
 
     /**
      * Checkbox cell data ID.
      */
-    private String id = null;
+    protected String id = null;
 
     /**
      * Whether checkbox is selected or not.
      */
-    private boolean selected = false;
+    protected boolean selected = false;
 
     /**
      * Whether checkbox is enabled or not.
      */
-    private boolean enabled = true;
+    protected boolean enabled = true;
 
     /**
      * User object for cell rendering.
      */
-    private Object userObject = null;
+    protected Object userObject = null;
 
     /**
-     * Constructs default checkbox cell data with null user object.
+     * Constructs new {@link CheckBoxCellData} with {@code null} user object.
      */
     public CheckBoxCellData ()
     {
@@ -61,23 +61,23 @@ public class CheckBoxCellData
     }
 
     /**
-     * Constructs default checkbox cell data with specified user object.
+     * Constructs new {@link CheckBoxCellData} with specified user object.
      *
      * @param userObject user object
      */
-    public CheckBoxCellData ( Object userObject )
+    public CheckBoxCellData ( final Object userObject )
     {
         super ();
         this.userObject = userObject;
     }
 
     /**
-     * Constructs default checkbox cell data with specified user object and checkbox selection state.
+     * Constructs new {@link CheckBoxCellData} with specified user object and selection state.
      *
      * @param userObject user object
      * @param selected   whether checkbox is selected or not
      */
-    public CheckBoxCellData ( Object userObject, boolean selected )
+    public CheckBoxCellData ( final Object userObject, final boolean selected )
     {
         super ();
         this.selected = selected;
@@ -103,7 +103,7 @@ public class CheckBoxCellData
      *
      * @param id new checkbox cell data ID
      */
-    public void setId ( String id )
+    public void setId ( final String id )
     {
         this.id = id;
     }
@@ -123,7 +123,7 @@ public class CheckBoxCellData
      *
      * @param userObject new user object
      */
-    public void setUserObject ( Object userObject )
+    public void setUserObject ( final Object userObject )
     {
         this.userObject = userObject;
     }
@@ -143,7 +143,7 @@ public class CheckBoxCellData
      *
      * @param selected whether checkbox is selected or not
      */
-    public void setSelected ( boolean selected )
+    public void setSelected ( final boolean selected )
     {
         this.selected = selected;
     }
@@ -171,7 +171,7 @@ public class CheckBoxCellData
      *
      * @param enabled whether checkbox is enabled or not
      */
-    public void setEnabled ( boolean enabled )
+    public void setEnabled ( final boolean enabled )
     {
         this.enabled = enabled;
     }

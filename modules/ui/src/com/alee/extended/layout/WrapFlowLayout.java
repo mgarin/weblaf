@@ -153,24 +153,24 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
+    public Dimension preferredLayoutSize ( final Container container )
     {
-        layoutContainer ( parent );
+        layoutContainer ( container );
         return new Dimension ( maxWidth, maxHeight );
     }
 
     @Override
-    public Dimension minimumLayoutSize ( final Container parent )
+    public Dimension minimumLayoutSize ( final Container container )
     {
-        layoutContainer ( parent );
+        layoutContainer ( container );
         return new Dimension ( 0, maxHeight );
     }
 
     @Override
-    public void layoutContainer ( final Container parent )
+    public void layoutContainer ( final Container container )
     {
         // Ignore if no children
-        if ( parent.getComponentCount () == 0 )
+        if ( container.getComponentCount () == 0 )
         {
             maxWidth = 0;
             maxHeight = 0;
@@ -179,8 +179,8 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
         }
 
         // Parent properties
-        final Insets insets = parent.getInsets ();
-        final int parentWidth = parent.getWidth () - insets.left - insets.right;
+        final Insets insets = container.getInsets ();
+        final int parentWidth = container.getWidth () - insets.left - insets.right;
 
         // Current row
         int currentRow = 0;
@@ -198,9 +198,9 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
 
         // Computing rows and components
         rowsData = new ArrayList<RowData> ();
-        for ( int i = 0; i < parent.getComponentCount (); i++ )
+        for ( int i = 0; i < container.getComponentCount (); i++ )
         {
-            final Component component = parent.getComponent ( i );
+            final Component component = container.getComponent ( i );
             final Dimension ps = component.getPreferredSize ();
             if ( componentInRow > 0 && ( isWrapEachComponent () || currentRowWidth + hgap + ps.width > parentWidth ) )
             {
@@ -236,10 +236,10 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
 
         // Layouting components
         int x;
-        int y = getStartY ( parent, insets );
+        int y = getStartY ( container, insets );
         for ( final RowData row : rowsData )
         {
-            x = getStartX ( parent, insets, row );
+            x = getStartX ( container, insets, row );
             int i = 0;
             for ( final Component component : row.getComponents () )
             {
@@ -259,7 +259,7 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
         }
     }
 
-    protected int getStartX ( final Container parent, final Insets insets, final RowData row )
+    protected int getStartX ( final Container container, final Insets insets, final RowData row )
     {
         final int x;
         if ( fillWidth || halign == LEFT )
@@ -268,16 +268,16 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
         }
         else if ( halign == RIGHT )
         {
-            x = parent.getWidth () - insets.right - row.getWidth ();
+            x = container.getWidth () - insets.right - row.getWidth ();
         }
         else
         {
-            x = parent.getWidth () / 2 - row.getWidth () / 2;
+            x = container.getWidth () / 2 - row.getWidth () / 2;
         }
         return x;
     }
 
-    protected int getStartY ( final Container parent, final Insets insets )
+    protected int getStartY ( final Container container, final Insets insets )
     {
         final int y;
         if ( valign == TOP )
@@ -286,11 +286,11 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
         }
         else if ( valign == BOTTOM )
         {
-            y = parent.getHeight () - insets.bottom - maxHeight;
+            y = container.getHeight () - insets.bottom - maxHeight;
         }
         else
         {
-            y = insets.top + parent.getHeight () / 2 - maxHeight / 2;
+            y = insets.top + container.getHeight () / 2 - maxHeight / 2;
         }
         return y;
     }

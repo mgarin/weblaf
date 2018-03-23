@@ -19,14 +19,14 @@ package com.alee.demo.content.data.tree;
 
 import com.alee.demo.api.example.*;
 import com.alee.extended.tree.*;
+import com.alee.extended.tree.sample.SampleExDataProvider;
 import com.alee.extended.tree.sample.SampleNode;
-import com.alee.extended.tree.sample.SampleNodeType;
+import com.alee.extended.tree.sample.SampleObjectType;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -157,65 +157,12 @@ public class WebExTreeExample extends AbstractStylePreviewExample
      */
     protected static ExTreeDataProvider<SampleNode> createDataProvider ()
     {
-        return new AbstractExTreeDataProvider<SampleNode> ()
-        {
-            @Override
-            public SampleNode getRoot ()
-            {
-                return new SampleNode ( SampleNodeType.root, "Root" );
-            }
-
-            @Override
-            public List<SampleNode> getChildren ( final SampleNode parent )
-            {
-                switch ( parent.getType () )
-                {
-                    case root:
-                    {
-                        return createFolders ();
-                    }
-                    case folder:
-                    {
-                        return createLeafs ();
-                    }
-                    default:
-                    {
-                        return Collections.EMPTY_LIST;
-                    }
-                }
-            }
-
-            /**
-             * Returns folder sample elements.
-             *
-             * @return folder sample elements
-             */
-            protected List<SampleNode> createFolders ()
-            {
-                final SampleNode folder1 = new SampleNode ( SampleNodeType.folder, "Folder 1" );
-                final SampleNode folder2 = new SampleNode ( SampleNodeType.folder, "Folder 2" );
-                final SampleNode folder3 = new SampleNode ( SampleNodeType.folder, "Folder 3" );
-                return CollectionUtils.asList ( folder1, folder2, folder3 );
-            }
-
-            /**
-             * Returns leaf sample elements.
-             *
-             * @return leaf sample elements
-             */
-            protected List<SampleNode> createLeafs ()
-            {
-                final SampleNode leaf1 = new SampleNode ( SampleNodeType.leaf, "Leaf 1" );
-                final SampleNode leaf2 = new SampleNode ( SampleNodeType.leaf, "Leaf 2" );
-                final SampleNode leaf3 = new SampleNode ( SampleNodeType.leaf, "Leaf 3" );
-                return CollectionUtils.asList ( leaf1, leaf2, leaf3 );
-            }
-        };
+        return new SampleExDataProvider ();
     }
 
     /**
      * Returns sample tree transfer handler.
-     * It will provide base functionality of Drag &amp; Drop for our sample tree.
+     * It will provide base functionality of DnD for our sample tree.
      *
      * @return sample extended tree transfer handler
      */
@@ -223,12 +170,18 @@ public class WebExTreeExample extends AbstractStylePreviewExample
     {
         return new ExTreeTransferHandler<SampleNode, WebExTree<SampleNode>, ExTreeModel<SampleNode>> ()
         {
+            /**
+             * Forcing this {@link TransferHandler} to move nodes.
+             */
             @Override
             public int getSourceActions ( final JComponent c )
             {
                 return MOVE;
             }
 
+            /**
+             * Blocks drop on {@link SampleObjectType#leaf} nodes.
+             */
             @Override
             protected List<? extends TreeDropHandler> createDropHandlers ()
             {
@@ -239,28 +192,32 @@ public class WebExTreeExample extends AbstractStylePreviewExample
                                                 final ExTreeModel<SampleNode> model, final SampleNode dropLocation, final int dropIndex,
                                                 final List<SampleNode> nodes )
                     {
-                        return dropLocation.getType () != SampleNodeType.leaf;
+                        return dropLocation.getUserObject ().getType () != SampleObjectType.leaf;
                     }
                 } );
             }
 
+            /**
+             * We do not need to copy children as {@link ExTreeDataProvider} will do that instead.
+             * We only need to provide a copy of the specified node here.
+             */
             @Override
             protected SampleNode copy ( final WebExTree<SampleNode> tree, final ExTreeModel<SampleNode> model, final SampleNode node )
             {
-                // We do not need to copy children as {@link com.alee.extended.tree.ExTreeDataProvider} will do that instead
-                // We only need to provide a copy of the specified node here
                 return node.clone ();
             }
 
+            /**
+             * Blocks root element drag.
+             */
             @Override
             protected boolean canBeDragged ( final WebExTree<SampleNode> tree, final ExTreeModel<SampleNode> model,
                                              final List<SampleNode> nodes )
             {
-                // Blocking root drag
                 boolean allowed = true;
                 for ( final SampleNode node : nodes )
                 {
-                    if ( node.getType () == SampleNodeType.root )
+                    if ( node.getUserObject ().getType () == SampleObjectType.root )
                     {
                         allowed = false;
                         break;

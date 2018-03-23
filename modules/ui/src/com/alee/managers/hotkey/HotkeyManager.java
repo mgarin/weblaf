@@ -19,15 +19,12 @@ package com.alee.managers.hotkey;
 
 import com.alee.api.jdk.BiConsumer;
 import com.alee.api.jdk.BiPredicate;
+import com.alee.api.jdk.Function;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.TooltipWay;
-import com.alee.utils.CollectionUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.TextUtils;
-import com.alee.utils.XmlUtils;
+import com.alee.utils.*;
 import com.alee.utils.compare.Filter;
 import com.alee.utils.swing.WeakComponentDataList;
-import com.alee.utils.text.TextProvider;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,12 +58,12 @@ public final class HotkeyManager
     /**
      * HotkeyInfo text provider.
      */
-    private static final TextProvider<HotkeyInfo> HOTKEY_TEXT_PROVIDER = new TextProvider<HotkeyInfo> ()
+    private static final Function<HotkeyInfo, String> HOTKEY_TEXT_PROVIDER = new Function<HotkeyInfo, String> ()
     {
         @Override
-        public String getText ( final HotkeyInfo object )
+        public String apply ( final HotkeyInfo hotkeyInfo )
         {
-            return object.getHotkeyData ().toString ();
+            return hotkeyInfo.getHotkeyData ().toString ();
         }
     };
 
@@ -231,7 +228,7 @@ public final class HotkeyManager
         {
             // Finding top component
             Component topComponent = hotkeyInfo.getTopComponent ();
-            topComponent = topComponent != null ? topComponent : SwingUtils.getWindowAncestor ( forComponent );
+            topComponent = topComponent != null ? topComponent : CoreSwingUtils.getWindowAncestor ( forComponent );
 
             // Checking if componen or one of its children has focus
             if ( SwingUtils.hasFocusOwner ( topComponent ) )
@@ -271,7 +268,7 @@ public final class HotkeyManager
         }
         else
         {
-            SwingUtils.invokeLater ( new Runnable ()
+            CoreSwingUtils.invokeLater ( new Runnable ()
             {
                 @Override
                 public void run ()
@@ -512,7 +509,7 @@ public final class HotkeyManager
         TooltipManager.hideAllTooltips ();
 
         // Displaying one-time tips with hotkeys
-        showComponentHotkeys ( SwingUtils.getWindowAncestor ( component ) );
+        showComponentHotkeys ( CoreSwingUtils.getWindowAncestor ( component ) );
     }
 
     private static void showComponentHotkeys ( final Window window )
@@ -527,7 +524,7 @@ public final class HotkeyManager
                 {
                     final JComponent forComponent = hotkeyInfo.getForComponent ();
                     if ( forComponent != null && !shown.contains ( forComponent ) && forComponent.isVisible () &&
-                            forComponent.isShowing () && SwingUtils.getWindowAncestor ( forComponent ) == window )
+                            forComponent.isShowing () && CoreSwingUtils.getWindowAncestor ( forComponent ) == window )
                     {
                         final String hotkey = HotkeyManager.getComponentHotkeysString ( forComponent );
                         final TooltipWay displayWay = hotkeyInfo.getHotkeyDisplayWay ();

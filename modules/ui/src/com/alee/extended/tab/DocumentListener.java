@@ -22,6 +22,7 @@ import java.util.EventListener;
 /**
  * Documents state listener for WebDocumentPane component.
  *
+ * @param <T> {@link DocumentData} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
  * @see com.alee.extended.tab.WebDocumentPane

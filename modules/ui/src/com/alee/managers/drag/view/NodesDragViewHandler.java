@@ -25,7 +25,7 @@ import com.alee.utils.ImageUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
 import java.awt.*;
 import java.awt.dnd.DragSourceContext;
 import java.awt.dnd.DragSourceDragEvent;
@@ -42,7 +42,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public abstract class NodesDragViewHandler<N extends DefaultMutableTreeNode> implements DragViewHandler<List<N>>
+public abstract class NodesDragViewHandler<N extends MutableTreeNode> implements DragViewHandler<List<N>>
 {
     /**
      * Returns maximum amount of nodes displayed when dragged.
@@ -116,7 +116,7 @@ public abstract class NodesDragViewHandler<N extends DefaultMutableTreeNode> imp
                 int width = 0;
                 int height = 0;
                 int count = 0;
-                for ( final DefaultMutableTreeNode node : realNodes )
+                for ( final N node : realNodes )
                 {
                     if ( limit <= 0 || limit > count )
                     {

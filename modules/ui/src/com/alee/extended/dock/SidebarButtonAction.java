@@ -21,6 +21,7 @@ package com.alee.extended.dock;
  * Enumeration representing possible frame sidebar button actions.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  */
 
 public enum SidebarButtonAction

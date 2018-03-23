@@ -24,54 +24,41 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * Sample {@link com.alee.extended.tree.ExTreeDataProvider} implementation.
+ *
  * @author Mikle Garin
  */
 
-public final class SampleExDataProvider extends AbstractExTreeDataProvider<SampleNode>
+public class SampleExDataProvider extends AbstractExTreeDataProvider<SampleNode>
 {
-    /**
-     * Returns asynchronous tree sample root node.
-     *
-     * @return root node
-     */
     @Override
     public SampleNode getRoot ()
     {
-        return new SampleNode ( SampleNodeType.root, "Root" );
+        return new SampleNode ( new SampleObject ( SampleObjectType.root, "Root" ) );
     }
 
-    /**
-     * Returns sample child nodes for specified asynchronous tree node.
-     *
-     * @param parent children parent node
-     * @return sample child nodes for specified asynchronous tree node
-     */
     @Override
     public List<SampleNode> getChildren ( final SampleNode parent )
     {
-        // Sample children
-        switch ( parent.getType () )
+        switch ( parent.getUserObject ().getType () )
         {
             case root:
             {
-                // Folder type children
-                final SampleNode folder1 = new SampleNode ( SampleNodeType.folder, "Folder 1" );
-                final SampleNode folder2 = new SampleNode ( SampleNodeType.folder, "Folder 2" );
-                final SampleNode folder3 = new SampleNode ( SampleNodeType.folder, "Folder 3" );
+                final SampleNode folder1 = new SampleNode ( new SampleObject ( SampleObjectType.folder, "Folder 1" ) );
+                final SampleNode folder2 = new SampleNode ( new SampleObject ( SampleObjectType.folder, "Folder 2" ) );
+                final SampleNode folder3 = new SampleNode ( new SampleObject ( SampleObjectType.folder, "Folder 3" ) );
                 return CollectionUtils.asList ( folder1, folder2, folder3 );
             }
             case folder:
             {
-                // Leaf type children
-                final SampleNode leaf1 = new SampleNode ( SampleNodeType.leaf, "Leaf 1" );
-                final SampleNode leaf2 = new SampleNode ( SampleNodeType.leaf, "Leaf 2" );
-                final SampleNode leaf3 = new SampleNode ( SampleNodeType.leaf, "Leaf 3" );
+                final SampleNode leaf1 = new SampleNode ( new SampleObject ( SampleObjectType.leaf, "Leaf 1" ) );
+                final SampleNode leaf2 = new SampleNode ( new SampleObject ( SampleObjectType.leaf, "Leaf 2" ) );
+                final SampleNode leaf3 = new SampleNode ( new SampleObject ( SampleObjectType.leaf, "Leaf 3" ) );
                 return CollectionUtils.asList ( leaf1, leaf2, leaf3 );
             }
             default:
             {
-                // Empty children
-                return Collections.EMPTY_LIST;
+                return Collections.emptyList ();
             }
         }
     }

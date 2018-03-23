@@ -159,7 +159,7 @@ public class BasicStrokeConverterSupport implements StrokeConverterSupport<Basic
      * @param value value to unmarshal
      * @return unmarshalled {@link BasicStroke} cap
      */
-    private int unmarshalCap ( final String value )
+    protected int unmarshalCap ( final String value )
     {
         if ( value.equals ( cap_butt ) )
         {

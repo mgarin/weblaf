@@ -17,6 +17,7 @@
 
 package com.alee.laf.table.renderers;
 
+import com.alee.laf.table.TableCellParameters;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
@@ -26,12 +27,14 @@ import java.util.Date;
 /**
  * Default {@link javax.swing.table.TableCellRenderer} implementation for {@link Date} values.
  *
- * @param <V> cell value type
- * @param <C> table type
+ * @param <V> {@link Date} type
+ * @param <C> {@link JTable} type
+ * @param <P> {@link TableCellParameters} type
  * @author Mikle Garin
  */
 
-public class WebTableDateCellRenderer<V extends Date, C extends JTable> extends WebTableCellRenderer<V, C>
+public class WebTableDateCellRenderer<V extends Date, C extends JTable, P extends TableCellParameters<V, C>>
+        extends WebTableCellRenderer<V, C, P>
 {
     /**
      * {@link DateFormat}.
@@ -39,17 +42,15 @@ public class WebTableDateCellRenderer<V extends Date, C extends JTable> extends 
     protected DateFormat dateFormat;
 
     @Override
-    protected void updateStyleId ( final C table, final V value, final boolean isSelected,
-                                   final boolean hasFocus, final int row, final int column )
+    protected void updateStyleId ( final P parameters )
     {
-        setStyleId ( StyleId.tableCellRendererDate.at ( table ) );
+        setStyleId ( StyleId.tableCellRendererDate.at ( parameters.table () ) );
     }
 
     @Override
-    protected String textForValue ( final C table, final V value, final boolean isSelected,
-                                    final boolean hasFocus, final int row, final int column )
+    protected String textForValue ( final P parameters )
     {
-        return value != null ? getDateFormat ().format ( value ) : "";
+        return parameters.value () != null ? getDateFormat ().format ( parameters.value () ) : "";
     }
 
     /**
@@ -70,11 +71,12 @@ public class WebTableDateCellRenderer<V extends Date, C extends JTable> extends 
      * A subclass of {@link WebTableDateCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
      *
-     * @param <V> cell value type
-     * @param <C> table type
+     * @param <V> {@link Date} type
+     * @param <C> {@link JTable} type
+     * @param <P> {@link TableCellParameters} type
      */
-    public static class UIResource<V extends Date, C extends JTable> extends WebTableDateCellRenderer<V, C>
-            implements javax.swing.plaf.UIResource
+    public static class UIResource<V extends Date, C extends JTable, P extends TableCellParameters<V, C>>
+            extends WebTableDateCellRenderer<V, C, P> implements javax.swing.plaf.UIResource
     {
         /**
          * Implementation is used completely from {@link WebTableDateCellRenderer}.

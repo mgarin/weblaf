@@ -78,7 +78,6 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
      * @param c component that will use UI instance
      * @return instance of the {@link WebScrollBarUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebScrollBarUI ();

@@ -21,8 +21,8 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.LabelDescriptor;
 import com.alee.laf.label.WLabelUI;
 import com.alee.laf.label.WebLabelUI;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.LafUtils;
-import com.alee.utils.SwingUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -47,7 +47,7 @@ public final class ComponentDescriptorTest
     @BeforeClass
     public static void initialize ()
     {
-        SwingUtils.invokeAndWait ( new Runnable ()
+        CoreSwingUtils.invokeAndWait ( new Runnable ()
         {
             @Override
             public void run ()
@@ -64,7 +64,7 @@ public final class ComponentDescriptorTest
     @Test
     public void customDescriptor ()
     {
-        SwingUtils.invokeAndWait ( new Runnable ()
+        CoreSwingUtils.invokeAndWait ( new Runnable ()
         {
             @Override
             public void run ()
@@ -135,7 +135,6 @@ public final class ComponentDescriptorTest
          * @param c component that will use UI instance
          * @return instance of the {@link MyLabelUI}
          */
-        @SuppressWarnings ( "UnusedParameters" )
         public static ComponentUI createUI ( final JComponent c )
         {
             return new MyLabelUI ();
@@ -148,7 +147,7 @@ public final class ComponentDescriptorTest
     @AfterClass
     public static void destroy ()
     {
-        SwingUtils.invokeAndWait ( new Runnable ()
+        CoreSwingUtils.invokeAndWait ( new Runnable ()
         {
             @Override
             public void run ()

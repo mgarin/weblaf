@@ -28,51 +28,51 @@ import java.awt.*;
 import java.io.Serializable;
 
 /**
- * Model used by {@link com.alee.extended.dock.WebDockablePane} component.
+ * Model used by {@link WebDockablePane} component.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
- * @see com.alee.extended.dock.WebDockablePane
- * @see com.alee.extended.dock.WebDockablePaneModel
+ * @see WebDockablePane
+ * @see WebDockablePaneModel
  */
 
 public interface DockablePaneModel extends LayoutManager, Serializable
 {
     /**
-     * Returns root structure container element.
+     * Returns root {@link DockableContainer}.
      *
-     * @return root structure container element
+     * @return root {@link DockableContainer}
      */
     public DockableContainer getRoot ();
 
     /**
-     * Sets root structure container element.
+     * Sets root {@link DockableContainer}.
      *
-     * @param root root structure container element
+     * @param root root {@link DockableContainer}
      */
     public void setRoot ( DockableContainer root );
 
     /**
-     * Returns element with the specified ID.
+     * Returns {@link DockableElement} with the specified identifier.
      *
      * @param id  element ID
      * @param <T> element type
-     * @return element with the specified ID
+     * @return {@link DockableElement} with the specified identifier
      */
     public <T extends DockableElement> T getElement ( String id );
 
     /**
-     * Ensures specified {@link com.alee.extended.dock.WebDockableFrame} data exists in the model.
+     * Ensures specified {@link WebDockableFrame} data exists in the model.
      *
-     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane} frame is added to
+     * @param dockablePane {@link WebDockablePane} frame is added to
      * @param frame        {@link WebDockableFrame} to process
      */
     public void updateFrame ( WebDockablePane dockablePane, WebDockableFrame frame );
 
     /**
-     * Removes specified {@link com.alee.extended.dock.WebDockableFrame} from model.
+     * Removes specified {@link WebDockableFrame} from model.
      *
-     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane} frame is added to
+     * @param dockablePane {@link WebDockablePane} frame is added to
      * @param frame        {@link WebDockableFrame} to remove
      */
     public void removeFrame ( WebDockablePane dockablePane, WebDockableFrame frame );
@@ -80,7 +80,7 @@ public interface DockablePaneModel extends LayoutManager, Serializable
     /**
      * Returns information on possible drop location.
      *
-     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane} frame is added to
+     * @param dockablePane {@link WebDockablePane} frame is added to
      * @param support      transfer operation data
      * @return information on possible drop location
      */
@@ -89,7 +89,7 @@ public interface DockablePaneModel extends LayoutManager, Serializable
     /**
      * Performs drop operation and returns whether or not drop operation was completed successfully.
      *
-     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane} frame is added to
+     * @param dockablePane {@link WebDockablePane} frame is added to
      * @param support      transfer operation data
      * @return true if drop operation was completed successfully, false otherwise
      */
@@ -105,11 +105,11 @@ public interface DockablePaneModel extends LayoutManager, Serializable
     public ResizeData getResizeData ( int x, int y );
 
     /**
-     * Returns bounds for the frame dialog created in {@link com.alee.extended.dock.DockableFrameState#floating} state.
-     * These bounds are requested when frame is being switched into {@link com.alee.extended.dock.DockableFrameState#floating}.
+     * Returns bounds for the frame dialog created in {@link DockableFrameState#floating} state.
+     * These bounds are requested when frame is being switched into {@link DockableFrameState#floating}.
      *
      * @param dockablePane {@link WebDockablePane} frame is added to
-     * @param frame        {@link com.alee.extended.dock.WebDockableFrame} to returns bounds for
+     * @param frame        {@link WebDockableFrame} to returns bounds for
      * @param dialog       {@link com.alee.laf.window.WebDialog} used to display floating frame
      * @return bounds for the frame dialog created in floating state
      */

@@ -55,7 +55,6 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeSupport, Margin
      * @param c component that will use UI instance
      * @return instance of the {@link WebMenuBarUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebMenuBarUI ();

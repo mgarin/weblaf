@@ -17,6 +17,7 @@
 
 package com.alee.laf.table.renderers;
 
+import com.alee.laf.table.TableCellParameters;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
@@ -25,30 +26,30 @@ import java.text.NumberFormat;
 /**
  * Default {@link javax.swing.table.TableCellRenderer} implementation for {@link Double} values.
  *
- * @param <V> cell value type
- * @param <C> table type
+ * @param <V> {@link Double} type
+ * @param <C> {@link JTable} type
+ * @param <P> {@link TableCellParameters} type
  * @author Mikle Garin
  */
 
-public class WebTableDoubleCellRenderer<V extends Double, C extends JTable> extends WebTableNumberCellRenderer<V, C>
+public class WebTableDoubleCellRenderer<V extends Double, C extends JTable, P extends TableCellParameters<V, C>>
+        extends WebTableNumberCellRenderer<V, C, P>
 {
     /**
-     * Number formatter.
+     * {@link NumberFormat}.
      */
     protected NumberFormat numberFormat;
 
     @Override
-    protected void updateStyleId ( final C table, final V value, final boolean isSelected,
-                                   final boolean hasFocus, final int row, final int column )
+    protected void updateStyleId ( final P parameters )
     {
-        setStyleId ( StyleId.tableCellRendererDouble.at ( table ) );
+        setStyleId ( StyleId.tableCellRendererDouble.at ( parameters.table () ) );
     }
 
     @Override
-    protected String textForValue ( final C table, final V value, final boolean isSelected,
-                                    final boolean hasFocus, final int row, final int column )
+    protected String textForValue ( final P parameters )
     {
-        return value != null ? getNumberFormat ().format ( value ) : "";
+        return parameters.value () != null ? getNumberFormat ().format ( parameters.value () ) : "";
     }
 
     /**
@@ -69,11 +70,12 @@ public class WebTableDoubleCellRenderer<V extends Double, C extends JTable> exte
      * A subclass of {@link WebTableDoubleCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
      *
-     * @param <V> cell value type
-     * @param <C> table type
+     * @param <V> {@link Double} type
+     * @param <C> {@link JTable} type
+     * @param <P> {@link TableCellParameters} type
      */
-    public static class UIResource<V extends Double, C extends JTable> extends WebTableDoubleCellRenderer<V, C>
-            implements javax.swing.plaf.UIResource
+    public static class UIResource<V extends Double, C extends JTable, P extends TableCellParameters<V, C>>
+            extends WebTableDoubleCellRenderer<V, C, P> implements javax.swing.plaf.UIResource
     {
         /**
          * Implementation is used completely from {@link WebTableDoubleCellRenderer}.

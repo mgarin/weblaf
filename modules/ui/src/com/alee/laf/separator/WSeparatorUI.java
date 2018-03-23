@@ -30,7 +30,7 @@ import javax.swing.plaf.SeparatorUI;
  * @author Mikle Garin
  */
 
-public class WSeparatorUI<C extends JSeparator> extends SeparatorUI implements WebUI<C>
+public abstract class WSeparatorUI<C extends JSeparator> extends SeparatorUI implements WebUI<C>
 {
     /**
      * Runtime variables.

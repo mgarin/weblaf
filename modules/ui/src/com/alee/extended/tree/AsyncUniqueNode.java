@@ -17,8 +17,11 @@
 
 package com.alee.extended.tree;
 
-import com.alee.api.IconSupport;
+import com.alee.api.ui.EmptyRenderingParameters;
+import com.alee.api.ui.IconBridge;
+import com.alee.api.ui.RenderingParameters;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.tree.TreeNodeParameters;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.swing.BroadcastImageObserver;
@@ -26,19 +29,26 @@ import com.alee.utils.swing.LoadIconType;
 
 import javax.swing.*;
 import java.awt.image.ImageObserver;
-import java.io.Serializable;
 import java.util.Map;
 import java.util.WeakHashMap;
 
 /**
- * Custom UniqueNode for WebAsyncTree.
- * In addition to UniqueNode it contains a load icon and busy state indicator.
+ * Custom {@link javax.swing.tree.MutableTreeNode} implementation for {@link WebAsyncTree}.
+ * In addition to {@link UniqueNode} capabilities it can provide busy state indicator icon.
  *
+ * @param <N> tree node type
+ * @param <T> stored object type
  * @author Mikle Garin
  */
 
-public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport, Serializable
+public abstract class AsyncUniqueNode<N extends UniqueNode<N, T>, T> extends UniqueNode<N, T>
+        implements IconBridge<TreeNodeParameters<N, WebAsyncTree>>
 {
+    /**
+     * todo 1. Provide an easy way to customize failed state icon
+     * todo 2. Move failed icon into icon set (and make it SVG?)
+     */
+
     /**
      * Special failed state icon.
      */
@@ -82,7 +92,7 @@ public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport,
      *
      * @param userObject custom user object
      */
-    public AsyncUniqueNode ( final Object userObject )
+    public AsyncUniqueNode ( final T userObject )
     {
         super ( userObject );
     }
@@ -93,7 +103,7 @@ public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport,
      * @param id         node ID
      * @param userObject custom user object
      */
-    public AsyncUniqueNode ( final String id, final Object userObject )
+    public AsyncUniqueNode ( final String id, final T userObject )
     {
         super ( id, userObject );
     }
@@ -180,26 +190,29 @@ public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport,
     }
 
     @Override
-    public Icon getIcon ()
+    public Icon getIcon ( final TreeNodeParameters<N, WebAsyncTree> parameters )
     {
+        final Icon icon;
         if ( isLoading () )
         {
-            return getLoadIcon ();
+            icon = getLoadIcon ( parameters );
         }
         else
         {
-            final Icon icon = getNodeIcon ();
-            return icon != null && isFailed () ? getFailedStateIcon ( icon ) : icon;
+            final Icon nodeIcon = getNodeIcon ( parameters );
+            icon = nodeIcon != null && isFailed () ? getFailedStateIcon ( parameters, nodeIcon ) : nodeIcon;
         }
+        return icon;
     }
 
     /**
      * Returns load icon for this node.
      * This icon represents node loading state.
      *
+     * @param parameters {@link RenderingParameters}
      * @return load icon
      */
-    public Icon getLoadIcon ()
+    public Icon getLoadIcon ( final RenderingParameters parameters )
     {
         return loadIconType != null ? loadIconType.getIcon () : null;
     }
@@ -216,7 +229,7 @@ public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport,
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Proceed only if icon actually exists
-        final Icon icon = getLoadIcon ();
+        final Icon icon = getLoadIcon ( EmptyRenderingParameters.instance () );
         if ( icon != null && icon instanceof ImageIcon )
         {
             final ImageIcon imageIcon = ( ImageIcon ) icon;
@@ -266,7 +279,7 @@ public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport,
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Proceed only if icon actually exists
-        final Icon icon = getLoadIcon ();
+        final Icon icon = getLoadIcon ( EmptyRenderingParameters.instance () );
         if ( icon != null && icon instanceof ImageIcon )
         {
             final ImageIcon imageIcon = ( ImageIcon ) icon;
@@ -286,17 +299,19 @@ public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport,
      * Returns specific icon for this node.
      * This icon usually represents node content type or state.
      *
+     * @param parameters {@link TreeNodeParameters}
      * @return specific icon for this node
      */
-    public abstract Icon getNodeIcon ();
+    public abstract Icon getNodeIcon ( TreeNodeParameters<N, WebAsyncTree> parameters );
 
     /**
      * Returns failed state icon for this node.
      *
-     * @param icon node icon
+     * @param parameters {@link TreeNodeParameters}
+     * @param icon       node icon
      * @return failed state icon for this node
      */
-    public Icon getFailedStateIcon ( final Icon icon )
+    public Icon getFailedStateIcon ( final TreeNodeParameters<N, WebAsyncTree> parameters, final Icon icon )
     {
         Icon failedIcon = failedStateIcons.get ( icon );
         if ( failedIcon == null )
@@ -305,17 +320,5 @@ public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport,
             failedStateIcons.put ( icon, failedIcon );
         }
         return failedIcon;
-    }
-
-    @Override
-    public AsyncUniqueNode getParent ()
-    {
-        return ( AsyncUniqueNode ) super.getParent ();
-    }
-
-    @Override
-    public AsyncUniqueNode getChildAt ( final int index )
-    {
-        return ( AsyncUniqueNode ) super.getChildAt ( index );
     }
 }

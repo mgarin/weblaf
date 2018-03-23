@@ -129,7 +129,7 @@ public class LanguageChooserModel extends WebComboBoxModel<Locale> implements La
                 data.add ( 0, systemLocale );
             }
         }
-        replaceAllElements ( data );
+        setAll ( data );
 
         // Selected locale will always be selected in LanguageChooser as well
         // Even if it is not included into limitation list or it is not even supported

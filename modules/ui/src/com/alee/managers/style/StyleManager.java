@@ -32,9 +32,11 @@ import com.alee.extended.label.AbstractStyledTextContent;
 import com.alee.extended.label.HotkeyLabelBackground;
 import com.alee.extended.label.StyledLabelDescriptor;
 import com.alee.extended.label.StyledLabelText;
-import com.alee.extended.language.LanguageItemLocale;
+import com.alee.painter.decoration.content.LocaleTextContent;
 import com.alee.extended.link.LinkDescriptor;
 import com.alee.extended.panel.SelectablePanelPainter;
+import com.alee.extended.split.MultiSplitPaneDescriptor;
+import com.alee.extended.split.MultiSplitPaneDividerDescriptor;
 import com.alee.extended.statusbar.MemoryBarBackground;
 import com.alee.extended.statusbar.StatusBarDescriptor;
 import com.alee.extended.syntax.SyntaxPanelPainter;
@@ -291,6 +293,7 @@ public final class StyleManager
         XmlUtils.processAnnotations ( AbstractIconContent.class );
         XmlUtils.processAnnotations ( AbstractTextContent.class );
         XmlUtils.processAnnotations ( AbstractStyledTextContent.class );
+        XmlUtils.processAnnotations ( LocaleTextContent.class );
         XmlUtils.processAnnotations ( ToolTipText.class );
         XmlUtils.processAnnotations ( StyledToolTipText.class );
         XmlUtils.processAnnotations ( ButtonLayout.class );
@@ -308,7 +311,6 @@ public final class StyleManager
         XmlUtils.processAnnotations ( ProgressBarText.class );
         XmlUtils.processAnnotations ( HotkeyLabelBackground.class );
         XmlUtils.processAnnotations ( MemoryBarBackground.class );
-        XmlUtils.processAnnotations ( LanguageItemLocale.class );
 
         // Painter aliases
         XmlUtils.processAnnotations ( PopOverPainter.class );
@@ -387,6 +389,8 @@ public final class StyleManager
         registerComponentDescriptor ( new TabbedPaneDescriptor () );
         registerComponentDescriptor ( new SplitPaneDividerDescriptor () );
         registerComponentDescriptor ( new SplitPaneDescriptor () );
+        registerComponentDescriptor ( new MultiSplitPaneDividerDescriptor () );
+        registerComponentDescriptor ( new MultiSplitPaneDescriptor () );
         registerComponentDescriptor ( new PopupDescriptor () );
 
         /**
@@ -409,8 +413,8 @@ public final class StyleManager
          * Scroll-related components.
          */
         registerComponentDescriptor ( new ScrollBarDescriptor () );
-        registerComponentDescriptor ( new ScrollPaneDescriptor () );
         registerComponentDescriptor ( new ViewportDescriptor () );
+        registerComponentDescriptor ( new ScrollPaneDescriptor () );
 
         /**
          * Text-related components.
@@ -777,7 +781,7 @@ public final class StyleManager
         try
         {
             final Class<? extends Skin> skinClass = ReflectUtils.getClass ( skin );
-            setDefaultSkin ( new LazyInstance<Skin> ( ( Class<Skin> ) skinClass, arguments ) );
+            setDefaultSkin ( new LazyInstance<Skin> ( skinClass, arguments ) );
         }
         catch ( final ClassNotFoundException e )
         {
@@ -795,7 +799,7 @@ public final class StyleManager
      */
     public static void setDefaultSkin ( final Class<? extends Skin> skin, final Object... arguments )
     {
-        setDefaultSkin ( new LazyInstance<Skin> ( ( Class<Skin> ) skin, arguments ) );
+        setDefaultSkin ( new LazyInstance<Skin> ( skin, arguments ) );
     }
 
     /**
@@ -859,7 +863,7 @@ public final class StyleManager
      */
     public static Skin setSkin ( final Class<? extends Skin> skin, final Object... arguments )
     {
-        return setSkin ( new LazyInstance<Skin> ( ( Class<Skin> ) skin, arguments ) );
+        return setSkin ( new LazyInstance<Skin> ( skin, arguments ) );
     }
 
     /**

@@ -17,9 +17,9 @@
 
 package com.alee.extended.list;
 
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.ImageUtils;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.concurrent.DaemonThreadFactory;
 
 import javax.swing.*;
@@ -178,7 +178,7 @@ public class ThumbnailGenerator implements Runnable
 
         // Updating list view
         // Repaint doesn't really require EDT but this is simply a dirty trick to invoke this call later
-        SwingUtils.invokeLater ( new Runnable ()
+        CoreSwingUtils.invokeLater ( new Runnable ()
         {
             @Override
             public void run ()

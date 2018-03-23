@@ -61,7 +61,6 @@ public class WebEditorPaneUI extends WEditorPaneUI implements ShapeSupport, Marg
      * @param c component that will use UI instance
      * @return instance of the {@link WebEditorPaneUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebEditorPaneUI ();

@@ -49,7 +49,6 @@ public class WebButtonUI<C extends JButton> extends WButtonUI<C> implements Shap
      * @param c component that will use UI instance
      * @return instance of the {@link WebButtonUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebButtonUI ();

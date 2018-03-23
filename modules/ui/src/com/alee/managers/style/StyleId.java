@@ -2,7 +2,7 @@ package com.alee.managers.style;
 
 import com.alee.api.Identifiable;
 import com.alee.utils.CompareUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.CoreSwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,7 +21,6 @@ import java.lang.ref.WeakReference;
  * @see StyleManager
  */
 
-@SuppressWarnings ( "unused" )
 public final class StyleId implements Identifiable
 {
     /**
@@ -260,6 +259,14 @@ public final class StyleId implements Identifiable
     public static final StyleId tabbedpaneAttached = StyleId.of ( "attached" );
 
     /**
+     * {@link com.alee.laf.splitpane.WebSplitPaneDivider} style identifiers.
+     */
+    public static final StyleId splitpanedivider = StyleId.of ( "splitpanedivider" );
+    public static final ChildStyleId splitpanedividerOneTouchButton = ChildStyleId.of ( "onetouch" );
+    public static final ChildStyleId splitpanedividerOneTouchLeftButton = ChildStyleId.of ( "onetouch-left" );
+    public static final ChildStyleId splitpanedividerOneTouchRightButton = ChildStyleId.of ( "onetouch-right" );
+
+    /**
      * {@link com.alee.laf.splitpane.WebSplitPane} style identifiers.
      */
     public static final StyleId splitpane = StyleId.of ( "splitpane" );
@@ -272,12 +279,24 @@ public final class StyleId implements Identifiable
     public static final ChildStyleId splitpaneNonContinuousDivider = ChildStyleId.of ( "non-continuous" );
 
     /**
-     * {@link com.alee.laf.splitpane.WebSplitPaneDivider} style identifiers.
+     * {@link com.alee.extended.split.WebMultiSplitPaneDivider} style IDs.
      */
-    public static final StyleId splitpanedivider = StyleId.of ( "splitpanedivider" );
-    public static final ChildStyleId splitpanedividerOneTouchButton = ChildStyleId.of ( "onetouch" );
-    public static final ChildStyleId splitpanedividerOneTouchLeftButton = ChildStyleId.of ( "onetouch-left" );
-    public static final ChildStyleId splitpanedividerOneTouchRightButton = ChildStyleId.of ( "onetouch-right" );
+    public static final StyleId multisplitpanedivider = StyleId.of ( "multisplitpanedivider" );
+    public static final ChildStyleId multisplitpanedividerOneTouchButton = ChildStyleId.of ( "onetouch" );
+    public static final ChildStyleId multisplitpanedividerOneTouchLeftButton = ChildStyleId.of ( "onetouch-left" );
+    public static final ChildStyleId multisplitpanedividerOneTouchRightButton = ChildStyleId.of ( "onetouch-right" );
+
+    /**
+     * {@link com.alee.extended.split.WebMultiSplitPane} style IDs.
+     */
+    public static final StyleId multisplitpane = StyleId.of ( "multisplitpane" );
+    public static final StyleId multisplitpaneNonOpaque = StyleId.of ( "non-opaque" );
+    public static final StyleId multisplitpaneTransparent = StyleId.of ( "transparent" );
+    public static final StyleId multisplitpaneUndecorated = StyleId.of ( "undecorated" );
+    public static final StyleId multisplitpaneDecorated = StyleId.of ( "decorated" );
+    public static final StyleId multisplitpaneFocusable = StyleId.of ( "focusable" );
+    public static final ChildStyleId multisplitpaneContinuousDivider = ChildStyleId.of ( "continuous" );
+    public static final ChildStyleId multisplitpaneNonContinuousDivider = ChildStyleId.of ( "non-continuous" );
 
     /**
      * {@link com.alee.laf.toolbar.WebToolBar} style identifiers.
@@ -849,10 +868,14 @@ public final class StyleId implements Identifiable
     public static final ChildStyleId directorychooserToolButton = ChildStyleId.of ( "button" );
     public static final ChildStyleId directorychooserFolderUpButton = ChildStyleId.of ( "folderup" );
     public static final ChildStyleId directorychooserHomeButton = ChildStyleId.of ( "home" );
+    public static final ChildStyleId directorychooserDesktopButton = ChildStyleId.of ( "desktop" );
     public static final ChildStyleId directorychooserDriveButton = ChildStyleId.of ( "drive" );
     public static final ChildStyleId directorychooserRefreshButton = ChildStyleId.of ( "refresh" );
     public static final ChildStyleId directorychooserNewFolderButton = ChildStyleId.of ( "new-folder" );
     public static final ChildStyleId directorychooserDeleteButton = ChildStyleId.of ( "delete" );
+    public static final ChildStyleId directorychooserPathField = ChildStyleId.of ( "path" );
+    public static final ChildStyleId directorychooserScroll = ChildStyleId.of ( "scroll" );
+    public static final ChildStyleId directorychooserFileSystem = ChildStyleId.of ( "file-system" );
     public static final ChildStyleId directorychooserControlsPanel = ChildStyleId.of ( "controls" );
     public static final ChildStyleId directorychooserControlButton = ChildStyleId.of ( "button" );
     public static final ChildStyleId directorychooserAcceptButton = ChildStyleId.of ( "accept" );
@@ -1167,7 +1190,7 @@ public final class StyleId implements Identifiable
      */
     private static JRootPane getRootPane ( final Window window )
     {
-        final JRootPane rootPane = SwingUtils.getRootPane ( window );
+        final JRootPane rootPane = CoreSwingUtils.getRootPane ( window );
         if ( rootPane == null )
         {
             final String msg = "Unable to retrieve root pane for Window: %s";

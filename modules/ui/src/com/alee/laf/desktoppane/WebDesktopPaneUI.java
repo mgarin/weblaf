@@ -54,7 +54,6 @@ public class WebDesktopPaneUI extends BasicDesktopPaneUI implements ShapeSupport
      * @param c component that will use UI instance
      * @return instance of the {@link WebDesktopPaneUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebDesktopPaneUI ();

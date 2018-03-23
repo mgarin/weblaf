@@ -20,6 +20,7 @@ package com.alee.demo.ui.tools;
 import com.alee.demo.skin.DemoIcons;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.combobox.ComboBoxCellParameters;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.combobox.WebComboBoxRenderer;
 import com.alee.laf.panel.WebPanel;
@@ -28,7 +29,7 @@ import com.alee.managers.language.Language;
 import com.alee.managers.language.LanguageListener;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.CoreSwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,42 +55,40 @@ public final class OrientationChooserTool extends WebPanel
         super ( StyleId.panelTransparent, new BorderLayout ( 0, 0 ) );
 
         // Orientation chooser combobox
-        final WebComboBox orientation = new WebComboBox ( DemoStyles.toolCombobox, new OrientationModel () );
-        orientation.setLanguage ( "demo.tool.orientation" );
-        orientation.setSelectedItem ( WebLookAndFeel.getOrientation () );
-        orientation.setRenderer ( new WebComboBoxRenderer<ComponentOrientation, JList> ()
+        final WebComboBox chooser = new WebComboBox ( DemoStyles.toolCombobox, new OrientationModel () );
+        chooser.setLanguage ( "demo.tool.orientation" );
+        chooser.setSelectedItem ( WebLookAndFeel.getOrientation () );
+        chooser.setRenderer ( new WebComboBoxRenderer<ComponentOrientation, JList, ComboBoxCellParameters<ComponentOrientation, JList>> ()
         {
             @Override
-            protected Icon iconForValue ( final JList list, final ComponentOrientation value, final int index,
-                                          final boolean isSelected, final boolean hasFocus )
+            protected Icon iconForValue ( final ComboBoxCellParameters<ComponentOrientation, JList> parameters )
             {
-                return value == LEFT_TO_RIGHT ? DemoIcons.ltr16 : DemoIcons.rtl16;
+                return parameters.value () == LEFT_TO_RIGHT ? DemoIcons.ltr16 : DemoIcons.rtl16;
             }
 
             @Override
-            protected String textForValue ( final JList list, final ComponentOrientation value, final int index,
-                                            final boolean isSelected, final boolean hasFocus )
+            protected String textForValue ( final ComboBoxCellParameters<ComponentOrientation, JList> parameters )
             {
-                return LM.get ( "demo.tool.orientation." + ( value == LEFT_TO_RIGHT ? "ltr" : "rtl" ) );
+                return LM.get ( "demo.tool.orientation." + ( parameters.value () == LEFT_TO_RIGHT ? "ltr" : "rtl" ) );
             }
         } );
-        orientation.addActionListener ( new ActionListener ()
+        chooser.addActionListener ( new ActionListener ()
         {
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
                 // Executing later to avoid any possible interferences
-                SwingUtils.invokeLater ( new Runnable ()
+                CoreSwingUtils.invokeLater ( new Runnable ()
                 {
                     @Override
                     public void run ()
                     {
-                        WebLookAndFeel.setOrientation ( ( ComponentOrientation ) orientation.getSelectedItem () );
+                        WebLookAndFeel.setOrientation ( ( ComponentOrientation ) chooser.getSelectedItem () );
                     }
                 } );
             }
         } );
-        add ( orientation, BorderLayout.CENTER );
+        add ( chooser, BorderLayout.CENTER );
     }
 
     /**

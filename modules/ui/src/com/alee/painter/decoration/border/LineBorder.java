@@ -17,8 +17,6 @@
 
 package com.alee.painter.decoration.border;
 
-import com.alee.api.ColorSupport;
-import com.alee.api.StrokeSupport;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.GraphicsUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -38,7 +36,6 @@ import java.awt.*;
 
 @XStreamAlias ( "LineBorder" )
 public class LineBorder<C extends JComponent, D extends IDecoration<C, D>, I extends LineBorder<C, D, I>> extends AbstractBorder<C, D, I>
-        implements ColorSupport, StrokeSupport
 {
     /**
      * Border stroke.
@@ -52,13 +49,21 @@ public class LineBorder<C extends JComponent, D extends IDecoration<C, D>, I ext
     @XStreamAsAttribute
     protected Color color;
 
-    @Override
+    /**
+     * Returns {@link Stroke} used for this border.
+     *
+     * @return {@link Stroke} used for this border
+     */
     public Stroke getStroke ()
     {
         return stroke;
     }
 
-    @Override
+    /**
+     * Returns {@link Color} used for this border.
+     *
+     * @return {@link Color} used for this border
+     */
     public Color getColor ()
     {
         return color != null ? color : new Color ( 210, 210, 210 );

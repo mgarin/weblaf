@@ -17,6 +17,7 @@
 
 package com.alee.laf.toolbar;
 
+import com.alee.api.jdk.Consumer;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.window.WebDialog;
 import com.alee.managers.style.*;
@@ -24,9 +25,8 @@ import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.ProprietaryUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -67,7 +67,6 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
      * @param c component that will use UI instance
      * @return instance of the {@link WebToolBarUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebToolBarUI ();
@@ -125,7 +124,6 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
      * @param oldValue old property value
      * @param newValue new property value
      */
-    @SuppressWarnings ( "unused" )
     protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
     {
         if ( CompareUtils.equals ( property, WebLookAndFeel.ORIENTATION_PROPERTY ) )
@@ -286,7 +284,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
     protected RootPaneContainer createFloatingWindow ( final JToolBar toolbar )
     {
         final JDialog dialog;
-        final Window window = SwingUtils.getWindowAncestor ( toolbar );
+        final Window window = CoreSwingUtils.getWindowAncestor ( toolbar );
         if ( window instanceof Frame )
         {
             dialog = new ToolBarDialog ( ( Frame ) window, toolbar.getName () );

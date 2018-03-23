@@ -50,7 +50,6 @@ public class WebToggleButtonUI<C extends JToggleButton> extends WToggleButtonUI<
      * @param c component that will use UI instance
      * @return instance of the {@link WebToggleButtonUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebToggleButtonUI ();

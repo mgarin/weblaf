@@ -19,7 +19,7 @@ package com.alee.managers.language;
 
 /**
  * This marker interface can be implemented by any class that provides {@link Language}-sensitive content.
- * It is then used by various components to synchronize visual updates with {@link Language} changes.
+ * It can be used by various components to synchronize visual updates with {@link Language} changes.
  *
  * It is currently supported by UIs of next components:
  * - {@link javax.swing.JList}

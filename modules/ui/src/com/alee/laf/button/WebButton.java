@@ -48,9 +48,12 @@ import java.util.List;
  * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
- * @see JButton
+ * @see ButtonDescriptor
+ * @see WButtonUI
  * @see WebButtonUI
+ * @see IButtonPainter
  * @see ButtonPainter
+ * @see JButton
  */
 
 public class WebButton extends JButton
@@ -58,7 +61,7 @@ public class WebButton extends JButton
         LanguageEventMethods, FontMethods<WebButton>, SizeMethods<WebButton>
 {
     /**
-     * Constructs new button.
+     * Constructs new {@link WebButton}.
      */
     public WebButton ()
     {
@@ -66,9 +69,9 @@ public class WebButton extends JButton
     }
 
     /**
-     * Constructs new button.
+     * Constructs new {@link WebButton}.
      *
-     * @param action button action
+     * @param action button {@link Action}
      */
     public WebButton ( final Action action )
     {
@@ -76,9 +79,9 @@ public class WebButton extends JButton
     }
 
     /**
-     * Constructs new button.
+     * Constructs new {@link WebButton}.
      *
-     * @param icon button icon
+     * @param icon button {@link Icon}
      */
     public WebButton ( final Icon icon )
     {
@@ -86,9 +89,9 @@ public class WebButton extends JButton
     }
 
     /**
-     * Constructs new button.
+     * Constructs new {@link WebButton}.
      *
-     * @param icon         button icon
+     * @param icon         button {@link Icon}
      * @param rolloverIcon button hover icon
      */
     public WebButton ( final Icon icon, final Icon rolloverIcon )
@@ -97,7 +100,7 @@ public class WebButton extends JButton
     }
 
     /**
-     * Constructs new button.
+     * Constructs new {@link WebButton}.
      *
      * @param text button text
      */
@@ -107,10 +110,10 @@ public class WebButton extends JButton
     }
 
     /**
-     * Constructs new button.
+     * Constructs new {@link WebButton}.
      *
      * @param text button text
-     * @param icon button icon
+     * @param icon button {@link Icon}
      */
     public WebButton ( final String text, final Icon icon )
     {
@@ -118,9 +121,9 @@ public class WebButton extends JButton
     }
 
     /**
-     * Constructs new button.
+     * Constructs new {@link WebButton}.
      *
-     * @param listener button action listener
+     * @param listener button {@link Action} listener
      */
     public WebButton ( final ActionListener listener )
     {
@@ -128,10 +131,10 @@ public class WebButton extends JButton
     }
 
     /**
-     * Constructs new button.
+     * Constructs new {@link WebButton}.
      *
-     * @param icon     button icon
-     * @param listener button action listener
+     * @param icon     button {@link Icon}
+     * @param listener button {@link ActionListener}
      */
     public WebButton ( final Icon icon, final ActionListener listener )
     {
@@ -139,10 +142,10 @@ public class WebButton extends JButton
     }
 
     /**
-     * Constructs new button.
+     * Constructs new {@link WebButton}.
      *
      * @param text     button text
-     * @param listener button action listener
+     * @param listener button {@link ActionListener}
      */
     public WebButton ( final String text, final ActionListener listener )
     {
@@ -151,11 +154,11 @@ public class WebButton extends JButton
     }
 
     /**
-     * Constructs new button.
+     * Constructs new {@link WebButton}.
      *
      * @param text     button text
-     * @param icon     button icon
-     * @param listener button action listener
+     * @param icon     button {@link Icon}
+     * @param listener button {@link ActionListener}
      */
     public WebButton ( final String text, final Icon icon, final ActionListener listener )
     {
@@ -163,9 +166,9 @@ public class WebButton extends JButton
     }
 
     /**
-     * Constructs new button.
+     * Constructs new {@link WebButton}.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebButton ( final StyleId id )
     {
@@ -173,10 +176,10 @@ public class WebButton extends JButton
     }
 
     /**
-     * Constructs new button.
+     * Constructs new {@link WebButton}.
      *
-     * @param id     style ID
-     * @param action button action
+     * @param id     {@link StyleId}
+     * @param action button {@link Action}
      */
     public WebButton ( final StyleId id, final Action action )
     {
@@ -185,10 +188,10 @@ public class WebButton extends JButton
     }
 
     /**
-     * Constructs new button.
+     * Constructs new {@link WebButton}.
      *
-     * @param id   style ID
-     * @param icon button icon
+     * @param id   {@link StyleId}
+     * @param icon button {@link Icon}
      */
     public WebButton ( final StyleId id, final Icon icon )
     {
@@ -196,10 +199,10 @@ public class WebButton extends JButton
     }
 
     /**
-     * Constructs new button.
+     * Constructs new {@link WebButton}.
      *
-     * @param id           style ID
-     * @param icon         button icon
+     * @param id           {@link StyleId}
+     * @param icon         button {@link Icon}
      * @param rolloverIcon button hover icon
      */
     public WebButton ( final StyleId id, final Icon icon, final Icon rolloverIcon )
@@ -209,9 +212,9 @@ public class WebButton extends JButton
     }
 
     /**
-     * Constructs new button.
+     * Constructs new {@link WebButton}.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text button text
      */
     public WebButton ( final StyleId id, final String text )
@@ -220,11 +223,11 @@ public class WebButton extends JButton
     }
 
     /**
-     * Constructs new button.
+     * Constructs new {@link WebButton}.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text button text
-     * @param icon button icon
+     * @param icon button {@link Icon}
      */
     public WebButton ( final StyleId id, final String text, final Icon icon )
     {
@@ -232,10 +235,10 @@ public class WebButton extends JButton
     }
 
     /**
-     * Constructs new button.
+     * Constructs new {@link WebButton}.
      *
-     * @param id       style ID
-     * @param listener button action listener
+     * @param id       {@link StyleId}
+     * @param listener button {@link ActionListener}
      */
     public WebButton ( final StyleId id, final ActionListener listener )
     {
@@ -243,11 +246,11 @@ public class WebButton extends JButton
     }
 
     /**
-     * Constructs new button.
+     * Constructs new {@link WebButton}.
      *
-     * @param id       style ID
-     * @param icon     button icon
-     * @param listener button action listener
+     * @param id       {@link StyleId}
+     * @param icon     button {@link Icon}
+     * @param listener button {@link ActionListener}
      */
     public WebButton ( final StyleId id, final Icon icon, final ActionListener listener )
     {
@@ -255,11 +258,11 @@ public class WebButton extends JButton
     }
 
     /**
-     * Constructs new button.
+     * Constructs new {@link WebButton}.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param text     button text
-     * @param listener button action listener
+     * @param listener button {@link ActionListener}
      */
     public WebButton ( final StyleId id, final String text, final ActionListener listener )
     {
@@ -267,12 +270,12 @@ public class WebButton extends JButton
     }
 
     /**
-     * Constructs new button.
+     * Constructs new {@link WebButton}.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param text     button text
-     * @param icon     button icon
-     * @param listener button action listener
+     * @param icon     button {@link Icon}
+     * @param listener button {@link ActionListener}
      */
     public WebButton ( final StyleId id, final String text, final Icon icon, final ActionListener listener )
     {

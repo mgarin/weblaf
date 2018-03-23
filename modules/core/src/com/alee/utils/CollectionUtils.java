@@ -19,7 +19,6 @@ package com.alee.utils;
 
 import com.alee.api.jdk.Function;
 import com.alee.utils.compare.Filter;
-import com.alee.utils.text.TextProvider;
 
 import java.util.*;
 
@@ -752,12 +751,12 @@ public final class CollectionUtils
      * @param <T>          {@link List} elements type
      * @return {@link List} of {@link String}s extracted from the specified elements {@link List}
      */
-    public static <T> ArrayList<String> toStringList ( final List<T> list, final TextProvider<T> textProvider )
+    public static <T> ArrayList<String> toStringList ( final List<T> list, final Function<T,String> textProvider )
     {
         final ArrayList<String> stringList = new ArrayList<String> ( list.size () );
         for ( final T element : list )
         {
-            stringList.add ( textProvider.getText ( element ) );
+            stringList.add ( textProvider.apply ( element ) );
         }
         return stringList;
     }
@@ -836,6 +835,30 @@ public final class CollectionUtils
     }
 
     /**
+     * Removes non-distinct {@link List} elements.
+     *
+     * @param list {@link List} to distinct
+     * @param <T>  elements type
+     */
+    public static <T> void distinct ( final List<T> list )
+    {
+        final Set<T> seen = new HashSet<T> ( list.size () );
+        final Iterator<T> iterator = list.iterator ();
+        while ( iterator.hasNext () )
+        {
+            final T element = iterator.next ();
+            if ( !seen.contains ( element ) )
+            {
+                seen.add ( element );
+            }
+            else
+            {
+                iterator.remove ();
+            }
+        }
+    }
+
+    /**
      * Sorts {@link List} using the specified {@link Comparator}.
      *
      * @param list       {@link List} to sort
@@ -844,13 +867,13 @@ public final class CollectionUtils
      */
     public static <T> void sort ( final List<T> list, final Comparator<T> comparator )
     {
-        final Object[] a = list.toArray ();
-        Arrays.sort ( a, ( Comparator ) comparator );
-        final ListIterator<T> i = list.listIterator ();
-        for ( final Object e : a )
+        final Object[] array = list.toArray ();
+        Arrays.sort ( array, ( Comparator ) comparator );
+        final ListIterator<T> iterator = list.listIterator ();
+        for ( final Object element : array )
         {
-            i.next ();
-            i.set ( ( T ) e );
+            iterator.next ();
+            iterator.set ( ( T ) element );
         }
     }
 

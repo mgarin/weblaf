@@ -25,7 +25,6 @@ import com.alee.laf.menu.PopupStyle;
 import com.alee.laf.rootpane.WRootPaneUI;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.ProprietaryUtils;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.SystemUtils;
 import com.alee.utils.swing.AncestorAdapter;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -439,7 +438,7 @@ public class PopOverPainter<C extends JRootPane, U extends WRootPaneUI> extends 
         else if ( invoker.isShowing () )
         {
             // Updating WebPopOver location in a smarter way
-            updatePopOverLocation ( popOver, invoker, SwingUtils.getBoundsOnScreen ( invoker ) );
+            updatePopOverLocation ( popOver, invoker, CoreSwingUtils.getBoundsOnScreen ( invoker ) );
         }
     }
 
@@ -492,7 +491,7 @@ public class PopOverPainter<C extends JRootPane, U extends WRootPaneUI> extends 
                                                    final Supplier<Rectangle> boundsProvider )
     {
         // Invoker component window
-        final Window invokerWindow = SwingUtils.getWindowAncestor ( invoker );
+        final Window invokerWindow = CoreSwingUtils.getWindowAncestor ( invoker );
 
         // Invoker window follow adapter
         final WindowFollowBehavior windowFollowBehavior = new WindowFollowBehavior ( popOver, invokerWindow )

@@ -17,13 +17,18 @@
 
 package com.alee.laf.list;
 
+import com.alee.utils.CollectionUtils;
+import com.alee.utils.compare.IntegerComparator;
+
 import javax.swing.*;
 import java.util.*;
 
 /**
- * Modified and optimized Swing DefaultListModel.
- * This model contains multiply elements add/remove methods and works with typed elements.
+ * Custom {@link JList} model with generic element type.
+ * Unlike {@link DefaultComboBoxModel} it will not reuse any of the provided arrays or {@link Collection}s.
+ * Model should have its own data enclosed in itself in the first place, if you want to have control over it - override the model itself.
  *
+ * @param <T> element type
  * @author Mikle Garin
  * @see com.alee.laf.list.WebList
  */
@@ -65,33 +70,12 @@ public class WebListModel<T> extends AbstractListModel
         delegate.addAll ( data );
     }
 
-    /**
-     * Returns the number of components in this list.
-     * <p>
-     * This method is identical to {@code size}, which implements the {@code List} interface defined in the 1.2 Collections
-     * framework. This method exists in conjunction with {@code setSize} so that {@code size} is identifiable as a JavaBean
-     * property.
-     *
-     * @return the number of components in this list
-     * @see #size()
-     */
     @Override
     public int getSize ()
     {
         return delegate.size ();
     }
 
-    /**
-     * Returns the component at the specified index.
-     * <p>
-     * <blockquote> <b>Note:</b> Although this method is not deprecated, the preferred method to use is {@code get(int)},
-     * which implements the {@code List} interface defined in the 1.2 Collections framework. </blockquote>
-     *
-     * @param index an index into this list
-     * @return the component at the specified index
-     * @throws ArrayIndexOutOfBoundsException if the {@code index} is negative or greater than the current size of this list
-     * @see #get(int)
-     */
     @Override
     public T getElementAt ( final int index )
     {
@@ -270,27 +254,12 @@ public class WebListModel<T> extends AbstractListModel
     }
 
     /**
-     * Returns the component at the specified index. Throws an {@code ArrayIndexOutOfBoundsException} if the index is negative or not
-     * less than the size of the list. <blockquote> <b>Note:</b> Although this method is not deprecated, the preferred method to use is
-     * {@code get(int)}, which implements the {@code List} interface defined in the 1.2 Collections framework. </blockquote>
-     *
-     * @param index an index into this list
-     * @return the component at the specified index
-     * @see #get(int)
-     * @see Vector#elementAt(int)
-     */
-    public T elementAt ( final int index )
-    {
-        return delegate.elementAt ( index );
-    }
-
-    /**
      * Returns the first component of this list. Throws a {@code NoSuchElementException} if this vector has no components.
      *
      * @return the first component of this list
      * @see Vector#firstElement()
      */
-    public T firstElement ()
+    public T first ()
     {
         return delegate.firstElement ();
     }
@@ -301,184 +270,9 @@ public class WebListModel<T> extends AbstractListModel
      * @return the last component of the list
      * @see Vector#lastElement()
      */
-    public T lastElement ()
+    public T last ()
     {
         return delegate.lastElement ();
-    }
-
-    /**
-     * Sets the component at the specified {@code index} of this list to be the specified object. The previous component at that
-     * position is discarded.
-     * <p>
-     * Throws an {@code ArrayIndexOutOfBoundsException} if the index is invalid. <blockquote> <b>Note:</b> Although this method is not
-     * deprecated, the preferred method to use is {@code set(int, Object)}, which implements the {@code List} interface defined in
-     * the 1.2 Collections framework. </blockquote>
-     *
-     * @param obj   what the component is to be set to
-     * @param index the specified index
-     * @see #set(int, Object)
-     * @see Vector#setElementAt(Object, int)
-     */
-    public void setElementAt ( final T obj, final int index )
-    {
-        delegate.setElementAt ( obj, index );
-        fireContentsChanged ( this, index, index );
-    }
-
-    /**
-     * Deletes the component at the specified index.
-     * <p>
-     * Throws an {@code ArrayIndexOutOfBoundsException} if the index is invalid. <blockquote> <b>Note:</b> Although this method is not
-     * deprecated, the preferred method to use is {@code remove(int)}, which implements the {@code List} interface defined in the
-     * 1.2 Collections framework. </blockquote>
-     *
-     * @param index the index of the object to remove
-     * @see #remove(int)
-     * @see Vector#removeElementAt(int)
-     */
-    public void removeElementAt ( final int index )
-    {
-        delegate.removeElementAt ( index );
-        fireIntervalRemoved ( this, index, index );
-    }
-
-    /**
-     * Inserts the specified object as a component in this list at the specified {@code index}.
-     * <p>
-     * Throws an {@code ArrayIndexOutOfBoundsException} if the index is invalid. <blockquote> <b>Note:</b> Although this method is not
-     * deprecated, the preferred method to use is {@code add(int, Object)}, which implements the {@code List} interface defined in
-     * the 1.2 Collections framework. </blockquote>
-     *
-     * @param obj   the component to insert
-     * @param index where to insert the new component
-     * @throws ArrayIndexOutOfBoundsException if the index was invalid
-     * @see #add(int, Object)
-     * @see Vector#insertElementAt(Object, int)
-     */
-    public void insertElementAt ( final T obj, final int index )
-    {
-        delegate.insertElementAt ( obj, index );
-        fireIntervalAdded ( this, index, index );
-    }
-
-    /**
-     * Adds the specified component to the end of this list.
-     *
-     * @param obj the component to be added
-     * @see Vector#addElement(Object)
-     */
-    public void addElement ( final T obj )
-    {
-        final int index = delegate.size ();
-        delegate.addElement ( obj );
-        fireIntervalAdded ( this, index, index );
-    }
-
-    /**
-     * Adds the specified components to the end of this list.
-     *
-     * @param objects the components to be added
-     */
-    public void addElements ( final T... objects )
-    {
-        if ( objects.length > 0 )
-        {
-            final int index = delegate.size ();
-            Collections.addAll ( delegate, objects );
-            fireIntervalAdded ( this, index, delegate.size () - 1 );
-        }
-    }
-
-    /**
-     * Adds the specified components to the end of this list.
-     *
-     * @param objects the components to be added
-     */
-    public void addElements ( final Collection<T> objects )
-    {
-        if ( objects.size () > 0 )
-        {
-            final int index = delegate.size ();
-            delegate.addAll ( objects );
-            fireIntervalAdded ( this, index, delegate.size () - 1 );
-        }
-    }
-
-    /**
-     * Clears list data and adds specified elements.
-     *
-     * @param objects the components to be added
-     */
-    public void setElements ( final Collection<T> objects )
-    {
-        clear ();
-        if ( objects.size () > 0 )
-        {
-            delegate.addAll ( objects );
-            fireIntervalAdded ( this, 0, delegate.size () - 1 );
-        }
-    }
-
-    /**
-     * Removes the first (lowest-indexed) occurrence of the argument from this list.
-     *
-     * @param object the component to be removed
-     * @return {@code true} if the argument was a component of this list; {@code false} otherwise
-     * @see Vector#removeElement(Object)
-     */
-    public boolean removeElement ( final T object )
-    {
-        final int index = indexOf ( object );
-        final boolean rv = delegate.removeElement ( object );
-        if ( index >= 0 )
-        {
-            fireIntervalRemoved ( this, index, index );
-        }
-        return rv;
-    }
-
-    /**
-     * Removes the specified elements from this list.
-     *
-     * @param objects the components to be removed
-     */
-    public void removeElements ( final T... objects )
-    {
-        for ( final T object : objects )
-        {
-            removeElement ( object );
-        }
-    }
-
-    /**
-     * Removes the specified elements from this list.
-     *
-     * @param objects the components to be removed
-     */
-    public void removeElements ( final Collection<T> objects )
-    {
-        for ( final T object : objects )
-        {
-            removeElement ( object );
-        }
-    }
-
-    /**
-     * Removes all components from this list and sets its size to zero. <blockquote> <b>Note:</b> Although this method is not deprecated,
-     * the preferred method to use is {@code clear}, which implements the {@code List} interface defined in the 1.2 Collections
-     * framework. </blockquote>
-     *
-     * @see #clear()
-     * @see Vector#removeAllElements()
-     */
-    public void removeAllElements ()
-    {
-        final int index1 = delegate.size () - 1;
-        delegate.removeAllElements ();
-        if ( index1 >= 0 )
-        {
-            fireIntervalRemoved ( this, 0, index1 );
-        }
     }
 
     /**
@@ -517,17 +311,6 @@ public class WebListModel<T> extends AbstractListModel
     }
 
     /**
-     * Returns a string that displays and identifies this object's properties.
-     *
-     * @return a String representation of this object
-     */
-    @Override
-    public String toString ()
-    {
-        return delegate.toString ();
-    }
-
-    /**
      * Returns an array containing all of the elements in this list in the correct order.
      *
      * @return an array containing the elements of the list
@@ -554,9 +337,7 @@ public class WebListModel<T> extends AbstractListModel
 
     /**
      * Replaces the element at the specified position in this list with the specified element.
-     * <p>
-     * Throws an {@code ArrayIndexOutOfBoundsException} if the index is out of range ({@code index &lt; 0 || index &gt;=
-     * size()}).
+     * Throws an {@code ArrayIndexOutOfBoundsException} if the index is out of range ({@code index &lt; 0 || index &gt;= size()}).
      *
      * @param index   index of element to replace
      * @param element element to be stored at the specified position
@@ -571,6 +352,31 @@ public class WebListModel<T> extends AbstractListModel
     }
 
     /**
+     * Clears list data and adds specified elements.
+     *
+     * @param elements elements to be added
+     */
+    public void setAll ( final T... elements )
+    {
+        setAll ( CollectionUtils.asList ( elements ) );
+    }
+
+    /**
+     * Clears list data and adds specified elements.
+     *
+     * @param elements elements to be added
+     */
+    public void setAll ( final Collection<T> elements )
+    {
+        clear ();
+        if ( elements.size () > 0 )
+        {
+            delegate.addAll ( elements );
+            fireIntervalAdded ( this, 0, delegate.size () - 1 );
+        }
+    }
+
+    /**
      * Adds the specified element to this list.
      *
      * @param element element to be added
@@ -582,7 +388,6 @@ public class WebListModel<T> extends AbstractListModel
 
     /**
      * Inserts the specified element at the specified position in this list.
-     * <p>
      * Throws an {@code ArrayIndexOutOfBoundsException} if the index is out of range ({@code index &lt; 0 || index &gt; size()}).
      *
      * @param index   index at which the specified element is to be inserted
@@ -592,6 +397,31 @@ public class WebListModel<T> extends AbstractListModel
     {
         delegate.insertElementAt ( element, index );
         fireIntervalAdded ( this, index, index );
+    }
+
+    /**
+     * Adds specified elements to the end of this list.
+     *
+     * @param elements elements to be added
+     */
+    public void add ( final T... elements )
+    {
+        add ( CollectionUtils.asList ( elements ) );
+    }
+
+    /**
+     * Adds specified elements to the end of this list.
+     *
+     * @param elements elements to be added
+     */
+    public void add ( final Collection<T> elements )
+    {
+        if ( elements.size () > 0 )
+        {
+            final int index = delegate.size ();
+            delegate.addAll ( elements );
+            fireIntervalAdded ( this, index, delegate.size () - 1 );
+        }
     }
 
     /**
@@ -607,10 +437,9 @@ public class WebListModel<T> extends AbstractListModel
     }
 
     /**
-     * Removes the element at the specified position in this list. Returns the element that was removed from the list.
-     * <p>
-     * Throws an {@code ArrayIndexOutOfBoundsException} if the index is out of range ({@code index &lt; 0 || index &gt;=
-     * size()}).
+     * Removes the element at the specified position in this list.
+     * Returns the element that was removed from the list.
+     * Throws an {@code ArrayIndexOutOfBoundsException} if the index is out of range ({@code index &lt; 0 || index &gt;= size()}).
      *
      * @param index the index of the element to removed
      * @return removed element
@@ -624,7 +453,80 @@ public class WebListModel<T> extends AbstractListModel
     }
 
     /**
-     * Removes all of the elements from this list.  The list will be empty after this call returns (unless it throws an exception).
+     * Removes the specified elements from this list.
+     * It ensures that minimal amount of {@link #fireIntervalRemoved(Object, int, int)} calls are made.
+     *
+     * @param objects the components to be removed
+     */
+    public void removeAll ( final T... objects )
+    {
+        removeAll ( CollectionUtils.asList ( objects ) );
+    }
+
+    /**
+     * Removes the specified elements from this list.
+     *
+     * @param objects the components to be removed
+     */
+    public void removeAll ( final Collection<T> objects )
+    {
+        // Collecting indices to remove
+        final List<Integer> indices = new ArrayList<Integer> ( objects.size () );
+        for ( final T object : objects )
+        {
+            final int index = delegate.indexOf ( object );
+            if ( index != -1 )
+            {
+                indices.add ( index );
+            }
+        }
+
+        // Making sure there are no duplicate indices
+        CollectionUtils.distinct ( indices );
+
+        // Sorting indices
+        CollectionUtils.sort ( indices, new IntegerComparator () );
+
+        // Collecting ranges
+        int rangeStart = -1;
+        int rangeEnd = -1;
+        for ( int i = indices.size () - 1; i >= 0; i-- )
+        {
+            final int index = indices.get ( i );
+
+            // Removing element
+            delegate.remove ( index );
+
+            // Checking range
+            if ( rangeStart == -1 || rangeEnd == -1 )
+            {
+                // We are in the first iteration
+                // Updating range with initial values
+                rangeStart = index;
+                rangeEnd = index;
+            }
+            else if ( index == rangeStart - 1 )
+            {
+                // Current index is next to previous range start
+                // Simply moving range start to this index
+                rangeStart = index;
+            }
+            else
+            {
+                // We reached range border
+                // Firing interval removal event
+                fireIntervalRemoved ( this, rangeStart, rangeEnd );
+
+                // Updating range with new values
+                rangeStart = index;
+                rangeEnd = index;
+            }
+        }
+    }
+
+    /**
+     * Removes all of the elements from this list.
+     * The list will be empty after this call returns (unless it throws an exception).
      */
     public void clear ()
     {
@@ -639,9 +541,9 @@ public class WebListModel<T> extends AbstractListModel
     /**
      * Deletes the components at the specified range of indexes. The removal is inclusive, so specifying a range of (1,5) removes the
      * component at index 1 and the component at index 5, as well as all components in between.
-     * <p>
-     * Throws an {@code ArrayIndexOutOfBoundsException} if the index was invalid. Throws an {@code IllegalArgumentException} if
-     * {@code fromIndex &gt; toIndex}.
+     *
+     * Throws an {@code ArrayIndexOutOfBoundsException} if the index was invalid.
+     * Throws an {@code IllegalArgumentException} if {@code fromIndex &gt; toIndex}.
      *
      * @param fromIndex the index of the lower end of the range
      * @param toIndex   the index of the upper end of the range
@@ -674,21 +576,36 @@ public class WebListModel<T> extends AbstractListModel
         }
     }
 
+    /**
+     * Made public within {@link WebListModel} to allow content updates from outside of the model.
+     */
     @Override
     public void fireContentsChanged ( final Object source, final int index0, final int index1 )
     {
         super.fireContentsChanged ( source, index0, index1 );
     }
 
+    /**
+     * Made public within {@link WebListModel} to allow content updates from outside of the model.
+     */
     @Override
     public void fireIntervalAdded ( final Object source, final int index0, final int index1 )
     {
         super.fireIntervalAdded ( source, index0, index1 );
     }
 
+    /**
+     * Made public within {@link WebListModel} to allow content updates from outside of the model.
+     */
     @Override
     public void fireIntervalRemoved ( final Object source, final int index0, final int index1 )
     {
         super.fireIntervalRemoved ( source, index0, index1 );
+    }
+
+    @Override
+    public String toString ()
+    {
+        return delegate.toString ();
     }
 }

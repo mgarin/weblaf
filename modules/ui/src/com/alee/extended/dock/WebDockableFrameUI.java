@@ -36,6 +36,7 @@ import com.alee.painter.PainterSupport;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.MouseEventRunnable;
@@ -95,7 +96,6 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
      * @param c component that will use UI instance
      * @return instance of the {@link WebDockableFrameUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebDockableFrameUI ();
@@ -489,7 +489,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
      */
     protected void requestFocusInFrame ()
     {
-        SwingUtils.invokeLater ( new Runnable ()
+        CoreSwingUtils.invokeLater ( new Runnable ()
         {
             @Override
             public void run ()

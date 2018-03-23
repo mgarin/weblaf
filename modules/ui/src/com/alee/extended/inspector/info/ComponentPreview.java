@@ -30,18 +30,18 @@ import java.awt.*;
 public interface ComponentPreview<C extends Component>
 {
     /**
-     * Returns icon for the specified component.
+     * Returns icon for the specified {@link Component}.
      *
-     * @param component component to provide icon for
-     * @return icon for the specified component
+     * @param component {@link Component} to provide icon for
+     * @return icon for the specified {@link Component}
      */
     public Icon getIcon ( C component );
 
     /**
-     * Returns string value for the specified component.
+     * Returns text value for the specified {@link Component}.
      *
-     * @param component object to provide text for
-     * @return string value for the specified component
+     * @param component {@link Component} to provide text for
+     * @return text value for the specified {@link Component}
      */
     public String getText ( C component );
 }

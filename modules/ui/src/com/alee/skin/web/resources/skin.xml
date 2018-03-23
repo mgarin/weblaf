@@ -36,6 +36,8 @@
     <include>resources/progressbar.xml</include>
     <include>resources/splitpanedivider.xml</include>
     <include>resources/splitpane.xml</include>
+    <include>resources/multisplitpanedivider.xml</include>
+    <include>resources/multisplitpane.xml</include>
     <include>resources/separator.xml</include>
     <include>resources/slider.xml</include>
     <include>resources/menubar.xml</include>

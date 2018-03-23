@@ -17,9 +17,8 @@
 
 package com.alee.utils;
 
+import com.alee.api.jdk.Function;
 import com.alee.utils.compare.Filter;
-import com.alee.utils.text.SimpleTextProvider;
-import com.alee.utils.text.TextProvider;
 import com.alee.utils.xml.ColorConverter;
 import com.alee.utils.xml.InsetsConverter;
 import com.alee.utils.xml.PointConverter;
@@ -41,15 +40,22 @@ public final class TextUtils
     /**
      * Separators used to determine words in text.
      */
-    private static final List<String> textSeparators = CollectionUtils.asList (
-            " ", ".", ",", ":", ";", "/", "|", "{", "}", "[", "]", "(", ")", "<", ">",
-            "\\", "\n", "\t", "\"", "'", "-", "+", "*", "%", "$", "#", "@", "!", "~", "^", "&", "?"
+    private static final List<Character> textSeparators = CollectionUtils.asList (
+            ' ', '.', ',', ':', ';', '/', '|', '{', '}', '[', ']', '(', ')', '<', '>',
+            '\\', '\n', '\t', '\'', '\'', '-', '+', '*', '%', '$', '#', '@', '!', '~', '^', '&', '?'
     );
 
     /**
      * Text provider for any type of objects.
      */
-    private static final SimpleTextProvider simpleTextProvider = new SimpleTextProvider ();
+    private static final Function<Object, String> simpleTextProvider = new Function<Object, String> ()
+    {
+        @Override
+        public String apply ( final Object object )
+        {
+            return object != null ? object.toString () : "null";
+        }
+    };
 
     /**
      * Default ID part length.
@@ -243,39 +249,75 @@ public final class TextUtils
      */
     public static String getWord ( final String text, final int location )
     {
-        int wordStart = location;
-        int wordEnd = location;
-
-        // At the word start
-        while ( wordEnd < text.length () - 1 && !textSeparators.contains ( text.substring ( wordEnd, wordEnd + 1 ) ) )
+        final String word;
+        if ( 0 <= location && location < text.length () )
         {
-            wordEnd++;
-        }
+            if ( !textSeparators.contains ( text.charAt ( location ) ) )
+            {
+                int wordStart = location;
+                int wordEnd = location;
 
-        // At the word end
-        while ( wordStart > 0 && !textSeparators.contains ( text.substring ( wordStart - 1, wordStart ) ) )
+                // At the word start
+                while ( wordEnd < text.length () - 1 && !textSeparators.contains ( text.charAt ( wordEnd ) ) )
+                {
+                    wordEnd++;
+                }
+
+                // At the word end
+                while ( wordStart > 0 && !textSeparators.contains ( text.charAt ( wordStart - 1 ) ) )
+                {
+                    wordStart--;
+                }
+
+                word = wordStart == wordEnd ? null : text.substring ( wordStart, wordEnd );
+            }
+            else
+            {
+                // There is no word at the specified location
+                word = null;
+            }
+        }
+        else
         {
-            wordStart--;
+            // Location is outside of the text boundaries
+            word = null;
         }
-
-        return wordStart == wordEnd ? null : text.substring ( wordStart, wordEnd );
+        return word;
     }
 
     /**
-     * Returns a word start index at the specified location.
+     * Returns index of the first character in the word at the specified location.
      *
      * @param text     text to retrieve the word start index from
      * @param location word location
-     * @return word start index
+     * @return index of the first character in the word at the specified location
      */
     public static int getWordStart ( final String text, final int location )
     {
-        int wordStart = location;
-        while ( wordStart > 0 && !textSeparators.contains ( text.substring ( wordStart - 1, wordStart ) ) )
+        final int start;
+        if ( 0 <= location && location < text.length () )
         {
-            wordStart--;
+            if ( !textSeparators.contains ( text.charAt ( location ) ) )
+            {
+                int wordStart = location;
+                while ( wordStart > 0 && !textSeparators.contains ( text.charAt ( wordStart - 1 ) ) )
+                {
+                    wordStart--;
+                }
+                start = wordStart;
+            }
+            else
+            {
+                // Location points at a separator character
+                start = -1;
+            }
         }
-        return wordStart;
+        else
+        {
+            // Location is outside of the text boundaries
+            start = -1;
+        }
+        return start;
     }
 
     /**
@@ -287,12 +329,30 @@ public final class TextUtils
      */
     public static int getWordEnd ( final String text, final int location )
     {
-        int wordEnd = location;
-        while ( wordEnd < text.length () - 1 && !textSeparators.contains ( text.substring ( wordEnd, wordEnd + 1 ) ) )
+        final int end;
+        if ( 0 <= location && location < text.length () )
         {
-            wordEnd++;
+            if ( !textSeparators.contains ( text.charAt ( location ) ) )
+            {
+                int wordEnd = location;
+                while ( wordEnd < text.length () && !textSeparators.contains ( text.charAt ( wordEnd ) ) )
+                {
+                    wordEnd++;
+                }
+                end = wordEnd;
+            }
+            else
+            {
+                // Location points at a separator character
+                end = -1;
+            }
         }
-        return wordEnd;
+        else
+        {
+            // Location is outside of the text boundaries
+            end = -1;
+        }
+        return end;
     }
 
     /**
@@ -610,7 +670,7 @@ public final class TextUtils
      */
     public static <T> String listToString ( final List<T> list, final String separator )
     {
-        return listToString ( list, separator, ( TextProvider<T> ) simpleTextProvider );
+        return listToString ( list, separator, ( Function<T, String> ) simpleTextProvider );
     }
 
     /**
@@ -618,11 +678,11 @@ public final class TextUtils
      *
      * @param list         list to combine into single text
      * @param separator    elements separator
-     * @param textProvider text provider
+     * @param textProvider {@link Function} providing text
      * @param <T>          elements type
      * @return single text combined from list of elements using specified separator
      */
-    public static <T> String listToString ( final List<T> list, final String separator, final TextProvider<T> textProvider )
+    public static <T> String listToString ( final List<T> list, final String separator, final Function<T, String> textProvider )
     {
         return listToString ( list, separator, textProvider, null );
     }
@@ -632,12 +692,12 @@ public final class TextUtils
      *
      * @param list         list to combine into single text
      * @param separator    elements separator
-     * @param textProvider text provider
-     * @param filter       elements filter
+     * @param textProvider {@link Function} providing text
+     * @param filter       {@link Filter} for elements
      * @param <T>          elements type
      * @return single text combined from list of elements using specified separator
      */
-    public static <T> String listToString ( final List<T> list, final String separator, final TextProvider<T> textProvider,
+    public static <T> String listToString ( final List<T> list, final String separator, final Function<T, String> textProvider,
                                             final Filter<T> filter )
     {
         if ( CollectionUtils.notEmpty ( list ) )
@@ -652,7 +712,7 @@ public final class TextUtils
                     {
                         stringBuilder.append ( separator );
                     }
-                    stringBuilder.append ( textProvider.getText ( object ) );
+                    stringBuilder.append ( textProvider.apply ( object ) );
                     hasPreviouslyAccepted = true;
                 }
             }
@@ -693,12 +753,12 @@ public final class TextUtils
      * Returns single text combined from array of elements using specified separator.
      *
      * @param separator    elements separator
-     * @param textProvider text provider
+     * @param textProvider {@link Function} providing text
      * @param array        array to combine into single text
      * @param <T>          elements type
      * @return single text combined from array of elements using specified separator
      */
-    public static <T> String arrayToString ( final String separator, final TextProvider<T> textProvider, final T... array )
+    public static <T> String arrayToString ( final String separator, final Function<T, String> textProvider, final T... array )
     {
         return arrayToString ( separator, textProvider, null, array );
     }
@@ -707,13 +767,13 @@ public final class TextUtils
      * Returns single text combined from array of elements using specified separator.
      *
      * @param separator    elements separator
-     * @param textProvider text provider
-     * @param filter       elements filter
+     * @param textProvider {@link Function} providing text
+     * @param filter       {@link Filter} for elements
      * @param array        array to combine into single text
      * @param <T>          elements type
      * @return single text combined from array of elements using specified separator
      */
-    public static <T> String arrayToString ( final String separator, final TextProvider<T> textProvider, final Filter<T> filter,
+    public static <T> String arrayToString ( final String separator, final Function<T, String> textProvider, final Filter<T> filter,
                                              final T... array )
     {
         if ( array != null && array.length > 0 )
@@ -728,7 +788,7 @@ public final class TextUtils
                     {
                         stringBuilder.append ( separator );
                     }
-                    stringBuilder.append ( textProvider.getText ( object ) );
+                    stringBuilder.append ( textProvider.apply ( object ) );
                     hasPreviouslyAccepted = true;
                 }
             }
@@ -979,10 +1039,11 @@ public final class TextUtils
      * @param text       text to replace string occurrences in
      * @param ignoreCase whether should ignore case while searching for occurrences or not
      * @param str        text to replace
-     * @param provider   text replacement
+     * @param replacer   text replacement {@link Function}
      * @return text with replaced occurrences of the specified str
      */
-    public static String replaceAll ( final String text, final boolean ignoreCase, final String str, final TextProvider<String> provider )
+    public static String replaceAll ( final String text, final boolean ignoreCase, final String str,
+                                      final Function<String, String> replacer )
     {
         final String exp = ignoreCase ? str.toLowerCase ( Locale.ROOT ) : str;
         int match = 0;
@@ -1008,7 +1069,7 @@ public final class TextUtils
                 final int start = i - exp.length () + 1;
                 final String part = text.substring ( start, start + exp.length () );
                 builder.append ( text.substring ( prev, start ) );
-                builder.append ( provider.getText ( part ) );
+                builder.append ( replacer.apply ( part ) );
                 prev = start + exp.length ();
                 match = 0;
             }

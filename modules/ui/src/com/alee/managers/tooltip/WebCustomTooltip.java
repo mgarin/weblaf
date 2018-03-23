@@ -508,7 +508,7 @@ public class WebCustomTooltip extends JComponent implements ShapeMethods
             }
 
             final Dimension rootSize = glassPane.getSize ();
-            final Rectangle componentBounds = SwingUtils.getRelativeBounds ( component, glassPane );
+            final Rectangle componentBounds = CoreSwingUtils.getRelativeBounds ( component, glassPane );
             final Dimension ps = WebCustomTooltip.this.getPreferredSize ();
 
             if ( componentBounds.y + getTooltipPoint ( component, TooltipWay.down ).y + ps.height < rootSize.height - windowSideSpacing )
@@ -673,7 +673,7 @@ public class WebCustomTooltip extends JComponent implements ShapeMethods
                         }
                         else
                         {
-                            final Rectangle b = SwingUtils.getRelativeBounds ( rtc, component );
+                            final Rectangle b = CoreSwingUtils.getRelativeBounds ( rtc, component );
                             compMiddle = x0 + b.x + b.width / 2;
                             compTipY = y0 + b.y + ( displayWay == TooltipWay.up ? cornerLength / 2 - shadeWidth - ps.height :
                                     b.height - cornerLength / 2 + shadeWidth );
@@ -728,7 +728,7 @@ public class WebCustomTooltip extends JComponent implements ShapeMethods
                         }
                         else
                         {
-                            final Rectangle b = SwingUtils.getRelativeBounds ( rtc, component );
+                            final Rectangle b = CoreSwingUtils.getRelativeBounds ( rtc, component );
                             compMiddle = y0 + b.y + b.height / 2;
                             compTipX = x0 + b.x + ( displayWay == TooltipWay.left ? cornerLength / 2 - shadeWidth - ps.width :
                                     b.width - cornerLength / 2 + shadeWidth );

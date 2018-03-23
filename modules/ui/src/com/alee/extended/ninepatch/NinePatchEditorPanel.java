@@ -225,7 +225,7 @@ public class NinePatchEditorPanel extends WebPanel
                 {
                     wfc.setSelectedFile ( imageSrc );
                 }
-                if ( wfc.showOpenDialog ( SwingUtils.getWindowAncestor ( NinePatchEditorPanel.this ) ) == WebFileChooser.APPROVE_OPTION )
+                if ( wfc.showOpenDialog ( CoreSwingUtils.getWindowAncestor ( NinePatchEditorPanel.this ) ) == WebFileChooser.APPROVE_OPTION )
                 {
                     openImage ( wfc.getSelectedFile () );
                 }
@@ -281,7 +281,7 @@ public class NinePatchEditorPanel extends WebPanel
                 {
                     wfc.setSelectedFile ( imageSrc );
                 }
-                if ( wfc.showSaveDialog ( SwingUtils.getWindowAncestor ( NinePatchEditorPanel.this ) ) == WebFileChooser.APPROVE_OPTION )
+                if ( wfc.showSaveDialog ( CoreSwingUtils.getWindowAncestor ( NinePatchEditorPanel.this ) ) == WebFileChooser.APPROVE_OPTION )
                 {
                     try
                     {
@@ -847,7 +847,7 @@ public class NinePatchEditorPanel extends WebPanel
             {
                 if ( webColorChooser == null )
                 {
-                    webColorChooser = new WebColorChooserDialog ( SwingUtils.getWindowAncestor ( previewPanel ) );
+                    webColorChooser = new WebColorChooserDialog ( CoreSwingUtils.getWindowAncestor ( previewPanel ) );
                 }
                 webColorChooser.setColor ( preview.getForeground () );
                 if ( webColorChooser.showDialog () == DialogOptions.OK_OPTION )
@@ -877,7 +877,7 @@ public class NinePatchEditorPanel extends WebPanel
                 SettingsManager.set ( "NinePatchEditor", "preview.transparentBackground", false );
                 if ( webColorChooser == null )
                 {
-                    webColorChooser = new WebColorChooserDialog ( SwingUtils.getWindowAncestor ( previewPanel ) );
+                    webColorChooser = new WebColorChooserDialog ( CoreSwingUtils.getWindowAncestor ( previewPanel ) );
                 }
                 webColorChooser.setColor ( previewColor );
                 if ( webColorChooser.showDialog () == DialogOptions.OK_OPTION )

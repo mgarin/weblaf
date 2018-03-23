@@ -352,7 +352,6 @@ public final class SizeMethodsImpl
      * @param originalPreferredSize original {@link JComponent} preferred size
      * @return original {@link JComponent} preferred size before any adjustments
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static Dimension getOriginalPreferredSize ( final JComponent component, final Dimension originalPreferredSize )
     {
         return originalPreferredSize;

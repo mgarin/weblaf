@@ -17,13 +17,12 @@
 
 package com.alee.painter.decoration;
 
-import com.alee.api.ColorSupport;
-import com.alee.api.StrokeSupport;
 import com.alee.api.merge.Merge;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.background.IBackground;
 import com.alee.painter.decoration.border.BorderWidth;
 import com.alee.painter.decoration.border.IBorder;
+import com.alee.painter.decoration.border.LineBorder;
 import com.alee.painter.decoration.shadow.IShadow;
 import com.alee.painter.decoration.shadow.ShadowType;
 import com.alee.painter.decoration.shape.IPartialShape;
@@ -442,7 +441,8 @@ public class WebDecoration<C extends JComponent, I extends WebDecoration<C, I>> 
             border.paint ( g2d, bounds, c, WebDecoration.this, s );
 
             // Painting side lines
-            if ( shape instanceof IPartialShape && border instanceof ColorSupport && border instanceof StrokeSupport )
+            // todo Use an interface instead of LineBorder?
+            if ( shape instanceof IPartialShape && border instanceof LineBorder )
             {
                 final IPartialShape ps = ( IPartialShape ) shape;
                 final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
@@ -456,9 +456,10 @@ public class WebDecoration<C extends JComponent, I extends WebDecoration<C, I>> 
                 final boolean actualPaintRightLine = ltr ? ps.isPaintRightLine ( c, this ) : ps.isPaintLeftLine ( c, this );
                 final int shadowWidth = getShadowWidth ( ShadowType.outer );
 
-                final Stroke stroke = ( ( StrokeSupport ) border ).getStroke ();
+                final LineBorder lineBorder = ( LineBorder ) border;
+                final Stroke stroke = lineBorder.getStroke ();
                 final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke, stroke != null );
-                final Color bc = ( ( ColorSupport ) border ).getColor ();
+                final Color bc = lineBorder.getColor ();
                 final Paint op = GraphicsUtils.setupPaint ( g2d, bc, bc != null );
 
                 // todo Better solution is required for side lines

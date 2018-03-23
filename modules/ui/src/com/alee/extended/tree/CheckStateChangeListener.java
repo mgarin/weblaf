@@ -17,7 +17,7 @@
 
 package com.alee.extended.tree;
 
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
 import java.util.List;
 
 /**
@@ -27,7 +27,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public interface CheckStateChangeListener<N extends DefaultMutableTreeNode>
+public interface CheckStateChangeListener<N extends MutableTreeNode>
 {
     /**
      * Informs about single or multiply check state changes.

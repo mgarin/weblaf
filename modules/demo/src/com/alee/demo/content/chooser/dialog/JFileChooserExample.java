@@ -18,6 +18,7 @@
 package com.alee.demo.content.chooser.dialog;
 
 
+import com.alee.api.jdk.Function;
 import com.alee.demo.DemoApplication;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
@@ -28,7 +29,6 @@ import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.TextUtils;
-import com.alee.utils.text.TextProvider;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -43,12 +43,12 @@ import java.util.List;
 public class JFileChooserExample extends AbstractStylePreviewExample
 {
     /**
-     * Simple text provider for file name.
+     * Simple {@link Function} providing {@link File} name.
      */
-    public static final TextProvider<File> FILE_NAME_PROVIDER = new TextProvider<File> ()
+    public static final Function<File, String> FILE_NAME = new Function<File, String> ()
     {
         @Override
-        public String getText ( final File file )
+        public String apply ( final File file )
         {
             return file.getName ();
         }
@@ -104,7 +104,7 @@ public class JFileChooserExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            return CollectionUtils.asList ( new WebButton ( getExampleLanguagePrefix () + "show", new ActionListener ()
+            return CollectionUtils.asList ( new WebButton ( getExampleLanguageKey ( "show" ), new ActionListener ()
             {
                 @Override
                 public void actionPerformed ( final ActionEvent e )
@@ -139,7 +139,7 @@ public class JFileChooserExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            return CollectionUtils.asList ( new WebButton ( getExampleLanguagePrefix () + "show", new ActionListener ()
+            return CollectionUtils.asList ( new WebButton ( getExampleLanguageKey ( "show" ), new ActionListener ()
             {
                 @Override
                 public void actionPerformed ( final ActionEvent e )
@@ -164,8 +164,8 @@ public class JFileChooserExample extends AbstractStylePreviewExample
      */
     protected void showNotification ( final JComponent source, final JFileChooser fileChooser, final int result )
     {
-        final String languagePrefix = getExampleLanguagePrefix ();
-        final String msg;
+        final String key;
+        final Object[] data;
         switch ( result )
         {
             case JFileChooser.APPROVE_OPTION:
@@ -174,27 +174,32 @@ public class JFileChooserExample extends AbstractStylePreviewExample
                 final File[] selectedFiles = fileChooser.getSelectedFiles ();
                 if ( selectedFiles != null && selectedFiles.length > 0 )
                 {
-                    final String files = TextUtils.arrayToString ( selectedFiles, FILE_NAME_PROVIDER, ", " );
-                    msg = LM.get ( languagePrefix + "result.selected" + suffix, files );
+                    key = "result.selected" + suffix;
+                    final String files = TextUtils.arrayToString ( ", ", FILE_NAME, selectedFiles );
+                    data = new Object[]{ TextUtils.shortenText ( files, 100, true ) };
                 }
                 else
                 {
-                    msg = LM.get ( languagePrefix + "result.none" + suffix );
+                    key = "result.none" + suffix;
+                    data = new Object[ 0 ];
                 }
                 break;
             }
             case JFileChooser.CANCEL_OPTION:
             {
-                msg = LM.get ( languagePrefix + "result.cancelled" );
+                key = "result.cancelled";
+                data = new Object[ 0 ];
                 break;
             }
             default:
             case JFileChooser.ERROR_OPTION:
             {
-                msg = LM.get ( languagePrefix + "result.error" );
+                key = "result.error";
+                data = new Object[ 0 ];
                 break;
             }
         }
-        NotificationManager.showNotification ( source, msg );
+        final String message = LM.get ( getExampleLanguageKey ( key ), data );
+        NotificationManager.showNotification ( source, message );
     }
 }

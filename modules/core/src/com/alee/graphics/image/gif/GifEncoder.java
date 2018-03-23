@@ -39,7 +39,6 @@ import java.io.OutputStream;
  * </pre>
  */
 
-@SuppressWarnings ( "SpellCheckingInspection" )
 public class GifEncoder
 {
     protected int width; // image size

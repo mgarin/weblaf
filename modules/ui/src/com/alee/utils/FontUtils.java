@@ -137,18 +137,22 @@ public final class FontUtils
      * discover any case where it cannot make naive assumptions about
      * the number of chars, and how to index through them, then it may
      * need the option to have a 'true' return in such a case.
+     *
+     * @param characters characters
+     * @param start      check start index
+     * @param limit      check end index
+     * @return {@code true} if any of the characters are non-simple, {@code false} otherwise
      */
-    @SuppressWarnings ( "JavaDoc" )
-    public static boolean isComplexText ( final char[] chs, final int start, final int limit )
+    public static boolean isComplexText ( final char[] characters, final int start, final int limit )
     {
         for ( int i = start; i < limit; i++ )
         {
-            if ( chs[ i ] < MIN_LAYOUT_CHARCODE )
+            if ( characters[ i ] < MIN_LAYOUT_CHARCODE )
             {
                 //noinspection UnnecessaryContinue
                 continue;
             }
-            else if ( isNonSimpleChar ( chs[ i ] ) )
+            else if ( isNonSimpleChar ( characters[ i ] ) )
             {
                 return true;
             }
@@ -167,11 +171,13 @@ public final class FontUtils
      * These callers really are asking for more than whether 'layout'
      * needs to be run, they need to know if they can assume 1-&gt;1
      * char-&gt;glyph mapping.
+     *
+     * @param character character
+     * @return {@code true} if character is not simple, {@code false} otherwise
      */
-    @SuppressWarnings ( "JavaDoc" )
-    private static boolean isNonSimpleChar ( final char ch )
+    private static boolean isNonSimpleChar ( final char character )
     {
-        return isComplexCharCode ( ch ) || ch >= HI_SURROGATE_START && ch <= LO_SURROGATE_END;
+        return isComplexCharCode ( character ) || character >= HI_SURROGATE_START && character <= LO_SURROGATE_END;
     }
 
     /**
@@ -192,33 +198,37 @@ public final class FontUtils
      * converted surrogate pairs into supplementary characters, and so
      * can handle this case and doesn't need to be told such a case is
      * 'complex'.
+     *
+     * @param code character code
+     * @return {@code true} if character code points to a complex character, {@code false} otherwise
      */
-    @SuppressWarnings ( "JavaDoc" )
+    @SuppressWarnings ( "RedundantIfStatement" )
     private static boolean isComplexCharCode ( final int code )
     {
+        final boolean complex;
         if ( code < MIN_LAYOUT_CHARCODE || code > MAX_LAYOUT_CHARCODE )
         {
-            return false;
+            complex = false;
         }
         else if ( code <= 0x036f )
         {
             // Trigger layout for combining diacriticals 0x0300->0x036f
-            return true;
+            complex = true;
         }
         else if ( code < 0x0590 )
         {
             // No automatic layout for Greek, Cyrillic, Armenian.
-            return false;
+            complex = false;
         }
         else if ( code <= 0x06ff )
         {
             // Hebrew 0590 - 05ff
             // Arabic 0600 - 06ff
-            return true;
+            complex = true;
         }
         else if ( code < 0x0900 )
         {
-            return false; // Syriac and Thaana
+            complex = false; // Syriac and Thaana
         }
         else if ( code <= 0x0e7f )
         {
@@ -234,32 +244,39 @@ public final class FontUtils
             // 0D00 - 0D7F Malayalam
             // 0D80 - 0DFF Sinhala
             // 0E00 - 0E7F if Thai, assume shaping for vowel, tone marks
-            return true;
+            complex = true;
         }
         else if ( code < 0x1780 )
         {
-            return false;
+            complex = false;
         }
         else if ( code <= 0x17ff )
-        { // 1780 - 17FF Khmer
-            return true;
+        {
+            // 1780 - 17FF Khmer
+            complex = true;
         }
         else if ( code < 0x200c )
         {
-            return false;
+            complex = false;
         }
         else if ( code <= 0x200d )
         { //  zwj or zwnj
-            return true;
+            complex = true;
         }
         else if ( code >= 0x202a && code <= 0x202e )
-        { // directional control
-            return true;
+        {
+            // directional control
+            complex = true;
         }
         else if ( code >= 0x206a && code <= 0x206f )
-        { // directional control
-            return true;
+        {
+            // directional control
+            complex = true;
         }
-        return false;
+        else
+        {
+            complex = false;
+        }
+        return complex;
     }
 }

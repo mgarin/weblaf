@@ -48,7 +48,6 @@ public class WebLabelUI extends WLabelUI implements ShapeSupport, MarginSupport,
      * @param c component that will use UI instance
      * @return instance of the {@link WebLabelUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebLabelUI ();

@@ -30,27 +30,27 @@ public class PreferredCardLayout extends CardLayout
     /**
      * Determines the preferred size of the container argument using this card layout.
      *
-     * @param parent the parent container in which to do the layout
+     * @param container the parent container in which to do the layout
      * @return the preferred dimensions to lay out the subcomponents of the specified container
      * @see java.awt.Container#getPreferredSize()
      * @see java.awt.CardLayout#minimumLayoutSize(java.awt.Container)
      */
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
+    public Dimension preferredLayoutSize ( final Container container )
     {
-        synchronized ( parent.getTreeLock () )
+        synchronized ( container.getTreeLock () )
         {
-            final Insets insets = parent.getInsets ();
-            final int ncomponents = parent.getComponentCount ();
+            final Insets insets = container.getInsets ();
+            final int ncomponents = container.getComponentCount ();
             int w = 0;
             int h = 0;
 
             for ( int i = 0; i < ncomponents; i++ )
             {
-                final Component comp = parent.getComponent ( i );
-                if ( comp.isVisible () )
+                final Component component = container.getComponent ( i );
+                if ( component.isVisible () )
                 {
-                    final Dimension d = comp.getPreferredSize ();
+                    final Dimension d = component.getPreferredSize ();
                     if ( d.width > w )
                     {
                         w = d.width;
@@ -68,27 +68,27 @@ public class PreferredCardLayout extends CardLayout
     /**
      * Calculates the minimum size for the specified panel.
      *
-     * @param parent the parent container in which to do the layout
+     * @param container the parent container in which to do the layout
      * @return the minimum dimensions required to lay out the subcomponents of the specified container
      * @see java.awt.Container#doLayout()
      * @see java.awt.CardLayout#preferredLayoutSize(java.awt.Container)
      */
     @Override
-    public Dimension minimumLayoutSize ( final Container parent )
+    public Dimension minimumLayoutSize ( final Container container )
     {
-        synchronized ( parent.getTreeLock () )
+        synchronized ( container.getTreeLock () )
         {
-            final Insets insets = parent.getInsets ();
-            final int ncomponents = parent.getComponentCount ();
+            final Insets insets = container.getInsets ();
+            final int ncomponents = container.getComponentCount ();
             int w = 0;
             int h = 0;
 
             for ( int i = 0; i < ncomponents; i++ )
             {
-                final Component comp = parent.getComponent ( i );
-                if ( comp.isVisible () )
+                final Component component = container.getComponent ( i );
+                if ( component.isVisible () )
                 {
-                    final Dimension d = comp.getMinimumSize ();
+                    final Dimension d = component.getMinimumSize ();
                     if ( d.width > w )
                     {
                         w = d.width;

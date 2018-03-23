@@ -17,23 +17,46 @@
 
 package com.alee.extended.link;
 
+import com.alee.api.ui.IconBridge;
+import com.alee.api.ui.TextBridge;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.EventListener;
 
 /**
  * Base interface for {@link WebLink} actions.
+ * Implementations of this interface can also implement {@link IconBridge} and
+ * {@link TextBridge} for providing initial {@link WebLink} icon and text.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLink">How to use WebLink</a>
  * @see WebLink
- * @see com.alee.extended.link.AsyncLinkAction
- * @see com.alee.extended.link.UrlLinkAction
- * @see com.alee.extended.link.EmailLinkAction
- * @see com.alee.extended.link.FileLinkAction
+ * @see AbstractLinkAction
+ * @see AsyncLinkAction
+ * @see UrlLinkAction
+ * @see EmailLinkAction
+ * @see FileLinkAction
  */
 
 public interface LinkAction extends EventListener
 {
+    /**
+     * Returns {@link Icon} for this {@link LinkAction}.
+     * Return {@code null} to avoid affecting {@link WebLink}.
+     *
+     * @return {@link Icon} for this {@link LinkAction}
+     */
+    public Icon getIcon ();
+
+    /**
+     * Returns text for this {@link LinkAction}.
+     * Return {@code null} to avoid affecting {@link WebLink}.
+     *
+     * @return text for this {@link LinkAction}
+     */
+    public String getText ();
+
     /**
      * Invoked when link is being executed.
      *

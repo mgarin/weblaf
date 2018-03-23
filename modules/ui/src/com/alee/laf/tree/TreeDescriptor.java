@@ -62,10 +62,10 @@ public final class TreeDescriptor extends AbstractComponentDescriptor<JTree>
         }
         else if ( editor instanceof DefaultCellEditor )
         {
-            final Component comp = ( ( DefaultCellEditor ) editor ).getComponent ();
-            if ( comp != null )
+            final Component editorComponent = ( ( DefaultCellEditor ) editor ).getComponent ();
+            if ( editorComponent != null )
             {
-                SwingUtilities.updateComponentTreeUI ( comp );
+                SwingUtilities.updateComponentTreeUI ( editorComponent );
             }
         }
     }

@@ -51,7 +51,6 @@ public class WebTristateCheckBoxUI<C extends WebTristateCheckBox> extends WTrist
      * @param c component that will use UI instance
      * @return instance of the {@link WebTristateCheckBoxUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTristateCheckBoxUI ();

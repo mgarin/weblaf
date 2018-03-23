@@ -22,7 +22,7 @@ import com.alee.managers.drag.view.DragViewHandler;
 import com.alee.managers.glasspane.GlassPaneManager;
 import com.alee.managers.glasspane.WebGlassPane;
 import com.alee.utils.ArrayUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.swing.WeakComponentDataList;
 import org.slf4j.LoggerFactory;
 
@@ -266,7 +266,7 @@ public final class DragManager
                  */
                 public Point getLocation ( final WebGlassPane gp, final DragSourceDragEvent dsde, final BufferedImage view )
                 {
-                    final Point mp = SwingUtils.getMouseLocation ( gp );
+                    final Point mp = CoreSwingUtils.getMouseLocation ( gp );
                     final Point vp = dragViewHandler.getViewRelativeLocation ( data, dsde, view );
                     return new Point ( mp.x + vp.x, mp.y + vp.y );
                 }

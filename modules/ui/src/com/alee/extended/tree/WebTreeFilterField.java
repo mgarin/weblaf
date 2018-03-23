@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.jdk.Function;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.menu.WebCheckBoxMenuItem;
@@ -31,7 +32,6 @@ import com.alee.managers.style.StyleId;
 import com.alee.utils.compare.Filter;
 import com.alee.utils.swing.extensions.DocumentEventRunnable;
 import com.alee.utils.swing.extensions.KeyEventRunnable;
-import com.alee.utils.text.TextProvider;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.Document;
@@ -41,10 +41,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.lang.ref.WeakReference;
 
 /**
- * Special filter field that can be attached to any WebExTree or WebAsyncTree.
+ * Special filter field that can be attached to any {@link WebExTree} or {@link WebAsyncTree}.
  *
  * @param <N> node type
  * @author Mikle Garin
@@ -55,7 +54,7 @@ public class WebTreeFilterField<N extends UniqueNode> extends WebTextField
     /**
      * Async tree to which this field should apply filtering.
      */
-    protected WeakReference<WebTree<N>> tree;
+    protected WebTree<N> tree;
 
     /**
      * Nodes filter used by this field.
@@ -120,7 +119,7 @@ public class WebTreeFilterField<N extends UniqueNode> extends WebTextField
      *
      * @param textProvider node text provider
      */
-    public WebTreeFilterField ( final TextProvider<N> textProvider )
+    public WebTreeFilterField ( final Function<N, String> textProvider )
     {
         this ( StyleId.auto, null, textProvider );
     }
@@ -131,7 +130,7 @@ public class WebTreeFilterField<N extends UniqueNode> extends WebTextField
      * @param tree         tree to which this field applies filtering
      * @param textProvider node text provider
      */
-    public WebTreeFilterField ( final WebTree<N> tree, final TextProvider<N> textProvider )
+    public WebTreeFilterField ( final WebTree<N> tree, final Function<N, String> textProvider )
     {
         this ( StyleId.auto, tree, textProvider );
     }
@@ -163,7 +162,7 @@ public class WebTreeFilterField<N extends UniqueNode> extends WebTextField
      * @param id           style ID
      * @param textProvider node text provider
      */
-    public WebTreeFilterField ( final StyleId id, final TextProvider<N> textProvider )
+    public WebTreeFilterField ( final StyleId id, final Function<N, String> textProvider )
     {
         this ( id, null, textProvider );
     }
@@ -175,7 +174,7 @@ public class WebTreeFilterField<N extends UniqueNode> extends WebTextField
      * @param tree         tree to which this field applies filtering
      * @param textProvider node text provider
      */
-    public WebTreeFilterField ( final StyleId id, final WebTree<N> tree, final TextProvider<N> textProvider )
+    public WebTreeFilterField ( final StyleId id, final WebTree<N> tree, final Function<N, String> textProvider )
     {
         super ( id );
         setLanguage ( "weblaf.ex.treefilter.inputprompt" );
@@ -315,7 +314,7 @@ public class WebTreeFilterField<N extends UniqueNode> extends WebTextField
                 applyFieldFilter ();
             }
         };
-        getTree ().addPropertyChangeListener ( WebLookAndFeel.TREE_DATA_PROVIDER_PROPERTY, dataProviderChangeListener );
+        tree.addPropertyChangeListener ( WebLookAndFeel.TREE_DATA_PROVIDER_PROPERTY, dataProviderChangeListener );
 
         // Filter change listener to properly update field filter
         filterChangeListener = new PropertyChangeListener ()
@@ -327,7 +326,7 @@ public class WebTreeFilterField<N extends UniqueNode> extends WebTextField
                 applyFieldFilter ();
             }
         };
-        getTree ().addPropertyChangeListener ( WebLookAndFeel.TREE_FILTER_PROPERTY, dataProviderChangeListener );
+        tree.addPropertyChangeListener ( WebLookAndFeel.TREE_FILTER_PROPERTY, dataProviderChangeListener );
     }
 
     /**
@@ -341,7 +340,7 @@ public class WebTreeFilterField<N extends UniqueNode> extends WebTextField
         checkTree ( tree );
 
         // Cleanup the mess we made in previous tree
-        final WebTree<N> previousTree = getTree ();
+        final WebTree<N> previousTree = this.tree;
         if ( previousTree != null )
         {
             // Removing listener from previous tree
@@ -354,7 +353,7 @@ public class WebTreeFilterField<N extends UniqueNode> extends WebTextField
         // Installing filtering into new tree
         {
             // Saving reference to new tree
-            this.tree = new WeakReference<WebTree<N>> ( tree );
+            this.tree = tree;
 
             // Updating filter in current tree
             applyFieldFilter ();
@@ -392,7 +391,6 @@ public class WebTreeFilterField<N extends UniqueNode> extends WebTextField
     protected void applyFieldFilter ()
     {
         // Updating tree filter if possible
-        final WebTree<N> tree = getTree ();
         if ( tree != null )
         {
             if ( tree instanceof WebAsyncTree )
@@ -435,7 +433,6 @@ public class WebTreeFilterField<N extends UniqueNode> extends WebTextField
      */
     protected void removeFieldFilter ()
     {
-        final WebTree<N> tree = getTree ();
         if ( tree != null )
         {
             final Filter<N> originalFilter = filter.getOriginalFilter ();
@@ -456,7 +453,7 @@ public class WebTreeFilterField<N extends UniqueNode> extends WebTextField
      *
      * @return node text provider
      */
-    public TextProvider<N> getTextProvider ()
+    public Function<N, String> getTextProvider ()
     {
         return filter.getTextProvider ();
     }
@@ -466,7 +463,7 @@ public class WebTreeFilterField<N extends UniqueNode> extends WebTextField
      *
      * @param textProvider new node text provider
      */
-    public void setTextProvider ( final TextProvider<N> textProvider )
+    public void setTextProvider ( final Function<N, String> textProvider )
     {
         filter.setTextProvider ( textProvider );
         updateFiltering ();
@@ -498,7 +495,6 @@ public class WebTreeFilterField<N extends UniqueNode> extends WebTextField
     public void updateFiltering ()
     {
         // Updating tree filtering if possible
-        final WebTree<N> tree = getTree ();
         if ( tree != null )
         {
             if ( tree instanceof WebAsyncTree )
@@ -509,7 +505,8 @@ public class WebTreeFilterField<N extends UniqueNode> extends WebTextField
                 filter.clearCache ();
 
                 // Updating tree filtering
-                ( ( WebAsyncTree ) tree ).filterAndSort ();
+                final WebAsyncTree asyncTree = ( WebAsyncTree ) tree;
+                asyncTree.filterAndSort ();
             }
             else if ( tree instanceof WebExTree )
             {
@@ -527,7 +524,8 @@ public class WebTreeFilterField<N extends UniqueNode> extends WebTextField
                 filter.clearCache ();
 
                 // Updating tree filtering
-                ( ( WebExTree ) tree ).filterAndSort ();
+                final WebExTree exTree = ( WebExTree ) tree;
+                exTree.filterAndSort ();
 
                 // Restore tree state or expand tree
                 if ( defaultTreeStateBehavior )
@@ -562,7 +560,6 @@ public class WebTreeFilterField<N extends UniqueNode> extends WebTextField
     public void updateNodeAcceptance ( final N node )
     {
         // Updating tree filtering
-        final WebTree<N> tree = getTree ();
         if ( tree != null )
         {
             if ( tree instanceof WebAsyncTree )
@@ -571,7 +568,8 @@ public class WebTreeFilterField<N extends UniqueNode> extends WebTextField
                 filter.clearCache ( node );
 
                 // Updating tree node filtering
-                ( ( WebAsyncTree ) tree ).filterAndSort ( ( AsyncUniqueNode ) node.getParent () );
+                final WebAsyncTree asyncTree = ( WebAsyncTree ) tree;
+                asyncTree.filterAndSort ( ( AsyncUniqueNode ) node.getParent () );
             }
             else if ( tree instanceof WebExTree )
             {
@@ -579,19 +577,10 @@ public class WebTreeFilterField<N extends UniqueNode> extends WebTextField
                 filter.clearCache ( node );
 
                 // Updating tree node filtering
-                ( ( WebExTree ) tree ).filterAndSort ( node.getParent () );
+                final WebExTree exTree = ( WebExTree ) tree;
+                exTree.filterAndSort ( ( UniqueNode ) node.getParent () );
             }
         }
-    }
-
-    /**
-     * Returns tree to which this field applies filtering.
-     *
-     * @return tree to which this field applies filtering
-     */
-    public WebTree<N> getTree ()
-    {
-        return tree != null ? tree.get () : null;
     }
 
     /**

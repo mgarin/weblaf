@@ -72,7 +72,7 @@ public class JSplitPaneExample extends AbstractStylePreviewExample
                 new SplitPanePreview ( "transparent", FeatureState.updated, StyleId.splitpaneTransparent, true, false, false ),
                 new SplitPanePreview ( "decorated", FeatureState.updated, StyleId.splitpaneDecorated, false, true, true ),
                 new SplitPanePreview ( "decorated", FeatureState.updated, StyleId.splitpaneDecorated, false, true, false ),
-                new SplitPanePreview ( "focusable", FeatureState.updated, StyleId.splitpaneFocusable, true, false, true ),
+                new SplitPanePreview ( "focusable", FeatureState.updated, StyleId.splitpaneFocusable, false, true, false ),
                 new SplitPanePreview ( "focusable", FeatureState.updated, StyleId.splitpaneFocusable, true, false, false )
         );
     }

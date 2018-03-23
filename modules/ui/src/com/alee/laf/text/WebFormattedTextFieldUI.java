@@ -65,7 +65,6 @@ public class WebFormattedTextFieldUI extends WFormattedTextFieldUI implements Sh
      * @param c component that will use UI instance
      * @return instance of the {@link WebFormattedTextFieldUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebFormattedTextFieldUI ();

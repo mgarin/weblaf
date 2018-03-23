@@ -17,15 +17,15 @@
 
 package com.alee.extended.inspector;
 
+import com.alee.api.data.CompassDirection;
+import com.alee.api.jdk.Objects;
 import com.alee.extended.behavior.ComponentVisibilityBehavior;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.glasspane.GlassPaneManager;
 import com.alee.managers.glasspane.WebGlassPane;
 import com.alee.managers.style.MarginSupport;
 import com.alee.managers.style.PaddingSupport;
-import com.alee.utils.GraphicsUtils;
-import com.alee.utils.LafUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.*;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -35,7 +35,6 @@ import java.awt.event.ComponentListener;
 import java.awt.event.HierarchyBoundsListener;
 import java.awt.event.HierarchyEvent;
 import java.awt.geom.Area;
-import java.awt.geom.GeneralPath;
 import java.util.Map;
 
 /**
@@ -64,17 +63,17 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
     /**
      * Highlighted component.
      */
-    private Component component;
-
-    /**
-     * Highlighted component visibility listener.
-     */
-    private ComponentVisibilityBehavior visibilityListener;
+    private transient Component component;
 
     /**
      * Highlighter glasspane.
      */
-    private WebGlassPane glassPane;
+    private transient WebGlassPane glassPane;
+
+    /**
+     * Highlighted component visibility listener.
+     */
+    private transient ComponentVisibilityBehavior visibilityListener;
 
     /**
      * Constructs new component highlighter.
@@ -95,8 +94,11 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
     {
         if ( this.component == null && this.glassPane == null )
         {
-            this.component = component;
-            this.glassPane = GlassPaneManager.getGlassPane ( component );
+            this.component = Objects.requireNonNull ( component, "Component cannot be null" );
+
+            // Retrieving glass pane
+            final WebGlassPane webGlassPane = GlassPaneManager.getGlassPane ( component );
+            this.glassPane = Objects.requireNonNull ( webGlassPane, "Component window must have a glass pane" );
 
             // Updating highligther position
             updateBounds ();
@@ -121,7 +123,7 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
             visibilityListener.install ();
 
             // Displaying highlighter on glass pane
-            glassPane.showComponent ( this );
+            this.glassPane.showComponent ( this );
         }
     }
 
@@ -196,10 +198,115 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
      */
     private void updateBounds ()
     {
-        final Component glassPane = SwingUtils.getGlassPane ( component );
-        final Rectangle rb = SwingUtils.getRelativeBounds ( component, glassPane );
-        final int tipWidth = getFontMetrics ( getFont () ).stringWidth ( getSizeTip () ) + 8;
-        setBounds ( new Rectangle ( rb.x, rb.y - sizeTipHeight, Math.max ( tipWidth, rb.width ), rb.height + sizeTipHeight ) );
+        final Dimension glassPaneSize = glassPane.getSize ();
+        final Rectangle componentBounds = CoreSwingUtils.getRelativeBounds ( component, glassPane );
+        final int tipWidth = getTipWidth ();
+        final CompassDirection tipDirection = getTipDirection ( tipWidth, glassPaneSize, componentBounds );
+        final Rectangle tipBounds = getTipBounds ( true, tipWidth, tipDirection, componentBounds );
+        final Rectangle bodyBounds = getBodyBounds ( true, tipWidth, tipDirection, componentBounds );
+        setBounds ( GeometryUtils.getContainingRect ( tipBounds, bodyBounds ) );
+    }
+
+    /**
+     * Returns tip width.
+     *
+     * @return tip width
+     */
+    private int getTipWidth ()
+    {
+        return getFontMetrics ( getFont () ).stringWidth ( getSizeTip () ) + 8;
+    }
+
+    /**
+     * Returns tip {@link CompassDirection}.
+     *
+     * @param tipWidth        tip width
+     * @param glassPaneSize   glass pane size
+     * @param componentBounds inspected component bounds
+     * @return tip {@link CompassDirection}
+     */
+    private CompassDirection getTipDirection ( final int tipWidth, final Dimension glassPaneSize, final Rectangle componentBounds )
+    {
+        final boolean fromLeft = componentBounds.x + tipWidth < glassPaneSize.width ||
+                componentBounds.x + componentBounds.width - tipWidth < 0;
+        if ( componentBounds.y > sizeTipHeight )
+        {
+            return fromLeft ? CompassDirection.northWest : CompassDirection.northEast;
+        }
+        else
+        {
+            return fromLeft ? CompassDirection.southWest : CompassDirection.southEast;
+        }
+    }
+
+    /**
+     * Returns tip bounds.
+     *
+     * @param relative        whether bounds should be relative to position on glass pane or not
+     * @param tipWidth        tip width
+     * @param tipDirection    tip {@link CompassDirection}
+     * @param componentBounds inspected component bounds
+     * @return tip bounds
+     */
+    private Rectangle getTipBounds ( final boolean relative, final int tipWidth, final CompassDirection tipDirection,
+                                     final Rectangle componentBounds )
+    {
+        final int x;
+        if ( tipDirection == CompassDirection.northWest || tipDirection == CompassDirection.southWest )
+        {
+            x = relative ? componentBounds.x : 0;
+        }
+        else
+        {
+            x = relative ? componentBounds.x + componentBounds.width - tipWidth : 0;
+        }
+        final int y;
+        if ( tipDirection == CompassDirection.northEast || tipDirection == CompassDirection.northWest )
+        {
+            y = relative ? componentBounds.y - sizeTipHeight : 0;
+        }
+        else
+        {
+            y = relative ? componentBounds.y + componentBounds.height : componentBounds.height;
+        }
+        final int w = relative ? tipWidth : tipWidth - 1;
+        final int h = relative ? sizeTipHeight : sizeTipHeight - 1;
+        return new Rectangle ( x, y, w, h );
+    }
+
+    /**
+     * Returns body bounds.
+     *
+     * @param relative        whether bounds should be relative to position on glass pane or not
+     * @param tipWidth        tip width
+     * @param tipDirection    tip {@link CompassDirection}
+     * @param componentBounds inspected component bounds
+     * @return body bounds
+     */
+    private Rectangle getBodyBounds ( final boolean relative, final int tipWidth, final CompassDirection tipDirection,
+                                      final Rectangle componentBounds )
+    {
+        final int x;
+        if ( tipDirection == CompassDirection.northWest || tipDirection == CompassDirection.southWest )
+        {
+            x = relative ? componentBounds.x : 0;
+        }
+        else
+        {
+            x = relative ? componentBounds.x : tipWidth - componentBounds.width;
+        }
+        final int y;
+        if ( tipDirection == CompassDirection.northEast || tipDirection == CompassDirection.northWest )
+        {
+            y = relative ? componentBounds.y : sizeTipHeight;
+        }
+        else
+        {
+            y = relative ? componentBounds.y : 0;
+        }
+        final int w = componentBounds.width;
+        final int h = componentBounds.height;
+        return new Rectangle ( x, y, w, h );
     }
 
     /**
@@ -219,66 +326,75 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
         {
             final Graphics2D g2d = ( Graphics2D ) g;
 
+            final Dimension glassPaneSize = glassPane.getSize ();
+            final Rectangle componentBounds = CoreSwingUtils.getRelativeBounds ( component, glassPane );
+            final int tipWidth = getTipWidth ();
+            final CompassDirection tipPosition = getTipDirection ( tipWidth, glassPaneSize, componentBounds );
+            final Rectangle tipBounds = getTipBounds ( false, tipWidth, tipPosition, componentBounds );
+            final Rectangle bodyBounds = getBodyBounds ( false, tipWidth, tipPosition, componentBounds );
+
             // Painting size tip
-            paintSizeTip ( g2d );
+            paintSizeTip ( g2d, tipBounds, tipPosition );
 
             // Painting areas
-            paintAreas ( g2d );
+            paintAreas ( g2d, bodyBounds );
         }
     }
 
     /**
      * Paints component size tip.
      *
-     * @param g2d graphics context
+     * @param g2d         graphics context
+     * @param tipBounds   tip bounds
+     * @param tipPosition tip position
      */
-    private void paintSizeTip ( final Graphics2D g2d )
+    private void paintSizeTip ( final Graphics2D g2d, final Rectangle tipBounds, final CompassDirection tipPosition )
     {
+
         final FontMetrics fm = g2d.getFontMetrics ( g2d.getFont () );
-        final String sizeTip = getSizeTip ();
         final int shearY = LafUtils.getTextCenterShiftY ( fm );
-        final int tipWidth = fm.stringWidth ( sizeTip ) + 8 - 1;
-        final int tipHeight = sizeTipHeight - 1;
-        final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        gp.moveTo ( 0, 4 );
-        gp.quadTo ( 0, 0, 4, 0 );
-        gp.lineTo ( tipWidth - 4, 0 );
-        gp.quadTo ( tipWidth, 0, tipWidth, 4 );
-        if ( component.getWidth () < tipWidth )
-        {
-            gp.lineTo ( tipWidth, tipHeight - 4 );
-            gp.quadTo ( tipWidth, tipHeight, tipWidth - 4, tipHeight );
-        }
-        else
-        {
-            gp.lineTo ( tipWidth, tipHeight );
-        }
-        gp.lineTo ( 0, tipHeight );
-        gp.closePath ();
+
+        // Creating shape
+        final boolean top = tipPosition == CompassDirection.northWest || tipPosition == CompassDirection.northEast;
+        final boolean left = tipPosition == CompassDirection.northWest || tipPosition == CompassDirection.southWest;
+        final boolean longTip = component.getWidth () < tipBounds.width;
+        final Point[] points = new Point[]{
+                new Point ( tipBounds.x, tipBounds.y ),
+                new Point ( tipBounds.x + tipBounds.width, tipBounds.y ),
+                new Point ( tipBounds.x + tipBounds.width, tipBounds.y + tipBounds.height ),
+                new Point ( tipBounds.x, tipBounds.y + tipBounds.height )
+        };
+        final int[] round = new int[]{
+                top || !top && !left && longTip ? 4 : 0,
+                top || !top && left && longTip ? 4 : 0,
+                !top || top && left && longTip ? 4 : 0,
+                !top || top && !left && longTip ? 4 : 0
+        };
+        final Shape shape = ShapeUtils.createRoundedShape ( points, round );
 
         // Background
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
         g2d.setPaint ( Color.WHITE );
-        g2d.fill ( gp );
+        g2d.fill ( shape );
         g2d.setPaint ( Color.BLACK );
-        g2d.draw ( gp );
+        g2d.draw ( shape );
         GraphicsUtils.restoreAntialias ( g2d, aa );
 
         // Text
         final Map taa = SwingUtils.setupTextAntialias ( g2d );
         g2d.setPaint ( Color.BLACK );
-        g2d.drawString ( sizeTip, 4, sizeTipHeight / 2 + shearY );
+        g2d.drawString ( getSizeTip (), tipBounds.x + 4, tipBounds.y + tipBounds.height / 2 + 1 + shearY );
         SwingUtils.restoreTextAntialias ( g2d, taa );
     }
 
     /**
      * Paints component areas.
      *
-     * @param g2d graphics context
+     * @param g2d        graphics context
+     * @param bodyBounds body bounds
      */
-    private void paintAreas ( final Graphics2D g2d )
+    private void paintAreas ( final Graphics2D g2d, final Rectangle bodyBounds )
     {
-        final Rectangle bounds = new Rectangle ( 0, sizeTipHeight, component.getWidth (), getHeight () - sizeTipHeight );
         if ( component instanceof JComponent && LafUtils.hasWebLafUI ( ( JComponent ) component ) )
         {
             // todo A better way to check WebLaF styling?
@@ -310,7 +426,7 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
                 }
 
                 // Computing area sizes
-                final Rectangle sr = new Rectangle ( bounds );
+                final Rectangle sr = new Rectangle ( bodyBounds );
                 final Rectangle mr = new Rectangle ( sr.x + m.left, sr.y + m.top,
                         sr.width - m.left - m.right, sr.height - m.top - m.bottom );
                 final Rectangle br = new Rectangle ( mr.x + b.left, mr.y + b.top,
@@ -333,13 +449,13 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
             else
             {
                 // Painting component bounds area
-                paintContentArea ( g2d, bounds );
+                paintContentArea ( g2d, bodyBounds );
             }
         }
         else
         {
             // Painting component bounds area
-            paintContentArea ( g2d, bounds );
+            paintContentArea ( g2d, bodyBounds );
         }
     }
 

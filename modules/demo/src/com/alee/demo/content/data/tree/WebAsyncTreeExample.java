@@ -25,8 +25,9 @@ import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.WebLafWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.extended.tree.*;
+import com.alee.extended.tree.sample.SampleAsyncDataProvider;
 import com.alee.extended.tree.sample.SampleNode;
-import com.alee.extended.tree.sample.SampleNodeType;
+import com.alee.extended.tree.sample.SampleObjectType;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
@@ -35,7 +36,6 @@ import com.alee.utils.ThreadUtils;
 
 import javax.swing.*;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * @author Mikle Garin
@@ -171,85 +171,28 @@ public class WebAsyncTreeExample extends AbstractStylePreviewExample
      */
     protected static AsyncTreeDataProvider<SampleNode> createDataProvider ()
     {
-        return new AbstractAsyncTreeDataProvider<SampleNode> ()
+        return new SampleAsyncDataProvider ()
         {
-            @Override
-            public SampleNode getRoot ()
-            {
-                return new SampleNode ( SampleNodeType.root, "Root" );
-            }
-
+            /**
+             * Adds extra loading time to showcase asynchronous data loading.
+             * It only excludes root node children to avoid awkward demo startup.
+             * Stalling the thread here won't hurt the UI since it is always executed on non-EDT thread.
+             */
             @Override
             public void loadChildren ( final SampleNode parent, final NodesLoadCallback<SampleNode> listener )
             {
-                // Creating virtual loading time
-                // This method is executed outside of EDT so it won't cause any issues
-                if ( parent.getType () != SampleNodeType.root )
+                if ( parent.getUserObject ().getType () != SampleObjectType.root )
                 {
                     ThreadUtils.sleepSafely ( MathUtils.random ( 100, 2000 ) );
                 }
-
-                // Loading children
-                if ( parent.getTitle ().toLowerCase ( Locale.ROOT ).contains ( "fail" ) )
-                {
-                    listener.failed ( new RuntimeException ( "Sample exception cause" ) );
-                }
-                else
-                {
-                    switch ( parent.getType () )
-                    {
-                        case root:
-                        {
-                            listener.completed ( createFolders () );
-                            break;
-                        }
-                        case folder:
-                        {
-                            listener.completed ( createLeafs () );
-                            break;
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public boolean isLeaf ( final SampleNode node )
-            {
-                return node.getType ().equals ( SampleNodeType.leaf );
-            }
-
-            /**
-             * Returns folder sample elements.
-             *
-             * @return folder sample elements
-             */
-            protected List<SampleNode> createFolders ()
-            {
-                final SampleNode folder1 = new SampleNode ( SampleNodeType.folder, "Folder 1" );
-                final SampleNode folder2 = new SampleNode ( SampleNodeType.folder, "Folder 2" );
-                final SampleNode folder3 = new SampleNode ( SampleNodeType.folder, "Folder 3" );
-                final SampleNode failFolder = new SampleNode ( SampleNodeType.folder, "Fail folder" );
-                return CollectionUtils.asList ( folder1, folder2, folder3, failFolder );
-            }
-
-            /**
-             * Returns leaf sample elements.
-             *
-             * @return leaf sample elements
-             */
-            protected List<SampleNode> createLeafs ()
-            {
-                final SampleNode leaf1 = new SampleNode ( SampleNodeType.leaf, "Leaf 1" );
-                final SampleNode leaf2 = new SampleNode ( SampleNodeType.leaf, "Leaf 2" );
-                final SampleNode leaf3 = new SampleNode ( SampleNodeType.leaf, "Leaf 3" );
-                return CollectionUtils.asList ( leaf1, leaf2, leaf3 );
+                super.loadChildren ( parent, listener );
             }
         };
     }
 
     /**
      * Returns sample tree transfer handler.
-     * It will provide base functionality of Drag & Drop for our sample tree.
+     * It will provide base functionality of DnD for our sample tree.
      *
      * @return sample extended tree transfer handler
      */
@@ -257,12 +200,18 @@ public class WebAsyncTreeExample extends AbstractStylePreviewExample
     {
         return new AsyncTreeTransferHandler<SampleNode, WebAsyncTree<SampleNode>, AsyncTreeModel<SampleNode>> ()
         {
+            /**
+             * Forcing this {@link TransferHandler} to move nodes.
+             */
             @Override
             public int getSourceActions ( final JComponent c )
             {
                 return MOVE;
             }
 
+            /**
+             * Blocks drop on {@link SampleObjectType#leaf} nodes.
+             */
             @Override
             protected List<? extends TreeDropHandler> createDropHandlers ()
             {
@@ -273,28 +222,32 @@ public class WebAsyncTreeExample extends AbstractStylePreviewExample
                                                 final AsyncTreeModel<SampleNode> model, final SampleNode destination, final int dropIndex,
                                                 final List<SampleNode> nodes )
                     {
-                        return destination.getType () != SampleNodeType.leaf;
+                        return destination.getUserObject ().getType () != SampleObjectType.leaf;
                     }
                 } );
             }
 
+            /**
+             * We do not need to copy children as {@link AsyncTreeDataProvider} will do that instead.
+             * We only need to provide a copy of the specified node here.
+             */
             @Override
             protected SampleNode copy ( final WebAsyncTree<SampleNode> tree, final AsyncTreeModel<SampleNode> model, final SampleNode node )
             {
-                // We do not need to copy children as {@link com.alee.extended.tree.AsyncTreeDataProvider} will do that instead
-                // We only need to provide a copy of the specified node here
                 return node.clone ();
             }
 
+            /**
+             * Blocks root element drag.
+             */
             @Override
             protected boolean canBeDragged ( final WebAsyncTree<SampleNode> tree, final AsyncTreeModel<SampleNode> model,
                                              final List<SampleNode> nodes )
             {
-                // Blocking root drag
                 boolean allowed = true;
                 for ( final SampleNode node : nodes )
                 {
-                    if ( node.getType () == SampleNodeType.root )
+                    if ( node.getUserObject ().getType () == SampleObjectType.root )
                     {
                         allowed = false;
                         break;

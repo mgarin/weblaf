@@ -32,7 +32,6 @@ import com.alee.managers.tooltip.TooltipWay;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
@@ -62,10 +61,6 @@ import java.util.Vector;
 public class WebComboBox extends JComboBox implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods,
         LanguageEventMethods, ToolTipMethods, LanguageMethods, SettingsMethods, FontMethods<WebComboBox>, SizeMethods<WebComboBox>
 {
-    /**
-     * todo 1. Collection constructors should provide different model to make proper use of the collection?
-     */
-
     /**
      * Constructs new combobox.
      */
@@ -173,16 +168,6 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
     /**
      * Constructs new combobox.
      *
-     * @param model combobox model
-     */
-    public WebComboBox ( final ComboBoxModel model )
-    {
-        this ( StyleId.auto, model );
-    }
-
-    /**
-     * Constructs new combobox.
-     *
      * @param model    combobox model
      * @param selected selected index
      */
@@ -205,11 +190,21 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
     /**
      * Constructs new combobox.
      *
+     * @param model combobox model
+     */
+    public WebComboBox ( final ComboBoxModel model )
+    {
+        this ( StyleId.auto, model );
+    }
+
+    /**
+     * Constructs new combobox.
+     *
      * @param id style ID
      */
     public WebComboBox ( final StyleId id )
     {
-        this ( id, new DefaultComboBoxModel () );
+        this ( id, new WebComboBoxModel () );
     }
 
     /**
@@ -220,7 +215,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
      */
     public WebComboBox ( final StyleId id, final Collection<?> items )
     {
-        this ( id, new DefaultComboBoxModel ( CollectionUtils.toVector ( items ) ) );
+        this ( id, new WebComboBoxModel ( items ) );
     }
 
     /**
@@ -232,7 +227,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
      */
     public WebComboBox ( final StyleId id, final Collection<?> items, final int selected )
     {
-        this ( id, new DefaultComboBoxModel ( CollectionUtils.toVector ( items ) ), selected );
+        this ( id, new WebComboBoxModel ( items ), selected );
     }
 
     /**
@@ -244,7 +239,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
      */
     public WebComboBox ( final StyleId id, final Collection<?> items, final Object selected )
     {
-        this ( id, new DefaultComboBoxModel ( CollectionUtils.toVector ( items ) ), selected );
+        this ( id, new WebComboBoxModel ( items ), selected );
     }
 
     /**
@@ -255,7 +250,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
      */
     public WebComboBox ( final StyleId id, final Vector<?> items )
     {
-        this ( id, new DefaultComboBoxModel ( items ) );
+        this ( id, new WebComboBoxModel ( items ) );
     }
 
     /**
@@ -267,7 +262,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
      */
     public WebComboBox ( final StyleId id, final Vector<?> items, final int selected )
     {
-        this ( id, new DefaultComboBoxModel ( items ), selected );
+        this ( id, new WebComboBoxModel ( items ), selected );
     }
 
     /**
@@ -279,7 +274,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
      */
     public WebComboBox ( final StyleId id, final Vector<?> items, final Object selected )
     {
-        this ( id, new DefaultComboBoxModel ( items ), selected );
+        this ( id, new WebComboBoxModel ( items ), selected );
     }
 
     /**
@@ -290,7 +285,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
      */
     public WebComboBox ( final StyleId id, final Object[] items )
     {
-        this ( id, new DefaultComboBoxModel ( items ) );
+        this ( id, new WebComboBoxModel ( items ) );
     }
 
     /**
@@ -302,7 +297,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
      */
     public WebComboBox ( final StyleId id, final Object[] items, final int selected )
     {
-        this ( id, new DefaultComboBoxModel ( items ), selected );
+        this ( id, new WebComboBoxModel ( items ), selected );
     }
 
     /**
@@ -314,7 +309,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
      */
     public WebComboBox ( final StyleId id, final Object[] items, final Object selected )
     {
-        this ( id, new DefaultComboBoxModel ( items ), selected );
+        this ( id, new WebComboBoxModel ( items ), selected );
     }
 
     /**

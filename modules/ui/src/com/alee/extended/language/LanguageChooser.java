@@ -20,7 +20,7 @@ package com.alee.extended.language;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.style.StyleId;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.collection.ImmutableList;
 
 import javax.swing.*;
@@ -127,7 +127,7 @@ public class LanguageChooser extends WebComboBox
             public void actionPerformed ( final ActionEvent e )
             {
                 // Executing later to avoid any possible interferences
-                SwingUtils.invokeLater ( new Runnable ()
+                CoreSwingUtils.invokeLater ( new Runnable ()
                 {
                     @Override
                     public void run ()

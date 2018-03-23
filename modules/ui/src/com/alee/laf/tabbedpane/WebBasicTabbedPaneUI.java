@@ -165,7 +165,6 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
 
     // UI creation
 
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebBasicTabbedPaneUI ();
@@ -1131,7 +1130,6 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         textRect.y += yNudge;
     }
 
-    @SuppressWarnings ( "UnusedParameters" )
     protected void paintIcon ( final Graphics g, final int tabPlacement, final int tabIndex, final Icon icon, final Rectangle iconRect,
                                final boolean isSelected )
     {
@@ -1141,7 +1139,6 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         }
     }
 
-    @SuppressWarnings ( "UnusedParameters" )
     protected void paintText ( final Graphics g, final int tabPlacement, final Font font, final FontMetrics metrics, final int tabIndex,
                                final String title, final Rectangle textRect, final boolean isSelected )
     {
@@ -1228,7 +1225,6 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         }
     }
 
-    @SuppressWarnings ( "UnusedParameters" )
     protected void paintFocusIndicator ( final Graphics g, final int tabPlacement, final Rectangle[] rects, final int tabIndex,
                                          final Rectangle iconRect, final Rectangle textRect, final boolean isSelected )
     {
@@ -1276,7 +1272,6 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
      * note that this function does now draw the background of the tab.
      * that is done elsewhere
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected void paintTabBorder ( final Graphics g, final int tabPlacement, final int tabIndex, final int x, final int y, final int w,
                                     final int h, final boolean isSelected )
     {
@@ -1430,7 +1425,6 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
 
     }
 
-    @SuppressWarnings ( "UnusedParameters" )
     protected void paintContentBorderTopEdge ( final Graphics g, final int tabPlacement, final int selectedIndex, final int x, final int y,
                                                final int w, final int h )
     {
@@ -1464,7 +1458,6 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         }
     }
 
-    @SuppressWarnings ( "UnusedParameters" )
     protected void paintContentBorderLeftEdge ( final Graphics g, final int tabPlacement, final int selectedIndex, final int x, final int y,
                                                 final int w, final int h )
     {
@@ -1614,7 +1607,6 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         return tabForCoordinate ( pane, x, y, true );
     }
 
-    @SuppressWarnings ( "UnusedParameters" )
     private int tabForCoordinate ( final JTabbedPane pane, final int x, final int y, final boolean validateIfNecessary )
     {
         if ( validateIfNecessary )
@@ -2406,10 +2398,10 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
 
     protected boolean requestFocusForVisibleComponent ()
     {
-        final Component comp = getVisibleComponent ();
-        if ( comp != null )
+        final Component component = getVisibleComponent ();
+        if ( component != null )
         {
-            comp.transferFocus ();
+            component.transferFocus ();
             return true;
         }
         return false;
@@ -2561,25 +2553,24 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
      */
     public class TabbedPaneLayout implements LayoutManager
     {
-
         @Override
-        public void addLayoutComponent ( final String name, final Component comp )
+        public void addLayoutComponent ( final String consraints, final Component component )
         {
         }
 
         @Override
-        public void removeLayoutComponent ( final Component comp )
+        public void removeLayoutComponent ( final Component component )
         {
         }
 
         @Override
-        public Dimension preferredLayoutSize ( final Container parent )
+        public Dimension preferredLayoutSize ( final Container container )
         {
             return calculateSize ( false );
         }
 
         @Override
-        public Dimension minimumLayoutSize ( final Container parent )
+        public Dimension minimumLayoutSize ( final Container container )
         {
             return calculateSize ( true );
         }
@@ -2699,7 +2690,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         }
 
         @Override
-        public void layoutContainer ( final Container parent )
+        public void layoutContainer ( final Container container )
         {
             /* Some of the code in this method deals with changing the
             * visibility of components to hide and show the contents for the
@@ -3106,7 +3097,6 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         /*
         * Rotates the run-index array so that the selected run is run[0]
         */
-        @SuppressWarnings ( "UnusedParameters" )
         protected void rotateTabRuns ( final int tabPlacement, final int selectedRun )
         {
             for ( int i = 0; i < selectedRun; i++ )
@@ -3294,7 +3284,6 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
 
     public class TabbedPaneScrollLayout extends TabbedPaneLayout
     {
-
         @Override
         protected int preferredTabAreaHeight ( final int tabPlacement, final int width )
         {
@@ -3308,7 +3297,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         }
 
         @Override
-        public void layoutContainer ( final Container parent )
+        public void layoutContainer ( final Container container )
         {
             /* Some of the code in this method deals with changing the
              * visibility of components to hide and show the contents for the
@@ -3717,7 +3706,6 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
 
         private final Point tabViewPosition = new Point ( 0, 0 );
 
-        @SuppressWarnings ( "UnusedParameters" )
         ScrollableTabSupport ( final int tabPlacement )
         {
             viewport = new ScrollableTabViewport ();
@@ -4407,10 +4395,10 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         }
 
         @Override
-        public void remove ( final Component comp )
+        public void remove ( final Component component )
         {
-            final int index = tabPane.indexOfTabComponent ( comp );
-            super.remove ( comp );
+            final int index = tabPane.indexOfTabComponent ( component );
+            super.remove ( component );
             if ( notifyTabbedPane && index != -1 )
             {
                 tabPane.setTabComponentAt ( index, null );

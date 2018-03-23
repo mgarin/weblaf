@@ -43,7 +43,7 @@ public final class LafUtils
      */
     public static boolean isInDecoratedWindow ( final Component component )
     {
-        final JRootPane rootPane = SwingUtils.getRootPane ( component );
+        final JRootPane rootPane = CoreSwingUtils.getRootPane ( component );
         if ( rootPane != null )
         {
             final RootPaneUI ui = rootPane.getUI ();

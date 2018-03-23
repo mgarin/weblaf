@@ -17,6 +17,7 @@
 
 package com.alee.managers.settings;
 
+import com.alee.laf.WebLookAndFeel;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -26,13 +27,15 @@ import java.io.Serializable;
  * Abstract class that tracks component settings to load and save them on demand.
  * Instance of this class implementations is created for each component which settings are registered to be tracked.
  * Extend this class and register it in SettingsManager or ComponentSettingsManager to provide additional components support.
- * <p>
+ *
  * SettingsProcessor is also defended from recursive settings load/save which might occur if component sends additional data change events
  * when new data is loaded into it (doesn't matter from SettingsProcessor or some other source).
- * <p>
+ *
  * To register new SettingsProcessor use {@code registerSettingsProcessor(Class, Class)} method from SettingsManager or
  * ComponentSettingsManager class (they both do the same).
  *
+ * @param <C> {@link JComponent} type
+ * @param <V> {@link Serializable} data type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
  * @see com.alee.managers.settings.SettingsManager
@@ -81,6 +84,9 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
     public SettingsProcessor ( final SettingsProcessorData data )
     {
         super ();
+
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
 
         // SettingsProcessor data
         this.data = data;
@@ -179,9 +185,13 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
 
     /**
      * Loads saved settings into the component.
+     * Must always be performed on Swing Event Dispatch Thread.
      */
     public final void load ()
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Ignore load if its save or load already running
         if ( loading || saving )
         {
@@ -211,6 +221,9 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
      */
     public final void save ( final boolean onChange )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Ignore this call if save-on-change is disabled
         if ( onChange && !SettingsManager.isSaveOnChange () )
         {
@@ -234,6 +247,10 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
      */
     public final void destroy ()
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Destroying processor data
         doDestroy ( getComponent () );
         this.data = null;
     }

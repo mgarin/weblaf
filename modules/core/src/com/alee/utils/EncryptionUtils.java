@@ -38,7 +38,6 @@ public final class EncryptionUtils
     /**
      * Encode and decode key.
      */
-    @SuppressWarnings ( "SpellCheckingInspection" )
     private static final String key = "aZCVKk3mospdfm12pk4fcFD43d435ccCDgHKPQMQ23x7zkq03";
 
     /**

@@ -65,7 +65,7 @@ import java.util.List;
  * @see TreePainter
  */
 
-public class WebTree<N extends DefaultMutableTreeNode> extends JTree
+public class WebTree<N extends MutableTreeNode> extends JTree
         implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, TreeEventMethods<N>, EventMethods,
         LanguageEventMethods, SettingsMethods, FontMethods<WebTree<N>>, SizeMethods<WebTree<N>>
 {
@@ -561,7 +561,7 @@ public class WebTree<N extends DefaultMutableTreeNode> extends JTree
      */
     public TreePath getPathForNode ( final N node )
     {
-        return node != null ? new TreePath ( node.getPath () ) : null;
+        return node != null ? new TreePath ( TreeUtils.getPath ( node ) ) : null;
     }
 
     /**

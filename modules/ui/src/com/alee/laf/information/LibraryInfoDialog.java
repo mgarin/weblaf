@@ -20,7 +20,7 @@ package com.alee.laf.information;
 import com.alee.extended.behavior.ComponentMoveBehavior;
 import com.alee.extended.image.WebImage;
 import com.alee.extended.layout.VerticalFlowLayout;
-import com.alee.extended.link.LinkAction;
+import com.alee.extended.link.AbstractLinkAction;
 import com.alee.extended.link.UrlLinkAction;
 import com.alee.extended.link.WebLink;
 import com.alee.extended.panel.GroupPanel;
@@ -213,7 +213,7 @@ public class LibraryInfoDialog extends WebFrame
 
                         // Library license file
                         final WebLabel licenseLabel = new WebLabel ( "weblaf.info.libraries.license" );
-                        final WebLink licenseLink = new WebLink ( child.getName (), new LinkAction ()
+                        final WebLink licenseLink = new WebLink ( new AbstractLinkAction ( child.getName () )
                         {
                             @Override
                             public void linkExecuted ( final ActionEvent event )
@@ -390,7 +390,7 @@ public class LibraryInfoDialog extends WebFrame
      */
     public static void main ( final String[] args )
     {
-        SwingUtils.invokeLater ( new Runnable ()
+        CoreSwingUtils.invokeLater ( new Runnable ()
         {
             @Override
             public void run ()

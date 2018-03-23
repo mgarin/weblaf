@@ -38,7 +38,6 @@ import java.util.List;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  */
 
-@SuppressWarnings ( "UnusedParameters" )
 public abstract class AbstractSimpleStyledTextContent<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractSimpleStyledTextContent<C, D, I>>
         extends AbstractStyledTextContent<C, D, I>
 {

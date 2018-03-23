@@ -17,10 +17,9 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.jdk.Function;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.utils.compare.Filter;
-import com.alee.utils.text.DefaultTextProvider;
-import com.alee.utils.text.TextProvider;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -45,7 +44,7 @@ public class StructuredTreeNodesFilter<N extends UniqueNode> implements Filter<N
     /**
      * Nodes text provider.
      */
-    protected TextProvider<N> textProvider;
+    protected Function<N, String> textProvider;
 
     /**
      * Accept states by node IDs cache.
@@ -97,7 +96,7 @@ public class StructuredTreeNodesFilter<N extends UniqueNode> implements Filter<N
      *
      * @return nodes text provider
      */
-    public TextProvider<N> getTextProvider ()
+    public Function<N, String> getTextProvider ()
     {
         return textProvider;
     }
@@ -108,9 +107,16 @@ public class StructuredTreeNodesFilter<N extends UniqueNode> implements Filter<N
      *
      * @param textProvider new nodes text provider
      */
-    public void setTextProvider ( final TextProvider<N> textProvider )
+    public void setTextProvider ( final Function<N, String> textProvider )
     {
-        this.textProvider = textProvider != null ? textProvider : new DefaultTextProvider ();
+        this.textProvider = textProvider != null ? textProvider : new Function<N, String> ()
+        {
+            @Override
+            public String apply ( final N node )
+            {
+                return node != null ? node.toString () : "";
+            }
+        };
     }
 
     /**
@@ -287,7 +293,8 @@ public class StructuredTreeNodesFilter<N extends UniqueNode> implements Filter<N
      */
     protected boolean acceptNodeImpl ( final N node, final String searchRequest )
     {
-        final String nodeText = matchCase ? textProvider.getText ( node ) : textProvider.getText ( node ).toLowerCase ( Locale.ROOT );
+        final String rawText = textProvider.apply ( node );
+        final String nodeText = matchCase ? rawText : rawText.toLowerCase ( Locale.ROOT );
         if ( useSpaceAsSeparator )
         {
             final StringTokenizer tokenizer = new StringTokenizer ( searchRequest, " ", false );

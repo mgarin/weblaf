@@ -72,24 +72,24 @@ import java.util.ListIterator;
  * trailing.  With full justification the component is stretched either vertically or horizontally
  * to fit the cell or group of cells.<p> <b>Justification</b> <p>Leading and trailing
  * justification are used to support languages that are read from right to left.  See the
- * <code>java.awt.ComponentOrientation</code> class for details and http://java.sun.com/products/jfc/tsc/articles/bidi
+ * {@code java.awt.ComponentOrientation} class for details and http://java.sun.com/products/jfc/tsc/articles/bidi
  * for an introduction to component orientation and bidirectional text support.  The leading
  * justification will align the component along the leading edge of the container and the trailing
  * justification will align the component along the trailing edge.  There is no leading or trailing
  * justification along the vertical axis since all modern languages are read from top to bottom and
- * no bottom-to-top orientation is defined in <code>java.awt.ComponentOrientation.</code>
- * <p>For components using the <code>ComponentOrientation.LEFT_TO_RIGHT</code> orientation, the
+ * no bottom-to-top orientation is defined in {@code java.awt.ComponentOrientation.}
+ * <p>For components using the {@code ComponentOrientation.LEFT_TO_RIGHT} orientation, the
  * leading edge is the left edge and the trailing edge is the right one.  For components using the
- * <code>ComponentOrientation.RIGHT_TO_LEFT </code> orientation, the opposite is true.  For
- * components that are using <code>ComponentOrientation.UNKNOWN</code> and for Java runtime
+ * {@code ComponentOrientation.RIGHT_TO_LEFT } orientation, the opposite is true.  For
+ * components that are using {@code ComponentOrientation.UNKNOWN} and for Java runtime
  * environments that do not support component orientation, left-to-right orientation is assumed for
  * backwards compatibility.
  * <p>
  * <b>Gaps</b>
  * <p>
  * Horizontal and vertical gaps can be placed
- * between rows and columns in two ways.  If uniformed gaps are desired, the <code>setHGap</code>
- * and <code> setVGap</code> methods may be used.  To vary the size of gaps, simply use empty rows
+ * between rows and columns in two ways.  If uniformed gaps are desired, the {@code setHGap}
+ * and {@code setVGap} methods may be used.  To vary the size of gaps, simply use empty rows
  * and columns with absolute sizes.  Similiarly, to make a border around a container that does not
  * have insets, use empty rows and columns along the edges of the container.
  * <p>
@@ -97,13 +97,13 @@ import java.util.ListIterator;
  * <p>
  * Using TableLayout is a simple two step process.  First, create a grid
  * for your container by specifying row and column sizes using either a TableLayout constructor or
- * the <code>insertRow</code> and <code>insertColumn</code> methods.  Second, add components to the
+ * the {@code insertRow} and {@code insertColumn} methods.  Second, add components to the
  * cells formed by the rows and columns.
  * <p>
  * When adding a component to a container that
  * uses TableLayout, you specify the component's constraints that state which cells the component
  * will occupy and how the component will be aligned.  The constraints can be specified into two
- * ways.  The <code>TableLayoutConstraints</code> class can be used to systematically specify the
+ * ways.  The {@code TableLayoutConstraints} class can be used to systematically specify the
  * constraints.  This is useful to dynamic code, bean builders, and rapid application development
  * software. <p>For manual coding, a quicker and easier way to specify constraints is with
  * a short string in the form "x1, y1, x2, y2, hAlign, vAlign" where (x1, y1) identifies the top
@@ -133,18 +133,18 @@ import java.util.ListIterator;
  * Often it is desireable to
  * make a row or column just large enough to ensure that all components contained partially or
  * wholly in that row or column are their preferred size.  To make this easy, there is a constant
- * called <code>PREFERRED</code> that can be used to specify row or column sizes. There is another
- * constant called <code>MINIMUM</code> that does a similar task using components' minimum sizes
+ * called {@code PREFERRED} that can be used to specify row or column sizes. There is another
+ * constant called {@code MINIMUM} that does a similar task using components' minimum sizes
  * instead of their preferred sizes.
  * <p>
- * There is no corresponding <code>MAXIMUM</code>
+ * There is no corresponding {@code MAXIMUM}
  * constant for several reasons.  First, it is mathematically impossible to honor both the minimum
  * and maximum sizes of more than one component when conflicts arise.  For example, say components a
  * and b are in the same row.  If a's maximum height is less than b's minimum height, then one of
  * these constraints must be violated.  Since TableLayout is a complete, general Cartesian layout
- * manager, it would be possible to specify conflicting constraints if a <code>MAXIMUM </code>
+ * manager, it would be possible to specify conflicting constraints if a {@code MAXIMUM }
  * constant existed.<p> Second, the ability to make a component grow up to a maximum size is
- * primarily of interest to layout managers like <code>SpringLayout</code> that have to balance the
+ * primarily of interest to layout managers like {@code SpringLayout} that have to balance the
  * sizes of components because the presence of one component affects the size of another.  Other
  * than the effect of preferred and minimum size rows/columns, which are essentially convenient ways
  * of specifying absolute sizes, the existence and constraints of one component does not affect any
@@ -240,7 +240,6 @@ import java.util.ListIterator;
  * @version 4.0 September 14, 2005
  */
 
-@SuppressWarnings ({ "ALL" })
 public class TableLayout implements java.awt.LayoutManager2, java.io.Serializable, TableLayoutConstants
 {
     /*
@@ -256,7 +255,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
     /**
      * Default row/column size
      */
-    protected static final double defaultSize[][] = { { }, { } };
+    protected static final double defaultSize[][] = { {}, {} };
 
     /**
      * Indicates a column
@@ -346,7 +345,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param hGap the horizontal gap in pixels
      * @param vGap the vertical gap in pixels
      */
-    public TableLayout ( int hGap, int vGap )
+    public TableLayout ( final int hGap, final int vGap )
     {
         super ();
         init ( defaultSize[ C ], defaultSize[ R ] );
@@ -360,11 +359,11 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      *             colN}, {row0, row1, row2, ..., rowM}} If this parameter is invalid, the
      *             TableLayout will have exactly one row and one column.
      */
-    public TableLayout ( double[][] size )
+    public TableLayout ( final double[][] size )
     {
         super ();
         // Make sure columns and rows and nothing else is specified
-        if ( ( size != null ) && ( size.length == 2 ) )
+        if ( size != null && size.length == 2 )
         {
             init ( size[ C ], size[ R ] );
         }
@@ -385,7 +384,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param hGap the horizontal gap in pixels
      * @param vGap the vertical gap in pixels
      */
-    public TableLayout ( double[][] size, int hGap, int vGap )
+    public TableLayout ( final double[][] size, final int hGap, final int vGap )
     {
         this ( size );
         setGaps ( hGap, vGap );
@@ -397,7 +396,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param col widths of columns in the format, {{col0, col1, col2, ..., colN}
      * @param row heights of rows in the format, {{row0, row1, row2, ..., rowN}
      */
-    public TableLayout ( double[] col, double[] row )
+    public TableLayout ( final double[] col, final double[] row )
     {
         super ();
         init ( col, row );
@@ -411,7 +410,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param hGap the horizontal gap in pixels
      * @param vGap the vertical gap in pixels
      */
-    public TableLayout ( double[] col, double[] row, int hGap, int vGap )
+    public TableLayout ( final double[] col, final double[] row, final int hGap, final int vGap )
     {
         this ( col, row );
         setGaps ( hGap, vGap );
@@ -423,7 +422,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param col widths of columns in the format, {{col0, col1, col2, ..., colN}
      * @param row heights of rows in the format, {{row0, row1, row2, ..., rowN}
      */
-    protected void init ( double[] col, double[] row )
+    protected void init ( final double[] col, final double[] row )
     {
         // Check parameters
         if ( col == null )
@@ -447,18 +446,18 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
         // Make sure rows and columns are valid
         for ( int counter = 0; counter < crSpec[ C ].length; counter++ )
         {
-            if ( ( crSpec[ C ][ counter ] < 0.0 ) && ( crSpec[ C ][ counter ] != FILL ) &&
-                    ( crSpec[ C ][ counter ] != PREFERRED ) &&
-                    ( crSpec[ C ][ counter ] != MINIMUM ) )
+            if ( crSpec[ C ][ counter ] < 0.0 && crSpec[ C ][ counter ] != FILL &&
+                    crSpec[ C ][ counter ] != PREFERRED &&
+                    crSpec[ C ][ counter ] != MINIMUM )
             {
                 crSpec[ C ][ counter ] = 0.0;
             }
         }
         for ( int counter = 0; counter < crSpec[ R ].length; counter++ )
         {
-            if ( ( crSpec[ R ][ counter ] < 0.0 ) && ( crSpec[ R ][ counter ] != FILL ) &&
-                    ( crSpec[ R ][ counter ] != PREFERRED ) &&
-                    ( crSpec[ R ][ counter ] != MINIMUM ) )
+            if ( crSpec[ R ][ counter ] < 0.0 && crSpec[ R ][ counter ] != FILL &&
+                    crSpec[ R ][ counter ] != PREFERRED &&
+                    crSpec[ R ][ counter ] != MINIMUM )
             {
                 crSpec[ R ][ counter ] = 0.0;
             }
@@ -478,12 +477,12 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @return If the given component is found, the constraints associated with that component.  If
      * the given component is null or is not found, null is returned.
      */
-    public TableLayoutConstraints getConstraints ( Component component )
+    public TableLayoutConstraints getConstraints ( final Component component )
     {
-        ListIterator iterator = list.listIterator ( 0 );
+        final ListIterator iterator = list.listIterator ( 0 );
         while ( iterator.hasNext () )
         {
-            Entry entry = ( Entry ) iterator.next ();
+            final Entry entry = ( Entry ) iterator.next ();
 
             if ( entry.component == component )
             {
@@ -500,7 +499,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param component  desired component.  This parameter cannot be null.
      * @param constraint new set of constraints.  This parameter cannot be null.
      */
-    public void setConstraints ( Component component, TableLayoutConstraints constraint )
+    public void setConstraints ( final Component component, final TableLayoutConstraints constraint )
     {
         // Check parameters
         if ( component == null )
@@ -513,11 +512,11 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
         }
 
         // Find and update constraints for the given component
-        ListIterator iterator = list.listIterator ( 0 );
+        final ListIterator iterator = list.listIterator ( 0 );
 
         while ( iterator.hasNext () )
         {
-            Entry entry = ( Entry ) iterator.next ();
+            final Entry entry = ( Entry ) iterator.next ();
 
             if ( entry.component == component )
             {
@@ -548,7 +547,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param column widths of each of the columns
      * @see #getColumn
      */
-    public void setColumn ( double column[] )
+    public void setColumn ( final double[] column )
     {
         setCr ( C, column );
     }
@@ -558,7 +557,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * should request this layout manager to perform the layout.  This can be done with the
      * following code:
      * <p>
-     * <code> layout.layoutContainer(container); container.repaint(); </code>
+     * {@code layout.layoutContainer(container); container.repaint(); }
      * <p>
      * or
      * <p>
@@ -572,7 +571,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param row heights of each of the rows.  This parameter cannot be null.
      * @see #getRow
      */
-    public void setRow ( double row[] )
+    public void setRow ( final double[] row )
     {
         setCr ( R, row );
     }
@@ -583,7 +582,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param z    indicates row or column
      * @param size new cr size
      */
-    protected void setCr ( int z, double size[] )
+    protected void setCr ( final int z, final double[] size )
     {
         // Copy crs
         crSpec[ z ] = new double[ size.length ];
@@ -592,9 +591,9 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
         // Make sure rows are valid
         for ( int counter = 0; counter < crSpec[ z ].length; counter++ )
         {
-            if ( ( crSpec[ z ][ counter ] < 0.0 ) && ( crSpec[ z ][ counter ] != FILL ) &&
-                    ( crSpec[ z ][ counter ] != PREFERRED ) &&
-                    ( crSpec[ z ][ counter ] != MINIMUM ) )
+            if ( crSpec[ z ][ counter ] < 0.0 && crSpec[ z ][ counter ] != FILL &&
+                    crSpec[ z ][ counter ] != PREFERRED &&
+                    crSpec[ z ][ counter ] != MINIMUM )
             {
                 crSpec[ z ][ counter ] = 0.0;
             }
@@ -609,7 +608,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * should request this layout manager to perform the layout.  This can be done with the
      * following code:
      * <p>
-     * <code> layout.layoutContainer(container); container.repaint(); </code>
+     * {@code layout.layoutContainer(container); container.repaint(); }
      * <p>
      * or
      * <p>
@@ -625,7 +624,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param size width of the column.  This parameter cannot be null.
      * @see #getColumn
      */
-    public void setColumn ( int i, double size )
+    public void setColumn ( final int i, final double size )
     {
         setCr ( C, i, size );
     }
@@ -635,7 +634,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * should request this layout manager to perform the layout.  This can be done with the
      * following code:
      * <p>
-     * <code> layout.layoutContainer(container); container.repaint(); </code>
+     * {@code layout.layoutContainer(container); container.repaint(); }
      * <p>
      * or
      * <p>
@@ -651,7 +650,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param size height of the row.  This parameter cannot be null.
      * @see #getRow
      */
-    public void setRow ( int i, double size )
+    public void setRow ( final int i, final double size )
     {
         setCr ( R, i, size );
     }
@@ -663,10 +662,10 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param i    indicates which cr to resize
      * @param size new cr size
      */
-    protected void setCr ( int z, int i, double size )
+    protected void setCr ( final int z, final int i, double size )
     {
         // Make sure size is valid
-        if ( ( size < 0.0 ) && ( size != FILL ) && ( size != PREFERRED ) && ( size != MINIMUM ) )
+        if ( size < 0.0 && size != FILL && size != PREFERRED && size != MINIMUM )
         {
             size = 0.0;
         }
@@ -687,7 +686,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
     public double[] getColumn ()
     {
         // Copy columns
-        double column[] = new double[ crSpec[ C ].length ];
+        final double[] column = new double[ crSpec[ C ].length ];
         System.arraycopy ( crSpec[ C ], 0, column, 0, column.length );
 
         return column;
@@ -702,7 +701,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
     public double[] getRow ()
     {
         // Copy rows
-        double row[] = new double[ crSpec[ R ].length ];
+        final double[] row = new double[ crSpec[ R ].length ];
         System.arraycopy ( crSpec[ R ], 0, row, 0, row.length );
 
         return row;
@@ -716,7 +715,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @return width of the requested column
      * @see #setRow
      */
-    public double getColumn ( int i )
+    public double getColumn ( final int i )
     {
         return crSpec[ C ][ i ];
     }
@@ -729,7 +728,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @return height of each of the requested row
      * @see #setRow
      */
-    public double getRow ( int i )
+    public double getRow ( final int i )
     {
         return crSpec[ R ][ i ];
     }
@@ -779,7 +778,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      *
      * @param hGap the horizontal gap in pixels
      */
-    public void setHGap ( int hGap )
+    public void setHGap ( final int hGap )
     {
         if ( hGap >= 0 )
         {
@@ -796,7 +795,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      *
      * @param vGap the vertical gap in pixels
      */
-    public void setVGap ( int vGap )
+    public void setVGap ( final int vGap )
     {
         if ( vGap >= 0 )
         {
@@ -814,7 +813,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param hGap the horizontal gap in pixels
      * @param vGap the vertical gap in pixels
      */
-    public void setGaps ( int hGap, int vGap )
+    public void setGaps ( final int hGap, final int vGap )
     {
         setHGap ( hGap );
         setVGap ( vGap );
@@ -823,14 +822,14 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
     /**
      * Inserts a column in this layout.  All components to the right of the insertion point are
      * moved right one column.  The container will need to be laid out after this method returns.
-     * See <code>setColumn</code>.
+     * See {@code setColumn}.
      *
      * @param i    zero-based index at which to insert the column
      * @param size size of the column to be inserted
      * @see #setColumn
      * @see #deleteColumn
      */
-    public void insertColumn ( int i, double size )
+    public void insertColumn ( final int i, final double size )
     {
         insertCr ( C, i, size );
     }
@@ -838,14 +837,14 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
     /**
      * Inserts a row in this layout.  All components below the insertion point are moved down one
      * row.  The container will need to be laid out after this method returns.  See
-     * <code>setRow</code>.
+     * {@code setRow}.
      *
      * @param i    zero-based index at which to insert the row
      * @param size size of the row to be inserted
      * @see #setRow
      * @see #deleteRow
      */
-    public void insertRow ( int i, double size )
+    public void insertRow ( final int i, final double size )
     {
         insertCr ( R, i, size );
     }
@@ -857,23 +856,23 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param i    zero-based index at which to insert the cr
      * @param size size of cr being inserted
      */
-    public void insertCr ( int z, int i, double size )
+    public void insertCr ( final int z, final int i, double size )
     {
         // Make sure position is valid
-        if ( ( i < 0 ) || ( i > crSpec[ z ].length ) )
+        if ( i < 0 || i > crSpec[ z ].length )
         {
             throw new IllegalArgumentException ( "Parameter i is invalid.  i = " + i + ".  Valid range is [0, " +
                     crSpec[ z ].length + "]." );
         }
 
         // Make sure row size is valid
-        if ( ( size < 0.0 ) && ( size != FILL ) && ( size != PREFERRED ) && ( size != MINIMUM ) )
+        if ( size < 0.0 && size != FILL && size != PREFERRED && size != MINIMUM )
         {
             size = 0.0;
         }
 
         // Copy crs
-        double cr[] = new double[ crSpec[ z ].length + 1 ];
+        final double[] cr = new double[ crSpec[ z ].length + 1 ];
         System.arraycopy ( crSpec[ z ], 0, cr, 0, i );
         System.arraycopy ( crSpec[ z ], i, cr, i + 1, crSpec[ z ].length - i );
 
@@ -882,12 +881,12 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
         crSpec[ z ] = cr;
 
         // Move all components that are below the new cr
-        ListIterator iterator = list.listIterator ( 0 );
+        final ListIterator iterator = list.listIterator ( 0 );
 
         while ( iterator.hasNext () )
         {
             // Get next entry
-            Entry entry = ( Entry ) iterator.next ();
+            final Entry entry = ( Entry ) iterator.next ();
 
             // Is the first cr below the new cr
             if ( entry.cr1[ z ] >= i )
@@ -911,27 +910,27 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
     /**
      * Deletes a column in this layout.  All components to the right of the deletion point are moved
      * left one column.  The container will need to be laid out after this method returns.  See
-     * <code>setColumn</code>.
+     * {@code setColumn}.
      *
      * @param i zero-based index of column to delete
      * @see #setColumn
      * @see #deleteColumn
      */
-    public void deleteColumn ( int i )
+    public void deleteColumn ( final int i )
     {
         deleteCr ( C, i );
     }
 
     /**
      * Deletes a row in this layout.  All components below the deletion point are moved up one row.
-     * The container will need to be laid out after this method returns.  See <code>setRow</code>.
+     * The container will need to be laid out after this method returns.  See {@code setRow}.
      * There must be at least two rows in order to delete a row.
      *
      * @param i zero-based index of row to delete
      * @see #setRow
      * @see #deleteRow
      */
-    public void deleteRow ( int i )
+    public void deleteRow ( final int i )
     {
         deleteCr ( R, i );
     }
@@ -942,17 +941,17 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param z indicates row or column
      * @param i zero-based index of cr to delete
      */
-    protected void deleteCr ( int z, int i )
+    protected void deleteCr ( final int z, final int i )
     {
         // Make sure position is valid
-        if ( ( i < 0 ) || ( i >= crSpec[ z ].length ) )
+        if ( i < 0 || i >= crSpec[ z ].length )
         {
             throw new IllegalArgumentException ( "Parameter i is invalid.  i = " + i + ".  Valid range is [0, " +
                     ( crSpec[ z ].length - 1 ) + "]." );
         }
 
         // Copy rows
-        double cr[] = new double[ crSpec[ z ].length - 1 ];
+        final double[] cr = new double[ crSpec[ z ].length - 1 ];
         System.arraycopy ( crSpec[ z ], 0, cr, 0, i );
         System.arraycopy ( crSpec[ z ], i + 1, cr, i, crSpec[ z ].length - i - 1 );
 
@@ -960,12 +959,12 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
         crSpec[ z ] = cr;
 
         // Move all components that are to below the row deleted
-        ListIterator iterator = list.listIterator ( 0 );
+        final ListIterator iterator = list.listIterator ( 0 );
 
         while ( iterator.hasNext () )
         {
             // Get next entry
-            Entry entry = ( Entry ) iterator.next ();
+            final Entry entry = ( Entry ) iterator.next ();
 
             // Is the first row below the new row
             if ( entry.cr1[ z ] > i )
@@ -992,41 +991,36 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @return a string representing the columns and row sizes in the form "{{col0, col1, col2, ...,
      * colN}, {row0, row1, row2, ..., rowM}}"
      */
+    @Override
     public String toString ()
     {
+        final StringBuilder value = new StringBuilder ( "TableLayout {{" );
         int counter;
-
-        String value = "TableLayout {{";
-
         if ( crSpec[ C ].length > 0 )
         {
             for ( counter = 0; counter < crSpec[ C ].length - 1; counter++ )
             {
-                value += crSpec[ C ][ counter ] + ", ";
+                value.append ( crSpec[ C ][ counter ] ).append ( ", " );
             }
-
-            value += crSpec[ C ][ crSpec[ C ].length - 1 ] + "}, {";
+            value.append ( crSpec[ C ][ crSpec[ C ].length - 1 ] ).append ( "}, {" );
         }
         else
         {
-            value += "}, {";
+            value.append ( "}, {" );
         }
-
         if ( crSpec[ R ].length > 0 )
         {
             for ( counter = 0; counter < crSpec[ R ].length - 1; counter++ )
             {
-                value += crSpec[ R ][ counter ] + ", ";
+                value.append ( crSpec[ R ][ counter ] ).append ( ", " );
             }
-
-            value += crSpec[ R ][ crSpec[ R ].length - 1 ] + "}}";
+            value.append ( crSpec[ R ][ crSpec[ R ].length - 1 ] ).append ( "}}" );
         }
         else
         {
-            value += "}}";
+            value.append ( "}}" );
         }
-
-        return value;
+        return value.toString ();
     }
 
     /**
@@ -1041,25 +1035,25 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      */
     public List getInvalidEntry ()
     {
-        LinkedList listInvalid = new LinkedList ();
+        final LinkedList listInvalid = new LinkedList ();
 
         try
         {
-            ListIterator iterator = list.listIterator ( 0 );
+            final ListIterator iterator = list.listIterator ( 0 );
 
             while ( iterator.hasNext () )
             {
-                Entry entry = ( Entry ) iterator.next ();
+                final Entry entry = ( Entry ) iterator.next ();
 
-                if ( ( entry.cr1[ R ] < 0 ) || ( entry.cr1[ C ] < 0 ) ||
-                        ( entry.cr2[ R ] >= crSpec[ R ].length ) ||
-                        ( entry.cr2[ C ] >= crSpec[ C ].length ) )
+                if ( entry.cr1[ R ] < 0 || entry.cr1[ C ] < 0 ||
+                        entry.cr2[ R ] >= crSpec[ R ].length ||
+                        entry.cr2[ C ] >= crSpec[ C ].length )
                 {
                     listInvalid.add ( entry.copy () );
                 }
             }
         }
-        catch ( CloneNotSupportedException error )
+        catch ( final CloneNotSupportedException error )
         {
             throw new RuntimeException ( "Unexpected CloneNotSupportedException" );
         }
@@ -1076,12 +1070,12 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      */
     public List getOverlappingEntry ()
     {
-        LinkedList listOverlapping = new LinkedList ();
+        final LinkedList listOverlapping = new LinkedList ();
 
         try
         {
             // Count contraints
-            int numEntry = list.size ();
+            final int numEntry = list.size ();
 
             // If there are no components, they can't be overlapping
             if ( numEntry == 0 )
@@ -1090,28 +1084,28 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
             }
 
             // Put entries in an array
-            Entry entry[] = ( Entry[] ) list.toArray ( new Entry[ numEntry ] );
+            final Entry[] entry = ( Entry[] ) list.toArray ( new Entry[ numEntry ] );
 
             // Check all components
             for ( int knowUnique = 1; knowUnique < numEntry; knowUnique++ )
             {
                 for ( int checking = knowUnique - 1; checking >= 0; checking-- )
                 {
-                    if ( ( ( entry[ checking ].cr1[ C ] >= entry[ knowUnique ].cr1[ C ] ) &&
-                            ( entry[ checking ].cr1[ C ] <= entry[ knowUnique ].cr2[ C ] ) &&
-                            ( entry[ checking ].cr1[ R ] >= entry[ knowUnique ].cr1[ R ] ) &&
-                            ( entry[ checking ].cr1[ R ] <= entry[ knowUnique ].cr2[ R ] ) ) ||
-                            ( ( entry[ checking ].cr2[ C ] >= entry[ knowUnique ].cr1[ C ] ) &&
-                                    ( entry[ checking ].cr2[ C ] <= entry[ knowUnique ].cr2[ C ] ) &&
-                                    ( entry[ checking ].cr2[ R ] >= entry[ knowUnique ].cr1[ R ] ) &&
-                                    ( entry[ checking ].cr2[ R ] <= entry[ knowUnique ].cr2[ R ] ) ) )
+                    if ( entry[ checking ].cr1[ C ] >= entry[ knowUnique ].cr1[ C ] &&
+                            entry[ checking ].cr1[ C ] <= entry[ knowUnique ].cr2[ C ] &&
+                            entry[ checking ].cr1[ R ] >= entry[ knowUnique ].cr1[ R ] &&
+                            entry[ checking ].cr1[ R ] <= entry[ knowUnique ].cr2[ R ] ||
+                            entry[ checking ].cr2[ C ] >= entry[ knowUnique ].cr1[ C ] &&
+                                    entry[ checking ].cr2[ C ] <= entry[ knowUnique ].cr2[ C ] &&
+                                    entry[ checking ].cr2[ R ] >= entry[ knowUnique ].cr1[ R ] &&
+                                    entry[ checking ].cr2[ R ] <= entry[ knowUnique ].cr2[ R ] )
                     {
                         listOverlapping.add ( entry[ checking ].copy () );
                     }
                 }
             }
         }
-        catch ( CloneNotSupportedException error )
+        catch ( final CloneNotSupportedException error )
         {
             throw new RuntimeException ( "Unexpected CloneNotSupportedException" );
         }
@@ -1121,18 +1115,18 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
 
     /**
      * Calculates the sizes of the rows and columns based on the absolute and relative sizes
-     * specified in <code>crSpec[R]</code> and <code>crSpec[C]</code> and the size of the container.
-     * The result is stored in <code>crSize[R]</code> and <code>crSize[C]</code>.
+     * specified in {@code crSpec[R]} and {@code crSpec[C]} and the size of the container.
+     * The result is stored in {@code crSize[R]} and {@code crSize[C]}.
      *
      * @param container container using this TableLayout
      */
-    protected void calculateSize ( Container container )
+    protected void calculateSize ( final Container container )
     {
         // Get the container's insets
-        Insets inset = container.getInsets ();
+        final Insets inset = container.getInsets ();
 
         // Get the size of the container's available space
-        Dimension d = container.getSize ();
+        final Dimension d = container.getSize ();
         int availableWidth = d.width - inset.left - inset.right;
         int availableHeight = d.height - inset.top - inset.bottom;
 
@@ -1187,13 +1181,13 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param availableSize amount of space available in the container
      * @return the amount of space available after absolute crs have been assigned sizes
      */
-    protected int assignAbsoluteSize ( int z, int availableSize )
+    protected int assignAbsoluteSize ( final int z, int availableSize )
     {
-        int numCr = crSpec[ z ].length;
+        final int numCr = crSpec[ z ].length;
 
         for ( int counter = 0; counter < numCr; counter++ )
         {
-            if ( ( crSpec[ z ][ counter ] >= 1.0 ) || ( crSpec[ z ][ counter ] == 0.0 ) )
+            if ( crSpec[ z ][ counter ] >= 1.0 || crSpec[ z ][ counter ] == 0.0 )
             {
                 crSize[ z ][ counter ] = ( int ) ( crSpec[ z ][ counter ] + 0.5 );
                 availableSize -= crSize[ z ][ counter ];
@@ -1210,14 +1204,14 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param availableSize amount of space available in the container
      * @return the amount of space available after relative crs have been assigned sizes
      */
-    protected int assignRelativeSize ( int z, int availableSize )
+    protected int assignRelativeSize ( final int z, int availableSize )
     {
-        int relativeSize = ( availableSize < 0 ) ? 0 : availableSize;
-        int numCr = crSpec[ z ].length;
+        final int relativeSize = availableSize < 0 ? 0 : availableSize;
+        final int numCr = crSpec[ z ].length;
 
         for ( int counter = 0; counter < numCr; counter++ )
         {
-            if ( ( crSpec[ z ][ counter ] > 0.0 ) && ( crSpec[ z ][ counter ] < 1.0 ) )
+            if ( crSpec[ z ][ counter ] > 0.0 && crSpec[ z ][ counter ] < 1.0 )
             {
                 crSize[ z ][ counter ] = ( int ) ( crSpec[ z ][ counter ] * relativeSize + 0.5 );
 
@@ -1234,7 +1228,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param z             indicates row or column
      * @param availableSize amount of space available in the container
      */
-    protected void assignFillSize ( int z, int availableSize )
+    protected void assignFillSize ( final int z, final int availableSize )
     {
         // Skip if there is no more space to allocate
         if ( availableSize <= 0 )
@@ -1244,7 +1238,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
 
         // Count the number of "fill" cells
         int numFillSize = 0;
-        int numCr = crSpec[ z ].length;
+        final int numCr = crSpec[ z ].length;
 
         for ( int counter = 0; counter < numCr; counter++ )
         {
@@ -1273,7 +1267,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
 
         // Assign one pixel of slack to each FILL cr, starting at the last one,
         // until all slack has been consumed
-        for ( int counter = numCr - 1; ( counter >= 0 ) && ( slackSize > 0 ); counter-- )
+        for ( int counter = numCr - 1; counter >= 0 && slackSize > 0; counter-- )
         {
             if ( crSpec[ z ][ counter ] == FILL )
             {
@@ -1286,14 +1280,15 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
     /**
      * Calculates the offset of each cr.
      *
-     * @param z indicates row or column
+     * @param z     indicates row or column
+     * @param inset container insets
      */
-    protected void calculateOffset ( int z, Insets inset )
+    protected void calculateOffset ( final int z, final Insets inset )
     {
-        int numCr = crSpec[ z ].length;
+        final int numCr = crSpec[ z ].length;
 
         crOffset[ z ] = new int[ numCr + 1 ];
-        crOffset[ z ][ 0 ] = ( z == C ) ? inset.left : inset.top;
+        crOffset[ z ][ 0 ] = z == C ? inset.left : inset.top;
 
         for ( int counter = 0; counter < numCr; counter++ )
         {
@@ -1313,10 +1308,10 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param typeOfSize    indicates preferred or minimum
      * @return the amount of space available after absolute crs have been assigned sizes
      */
-    protected int assignPrefMinSize ( int z, int availableSize, double typeOfSize )
+    protected int assignPrefMinSize ( final int z, int availableSize, final double typeOfSize )
     {
         // Get variables referring to columns or rows (crs)
-        int numCr = crSpec[ z ].length;
+        final int numCr = crSpec[ z ].length;
 
         // Address every cr
         for ( int counter = 0; counter < numCr; counter++ )
@@ -1329,27 +1324,28 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
 
                 // Find maximum preferred/min width of all components completely
                 // or partially contained within this cr
-                ListIterator iterator = list.listIterator ( 0 );
+                final ListIterator iterator = list.listIterator ( 0 );
 
                 nextComponent:
                 while ( iterator.hasNext () )
                 {
-                    Entry entry = ( Entry ) iterator.next ();
+                    final Entry entry = ( Entry ) iterator.next ();
 
                     // Skip invalid entries
-                    if ( ( entry.cr1[ z ] < 0 ) || ( entry.cr2[ z ] >= numCr ) )
+                    if ( entry.cr1[ z ] < 0 || entry.cr2[ z ] >= numCr )
                     {
-                        continue nextComponent;
+                        continue;
                     }
 
                     // Find the maximum desired size of this cr based on all crs
                     // the current component occupies
-                    if ( ( entry.cr1[ z ] <= counter ) && ( entry.cr2[ z ] >= counter ) )
+                    if ( entry.cr1[ z ] <= counter && entry.cr2[ z ] >= counter )
                     {
                         // Setup size and number of adjustable crs
-                        Dimension p = ( typeOfSize == PREFERRED ) ? entry.component.getPreferredSize () : entry.component.getMinimumSize ();
+                        final Dimension p =
+                                typeOfSize == PREFERRED ? entry.component.getPreferredSize () : entry.component.getMinimumSize ();
 
-                        int size = ( p == null ) ? 0 : ( ( z == C ) ? p.width : p.height );
+                        int size = p == null ? 0 : z == C ? p.width : p.height;
                         int numAdjustable = 0;
 
                         // Calculate for preferred size
@@ -1360,7 +1356,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
                             {
                                 // Subtract absolute, relative, and minumum cr
                                 // sizes, which have already been calculated
-                                if ( ( crSpec[ z ][ entryCr ] >= 0.0 ) || ( crSpec[ z ][ entryCr ] == MINIMUM ) )
+                                if ( crSpec[ z ][ entryCr ] >= 0.0 || crSpec[ z ][ entryCr ] == MINIMUM )
                                 {
                                     size -= crSize[ z ][ entryCr ];
                                 }
@@ -1391,7 +1387,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
                                     size -= crSize[ z ][ entryCr ];
                                 }
                                 // Count preferred/min width columns
-                                else if ( ( crSpec[ z ][ entryCr ] == PREFERRED ) || ( crSpec[ z ][ entryCr ] == MINIMUM ) )
+                                else if ( crSpec[ z ][ entryCr ] == PREFERRED || crSpec[ z ][ entryCr ] == MINIMUM )
                                 {
                                     numAdjustable++;
                                 }
@@ -1435,38 +1431,39 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      *
      * @param container container being served by this layout manager
      */
-    public void layoutContainer ( Container container )
+    @Override
+    public void layoutContainer ( final Container container )
     {
         // Calculate sizes if container has changed size or components were added
-        Dimension d = container.getSize ();
+        final Dimension d = container.getSize ();
 
-        if ( dirty || ( d.width != oldWidth ) || ( d.height != oldHeight ) )
+        if ( dirty || d.width != oldWidth || d.height != oldHeight )
         {
             calculateSize ( container );
         }
 
         // Get component orientation and insets
-        ComponentOrientation co = getComponentOrientation ( container );
-        boolean isRightToLeft = ( co != null ) && !co.isLeftToRight ();
-        Insets insets = container.getInsets ();
+        final ComponentOrientation co = getComponentOrientation ( container );
+        final boolean isRightToLeft = co != null && !co.isLeftToRight ();
+        final Insets insets = container.getInsets ();
 
         // Get components
-        Component component[] = container.getComponents ();
+        final Component[] components = container.getComponents ();
 
         // Layout components
-        for ( int counter = 0; counter < component.length; counter++ )
+        for ( final Component component : components )
         {
             try
             {
                 // Get the entry for the next component
-                ListIterator iterator = list.listIterator ( 0 );
+                final ListIterator iterator = list.listIterator ( 0 );
                 Entry entry = null;
 
                 while ( iterator.hasNext () )
                 {
                     entry = ( Entry ) iterator.next ();
 
-                    if ( entry.component == component[ counter ] )
+                    if ( entry.component == component )
                     {
                         break;
                     }
@@ -1480,7 +1477,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
                 // setting the skip component's bounds to zero
                 if ( entry == null )
                 {
-                    component[ counter ].setBounds ( 0, 0, 0, 0 );
+                    component.setBounds ( 0, 0, 0, 0 );
                     continue;
                 }
 
@@ -1494,9 +1491,9 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
                 int preferredWidth = 0;
                 int preferredHeight = 0;
 
-                if ( ( entry.alignment[ C ] != FULL ) || ( entry.alignment[ R ] != FULL ) )
+                if ( entry.alignment[ C ] != FULL || entry.alignment[ R ] != FULL )
                 {
-                    Dimension preferredSize = component[ counter ].getPreferredSize ();
+                    final Dimension preferredSize = component.getPreferredSize ();
 
                     preferredWidth = preferredSize.width;
                     preferredHeight = preferredSize.height;
@@ -1505,10 +1502,10 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
                 // Calculate the coordinates and size of the component
                 int value[] = calculateSizeAndOffset ( entry, preferredWidth, true );
                 int x = value[ 0 ];
-                int w = value[ 1 ];
+                final int w = value[ 1 ];
                 value = calculateSizeAndOffset ( entry, preferredHeight, false );
-                int y = value[ 0 ];
-                int h = value[ 1 ];
+                final int y = value[ 0 ];
+                final int h = value[ 1 ];
 
                 // Compensate for component orientation.
                 if ( isRightToLeft )
@@ -1517,14 +1514,13 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
                 }
 
                 // Move and resize component
-                component[ counter ].setBounds ( x, y, w, h );
+                component.setBounds ( x, y, w, h );
             }
-            catch ( Exception error )
+            catch ( final Exception error )
             {
                 // If any error occurs, set the bounds of this component to zero
                 // and continue
-                component[ counter ].setBounds ( 0, 0, 0, 0 );
-                continue;
+                component.setBounds ( 0, 0, 0, 0 );
             }
         }
     }
@@ -1536,7 +1532,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param container Container whose orientation is being queried
      * @return the container's orientation or null if no orientation is supported
      */
-    protected ComponentOrientation getComponentOrientation ( Container container )
+    protected ComponentOrientation getComponentOrientation ( final Container container )
     {
         // This method is implemented to only get the class and method objects
         // once so as to reduce expensive reflection operations.  If the reflection
@@ -1548,9 +1544,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
         {
             if ( checkForComponentOrientationSupport )
             {
-                methodGetComponentOrientation =
-                        Class.forName ( "java.awt.Container" ).getMethod ( "getComponentOrientation", new Class[ 0 ] );
-
+                methodGetComponentOrientation = Class.forName ( "java.awt.Container" ).getMethod ( "getComponentOrientation" );
                 checkForComponentOrientationSupport = false;
             }
 
@@ -1559,7 +1553,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
                 co = ( ComponentOrientation ) methodGetComponentOrientation.invoke ( container, new Object[ 0 ] );
             }
         }
-        catch ( Exception e )
+        catch ( final Exception ignored )
         {
         }
 
@@ -1575,20 +1569,20 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      *                      column.  if false,... of a row.
      * @return an array, a, of two integers such that a[0] is the offset and a[1] is the size
      */
-    protected int[] calculateSizeAndOffset ( Entry entry, int preferredSize, boolean isColumn )
+    protected int[] calculateSizeAndOffset ( final Entry entry, final int preferredSize, final boolean isColumn )
     {
         // Get references to cr properties
-        int crOffset[] = isColumn ? this.crOffset[ C ] : this.crOffset[ R ];
+        final int[] crOffset = isColumn ? this.crOffset[ C ] : this.crOffset[ R ];
         int entryAlignment = isColumn ? entry.alignment[ C ] : entry.alignment[ R ];
 
         // Determine cell set size
-        int cellSetSize = isColumn ? crOffset[ entry.cr2[ C ] + 1 ] - crOffset[ entry.cr1[ C ] ] :
+        final int cellSetSize = isColumn ? crOffset[ entry.cr2[ C ] + 1 ] - crOffset[ entry.cr1[ C ] ] :
                 crOffset[ entry.cr2[ R ] + 1 ] - crOffset[ entry.cr1[ R ] ];
 
         // Determine the size of the component
         int size;
 
-        if ( ( entryAlignment == FULL ) || ( cellSetSize < preferredSize ) )
+        if ( entryAlignment == FULL || cellSetSize < preferredSize )
         {
             size = cellSetSize;
         }
@@ -1600,12 +1594,12 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
         // Since the component orientation is adjusted for in the layoutContainer
         // method, we can treat leading justification as left justification and
         // trailing justification as right justification.
-        if ( isColumn && ( entryAlignment == LEADING ) )
+        if ( isColumn && entryAlignment == LEADING )
         {
             entryAlignment = LEFT;
         }
 
-        if ( isColumn && ( entryAlignment == TRAILING ) )
+        if ( isColumn && entryAlignment == TRAILING )
         {
             entryAlignment = RIGHT;
         }
@@ -1624,7 +1618,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
                 break;
 
             case CENTER: // Center justify component
-                offset = crOffset[ isColumn ? entry.cr1[ C ] : entry.cr1[ R ] ] + ( ( cellSetSize - size ) >> 1 );
+                offset = crOffset[ isColumn ? entry.cr1[ C ] : entry.cr1[ R ] ] + ( cellSetSize - size >> 1 );
                 break;
 
             case FULL: // Align left/top side along left/top edge of cell
@@ -1639,7 +1633,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
         if ( isColumn )
         {
             offset += hGap * entry.cr1[ C ];
-            int cumlativeGap = hGap * ( entry.cr2[ C ] - entry.cr1[ C ] );
+            final int cumlativeGap = hGap * ( entry.cr2[ C ] - entry.cr1[ C ] );
 
             switch ( entryAlignment )
             {
@@ -1659,7 +1653,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
         else
         {
             offset += vGap * entry.cr1[ R ];
-            int cumlativeGap = vGap * ( entry.cr2[ R ] - entry.cr1[ R ] );
+            final int cumlativeGap = vGap * ( entry.cr2[ R ] - entry.cr1[ R ] );
 
             switch ( entryAlignment )
             {
@@ -1678,8 +1672,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
         }
 
         // Package return values
-        int value[] = { offset, size };
-        return value;
+        return new int[]{ offset, size };
     }
 
     /**
@@ -1695,7 +1688,8 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param container container being served by this layout manager
      * @return a dimension indicating the container's preferred size
      */
-    public Dimension preferredLayoutSize ( Container container )
+    @Override
+    public Dimension preferredLayoutSize ( final Container container )
     {
         return calculateLayoutSize ( container, PREFERRED );
     }
@@ -1713,7 +1707,8 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param container container being served by this layout manager
      * @return a dimension indicating the container's minimum size
      */
-    public Dimension minimumLayoutSize ( Container container )
+    @Override
+    public Dimension minimumLayoutSize ( final Container container )
     {
         return calculateLayoutSize ( container, MINIMUM );
     }
@@ -1726,17 +1721,17 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param typeOfSize indicates preferred or minimum
      * @return a dimension indicating the container's preferred or minimum size
      */
-    protected Dimension calculateLayoutSize ( Container container, double typeOfSize )
+    protected Dimension calculateLayoutSize ( final Container container, final double typeOfSize )
     {
         //  Get preferred/minimum sizes
-        Entry entryList[] = ( Entry[] ) list.toArray ( new Entry[ list.size () ] );
-        int numEntry = entryList.length;
-        Dimension prefMinSize[] = new Dimension[ numEntry ];
+        final Entry[] entryList = ( Entry[] ) list.toArray ( new Entry[ list.size () ] );
+        final int numEntry = entryList.length;
+        final Dimension[] prefMinSize = new Dimension[ numEntry ];
 
         for ( int i = 0; i < numEntry; i++ )
         {
             prefMinSize[ i ] =
-                    ( typeOfSize == PREFERRED ) ? entryList[ i ].component.getPreferredSize () : entryList[ i ].component.getMinimumSize ();
+                    typeOfSize == PREFERRED ? entryList[ i ].component.getPreferredSize () : entryList[ i ].component.getMinimumSize ();
         }
 
         // Calculate sizes
@@ -1745,7 +1740,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
         int height = calculateLayoutSize ( container, R, typeOfSize, entryList, prefMinSize );
 
         // Compensate for container's insets
-        Insets inset = container.getInsets ();
+        final Insets inset = container.getInsets ();
         width += inset.left + inset.right;
         height += inset.top + inset.bottom;
 
@@ -1765,7 +1760,8 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param prefMinSize list of preferred or minimum sizes
      * @return a dimension indicating the container's preferred or minimum size
      */
-    protected int calculateLayoutSize ( Container container, int z, double typeOfSize, Entry entryList[], Dimension prefMinSize[] )
+    protected int calculateLayoutSize ( final Container container, final int z, final double typeOfSize, final Entry[] entryList,
+                                        final Dimension[] prefMinSize )
     {
         Dimension size;      // Preferred/minimum size of current component
         int scaledSize = 0;  // Preferred/minimum size of scaled components
@@ -1773,7 +1769,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
         int counter;         // Counting variable
 
         // Get number of crs
-        int numCr = crSpec[ z ].length;
+        final int numCr = crSpec[ z ].length;
 
         // Determine percentage of space allocated to fill components.  This is
         // one minus the sum of all scalable components.
@@ -1782,7 +1778,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
 
         for ( counter = 0; counter < numCr; counter++ )
         {
-            if ( ( crSpec[ z ][ counter ] > 0.0 ) && ( crSpec[ z ][ counter ] < 1.0 ) )
+            if ( crSpec[ z ][ counter ] > 0.0 && crSpec[ z ][ counter ] < 1.0 )
             {
                 fillSizeRatio -= crSpec[ z ][ counter ];
             }
@@ -1816,30 +1812,30 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
         assignPrefMinSize ( z, 0, MINIMUM );
         assignPrefMinSize ( z, 0, PREFERRED );
 
-        int crPrefMin[] = new int[ numCr ];
+        final int[] crPrefMin = new int[ numCr ];
 
         for ( counter = 0; counter < numCr; counter++ )
         {
-            if ( ( crSpec[ z ][ counter ] == PREFERRED ) || ( crSpec[ z ][ counter ] == MINIMUM ) )
+            if ( crSpec[ z ][ counter ] == PREFERRED || crSpec[ z ][ counter ] == MINIMUM )
             {
                 crPrefMin[ counter ] = crSize[ z ][ counter ];
             }
         }
 
         // Find maximum preferred/minimum size of all scaled components
-        int numColumn = crSpec[ C ].length;
-        int numRow = crSpec[ R ].length;
-        int numEntry = entryList.length;
+        final int numColumn = crSpec[ C ].length;
+        final int numRow = crSpec[ R ].length;
+        final int numEntry = entryList.length;
 
         for ( int entryCounter = 0; entryCounter < numEntry; entryCounter++ )
         {
             // Get next entry
-            Entry entry = entryList[ entryCounter ];
+            final Entry entry = entryList[ entryCounter ];
 
             // Make sure entry is in valid rows and columns
-            if ( ( entry.cr1[ C ] < 0 ) || ( entry.cr1[ C ] >= numColumn ) ||
-                    ( entry.cr2[ C ] >= numColumn ) || ( entry.cr1[ R ] < 0 ) ||
-                    ( entry.cr1[ R ] >= numRow ) || ( entry.cr2[ R ] >= numRow ) )
+            if ( entry.cr1[ C ] < 0 || entry.cr1[ C ] >= numColumn ||
+                    entry.cr2[ C ] >= numColumn || entry.cr1[ R ] < 0 ||
+                    entry.cr1[ R ] >= numRow || entry.cr2[ R ] >= numRow )
             {
                 // Skip the bad component
                 continue;
@@ -1851,7 +1847,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
             //----------------------------------------------------------------------
 
             // Calculate portion of component that is not absolutely sized
-            int scalableSize = ( z == C ) ? size.width : size.height;
+            int scalableSize = z == C ? size.width : size.height;
 
             for ( counter = entry.cr1[ z ]; counter <= entry.cr2[ z ]; counter++ )
             {
@@ -1859,7 +1855,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
                 {
                     scalableSize -= crSpec[ z ][ counter ];
                 }
-                else if ( ( crSpec[ z ][ counter ] == PREFERRED ) || ( crSpec[ z ][ counter ] == MINIMUM ) )
+                else if ( crSpec[ z ][ counter ] == PREFERRED || crSpec[ z ][ counter ] == MINIMUM )
                 {
                     scalableSize -= crPrefMin[ counter ];
                 }
@@ -1874,13 +1870,13 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
             for ( counter = entry.cr1[ z ]; counter <= entry.cr2[ z ]; counter++ )
             {
                 // Cr is scaled
-                if ( ( crSpec[ z ][ counter ] > 0.0 ) && ( crSpec[ z ][ counter ] < 1.0 ) )
+                if ( crSpec[ z ][ counter ] > 0.0 && crSpec[ z ][ counter ] < 1.0 )
                 // Add scaled size to relativeWidth
                 {
                     relativeSize += crSpec[ z ][ counter ];
                 }
                 // Cr is fill
-                else if ( ( crSpec[ z ][ counter ] == FILL ) && ( fillSizeRatio != 0.0 ) )
+                else if ( crSpec[ z ][ counter ] == FILL && fillSizeRatio != 0.0 )
                 // Add fill size to relativeWidth
                 {
                     relativeSize += fillSizeRatio;
@@ -1918,7 +1914,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
                 totalSize += ( int ) ( crSpec[ z ][ counter ] + 0.5 );
             }
             // Is the current cr a preferred/minimum size
-            else if ( ( crSpec[ z ][ counter ] == PREFERRED ) || ( crSpec[ z ][ counter ] == MINIMUM ) )
+            else if ( crSpec[ z ][ counter ] == PREFERRED || crSpec[ z ][ counter ] == MINIMUM )
             {
                 // Add preferred/minimum width
                 totalSize += crPrefMin[ counter ];
@@ -1928,7 +1924,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
         // Compensate for horizontal and vertical gap
         if ( numCr > 0 )
         {
-            totalSize += ( ( z == C ) ? hGap : vGap ) * ( numCr - 1 );
+            totalSize += ( z == C ? hGap : vGap ) * ( numCr - 1 );
         }
 
         return totalSize;
@@ -1940,7 +1936,8 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param name      indicates entry's position and anchor
      * @param component component to add
      */
-    public void addLayoutComponent ( String name, Component component )
+    @Override
+    public void addLayoutComponent ( final String name, final Component component )
     {
         addLayoutComponent ( component, name );
     }
@@ -1951,7 +1948,8 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param component  component to add
      * @param constraint indicates entry's position and alignment
      */
-    public void addLayoutComponent ( Component component, Object constraint )
+    @Override
+    public void addLayoutComponent ( final Component component, Object constraint )
     {
         if ( constraint instanceof String )
         {
@@ -1987,14 +1985,15 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      *
      * @param component component being removed
      */
-    public void removeLayoutComponent ( Component component )
+    @Override
+    public void removeLayoutComponent ( final Component component )
     {
         // Remove the component
-        ListIterator iterator = list.listIterator ( 0 );
+        final ListIterator iterator = list.listIterator ( 0 );
 
         while ( iterator.hasNext () )
         {
-            Entry entry = ( Entry ) iterator.next ();
+            final Entry entry = ( Entry ) iterator.next ();
 
             if ( entry.component == component )
             {
@@ -2010,11 +2009,12 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * Returns the maximum dimensions for this layout given the components in the specified target
      * container.
      *
-     * @param target the component which needs to be laid out
+     * @param container the component which needs to be laid out
      * @return unconditionally, a Dimension of Integer.MAX_VALUE by Integer.MAX_VALUE since
      * TableLayout does not limit the maximum size of a container
      */
-    public Dimension maximumLayoutSize ( Container target )
+    @Override
+    public Dimension maximumLayoutSize ( final Container container )
     {
         return new Dimension ( Integer.MAX_VALUE, Integer.MAX_VALUE );
     }
@@ -2027,7 +2027,8 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      *
      * @return unconditionally, 0.5
      */
-    public float getLayoutAlignmentX ( Container parent )
+    @Override
+    public float getLayoutAlignmentX ( final Container container )
     {
         return 0.5f;
     }
@@ -2040,7 +2041,8 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      *
      * @return unconditionally, 0.5
      */
-    public float getLayoutAlignmentY ( Container parent )
+    @Override
+    public float getLayoutAlignmentY ( final Container container )
     {
         return 0.5f;
     }
@@ -2049,7 +2051,8 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * Invalidates the layout, indicating that if the layout manager has cached information it
      * should be discarded.
      */
-    public void invalidateLayout ( Container target )
+    @Override
+    public void invalidateLayout ( final Container container )
     {
         dirty = true;
     }
@@ -2085,11 +2088,11 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
          * @param component  component being bound
          * @param constraint constraints being applied
          */
-        public Entry ( Component component, TableLayoutConstraints constraint )
+        public Entry ( final Component component, final TableLayoutConstraints constraint )
         {
-            int cr1[] = { constraint.col1, constraint.row1 };
-            int cr2[] = { constraint.col2, constraint.row2 };
-            int alignment[] = { constraint.hAlign, constraint.vAlign };
+            final int[] cr1 = { constraint.col1, constraint.row1 };
+            final int[] cr2 = { constraint.col2, constraint.row2 };
+            final int[] alignment = { constraint.hAlign, constraint.vAlign };
 
             this.cr1 = cr1;
             this.cr2 = cr2;
@@ -2098,7 +2101,10 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
         }
 
         /**
-         * Copies this Entry.
+         * Returns copy of this Entry.
+         *
+         * @return copy of this Entry
+         * @throws CloneNotSupportedException if clone is not supported
          */
         public Object copy () throws CloneNotSupportedException
         {
@@ -2110,9 +2116,10 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
          *
          * @return a string in the form "(col1, row1, col2, row2, vAlign, hAlign) component"
          */
+        @Override
         public String toString ()
         {
-            TableLayoutConstraints c =
+            final TableLayoutConstraints c =
                     new TableLayoutConstraints ( cr1[ C ], cr1[ R ], cr2[ C ], cr2[ R ], alignment[ C ], alignment[ R ] );
 
             return "(" + c + ") " + component;

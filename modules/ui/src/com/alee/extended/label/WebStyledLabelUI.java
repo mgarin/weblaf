@@ -51,7 +51,6 @@ public class WebStyledLabelUI<C extends WebStyledLabel> extends WStyledLabelUI<C
      * @param c component that will use UI instance
      * @return instance of the {@link WebStyledLabelUI}
      */
-    @SuppressWarnings ( { "UnusedDeclaration" } )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebStyledLabelUI ();

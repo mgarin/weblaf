@@ -111,10 +111,10 @@ public class SlidingLayout extends AbstractLayoutManager
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
+    public Dimension preferredLayoutSize ( final Container container )
     {
         Dimension ps = new Dimension ( 0, 0 );
-        for ( final Component c : parent.getComponents () )
+        for ( final Component c : container.getComponents () )
         {
             ps = SwingUtils.max ( ps, c.getPreferredSize () );
         }
@@ -123,12 +123,12 @@ public class SlidingLayout extends AbstractLayoutManager
     }
 
     @Override
-    public void layoutContainer ( final Container parent )
+    public void layoutContainer ( final Container container )
     {
-        for ( final Component c : parent.getComponents () )
+        for ( final Component c : container.getComponents () )
         {
             final Dimension ps = c.getPreferredSize ();
-            c.setBounds ( 0, slideY < ps.height ? slideY - ps.height : 0, parent.getWidth (), ps.height );
+            c.setBounds ( 0, slideY < ps.height ? slideY - ps.height : 0, container.getWidth (), ps.height );
             height = Math.max ( height, ps.height );
         }
     }

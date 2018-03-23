@@ -112,7 +112,7 @@ public final class ZipUtils
                 {
                     // Ensures that destination file and its folders exist
                     extractToFile = new File ( dst, entry.getName () );
-                    extractToFile.getParentFile ().mkdirs ();
+                    FileUtils.getParent ( extractToFile ).mkdirs ();
                     extractToFile.createNewFile ();
 
                     // Copying file

@@ -26,7 +26,7 @@ import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
 
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
@@ -55,7 +55,7 @@ import java.util.List;
  * @see com.alee.extended.tree.TreeCheckingModel
  */
 
-public class WebCheckBoxTree<N extends DefaultMutableTreeNode> extends WebTree<N>
+public class WebCheckBoxTree<N extends MutableTreeNode> extends WebTree<N>
 {
     /**
      * todo 1. Create separate "checkboxtree" styleable component with its own skin?
@@ -332,7 +332,7 @@ public class WebCheckBoxTree<N extends DefaultMutableTreeNode> extends WebTree<N
      */
     protected WebCheckBoxTreeCellRenderer createCheckBoxTreeCellRenderer ()
     {
-        return new WebCheckBoxTreeCellRenderer ();
+        return new WebCheckBoxTreeCellRenderer.UIResource<N, WebCheckBoxTree<N>, CheckBoxTreeNodeParameters<N, WebCheckBoxTree<N>>> ();
     }
 
     /**

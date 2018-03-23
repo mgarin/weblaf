@@ -21,35 +21,40 @@ import com.alee.extended.behavior.Behavior;
 import com.alee.laf.tree.WebTree;
 import com.alee.utils.swing.HoverListener;
 
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
 
 /**
  * Tree behavior that automatically selects any hovered node.
  * It is using optimized {@link HoverListener} based on custom UI functionality.
  *
+ * @param <N> node type
  * @author Mikle Garin
  */
 
-public class TreeHoverSelectionBehavior implements HoverListener<DefaultMutableTreeNode>, Behavior
+public class TreeHoverSelectionBehavior<N extends MutableTreeNode> implements HoverListener<N>, Behavior
 {
+    /**
+     * todo 1. Make non-static install/uninstall methods
+     */
+
     /**
      * Tree using this behavior.
      */
-    protected final WebTree tree;
+    protected final WebTree<N> tree;
 
     /**
      * Constructs new tree hover selection behavior.
      *
      * @param tree tree using this behavior
      */
-    public TreeHoverSelectionBehavior ( final WebTree tree )
+    public TreeHoverSelectionBehavior ( final WebTree<N> tree )
     {
         super ();
         this.tree = tree;
     }
 
     @Override
-    public void hoverChanged ( final DefaultMutableTreeNode previous, final DefaultMutableTreeNode current )
+    public void hoverChanged ( final N previous, final N current )
     {
         if ( current != null )
         {

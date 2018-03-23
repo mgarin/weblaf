@@ -121,12 +121,12 @@ public class OverlayLayout extends AbstractLayoutManager implements SwingConstan
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
+    public Dimension preferredLayoutSize ( final Container container )
     {
-        final Insets bi = parent.getInsets ();
-        final Insets ci = getActualComponentInsets ( parent );
+        final Insets bi = container.getInsets ();
+        final Insets ci = getActualComponentInsets ( container );
         Dimension ps = new Dimension ();
-        for ( final Component component : parent.getComponents () )
+        for ( final Component component : container.getComponents () )
         {
             final String constraint = constraints.get ( component );
             if ( constraint != null && constraint.equals ( COMPONENT ) )
@@ -139,25 +139,25 @@ public class OverlayLayout extends AbstractLayoutManager implements SwingConstan
         return ps;
     }
 
-    protected Insets getActualComponentInsets ( final Container parent )
+    protected Insets getActualComponentInsets ( final Container container )
     {
         return componentMargin != null ?
-                parent.getComponentOrientation ().isLeftToRight () ? componentMargin : SwingUtils.toRTL ( componentMargin ) :
+                container.getComponentOrientation ().isLeftToRight () ? componentMargin : SwingUtils.toRTL ( componentMargin ) :
                 new Insets ( 0, 0, 0, 0 );
     }
 
     @Override
-    public void layoutContainer ( final Container parent )
+    public void layoutContainer ( final Container container )
     {
-        final Insets bi = parent.getInsets ();
-        final Insets ci = getActualComponentInsets ( parent );
-        for ( final Component component : parent.getComponents () )
+        final Insets bi = container.getInsets ();
+        final Insets ci = getActualComponentInsets ( container );
+        for ( final Component component : container.getComponents () )
         {
             final String constraint = constraints.get ( component );
             if ( constraint != null )
             {
-                final int pw = parent.getWidth ();
-                final int ph = parent.getHeight ();
+                final int pw = container.getWidth ();
+                final int ph = container.getHeight ();
                 if ( constraint.equals ( COMPONENT ) )
                 {
                     final int x = bi.left + ci.left;
@@ -168,7 +168,7 @@ public class OverlayLayout extends AbstractLayoutManager implements SwingConstan
                 }
                 else if ( constraint.equals ( OVERLAY ) )
                 {
-                    final WebOverlay webOverlay = ( WebOverlay ) parent;
+                    final WebOverlay webOverlay = ( WebOverlay ) container;
                     final OverlayData data = webOverlay.getOverlayData ( ( JComponent ) component );
                     final Insets om = overlayMargin != null ? overlayMargin : new Insets ( 0, 0, 0, 0 );
                     final Rectangle bounds;

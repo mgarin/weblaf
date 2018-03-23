@@ -37,7 +37,6 @@ import java.awt.*;
  */
 
 @XStreamAlias ( "MenuItemLayout" )
-@SuppressWarnings ( "UnusedParameters" )
 public class MenuItemLayout<C extends JMenuItem, D extends IDecoration<C, D>, I extends MenuItemLayout<C, D, I>>
         extends AbstractMenuItemLayout<C, D, I>
 {

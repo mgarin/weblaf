@@ -43,7 +43,6 @@ import java.util.List;
 /**
  * {@link JLabel} component extension that can render styled text.
  * Its rendering speed is far superior to HTML rendering within common {@link JLabel}.
- *
  * In addition to customizable style ranges text in this label also supports custom styling syntax.
  * You can find styling syntax description in {@link StyleRanges} class JavaDoc.
  *
@@ -52,9 +51,12 @@ import java.util.List;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
- * @see JLabel
+ * @see StyledLabelDescriptor
+ * @see WStyledLabelUI
  * @see WebStyledLabelUI
+ * @see IStyledLabelPainter
  * @see StyledLabelPainter
+ * @see JLabel
  */
 
 public class WebStyledLabel extends JLabel implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods,

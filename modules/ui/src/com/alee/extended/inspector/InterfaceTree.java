@@ -20,7 +20,7 @@ package com.alee.extended.inspector;
 import com.alee.extended.tree.WebExTree;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.style.StyleId;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.compare.Filter;
 import com.alee.utils.swing.HoverListener;
 import com.alee.utils.swing.extensions.KeyEventRunnable;
@@ -117,7 +117,7 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
     public void hoverChanged ( final InterfaceTreeNode previous, final InterfaceTreeNode current )
     {
         // Separating action from the tree hover makes UI more responsive
-        SwingUtils.invokeLater ( new Runnable ()
+        CoreSwingUtils.invokeLater ( new Runnable ()
         {
             @Override
             public void run ()
@@ -126,9 +126,9 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
                 {
                     hoverHighlighter.uninstall ();
                 }
-                if ( current != null && canHighlight ( current.getComponent () ) )
+                if ( current != null && canHighlight ( current.getUserObject () ) )
                 {
-                    hoverHighlighter.install ( current.getComponent () );
+                    hoverHighlighter.install ( current.getUserObject () );
                 }
             }
         } );
@@ -138,7 +138,7 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
     public void valueChanged ( final TreeSelectionEvent e )
     {
         // Separating action from the tree selection makes UI more responsive
-        SwingUtils.invokeLater ( new Runnable ()
+        CoreSwingUtils.invokeLater ( new Runnable ()
         {
             @Override
             public void run ()
@@ -153,7 +153,7 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
                 // Updating displayed highlighters
                 for ( final InterfaceTreeNode node : selected )
                 {
-                    final Component component = node.getComponent ();
+                    final Component component = node.getUserObject ();
                     final ComponentHighlighter prevHighlighter = prevHighlighters.get ( component );
                     if ( prevHighlighter != null )
                     {
@@ -197,7 +197,7 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
      */
     public Component getRootComponent ()
     {
-        return getDataProvider ().getRoot ().getComponent ();
+        return getDataProvider ().getRoot ().getUserObject ();
     }
 
     /**

@@ -152,6 +152,7 @@ public class WebFileTable extends WebTable implements FileTableColumns
         setModel ( new WebFileTableModel ( files, columns ) );
 
         // File table renderer and editor
+        // todo Move this into UI as well?
         setDefaultRenderer ( File.class, new WebFileTableCellRenderer () );
         setDefaultEditor ( File.class, new WebFileTableCellEditor () );
     }

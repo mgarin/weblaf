@@ -60,8 +60,8 @@ public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<Interf
             @Override
             public int compare ( final InterfaceTreeNode node1, final InterfaceTreeNode node2 )
             {
-                final Component component1 = node1.getComponent ();
-                final Component component2 = node2.getComponent ();
+                final Component component1 = node1.getUserObject ();
+                final Component component2 = node2.getUserObject ();
 
                 // Checking that parent is the same
                 final Container parent = component1.getParent ();
@@ -87,7 +87,7 @@ public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<Interf
     @Override
     public List<InterfaceTreeNode> getChildren ( final InterfaceTreeNode parent )
     {
-        final Container container = ( Container ) parent.getComponent ();
+        final Container container = ( Container ) parent.getUserObject ();
         final List<InterfaceTreeNode> nodes;
         if ( !( container instanceof CellRendererPane ) )
         {

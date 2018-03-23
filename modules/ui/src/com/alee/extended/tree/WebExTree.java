@@ -20,10 +20,7 @@ package com.alee.extended.tree;
 import com.alee.extended.tree.sample.SampleExDataProvider;
 import com.alee.extended.tree.sample.SampleTreeCellEditor;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.tree.UniqueNode;
-import com.alee.laf.tree.WebTree;
-import com.alee.laf.tree.WebTreeCellEditor;
-import com.alee.laf.tree.WebTreeCellRenderer;
+import com.alee.laf.tree.*;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.compare.Filter;
@@ -111,7 +108,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N>
         setDataProvider ( dataProvider );
 
         // Tree cell renderer & editor
-        setCellRenderer ( new WebTreeCellRenderer.UIResource<N, WebExTree<N>> () );
+        setCellRenderer ( new WebTreeCellRenderer.UIResource<N, WebExTree<N>, TreeNodeParameters<N, WebExTree<N>>> () );
         setCellEditor ( new WebTreeCellEditor () );
     }
 

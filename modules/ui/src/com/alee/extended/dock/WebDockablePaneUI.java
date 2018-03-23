@@ -18,6 +18,7 @@
 package com.alee.extended.dock;
 
 import com.alee.api.data.CompassDirection;
+import com.alee.api.jdk.Consumer;
 import com.alee.extended.behavior.ComponentVisibilityBehavior;
 import com.alee.extended.dock.data.DockableFrameElement;
 import com.alee.laf.panel.WebPanel;
@@ -30,7 +31,6 @@ import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -84,7 +84,6 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
      * @param c component that will use UI instance
      * @return instance of the {@link WebDockablePaneUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebDockablePaneUI ();
@@ -99,16 +98,14 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
         // Applying skin
         StyleManager.installSkin ( pane );
 
-        // Installing actions
+        // Installing components
         installComponents ();
-        installActions ();
     }
 
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        // Uninstalling actions
-        uninstallActions ();
+        // Uninstalling components
         uninstallComponents ();
 
         // Uninstalling applied skin
@@ -118,35 +115,13 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
         super.uninstallUI ( c );
     }
 
-    /**
-     * Installs UI elements.
-     */
-    protected void installComponents ()
+    @Override
+    protected void installListeners ()
     {
-        emptyContent = new WebPanel ( StyleId.dockablepaneEmpty.at ( pane ) );
-        if ( pane.getContent () == null )
-        {
-            pane.setContent ( emptyContent );
-        }
-    }
+        // Installing default listeners
+        super.installListeners ();
 
-    /**
-     * Uninstalls UI elements.
-     */
-    protected void uninstallComponents ()
-    {
-        if ( pane.getContent () == emptyContent )
-        {
-            pane.setContent ( null );
-        }
-        emptyContent = null;
-    }
-
-    /**
-     * Installs actions for UI elements.
-     */
-    protected void installActions ()
-    {
+        // Instaling custom listeners
         visibilityBehavior = new ComponentVisibilityBehavior ( pane )
         {
             @Override
@@ -177,16 +152,6 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
         };
         visibilityBehavior.install ();
         pane.addPropertyChangeListener ( this );
-    }
-
-    /**
-     * Uninstalls actions for UI elements.
-     */
-    protected void uninstallActions ()
-    {
-        pane.removePropertyChangeListener ( this );
-        visibilityBehavior.uninstall ();
-        visibilityBehavior = null;
     }
 
     @Override
@@ -244,6 +209,42 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
             pane.revalidate ();
             pane.repaint ();
         }
+    }
+
+    @Override
+    protected void uninstallListeners ()
+    {
+        // Uninstaling custom listeners
+        pane.removePropertyChangeListener ( this );
+        visibilityBehavior.uninstall ();
+        visibilityBehavior = null;
+
+        // Uninstalling default listeners
+        super.uninstallListeners ();
+    }
+
+    /**
+     * Installs UI elements.
+     */
+    protected void installComponents ()
+    {
+        emptyContent = new WebPanel ( StyleId.dockablepaneEmpty.at ( pane ) );
+        if ( pane.getContent () == null )
+        {
+            pane.setContent ( emptyContent );
+        }
+    }
+
+    /**
+     * Uninstalls UI elements.
+     */
+    protected void uninstallComponents ()
+    {
+        if ( pane.getContent () == emptyContent )
+        {
+            pane.setContent ( null );
+        }
+        emptyContent = null;
     }
 
     /**

@@ -17,7 +17,7 @@
 
 package com.alee.laf;
 
-import com.alee.utils.SwingUtils;
+import com.alee.utils.CoreSwingUtils;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.ComboPopup;
@@ -51,7 +51,7 @@ public class AltProcessor implements KeyEventPostProcessor
         if ( ev.getKeyCode () == KeyEvent.VK_ALT )
         {
             root = SwingUtilities.getRootPane ( ev.getComponent () );
-            winAncestor = root == null ? null : SwingUtils.getWindowAncestor ( root );
+            winAncestor = root == null ? null : CoreSwingUtils.getWindowAncestor ( root );
 
             if ( ev.getID () == KeyEvent.KEY_PRESSED )
             {

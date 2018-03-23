@@ -294,7 +294,6 @@ public class ScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> exte
      * @param scrollbar scroll bar
      * @param bounds    scroll bar bounds
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected void paintBackground ( final Graphics2D g2d, final C scrollbar, final Rectangle bounds )
     {
         if ( ui.isDisplayTrack () )
@@ -324,7 +323,6 @@ public class ScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> exte
      * @param scrollbar scroll bar
      * @param bounds    track bounds
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected void paintTrack ( final Graphics2D g2d, final C scrollbar, final Rectangle bounds )
     {
         // You can paint your own track decoration by overriding this method

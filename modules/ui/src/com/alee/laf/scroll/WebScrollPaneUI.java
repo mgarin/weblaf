@@ -18,6 +18,7 @@
 package com.alee.laf.scroll;
 
 import com.alee.api.data.Corner;
+import com.alee.api.jdk.Consumer;
 import com.alee.extended.canvas.WebCanvas;
 import com.alee.laf.LookAndFeelException;
 import com.alee.laf.WebLookAndFeel;
@@ -27,7 +28,6 @@ import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -74,7 +74,6 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
      * @param c component that will use UI instance
      * @return instance of the {@link WebScrollPaneUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebScrollPaneUI ();
@@ -233,7 +232,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
                         {
                             return;
                         }
-                        final Component comp = vp.getView ();
+                        final Component component = vp.getView ();
                         final int units = Math.abs ( e.getUnitsToScroll () );
 
                         // When the scrolling speed is set to maximum, it's possible for a single wheel click to scroll by more units than
@@ -244,17 +243,17 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
 
                         // Check if we should use the visibleRect trick
                         final Object fastWheelScroll = toScroll.getClientProperty ( "JScrollBar.fastWheelScrolling" );
-                        if ( Boolean.TRUE == fastWheelScroll && comp instanceof Scrollable )
+                        if ( Boolean.TRUE == fastWheelScroll && component instanceof Scrollable )
                         {
                             // 5078454: Under maximum acceleration, we may scroll by many 100s of units in ~1 second.
                             // BasicScrollBarUI.scrollByUnits() can bog down the EDT with repaints in this situation.
                             // However, the Scrollable interface allows us to pass in an arbitrary visibleRect.
                             // This allows us to accurately calculate the total scroll amount, and then update the GUI once.
                             // This technique provides much faster accelerated wheel scrolling.
-                            final Scrollable scrollComp = ( Scrollable ) comp;
+                            final Scrollable scrollComp = ( Scrollable ) component;
                             final Rectangle viewRect = vp.getViewRect ();
                             final int startingX = viewRect.x;
-                            final boolean leftToRight = comp.getComponentOrientation ().isLeftToRight ();
+                            final boolean leftToRight = component.getComponentOrientation ().isLeftToRight ();
                             int scrollMin = toScroll.getMinimum ();
                             int scrollMax = toScroll.getMaximum () - toScroll.getModel ().getExtent ();
 

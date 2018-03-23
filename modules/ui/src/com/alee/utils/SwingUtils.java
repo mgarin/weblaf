@@ -57,7 +57,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public final class SwingUtils extends CoreSwingUtils
+public final class SwingUtils
 {
     /**
      * Client property key that identifies that component can handle enabled state changes.
@@ -121,29 +121,6 @@ public final class SwingUtils extends CoreSwingUtils
      * Soft cache for the left and right side bearings.
      */
     private static final Set<SoftReference<BearingCacheEntry>> softBearingCache = new HashSet<SoftReference<BearingCacheEntry>> ();
-
-    /**
-     * Enables logging of all uncaught exceptions occured within EDT.
-     */
-    public static void enableEventQueueLogging ()
-    {
-        Toolkit.getDefaultToolkit ().getSystemEventQueue ().push ( new EventQueue ()
-        {
-            @Override
-            protected void dispatchEvent ( final AWTEvent event )
-            {
-                try
-                {
-                    super.dispatchEvent ( event );
-                }
-                catch ( final Throwable e )
-                {
-                    final String msg = "Uncaught EventQueue exception: %s";
-                    LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( String.format ( msg, e.toString () ), e );
-                }
-            }
-        } );
-    }
 
     /**
      * Returns whether or not specified component is opaque.
@@ -379,15 +356,15 @@ public final class SwingUtils extends CoreSwingUtils
         }
 
         // Header width
-        Component comp = renderer.getTableCellRendererComponent ( table, column.getHeaderValue (), false, false, 0, 0 );
-        width = comp.getPreferredSize ().width;
+        Component rendererComponent = renderer.getTableCellRendererComponent ( table, column.getHeaderValue (), false, false, 0, 0 );
+        width = rendererComponent.getPreferredSize ().width;
 
         // Cells width
         for ( int r = 0; r < table.getRowCount (); r++ )
         {
             renderer = table.getCellRenderer ( r, col );
-            comp = renderer.getTableCellRendererComponent ( table, table.getValueAt ( r, col ), false, false, r, col );
-            width = Math.max ( width, comp.getPreferredSize ().width );
+            rendererComponent = renderer.getTableCellRendererComponent ( table, table.getValueAt ( r, col ), false, false, r, col );
+            width = Math.max ( width, rendererComponent.getPreferredSize ().width );
         }
 
         // Margin
@@ -657,7 +634,7 @@ public final class SwingUtils extends CoreSwingUtils
             window.applyComponentOrientation ( orientation );
 
             // Updating root pane
-            final JRootPane rootPane = getRootPane ( window );
+            final JRootPane rootPane = CoreSwingUtils.getRootPane ( window );
             if ( rootPane != null )
             {
                 update ( rootPane );
@@ -691,31 +668,6 @@ public final class SwingUtils extends CoreSwingUtils
         if ( forced || orientation.isLeftToRight () != component.getComponentOrientation ().isLeftToRight () )
         {
             component.setComponentOrientation ( orientation );
-        }
-    }
-
-    /**
-     * Applies component orientation to specified component.
-     *
-     * @param component component to modify
-     */
-    public static void applyOrientation ( final Component component )
-    {
-        applyOrientation ( component, false );
-    }
-
-    /**
-     * Applies component orientation to specified component if needed or if forced.
-     *
-     * @param component component to modify
-     * @param forced    force orientation change
-     */
-    public static void applyOrientation ( final Component component, final boolean forced )
-    {
-        final ComponentOrientation orientation = WebLookAndFeel.getOrientation ();
-        if ( forced || orientation.isLeftToRight () != component.getComponentOrientation ().isLeftToRight () )
-        {
-            component.applyComponentOrientation ( orientation );
         }
     }
 
@@ -894,7 +846,7 @@ public final class SwingUtils extends CoreSwingUtils
      */
     public static Container getContentPane ( final Component component )
     {
-        final JRootPane rootPane = getRootPane ( component );
+        final JRootPane rootPane = CoreSwingUtils.getRootPane ( component );
         return rootPane != null ? rootPane.getContentPane () : null;
     }
 
@@ -906,7 +858,7 @@ public final class SwingUtils extends CoreSwingUtils
      */
     public static JLayeredPane getLayeredPane ( final Component component )
     {
-        final JRootPane rootPane = getRootPane ( component );
+        final JRootPane rootPane = CoreSwingUtils.getRootPane ( component );
         return rootPane != null ? rootPane.getLayeredPane () : null;
     }
 
@@ -918,7 +870,7 @@ public final class SwingUtils extends CoreSwingUtils
      */
     public static Component getGlassPane ( final Component component )
     {
-        final JRootPane rootPane = getRootPane ( component );
+        final JRootPane rootPane = CoreSwingUtils.getRootPane ( component );
         return rootPane != null ? rootPane.getGlassPane () : null;
     }
 
@@ -1243,9 +1195,9 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Adds HANDLES_ENABLE_STATE mark into component client properties.
+     * Adds {@link #HANDLES_ENABLE_STATE} client property into the specified {@link JComponent}.
      *
-     * @param component component to process
+     * @param component {@link JComponent} to set client property for
      */
     public static void setHandlesEnableStateMark ( final JComponent component )
     {
@@ -1253,9 +1205,9 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Removes HANDLES_ENABLE_STATE mark from component client properties.
+     * Removes {@link #HANDLES_ENABLE_STATE} client property from the specified {@link JComponent}.
      *
-     * @param component component to process
+     * @param component {@link JComponent} to remove client property from
      */
     public static void removeHandlesEnableStateMark ( final JComponent component )
     {
@@ -1263,22 +1215,24 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Returns whether HANDLES_ENABLE_STATE mark is set in this component to true or not.
+     * Returns whether or not {@link #HANDLES_ENABLE_STATE} client property is set to {@code true} in the specified {@link Component}.
      *
-     * @param component component to process
-     * @return true if HANDLES_ENABLE_STATE mark is set in this component to true, false otherwise
+     * @param component {@link Component} to check client property in
+     * @return {@code true} if {@link #HANDLES_ENABLE_STATE} client property is set to {@code true}, {@code false} otherwise
      */
     public static boolean isHandlesEnableState ( final Component component )
     {
+        final boolean handlesEnabledState;
         if ( component instanceof JComponent )
         {
-            final Object handlesEnabledState = ( ( JComponent ) component ).getClientProperty ( HANDLES_ENABLE_STATE );
-            if ( handlesEnabledState != null && handlesEnabledState instanceof Boolean && ( Boolean ) handlesEnabledState )
-            {
-                return true;
-            }
+            final Object property = ( ( JComponent ) component ).getClientProperty ( HANDLES_ENABLE_STATE );
+            handlesEnabledState = property != null && property instanceof Boolean && ( Boolean ) property;
         }
-        return false;
+        else
+        {
+            handlesEnabledState = false;
+        }
+        return handlesEnabledState;
     }
 
     /**
@@ -1913,6 +1867,52 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
+     * Performs composite focus request and returns {@link Component} that requested focus.
+     *
+     * @param component {@link Component} to perform composite focus request for
+     * @return {@link Component} that requested focus
+     */
+    public static Component compositeRequestFocus ( final Component component )
+    {
+        if ( component instanceof Container )
+        {
+            final Container container = ( Container ) component;
+            if ( container.isFocusCycleRoot () )
+            {
+                final FocusTraversalPolicy policy = container.getFocusTraversalPolicy ();
+                final Component defaultComponent = policy.getDefaultComponent ( container );
+                if ( defaultComponent != null )
+                {
+                    defaultComponent.requestFocus ();
+                    return defaultComponent;
+                }
+            }
+
+            final Container focusCycleRootAncestor = container.getFocusCycleRootAncestor ();
+            if ( focusCycleRootAncestor != null )
+            {
+                final FocusTraversalPolicy policy = focusCycleRootAncestor.getFocusTraversalPolicy ();
+                final Component after = policy.getComponentAfter ( focusCycleRootAncestor, container );
+                if ( after != null && SwingUtilities.isDescendingFrom ( after, container ) )
+                {
+                    after.requestFocus ();
+                    return after;
+                }
+            }
+        }
+
+        if ( component.isFocusable () )
+        {
+            component.requestFocus ();
+            return component;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /**
      * Returns first focusable component found in the container.
      *
      * @param container container to process
@@ -2138,15 +2138,15 @@ public final class SwingUtils extends CoreSwingUtils
     /**
      * Returns component index within the specified parent container.
      *
-     * @param parent container
-     * @param child  child component
+     * @param container container
+     * @param child     child component
      * @return component index within the specified parent container
      */
-    public static int indexOf ( final Container parent, final Component child )
+    public static int indexOf ( final Container container, final Component child )
     {
-        for ( int i = 0; i < parent.getComponentCount (); i++ )
+        for ( int i = 0; i < container.getComponentCount (); i++ )
         {
-            if ( parent.getComponent ( i ) == child )
+            if ( container.getComponent ( i ) == child )
             {
                 return i;
             }
@@ -2594,7 +2594,7 @@ public final class SwingUtils extends CoreSwingUtils
                     {
                         final int value = lastHorValue + xSign * Math.max ( Math.abs ( lastHorValue - x ) / 4, 1 );
                         lastHorValue = value;
-                        invokeLater ( new Runnable ()
+                        CoreSwingUtils.invokeLater ( new Runnable ()
                         {
                             @Override
                             public void run ()
@@ -2611,7 +2611,7 @@ public final class SwingUtils extends CoreSwingUtils
                     {
                         final int value = lastVerValue + ySign * Math.max ( Math.abs ( lastVerValue - y ) / 4, 1 );
                         lastVerValue = value;
-                        invokeLater ( new Runnable ()
+                        CoreSwingUtils.invokeLater ( new Runnable ()
                         {
                             @Override
                             public void run ()

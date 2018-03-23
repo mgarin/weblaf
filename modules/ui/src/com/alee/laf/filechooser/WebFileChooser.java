@@ -23,9 +23,9 @@ import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.ImageUtils;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.Customizer;
 
 import javax.swing.*;
@@ -259,7 +259,7 @@ public class WebFileChooser extends JFileChooser
         this.customIcons = customIcons;
 
         // Updating icon on displayed dialog
-        final Window window = SwingUtils.getWindowAncestor ( this );
+        final Window window = CoreSwingUtils.getWindowAncestor ( this );
         if ( window != null && window instanceof JDialog )
         {
             window.setIconImages ( customIcons );

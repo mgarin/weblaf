@@ -26,6 +26,7 @@ import com.alee.laf.panel.WebPanel;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.style.StyleId;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.AncestorAdapter;
@@ -332,8 +333,8 @@ public class WebInnerPopup extends WebPanel implements Popup, PopupMethods
             public Rectangle get ()
             {
                 // Determining component position inside window
-                final Rectangle cb = SwingUtils.getBoundsInWindow ( component );
-                final Dimension rps = SwingUtils.getRootPane ( component ).getSize ();
+                final Rectangle cb = CoreSwingUtils.getBoundsInWindow ( component );
+                final Dimension rps = CoreSwingUtils.getRootPane ( component ).getSize ();
                 final Dimension ps = WebInnerPopup.this.getPreferredSize ();
                 //        Painter bp = getPainter ();
                 //        Insets bm = bp != null ? bp.getMargin ( this ) : new Insets ( 0, 0, 0, 0 );
@@ -420,7 +421,7 @@ public class WebInnerPopup extends WebPanel implements Popup, PopupMethods
         // Updating popup bounds with component-relative values
         if ( component.isShowing () )
         {
-            final Rectangle cb = SwingUtils.getBoundsInWindow ( component );
+            final Rectangle cb = CoreSwingUtils.getBoundsInWindow ( component );
             setBounds ( cb.x + x, cb.y + y, width, height );
             revalidate ();
             repaint ();

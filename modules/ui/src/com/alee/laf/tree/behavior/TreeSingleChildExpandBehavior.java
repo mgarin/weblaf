@@ -35,6 +35,10 @@ import java.util.Arrays;
 
 public class TreeSingleChildExpandBehavior implements TreeExpansionListener, Behavior
 {
+    /**
+     * todo 1. Make non-static install/uninstall methods
+     */
+
     @Override
     public void treeExpanded ( final TreeExpansionEvent event )
     {

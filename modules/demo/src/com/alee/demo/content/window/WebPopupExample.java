@@ -102,6 +102,7 @@ public class WebPopupExample extends AbstractStylePreviewExample
                 {
                     final WebPopup popup = new WebPopup ( getStyleId (), new AlignLayout () );
                     popup.setPadding ( 10 );
+                    popup.setResizable ( true );
                     popup.setDraggable ( true );
 
                     final WebPanel container = new WebPanel ( new BorderLayout ( 5, 5 ) );

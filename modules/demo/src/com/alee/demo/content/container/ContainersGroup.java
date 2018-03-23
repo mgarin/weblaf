@@ -42,6 +42,7 @@ public class ContainersGroup extends AbstractExampleGroup
                 WebPanelExample.class,
                 JScrollPaneExample.class,
                 JSplitPaneExample.class,
+                WebMultiSplitPaneExample.class,
                 JToolBarExample.class,
                 GroupPaneExample.class,
                 WebCollapsiblePaneExample.class

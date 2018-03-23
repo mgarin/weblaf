@@ -34,8 +34,8 @@ import com.alee.managers.hotkey.HotkeyCondition;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.icon.Icons;
 import com.alee.managers.language.LM;
-import com.alee.managers.tooltip.TooltipWay;
 import com.alee.managers.style.StyleId;
+import com.alee.managers.tooltip.TooltipWay;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.SwingUtils;
@@ -82,6 +82,7 @@ public class WebDirectoryChooserPanel extends WebPanel
      */
     protected WebButton folderUp;
     protected WebButton folderHome;
+    protected WebButton folderDesktop;
     protected WebButton folderNew;
     protected WebButton refresh;
     protected WebButton remove;
@@ -149,13 +150,16 @@ public class WebDirectoryChooserPanel extends WebPanel
      */
     protected WebScrollPane createFileTree ()
     {
-        // Files tree
-        fileTree = new WebFileTree ( FileTreeRootType.drives );
+        final WebScrollPane treeScroll = new WebScrollPane ( StyleId.directorychooserScroll.at ( this ) );
+        treeScroll.setPreferredWidth ( 400 );
+
+        fileTree = new WebFileTree ( StyleId.directorychooserFileSystem.at ( treeScroll ), FileTreeRootType.drives );
         fileTree.setVisibleRowCount ( 15 );
         fileTree.setFileFilter ( filter );
         fileTree.setSelectedFile ( selectedDirectory, true );
         fileTree.setSelectionMode ( TreeSelectionModel.SINGLE_TREE_SELECTION );
         fileTree.setEditable ( true );
+        treeScroll.setViewportView ( fileTree );
 
         // Selected directory update
         fileTreeListener = new TreeSelectionListener ()
@@ -178,9 +182,6 @@ public class WebDirectoryChooserPanel extends WebPanel
             }
         } );
 
-        // Tree scroll
-        final WebScrollPane treeScroll = new WebScrollPane ( fileTree );
-        treeScroll.setPreferredWidth ( 400 );
         return treeScroll;
     }
 
@@ -192,7 +193,7 @@ public class WebDirectoryChooserPanel extends WebPanel
     protected WebPathField createPathField ()
     {
         // Path field
-        webPathField = new WebPathField ( selectedDirectory );
+        webPathField = new WebPathField ( StyleId.directorychooserPathField.at ( this ), selectedDirectory );
         webPathField.setFileFilter ( filter );
         webPathField.addPathFieldListener ( new PathFieldListener ()
         {
@@ -225,7 +226,7 @@ public class WebDirectoryChooserPanel extends WebPanel
             {
                 if ( selectedDirectory != null )
                 {
-                    updateSelectedDirectory ( selectedDirectory.getParentFile (), true, true );
+                    updateSelectedDirectory ( FileUtils.getParent ( selectedDirectory ), true, true );
                 }
             }
         } );
@@ -244,12 +245,28 @@ public class WebDirectoryChooserPanel extends WebPanel
         } );
         toolBar.add ( folderHome );
 
+        final File desktop = FileUtils.getDesktop ();
+        if ( desktop != null )
+        {
+            final StyleId desktopHomeId = StyleId.directorychooserDesktopButton.at ( toolBar );
+            folderDesktop = new WebButton ( desktopHomeId, "weblaf.ex.dirchooser.desktop", Icons.folderDesktop );
+            folderDesktop.addActionListener ( new ActionListener ()
+            {
+                @Override
+                public void actionPerformed ( final ActionEvent e )
+                {
+                    updateSelectedDirectory ( desktop, true, true );
+                }
+            } );
+            toolBar.add ( folderDesktop );
+        }
+
         toolBar.addSeparator ();
 
         for ( final File file : FileTreeRootType.drives.getRoots () )
         {
             final StyleId driveId = StyleId.directorychooserDriveButton.at ( toolBar );
-            final WebButton drive = new WebButton ( driveId, FileUtils.getFileIcon ( file ) );
+            final WebButton drive = new WebButton ( driveId, Icons.drive );
             drive.setToolTip ( FileUtils.getDisplayFileName ( file ) );
             drive.addActionListener ( new ActionListener ()
             {
@@ -426,12 +443,9 @@ public class WebDirectoryChooserPanel extends WebPanel
     protected void updateToolbarControlsState ()
     {
         final File selectedFile = fileTree.getSelectedFile ();
-
-        folderUp.setEnabled ( selectedFile != null && selectedFile.getParentFile () != null );
-
+        folderUp.setEnabled ( selectedFile != null && FileUtils.getParent ( selectedFile ) != null );
         folderNew.setEnabled ( selectedFile != null && selectedFile.canWrite () );
-        remove.setEnabled ( selectedFile != null && selectedFile.getParentFile () != null &&
-                selectedFile.canWrite () );
+        remove.setEnabled ( selectedFile != null && FileUtils.getParent ( selectedFile ) != null && selectedFile.canWrite () );
     }
 
     /**

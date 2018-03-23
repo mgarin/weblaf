@@ -30,7 +30,8 @@ import java.util.List;
  * Extension over {@link WeakComponentData} that provides convenience methods for {@link List}-type data usage.
  * Note that {@link List}s kept within the {@link JComponent} would never have {@code null} values.
  *
- * @param <E> list data type
+ * @param <C> {@link JComponent} type
+ * @param <E> {@link List} data type
  * @author Mikle Garin
  */
 

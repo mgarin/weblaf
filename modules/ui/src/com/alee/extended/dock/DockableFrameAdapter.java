@@ -23,6 +23,7 @@ import com.alee.api.data.CompassDirection;
  * {@link com.alee.extended.dock.DockableFrameListener} adapter.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  * @see com.alee.extended.dock.DockableFrameListener
  * @see com.alee.extended.dock.WebDockableFrame
  */

@@ -237,6 +237,7 @@ public interface DecorationState
      * @see com.alee.laf.splitpane.SplitPanePainter#getDecorationStates()
      * @see com.alee.laf.splitpane.WebSplitPaneDivider.OneTouchButton#getStates()
      * @see com.alee.laf.splitpane.WSplitPaneUI.NonContinuousDivider#getStates()
+     * @see com.alee.extended.split.MultiSplitPaneDividerPainter#getDecorationStates()
      */
     public static final String horizontal = "horizontal";
 
@@ -250,6 +251,7 @@ public interface DecorationState
      * @see com.alee.laf.splitpane.SplitPanePainter#getDecorationStates()
      * @see com.alee.laf.splitpane.WebSplitPaneDivider.OneTouchButton#getStates()
      * @see com.alee.laf.splitpane.SplitPaneDividerPainter#getDecorationStates()
+     * @see com.alee.extended.split.MultiSplitPaneDividerPainter#getDecorationStates()
      */
     public static final String vertical = "vertical";
 
@@ -260,8 +262,30 @@ public interface DecorationState
      * @see com.alee.laf.splitpane.SplitPanePainter#getDecorationStates()
      * @see com.alee.laf.splitpane.WebSplitPaneDivider.OneTouchButton#getStates()
      * @see com.alee.laf.splitpane.SplitPaneDividerPainter#getDecorationStates()
+     * @see com.alee.extended.split.MultiSplitPaneDividerPainter#getDecorationStates()
      */
     public static final String oneTouch = "one-touch";
+
+    /**
+     * Used to provide split pane layout type state.
+     *
+     * @see com.alee.extended.split.MultiSplitPaneDividerPainter#getDecorationStates()
+     */
+    public static final String continuous = "continuous";
+
+    /**
+     * Used to provide split pane layout type state.
+     *
+     * @see com.alee.extended.split.MultiSplitPaneDividerPainter#getDecorationStates()
+     */
+    public static final String nonContinuous = "non-continuous";
+
+    /**
+     * Used to provide dragged state.
+     *
+     * @see com.alee.extended.split.MultiSplitPaneDividerPainter#getDecorationStates()
+     */
+    public static final String dragged = "dragged";
 
     /**
      * Used to provide iconified state for root pane painter.
@@ -344,6 +368,20 @@ public interface DecorationState
      * @see com.alee.extended.tree.WebCheckBoxTreeCellRenderer#getStates()
      */
     public static final String leaf = "leaf";
+
+    /**
+     * Start position state.
+     *
+     * @see com.alee.extended.split.MultiSplitPaneDividerPainter#getDecorationStates()
+     */
+    public static final String start = "start";
+
+    /**
+     * End position state.
+     *
+     * @see com.alee.extended.split.MultiSplitPaneDividerPainter#getDecorationStates()
+     */
+    public static final String end = "end";
 
     /**
      * Even position state.

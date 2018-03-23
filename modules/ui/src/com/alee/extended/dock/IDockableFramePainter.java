@@ -25,6 +25,7 @@ import com.alee.painter.SpecificPainter;
  * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  */
 
 public interface IDockableFramePainter<C extends WebDockableFrame, U extends WDockableFrameUI> extends SpecificPainter<C, U>

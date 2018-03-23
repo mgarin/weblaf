@@ -28,8 +28,10 @@
             <xs:enumeration value="popupmenuseparator" />
             <xs:enumeration value="panel" />
             <xs:enumeration value="tabbedpane" />
-            <xs:enumeration value="splitpane" />
             <xs:enumeration value="splitpanedivider" />
+            <xs:enumeration value="splitpane" />
+            <xs:enumeration value="multisplitpanedivider" />
+            <xs:enumeration value="multisplitpane" />
             <xs:enumeration value="popup" />
             <xs:enumeration value="rootpane" />
             <xs:enumeration value="toolbar" />

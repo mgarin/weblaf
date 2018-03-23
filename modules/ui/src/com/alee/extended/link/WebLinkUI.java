@@ -51,7 +51,6 @@ public class WebLinkUI<C extends WebLink> extends WLinkUI<C> implements ShapeSup
      * @param c component that will use UI instance
      * @return instance of the {@link WebLinkUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebLinkUI ();

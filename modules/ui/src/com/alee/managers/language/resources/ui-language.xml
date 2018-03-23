@@ -478,6 +478,20 @@
             <value lang="vi" state="tooltip">Thư mục chủ</value>
             <value lang="hu" state="tooltip">Saját mappa</value>
         </record>
+        <record key="desktop">
+            <value lang="en" state="tooltip">Desktop</value>
+            <value lang="ru" state="tooltip">Рабочий стол</value>
+            <value lang="pl" state="tooltip">Pulpit</value>
+            <value lang="ar" state="tooltip">سطح المكتب</value>
+            <value lang="es" state="tooltip">Escritorio</value>
+            <value lang="fr" state="tooltip">Bureau</value>
+            <value lang="pt" state="tooltip">Área de Trabalho</value>
+            <value lang="de" state="tooltip">Desktop</value>
+            <value lang="it" state="tooltip">Desktop</value>
+            <value lang="tr" state="tooltip">Masaüstü</value>
+            <value lang="vi" state="tooltip">Desktop</value>
+            <value lang="hu" state="tooltip">Desktop</value>
+        </record>
         <record key="newfolder">
             <value lang="en" state="tooltip">Create new folder</value>
             <value lang="ru" state="tooltip">Создать новую папку</value>
@@ -1260,6 +1274,20 @@
                 <value lang="tr" state="tooltip">Ana dizini</value>
                 <value lang="vi" state="tooltip">Thư mục chủ</value>
                 <value lang="hu" state="tooltip">Saját mappa</value>
+            </record>
+            <record key="desktop">
+                <value lang="en" state="tooltip">Desktop</value>
+                <value lang="ru" state="tooltip">Рабочий стол</value>
+                <value lang="pl" state="tooltip">Pulpit</value>
+                <value lang="ar" state="tooltip">سطح المكتب</value>
+                <value lang="es" state="tooltip">Escritorio</value>
+                <value lang="fr" state="tooltip">Bureau</value>
+                <value lang="pt" state="tooltip">Área de Trabalho</value>
+                <value lang="de" state="tooltip">Desktop</value>
+                <value lang="it" state="tooltip">Desktop</value>
+                <value lang="tr" state="tooltip">Masaüstü</value>
+                <value lang="vi" state="tooltip">Desktop</value>
+                <value lang="hu" state="tooltip">Desktop</value>
             </record>
             <record key="refresh">
                 <value lang="en" state="tooltip">Reload folder content</value>

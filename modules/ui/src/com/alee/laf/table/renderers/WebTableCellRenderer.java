@@ -17,9 +17,10 @@
 
 package com.alee.laf.table.renderers;
 
-import com.alee.api.*;
+import com.alee.api.ui.*;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.table.TableCellParameters;
 import com.alee.managers.style.ChildStyleId;
 import com.alee.managers.style.StyleId;
 import com.alee.painter.decoration.AbstractDecorationPainter;
@@ -42,11 +43,14 @@ import java.util.List;
  * And since it is based on {@link WebStyledLabel} it retains all of its extra features.
  *
  * @param <V> cell value type
- * @param <C> table type
+ * @param <C> {@link JTable} type
+ * @param <P> {@link TableCellParameters} type
  * @author Mikle Garin
+ * @see TableCellParameters
  */
 
-public class WebTableCellRenderer<V, C extends JTable> extends WebStyledLabel implements TableCellRenderer, Stateful
+public class WebTableCellRenderer<V, C extends JTable, P extends TableCellParameters<V, C>>
+        extends WebStyledLabel implements TableCellRenderer, Stateful
 {
     /**
      * Additional renderer decoration states.
@@ -72,24 +76,18 @@ public class WebTableCellRenderer<V, C extends JTable> extends WebStyledLabel im
     /**
      * Updates custom renderer states based on render cycle settings.
      *
-     * @param table      {@link JTable}
-     * @param value      cell value
-     * @param isSelected whether or not cell is selected
-     * @param hasFocus   whether or not cell has focus
-     * @param row        cell row number
-     * @param column     cell column number
+     * @param parameters {@link TableCellParameters}
      */
-    protected void updateStates ( final C table, final V value, final boolean isSelected,
-                                  final boolean hasFocus, final int row, final int column )
+    protected void updateStates ( final P parameters )
     {
         // Resetting states
         states.clear ();
 
         // Selection state
-        states.add ( isSelected ? DecorationState.selected : DecorationState.unselected );
+        states.add ( parameters.isSelected () ? DecorationState.selected : DecorationState.unselected );
 
         // Focus state
-        if ( hasFocus )
+        if ( parameters.isFocused () )
         {
             states.add ( DecorationState.focused );
         }
@@ -98,34 +96,30 @@ public class WebTableCellRenderer<V, C extends JTable> extends WebStyledLabel im
         // states.add ( DecorationState.hover );
 
         // Extra states provided by value
-        states.addAll ( DecorationUtils.getExtraStates ( value ) );
+        states.addAll ( DecorationUtils.getExtraStates ( parameters.value () ) );
     }
 
     /**
      * Updates renderer component style identifier.
      *
-     * @param table      {@link JTable}
-     * @param value      cell value
-     * @param isSelected whether or not cell is selected
-     * @param hasFocus   whether or not cell has focus
-     * @param row        cell row number
-     * @param column     cell column number
+     * @param parameters {@link TableCellParameters}
      */
-    protected void updateStyleId ( final C table, final V value, final boolean isSelected,
-                                   final boolean hasFocus, final int row, final int column )
+    protected void updateStyleId ( final P parameters )
     {
         StyleId id = null;
-        if ( value instanceof ChildStyleSupport )
+        if ( parameters.value () instanceof ChildStyleIdBridge )
         {
-            final ChildStyleId childStyleId = ( ( ChildStyleSupport ) value ).getChildStyleId ();
+            final ChildStyleIdBridge childStyleIdBridge = ( ChildStyleIdBridge ) parameters.value ();
+            final ChildStyleId childStyleId = childStyleIdBridge.getChildStyleId ( parameters );
             if ( childStyleId != null )
             {
-                id = childStyleId.at ( table );
+                id = childStyleId.at ( parameters.table () );
             }
         }
-        else if ( value instanceof StyleSupport )
+        else if ( parameters.value () instanceof StyleIdBridge )
         {
-            final StyleId styleId = ( ( StyleSupport ) value ).getStyleId ();
+            final StyleIdBridge styleIdBridge = ( StyleIdBridge ) parameters.value ();
+            final StyleId styleId = styleIdBridge.getStyleId ( parameters );
             if ( styleId != null )
             {
                 id = styleId;
@@ -133,7 +127,7 @@ public class WebTableCellRenderer<V, C extends JTable> extends WebStyledLabel im
         }
         if ( id == null )
         {
-            id = StyleId.tableCellRenderer.at ( table );
+            id = StyleId.tableCellRenderer.at ( parameters.table () );
         }
         setStyleId ( id );
     }
@@ -141,124 +135,117 @@ public class WebTableCellRenderer<V, C extends JTable> extends WebStyledLabel im
     /**
      * Updating renderer based on the provided settings.
      *
-     * @param table      {@link JTable}
-     * @param value      cell value
-     * @param isSelected whether or not cell is selected
-     * @param hasFocus   whether or not cell has focus
-     * @param row        cell row number
-     * @param column     cell column number
+     * @param parameters {@link TableCellParameters}
      */
-    protected void updateView ( final C table, final V value, final boolean isSelected,
-                                final boolean hasFocus, final int row, final int column )
+    protected void updateView ( final P parameters )
     {
-        setEnabled ( enabledForValue ( table, value, isSelected, hasFocus, row, column ) );
-        setComponentOrientation ( orientationForValue ( table, value, isSelected, hasFocus, row, column ) );
-        setFont ( fontForValue ( table, value, isSelected, hasFocus, row, column ) );
-        setForeground ( foregroundForValue ( table, value, isSelected, hasFocus, row, column ) );
-        setIcon ( iconForValue ( table, value, isSelected, hasFocus, row, column ) );
-        setText ( textForValue ( table, value, isSelected, hasFocus, row, column ) );
+        setEnabled ( enabledForValue ( parameters ) );
+        setComponentOrientation ( orientationForValue ( parameters ) );
+        setFont ( fontForValue ( parameters ) );
+        setForeground ( foregroundForValue ( parameters ) );
+        setHorizontalAlignment ( horizontalAlignmentForValue ( parameters ) );
+        setIcon ( iconForValue ( parameters ) );
+        setText ( textForValue ( parameters ) );
     }
 
     /**
      * Returns whether or not renderer for the specified cell value should be enabled.
      *
-     * @param table      {@link JTable}
-     * @param value      cell value
-     * @param isSelected whether or not cell is selected
-     * @param hasFocus   whether or not cell has focus
-     * @param row        cell row number
-     * @param column     cell column number
+     * @param parameters {@link TableCellParameters}
      * @return {@code true} if renderer for the specified cell value should be enabled, {@code false} otherwise
      */
-    protected boolean enabledForValue ( final C table, final V value, final boolean isSelected,
-                                        final boolean hasFocus, final int row, final int column )
+    protected boolean enabledForValue ( final P parameters )
     {
-        return table.isEnabled ();
+        return parameters.table ().isEnabled ();
     }
 
     /**
      * Returns renderer {@link ComponentOrientation} for the specified cell value.
      *
-     * @param table      {@link JTable}
-     * @param value      cell value
-     * @param isSelected whether or not cell is selected
-     * @param hasFocus   whether or not cell has focus
-     * @param row        cell row number
-     * @param column     cell column number
+     * @param parameters {@link TableCellParameters}
      * @return renderer {@link ComponentOrientation} for the specified cell value
      */
-    protected ComponentOrientation orientationForValue ( final C table, final V value, final boolean isSelected,
-                                                         final boolean hasFocus, final int row, final int column )
+    protected ComponentOrientation orientationForValue ( final P parameters )
     {
-        return table.getComponentOrientation ();
+        return parameters.table ().getComponentOrientation ();
     }
 
     /**
      * Returns renderer {@link Font} for the specified cell value.
      *
-     * @param table      {@link JTable}
-     * @param value      cell value
-     * @param isSelected whether or not cell is selected
-     * @param hasFocus   whether or not cell has focus
-     * @param row        cell row number
-     * @param column     cell column number
+     * @param parameters {@link TableCellParameters}
      * @return renderer {@link Font} for the specified cell value
      */
-    protected Font fontForValue ( final C table, final V value, final boolean isSelected,
-                                  final boolean hasFocus, final int row, final int column )
+    protected Font fontForValue ( final P parameters )
     {
-        return table.getFont ();
+        return parameters.table ().getFont ();
     }
 
     /**
      * Returns renderer foreground color for the specified cell value.
      *
-     * @param table      {@link JTable}
-     * @param value      cell value
-     * @param isSelected whether or not cell is selected
-     * @param hasFocus   whether or not cell has focus
-     * @param row        cell row number
-     * @param column     cell column number
+     * @param parameters {@link TableCellParameters}
      * @return renderer foreground color for the specified cell value
      */
-    protected Color foregroundForValue ( final C table, final V value, final boolean isSelected,
-                                         final boolean hasFocus, final int row, final int column )
+    protected Color foregroundForValue ( final P parameters )
     {
         final Color foreground;
-        if ( value instanceof ColorSupport )
+        if ( parameters.value () instanceof ForegroundBridge )
         {
-            final Color color = ( ( ColorSupport ) value ).getColor ();
-            foreground = color != null ? color : isSelected ? table.getSelectionForeground () : table.getForeground ();
+            final ForegroundBridge foregroundBridge = ( ForegroundBridge ) parameters.value ();
+            final Color fg = foregroundBridge.getForeground ( parameters );
+            if ( fg != null )
+            {
+                foreground = fg;
+            }
+            else if ( parameters.isSelected () )
+            {
+                foreground = parameters.table ().getSelectionForeground ();
+            }
+            else
+            {
+                foreground = parameters.table ().getForeground ();
+            }
+        }
+        else if ( parameters.isSelected () )
+        {
+            foreground = parameters.table ().getSelectionForeground ();
         }
         else
         {
-            foreground = isSelected ? table.getSelectionForeground () : table.getForeground ();
+            foreground = parameters.table ().getForeground ();
         }
         return foreground;
     }
 
     /**
+     * Returns renderer horizontal alignment for the specified cell value.
+     *
+     * @param parameters {@link TableCellParameters}
+     * @return renderer horizontal alignment for the specified cell value
+     */
+    protected int horizontalAlignmentForValue ( final P parameters )
+    {
+        return SwingConstants.LEADING;
+    }
+
+    /**
      * Returns renderer icon for the specified cell value.
      *
-     * @param table      {@link JTable}
-     * @param value      cell value
-     * @param isSelected whether or not cell is selected
-     * @param hasFocus   whether or not cell has focus
-     * @param row        cell row number
-     * @param column     cell column number
+     * @param parameters {@link TableCellParameters}
      * @return renderer icon for the specified cell value
      */
-    protected Icon iconForValue ( final C table, final V value, final boolean isSelected,
-                                  final boolean hasFocus, final int row, final int column )
+    protected Icon iconForValue ( final P parameters )
     {
         final Icon icon;
-        if ( value instanceof IconSupport )
+        if ( parameters.value () instanceof IconBridge )
         {
-            icon = ( ( IconSupport ) value ).getIcon ();
+            final IconBridge iconBridge = ( IconBridge ) parameters.value ();
+            icon = iconBridge.getIcon ( parameters );
         }
         else
         {
-            icon = value instanceof Icon ? ( Icon ) value : null;
+            icon = parameters.value () instanceof Icon ? ( Icon ) parameters.value () : null;
         }
         return icon;
     }
@@ -266,25 +253,20 @@ public class WebTableCellRenderer<V, C extends JTable> extends WebStyledLabel im
     /**
      * Returns renderer text for the specified cell value.
      *
-     * @param table      {@link JTable}
-     * @param value      cell value
-     * @param isSelected whether or not cell is selected
-     * @param hasFocus   whether or not cell has focus
-     * @param row        cell row number
-     * @param column     cell column number
+     * @param parameters {@link TableCellParameters}
      * @return renderer text for the specified cell value
      */
-    protected String textForValue ( final C table, final V value, final boolean isSelected,
-                                    final boolean hasFocus, final int row, final int column )
+    protected String textForValue ( final P parameters )
     {
         final String text;
-        if ( value instanceof TitleSupport )
+        if ( parameters.value () instanceof TextBridge )
         {
-            text = ( ( TitleSupport ) value ).getTitle ();
+            final TextBridge textBridge = ( TextBridge ) parameters.value ();
+            text = textBridge.getText ( parameters );
         }
         else
         {
-            text = value != null && !( value instanceof Icon ) ? value.toString () : "";
+            text = parameters.value () != null && !( parameters.value () instanceof Icon ) ? parameters.value ().toString () : "";
         }
         return text;
     }
@@ -304,19 +286,39 @@ public class WebTableCellRenderer<V, C extends JTable> extends WebStyledLabel im
     public Component getTableCellRendererComponent ( final JTable table, final Object value, final boolean isSelected,
                                                      final boolean hasFocus, final int row, final int column )
     {
+        // Forming cell parameters
+        final P parameters = getRenderingParameters ( ( C ) table, ( V ) value, isSelected, hasFocus, row, column );
+
         // Updating custom states
-        updateStates ( ( C ) table, ( V ) value, isSelected, hasFocus, row, column );
+        updateStates ( parameters );
 
         // Updating style ID
-        updateStyleId ( ( C ) table, ( V ) value, isSelected, hasFocus, row, column );
+        updateStyleId ( parameters );
 
         // Updating renderer view
-        updateView ( ( C ) table, ( V ) value, isSelected, hasFocus, row, column );
+        updateView ( parameters );
 
         // Updating decoration states for this render cycle
         DecorationUtils.fireStatesChanged ( this );
 
         return this;
+    }
+
+    /**
+     * Returns {@link TableCellParameters}.
+     *
+     * @param table      {@link JTable}
+     * @param value      cell value
+     * @param isSelected whether or not cell is selected
+     * @param hasFocus   whether or not cell has focus
+     * @param row        cell row number
+     * @param column     cell column number
+     * @return {@link TableCellParameters}
+     */
+    protected P getRenderingParameters ( final C table, final V value, final boolean isSelected,
+                                         final boolean hasFocus, final int row, final int column )
+    {
+        return ( P ) new TableCellParameters<V, C> ( table, value, row, column, isSelected, hasFocus );
     }
 
     @Override
@@ -456,9 +458,11 @@ public class WebTableCellRenderer<V, C extends JTable> extends WebStyledLabel im
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
      *
      * @param <V> cell value type
-     * @param <C> table type
+     * @param <C> {@link JTable} type
+     * @param <P> {@link TableCellParameters} type
      */
-    public static class UIResource<V, C extends JTable> extends WebTableCellRenderer<V, C> implements javax.swing.plaf.UIResource
+    public static class UIResource<V, C extends JTable, P extends TableCellParameters<V, C>>
+            extends WebTableCellRenderer<V, C, P> implements javax.swing.plaf.UIResource
     {
         /**
          * Implementation is used completely from {@link WebTableCellRenderer}.

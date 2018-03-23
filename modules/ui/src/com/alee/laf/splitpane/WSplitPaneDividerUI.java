@@ -30,7 +30,7 @@ import javax.swing.plaf.ComponentUI;
  * @author Mikle Garin
  */
 
-public class WSplitPaneDividerUI<C extends WebSplitPaneDivider> extends ComponentUI implements WebUI<C>
+public abstract class WSplitPaneDividerUI<C extends WebSplitPaneDivider> extends ComponentUI implements WebUI<C>
 {
     /**
      * Runtime variables.

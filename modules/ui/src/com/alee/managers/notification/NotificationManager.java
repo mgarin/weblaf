@@ -19,10 +19,11 @@ package com.alee.managers.notification;
 
 import com.alee.api.jdk.BiConsumer;
 import com.alee.api.jdk.Function;
+import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.window.PopupAdapter;
-import com.alee.laf.label.WebLabel;
 import com.alee.managers.popup.PopupLayer;
 import com.alee.managers.popup.PopupManager;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.SystemUtils;
 import com.alee.utils.swing.WeakComponentData;
@@ -338,7 +339,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebNotification showNotification ( final String content )
     {
-        return showNotification ( null, new WebLabel ( content ), NotificationIcon.information.getIcon () );
+        return showNotification ( null, new WebStyledLabel ( content ), NotificationIcon.information.getIcon () );
     }
 
     /**
@@ -350,7 +351,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebNotification showNotification ( final String content, final Icon icon )
     {
-        return showNotification ( null, new WebLabel ( content ), icon );
+        return showNotification ( null, new WebStyledLabel ( content ), icon );
     }
 
     /**
@@ -362,7 +363,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebNotification showNotification ( final Component showFor, final String content )
     {
-        return showNotification ( showFor, new WebLabel ( content ), NotificationIcon.information.getIcon () );
+        return showNotification ( showFor, new WebStyledLabel ( content ), NotificationIcon.information.getIcon () );
     }
 
     /**
@@ -375,7 +376,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebNotification showNotification ( final Component showFor, final String content, final Icon icon )
     {
-        return showNotification ( showFor, new WebLabel ( content ), icon );
+        return showNotification ( showFor, new WebStyledLabel ( content ), icon );
     }
 
     /**
@@ -438,7 +439,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebNotification showNotification ( final String content, final NotificationOption... options )
     {
-        return showNotification ( null, new WebLabel ( content ), NotificationIcon.information.getIcon (), options );
+        return showNotification ( null, new WebStyledLabel ( content ), NotificationIcon.information.getIcon (), options );
     }
 
     /**
@@ -451,7 +452,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebNotification showNotification ( final String content, final Icon icon, final NotificationOption... options )
     {
-        return showNotification ( null, new WebLabel ( content ), icon, options );
+        return showNotification ( null, new WebStyledLabel ( content ), icon, options );
     }
 
     /**
@@ -464,7 +465,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebNotification showNotification ( final Component showFor, final String content, final NotificationOption... options )
     {
-        return showNotification ( showFor, new WebLabel ( content ), NotificationIcon.information.getIcon (), options );
+        return showNotification ( showFor, new WebStyledLabel ( content ), NotificationIcon.information.getIcon (), options );
     }
 
     /**
@@ -479,7 +480,7 @@ public final class NotificationManager implements SwingConstants
     public static WebNotification showNotification ( final Component showFor, final String content, final Icon icon,
                                                      final NotificationOption... options )
     {
-        return showNotification ( showFor, new WebLabel ( content ), icon, options );
+        return showNotification ( showFor, new WebStyledLabel ( content ), icon, options );
     }
 
     /**
@@ -563,7 +564,7 @@ public final class NotificationManager implements SwingConstants
         final NotificationsScreenLayout layout = getLayout ( showFor );
 
         // Notifications caching
-        notificationWindows.set ( notification, SwingUtils.getWindowAncestor ( showFor ) );
+        notificationWindows.set ( notification, CoreSwingUtils.getWindowAncestor ( showFor ) );
         notification.addPopupListener ( new PopupAdapter ()
         {
             @Override
@@ -592,7 +593,7 @@ public final class NotificationManager implements SwingConstants
      */
     private static NotificationsScreenLayout getLayout ( final Component showFor )
     {
-        final Window window = showFor != null && showFor.isShowing () ? SwingUtils.getWindowAncestor ( showFor ) : null;
+        final Window window = showFor != null && showFor.isShowing () ? CoreSwingUtils.getWindowAncestor ( showFor ) : null;
         final GraphicsDevice gd = SystemUtils.getGraphicsDevice ( window );
         if ( !screenLayouts.containsKey ( gd ) )
         {
@@ -609,7 +610,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebInnerNotification showInnerNotification ( final String content )
     {
-        return showInnerNotification ( SwingUtils.getAvailableWindow (), new WebLabel ( content ),
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), new WebStyledLabel ( content ),
                 NotificationIcon.information.getIcon () );
     }
 
@@ -622,7 +623,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebInnerNotification showInnerNotification ( final String content, final Icon icon )
     {
-        return showInnerNotification ( SwingUtils.getAvailableWindow (), new WebLabel ( content ), icon );
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), new WebStyledLabel ( content ), icon );
     }
 
     /**
@@ -634,7 +635,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebInnerNotification showInnerNotification ( final Component showFor, final String content )
     {
-        return showInnerNotification ( showFor, new WebLabel ( content ), NotificationIcon.information.getIcon () );
+        return showInnerNotification ( showFor, new WebStyledLabel ( content ), NotificationIcon.information.getIcon () );
     }
 
     /**
@@ -647,7 +648,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebInnerNotification showInnerNotification ( final Component showFor, final String content, final Icon icon )
     {
-        return showInnerNotification ( showFor, new WebLabel ( content ), icon );
+        return showInnerNotification ( showFor, new WebStyledLabel ( content ), icon );
     }
 
     /**
@@ -710,8 +711,8 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebInnerNotification showInnerNotification ( final String content, final NotificationOption... options )
     {
-        return showInnerNotification ( SwingUtils.getAvailableWindow (), new WebLabel ( content ), NotificationIcon.information.getIcon (),
-                options );
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), new WebStyledLabel ( content ),
+                NotificationIcon.information.getIcon (), options );
     }
 
     /**
@@ -724,7 +725,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebInnerNotification showInnerNotification ( final String content, final Icon icon, final NotificationOption... options )
     {
-        return showInnerNotification ( SwingUtils.getAvailableWindow (), new WebLabel ( content ), icon, options );
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), new WebStyledLabel ( content ), icon, options );
     }
 
     /**
@@ -738,7 +739,7 @@ public final class NotificationManager implements SwingConstants
     public static WebInnerNotification showInnerNotification ( final Component showFor, final String content,
                                                                final NotificationOption... options )
     {
-        return showInnerNotification ( showFor, new WebLabel ( content ), NotificationIcon.information.getIcon (), options );
+        return showInnerNotification ( showFor, new WebStyledLabel ( content ), NotificationIcon.information.getIcon (), options );
     }
 
     /**
@@ -753,7 +754,7 @@ public final class NotificationManager implements SwingConstants
     public static WebInnerNotification showInnerNotification ( final Component showFor, final String content, final Icon icon,
                                                                final NotificationOption... options )
     {
-        return showInnerNotification ( showFor, new WebLabel ( content ), icon, options );
+        return showInnerNotification ( showFor, new WebStyledLabel ( content ), icon, options );
     }
 
     /**

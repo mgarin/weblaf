@@ -20,14 +20,15 @@ package com.alee.extended.window;
 import com.alee.api.data.CompassDirection;
 import com.alee.api.jdk.Function;
 import com.alee.extended.WebContainer;
-import com.alee.extended.behavior.ComponentMoveBehavior;
 import com.alee.extended.behavior.ComponentResizeBehavior;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.window.WindowMethods;
 import com.alee.laf.window.WindowMethodsImpl;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.GlobalFocusListener;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.WebTimer;
@@ -39,8 +40,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Custom extension that makes use of Swing heavy-weight popup.
@@ -66,11 +65,6 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
      */
 
     /**
-     * Whether or not this popup should be resizable.
-     */
-    protected boolean resizable = false;
-
-    /**
      * Whether or not should close popup on any action outside of this popup.
      */
     protected boolean closeOnOuterAction = true;
@@ -84,6 +78,11 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
      * Whether or not popup window should be draggable.
      */
     protected boolean draggable = false;
+
+    /**
+     * Whether or not this popup should be resizable.
+     */
+    protected boolean resizable = false;
 
     /**
      * Whether or not popup should follow invoker's window.
@@ -119,11 +118,6 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     protected float visibilityProgress = 0f;
 
     /**
-     * Show/hide actions synchronization object.
-     */
-    protected final Object sync = new Object ();
-
-    /**
      * Whether popup is being displayed or not.
      */
     protected boolean displaying = false;
@@ -142,21 +136,6 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
      * Hide action animation timer.
      */
     protected WebTimer hideAnimator = null;
-
-    /**
-     * Actions to perform on full display.
-     */
-    protected final List<Runnable> onFullDisplay = new ArrayList<Runnable> ();
-
-    /**
-     * Actions to perform on full hide.
-     */
-    protected final List<Runnable> onFullHide = new ArrayList<Runnable> ();
-
-    /**
-     * Listeners synchronization object.
-     */
-    protected final Object lsync = new Object ();
 
     /**
      * Window in which popup content is currently displayed.
@@ -189,9 +168,9 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     protected transient GlobalFocusListener focusListener;
 
     /**
-     * {@link ComponentMoveBehavior}.
+     * {@link ComponentResizeBehavior}.
      */
-    protected transient ComponentMoveBehavior moveBehavior;
+    protected transient ComponentResizeBehavior resizeBehavior;
 
     /**
      * Invoker follow adapter.
@@ -269,97 +248,6 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     public StyleId getDefaultStyleId ()
     {
         return StyleId.popup;
-    }
-
-    /**
-     * Returns whether or not this popup is resizable.
-     *
-     * @return true if this popup is resizable, false otherwise
-     */
-    public boolean isResizable ()
-    {
-        return resizable;
-    }
-
-    /**
-     * Sets whether or not this popup should be resizable.
-     *
-     * @param resizable whether or not this popup should be resizable
-     */
-    public void setResizable ( final boolean resizable )
-    {
-        if ( this.resizable != resizable )
-        {
-            this.resizable = resizable;
-            if ( resizable )
-            {
-                ComponentResizeBehavior.install ( this, getResizeDirectives () );
-            }
-            else
-            {
-                ComponentResizeBehavior.uninstall ( this );
-            }
-        }
-    }
-
-    /**
-     * Returns popup resize directives.
-     *
-     * @return popup resize directives
-     */
-    protected Function<Point, CompassDirection> getResizeDirectives ()
-    {
-        return new Function<Point, CompassDirection> ()
-        {
-            @Override
-            public CompassDirection apply ( final Point point )
-            {
-                final Insets i = getInsets ();
-                final int resizer = 6;
-                if ( point.getY () < i.top + resizer )
-                {
-                    if ( point.getX () < i.left + resizer )
-                    {
-                        return CompassDirection.northWest;
-                    }
-                    else if ( point.getX () > getWidth () - i.right - resizer )
-                    {
-                        return CompassDirection.northEast;
-                    }
-                    else
-                    {
-                        return CompassDirection.north;
-                    }
-                }
-                else if ( point.getY () > getHeight () - i.bottom - resizer )
-                {
-                    if ( point.getX () < i.left + resizer )
-                    {
-                        return CompassDirection.southWest;
-                    }
-                    else if ( point.getX () > getWidth () - i.right - resizer )
-                    {
-                        return CompassDirection.southEast;
-                    }
-                    else
-                    {
-                        return CompassDirection.south;
-                    }
-                }
-                else if ( point.getX () < i.left + resizer )
-                {
-                    return CompassDirection.west;
-                }
-                else if ( point.getX () > getWidth () - i.right - resizer )
-                {
-                    return CompassDirection.east;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        };
     }
 
     /**
@@ -469,13 +357,6 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
         return hiding;
     }
 
-    @Override
-    public void setOpaque ( final boolean isOpaque )
-    {
-        super.setOpaque ( isOpaque );
-        setWindowOpaque ( isOpaque );
-    }
-
     /**
      * Returns whether or not popup window should be draggable.
      *
@@ -496,17 +377,68 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
         if ( this.draggable != draggable )
         {
             this.draggable = draggable;
-            if ( draggable )
+            updateResizeBehavior ();
+        }
+    }
+
+    /**
+     * Returns whether or not this popup is resizable.
+     *
+     * @return true if this popup is resizable, false otherwise
+     */
+    public boolean isResizable ()
+    {
+        return resizable;
+    }
+
+    /**
+     * Sets whether or not this popup should be resizable.
+     *
+     * @param resizable whether or not this popup should be resizable
+     */
+    public void setResizable ( final boolean resizable )
+    {
+        if ( this.resizable != resizable )
+        {
+            this.resizable = resizable;
+            updateResizeBehavior ();
+        }
+    }
+
+    /**
+     * Updates {@link ComponentResizeBehavior}.
+     */
+    protected void updateResizeBehavior ()
+    {
+        if ( isDraggable () || isResizable () )
+        {
+            if ( resizeBehavior == null )
             {
-                moveBehavior = new ComponentMoveBehavior ( this );
-                moveBehavior.install ();
-            }
-            else
-            {
-                moveBehavior.uninstall ();
-                moveBehavior = null;
+                installResizeBehavior ();
             }
         }
+        else
+        {
+            uninstallResizeBehavior ();
+        }
+    }
+
+    /**
+     * Installs {@link ComponentResizeBehavior}.
+     */
+    protected void installResizeBehavior ()
+    {
+        resizeBehavior = new ComponentResizeBehavior ( this, new ResizeDirections ( 6 ) );
+        resizeBehavior.install ();
+    }
+
+    /**
+     * Uninstalls {@link ComponentResizeBehavior}.
+     */
+    protected void uninstallResizeBehavior ()
+    {
+        resizeBehavior.uninstall ();
+        resizeBehavior = null;
     }
 
     /**
@@ -533,14 +465,14 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
             {
                 if ( followBehavior == null && window != null && invokerWindow != null )
                 {
-                    installFollowAdapter ();
+                    installFollowBehavior ();
                 }
             }
             else
             {
                 if ( followBehavior != null && window != null && invokerWindow != null )
                 {
-                    uninstallFollowAdapter ();
+                    uninstallFollowBehavior ();
                 }
             }
         }
@@ -549,7 +481,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     /**
      * Installs {@link WindowFollowBehavior}.
      */
-    protected void installFollowAdapter ()
+    protected void installFollowBehavior ()
     {
         followBehavior = new WindowFollowBehavior ( window, invokerWindow );
         followBehavior.install ();
@@ -558,7 +490,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     /**
      * Uninstalls {@link WindowFollowBehavior}.
      */
-    protected void uninstallFollowAdapter ()
+    protected void uninstallFollowBehavior ()
     {
         followBehavior.uninstall ();
         followBehavior = null;
@@ -687,146 +619,137 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
      */
     protected void showPopupImpl ( final Component invoker, final int x, final int y )
     {
-        synchronized ( sync )
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Ignore action if popup is being displayed or already displayed
+        if ( displaying || !hiding && window != null )
         {
-            // Ignore action if popup is being displayed or already displayed
-            if ( displaying || !hiding && window != null )
-            {
-                return;
-            }
-
-            // Stop hiding popup
-            if ( hiding )
-            {
-                if ( hideAnimator != null )
-                {
-                    hideAnimator.stop ();
-                    hideAnimator = null;
-                }
-                hiding = false;
-                completePopupHide ();
-            }
-
-            // Set state to displaying
-            displaying = true;
-
-            // Saving invoker
-            this.invoker = invoker;
-            this.invokerWindow = SwingUtils.getWindowAncestor ( invoker );
-
-            // Updating display state
-            this.visibilityProgress = animate ? 0f : 1f;
-
-            // Creating popup
-            window = createWindow ( x, y );
-
-            // Informing about popup display
-            firePopupWillBeOpened ();
-
-            // Creating menu hide mouse event listener (when mouse pressed outside of the menu)
-            mouseListener = new AWTEventListener ()
-            {
-                @Override
-                public void eventDispatched ( final AWTEvent event )
-                {
-                    if ( isCloseOnOuterAction () )
-                    {
-                        final MouseEvent e = ( MouseEvent ) event;
-                        if ( e.getID () == MouseEvent.MOUSE_PRESSED )
-                        {
-                            final Component component = e.getComponent ();
-                            if ( window != component && !window.isAncestorOf ( component ) )
-                            {
-                                hidePopup ();
-                            }
-                        }
-                    }
-                }
-            };
-            Toolkit.getDefaultToolkit ().addAWTEventListener ( mouseListener, AWTEvent.MOUSE_EVENT_MASK );
-
-            // Creating menu hide focus event listener (when focus leaves application)
-            focusListener = new GlobalFocusListener ()
-            {
-                @Override
-                public void focusChanged ( final Component oldFocus, final Component newFocus )
-                {
-                    if ( isCloseOnOuterAction () && newFocus == null )
-                    {
-                        hidePopup ();
-                    }
-                }
-            };
-            FocusManager.registerGlobalFocusListener ( this, focusListener );
-
-            // Displaying popup
-            window.setVisible ( true );
-
-            // Transferring focus
-            final Component defaultFocus = getDefaultFocus ();
-            if ( defaultFocus != null && WebPopup.this.isAncestorOf ( defaultFocus ) && defaultFocus.isShowing () )
-            {
-                // Transferring focus into specified component located inside of the popup
-                defaultFocus.requestFocusInWindow ();
-            }
-            else
-            {
-                // Transferring focus into first focusable component
-                final Component nextFocus = SwingUtils.findFocusableComponent ( this );
-                if ( nextFocus != null && nextFocus.isShowing () )
-                {
-                    nextFocus.requestFocusInWindow ();
-                }
-
-                // todo Transfer focus into popup if no focusable elements found?
-            }
-
-            // Animating popup display
-            if ( animate )
-            {
-                showAnimator = WebTimer.repeat ( SwingUtils.frameRateDelay ( 48 ), 0L, new ActionListener ()
-                {
-                    @Override
-                    public void actionPerformed ( final ActionEvent e )
-                    {
-                        synchronized ( sync )
-                        {
-                            if ( visibilityProgress < 1f )
-                            {
-                                visibilityProgress = Math.min ( visibilityProgress + fadeStepSize, 1f );
-                                setWindowOpacity ( visibilityProgress );
-                            }
-                            else
-                            {
-                                showAnimator.stop ();
-                                showAnimator = null;
-                                displaying = false;
-                                fullyDisplayed ();
-                            }
-                            showAnimationStepPerformed ();
-                        }
-                    }
-                } );
-            }
-
-            // Adding follow behavior if needed
-            if ( followInvoker && invokerWindow != null )
-            {
-                installFollowAdapter ();
-            }
-
-            if ( !animate )
-            {
-                displaying = false;
-            }
-
-            firePopupOpened ();
-
-            if ( !animate )
-            {
-                fullyDisplayed ();
-            }
+            return;
         }
+
+        // Stop hiding popup
+        if ( hiding )
+        {
+            if ( hideAnimator != null )
+            {
+                hideAnimator.stop ();
+                hideAnimator = null;
+            }
+            hiding = false;
+            completePopupHide ();
+        }
+
+        // Set state to displaying
+        displaying = true;
+
+        // Saving invoker
+        this.invoker = invoker;
+        this.invokerWindow = CoreSwingUtils.getWindowAncestor ( invoker );
+
+        // Updating display state
+        this.visibilityProgress = animate ? 0f : 1f;
+
+        // Creating popup
+        window = createWindow ( x, y );
+
+        // Informing about popup display
+        firePopupWillBeOpened ();
+
+        // Creating menu hide mouse event listener (when mouse pressed outside of the menu)
+        mouseListener = new AWTEventListener ()
+        {
+            @Override
+            public void eventDispatched ( final AWTEvent event )
+            {
+                if ( isCloseOnOuterAction () )
+                {
+                    final MouseEvent e = ( MouseEvent ) event;
+                    if ( e.getID () == MouseEvent.MOUSE_PRESSED )
+                    {
+                        final Component component = e.getComponent ();
+                        if ( window != component && !window.isAncestorOf ( component ) )
+                        {
+                            hidePopup ();
+                        }
+                    }
+                }
+            }
+        };
+        Toolkit.getDefaultToolkit ().addAWTEventListener ( mouseListener, AWTEvent.MOUSE_EVENT_MASK );
+
+        // Creating menu hide focus event listener (when focus leaves application)
+        focusListener = new GlobalFocusListener ()
+        {
+            @Override
+            public void focusChanged ( final Component oldFocus, final Component newFocus )
+            {
+                if ( isCloseOnOuterAction () && newFocus == null )
+                {
+                    hidePopup ();
+                }
+            }
+        };
+        FocusManager.registerGlobalFocusListener ( this, focusListener );
+
+        // Displaying popup
+        window.setVisible ( true );
+
+        // Transferring focus
+        final Component defaultFocus = getDefaultFocus ();
+        if ( defaultFocus != null && WebPopup.this.isAncestorOf ( defaultFocus ) && defaultFocus.isShowing () )
+        {
+            // Transferring focus into specified component located inside of the popup
+            defaultFocus.requestFocusInWindow ();
+        }
+        else
+        {
+            // Transferring focus into first focusable component
+            final Component nextFocus = SwingUtils.findFocusableComponent ( this );
+            if ( nextFocus != null && nextFocus.isShowing () )
+            {
+                nextFocus.requestFocusInWindow ();
+            }
+
+            // todo Transfer focus into popup if no focusable elements found?
+        }
+
+        // Animating popup display
+        if ( animate )
+        {
+            showAnimator = WebTimer.repeat ( SwingUtils.frameRateDelay ( 48 ), 0L, true, new ActionListener ()
+            {
+                @Override
+                public void actionPerformed ( final ActionEvent e )
+                {
+                    if ( visibilityProgress < 1f )
+                    {
+                        visibilityProgress = Math.min ( visibilityProgress + fadeStepSize, 1f );
+                        setWindowOpacity ( visibilityProgress );
+                    }
+                    else
+                    {
+                        showAnimator.stop ();
+                        showAnimator = null;
+                        displaying = false;
+                    }
+                    showAnimationStepPerformed ();
+                }
+            } );
+        }
+
+        // Adding follow behavior if needed
+        if ( followInvoker && invokerWindow != null )
+        {
+            installFollowBehavior ();
+        }
+
+        if ( !animate )
+        {
+            displaying = false;
+        }
+
+        firePopupOpened ();
     }
 
     /**
@@ -847,7 +770,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
         // Udating window location
         if ( invokerWindow != null )
         {
-            final Rectangle bos = SwingUtils.getBoundsOnScreen ( invoker );
+            final Rectangle bos = CoreSwingUtils.getBoundsOnScreen ( invoker );
             window.setLocation ( bos.x + x, bos.y + y );
         }
         else
@@ -887,61 +810,58 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
      */
     protected void hidePopupImpl ()
     {
-        synchronized ( sync )
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Ignore action if popup is being hidden or already hidden
+        if ( hiding || window == null || window != null && !window.isShowing () )
         {
-            // Ignore action if popup is being hidden or already hidden
-            if ( hiding || window == null || window != null && !window.isShowing () )
+            return;
+        }
+
+        // Set state to displaying
+        hiding = true;
+
+        // Stop hiding popup
+        if ( displaying )
+        {
+            if ( showAnimator != null )
             {
-                return;
+                showAnimator.stop ();
             }
+            displaying = false;
+        }
 
-            // Set state to displaying
-            hiding = true;
+        // Updating display state
+        this.visibilityProgress = animate ? 1f : 0f;
 
-            // Stop hiding popup
-            if ( displaying )
+        if ( animate )
+        {
+            hideAnimator = WebTimer.repeat ( SwingUtils.frameRateDelay ( 48 ), 0L, true, new ActionListener ()
             {
-                if ( showAnimator != null )
+                @Override
+                public void actionPerformed ( final ActionEvent e )
                 {
-                    showAnimator.stop ();
-                }
-                displaying = false;
-            }
-
-            // Updating display state
-            this.visibilityProgress = animate ? 1f : 0f;
-
-            if ( animate )
-            {
-                hideAnimator = WebTimer.repeat ( SwingUtils.frameRateDelay ( 48 ), 0L, new ActionListener ()
-                {
-                    @Override
-                    public void actionPerformed ( final ActionEvent e )
+                    if ( visibilityProgress > 0f )
                     {
-                        synchronized ( sync )
-                        {
-                            if ( visibilityProgress > 0f )
-                            {
-                                visibilityProgress = Math.max ( visibilityProgress - fadeStepSize, 0f );
-                                setWindowOpacity ( visibilityProgress );
-                            }
-                            else
-                            {
-                                completePopupHide ();
-                                hideAnimator.stop ();
-                                hideAnimator = null;
-                                hiding = false;
-                            }
-                            hideAnimationStepPerformed ();
-                        }
+                        visibilityProgress = Math.max ( visibilityProgress - fadeStepSize, 0f );
+                        setWindowOpacity ( visibilityProgress );
                     }
-                } );
-            }
-            else
-            {
-                completePopupHide ();
-                hiding = false;
-            }
+                    else
+                    {
+                        completePopupHide ();
+                        hideAnimator.stop ();
+                        hideAnimator = null;
+                        hiding = false;
+                    }
+                    hideAnimationStepPerformed ();
+                }
+            } );
+        }
+        else
+        {
+            completePopupHide ();
+            hiding = false;
         }
     }
 
@@ -955,7 +875,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
         // Removing follow adapter
         if ( followInvoker && invokerWindow != null )
         {
-            uninstallFollowAdapter ();
+            uninstallFollowBehavior ();
         }
 
         // Removing popup hide event listeners
@@ -973,7 +893,6 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
         window = null;
 
         firePopupClosed ();
-        fullyHidden ();
     }
 
     /**
@@ -983,6 +902,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     protected void showAnimationStepPerformed ()
     {
         // Do nothing by default
+        // todo Replace with appropriate listeners
     }
 
     /**
@@ -992,79 +912,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     protected void hideAnimationStepPerformed ()
     {
         // Do nothing by default
-    }
-
-    /**
-     * Performs provided action when menu is fully displayed.
-     * Might be useful to display sub-menus or perform some other actions.
-     * Be aware that this action will be performed only once and then removed from the actions list.
-     *
-     * @param action action to perform
-     */
-    public void onFullDisplay ( final Runnable action )
-    {
-        synchronized ( lsync )
-        {
-            if ( !isShowing () || isDisplaying () )
-            {
-                onFullDisplay.add ( action );
-            }
-            else if ( isShowing () && !isHiding () )
-            {
-                action.run ();
-            }
-        }
-    }
-
-    /**
-     * Performs actions waiting for menu display animation finish.
-     */
-    public void fullyDisplayed ()
-    {
-        synchronized ( lsync )
-        {
-            for ( final Runnable runnable : onFullDisplay )
-            {
-                runnable.run ();
-            }
-            onFullDisplay.clear ();
-        }
-    }
-
-    /**
-     * Performs provided action when menu is fully hidden.
-     * Be aware that this action will be performed only once and then removed from the actions list.
-     *
-     * @param action action to perform
-     */
-    public void onFullHide ( final Runnable action )
-    {
-        synchronized ( lsync )
-        {
-            if ( isShowing () )
-            {
-                onFullHide.add ( action );
-            }
-            else
-            {
-                action.run ();
-            }
-        }
-    }
-
-    /**
-     * Performs actions waiting for menu hide animation finish.
-     */
-    public void fullyHidden ()
-    {
-        synchronized ( lsync )
-        {
-            for ( final Runnable runnable : onFullHide )
-            {
-                runnable.run ();
-            }
-            onFullHide.clear ();
-        }
+        //        // todo Replace with appropriate listeners
     }
 
     @Override
@@ -1159,6 +1007,13 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
             window.pack ();
         }
         return window;
+    }
+
+    @Override
+    public void setOpaque ( final boolean isOpaque )
+    {
+        super.setOpaque ( isOpaque );
+        setWindowOpaque ( isOpaque );
     }
 
     @Override
@@ -1282,5 +1137,101 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     public String getUIClassID ()
     {
         return StyleManager.getDescriptor ( this ).getUIClassId ();
+    }
+
+    /**
+     * {@link Function} providing appropriate resize {@link CompassDirection} according to specified {@link Point} on the {@link WebPopup}.
+     */
+    public class ResizeDirections implements Function<Point, CompassDirection>
+    {
+        /**
+         * Distance from the inner popup border at which {@link Component} resize is still available.
+         */
+        protected final int distance;
+
+        /**
+         * Constructs new {@link ResizeDirections}.
+         *
+         * @param distance distance from the inner popup border at which resizer is still available
+         */
+        public ResizeDirections ( final int distance )
+        {
+            this.distance = distance;
+        }
+
+        /**
+         * Returns distance from the inner popup border at which resizer is still available.
+         *
+         * @return distance from the inner popup border at which resizer is still available
+         */
+        public int distance ()
+        {
+            return distance;
+        }
+
+        @Override
+        public CompassDirection apply ( final Point point )
+        {
+            final CompassDirection direction;
+            if ( isResizable () )
+            {
+                final Insets i = getInsets ();
+                if ( point.getY () < i.top + distance )
+                {
+                    if ( point.getX () < i.left + distance )
+                    {
+                        direction = CompassDirection.northWest;
+                    }
+                    else if ( point.getX () > getWidth () - i.right - distance )
+                    {
+                        direction = CompassDirection.northEast;
+                    }
+                    else
+                    {
+                        direction = CompassDirection.north;
+                    }
+                }
+                else if ( point.getY () > getHeight () - i.bottom - distance )
+                {
+                    if ( point.getX () < i.left + distance )
+                    {
+                        direction = CompassDirection.southWest;
+                    }
+                    else if ( point.getX () > getWidth () - i.right - distance )
+                    {
+                        direction = CompassDirection.southEast;
+                    }
+                    else
+                    {
+                        direction = CompassDirection.south;
+                    }
+                }
+                else if ( point.getX () < i.left + distance )
+                {
+                    direction = CompassDirection.west;
+                }
+                else if ( point.getX () > getWidth () - i.right - distance )
+                {
+                    direction = CompassDirection.east;
+                }
+                else if ( isDraggable () )
+                {
+                    direction = CompassDirection.center;
+                }
+                else
+                {
+                    direction = null;
+                }
+            }
+            else if ( isDraggable () )
+            {
+                direction = CompassDirection.center;
+            }
+            else
+            {
+                direction = null;
+            }
+            return direction;
+        }
     }
 }

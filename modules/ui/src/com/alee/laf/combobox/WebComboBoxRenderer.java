@@ -31,40 +31,51 @@ import java.awt.*;
  * It also retains all of the {@link WebListCellRenderer} methods that can be overridden for renderer customization.
  *
  * @param <V> cell value type
- * @param <C> list type
+ * @param <C> {@link JList} type
+ * @param <P> {@link ComboBoxCellParameters} type
  * @author Mikle Garin
+ * @see ComboBoxCellParameters
  */
 
-public class WebComboBoxRenderer<V, C extends JList> extends WebListCellRenderer<V, C>
+public class WebComboBoxRenderer<V, C extends JList, P extends ComboBoxCellParameters<V, C>>
+        extends WebListCellRenderer<V, C, P>
 {
     @Override
-    protected void updateStates ( final C list, final V value, final int index,
-                                  final boolean isSelected, final boolean hasFocus )
+    protected void updateStates ( final P parameters )
     {
         // Adding base states
-        super.updateStates ( list, value, index, isSelected, hasFocus );
+        super.updateStates ( parameters );
 
         // Adding press and expansion states
-        final JComboBox comboBox = getComboBox ( list );
-        if ( comboBox != null )
+        if ( parameters.comboBox ().isPopupVisible () )
         {
-            if ( comboBox.isPopupVisible () )
-            {
-                states.add ( DecorationState.pressed );
-                states.add ( DecorationState.expanded );
-            }
-            else
-            {
-                states.add ( DecorationState.collapsed );
-            }
+            states.add ( DecorationState.pressed );
+            states.add ( DecorationState.expanded );
+        }
+        else
+        {
+            states.add ( DecorationState.collapsed );
         }
     }
 
     @Override
-    protected void updateStyleId ( final C list, final V value, final int index,
-                                   final boolean isSelected, final boolean cellHasFocus )
+    protected void updateStyleId ( final P parameters )
     {
-        setStyleId ( index == -1 ? StyleId.comboboxBoxRenderer.at ( list ) : StyleId.comboboxListRenderer.at ( list ) );
+        if ( parameters.index () == -1 )
+        {
+            setStyleId ( StyleId.comboboxBoxRenderer.at ( parameters.list () ) );
+        }
+        else
+        {
+            setStyleId ( StyleId.comboboxListRenderer.at ( parameters.list () ) );
+        }
+    }
+
+    @Override
+    protected P getRenderingParameters ( final C list, final V value, final int index,
+                                         final boolean isSelected, final boolean hasFocus )
+    {
+        return ( P ) new ComboBoxCellParameters<V, C> ( list, value, index, isSelected, hasFocus );
     }
 
     @Override
@@ -102,24 +113,15 @@ public class WebComboBoxRenderer<V, C extends JList> extends WebListCellRenderer
     }
 
     /**
-     * Returns {@link JComboBox} for which specified {@link JList} is used in popup.
-     *
-     * @param list {@link JList} to retrieve {@link JComboBox} for
-     * @return {@link JComboBox} for which specified {@link JList} is used in popup
-     */
-    protected JComboBox getComboBox ( final JList list )
-    {
-        return ( JComboBox ) list.getClientProperty ( WebComboBoxUI.COMBOBOX_INSTANCE );
-    }
-
-    /**
      * A subclass of {@link WebComboBoxRenderer} that implements {@link javax.swing.plaf.UIResource}.
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
      *
      * @param <V> cell value type
-     * @param <C> list type
+     * @param <C> {@link JList} type
+     * @param <P> {@link ComboBoxCellParameters} type
      */
-    public static final class UIResource<V, C extends JList> extends WebComboBoxRenderer<V, C> implements javax.swing.plaf.UIResource
+    public static final class UIResource<V, C extends JList, P extends ComboBoxCellParameters<V, C>>
+            extends WebComboBoxRenderer<V, C, P> implements javax.swing.plaf.UIResource
     {
         /**
          * Implementation is used completely from {@link WebComboBoxRenderer}.

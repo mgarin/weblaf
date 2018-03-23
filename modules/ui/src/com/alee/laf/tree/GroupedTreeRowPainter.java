@@ -21,7 +21,7 @@ import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.util.List;
 
@@ -44,16 +44,16 @@ public class GroupedTreeRowPainter<C extends JTree, U extends WTreeUI, D extends
         // Ensure it is not root and that we are working with nodes
         final Object value = path.getLastPathComponent ();
         final Object root = component.getModel ().getRoot ();
-        if ( value instanceof DefaultMutableTreeNode && root instanceof DefaultMutableTreeNode && value != root )
+        if ( value instanceof TreeNode && root instanceof TreeNode && value != root )
         {
             // Finding out first level node in path
-            final DefaultMutableTreeNode rootNode = ( DefaultMutableTreeNode ) root;
-            DefaultMutableTreeNode firstLevel = ( DefaultMutableTreeNode ) value;
-            DefaultMutableTreeNode parent = ( DefaultMutableTreeNode ) firstLevel.getParent ();
+            final TreeNode rootNode = ( TreeNode ) root;
+            TreeNode firstLevel = ( TreeNode ) value;
+            TreeNode parent = firstLevel.getParent ();
             while ( parent != rootNode && parent != null )
             {
                 firstLevel = parent;
-                parent = ( DefaultMutableTreeNode ) firstLevel.getParent ();
+                parent = firstLevel.getParent ();
             }
 
             // Calculating general even/odd state
@@ -62,7 +62,7 @@ public class GroupedTreeRowPainter<C extends JTree, U extends WTreeUI, D extends
             states.add ( odd ? DecorationState.odd : DecorationState.even );
 
             // Calculating extra even/odd state
-            final int innerIndex = row - component.getRowForPath ( new TreePath ( firstLevel.getPath () ) );
+            final int innerIndex = row - component.getRowForPath ( new TreePath ( TreeUtils.getPath ( firstLevel ) ) );
             final boolean innerOdd = innerIndex % 2 == 0;
             states.add ( innerOdd ? DecorationState.innerOdd : DecorationState.innerEven );
         }

@@ -50,9 +50,9 @@ public class WebLayoutStyle extends DefaultLayoutStyle
 
     @Override
     public int getPreferredGap ( final JComponent component1, final JComponent component2, final ComponentPlacement type,
-                                 final int position, final Container parent )
+                                 final int position, final Container container )
     {
-        super.getPreferredGap ( component1, component2, type, position, parent );
+        super.getPreferredGap ( component1, component2, type, position, container );
 
         int offset = 0;
         switch ( type )
@@ -97,9 +97,9 @@ public class WebLayoutStyle extends DefaultLayoutStyle
     }
 
     @Override
-    public int getContainerGap ( final JComponent component, final int position, final Container parent )
+    public int getContainerGap ( final JComponent component, final int position, final Container container )
     {
-        super.getContainerGap ( component, position, parent );
+        super.getContainerGap ( component, position, container );
         return getButtonGap ( component, position, 12 - getButtonAdjustment ( component, position ) );
     }
 

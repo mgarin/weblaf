@@ -25,9 +25,9 @@ import javax.swing.*;
  * For example {@link com.alee.painter.decoration.shape.IShape} only provides {@link java.awt.Shape} for other elements.
  * As another example {@link com.alee.painter.decoration.background.IBackground} paints an actual background for any provided shape.
  *
- * @param <C> component type
- * @param <D> decoration type
- * @param <I> element type
+ * @param <C> {@link JComponent} type
+ * @param <D> {@link IDecoration} type
+ * @param <I> {@link IDecoratonElement} type
  * @author Mikle Garin
  */
 

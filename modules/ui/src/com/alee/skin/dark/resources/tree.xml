@@ -55,11 +55,11 @@
                     <decoration states="drop-on">
                         <WebShape round="0" />
                         <WebShadow type="inner" width="5" />
-                        <LineBorder color="85,130,190" stroke="basic;1;round;round;0;4,5" />
+                        <LineBorder color="220,220,220" stroke="basic;1;round;round;0;4,5" />
                     </decoration>
                     <decoration states="drop-between" size="80,2">
                         <WebShape round="0" />
-                        <LineBorder color="85,130,190" stroke="basic;1;round;round;0;4,5" />
+                        <LineBorder color="220,220,220" stroke="basic;1;round;round;0;4,5" />
                     </decoration>
                 </decorations>
             </dropLocationPainter>

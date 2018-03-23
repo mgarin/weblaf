@@ -321,7 +321,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
             // Ensure that this component is the top one under the mouse
             // We have to do that to avoid displaying hover on components which recieve update events while not directly being hovered
             // This case can be easily reproduced by using scroll pane with hovering scroll bars - draging the bars should not trigger hover
-            final JRootPane window = SwingUtils.getRootPane ( component );
+            final JRootPane window = CoreSwingUtils.getRootPane ( component );
             final Point windowPoint = CoreSwingUtils.getMouseLocation ( window );
             final Component topComponentAt = SwingUtils.getTopComponentAt ( window, windowPoint );
             if ( topComponentAt == component )

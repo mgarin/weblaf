@@ -69,15 +69,15 @@ public class ComponentPanelLayout extends AbstractLayoutManager
         components.remove ( component );
     }
 
-    public void insertLayoutComponent ( final int index, final Component comp )
+    public void insertLayoutComponent ( final int index, final Component component )
     {
-        components.add ( index, comp );
+        components.add ( index, component );
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
+    public Dimension preferredLayoutSize ( final Container container )
     {
-        final Insets insets = parent.getInsets ();
+        final Insets insets = container.getInsets ();
         int width = insets.left + insets.right;
         int height = insets.top + insets.bottom;
         for ( final Component component : components )
@@ -90,16 +90,16 @@ public class ComponentPanelLayout extends AbstractLayoutManager
     }
 
     @Override
-    public void layoutContainer ( final Container parent )
+    public void layoutContainer ( final Container container )
     {
-        final Insets insets = parent.getInsets ();
+        final Insets insets = container.getInsets ();
         int y = insets.top;
         for ( final Component component : components )
         {
             final Dimension ps = component.getPreferredSize ();
 
             final Integer shift = yShift.get ( component );
-            component.setBounds ( insets.left, shift == null ? y : y + shift, parent.getWidth () - insets.left - insets.right, ps.height );
+            component.setBounds ( insets.left, shift == null ? y : y + shift, container.getWidth () - insets.left - insets.right, ps.height );
 
             y += ps.height;
         }

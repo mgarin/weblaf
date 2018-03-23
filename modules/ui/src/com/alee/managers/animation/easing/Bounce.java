@@ -68,15 +68,15 @@ public abstract class Bounce extends AbstractEasing
      */
     protected final double out ( final double start, final double distance, double current, final double total )
     {
-        if ( ( current /= total ) < ( 1 / 2.75 ) )
+        if ( ( current /= total ) < 1 / 2.75 )
         {
             return distance * ( 7.5625 * current * current ) + start;
         }
-        else if ( current < ( 2 / 2.75 ) )
+        else if ( current < 2 / 2.75 )
         {
             return distance * ( 7.5625 * ( current -= 1.5 / 2.75 ) * current + .75 ) + start;
         }
-        else if ( current < ( 2.5 / 2.75 ) )
+        else if ( current < 2.5 / 2.75 )
         {
             return distance * ( 7.5625 * ( current -= 2.25 / 2.75 ) * current + .9375 ) + start;
         }

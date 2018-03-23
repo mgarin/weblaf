@@ -743,7 +743,6 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
      * Should be called when painter opacity changes.
      * todo Use this instead of the outer border updates?
      */
-    @SuppressWarnings ( "unused" )
     protected void updateOpacity ()
     {
         if ( isSettingsUpdateAllowed () )

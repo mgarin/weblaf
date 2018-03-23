@@ -17,7 +17,7 @@
 
 package com.alee.extended.tree;
 
-import com.alee.utils.SwingUtils;
+import com.alee.utils.CoreSwingUtils;
 
 import java.awt.*;
 import java.awt.image.ImageObserver;
@@ -70,7 +70,7 @@ public class NodeImageObserver implements ImageObserver
         {
             // Extra layer of safety as tree path bounds retrieval might cause issues outside of EDT
             // It can be the case since it asks renderer which might perform some internal UI updates on return
-            SwingUtils.invokeLater ( new Runnable ()
+            CoreSwingUtils.invokeLater ( new Runnable ()
             {
                 @Override
                 public void run ()

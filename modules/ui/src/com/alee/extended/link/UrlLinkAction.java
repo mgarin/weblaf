@@ -17,12 +17,9 @@
 
 package com.alee.extended.link;
 
-import com.alee.api.IconSupport;
-import com.alee.api.TitleSupport;
 import com.alee.managers.icon.Icons;
 import com.alee.utils.WebUtils;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 /**
@@ -33,12 +30,12 @@ import java.awt.event.ActionEvent;
  * @see WebLink
  */
 
-public class UrlLinkAction extends AsyncLinkAction implements IconSupport, TitleSupport
+public class UrlLinkAction extends AsyncLinkAction
 {
     /**
-     * URL to be opened.
+     * todo 1. Retrieve favicon from the site?
+     * todo 2. Remove protocol from URL?
      */
-    private final String url;
 
     /**
      * Constructs new {@link com.alee.extended.link.UrlLinkAction}.
@@ -47,27 +44,12 @@ public class UrlLinkAction extends AsyncLinkAction implements IconSupport, Title
      */
     public UrlLinkAction ( final String url )
     {
-        super ();
-        this.url = url;
-    }
-
-    @Override
-    public Icon getIcon ()
-    {
-        // todo Probably retrieve favicon from the site?
-        return Icons.globe;
-    }
-
-    @Override
-    public String getTitle ()
-    {
-        // todo Probably remove protocol if it exists?
-        return url;
+        super ( Icons.globe, url );
     }
 
     @Override
     protected void asyncLinkExecuted ( final ActionEvent event )
     {
-        WebUtils.browseSiteSafely ( url );
+        WebUtils.browseSiteSafely ( getText () );
     }
 }

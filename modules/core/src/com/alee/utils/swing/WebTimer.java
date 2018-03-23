@@ -22,9 +22,10 @@ import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.TimeUtils;
 import com.alee.utils.parsing.DurationUnits;
 
+import javax.swing.event.EventListenerList;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,7 @@ import java.util.Map;
  * This timer is a small extension for standard javax.swing.Timer. Instead of running in a single queue it creates separate Threads for
  * each timer and does not affect event-dispatching thread, until events are dispatched. This basically means that you can use any number
  * of Timer instances and you can run them altogether without having any issues.
- * <p>
+ *
  * Also this Timer implementation offers a variety of additional features and improvements which standard timer doesn't have (for example
  * you can dispatch events in a separate non-EDT thread and as a result avoid using EDT at all where it is not necessary).
  *
@@ -42,7 +43,7 @@ import java.util.Map;
  * @see com.alee.utils.swing.TimerActionListener
  */
 
-public class WebTimer
+public class WebTimer implements Serializable
 {
     /**
      * Default name for timer thread.
@@ -58,46 +59,6 @@ public class WebTimer
      * Whether EDT should be used as the default timer action execution thread.
      */
     public static boolean useEdtByDefault = true;
-
-    /**
-     * Timer event listeners list.
-     */
-    protected final List<ActionListener> listeners = new ArrayList<ActionListener> ( 1 );
-
-    /**
-     * Unique (within one timer instance) ID of currently running thread.
-     */
-    protected int id = 0;
-
-    /**
-     * ID of previously executed thread.
-     */
-    protected int lastId;
-
-    /**
-     * Map of marks for currently active threads.
-     */
-    protected final Map<Integer, Boolean> running = new Hashtable<Integer, Boolean> ();
-
-    /**
-     * Last timer cycle start time.
-     */
-    protected long sleepStart = 0;
-
-    /**
-     * Last timer cycle delay time.
-     */
-    protected long sleepTime = 0;
-
-    /**
-     * Number of executed cycles;
-     */
-    protected int cycleCount = 0;
-
-    /**
-     * Last timer thread.
-     */
-    protected Thread exec = null;
 
     /**
      * Delay between timer cycles in milliseconds.
@@ -155,6 +116,46 @@ public class WebTimer
      * Zero and less = unlimited amount of execution cycles.
      */
     protected int cyclesLimit = 0;
+
+    /**
+     * Timer event listeners list.
+     */
+    protected final EventListenerList listeners = new EventListenerList ();
+
+    /**
+     * Unique (within one timer instance) ID of currently running thread.
+     */
+    protected transient int id = 0;
+
+    /**
+     * ID of previously executed thread.
+     */
+    protected transient int lastId;
+
+    /**
+     * Map of marks for currently active threads.
+     */
+    protected transient final Map<Integer, Boolean> running = new Hashtable<Integer, Boolean> ();
+
+    /**
+     * Last timer cycle start time.
+     */
+    protected transient long sleepStart = 0;
+
+    /**
+     * Last timer cycle delay time.
+     */
+    protected transient long sleepTime = 0;
+
+    /**
+     * Number of executed cycles;
+     */
+    protected transient int cycleCount = 0;
+
+    /**
+     * Last timer thread.
+     */
+    protected transient Thread exec = null;
 
     /**
      * Constructs timer with specified delay.
@@ -919,7 +920,7 @@ public class WebTimer
     {
         if ( listener != null )
         {
-            listeners.add ( listener );
+            listeners.add ( ActionListener.class, listener );
         }
         return this;
     }
@@ -934,7 +935,7 @@ public class WebTimer
     {
         if ( listener != null )
         {
-            listeners.remove ( listener );
+            listeners.remove ( ActionListener.class, listener );
         }
         return this;
     }
@@ -946,7 +947,7 @@ public class WebTimer
      */
     public List<ActionListener> getListeners ()
     {
-        return listeners;
+        return CollectionUtils.asList ( listeners.getListeners ( ActionListener.class ) );
     }
 
     /**
@@ -956,13 +957,13 @@ public class WebTimer
      */
     public void fireActionPerformed ( final int id )
     {
-        if ( listeners.size () > 0 )
+        if ( listeners.getListenerCount ( ActionListener.class ) > 0 )
         {
+            // Working with local array
+            final ActionListener[] listenerList = listeners.getListeners ( ActionListener.class );
+
             // Event
             final ActionEvent actionEvent = createActionEvent ();
-
-            // Working with local array
-            final List<ActionListener> listenerList = CollectionUtils.copy ( listeners );
 
             // Dispatch event in chosen way
             if ( useEventDispatchThread )

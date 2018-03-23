@@ -41,13 +41,13 @@ public class WebViewportLayout extends AbstractLayoutManager implements Mergeabl
     /**
      * Called by the AWT when the specified container needs to be laid out.
      *
-     * @param parent the container to lay out
+     * @param container the container to lay out
      * @throws AWTError if the target isn't the container specified to the {@code BoxLayout} constructor
      */
     @Override
-    public void layoutContainer ( final Container parent )
+    public void layoutContainer ( final Container container )
     {
-        final JViewport viewport = ( JViewport ) parent;
+        final JViewport viewport = ( JViewport ) container;
         final Component view = viewport.getView ();
         Scrollable scrollableView = null;
 
@@ -179,9 +179,9 @@ public class WebViewportLayout extends AbstractLayoutManager implements Mergeabl
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
+    public Dimension preferredLayoutSize ( final Container container )
     {
-        final JViewport viewport = ( JViewport ) parent;
+        final JViewport viewport = ( JViewport ) container;
         final Component view = viewport.getView ();
 
         /**
@@ -244,7 +244,7 @@ public class WebViewportLayout extends AbstractLayoutManager implements Mergeabl
     }
 
     @Override
-    public Dimension minimumLayoutSize ( final Container parent )
+    public Dimension minimumLayoutSize ( final Container container )
     {
         return new Dimension ( 4, 4 );
     }

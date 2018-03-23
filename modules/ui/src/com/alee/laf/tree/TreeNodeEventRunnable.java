@@ -17,7 +17,7 @@
 
 package com.alee.laf.tree;
 
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
 
 /**
  * Custom runnable that provides single tree node.
@@ -26,7 +26,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * @author Mikle Garin
  */
 
-public interface TreeNodeEventRunnable<N extends DefaultMutableTreeNode>
+public interface TreeNodeEventRunnable<N extends MutableTreeNode>
 {
     /**
      * Performs action according to node.

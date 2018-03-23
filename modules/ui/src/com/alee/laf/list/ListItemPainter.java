@@ -112,7 +112,6 @@ public class ListItemPainter<C extends JList, U extends WebListUI, D extends IDe
      * @param states list to add states to
      * @param item   item to provide states for
      */
-    @SuppressWarnings ( "unused" )
     protected void addNumerationStates ( final List<String> states, final Object item )
     {
         states.add ( index % 2 == 0 ? DecorationState.odd : DecorationState.even );

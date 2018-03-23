@@ -74,7 +74,6 @@ public class DashFocus<C extends JComponent, D extends IDecoration<C, D>, I exte
      * @param d painted decoration state
      * @return focus rounding
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected int getRound ( final C c, final D d )
     {
         return round != null ? round : 0;
@@ -87,7 +86,6 @@ public class DashFocus<C extends JComponent, D extends IDecoration<C, D>, I exte
      * @param d painted decoration state
      * @return focus stroke
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public Stroke getStroke ( final C c, final D d )
     {
         return stroke;
@@ -100,7 +98,6 @@ public class DashFocus<C extends JComponent, D extends IDecoration<C, D>, I exte
      * @param d painted decoration state
      * @return focus color
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected Color getColor ( final C c, final D d )
     {
         if ( color != null )

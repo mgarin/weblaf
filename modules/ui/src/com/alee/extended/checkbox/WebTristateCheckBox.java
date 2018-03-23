@@ -21,7 +21,10 @@ import com.alee.laf.checkbox.CheckState;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
 import com.alee.managers.language.updaters.LanguageUpdater;
-import com.alee.managers.settings.*;
+import com.alee.managers.settings.DefaultValue;
+import com.alee.managers.settings.SettingsMethods;
+import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.settings.UISettingsManager;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
@@ -46,9 +49,12 @@ import java.util.List;
  * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see TristateCheckBoxDescriptor
+ * @see WTristateCheckBoxUI
+ * @see WebTristateCheckBoxUI
+ * @see ITristateCheckBoxPainter
+ * @see TristateCheckBoxPainter
  * @see JCheckBox
- * @see com.alee.laf.checkbox.WebCheckBoxUI
- * @see com.alee.laf.checkbox.CheckBoxPainter
  */
 
 public class WebTristateCheckBox extends JCheckBox

@@ -21,6 +21,7 @@ package com.alee.extended.dock;
  * Various visibility settings for {@link com.alee.extended.dock.WebDockablePane} sidebar buttons.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  */
 
 public enum SidebarVisibility

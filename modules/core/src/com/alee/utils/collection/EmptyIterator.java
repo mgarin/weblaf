@@ -32,7 +32,7 @@ public final class EmptyIterator<E> implements Iterator<E>
     /**
      * {@link EmptyIterator} singleton instance.
      */
-    private static EmptyIterator instance;
+    private static Iterator instance;
 
     /**
      * Returns {@link EmptyIterator} instance.

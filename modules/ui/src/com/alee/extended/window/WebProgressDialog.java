@@ -17,12 +17,12 @@
 
 package com.alee.extended.window;
 
-import com.alee.managers.style.StyleId;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.progressbar.WebProgressBar;
 import com.alee.laf.window.WebDialog;
-import com.alee.utils.SwingUtils;
+import com.alee.managers.style.StyleId;
+import com.alee.utils.CoreSwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -99,7 +99,7 @@ public class WebProgressDialog extends WebDialog
 
     public void setText ( final String text )
     {
-        SwingUtils.invokeLater ( new Runnable ()
+        CoreSwingUtils.invokeLater ( new Runnable ()
         {
             @Override
             public void run ()
@@ -111,7 +111,7 @@ public class WebProgressDialog extends WebDialog
 
     public void setTextKey ( final String key )
     {
-        SwingUtils.invokeLater ( new Runnable ()
+        CoreSwingUtils.invokeLater ( new Runnable ()
         {
             @Override
             public void run ()
@@ -128,7 +128,7 @@ public class WebProgressDialog extends WebDialog
 
     public void setProgressText ( final String progressText )
     {
-        SwingUtils.invokeLater ( new Runnable ()
+        CoreSwingUtils.invokeLater ( new Runnable ()
         {
             @Override
             public void run ()
@@ -145,7 +145,7 @@ public class WebProgressDialog extends WebDialog
 
     public void setShowProgressText ( final boolean showProgressText )
     {
-        SwingUtils.invokeLater ( new Runnable ()
+        CoreSwingUtils.invokeLater ( new Runnable ()
         {
             @Override
             public void run ()
@@ -163,7 +163,7 @@ public class WebProgressDialog extends WebDialog
 
     public void setIndeterminate ( final boolean indeterminate )
     {
-        SwingUtils.invokeLater ( new Runnable ()
+        CoreSwingUtils.invokeLater ( new Runnable ()
         {
             @Override
             public void run ()
@@ -180,7 +180,7 @@ public class WebProgressDialog extends WebDialog
 
     public void setMinimum ( final int minimum )
     {
-        SwingUtils.invokeLater ( new Runnable ()
+        CoreSwingUtils.invokeLater ( new Runnable ()
         {
             @Override
             public void run ()
@@ -197,7 +197,7 @@ public class WebProgressDialog extends WebDialog
 
     public void setMaximum ( final int maximum )
     {
-        SwingUtils.invokeLater ( new Runnable ()
+        CoreSwingUtils.invokeLater ( new Runnable ()
         {
             @Override
             public void run ()
@@ -214,7 +214,7 @@ public class WebProgressDialog extends WebDialog
 
     public void setProgress ( final int progress )
     {
-        SwingUtils.invokeLater ( new Runnable ()
+        CoreSwingUtils.invokeLater ( new Runnable ()
         {
             @Override
             public void run ()

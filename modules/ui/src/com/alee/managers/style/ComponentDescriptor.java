@@ -17,9 +17,7 @@
 
 package com.alee.managers.style;
 
-import com.alee.api.IconSupport;
 import com.alee.api.Identifiable;
-import com.alee.api.TitleSupport;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -37,7 +35,7 @@ import javax.swing.plaf.ComponentUI;
  * @see AbstractComponentDescriptor
  */
 
-public interface ComponentDescriptor<C extends JComponent> extends Identifiable, IconSupport, TitleSupport
+public interface ComponentDescriptor<C extends JComponent> extends Identifiable
 {
     /**
      * Returns {@link JComponent} class.
@@ -94,11 +92,10 @@ public interface ComponentDescriptor<C extends JComponent> extends Identifiable,
     public String getId ();
 
     /**
-     * Returns component icon.
+     * Returns component {@link Icon}.
      *
-     * @return component icon
+     * @return component {@link Icon}
      */
-    @Override
     public Icon getIcon ();
 
     /**
@@ -106,7 +103,6 @@ public interface ComponentDescriptor<C extends JComponent> extends Identifiable,
      *
      * @return component name
      */
-    @Override
     public String getTitle ();
 
     /**

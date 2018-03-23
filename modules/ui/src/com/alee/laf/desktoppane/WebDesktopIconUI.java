@@ -50,7 +50,6 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements ShapeSupport
      * @param c component that will use UI instance
      * @return instance of the {@link WebDesktopIconUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebDesktopIconUI ();
@@ -105,7 +104,10 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements ShapeSupport
     @Override
     protected void installListeners ()
     {
+        // Installing default listeners
         super.installListeners ();
+
+        // Instaling custom listeners
         if ( iconPane instanceof WebInternalFrameTitlePane )
         {
             ( ( WebInternalFrameTitlePane ) iconPane ).install ();
@@ -115,10 +117,13 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements ShapeSupport
     @Override
     protected void uninstallListeners ()
     {
+        // Uninstaling custom listeners
         if ( iconPane instanceof WebInternalFrameTitlePane )
         {
             ( ( WebInternalFrameTitlePane ) iconPane ).uninstall ();
         }
+
+        // Uninstalling default listeners
         super.uninstallListeners ();
     }
 

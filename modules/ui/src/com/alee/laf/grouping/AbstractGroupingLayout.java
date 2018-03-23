@@ -409,12 +409,12 @@ public abstract class AbstractGroupingLayout extends AbstractLayoutManager imple
      * Returns descriptors for painted component sides and lines.
      * It is requested only if grouping is actually enabled.
      *
-     * @param parent    component container
+     * @param container    component container
      * @param component painted component
      * @param index     component z-index in container
      * @return descriptors for painted component sides and lines
      */
-    public abstract Pair<String, String> getDescriptors ( Container parent, Component component, int index );
+    public abstract Pair<String, String> getDescriptors ( Container container, Component component, int index );
 
     /**
      * Resets cached sides and lines descriptors.

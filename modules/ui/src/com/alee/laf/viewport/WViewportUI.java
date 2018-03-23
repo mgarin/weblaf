@@ -30,7 +30,7 @@ import javax.swing.plaf.ViewportUI;
  * @author Mikle Garin
  */
 
-public class WViewportUI<C extends JViewport> extends ViewportUI implements WebUI<C>
+public abstract class WViewportUI<C extends JViewport> extends ViewportUI implements WebUI<C>
 {
     /**
      * Runtime variables.

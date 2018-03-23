@@ -27,6 +27,7 @@ import java.util.List;
 /**
  * This class represents basic data for single document opened in WebDocumentPane.
  *
+ * @param <C> {@link Component} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
  * @see com.alee.extended.tab.WebDocumentPane
@@ -148,7 +149,7 @@ public class DocumentData<C extends Component>
      * @param icon       document icon
      * @param title      document title
      * @param background document tab background color
-     * @param closable  whether document is closable or not
+     * @param closable   whether document is closable or not
      * @param component  document content
      */
     public DocumentData ( final String id, final Icon icon, final String title, final Color background, final boolean closable,
@@ -164,7 +165,7 @@ public class DocumentData<C extends Component>
      * @param icon       document icon
      * @param title      document title
      * @param background document tab background color
-     * @param closable  whether document is closable or not
+     * @param closable   whether document is closable or not
      * @param draggable  whether document is draggable or not
      * @param component  document content
      */
@@ -182,7 +183,7 @@ public class DocumentData<C extends Component>
      * @param title      document title
      * @param foreground document title foreground color
      * @param background document tab background color
-     * @param closable  whether document is closable or not
+     * @param closable   whether document is closable or not
      * @param draggable  whether document is draggable or not
      * @param component  document content
      */

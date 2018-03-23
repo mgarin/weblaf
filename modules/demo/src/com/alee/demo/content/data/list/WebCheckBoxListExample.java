@@ -18,6 +18,7 @@
 package com.alee.demo.content.data.list;
 
 import com.alee.demo.api.example.*;
+import com.alee.extended.list.CheckBoxCellData;
 import com.alee.extended.list.CheckBoxListModel;
 import com.alee.extended.list.WebCheckBoxList;
 import com.alee.laf.scroll.WebScrollPane;
@@ -144,7 +145,7 @@ public class WebCheckBoxListExample extends AbstractStylePreviewExample
         final CheckBoxListModel model = new CheckBoxListModel ();
         for ( final String element : data )
         {
-            model.addCheckBoxElement ( element );
+            model.add ( new CheckBoxCellData ( element ) );
         }
         return model;
     }

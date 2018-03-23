@@ -21,6 +21,7 @@ import com.alee.extended.layout.StackLayout;
 import com.alee.extended.transition.effects.TransitionEffect;
 import com.alee.laf.panel.WebPanel;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.WebTimer;
 
@@ -127,7 +128,7 @@ public class ComponentTransition extends WebPanel
 
     public void performTransition ( final Component content )
     {
-        SwingUtils.invokeLater ( new Runnable ()
+        CoreSwingUtils.invokeLater ( new Runnable ()
         {
             @Override
             public void run ()

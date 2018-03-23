@@ -50,7 +50,6 @@ public class WebSplitPaneDividerUI<C extends WebSplitPaneDivider> extends WSplit
      * @param c component that will use UI instance
      * @return instance of the {@link WebSplitPaneDividerUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSplitPaneDividerUI ();

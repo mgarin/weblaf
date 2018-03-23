@@ -90,6 +90,11 @@ public final class Icons
     public static final LazyIcon squarePlusDisabled = new LazyIcon ( "square-plus-disabled" );
     public static final LazyIcon squareMinus = new LazyIcon ( "square-minus" );
     public static final LazyIcon squareMinusDisabled = new LazyIcon ( "square-minus-disabled" );
+    public static final LazyIcon root = new LazyIcon ( "root" );
+    public static final LazyIcon rootOpen = new LazyIcon ( "root-open" );
+    public static final LazyIcon folder = new LazyIcon ( "folder" );
+    public static final LazyIcon folderOpen = new LazyIcon ( "folder-open" );
+    public static final LazyIcon leaf = new LazyIcon ( "leaf" );
 
     /**
      * File Chooser icons.
@@ -99,7 +104,9 @@ public final class Icons
     public static final LazyIcon history = new LazyIcon ( "history" );
     public static final LazyIcon folderUp = new LazyIcon ( "folder-up" );
     public static final LazyIcon folderHome = new LazyIcon ( "folder-home" );
+    public static final LazyIcon folderDesktop = new LazyIcon ( "folder-desktop" );
     public static final LazyIcon folderNew = new LazyIcon ( "folder-new" );
+    public static final LazyIcon drive = new LazyIcon ( "drive" );
     public static final LazyIcon refresh = new LazyIcon ( "refresh" );
     public static final LazyIcon remove = new LazyIcon ( "remove" );
     public static final LazyIcon view = new LazyIcon ( "view" );

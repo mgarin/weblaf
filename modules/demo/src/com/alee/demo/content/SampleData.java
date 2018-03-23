@@ -17,11 +17,13 @@
 
 package com.alee.demo.content;
 
-import com.alee.api.TitleSupport;
+import com.alee.api.ui.TextBridge;
+import com.alee.laf.list.ListCellParameters;
 import com.alee.managers.language.LM;
 import com.alee.managers.language.LanguageSensitive;
 import com.alee.utils.CollectionUtils;
 
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import java.io.Serializable;
@@ -204,7 +206,7 @@ public final class SampleData
      * Sample list item object.
      * It supports translation based on the provided language key in combination with example key.
      */
-    private static class ListItem implements TitleSupport
+    private static class ListItem implements TextBridge<ListCellParameters<ListItem, JList>>
     {
         /**
          * Item language key.
@@ -223,7 +225,7 @@ public final class SampleData
         }
 
         @Override
-        public String getTitle ()
+        public String getText ( final ListCellParameters<ListItem, JList> parameters )
         {
             return LM.get ( "demo.sample.list." + language );
         }

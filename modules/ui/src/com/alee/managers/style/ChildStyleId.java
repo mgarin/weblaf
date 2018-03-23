@@ -17,7 +17,7 @@
 
 package com.alee.managers.style;
 
-import com.alee.utils.SwingUtils;
+import com.alee.utils.CoreSwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -76,7 +76,7 @@ public final class ChildStyleId
      */
     public StyleId at ( final Window parent )
     {
-        return at ( SwingUtils.getRootPane ( parent ) );
+        return at ( CoreSwingUtils.getRootPane ( parent ) );
     }
 
     /**

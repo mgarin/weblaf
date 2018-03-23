@@ -429,7 +429,7 @@ public class WebColorChooserField extends WebTextField
                                         if ( screen != null )
                                         {
                                             screen.repaint ();
-                                            SwingUtils.invokeLater ( new Runnable ()
+                                            CoreSwingUtils.invokeLater ( new Runnable ()
                                             {
                                                 @Override
                                                 public void run ()
@@ -627,7 +627,7 @@ public class WebColorChooserField extends WebTextField
         // Create popup if it doesn't exist
         if ( popup == null || colorChooserPanel == null )
         {
-            final Window ancestor = SwingUtils.getWindowAncestor ( this );
+            final Window ancestor = CoreSwingUtils.getWindowAncestor ( this );
 
             // Popup window
             popup = new WebPopOver ( ancestor );

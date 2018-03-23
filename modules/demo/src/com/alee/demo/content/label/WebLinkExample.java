@@ -166,7 +166,7 @@ public class WebLinkExample extends AbstractStylePreviewExample
         {
             final ImageIcon icon = WebLookAndFeel.getIcon ( 16 );
             final String text = getPreviewLanguagePrefix () + "link";
-            final WebLink link = new WebLink ( getStyleId (), icon, text, new LinkAction ()
+            final WebLink link = new WebLink ( getStyleId (), new AbstractLinkAction ( icon, text )
             {
                 @Override
                 public void linkExecuted ( final ActionEvent event )

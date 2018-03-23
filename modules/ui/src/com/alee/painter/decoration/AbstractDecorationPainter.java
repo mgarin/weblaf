@@ -427,7 +427,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     {
         if ( usesHoverView () )
         {
-            hover = SwingUtils.isHovered ( component );
+            hover = CoreSwingUtils.isHovered ( component );
             hoverStateTracker = new AbstractHoverBehavior<C> ( component, false )
             {
                 @Override

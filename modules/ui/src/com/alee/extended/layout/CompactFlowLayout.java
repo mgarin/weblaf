@@ -58,11 +58,11 @@ public class CompactFlowLayout extends FlowLayout
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container target )
+    public Dimension preferredLayoutSize ( final Container container )
     {
-        synchronized ( target.getTreeLock () )
+        synchronized ( container.getTreeLock () )
         {
-            final Dimension ps = super.preferredLayoutSize ( target );
+            final Dimension ps = super.preferredLayoutSize ( container );
             ps.width -= getHgap () * 2;
             ps.height -= getVgap () * 2;
             return ps;
@@ -70,11 +70,11 @@ public class CompactFlowLayout extends FlowLayout
     }
 
     @Override
-    public Dimension minimumLayoutSize ( final Container target )
+    public Dimension minimumLayoutSize ( final Container container )
     {
-        synchronized ( target.getTreeLock () )
+        synchronized ( container.getTreeLock () )
         {
-            final Dimension ms = super.minimumLayoutSize ( target );
+            final Dimension ms = super.minimumLayoutSize ( container );
             ms.width -= getHgap () * 2;
             ms.height -= getVgap () * 2;
             return ms;
@@ -82,18 +82,18 @@ public class CompactFlowLayout extends FlowLayout
     }
 
     @Override
-    public void layoutContainer ( final Container target )
+    public void layoutContainer ( final Container container )
     {
-        synchronized ( target.getTreeLock () )
+        synchronized ( container.getTreeLock () )
         {
-            final Insets insets = target.getInsets ();
-            final int maxwidth = target.getWidth () - ( insets.left + insets.right );
-            final int nmembers = target.getComponentCount ();
+            final Insets insets = container.getInsets ();
+            final int maxwidth = container.getWidth () - ( insets.left + insets.right );
+            final int nmembers = container.getComponentCount ();
             int x = 0;
             int y = insets.top;
             int rowh = 0, start = 0;
 
-            final boolean ltr = target.getComponentOrientation ().isLeftToRight ();
+            final boolean ltr = container.getComponentOrientation ().isLeftToRight ();
 
             final boolean useBaseline = getAlignOnBaseline ();
             int[] ascent = null;
@@ -107,7 +107,7 @@ public class CompactFlowLayout extends FlowLayout
 
             for ( int i = 0; i < nmembers; i++ )
             {
-                final Component m = target.getComponent ( i );
+                final Component m = container.getComponent ( i );
                 if ( m.isVisible () )
                 {
                     final Dimension d = m.getPreferredSize ();
@@ -137,7 +137,7 @@ public class CompactFlowLayout extends FlowLayout
                     }
                     else
                     {
-                        rowh = moveComponents ( target, insets.left, y,
+                        rowh = moveComponents ( container, insets.left, y,
                                 maxwidth - x, rowh,
                                 start, i, ltr, useBaseline, ascent, descent );
                         x = d.width;
@@ -147,7 +147,7 @@ public class CompactFlowLayout extends FlowLayout
                     }
                 }
             }
-            moveComponents ( target, insets.left, y,
+            moveComponents ( container, insets.left, y,
                     maxwidth - x, rowh,
                     start, nmembers, ltr, useBaseline, ascent, descent );
         }
@@ -156,7 +156,7 @@ public class CompactFlowLayout extends FlowLayout
     /**
      * Centers the elements in the specified row, if there is any slack.
      *
-     * @param target      the component which needs to be moved
+     * @param container   the component which needs to be moved
      * @param x           the x coordinate
      * @param y           the y coordinate
      * @param width       the width dimensions
@@ -169,7 +169,7 @@ public class CompactFlowLayout extends FlowLayout
      * @param descent     ascent for the components, only valid if useBaseline is true
      * @return actual row height
      */
-    protected int moveComponents ( final Container target, int x, final int y, final int width, int height, final int rowStart,
+    protected int moveComponents ( final Container container, int x, final int y, final int width, int height, final int rowStart,
                                    final int rowEnd, final boolean ltr, final boolean useBaseline, final int[] ascent, final int[] descent )
     {
         switch ( getAlignment () )
@@ -197,7 +197,7 @@ public class CompactFlowLayout extends FlowLayout
             int maxDescent = 0;
             for ( int i = rowStart; i < rowEnd; i++ )
             {
-                final Component m = target.getComponent ( i );
+                final Component m = container.getComponent ( i );
                 if ( m.isVisible () )
                 {
                     if ( ascent[ i ] >= 0 )
@@ -217,7 +217,7 @@ public class CompactFlowLayout extends FlowLayout
         }
         for ( int i = rowStart; i < rowEnd; i++ )
         {
-            final Component m = target.getComponent ( i );
+            final Component m = container.getComponent ( i );
             if ( m.isVisible () )
             {
                 final int cy;
@@ -235,7 +235,7 @@ public class CompactFlowLayout extends FlowLayout
                 }
                 else
                 {
-                    m.setLocation ( target.getWidth () - x - m.getWidth (), cy );
+                    m.setLocation ( container.getWidth () - x - m.getWidth (), cy );
                 }
                 x += m.getWidth () + getHgap ();
             }

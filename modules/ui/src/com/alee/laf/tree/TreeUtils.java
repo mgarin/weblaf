@@ -240,4 +240,105 @@ public final class TreeUtils
         }
         return ( TreeWalker<N> ) treeWalker;
     }
+
+    /**
+     * Returns {@link TreePath} from the root to the specified {@link TreeNode}.
+     * The last element in the path is the specified {@link TreeNode}.
+     *
+     * @param node {@link TreeNode} to get {@link TreePath} for
+     * @return {@link TreePath} from the root to the specified {@link TreeNode}
+     */
+    public static TreePath getTreePath ( final TreeNode node )
+    {
+        return new TreePath ( getPath ( node ) );
+    }
+
+    /**
+     * Returns the path from the root, to get to this node.
+     * First element in the path is the root and the last element in the path is this node.
+     *
+     * @param node {@link TreeNode} to get the path for
+     * @return array of {@link TreeNode}s representing the path
+     */
+    public static TreeNode[] getPath ( final TreeNode node )
+    {
+        return getPathToRoot ( node, 0 );
+    }
+
+    /**
+     * Builds the parents of node up to and including the root node, where the original node is the last element in the returned array.
+     * The length of the returned array gives the node's depth in the tree.
+     *
+     * @param node  {@link TreeNode} to get the path for
+     * @param depth an int giving the number of steps already taken towards the root (on recursive calls), used to size the returned array
+     * @return array of {@link TreeNode}s representing the path from the root to the specified {@link TreeNode}
+     */
+    public static TreeNode[] getPathToRoot ( final TreeNode node, int depth )
+    {
+        final TreeNode[] path;
+        if ( node == null )
+        {
+            if ( depth == 0 )
+            {
+                return null;
+            }
+            else
+            {
+                path = new TreeNode[ depth ];
+            }
+        }
+        else
+        {
+            depth++;
+            path = getPathToRoot ( node.getParent (), depth );
+            path[ path.length - depth ] = node;
+        }
+        return path;
+    }
+
+    /**
+     * Returns whether or not {@code anotherNode} is an ancestor of {@code node}.
+     * If {@code anotherNode} is {@code null}, this method returns {@code false}.
+     * Note that any node is considered as an ancestor of itself.
+     * This operation is at worst O(h) where h is the distance from the root to {@code node}.
+     *
+     * @param node        tested {@code node}
+     * @param anotherNode node to test as an ancestor of {@code node}
+     * @return {@code true} if {@code anotherNode} is an ancestor of {@code node}, {@code false} otherwise
+     */
+    public static boolean isNodeAncestor ( final TreeNode node, final TreeNode anotherNode )
+    {
+        if ( anotherNode != null )
+        {
+            TreeNode ancestor = node;
+            do
+            {
+                if ( ancestor == anotherNode )
+                {
+                    return true;
+                }
+            }
+            while ( ( ancestor = ancestor.getParent () ) != null );
+        }
+        return false;
+    }
+
+    /**
+     * Returns number of levels above the specified {@code node}.
+     * It is basically the distance from the root to the specified {@code node}.
+     * Returns {@code 0} if {@code node} is the root.
+     *
+     * @param node {@code node}
+     * @return number of levels above the specified {@code node}
+     */
+    public static int getLevel ( final TreeNode node )
+    {
+        int levels = 0;
+        TreeNode ancestor = node;
+        while ( ( ancestor = ancestor.getParent () ) != null )
+        {
+            levels++;
+        }
+        return levels;
+    }
 }

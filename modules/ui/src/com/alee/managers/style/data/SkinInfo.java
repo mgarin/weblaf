@@ -17,8 +17,6 @@
 
 package com.alee.managers.style.data;
 
-import com.alee.api.IconSupport;
-import com.alee.api.TitleSupport;
 import com.alee.api.merge.Merge;
 import com.alee.managers.icon.IconManager;
 import com.alee.managers.icon.set.IconSet;
@@ -47,7 +45,7 @@ import java.util.*;
 
 @XStreamAlias ( "skin" )
 @XStreamConverter ( SkinInfoConverter.class )
-public final class SkinInfo implements IconSupport, TitleSupport, Serializable
+public final class SkinInfo implements Serializable
 {
     /**
      * Unique skin ID.
@@ -245,11 +243,10 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
     }
 
     /**
-     * Returns skin icon.
+     * Returns skin {@link Icon}.
      *
-     * @return skin icon
+     * @return skin {@link Icon}
      */
-    @Override
     public Icon getIcon ()
     {
         return icon;
@@ -270,10 +267,26 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
      *
      * @return skin title
      */
-    @Override
     public String getTitle ()
     {
-        return title;
+        final String text;
+        if ( title != null )
+        {
+            text = title;
+        }
+        else
+        {
+            final String id = getId ();
+            if ( id != null )
+            {
+                text = id;
+            }
+            else
+            {
+                text = "Unnamed skin";
+            }
+        }
+        return text;
     }
 
     /**
@@ -916,24 +929,6 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
     @Override
     public String toString ()
     {
-        final String text;
-        final String title = getTitle ();
-        if ( title != null )
-        {
-            text = title;
-        }
-        else
-        {
-            final String id = getId ();
-            if ( id != null )
-            {
-                text = id;
-            }
-            else
-            {
-                text = "Unnamed skin";
-            }
-        }
-        return text;
+        return getTitle ();
     }
 }

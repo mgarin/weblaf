@@ -40,9 +40,12 @@ import java.util.List;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
- * @see WebContainer
- * @see WebDockablePaneUI
+ * @see DockableFrameDescriptor
+ * @see WDockableFrameUI
+ * @see WebDockableFrameUI
+ * @see IDockableFramePainter
  * @see DockablePanePainter
+ * @see WebContainer
  */
 
 public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFrameUI> implements Identifiable, Stateful

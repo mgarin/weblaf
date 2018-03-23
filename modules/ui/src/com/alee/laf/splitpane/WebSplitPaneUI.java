@@ -50,7 +50,6 @@ public class WebSplitPaneUI<C extends JSplitPane> extends WSplitPaneUI<C> implem
      * @param c component that will use UI instance
      * @return instance of the {@link WebSplitPaneUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSplitPaneUI ();

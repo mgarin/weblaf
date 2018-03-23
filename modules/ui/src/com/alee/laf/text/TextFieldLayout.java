@@ -46,9 +46,9 @@ public class TextFieldLayout extends AbstractLayoutManager
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
+    public Dimension preferredLayoutSize ( final Container container )
     {
-        final Insets b = parent.getInsets ();
+        final Insets b = container.getInsets ();
         final Component leading = painter.getLeadingComponent ();
         final Component trailing = painter.getTrailingComponent ();
         final Dimension l = leading != null ? leading.getPreferredSize () : new Dimension ();
@@ -57,10 +57,10 @@ public class TextFieldLayout extends AbstractLayoutManager
     }
 
     @Override
-    public void layoutContainer ( final Container parent )
+    public void layoutContainer ( final Container container )
     {
-        final Insets b = parent.getInsets ();
-        final boolean ltr = parent.getComponentOrientation ().isLeftToRight ();
+        final Insets b = container.getInsets ();
+        final boolean ltr = container.getComponentOrientation ().isLeftToRight ();
         final Component leading = painter.getLeadingComponent ();
         final Component trailing = painter.getTrailingComponent ();
         if ( leading != null )
@@ -68,11 +68,11 @@ public class TextFieldLayout extends AbstractLayoutManager
             final int w = leading.getPreferredSize ().width;
             if ( ltr )
             {
-                leading.setBounds ( b.left - w, b.top, w, parent.getHeight () - b.top - b.bottom );
+                leading.setBounds ( b.left - w, b.top, w, container.getHeight () - b.top - b.bottom );
             }
             else
             {
-                leading.setBounds ( parent.getWidth () - b.right, b.top, w, parent.getHeight () - b.top - b.bottom );
+                leading.setBounds ( container.getWidth () - b.right, b.top, w, container.getHeight () - b.top - b.bottom );
             }
         }
         if ( trailing != null )
@@ -80,11 +80,11 @@ public class TextFieldLayout extends AbstractLayoutManager
             final int w = trailing.getPreferredSize ().width;
             if ( ltr )
             {
-                trailing.setBounds ( parent.getWidth () - b.right, b.top, w, parent.getHeight () - b.top - b.bottom );
+                trailing.setBounds ( container.getWidth () - b.right, b.top, w, container.getHeight () - b.top - b.bottom );
             }
             else
             {
-                trailing.setBounds ( b.left - w, b.top, w, parent.getHeight () - b.top - b.bottom );
+                trailing.setBounds ( b.left - w, b.top, w, container.getHeight () - b.top - b.bottom );
             }
         }
     }

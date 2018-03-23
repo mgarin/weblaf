@@ -17,89 +17,66 @@
 
 package com.alee.laf.combobox;
 
+import com.alee.laf.list.WebListModel;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
+import java.util.Collection;
 
 /**
- * Custom {@link JComboBox} model with generic item type.
+ * Custom {@link JComboBox} model with generic element type.
+ * Unlike {@link DefaultComboBoxModel} it will not reuse any of the provided arrays or {@link Collection}s.
+ * Model should have its own data enclosed in itself in the first place, if you want to have control over it - override the model itself.
+ * Also this model is based on {@link WebListModel} and overrides its methods to properly handle {@link #selected} element.
  *
- * @param <E> model object type
+ * @param <T> element type
  * @author Mikle Garin
  */
 
-@SuppressWarnings ( "NonSerializableFieldInSerializableClass" )
-public class WebComboBoxModel<E> extends AbstractListModel implements MutableComboBoxModel, Serializable
+public class WebComboBoxModel<T> extends WebListModel<T> implements MutableComboBoxModel
 {
     /**
-     * Combobox items.
+     * Currently selected element.
      */
-    protected List<E> items;
+    @SuppressWarnings ( "NonSerializableFieldInSerializableClass" )
+    protected T selected;
 
     /**
-     * Currently selected item.
-     */
-    protected E selectedItem;
-
-    /**
-     * Constructs an empty DefaultComboBoxModel object.
+     * Constructs empty {@link WebComboBoxModel}.
      */
     public WebComboBoxModel ()
     {
-        this ( new ArrayList<E> ( 0 ) );
+        this ( new ArrayList<T> ( 0 ) );
     }
 
     /**
-     * Constructs a DefaultComboBoxModel object initialized with
-     * an array of objects.
+     * Constructs new {@link WebComboBoxModel}.
      *
-     * @param items an array of Object objects
+     * @param elements combobox elements
      */
-    public WebComboBoxModel ( final E[] items )
+    public WebComboBoxModel ( final T... elements )
     {
-        this ( CollectionUtils.asList ( items ) );
+        this ( CollectionUtils.asList ( elements ) );
     }
 
     /**
-     * Constructs a DefaultComboBoxModel object initialized with
-     * a vector.
+     * Constructs new {@link WebComboBoxModel}.
      *
-     * @param items a Vector object ...
+     * @param elements combobox elements
      */
-    public WebComboBoxModel ( final Vector<E> items )
+    public WebComboBoxModel ( final Collection<T> elements )
     {
-        this ( new ArrayList<E> ( items ) );
-    }
-
-    /**
-     * Constructs a DefaultComboBoxModel object initialized with
-     * a vector.
-     *
-     * @param items a Vector object ...
-     */
-    public WebComboBoxModel ( final List<E> items )
-    {
-        super ();
-        this.items = items;
-        this.selectedItem = getSize () > 0 ? getElementAt ( 0 ) : null;
+        super ( elements );
+        this.selected = getSize () > 0 ? getElementAt ( 0 ) : null;
     }
 
     @Override
-    public int getSize ()
+    public T getElementAt ( final int index )
     {
-        return items.size ();
-    }
-
-    @Override
-    public E getElementAt ( final int index )
-    {
-        if ( index >= 0 && index < items.size () )
+        if ( index >= 0 && index < delegate.size () )
         {
-            return items.get ( index );
+            return delegate.get ( index );
         }
         else
         {
@@ -108,44 +85,90 @@ public class WebComboBoxModel<E> extends AbstractListModel implements MutableCom
     }
 
     @Override
-    public E getSelectedItem ()
+    public T getSelectedItem ()
     {
-        return selectedItem;
+        return selected;
     }
 
     @Override
-    public void setSelectedItem ( final Object item )
+    public void setSelectedItem ( final Object element )
     {
-        if ( selectedItem != null && !selectedItem.equals ( item ) ||
-                selectedItem == null && item != null )
+        if ( selected != null && !selected.equals ( element ) || selected == null && element != null )
         {
-            selectedItem = ( E ) item;
+            selected = ( T ) element;
             fireContentsChanged ( this, -1, -1 );
         }
     }
 
     @Override
-    public void addElement ( final Object item )
+    public T set ( final int index, final T element )
     {
-        items.add ( ( E ) item );
-        fireIntervalAdded ( this, items.size () - 1, items.size () - 1 );
-        if ( items.size () == 1 && selectedItem == null && item != null )
+        final T replaced = super.set ( index, element );
+        if ( element != null && selected == replaced )
         {
-            setSelectedItem ( item );
+            setSelectedItem ( element );
+        }
+        return replaced;
+    }
+
+    @Override
+    public void setAll ( final Collection<T> elements )
+    {
+        super.setAll ( elements );
+        if ( elements.size () > 0 )
+        {
+            setSelectedItem ( elements.iterator ().next () );
         }
     }
 
     @Override
-    public void insertElementAt ( final Object item, final int index )
+    public void addElement ( final Object element )
     {
-        items.add ( index, ( E ) item );
-        fireIntervalAdded ( this, index, index );
+        add ( ( T ) element );
+    }
+
+    @Override
+    public void insertElementAt ( final Object element, final int index )
+    {
+        add ( index, ( T ) element );
+    }
+
+    @Override
+    public void add ( final int index, final T element )
+    {
+        super.add ( index, element );
+        if ( size () == 1 && selected == null && element != null )
+        {
+            setSelectedItem ( element );
+        }
+    }
+
+    @Override
+    public void add ( final Collection<T> elements )
+    {
+        super.add ( elements );
+        if ( size () == 1 && selected == null && CollectionUtils.notEmpty ( elements ) )
+        {
+            setSelectedItem ( elements.iterator ().next () );
+        }
     }
 
     @Override
     public void removeElementAt ( final int index )
     {
-        if ( getElementAt ( index ) == selectedItem )
+        remove ( index );
+    }
+
+    @Override
+    public void removeElement ( final Object item )
+    {
+        remove ( ( T ) item );
+    }
+
+    @Override
+    public T remove ( final int index )
+    {
+        if ( getElementAt ( index ) == selected )
         {
             if ( index == 0 )
             {
@@ -156,79 +179,25 @@ public class WebComboBoxModel<E> extends AbstractListModel implements MutableCom
                 setSelectedItem ( getElementAt ( index - 1 ) );
             }
         }
-        items.remove ( index );
-        fireIntervalRemoved ( this, index, index );
+        return super.remove ( index );
     }
 
     @Override
-    public void removeElement ( final Object item )
+    public void removeAll ( final Collection<T> objects )
     {
-        final int index = items.indexOf ( item );
-        if ( index != -1 )
+        if ( objects.contains ( selected ) )
         {
-            removeElementAt ( index );
-        }
-    }
-
-    /**
-     * Returns the index-position of the specified element in the list.
-     *
-     * @param item element to return index of in the model
-     * @return an int representing the index position, where 0 is the first position
-     */
-    public int getIndexOf ( final Object item )
-    {
-        return items.indexOf ( item );
-    }
-
-    /**
-     * Replaces all combobox elements.
-     *
-     * @param replacement new {@link List} of elements
-     */
-    public void replaceAllElements ( final List<E> replacement )
-    {
-        if ( items.size () > 0 )
-        {
-            items.clear ();
-            if ( replacement.size () > 0 )
+            int index = -1;
+            for ( int i = 0; i < size (); i++ )
             {
-                items.addAll ( replacement );
-                if ( selectedItem != null && !replacement.contains ( selectedItem ) )
+                if ( !objects.contains ( get ( i ) ) )
                 {
-                    setSelectedItem ( replacement.get ( 0 ) );
+                    index = i;
+                    break;
                 }
-                fireContentsChanged ( this, 0, items.size () - 1 );
             }
-            else
-            {
-                setSelectedItem ( null );
-                fireContentsChanged ( this, 0, 0 );
-            }
+            setSelectedItem ( index != -1 ? get ( index ) : null );
         }
-        else
-        {
-            items.addAll ( replacement );
-            fireIntervalAdded ( this, 0, items.size () - 1 );
-        }
-    }
-
-    /**
-     * Removes all list elements.
-     */
-    public void removeAllElements ()
-    {
-        if ( items.size () > 0 )
-        {
-            final int firstIndex = 0;
-            final int lastIndex = items.size () - 1;
-            items.clear ();
-            selectedItem = null;
-            fireIntervalRemoved ( this, firstIndex, lastIndex );
-        }
-        else
-        {
-            selectedItem = null;
-        }
+        super.removeAll ( objects );
     }
 }

@@ -34,8 +34,8 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 
 /**
- * Custom list cell renderer for {@link WebFileList} component.
- * This renderer is also able to generate thumbnails for file elements representing images.
+ * Custom {@link ListCellRenderer} implementation for {@link WebFileList}.
+ * This renderer is able to display extended file information and generate thumbnails for file image files.
  *
  * @author Mikle Garin
  */
@@ -44,8 +44,8 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
 {
     /**
      * todo 1. Move thumbnail generation into `WebImage` component as a feature?
-     * todo 2. Replace icon label with `WebImage` for usage convenience
-     * todo 3. In next updates replace this all with single component and IContent acting as parts
+     * todo 2. Replace icon label with `WebImage` for usage convenience?
+     * todo 3. Replace all parts with single component and IContent acting as parts?
      */
 
     /**
@@ -277,7 +277,6 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
      * @param cellHasFocus whether cell has focus or not
      * @return style ID for specific list cell
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected StyleId getStyleId ( final JList list, final Object value, final int index, final boolean isSelected,
                                    final boolean cellHasFocus )
     {
@@ -300,7 +299,7 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
     protected class FileCellLayout extends AbstractLayoutManager
     {
         @Override
-        public void layoutContainer ( final Container parent )
+        public void layoutContainer ( final Container container )
         {
             // Constants for further layout calculations
             final Dimension cellSize = getSize ();
@@ -360,9 +359,9 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
         }
 
         @Override
-        public Dimension preferredLayoutSize ( final Container parent )
+        public Dimension preferredLayoutSize ( final Container container )
         {
-            final Insets i = parent.getInsets ();
+            final Insets i = container.getInsets ();
             final Dimension is = iconLabel.getPreferredSize ();
             final Dimension ns = nameLabel.getPreferredSize ();
             if ( isTilesView () )

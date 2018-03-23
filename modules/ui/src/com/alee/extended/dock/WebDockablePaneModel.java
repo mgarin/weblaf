@@ -489,10 +489,10 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     }
 
     @Override
-    public void layoutContainer ( final Container parent )
+    public void layoutContainer ( final Container container )
     {
         // Base settings
-        final WebDockablePane dockablePane = ( WebDockablePane ) parent;
+        final WebDockablePane dockablePane = ( WebDockablePane ) container;
         final int w = dockablePane.getWidth ();
         final int h = dockablePane.getHeight ();
 
@@ -877,14 +877,14 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
+    public Dimension preferredLayoutSize ( final Container container )
     {
         // todo Use structure to recursively go through sizes
         return new Dimension ( 0, 0 );
     }
 
     @Override
-    public Pair<String, String> getDescriptors ( final Container parent, final Component component, final int index )
+    public Pair<String, String> getDescriptors ( final Container container, final Component component, final int index )
     {
         // todo Group buttons for grouped frames (tabs) when grouping is available
         // todo Group frames in case it is enabled here (simply group up the whole center area)

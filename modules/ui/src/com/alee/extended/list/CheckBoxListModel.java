@@ -33,56 +33,11 @@ import java.util.List;
 public class CheckBoxListModel extends WebListModel<CheckBoxCellData>
 {
     /**
-     * Constructs checkbox list model.
+     * Constructs new {@link CheckBoxListModel}.
      */
     public CheckBoxListModel ()
     {
         super ();
-    }
-
-
-    /**
-     * Adds new checkbox cell data with a specified user object into list model.
-     *
-     * @param userObject user object
-     */
-    public void addCheckBoxElement ( final Object userObject )
-    {
-        addElement ( new CheckBoxCellData ( userObject ) );
-    }
-
-    /**
-     * Adds new checkbox cell data with a specified user object and checkbox selection state into list model.
-     *
-     * @param userObject user object
-     * @param selected   whether checkbox selected or not
-     */
-    public void addCheckBoxElement ( final Object userObject, final boolean selected )
-    {
-        addElement ( new CheckBoxCellData ( userObject, selected ) );
-    }
-
-    /**
-     * Adds new checkbox cell data with a specified user object into list model at the specified index.
-     *
-     * @param index      new cell index
-     * @param userObject user object
-     */
-    public void addCheckBoxElementAt ( final int index, final Object userObject )
-    {
-        add ( index, new CheckBoxCellData ( userObject ) );
-    }
-
-    /**
-     * Adds new checkbox cell data with a specified user object and checkbox selection state into list model at the specified index.
-     *
-     * @param index      new cell index
-     * @param userObject user object
-     * @param selected   whether checkbox selected or not
-     */
-    public void addCheckBoxElementAt ( final int index, final Object userObject, final boolean selected )
-    {
-        add ( index, new CheckBoxCellData ( userObject, selected ) );
     }
 
     /**

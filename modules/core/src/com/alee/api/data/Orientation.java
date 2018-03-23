@@ -58,6 +58,16 @@ public enum Orientation implements SwingConstants
     }
 
     /**
+     * Returns {@link Orientation} opposite to this one.
+     *
+     * @return {@link Orientation} opposite to this one
+     */
+    public Orientation opposite ()
+    {
+        return this == horizontal ? vertical : horizontal;
+    }
+
+    /**
      * Returns constant value.
      *
      * @return constant value

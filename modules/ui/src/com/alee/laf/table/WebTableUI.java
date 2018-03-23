@@ -67,7 +67,6 @@ public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupp
      * @param c component that will use UI instance
      * @return instance of the {@link WebTableUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTableUI ();
@@ -79,14 +78,22 @@ public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupp
         super.installUI ( c );
 
         // Configuring default renderers
-        table.setDefaultRenderer ( Object.class, new WebTableCellRenderer.UIResource<Object, JTable> () );
-        table.setDefaultRenderer ( Number.class, new WebTableNumberCellRenderer.UIResource<Number, JTable> () );
-        table.setDefaultRenderer ( Double.class, new WebTableDoubleCellRenderer.UIResource<Double, JTable> () );
-        table.setDefaultRenderer ( Float.class, new WebTableFloatCellRenderer.UIResource<Float, JTable> () );
-        table.setDefaultRenderer ( Date.class, new WebTableDateCellRenderer.UIResource<Date, JTable> () );
-        table.setDefaultRenderer ( Icon.class, new WebTableIconCellRenderer.UIResource<Icon, JTable> () );
-        table.setDefaultRenderer ( ImageIcon.class, new WebTableIconCellRenderer.UIResource<ImageIcon, JTable> () );
-        table.setDefaultRenderer ( Boolean.class, new WebTableBooleanCellRenderer.UIResource<JTable> () );
+        table.setDefaultRenderer ( Object.class,
+                new WebTableCellRenderer.UIResource<Object, JTable, TableCellParameters<Object, JTable>> () );
+        table.setDefaultRenderer ( Number.class,
+                new WebTableNumberCellRenderer.UIResource<Number, JTable, TableCellParameters<Number, JTable>> () );
+        table.setDefaultRenderer ( Double.class,
+                new WebTableDoubleCellRenderer.UIResource<Double, JTable, TableCellParameters<Double, JTable>> () );
+        table.setDefaultRenderer ( Float.class,
+                new WebTableFloatCellRenderer.UIResource<Float, JTable, TableCellParameters<Float, JTable>> () );
+        table.setDefaultRenderer ( Date.class,
+                new WebTableDateCellRenderer.UIResource<Date, JTable, TableCellParameters<Date, JTable>> () );
+        table.setDefaultRenderer ( Icon.class,
+                new WebTableIconCellRenderer.UIResource<Icon, JTable, TableCellParameters<Icon, JTable>> () );
+        table.setDefaultRenderer ( ImageIcon.class,
+                new WebTableIconCellRenderer.UIResource<ImageIcon, JTable, TableCellParameters<ImageIcon, JTable>> () );
+        table.setDefaultRenderer ( Boolean.class,
+                new WebTableBooleanCellRenderer.UIResource<JTable, TableCellParameters<Boolean, JTable>> () );
         // todo Additional renderers:
         // table.setDefaultRenderer ( Dimension.class,  );
         // table.setDefaultRenderer ( Point.class,  );

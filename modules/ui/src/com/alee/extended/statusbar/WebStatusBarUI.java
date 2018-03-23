@@ -49,7 +49,6 @@ public class WebStatusBarUI<C extends WebStatusBar> extends WStatusBarUI<C> impl
      * @param c component that will use UI instance
      * @return instance of the {@link WebStatusBarUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebStatusBarUI ();

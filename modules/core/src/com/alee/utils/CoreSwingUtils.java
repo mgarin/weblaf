@@ -17,6 +17,8 @@
 
 package com.alee.utils;
 
+import org.slf4j.LoggerFactory;
+
 import javax.swing.*;
 import java.applet.Applet;
 import java.awt.*;
@@ -26,9 +28,31 @@ import java.lang.reflect.InvocationTargetException;
  * @author Mikle Garin
  */
 
-@SuppressWarnings ( "NonFinalUtilityClass" )
-public class CoreSwingUtils
+public final class CoreSwingUtils
 {
+    /**
+     * Enables logging of all uncaught exceptions occured within EDT.
+     */
+    public static void enableEventQueueLogging ()
+    {
+        Toolkit.getDefaultToolkit ().getSystemEventQueue ().push ( new EventQueue ()
+        {
+            @Override
+            protected void dispatchEvent ( final AWTEvent event )
+            {
+                try
+                {
+                    super.dispatchEvent ( event );
+                }
+                catch ( final Throwable e )
+                {
+                    final String msg = "Uncaught EventQueue exception: %s";
+                    LoggerFactory.getLogger ( CoreSwingUtils.class ).error ( String.format ( msg, e.toString () ), e );
+                }
+            }
+        } );
+    }
+
     /**
      * Returns window ancestor for specified component or {@code null} if it doesn't exist.
      *

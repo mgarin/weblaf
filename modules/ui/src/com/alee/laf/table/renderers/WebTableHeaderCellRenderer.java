@@ -39,11 +39,6 @@ public class WebTableHeaderCellRenderer extends WebLabel implements TableCellRen
 
     private boolean horizontalTextPositionSet;
 
-    public WebTableHeaderCellRenderer ()
-    {
-        super ();
-    }
-
     @Override
     public void setHorizontalTextPosition ( final int textPosition )
     {

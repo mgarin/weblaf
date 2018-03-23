@@ -17,6 +17,7 @@
 
 package com.alee.laf.table.renderers;
 
+import com.alee.laf.table.TableCellParameters;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
@@ -24,30 +25,35 @@ import javax.swing.*;
 /**
  * Default {@link javax.swing.table.TableCellRenderer} implementation for {@link Icon} values.
  *
- * @param <V> cell value type
- * @param <C> table type
+ * @param <V> {@link Icon} type
+ * @param <C> {@link JTable} type
+ * @param <P> {@link TableCellParameters} type
  * @author Mikle Garin
  */
 
-public class WebTableIconCellRenderer<V extends Icon, C extends JTable> extends WebTableCellRenderer<V, C>
+public class WebTableIconCellRenderer<V extends Icon, C extends JTable, P extends TableCellParameters<V, C>>
+        extends WebTableCellRenderer<V, C, P>
 {
     @Override
-    protected void updateStyleId ( final C table, final V value, final boolean isSelected, final boolean hasFocus, final int row,
-                                   final int column )
+    protected void updateStyleId ( final P parameters )
     {
-        setStyleId ( StyleId.tableCellRendererIcon.at ( table ) );
+        setStyleId ( StyleId.tableCellRendererIcon.at ( parameters.table () ) );
     }
 
     @Override
-    protected Icon iconForValue ( final C table, final V value, final boolean isSelected,
-                                  final boolean hasFocus, final int row, final int column )
+    protected int horizontalAlignmentForValue ( final P parameters )
     {
-        return value;
+        return SwingConstants.CENTER;
     }
 
     @Override
-    protected String textForValue ( final C table, final V value, final boolean isSelected,
-                                    final boolean hasFocus, final int row, final int column )
+    protected Icon iconForValue ( final P parameters )
+    {
+        return parameters.value ();
+    }
+
+    @Override
+    protected String textForValue ( final P parameters )
     {
         return null;
     }
@@ -56,11 +62,12 @@ public class WebTableIconCellRenderer<V extends Icon, C extends JTable> extends 
      * A subclass of {@link WebTableIconCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
      *
-     * @param <V> cell value type
-     * @param <C> table type
+     * @param <V> {@link Icon} type
+     * @param <C> {@link JTable} type
+     * @param <P> {@link TableCellParameters} type
      */
-    public static class UIResource<V extends Icon, C extends JTable> extends WebTableIconCellRenderer<V, C>
-            implements javax.swing.plaf.UIResource
+    public static class UIResource<V extends Icon, C extends JTable, P extends TableCellParameters<V, C>>
+            extends WebTableIconCellRenderer<V, C, P> implements javax.swing.plaf.UIResource
     {
         /**
          * Implementation is used completely from {@link WebTableIconCellRenderer}.

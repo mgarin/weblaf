@@ -19,8 +19,10 @@ package com.alee.extended.pathfield;
 
 import com.alee.extended.filechooser.PathFieldListener;
 import com.alee.extended.layout.HorizontalFlowLayout;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
+import com.alee.laf.list.ListCellParameters;
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.WebListCellRenderer;
 import com.alee.laf.menu.WebMenuItem;
@@ -62,9 +64,10 @@ import java.util.Locale;
 public class WebPathField extends WebPanel
 {
     /**
-     * todo 1. Enhance path update method performance
-     * todo 2. While menu is opened - open other menus on simple rollover
-     * todo 3. Proper focus handling after finishing manual path editing
+     * todo 1. Full and proper UI & styling implementation
+     * todo 2. Proper focus handling after finishing manual path editing
+     * todo 3. Enhance path update method performance
+     * todo 4. While menu is opened - open other menus on simple rollover
      */
 
     /**
@@ -161,7 +164,7 @@ public class WebPathField extends WebPanel
                 final FileFilter filter = getFileFilter ();
                 for ( final File file : files )
                 {
-                    final File actualFile = file.isDirectory () ? file : file.getParentFile ();
+                    final File actualFile = file.isDirectory () ? file : FileUtils.getParent ( file );
                     if ( filter == null || filter.accept ( actualFile ) )
                     {
                         folderSelected ( actualFile );
@@ -272,11 +275,11 @@ public class WebPathField extends WebPanel
 
                 if ( autocompleteDialog == null )
                 {
-                    autocompleteDialog = new JWindow ( SwingUtils.getWindowAncestor ( WebPathField.this ) );
+                    autocompleteDialog = new JWindow ( CoreSwingUtils.getWindowAncestor ( WebPathField.this ) );
                     autocompleteDialog.getContentPane ().setLayout ( new BorderLayout () );
                     autocompleteDialog.setFocusable ( false );
 
-                    SwingUtils.getWindowAncestor ( WebPathField.this ).addComponentListener ( new ComponentAdapter ()
+                    CoreSwingUtils.getWindowAncestor ( WebPathField.this ).addComponentListener ( new ComponentAdapter ()
                     {
                         @Override
                         public void componentMoved ( final ComponentEvent e )
@@ -295,20 +298,18 @@ public class WebPathField extends WebPanel
                     list.setFocusable ( false );
                     list.setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
                     list.setSelectOnHover ( true );
-                    list.setCellRenderer ( new WebListCellRenderer<File, WebList> ()
+                    list.setCellRenderer ( new WebListCellRenderer<File, WebList, ListCellParameters<File, WebList>> ()
                     {
                         @Override
-                        protected Icon iconForValue ( final WebList list, final File value, final int index,
-                                                      final boolean isSelected, final boolean hasFocus )
+                        protected Icon iconForValue ( final ListCellParameters<File, WebList> parameters )
                         {
-                            return FileUtils.getFileIcon ( value );
+                            return FileUtils.getFileIcon ( parameters.value () );
                         }
 
                         @Override
-                        protected String textForValue ( final WebList list, final File value, final int index,
-                                                        final boolean isSelected, final boolean hasFocus )
+                        protected String textForValue ( final ListCellParameters<File, WebList> parameters )
                         {
-                            return FileUtils.getDisplayFileName ( value );
+                            return FileUtils.getDisplayFileName ( parameters.value () );
                         }
                     } );
                     list.addMouseListener ( new MouseAdapter ()
@@ -437,7 +438,7 @@ public class WebPathField extends WebPanel
 
             private void updateList ( final List<File> similar )
             {
-                SwingUtils.invokeLater ( new Runnable ()
+                CoreSwingUtils.invokeLater ( new Runnable ()
                 {
                     @Override
                     public void run ()
@@ -481,7 +482,7 @@ public class WebPathField extends WebPanel
 
             private void hideDialog ()
             {
-                SwingUtils.invokeLater ( new Runnable ()
+                CoreSwingUtils.invokeLater ( new Runnable ()
                 {
                     @Override
                     public void run ()
@@ -710,9 +711,11 @@ public class WebPathField extends WebPanel
             File folder = new File ( selectedPath.getAbsolutePath () );
             final List<File> parents = new ArrayList<File> ();
             parents.add ( 0, folder );
-            while ( folder.getParent () != null )
+            File parent = FileUtils.getParent ( folder );
+            while ( parent != null )
             {
-                folder = folder.getParentFile ();
+                folder = parent;
+                parent = FileUtils.getParent ( folder );
                 parents.add ( 0, folder );
             }
 
@@ -794,7 +797,7 @@ public class WebPathField extends WebPanel
                     {
                         // todo Apply orientation globally on change, not here
                         WebPathField.this.transferFocus ();
-                        SwingUtils.applyOrientation ( menu );
+                        applyOrientation ( menu );
                         menu.showBelowMiddle ( children );
                     }
                 } );
@@ -953,7 +956,7 @@ public class WebPathField extends WebPanel
                 public void actionPerformed ( final ActionEvent e )
                 {
                     WebPathField.this.transferFocus ();
-                    SwingUtils.applyOrientation ( rootsMenu );
+                    applyOrientation ( rootsMenu );
                     rootsMenu.showBelowMiddle ( rootsArrowButton );
                 }
             } );
@@ -1028,5 +1031,32 @@ public class WebPathField extends WebPanel
     {
         super.applyComponentOrientation ( o );
         updatePath ();
+    }
+
+    /**
+     * Applies component orientation to specified component.
+     *
+     * @param component component to modify
+     */
+    @Deprecated
+    private static void applyOrientation ( final Component component )
+    {
+        applyOrientation ( component, false );
+    }
+
+    /**
+     * Applies component orientation to specified component if needed or if forced.
+     *
+     * @param component component to modify
+     * @param forced    force orientation change
+     */
+    @Deprecated
+    private static void applyOrientation ( final Component component, final boolean forced )
+    {
+        final ComponentOrientation orientation = WebLookAndFeel.getOrientation ();
+        if ( forced || orientation.isLeftToRight () != component.getComponentOrientation ().isLeftToRight () )
+        {
+            component.applyComponentOrientation ( orientation );
+        }
     }
 }

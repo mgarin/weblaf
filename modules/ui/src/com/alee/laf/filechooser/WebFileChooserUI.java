@@ -75,7 +75,6 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
      * @param c component that will use UI instance
      * @return instance of the {@link WebFileChooserUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebFileChooserUI ();

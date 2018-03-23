@@ -21,7 +21,7 @@ import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 
 /**
- * Base painter for containers.
+ * Base painter for {@link java.awt.Container}s.
  *
  * @param <C> component type
  * @param <U> component UI type

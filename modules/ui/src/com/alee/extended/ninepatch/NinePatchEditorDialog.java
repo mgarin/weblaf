@@ -22,8 +22,8 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.window.WebFrame;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.processors.WindowSettings;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.ImageUtils;
-import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -140,7 +140,7 @@ public class NinePatchEditorDialog extends WebFrame
 
     public static void main ( final String[] args )
     {
-        SwingUtils.invokeLater ( new Runnable ()
+        CoreSwingUtils.invokeLater ( new Runnable ()
         {
             @Override
             public void run ()

@@ -22,7 +22,7 @@ import com.alee.laf.UIAction;
 import com.alee.laf.UIActionMap;
 import com.alee.utils.LafLookup;
 import com.alee.utils.LafUtils;
-import sun.swing.SwingUtilities2;
+import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -315,7 +315,7 @@ public class WSplitPaneListener<C extends JSplitPane, U extends WSplitPaneUI<C>>
                         !( SwingUtilities.isDescendingFrom ( focus, left ) && SwingUtilities.isDescendingFrom ( focusOn, left ) ||
                                 SwingUtilities.isDescendingFrom ( focus, right ) && SwingUtilities.isDescendingFrom ( focusOn, right ) ) )
                 {
-                    SwingUtilities2.compositeRequestFocus ( focusOn );
+                    SwingUtils.compositeRequestFocus ( focusOn );
                 }
             }
         }

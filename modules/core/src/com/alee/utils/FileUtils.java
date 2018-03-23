@@ -269,7 +269,7 @@ public final class FileUtils
         while ( file != null )
         {
             path.add ( 0, file );
-            file = file.getParentFile ();
+            file = getParent ( file );
         }
         return path;
     }
@@ -294,7 +294,8 @@ public final class FileUtils
      */
     public static boolean isNameEditable ( final File file )
     {
-        return file.getParentFile () != null && file.canWrite () && file.getParentFile ().canWrite ();
+        final File parent = getParent ( file );
+        return parent != null && parent.canWrite () && file.canWrite ();
     }
 
     /**
@@ -612,6 +613,47 @@ public final class FileUtils
     }
 
     /**
+     * Returns desktop directory if one can be found.
+     *
+     * @return desktop directory if one can be found
+     */
+    public static File getDesktop ()
+    {
+        // Trying file system roots
+        final File[] roots = FileSystemView.getFileSystemView ().getRoots ();
+        if ( roots.length > 0 )
+        {
+            for ( final File root : roots )
+            {
+                if ( root.getName ().toLowerCase ( Locale.ROOT ).contains ( "desktop" ) )
+                {
+                    return root;
+                }
+            }
+        }
+
+        // Trying common known locations
+        final File desktop = new File ( getUserHome (), "Desktop" );
+        if ( desktop.exists () )
+        {
+            return desktop;
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns desktop directory path if one can be found.
+     *
+     * @return desktop directory path if one can be found
+     */
+    public static String getDesktopPath ()
+    {
+        final File desktop = getDesktop ();
+        return desktop != null ? desktop.getAbsolutePath () : null;
+    }
+
+    /**
      * Returns whether both files represent the same path in file system or not.
      *
      * @param file1 first file to be compared
@@ -780,6 +822,30 @@ public final class FileUtils
     }
 
     /**
+     * Returns parent {@link File}.
+     * Unlike {@link File#getParentFile()} it doesn't fail on cases when native parent is {@code null}.
+     * Whenever native parent is {@code null} this method will fallback to {@link File#getParent()} path usage.
+     *
+     * @param file {@link File} to return parent {@link File} for
+     * @return parent {@link File}
+     */
+    public static File getParent ( final File file )
+    {
+        final File parent;
+        final File nativeParent = file.getParentFile ();
+        if ( nativeParent != null )
+        {
+            parent = nativeParent;
+        }
+        else
+        {
+            final String parentPath = file.getParent ();
+            parent = parentPath != null ? new File ( parentPath ) : null;
+        }
+        return parent;
+    }
+
+    /**
      * Returns top not-null parent for the specified file.
      * If file has no parents at all simply returns null.
      *
@@ -788,17 +854,15 @@ public final class FileUtils
      */
     public static File getTopParent ( File file )
     {
+        File result = null;
         file = file.getAbsoluteFile ();
-        File parent = file.getParentFile ();
-        if ( parent == null )
+        File parent = getParent ( file );
+        while ( parent != null )
         {
-            return null;
+            result = parent;
+            parent = getParent ( parent );
         }
-        while ( parent.getParentFile () != null )
-        {
-            parent = parent.getParentFile ();
-        }
-        return parent;
+        return result;
     }
 
     /**
@@ -827,14 +891,14 @@ public final class FileUtils
             return false;
         }
         child = child.getAbsoluteFile ();
-        File cp = child.getParentFile ();
+        File cp = getParent ( child );
         while ( cp != null )
         {
             if ( cp.equals ( parent ) )
             {
                 return true;
             }
-            cp = cp.getParentFile ();
+            cp = getParent ( cp );
         }
         return false;
     }
@@ -1473,7 +1537,7 @@ public final class FileUtils
             try
             {
                 // Creating destination directory if needed
-                if ( ensureDirectoryExists ( dstFile.getParentFile () ) )
+                if ( ensureDirectoryExists ( getParent ( dstFile ) ) )
                 {
                     final FileChannel srcFC = new FileInputStream ( srcFile ).getChannel ();
                     final FileChannel dstFC = new FileOutputStream ( dstFile ).getChannel ();
@@ -1733,7 +1797,7 @@ public final class FileUtils
         }
 
         // Creating directories if necessary
-        file.getParentFile ().mkdirs ();
+        getParent ( file ).mkdirs ();
 
         // Writing text to file
         PrintWriter writer = null;
@@ -2563,7 +2627,7 @@ public final class FileUtils
             else if ( file.exists () )
             {
                 file = file.getAbsoluteFile ();
-                final boolean isHidden = file.getParentFile () != null && file.isHidden ();
+                final boolean isHidden = getParent ( file ) != null && file.isHidden ();
                 isHiddenCache.put ( absolutePath, isHidden );
                 return isHidden;
             }

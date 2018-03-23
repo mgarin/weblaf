@@ -61,7 +61,6 @@ public class IntTextDocument extends PlainDocument
      * @param integer entered integer number
      * @return true if entered integer number is accepted, false otherwise
      */
-    @SuppressWarnings ("UnusedParameters")
     protected boolean accept ( final int integer )
     {
         return true;

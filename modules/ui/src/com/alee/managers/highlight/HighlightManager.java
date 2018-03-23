@@ -19,6 +19,7 @@ package com.alee.managers.highlight;
 
 import com.alee.managers.glasspane.GlassPaneManager;
 import com.alee.managers.glasspane.WebGlassPane;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
 
 import java.awt.*;
@@ -87,7 +88,7 @@ public final class HighlightManager
     {
         if ( highlight != null )
         {
-            final WebGlassPane wgp = GlassPaneManager.getGlassPane ( SwingUtils.getWindowAncestor ( highlight ) );
+            final WebGlassPane wgp = GlassPaneManager.getGlassPane ( CoreSwingUtils.getWindowAncestor ( highlight ) );
             if ( wgp != null )
             {
                 wgp.clearHighlights ();
@@ -113,7 +114,7 @@ public final class HighlightManager
             final List<String> clearedIds = new ArrayList<String> ();
             for ( final Component component : highlights )
             {
-                final WebGlassPane wgp = GlassPaneManager.getGlassPane ( SwingUtils.getWindowAncestor ( component ) );
+                final WebGlassPane wgp = GlassPaneManager.getGlassPane ( CoreSwingUtils.getWindowAncestor ( component ) );
                 if ( wgp != null )
                 {
                     if ( !clearedIds.contains ( wgp.getId () ) )
@@ -136,7 +137,7 @@ public final class HighlightManager
     {
         if ( highlight != null )
         {
-            final WebGlassPane wgp = GlassPaneManager.getGlassPane ( SwingUtils.getWindowAncestor ( highlight ) );
+            final WebGlassPane wgp = GlassPaneManager.getGlassPane ( CoreSwingUtils.getWindowAncestor ( highlight ) );
             if ( wgp != null )
             {
                 wgp.removeHighlightedComponents ( highlight );
@@ -154,7 +155,7 @@ public final class HighlightManager
         {
             for ( final Component component : highlights )
             {
-                final WebGlassPane wgp = GlassPaneManager.getGlassPane ( SwingUtils.getWindowAncestor ( component ) );
+                final WebGlassPane wgp = GlassPaneManager.getGlassPane ( CoreSwingUtils.getWindowAncestor ( component ) );
                 if ( wgp != null )
                 {
                     wgp.removeHighlightedComponents ( component );
@@ -169,7 +170,7 @@ public final class HighlightManager
 
     public static void clearHighlightedComponents ( final Component component )
     {
-        clearHighlightedComponents ( SwingUtils.getWindowAncestor ( component ) );
+        clearHighlightedComponents ( CoreSwingUtils.getWindowAncestor ( component ) );
     }
 
     /**
@@ -191,7 +192,7 @@ public final class HighlightManager
 
     public static void setHighlightBase ( final Component highlightBase )
     {
-        setHighlightBase ( SwingUtils.getWindowAncestor ( highlightBase ), highlightBase );
+        setHighlightBase ( CoreSwingUtils.getWindowAncestor ( highlightBase ), highlightBase );
     }
 
     /**

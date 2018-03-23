@@ -18,7 +18,7 @@
 package com.alee.managers.glasspane;
 
 import com.alee.api.jdk.Function;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.swing.WeakComponentData;
 
 import javax.swing.*;
@@ -49,7 +49,7 @@ public final class GlassPaneManager
      */
     public static WebGlassPane getGlassPane ( final Component component )
     {
-        return getGlassPane ( SwingUtils.getRootPane ( component ) );
+        return getGlassPane ( CoreSwingUtils.getRootPane ( component ) );
     }
 
     /**

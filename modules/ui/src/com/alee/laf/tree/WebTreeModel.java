@@ -19,9 +19,9 @@ package com.alee.laf.tree;
 
 import com.alee.utils.CollectionUtils;
 
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +35,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class WebTreeModel<N extends DefaultMutableTreeNode> extends DefaultTreeModel
+public class WebTreeModel<N extends MutableTreeNode> extends DefaultTreeModel
 {
     /**
      * Constructs tree model with a specified node as root.
@@ -293,6 +293,7 @@ public class WebTreeModel<N extends DefaultMutableTreeNode> extends DefaultTreeM
      */
     public void updateTree ()
     {
-        fireTreeStructureChanged ( WebTreeModel.this, getRootNode ().getPath (), null, null );
+        final TreeNode[] path = TreeUtils.getPath ( getRootNode () );
+        fireTreeStructureChanged ( WebTreeModel.this, path, null, null );
     }
 }

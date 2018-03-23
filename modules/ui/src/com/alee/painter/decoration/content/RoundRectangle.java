@@ -75,7 +75,6 @@ public class RoundRectangle<C extends JComponent, D extends IDecoration<C, D>, I
      * @param d painted decoration state
      * @return background rounding
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected int getRound ( final C c, final D d )
     {
         return round != null ? round : 0;

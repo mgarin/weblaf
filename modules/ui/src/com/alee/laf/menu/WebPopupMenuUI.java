@@ -54,7 +54,6 @@ public class WebPopupMenuUI extends WPopupMenuUI implements ShapeSupport, Margin
      * @param c component that will use UI instance
      * @return instance of the {@link WebPopupMenuUI}
      */
-    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebPopupMenuUI ();

@@ -1,0 +1,137 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.split.WebMultiSplitPaneDivider -->
+
+    <!-- Multi split pane divider -->
+    <style type="multisplitpanedivider">
+        <component>
+            <opaque>true</opaque>
+            <background>237,237,237</background>
+        </component>
+        <painter>
+            <decorations>
+                <decoration states="vertical">
+                    <WebShape round="0" sides="0,1,0,1" />
+                    <GradientBackground from="0,0" to="1,0">
+                        <color>252,252,252</color>
+                        <color>223,223,223</color>
+                    </GradientBackground>
+                    <LineBorder color="170,170,170" />
+                    <AlignLayout padding="4,2,4,2">
+                        <BorderLayout constraints="center,center" vgap="4">
+                            <RoundRectangle constraints="north" id="1" round="4" size="4,4">
+                                <ColorBackground color="156,156,156" />
+                            </RoundRectangle>
+                            <RoundRectangle constraints="center" id="2" round="4" size="4,4">
+                                <ColorBackground color="156,156,156" />
+                            </RoundRectangle>
+                            <RoundRectangle constraints="south" id="3" round="4" size="4,4">
+                                <ColorBackground color="156,156,156" />
+                            </RoundRectangle>
+                        </BorderLayout>
+                    </AlignLayout>
+                </decoration>
+                <decoration states="vertical,dragged">
+                    <GradientBackground from="0,0" to="1,0">
+                        <color>232,232,232</color>
+                        <color>223,223,223</color>
+                    </GradientBackground>
+                </decoration>
+                <decoration states="vertical,start">
+                    <WebShape round="0" sides="0,0,0,1" />
+                </decoration>
+                <decoration states="vertical,end">
+                    <WebShape round="0" sides="0,1,0,0" />
+                </decoration>
+                <decoration states="horizontal">
+                    <WebShape round="0" sides="1,0,1,0" />
+                    <GradientBackground from="0,0" to="0,1">
+                        <color>252,252,252</color>
+                        <color>223,223,223</color>
+                    </GradientBackground>
+                    <LineBorder color="170,170,170" />
+                    <AlignLayout padding="2,4,2,4">
+                        <BorderLayout constraints="center,center" hgap="4">
+                            <RoundRectangle constraints="west" id="1" round="4" size="4,4">
+                                <ColorBackground color="156,156,156" />
+                            </RoundRectangle>
+                            <RoundRectangle constraints="center" id="2" round="4" size="4,4">
+                                <ColorBackground color="156,156,156" />
+                            </RoundRectangle>
+                            <RoundRectangle constraints="east" id="3" round="4" size="4,4">
+                                <ColorBackground color="156,156,156" />
+                            </RoundRectangle>
+                        </BorderLayout>
+                    </AlignLayout>
+                </decoration>
+                <decoration states="horizontal,dragged">
+                    <GradientBackground from="0,0" to="0,1">
+                        <color>232,232,232</color>
+                        <color>223,223,223</color>
+                    </GradientBackground>
+                </decoration>
+                <decoration states="horizontal,start">
+                    <WebShape round="0" sides="0,0,1,0" />
+                </decoration>
+                <decoration states="horizontal,end">
+                    <WebShape round="0" sides="1,0,0,0" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- One-touch expand buttons -->
+        <style type="button" id="onetouch" extends="undecorated">
+            <component>
+                <focusable>false</focusable>
+            </component>
+        </style>
+        <style type="button" id="onetouch-left" extends="onetouch">
+            <painter>
+                <decorations>
+                    <decoration cursor="common" />
+                    <decoration states="vertical">
+                        <ButtonLayout>
+                            <SetIcon constraints="icon" icon="left-small" />
+                        </ButtonLayout>
+                    </decoration>
+                    <decoration states="vertical,ltr">
+                        <ButtonLayout padding="2,1,1,0" />
+                    </decoration>
+                    <decoration states="vertical,rtl">
+                        <ButtonLayout padding="2,0,1,1" />
+                    </decoration>
+                    <decoration states="horizontal">
+                        <ButtonLayout padding="1,2,1,1">
+                            <SetIcon constraints="icon" icon="up-small" />
+                        </ButtonLayout>
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+        <style type="button" id="onetouch-right" extends="onetouch">
+            <painter>
+                <decorations>
+                    <decoration cursor="common" />
+                    <decoration states="vertical">
+                        <ButtonLayout>
+                            <SetIcon constraints="icon" icon="right-small" />
+                        </ButtonLayout>
+                    </decoration>
+                    <decoration states="vertical,ltr">
+                        <ButtonLayout padding="1,0,2,1" />
+                    </decoration>
+                    <decoration states="vertical,rtl">
+                        <ButtonLayout padding="1,1,2,0" />
+                    </decoration>
+                    <decoration states="horizontal">
+                        <ButtonLayout padding="1,0,1,2">
+                            <SetIcon constraints="icon" icon="down-small" />
+                        </ButtonLayout>
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+    </style>
+
+</skin>

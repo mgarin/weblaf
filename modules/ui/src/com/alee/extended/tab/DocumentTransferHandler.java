@@ -18,6 +18,7 @@
 package com.alee.extended.tab;
 
 import com.alee.laf.tabbedpane.WebTabbedPane;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
 import org.slf4j.LoggerFactory;
 
@@ -261,7 +262,7 @@ public class DocumentTransferHandler extends TransferHandler
     {
         // We have to perform focus transfer AFTER the drag ends, otherwise focus may be lost again
         // That happens due to splits/tabbed panes removal in the process
-        SwingUtils.invokeLater ( new Runnable ()
+        CoreSwingUtils.invokeLater ( new Runnable ()
         {
             @Override
             public void run ()

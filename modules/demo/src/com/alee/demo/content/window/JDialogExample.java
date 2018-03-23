@@ -27,7 +27,7 @@ import com.alee.laf.label.WebLabel;
 import com.alee.managers.language.UILanguageManager;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.CoreSwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -99,7 +99,7 @@ public class JDialogExample extends AbstractStylePreviewExample
                 @Override
                 public void actionPerformed ( final ActionEvent e )
                 {
-                    final Window parent = SwingUtils.getWindowAncestor ( button );
+                    final Window parent = CoreSwingUtils.getWindowAncestor ( button );
                     final String title = getExampleLanguagePrefix () + "content";
                     final JDialog dialog = new JDialog ( parent );
                     UILanguageManager.registerComponent ( dialog.getRootPane (), title );

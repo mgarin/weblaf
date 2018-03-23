@@ -1,5 +1,6 @@
 package com.alee.laf.grouping;
 
+import com.alee.api.data.BoxOrientation;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.utils.general.Pair;
@@ -151,17 +152,17 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
     }
 
     @Override
-    public void addComponent ( final Component component, final Object c )
+    public void addComponent ( final Component component, final Object constraints )
     {
         // Saving constraints
-        if ( c != null && !( c instanceof GroupPaneConstraints ) )
+        if ( constraints != null && !( constraints instanceof GroupPaneConstraints ) )
         {
-            throw new RuntimeException ( "Unsupported layout constraints: " + c );
+            throw new RuntimeException ( "Unsupported layout constraints: " + constraints );
         }
-        constraints.put ( component, c != null ? ( GroupPaneConstraints ) c : getDefaultConstraint () );
+        this.constraints.put ( component, constraints != null ? ( GroupPaneConstraints ) constraints : getDefaultConstraint () );
 
         // Performing basic operations
-        super.addComponent ( component, c );
+        super.addComponent ( component, constraints );
     }
 
     /**
@@ -185,18 +186,18 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
     }
 
     @Override
-    public void layoutContainer ( final Container parent )
+    public void layoutContainer ( final Container container )
     {
         // Retrieving actual grid size
-        final GridSize gridSize = getActualGridSize ( parent );
+        final GridSize gridSize = getActualGridSize ( container );
 
         // Calculating children preferred sizes
-        final Pair<int[], int[]> sizes = calculateSizes ( parent, gridSize, SizeType.current );
+        final Pair<int[], int[]> sizes = calculateSizes ( container, gridSize, SizeType.current );
 
         // Laying out components
         // To do that we will simply iterate through the whole grid
         // Some cells we will iterate through won't have components, we will simply skip those
-        final Insets border = parent.getInsets ();
+        final Insets border = container.getInsets ();
         int y = border.top;
         for ( int row = 0; row < gridSize.rows; row++ )
         {
@@ -204,10 +205,10 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
             for ( int column = 0; column < gridSize.columns; column++ )
             {
                 // Converting grid point to component index
-                final int index = pointToIndex ( parent, column, row, gridSize );
+                final int index = pointToIndex ( container, column, row, gridSize );
 
                 // Retrieving cell component if it exists
-                final Component component = parent.getComponent ( index );
+                final Component component = container.getComponent ( index );
                 if ( component != null )
                 {
                     // Updating its bounds
@@ -224,13 +225,13 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
+    public Dimension preferredLayoutSize ( final Container container )
     {
         // Retrieving actual grid size
-        final GridSize gridSize = getActualGridSize ( parent );
+        final GridSize gridSize = getActualGridSize ( container );
 
         // Calculating children preferred sizes
-        final Pair<int[], int[]> sizes = calculateSizes ( parent, gridSize, SizeType.preferred );
+        final Pair<int[], int[]> sizes = calculateSizes ( container, gridSize, SizeType.preferred );
 
         // Calculating preferred size
         final Dimension ps = new Dimension ( 0, 0 );
@@ -242,7 +243,7 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
         {
             ps.height += rowHeight;
         }
-        final Insets border = parent.getInsets ();
+        final Insets border = container.getInsets ();
         ps.width += border.left + border.right;
         ps.height += border.top + border.bottom;
 
@@ -256,12 +257,12 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
      * For example: Layout settings are set to have 5 columns and 5 rows which in total requires 25 components to fill-in the grid.
      * Though there might not be enough components provided to fill the grid, in that case the actual grid size might be less.
      *
-     * @param parent group pane
+     * @param container group pane
      * @return actual grid size according to container components amount
      */
-    public GridSize getActualGridSize ( final Container parent )
+    protected GridSize getActualGridSize ( final Container container )
     {
-        final int count = parent.getComponentCount ();
+        final int count = container.getComponentCount ();
         if ( orientation == HORIZONTAL )
         {
             return new GridSize ( Math.min ( count, columns ), ( count - 1 ) / columns + 1 );
@@ -275,30 +276,30 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
     /**
      * Returns component at the specified cell.
      *
-     * @param parent group pane
-     * @param column component column
-     * @param row    component row
+     * @param container group pane
+     * @param column    component column
+     * @param row       component row
      * @return component at the specified cell
      */
-    public Component getComponentAt ( final Container parent, final int column, final int row )
+    protected Component getComponentAt ( final Container container, final int column, final int row )
     {
-        final GridSize gridSize = getActualGridSize ( parent );
-        final int index = pointToIndex ( parent, column, row, gridSize );
-        final int count = parent.getComponentCount ();
-        return index < count ? parent.getComponent ( index ) : null;
+        final GridSize gridSize = getActualGridSize ( container );
+        final int index = pointToIndex ( container, column, row, gridSize );
+        final int count = container.getComponentCount ();
+        return index < count ? container.getComponent ( index ) : null;
     }
 
     /**
      * Returns grid column in which component under the specified index is placed.
      *
-     * @param parent   group pane
-     * @param index    component index
-     * @param gridSize actual grid size
+     * @param container group pane
+     * @param index     component index
+     * @param gridSize  actual grid size
      * @return grid column in which component under the specified index is placed
      */
-    public int indexToColumn ( final Container parent, final int index, final GridSize gridSize )
+    protected int indexToColumn ( final Container container, final int index, final GridSize gridSize )
     {
-        final boolean ltr = parent.getComponentOrientation ().isLeftToRight ();
+        final boolean ltr = container.getComponentOrientation ().isLeftToRight ();
         final int column = orientation == HORIZONTAL ? index % columns : index / rows;
         return ltr ? column : gridSize.columns - 1 - column;
     }
@@ -309,7 +310,7 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
      * @param index component index
      * @return grid row in which component under the specified index is placed
      */
-    public int indexToRow ( final int index )
+    protected int indexToRow ( final int index )
     {
         return orientation == HORIZONTAL ? index / columns : index % rows;
     }
@@ -317,15 +318,15 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
     /**
      * Returns index of the component placed in the specified grid cell or {@code null} if cell is empty.
      *
-     * @param parent   group pane
-     * @param column   grid column index
-     * @param row      grid row index
-     * @param gridSize actual grid size
+     * @param container group pane
+     * @param column    grid column index
+     * @param row       grid row index
+     * @param gridSize  actual grid size
      * @return index of the component placed in the specified grid cell or {@code null} if cell is empty
      */
-    public int pointToIndex ( final Container parent, final int column, final int row, final GridSize gridSize )
+    protected int pointToIndex ( final Container container, final int column, final int row, final GridSize gridSize )
     {
-        final boolean ltr = parent.getComponentOrientation ().isLeftToRight ();
+        final boolean ltr = container.getComponentOrientation ().isLeftToRight ();
         final int c = ltr ? column : gridSize.columns - 1 - column;
         return orientation == HORIZONTAL ? row * columns + c : c * rows + row;
     }
@@ -333,14 +334,14 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
     /**
      * Returns column and row sizes.
      *
-     * @param parent   group pane
-     * @param gridSize actual grid size
-     * @param type     requested sizes type
+     * @param container group pane
+     * @param gridSize  actual grid size
+     * @param type      requested sizes type
      * @return column and row sizes
      */
-    protected Pair<int[], int[]> calculateSizes ( final Container parent, final GridSize gridSize, final SizeType type )
+    protected Pair<int[], int[]> calculateSizes ( final Container container, final GridSize gridSize, final SizeType type )
     {
-        final int count = parent.getComponentCount ();
+        final int count = container.getComponentCount ();
 
         // Calculating initially available column and row sizes
         final int cols = gridSize.columns;
@@ -351,11 +352,11 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
         final double[] rowPercents = new double[ rows ];
         for ( int i = 0; i < count; i++ )
         {
-            final Component component = parent.getComponent ( i );
+            final Component component = container.getComponent ( i );
             final GroupPaneConstraints c = constraints.get ( component );
             final Dimension ps = component.getPreferredSize ();
 
-            final int col = indexToColumn ( parent, i, gridSize );
+            final int col = indexToColumn ( container, i, gridSize );
             final int row = indexToRow ( i );
 
             colWidths[ col ] = Math.max ( colWidths[ col ], ( int ) Math.floor ( c.width > 1 ? c.width : ps.width ) );
@@ -365,7 +366,7 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
         }
 
         // Calculating resulting column and row sizes
-        final Dimension size = parent.getSize ();
+        final Dimension size = container.getSize ();
         final Pair<Double, Integer> rc = calculateSizes ( cols, size.width, colWidths, colPercents );
         final Pair<Double, Integer> rr = calculateSizes ( rows, size.height, rowHeights, rowPercents );
 
@@ -375,7 +376,7 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
         {
             for ( int i = 0; i < count; i++ )
             {
-                final int col = indexToColumn ( parent, i, gridSize );
+                final int col = indexToColumn ( container, i, gridSize );
                 if ( colPercents[ col ] > 0 && colPercents[ col ] <= 1 )
                 {
                     final int pw = ( int ) Math.floor ( rc.getValue () * colPercents[ col ] / rc.getKey () );
@@ -496,15 +497,14 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
     }
 
     @Override
-    public Pair<String, String> getDescriptors ( final Container parent, final Component component, final int index )
+    public Pair<String, String> getDescriptors ( final Container container, final Component component, final int index )
     {
         // Retrieving actual grid size
-        final GridSize gridSize = getActualGridSize ( parent );
+        final GridSize gridSize = getActualGridSize ( container );
 
         // Retrieving component position
         final int row = indexToRow ( index );
-        final int col = indexToColumn ( parent, index, gridSize );
-        final boolean ltr = parent.getComponentOrientation ().isLeftToRight ();
+        final int col = indexToColumn ( container, index, gridSize );
 
         // Calculating descriptors values
         final boolean paintTop;
@@ -515,12 +515,12 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
         final boolean paintBottomLine;
         final boolean paintRight;
         final boolean paintRightLine;
-        if ( isNeighbourDecoratable ( parent, gridSize, col, row, TOP ) )
+        if ( isNeighbourDecoratable ( container, gridSize, col, row, BoxOrientation.top ) )
         {
             paintTop = false;
             paintTopLine = false;
         }
-        else if ( !isPaintTop () && row == 0 )
+        else if ( !isPaintTop () && isAtBorder ( container, gridSize, col, row, BoxOrientation.top ) )
         {
             paintTop = false;
             paintTopLine = false;
@@ -530,12 +530,12 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
             paintTop = true;
             paintTopLine = false;
         }
-        if ( isNeighbourDecoratable ( parent, gridSize, col, row, ltr ? LEFT : RIGHT ) )
+        if ( isNeighbourDecoratable ( container, gridSize, col, row, BoxOrientation.left ) )
         {
             paintLeft = false;
             paintLeftLine = false;
         }
-        else if ( !isPaintLeft () && col == ( ltr ? 0 : gridSize.columns - 1 ) )
+        else if ( !isPaintLeft () && isAtBorder ( container, gridSize, col, row, BoxOrientation.left ) )
         {
             paintLeft = false;
             paintLeftLine = false;
@@ -545,12 +545,12 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
             paintLeft = true;
             paintLeftLine = false;
         }
-        if ( isNeighbourDecoratable ( parent, gridSize, col, row, BOTTOM ) )
+        if ( isNeighbourDecoratable ( container, gridSize, col, row, BoxOrientation.bottom ) )
         {
             paintBottom = false;
             paintBottomLine = true;
         }
-        else if ( !isPaintBottom () && row == gridSize.rows - 1 )
+        else if ( !isPaintBottom () && isAtBorder ( container, gridSize, col, row, BoxOrientation.bottom ) )
         {
             paintBottom = false;
             paintBottomLine = false;
@@ -560,12 +560,12 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
             paintBottom = true;
             paintBottomLine = false;
         }
-        if ( isNeighbourDecoratable ( parent, gridSize, col, row, ltr ? RIGHT : LEFT ) )
+        if ( isNeighbourDecoratable ( container, gridSize, col, row, BoxOrientation.right ) )
         {
             paintRight = false;
             paintRightLine = true;
         }
-        else if ( !isPaintRight () && col == ( ltr ? gridSize.columns - 1 : 0 ) )
+        else if ( !isPaintRight () && isAtBorder ( container, gridSize, col, row, BoxOrientation.right ) )
         {
             paintRight = false;
             paintRightLine = false;
@@ -582,54 +582,97 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
         return new Pair<String, String> ( sides, lines );
     }
 
+
     /**
-     * Returns whether or not neighbour component painter is decoratable.
+     * Returns whether or not neighbour painter for component at the specified column/row is decoratable.
      *
-     * @param parent    container
+     * @param container container
      * @param gridSize  actual grid size
-     * @param col       current component column
-     * @param row       current component row
+     * @param col       component column
+     * @param row       component row
      * @param direction neighbour direction
-     * @return true if neighbour component painter is decoratable, false otherwise
+     * @return {@code true} if neighbour painter for component at the specified column/row is decoratable, {@code false} otherwise
      */
-    public boolean isNeighbourDecoratable ( final Container parent, final GridSize gridSize, final int col, final int row,
-                                            final int direction )
+    protected boolean isNeighbourDecoratable ( final Container container, final GridSize gridSize, final int col, final int row,
+                                               final BoxOrientation direction )
     {
-        final Component neighbour = getNeighbour ( parent, gridSize, col, row, direction );
+        final Component neighbour = getNeighbour ( container, gridSize, col, row, direction );
         return neighbour != null && PainterSupport.isDecoratable ( neighbour );
     }
 
     /**
-     * Returns neighbour component.
+     * Returns neighbour for component at the specified column/row.
      *
-     * @param parent    container
+     * @param container container
      * @param gridSize  actual grid size
-     * @param col       current component column
-     * @param row       current component row
+     * @param col       component column
+     * @param row       component row
      * @param direction neighbour direction
-     * @return neighbour component
+     * @return neighbour for component at the specified column/row
      */
-    public Component getNeighbour ( final Container parent, final GridSize gridSize, final int col, final int row, final int direction )
+    protected Component getNeighbour ( final Container container, final GridSize gridSize, final int col, final int row,
+                                       final BoxOrientation direction )
     {
-        if ( direction == TOP )
+        final Component neighbour;
+        final boolean ltr = container.getComponentOrientation ().isLeftToRight ();
+        if ( direction == BoxOrientation.top )
         {
-            return row > 0 ? getComponentAt ( parent, col, row - 1 ) : null;
+            neighbour = row > 0 ? getComponentAt ( container, col, row - 1 ) : null;
         }
-        else if ( direction == LEFT )
+        else if ( direction == BoxOrientation.bottom )
         {
-            return col > 0 ? getComponentAt ( parent, col - 1, row ) : null;
+            neighbour = row < gridSize.rows - 1 ? getComponentAt ( container, col, row + 1 ) : null;
         }
-        else if ( direction == BOTTOM )
+        else if ( direction == ( ltr ? BoxOrientation.left : BoxOrientation.right ) )
         {
-            return row < gridSize.rows - 1 ? getComponentAt ( parent, col, row + 1 ) : null;
+            neighbour = col > 0 ? getComponentAt ( container, col - 1, row ) : null;
         }
-        else if ( direction == RIGHT )
+        else if ( direction == ( ltr ? BoxOrientation.right : BoxOrientation.left ) )
         {
-            return col < gridSize.columns - 1 ? getComponentAt ( parent, col + 1, row ) : null;
+            neighbour = col < gridSize.columns - 1 ? getComponentAt ( container, col + 1, row ) : null;
         }
         else
         {
-            return null;
+            throw new IllegalArgumentException ( "Unknown neighbour direction: " + direction );
         }
+        return neighbour;
+    }
+
+    /**
+     * Returns whether or not component at the specified column/row is positioned right at container border.
+     *
+     * @param container container
+     * @param gridSize  actual grid size
+     * @param col       component column
+     * @param row       component row
+     * @param direction neighbour direction
+     * @return {@code true} if component at the specified column/row is positioned right at container border, {@code false} otherwise
+     */
+    protected boolean isAtBorder ( final Container container, final GridSize gridSize, final int col, final int row,
+                                   final BoxOrientation direction )
+    {
+        final boolean atBorder;
+        final boolean ltr = container.getComponentOrientation ().isLeftToRight ();
+        if ( direction == BoxOrientation.top )
+        {
+            atBorder = row == 0;
+        }
+        else if ( direction == BoxOrientation.bottom )
+        {
+            atBorder = row == gridSize.rows - 1;
+        }
+        else if ( direction == BoxOrientation.left )
+        {
+            atBorder = col == ( ltr ? 0 : gridSize.columns - 1 );
+        }
+        else if ( direction == BoxOrientation.right )
+        {
+            atBorder = col == ( ltr ? gridSize.columns - 1 : 0 );
+        }
+        else
+        {
+            throw new IllegalArgumentException ( "Unknown border direction: " + direction );
+        }
+        return atBorder;
     }
 }

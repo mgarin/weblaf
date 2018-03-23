@@ -32,14 +32,17 @@ import java.net.URL;
 /**
  * This component allows you to display images in many different ways.
  * This component uses less resources than a label and has a few optimization.
- * <p/>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
- * @see WebComponent
+ * @see ImageDescriptor
+ * @see WImageUI
  * @see WebImageUI
+ * @see IImagePainter
  * @see ImagePainter
+ * @see WebComponent
  */
 
 public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingConstants

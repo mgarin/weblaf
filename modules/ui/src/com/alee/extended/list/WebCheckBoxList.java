@@ -240,8 +240,9 @@ public class WebCheckBoxList extends WebList
             {
                 if ( checkOnIconOnly )
                 {
+                    final CheckBoxListModel checkBoxListModel = getCheckBoxListModel ();
                     final WebCheckBoxListCellRenderer renderer = getWebCheckBoxListCellRenderer ();
-                    final WebCheckBoxListElement element = renderer.getElement ( list, getCheckBoxListModel ().get ( index ) );
+                    final WebCheckBoxListElement element = renderer.getElement ( list, checkBoxListModel.get ( index ) );
                     final Rectangle cellRect = getUI ().getCellBounds ( list, index, index );
                     final Rectangle iconRect = element.getUI ().getIconBounds ();
                     iconRect.x += cellRect.x;

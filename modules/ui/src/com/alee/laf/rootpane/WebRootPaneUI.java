@@ -91,6 +91,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
      * Listeners.
      */
     protected transient PropertyChangeListener resizableChangeListener;
+    protected transient ComponentResizeBehavior resizeBehavior;
     protected transient PropertyChangeListener windowTitleListener;
 
     /**
@@ -122,7 +123,6 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
      * @param c component that will use UI instance
      * @return instance of the {@link WebRootPaneUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebRootPaneUI ();
@@ -239,7 +239,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     {
         if ( root.getWindowDecorationStyle () != JRootPane.NONE && isDecorated () )
         {
-            window = SwingUtils.getWindowAncestor ( root );
+            window = CoreSwingUtils.getWindowAncestor ( root );
             frame = window instanceof Frame ? ( Frame ) window : null;
             dialog = window instanceof Dialog ? ( Dialog ) window : null;
             installSettings ();
@@ -406,7 +406,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
 
         // Window resize behavior
         // todo Should this be tied to painter instead?
-        ComponentResizeBehavior.install ( root, new Function<Point, CompassDirection> ()
+        resizeBehavior = new ComponentResizeBehavior ( root, new Function<Point, CompassDirection> ()
         {
             @Override
             public CompassDirection apply ( final Point p )
@@ -468,6 +468,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
                 return null;
             }
         } );
+        resizeBehavior.install ();
     }
 
     /**
@@ -475,8 +476,10 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
      */
     protected void uninstallListeners ()
     {
-        ComponentResizeBehavior.uninstall ( root );
+        resizeBehavior.uninstall ();
+        resizeBehavior = null;
         window.removePropertyChangeListener ( WebLookAndFeel.RESIZABLE_PROPERTY, resizableChangeListener );
+        resizableChangeListener = null;
     }
 
     /**
@@ -856,7 +859,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     @Override
     public Window getWindow ()
     {
-        return SwingUtils.getWindowAncestor ( root );
+        return CoreSwingUtils.getWindowAncestor ( root );
     }
 
     @Override

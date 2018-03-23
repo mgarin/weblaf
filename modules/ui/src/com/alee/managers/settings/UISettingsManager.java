@@ -29,8 +29,12 @@ import com.alee.extended.dock.data.DockableFrameElement;
 import com.alee.extended.dock.data.DockableListContainer;
 import com.alee.extended.panel.WebAccordion;
 import com.alee.extended.panel.WebCollapsiblePane;
+import com.alee.extended.split.MultiSplitPaneSettingsProcessor;
+import com.alee.extended.split.MultiSplitState;
+import com.alee.extended.split.WebMultiSplitPane;
 import com.alee.extended.tab.DocumentPaneState;
 import com.alee.extended.tab.WebDocumentPane;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.colorchooser.HSBColor;
 import com.alee.laf.tree.NodeState;
 import com.alee.laf.tree.TreeState;
@@ -94,6 +98,7 @@ public final class UISettingsManager
 
             // Initializing data aliases
             XmlUtils.processAnnotations ( WindowSettings.class );
+            XmlUtils.processAnnotations ( MultiSplitState.class );
             XmlUtils.processAnnotations ( DocumentPaneState.class );
             XmlUtils.processAnnotations ( TreeState.class );
             XmlUtils.processAnnotations ( NodeState.class );
@@ -118,6 +123,7 @@ public final class UISettingsManager
             registerSettingsProcessor ( JRootPane.class, RootPaneSettingsProcessor.class );
 
             // Register additional component settings processors
+            registerSettingsProcessor ( WebMultiSplitPane.class, MultiSplitPaneSettingsProcessor.class );
             registerSettingsProcessor ( WebDocumentPane.class, DocumentPaneSettingsProcessor.class );
             registerSettingsProcessor ( WebTree.class, TreeSettingsProcessor.class );
             registerSettingsProcessor ( WebDateField.class, DateFieldSettingsProcessor.class );
@@ -363,8 +369,8 @@ public final class UISettingsManager
                                                                     final Class<T> defaultValueClass, final boolean loadInitialSettings,
                                                                     final boolean applySettingsChanges )
     {
-        registerComponent ( component, key, SettingsManager.getDefaultValue ( defaultValueClass ), loadInitialSettings,
-                applySettingsChanges );
+        registerComponent ( component, key, SettingsManager.getDefaultValue ( defaultValueClass ),
+                loadInitialSettings, applySettingsChanges );
     }
 
     /**
@@ -384,8 +390,8 @@ public final class UISettingsManager
     public static void registerComponent ( final JComponent component, final String key, final Object defaultValue,
                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
-        registerComponent ( component, SettingsManager.getDefaultSettingsGroup (), key, defaultValue, loadInitialSettings,
-                applySettingsChanges );
+        registerComponent ( component, SettingsManager.getDefaultSettingsGroup (), key, defaultValue,
+                loadInitialSettings, applySettingsChanges );
     }
 
     /**
@@ -409,8 +415,8 @@ public final class UISettingsManager
                                                                     final Class<T> defaultValueClass, final boolean loadInitialSettings,
                                                                     final boolean applySettingsChanges )
     {
-        registerComponent ( component, group, key, SettingsManager.getDefaultValue ( defaultValueClass ), loadInitialSettings,
-                applySettingsChanges );
+        registerComponent ( component, group, key, SettingsManager.getDefaultValue ( defaultValueClass ),
+                loadInitialSettings, applySettingsChanges );
     }
 
     /**
@@ -431,18 +437,20 @@ public final class UISettingsManager
     public static void registerComponent ( final JComponent component, final String group, final String key, final Object defaultValue,
                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
-        registerComponent (
-                new SettingsProcessorData ( component, group, key, defaultValue, loadInitialSettings, applySettingsChanges ) );
+        registerComponent ( new SettingsProcessorData ( component, group, key, defaultValue, loadInitialSettings, applySettingsChanges ) );
     }
 
     /**
-     * Registers component using the specified SettingsProcessorData.
+     * Registers component using the specified {@link SettingsProcessorData}.
      * Any old SettingsProcessor for that component will be unregistered if operation is successful.
      *
      * @param data SettingsProcessorData
      */
     public static void registerComponent ( final SettingsProcessorData data )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Creating new component settings processor if needed
         final SettingsProcessor settingsProcessor = createSettingsProcessor ( data );
 
@@ -459,6 +467,10 @@ public final class UISettingsManager
      */
     public static void registerComponent ( final JComponent component, final SettingsProcessor settingsProcessor )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Saving component settings processor
         settingsProcessors.set ( component, settingsProcessor, new BiConsumer<JComponent, SettingsProcessor> ()
         {
             @Override
@@ -476,6 +488,10 @@ public final class UISettingsManager
      */
     public static void loadSettings ( final JComponent component )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Loading settings if possible
         if ( settingsProcessors.contains ( component ) )
         {
             settingsProcessors.get ( component ).load ();
@@ -492,6 +508,9 @@ public final class UISettingsManager
      */
     public static void saveSettings ()
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Saving plain settings
         SettingsManager.saveSettings ();
 
@@ -513,6 +532,10 @@ public final class UISettingsManager
      */
     public static void saveSettings ( final JComponent component )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Saving settings
         if ( settingsProcessors.contains ( component ) )
         {
             settingsProcessors.get ( component ).save ( false );
@@ -531,6 +554,9 @@ public final class UISettingsManager
      */
     public static void unregisterComponent ( final JComponent component )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         settingsProcessors.clear ( component, new BiConsumer<JComponent, SettingsProcessor> ()
         {
             @Override

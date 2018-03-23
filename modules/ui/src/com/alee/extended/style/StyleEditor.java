@@ -1080,7 +1080,7 @@ public class StyleEditor extends WebFrame
                     if ( CompareUtils.equals ( sid.getCompleteId (), id ) )
                     {
                         final Dimension visible = previewPanel.getVisibleRect ().getSize ();
-                        final Rectangle bounds = SwingUtils.getRelativeBounds ( component, previewPanel );
+                        final Rectangle bounds = CoreSwingUtils.getRelativeBounds ( component, previewPanel );
                         if ( visible.height > bounds.height )
                         {
                             final int y = bounds.y + bounds.height / 2 - visible.height / 2;

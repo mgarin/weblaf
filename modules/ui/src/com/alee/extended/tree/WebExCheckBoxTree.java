@@ -20,6 +20,7 @@ package com.alee.extended.tree;
 import com.alee.extended.tree.sample.SampleExDataProvider;
 import com.alee.extended.tree.sample.SampleTreeCellEditor;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.tree.TreeNodeParameters;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.laf.tree.WebTreeCellEditor;
 import com.alee.laf.tree.WebTreeCellRenderer;
@@ -111,7 +112,7 @@ public class WebExCheckBoxTree<N extends UniqueNode> extends WebCheckBoxTree<N>
         setDataProvider ( dataProvider );
 
         // Tree cell renderer & editor
-        setCellRenderer ( new WebTreeCellRenderer.UIResource<N, WebExCheckBoxTree<N>> () );
+        setCellRenderer ( new WebTreeCellRenderer.UIResource<N, WebExCheckBoxTree<N>, TreeNodeParameters<N, WebExCheckBoxTree<N>>> () );
         setCellEditor ( new WebTreeCellEditor () );
     }
 

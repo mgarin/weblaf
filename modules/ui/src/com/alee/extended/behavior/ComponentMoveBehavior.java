@@ -19,7 +19,6 @@ package com.alee.extended.behavior;
 
 import com.alee.managers.style.BoundsType;
 import com.alee.utils.CoreSwingUtils;
-import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,12 +26,20 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 /**
- * Custom {@link Behavior} that allows you to easily move window/component.
- * Install this behavior onto any component to make it move the window when dragged.
- * You can specify moved component or window, or simply let the behavior detect it.
+ * This {@link Behavior} enables dragging {@link Component} or {@link Window} around using {@link #gripper}.
+ * You can explicitely specify {@link #target} {@link Component} or {@link Window} to be dragged.
+ * Otherwise behavior will use {@link #gripper}'s ancestor {@link Window}.
+ *
+ * This is basically simplified version of {@link ComponentResizeBehavior} as that one also allows dragging {@link #target}.
+ * Although this behavior is more flavorful and convenient to use when dragging is the only thing required.
+ *
  * Use {@link #install()} and {@link #uninstall()} methods to setup and remove this behavior.
+ * You don't need to explicitely store this behavior if your only intent is to install it once and keep forever.
+ * Although if you want to uninstall this behavior at some point you might want to keep its instance.
  *
  * @author Mikle Garin
+ * @see #install()
+ * @see #uninstall()
  */
 
 public class ComponentMoveBehavior extends MouseAdapter implements Behavior
@@ -42,13 +49,13 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
      */
 
     /**
-     * Component that acts as gripper.
+     * {@link Component} that controls movement.
      */
     protected final Component gripper;
 
     /**
-     * Component that should be dragged.
-     * If set to null mouse events source component parent window will be dragged instead.
+     * {@link Component} that is dragged using this behavior.
+     * If set to {@code null} - {@link #gripper}'s parent {@link Window} will be used instead.
      */
     protected final Component target;
 
@@ -146,7 +153,8 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
     @Override
     public void mousePressed ( final MouseEvent e )
     {
-        if ( e.getSource () == gripper && isEnabled () && gripper.isEnabled () && SwingUtilities.isLeftMouseButton ( e ) )
+        if ( !e.isConsumed () && SwingUtilities.isLeftMouseButton ( e ) &&
+                e.getSource () == gripper && isEnabled () && gripper.isEnabled () )
         {
             dragged = getDraggedComponent ( e );
             if ( dragged != null )
@@ -158,6 +166,9 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
                     initialPoint = CoreSwingUtils.getMouseLocation ();
                     initialBounds = dragged.getBounds ();
                     componentMoveStarted ( initialPoint, initialBounds.getLocation () );
+
+                    // Consume event
+                    e.consume ();
                 }
                 else
                 {
@@ -170,7 +181,7 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
     @Override
     public void mouseDragged ( final MouseEvent e )
     {
-        if ( dragging )
+        if ( !e.isConsumed () && SwingUtilities.isLeftMouseButton ( e ) && dragging )
         {
             final Point mouse = CoreSwingUtils.getMouseLocation ();
             final int x = initialBounds.x + mouse.x - initialPoint.x;
@@ -178,13 +189,16 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
             final Point location = new Point ( x, y );
             dragged.setLocation ( location );
             componentMoved ( mouse, location );
+
+            // Consume event
+            e.consume ();
         }
     }
 
     @Override
     public void mouseReleased ( final MouseEvent e )
     {
-        if ( dragging )
+        if ( !e.isConsumed () && SwingUtilities.isLeftMouseButton ( e ) && dragging )
         {
             final Point mouse = CoreSwingUtils.getMouseLocation ();
             final Point location = dragged.getLocation ();
@@ -193,6 +207,9 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
             initialPoint = null;
             initialBounds = null;
             componentMoveEnded ( mouse, location );
+
+            // Consume event
+            e.consume ();
         }
     }
 
@@ -202,7 +219,6 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
      * @param mouse    mouse location
      * @param location component location
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected void componentMoveStarted ( final Point mouse, final Point location )
     {
         // Do nothing by default
@@ -214,7 +230,6 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
      * @param mouse    new mouse location
      * @param location new component location
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected void componentMoved ( final Point mouse, final Point location )
     {
         // Do nothing by default
@@ -226,7 +241,6 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
      * @param mouse    mouse location
      * @param location component location
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected void componentMoveEnded ( final Point mouse, final Point location )
     {
         // Do nothing by default
@@ -240,7 +254,7 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
      */
     protected Component getDraggedComponent ( final MouseEvent e )
     {
-        return target == null ? SwingUtils.getWindowAncestor ( gripper ) : target;
+        return target != null ? target : CoreSwingUtils.getWindowAncestor ( gripper );
     }
 
     /**

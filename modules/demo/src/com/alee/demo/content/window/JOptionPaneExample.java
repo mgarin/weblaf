@@ -26,9 +26,9 @@ import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.notification.WebNotification;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.ExceptionUtils;
 import com.alee.utils.ReflectUtils;
-import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -131,7 +131,7 @@ public class JOptionPaneExample extends AbstractStylePreviewExample
                     }
 
                     // Display option pane
-                    final Window parent = SwingUtils.getWindowAncestor ( button );
+                    final Window parent = CoreSwingUtils.getWindowAncestor ( button );
                     final String title = LM.get ( getPreviewLanguagePrefix () + "title" );
                     final String message = LM.get ( getPreviewLanguagePrefix () + "message" );
                     final String notification = LM.get ( getPreviewLanguagePrefix () + "notification" );

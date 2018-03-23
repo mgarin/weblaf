@@ -17,12 +17,9 @@
 
 package com.alee.extended.link;
 
-import com.alee.api.IconSupport;
-import com.alee.api.TitleSupport;
 import com.alee.managers.icon.Icons;
 import com.alee.utils.WebUtils;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 /**
@@ -33,13 +30,8 @@ import java.awt.event.ActionEvent;
  * @see WebLink
  */
 
-public class EmailLinkAction extends AsyncLinkAction implements IconSupport, TitleSupport
+public class EmailLinkAction extends AsyncLinkAction
 {
-    /**
-     * Recipient email.
-     */
-    private final String email;
-
     /**
      * Constructs new {@link com.alee.extended.link.UrlLinkAction}.
      *
@@ -47,25 +39,12 @@ public class EmailLinkAction extends AsyncLinkAction implements IconSupport, Tit
      */
     public EmailLinkAction ( final String email )
     {
-        super ();
-        this.email = email;
-    }
-
-    @Override
-    public Icon getIcon ()
-    {
-        return Icons.email;
-    }
-
-    @Override
-    public String getTitle ()
-    {
-        return email;
+        super ( Icons.email, email );
     }
 
     @Override
     protected void asyncLinkExecuted ( final ActionEvent event )
     {
-        WebUtils.writeEmailSafely ( email );
+        WebUtils.writeEmailSafely ( getText () );
     }
 }

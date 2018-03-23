@@ -19,10 +19,7 @@ package com.alee.extended.heatmap;
 
 import com.alee.extended.magnifier.MagnifierGlass;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.utils.ColorUtils;
-import com.alee.utils.ImageUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.UtilityException;
+import com.alee.utils.*;
 import com.alee.utils.concurrent.DaemonThreadFactory;
 import com.alee.utils.swing.WebTimer;
 
@@ -448,7 +445,7 @@ public class HeatMap extends JComponent
         bufferGraphics.dispose ();
 
         // Updating heat map location
-        SwingUtils.invokeLater ( new Runnable ()
+        CoreSwingUtils.invokeLater ( new Runnable ()
         {
             @Override
             public void run ()
@@ -509,7 +506,7 @@ public class HeatMap extends JComponent
             // Performing and waiting for rendering in EDT
             // This is necessary to ensure we do not cause any damage for the component's painting flow
             final long[] time = new long[]{ 0 };
-            SwingUtils.invokeAndWait ( new Runnable ()
+            CoreSwingUtils.invokeAndWait ( new Runnable ()
             {
                 @Override
                 public void run ()
@@ -627,14 +624,14 @@ public class HeatMap extends JComponent
             // Checking that component is currently displayed
             throw new IllegalArgumentException ( "Provided component is not displayed on screen: " + component );
         }
-        if ( SwingUtils.getRootPane ( component ) == null )
+        if ( CoreSwingUtils.getRootPane ( component ) == null )
         {
             // Checking rootpane existence
             throw new IllegalArgumentException ( "Provided component is not placed within any window: " + component );
         }
 
         // Retrieving JRootPane
-        rootPane = SwingUtils.getRootPane ( component );
+        rootPane = CoreSwingUtils.getRootPane ( component );
         rootPane.addComponentListener ( resizeListener );
 
         // Displaying heat map

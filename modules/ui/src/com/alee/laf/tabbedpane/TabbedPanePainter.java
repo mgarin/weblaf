@@ -33,7 +33,6 @@ import java.util.Vector;
  * @author Mikle Garin
  */
 
-@SuppressWarnings ( "JavaDoc" )
 public class TabbedPanePainter<C extends JTabbedPane, U extends WTabbedPaneUI> extends AbstractPainter<C, U>
         implements ITabbedPanePainter<C, U>
 {
@@ -473,7 +472,6 @@ public class TabbedPanePainter<C extends JTabbedPane, U extends WTabbedPaneUI> e
         textRect.y += yNudge;
     }
 
-    @SuppressWarnings ( "UnusedParameters" )
     protected void paintIcon ( final Graphics g, final int tabPlacement, final int tabIndex, final Icon icon, final Rectangle iconRect,
                                final boolean isSelected )
     {
@@ -610,7 +608,6 @@ public class TabbedPanePainter<C extends JTabbedPane, U extends WTabbedPaneUI> e
                 component.getIconAt ( tabIndex );
     }
 
-    @SuppressWarnings ( "UnusedParameters" )
     protected void paintText ( final Graphics g, final int tabPlacement, final Font font, final FontMetrics metrics, final int tabIndex,
                                final String title, final Rectangle textRect, final boolean isSelected )
     {

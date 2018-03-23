@@ -24,6 +24,7 @@ import com.alee.managers.style.StyleId;
  * Custom descriptor for {@link WebDockableFrame} component.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  */
 
 public final class DockableFrameDescriptor extends AbstractComponentDescriptor<WebDockableFrame>

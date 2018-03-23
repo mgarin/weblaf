@@ -85,11 +85,7 @@
         <style type="styledlabel" id="renderer" padding="2" />
 
         <!-- Default number table cell renderer -->
-        <style type="styledlabel" id="renderer-number" extends="renderer">
-            <component>
-                <horizontalAlignment>11</horizontalAlignment>
-            </component>
-        </style>
+        <style type="styledlabel" id="renderer-number" extends="renderer" />
 
         <!-- Default double table cell renderer -->
         <style type="styledlabel" id="renderer-double" extends="renderer-number" />
@@ -101,18 +97,10 @@
         <style type="styledlabel" id="renderer-date" extends="renderer" />
 
         <!-- Icon cell renderer label -->
-        <style type="styledlabel" id="renderer-icon" padding="0" extends="renderer">
-            <component>
-                <horizontalAlignment>0</horizontalAlignment>
-            </component>
-        </style>
+        <style type="styledlabel" id="renderer-icon" padding="0" extends="renderer" />
 
         <!-- Boolean table cell renderer -->
-        <style type="checkbox" id="renderer-boolean">
-            <component>
-                <horizontalAlignment>0</horizontalAlignment>
-            </component>
-        </style>
+        <style type="checkbox" id="renderer-boolean" />
 
         <!-- File table cell editor -->
         <style type="textfield" id="editor" extends="non-opaque">

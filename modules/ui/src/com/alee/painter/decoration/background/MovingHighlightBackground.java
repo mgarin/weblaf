@@ -175,7 +175,6 @@ public class MovingHighlightBackground<C extends JComponent, D extends IDecorati
      *
      * @param c painted component
      */
-    @SuppressWarnings ( "unused" )
     protected void stopAnimation ( final C c )
     {
         if ( transitionsQueue != null )

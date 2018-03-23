@@ -34,6 +34,10 @@ import java.util.Map;
 public class FileListModel extends WebListModel<FileElement>
 {
     /**
+     * todo 1. Override {@link WebListModel} methods and adjust cache according to changes
+     */
+
+    /**
      * File elements cache lock.
      */
     private final Object elementsCacheLock = new Object ();
@@ -143,7 +147,7 @@ public class FileListModel extends WebListModel<FileElement>
     public void setData ( final String directoryPath )
     {
         clearCache ();
-        setElements ( toElementsList ( getData ( new File ( directoryPath ) ) ) );
+        setAll ( toElementsList ( getData ( new File ( directoryPath ) ) ) );
     }
 
     /**
@@ -154,7 +158,7 @@ public class FileListModel extends WebListModel<FileElement>
     public void setData ( final File directory )
     {
         clearCache ();
-        setElements ( toElementsList ( getData ( directory ) ) );
+        setAll ( toElementsList ( getData ( directory ) ) );
     }
 
     /**
@@ -165,7 +169,7 @@ public class FileListModel extends WebListModel<FileElement>
     public void setData ( final File[] data )
     {
         clearCache ();
-        setElements ( toElementsList ( data ) );
+        setAll ( toElementsList ( data ) );
     }
 
     /**
@@ -176,7 +180,7 @@ public class FileListModel extends WebListModel<FileElement>
     public void setData ( final List<File> data )
     {
         clearCache ();
-        setElements ( toElementsList ( data ) );
+        setAll ( toElementsList ( data ) );
     }
 
     /**

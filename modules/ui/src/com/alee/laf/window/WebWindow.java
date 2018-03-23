@@ -33,6 +33,7 @@ import com.alee.managers.settings.UISettingsManager;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.extensions.ComponentEventRunnable;
@@ -50,6 +51,7 @@ import java.util.List;
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
+ * @param <T> {@link WebWindow} type
  * @author Mikle Garin
  * @see JWindow
  * @see WebRootPaneUI
@@ -187,7 +189,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
      */
     public WebWindow ( final StyleId id, final Component owner )
     {
-        this ( id, SwingUtils.getWindowAncestor ( owner ) );
+        this ( id, CoreSwingUtils.getWindowAncestor ( owner ) );
     }
 
     /**

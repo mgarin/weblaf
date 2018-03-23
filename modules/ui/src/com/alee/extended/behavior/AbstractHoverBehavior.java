@@ -21,7 +21,6 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.drag.DragListener;
 import com.alee.managers.drag.DragManager;
 import com.alee.utils.CoreSwingUtils;
-import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -87,7 +86,7 @@ public abstract class AbstractHoverBehavior<C extends JComponent> extends Abstra
      */
     public void install ()
     {
-        hover = SwingUtils.isHovered ( component );
+        hover = CoreSwingUtils.isHovered ( component );
         component.addMouseListener ( this );
         component.addAncestorListener ( this );
         component.addHierarchyListener ( this );

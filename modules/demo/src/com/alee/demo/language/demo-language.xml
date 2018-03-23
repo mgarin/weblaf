@@ -1257,6 +1257,40 @@
                     </record>
                 </Dictionary>
             </Dictionary>
+            <Dictionary prefix="webmultisplitpane">
+                <record key="title">
+                    <value lang="en">WebMultiSplitPane</value>
+                    <value lang="ru">WebMultiSplitPane</value>
+                </record>
+                <record key="content">
+                    <value lang="en">Content</value>
+                    <value lang="ru">Содержимое</value>
+                </record>
+                <Dictionary prefix="basic">
+                    <record key="title">
+                        <value lang="en">Basic</value>
+                        <value lang="ru">Базовый</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="transparent">
+                    <record key="title">
+                        <value lang="en">Transparent</value>
+                        <value lang="ru">Прозрачный</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="decorated">
+                    <record key="title">
+                        <value lang="en">Decorated</value>
+                        <value lang="ru">Декорированный</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="focusable">
+                    <record key="title">
+                        <value lang="en">Focusable</value>
+                        <value lang="ru">Фокусабельный</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
             <Dictionary prefix="jtoolbar">
                 <record key="title">
                     <value lang="en">JToolBar</value>
@@ -2193,12 +2227,12 @@
                     </record>
                     <Dictionary prefix="result">
                         <record key="selected.single">
-                            <value lang="en">Selected file: %s</value>
-                            <value lang="ru">Выбранный файл: %s</value>
+                            <value lang="en">Selected file:{br}%s</value>
+                            <value lang="ru">Выбранный файл:{br}%s</value>
                         </record>
                         <record key="selected.multi">
-                            <value lang="en">Selected files: %s</value>
-                            <value lang="ru">Выбранные файлы: %s</value>
+                            <value lang="en">Selected files:{br}%s</value>
+                            <value lang="ru">Выбранные файлы:{br}%s</value>
                         </record>
                         <record key="none.single">
                             <value lang="en">File wasn't selected</value>
@@ -2215,6 +2249,46 @@
                         <record key="error">
                             <value lang="en">Something went wrong...</value>
                             <value lang="ru">Что-то пошло не так...</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="directorychooser">
+                    <record key="title">
+                        <value lang="en">WebDirectoryChooser</value>
+                        <value lang="ru">WebDirectoryChooser</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic chooser</value>
+                            <value lang="ru">Базовый выборщик</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="custom">
+                        <record key="title">
+                            <value lang="en">Custom chooser</value>
+                            <value lang="ru">Кастомизированный выборщик</value>
+                        </record>
+                    </Dictionary>
+                    <record key="show">
+                        <value lang="en">Show dialog</value>
+                        <value lang="ru">Показать диалог</value>
+                    </record>
+                    <Dictionary prefix="result">
+                        <record key="selected">
+                            <value lang="en">Selected directory:{br}%s</value>
+                            <value lang="ru">Выбранная директория:{br}%s</value>
+                        </record>
+                        <record key="cancelled">
+                            <value lang="en">Selection was cancelled</value>
+                            <value lang="ru">Выбор был отменён</value>
+                        </record>
+                        <record key="closed">
+                            <value lang="en">Dialog was closed</value>
+                            <value lang="ru">Диалог был закрыт</value>
+                        </record>
+                        <record key="none">
+                            <value lang="en">Directory was not selected</value>
+                            <value lang="ru">Директория не была выбрана</value>
                         </record>
                     </Dictionary>
                 </Dictionary>

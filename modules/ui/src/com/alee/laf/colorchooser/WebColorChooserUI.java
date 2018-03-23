@@ -64,7 +64,6 @@ public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, 
      * @param c component that will use UI instance
      * @return instance of the {@link WebColorChooserUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebColorChooserUI ();

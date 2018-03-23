@@ -37,7 +37,6 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
     private final Color borderColor = new Color ( 165, 165, 165 );
     private final Color innerBorderColor = new Color ( 248, 248, 248 );
 
-    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new NeoTabbedPaneUI ();
@@ -62,8 +61,8 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
         {
             int col = 0;
             final int start = tabRuns[ i ];
-            final int next = tabRuns[ ( i == runCount - 1 ) ? 0 : i + 1 ];
-            final int end = ( next != 0 ? next - 1 : tabCount - 1 );
+            final int next = tabRuns[ i == runCount - 1 ? 0 : i + 1 ];
+            final int end = next != 0 ? next - 1 : tabCount - 1;
             final int colsInRow = end - start + 1;
             for ( int j = start; j <= end; j++ )
             {
@@ -152,7 +151,7 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
             if ( tabPane.isEnabled () && tabPane.isEnabledAt ( tabIndex ) )
             {
                 Color fg = tabPane.getForegroundAt ( tabIndex );
-                if ( isSelected && ( fg instanceof UIResource ) )
+                if ( isSelected && fg instanceof UIResource )
                 {
                     final Color selectedFG = UIManager.getColor ( "TabbedPane.selectedForeground" );
                     if ( selectedFG != null )
@@ -216,7 +215,6 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
     //        }
     //    }
 
-    @SuppressWarnings ("UnusedParameters")
     protected void paintTabBackground ( final Graphics2D g2d, final int tabPlacement, final int row, final int col, final int colsInRow,
                                         final int tabIndex, final int x, final int y, final int w, final int h, final boolean isSelected )
     {
@@ -306,7 +304,7 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
         {
             case LEFT:
                 x += calculateTabAreaWidth ( tabPlacement, runCount, maxTabWidth );
-                w -= ( x - insets.left );
+                w -= x - insets.left;
                 break;
             case RIGHT:
                 w -= calculateTabAreaWidth ( tabPlacement, runCount, maxTabWidth );

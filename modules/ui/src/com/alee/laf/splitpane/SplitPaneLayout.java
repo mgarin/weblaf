@@ -72,28 +72,28 @@ public class SplitPaneLayout implements LayoutManager2
     }
 
     @Override
-    public void addLayoutComponent ( final String place, final Component component )
+    public void addLayoutComponent ( final String constraints, final Component component )
     {
         boolean isValid = true;
 
-        if ( place != null )
+        if ( constraints != null )
         {
-            if ( place.equals ( JSplitPane.DIVIDER ) )
+            if ( constraints.equals ( JSplitPane.DIVIDER ) )
             {
                 components[ 2 ] = component;
                 sizes[ 2 ] = getSizeForPrimaryAxis ( component.getPreferredSize () );
             }
-            else if ( place.equals ( JSplitPane.LEFT ) || place.equals ( JSplitPane.TOP ) )
+            else if ( constraints.equals ( JSplitPane.LEFT ) || constraints.equals ( JSplitPane.TOP ) )
             {
                 components[ 0 ] = component;
                 sizes[ 0 ] = 0;
             }
-            else if ( place.equals ( JSplitPane.RIGHT ) || place.equals ( JSplitPane.BOTTOM ) )
+            else if ( constraints.equals ( JSplitPane.RIGHT ) || constraints.equals ( JSplitPane.BOTTOM ) )
             {
                 components[ 1 ] = component;
                 sizes[ 1 ] = 0;
             }
-            else if ( !place.equals ( WSplitPaneUI.NON_CONTINUOUS_DIVIDER ) )
+            else if ( !constraints.equals ( WSplitPaneUI.NON_CONTINUOUS_DIVIDER ) )
             {
                 isValid = false;
             }
@@ -104,17 +104,17 @@ public class SplitPaneLayout implements LayoutManager2
         }
         if ( !isValid )
         {
-            throw new IllegalArgumentException ( "cannot add to layout: unknown constraint: " + place );
+            throw new IllegalArgumentException ( "cannot add to layout: unknown constraint: " + constraints );
         }
         doReset = true;
     }
 
     @Override
-    public void addLayoutComponent ( final Component comp, final Object constraints )
+    public void addLayoutComponent ( final Component component, final Object constraints )
     {
         if ( constraints == null || constraints instanceof String )
         {
-            addLayoutComponent ( ( String ) constraints, comp );
+            addLayoutComponent ( ( String ) constraints, component );
         }
         else
         {
@@ -318,25 +318,25 @@ public class SplitPaneLayout implements LayoutManager2
     }
 
     @Override
-    public Dimension maximumLayoutSize ( final Container target )
+    public Dimension maximumLayoutSize ( final Container container )
     {
         return new Dimension ( Integer.MAX_VALUE, Integer.MAX_VALUE );
     }
 
     @Override
-    public float getLayoutAlignmentX ( final Container target )
+    public float getLayoutAlignmentX ( final Container container )
     {
         return 0.0f;
     }
 
     @Override
-    public float getLayoutAlignmentY ( final Container target )
+    public float getLayoutAlignmentY ( final Container container )
     {
         return 0.0f;
     }
 
     @Override
-    public void invalidateLayout ( final Container c )
+    public void invalidateLayout ( final Container container )
     {
         /**
          * Does nothing by default.

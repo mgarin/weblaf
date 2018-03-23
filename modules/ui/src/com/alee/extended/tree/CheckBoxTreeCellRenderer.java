@@ -22,7 +22,7 @@ import com.alee.extended.checkbox.WebTristateCheckBox;
 import javax.swing.tree.TreeCellRenderer;
 
 /**
- * Base for any checkbox tree cell renderer.
+ * Base interface for {@link TreeCellRenderer} implementations for {@link WebCheckBoxTree}.
  *
  * @author Mikle Garin
  */
@@ -30,9 +30,9 @@ import javax.swing.tree.TreeCellRenderer;
 public interface CheckBoxTreeCellRenderer extends TreeCellRenderer
 {
     /**
-     * Returns checkbox used for rendering.
+     * Returns {@link WebTristateCheckBox} used for rendering.
      *
-     * @return checkbox used for rendering
+     * @return {@link WebTristateCheckBox} used for rendering
      */
     public WebTristateCheckBox getCheckBox ();
 }

@@ -20,7 +20,7 @@ package com.alee.laf.tree;
 import com.alee.api.jdk.Predicate;
 import com.alee.utils.SwingUtils;
 
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -40,8 +40,8 @@ public final class TreeEventMethodsImpl
      * @param runnable tree node event runnable
      * @return used mouse adapter
      */
-    public static <N extends DefaultMutableTreeNode> MouseAdapter onNodeDoubleClick ( final WebTree<N> tree,
-                                                                                      final TreeNodeEventRunnable<N> runnable )
+    public static <N extends MutableTreeNode> MouseAdapter onNodeDoubleClick ( final WebTree<N> tree,
+                                                                               final TreeNodeEventRunnable<N> runnable )
     {
         return onNodeDoubleClick ( tree, null, runnable );
     }
@@ -54,8 +54,8 @@ public final class TreeEventMethodsImpl
      * @param runnable  tree node event runnable
      * @return used mouse adapter
      */
-    public static <N extends DefaultMutableTreeNode> MouseAdapter onNodeDoubleClick ( final WebTree<N> tree, final Predicate<N> condition,
-                                                                                      final TreeNodeEventRunnable<N> runnable )
+    public static <N extends MutableTreeNode> MouseAdapter onNodeDoubleClick ( final WebTree<N> tree, final Predicate<N> condition,
+                                                                               final TreeNodeEventRunnable<N> runnable )
     {
         final MouseAdapter mouseAdapter = new MouseAdapter ()
         {

@@ -84,16 +84,15 @@ public class NodesDropHandler<N extends UniqueNode, T extends WebTree<N>, M exte
      * @param nodes       list of nodes to drop
      * @return true if nodes can be dropped to the specified location and index, false otherwise
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected boolean canDrop ( final TransferHandler.TransferSupport support, final T tree, final M model, final N destination,
-                                final int dropIndex, final List<N> nodes )
+    protected boolean canDrop ( final TransferHandler.TransferSupport support, final T tree, final M model,
+                                final N destination, final int dropIndex, final List<N> nodes )
     {
         return true;
     }
 
     @Override
-    public boolean prepareDrop ( final TransferHandler.TransferSupport support, final T tree, final M model, final N destination,
-                                 final int index )
+    public boolean prepareDrop ( final TransferHandler.TransferSupport support, final T tree, final M model,
+                                 final N destination, final int index )
     {
         try
         {
@@ -123,15 +122,15 @@ public class NodesDropHandler<N extends UniqueNode, T extends WebTree<N>, M exte
      * @param nodes       list of nodes to drop
      * @return true if nodes can be dropped to the specified location and index, false otherwise
      */
-    protected boolean prepareDrop ( final TransferHandler.TransferSupport support, final T tree, final M model, final N destination,
-                                    final int dropIndex, final List<N> nodes )
+    protected boolean prepareDrop ( final TransferHandler.TransferSupport support, final T tree, final M model,
+                                    final N destination, final int dropIndex, final List<N> nodes )
     {
         return canDrop ( support, tree, model, destination, dropIndex, nodes );
     }
 
     @Override
-    public void performDrop ( final TransferHandler.TransferSupport support, final T tree, final M model, final N destination,
-                              final int index, final NodesDropCallback<N> callback )
+    public void performDrop ( final TransferHandler.TransferSupport support, final T tree, final M model,
+                              final N destination, final int index, final NodesDropCallback<N> callback )
     {
         try
         {

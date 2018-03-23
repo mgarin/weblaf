@@ -21,7 +21,7 @@ import com.alee.laf.tree.UniqueNode;
 import com.alee.laf.tree.WebTree;
 import com.alee.laf.tree.WebTreeModel;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.CoreSwingUtils;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -285,7 +285,6 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
      * @param nodes dragged nodes
      * @return new transferable based on dragged nodes
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected Transferable createTransferable ( final T tree, final M model, final List<N> nodes )
     {
         return new NodesTransferable ( nodes );
@@ -366,7 +365,6 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
      * @param destination node onto which drop was performed
      * @return drop handler supporting this drop operation
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected TreeDropHandler<N, T, M> getDropHandler ( final TransferSupport support, final T tree, final M model, final N destination )
     {
         for ( final TreeDropHandler<N, T, M> dropHandler : dropHandlers )
@@ -411,8 +409,8 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
      * @param dropIndex preliminary nodes drop index
      * @return {@code true} if drop operation was successfully completed, {@code false} otherwise
      */
-    protected boolean prepareDropOperation ( final TransferSupport support, final T tree, final M model, final N parent,
-                                             final int dropIndex )
+    protected boolean prepareDropOperation ( final TransferSupport support, final T tree, final M model,
+                                             final N parent, final int dropIndex )
     {
         // Expanding parent first
         if ( !tree.isExpanded ( parent ) )
@@ -468,8 +466,8 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
      * @param index       nodes drop index
      * @return {@code true} if drop operation was successfully completed, {@code false} otherwise
      */
-    protected boolean performDropOperation ( final TransferSupport support, final T tree, final M model, final N destination,
-                                             final int index )
+    protected boolean performDropOperation ( final TransferSupport support, final T tree, final M model,
+                                             final N destination, final int index )
     {
         // Retrieving drop handler that will perform actual drop
         final TreeDropHandler<N, T, M> handler = getDropHandler ( support, tree, model, destination );
@@ -522,7 +520,7 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
             public void dropped ( final N... nodes )
             {
                 // Insert dropped nodes in EDT
-                SwingUtils.invokeLater ( new Runnable ()
+                CoreSwingUtils.invokeLater ( new Runnable ()
                 {
                     @Override
                     public void run ()
@@ -540,7 +538,7 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
             public void dropped ( final List<N> nodes )
             {
                 // Insert dropped nodes in EDT
-                SwingUtils.invokeLater ( new Runnable ()
+                CoreSwingUtils.invokeLater ( new Runnable ()
                 {
                     @Override
                     public void run ()
@@ -578,8 +576,8 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
      * @param index       nodes drop index
      * @param dropped     dropped nodes collected while drop callback was used
      */
-    protected void dropCompleted ( final TransferSupport support, final T tree, final M model, final N destination, final int index,
-                                   final List<N> dropped )
+    protected void dropCompleted ( final TransferSupport support, final T tree, final M model,
+                                   final N destination, final int index, final List<N> dropped )
     {
         // Simply finish drop operation
         finishDrop ( support, tree, model, destination, index, dropped );
@@ -596,8 +594,8 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
      * @param dropped     dropped nodes collected while drop callback was used
      * @param cause       drop failure cause
      */
-    protected void dropFailed ( final TransferSupport support, final T tree, final M model, final N destination, final int index,
-                                final List<N> dropped, final Throwable cause )
+    protected void dropFailed ( final TransferSupport support, final T tree, final M model,
+                                final N destination, final int index, final List<N> dropped, final Throwable cause )
     {
         // todo Think of a good way to process drop failure
         // Logging drop operation issues that have occurred
@@ -618,11 +616,10 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
      * @param index       nodes drop index
      * @param dropped     dropped nodes collected while drop callback was used
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected void finishDrop ( final TransferSupport support, final T tree, final M model, final N destination, final int index,
-                                final List<N> dropped )
+    protected void finishDrop ( final TransferSupport support, final T tree, final M model,
+                                final N destination, final int index, final List<N> dropped )
     {
-        SwingUtils.invokeLater ( new Runnable ()
+        CoreSwingUtils.invokeLater ( new Runnable ()
         {
             @Override
             public void run ()

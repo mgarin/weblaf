@@ -17,6 +17,7 @@
 
 package com.alee.utils.filefilter;
 
+import com.alee.api.ui.RenderingParameters;
 import com.alee.managers.language.LM;
 import com.alee.utils.FileUtils;
 import com.alee.utils.ImageUtils;
@@ -39,7 +40,7 @@ public class ImageFilesFilter extends AbstractFileFilter
     public static final ImageIcon ICON = new ImageIcon ( ImageFilesFilter.class.getResource ( "icons/image.png" ) );
 
     @Override
-    public ImageIcon getIcon ()
+    public Icon getIcon ( final RenderingParameters parameters )
     {
         return ICON;
     }

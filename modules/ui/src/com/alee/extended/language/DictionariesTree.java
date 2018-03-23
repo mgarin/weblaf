@@ -19,7 +19,10 @@ package com.alee.extended.language;
 
 import com.alee.laf.tree.WebTree;
 import com.alee.managers.hotkey.Hotkey;
-import com.alee.managers.language.data.*;
+import com.alee.managers.language.data.Dictionary;
+import com.alee.managers.language.data.Record;
+import com.alee.managers.language.data.Text;
+import com.alee.managers.language.data.Value;
 
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;

@@ -364,7 +364,7 @@ public abstract class AbstractListCellEditor<C extends Component, T> implements 
         if ( model instanceof WebListModel )
         {
             final WebListModel webListModel = ( WebListModel ) model;
-            webListModel.setElementAt ( newValue, index );
+            webListModel.set ( index, newValue );
             return true;
         }
         else if ( model instanceof DefaultListModel )

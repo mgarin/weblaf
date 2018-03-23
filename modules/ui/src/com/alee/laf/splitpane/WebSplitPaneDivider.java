@@ -42,6 +42,12 @@ import java.util.List;
  *
  * @author Scott Violet
  * @author Mikle Garin
+ * @see SplitPaneDescriptor
+ * @see WSplitPaneDividerUI
+ * @see WebSplitPaneDividerUI
+ * @see ISplitPanePainter
+ * @see SplitPanePainter
+ * @see WebSplitPane
  */
 
 public class WebSplitPaneDivider extends WebContainer<WebSplitPaneDivider, WSplitPaneDividerUI> implements PropertyChangeListener
@@ -100,7 +106,7 @@ public class WebSplitPaneDivider extends WebContainer<WebSplitPaneDivider, WSpli
     protected WebButton rightButton;
 
     /**
-     * Creates an instance of {@link WebSplitPaneDivider}.
+     * Constructs new {@link WebSplitPaneDivider}.
      *
      * @param splitPane {@link JSplitPane} this divider is attached to
      */
@@ -110,9 +116,9 @@ public class WebSplitPaneDivider extends WebContainer<WebSplitPaneDivider, WSpli
     }
 
     /**
-     * Creates an instance of {@link WebSplitPaneDivider}.
+     * Constructs new {@link WebSplitPaneDivider}.
      *
-     * @param id        style ID
+     * @param id        {@link StyleId}
      * @param splitPane {@link JSplitPane} this divider is attached to
      */
     public WebSplitPaneDivider ( final StyleId id, final JSplitPane splitPane )
@@ -258,7 +264,7 @@ public class WebSplitPaneDivider extends WebContainer<WebSplitPaneDivider, WSpli
     }
 
     /**
-     * Performs locally stored {@link JSplitPane} orientation variable update.
+     * Updates locally stored {@link JSplitPane} orientation and divider cursor.
      */
     protected void updateOrientationAndCursor ()
     {
@@ -280,31 +286,16 @@ public class WebSplitPaneDivider extends WebContainer<WebSplitPaneDivider, WSpli
             if ( leftButton == null && rightButton == null )
             {
                 /**
-                 * Create the left button and add an action listener to expand/collapse it.
+                 * Creating left and right buttons.
                  */
                 leftButton = createLeftOneTouchButton ();
-                if ( leftButton != null )
-                {
-                    leftButton.addActionListener ( new OneTouchActionHandler ( true ) );
-                }
-
-                /**
-                 * Create the right button and add an action listener to expand/collapse it.
-                 */
                 rightButton = createRightOneTouchButton ();
-                if ( rightButton != null )
-                {
-                    rightButton.addActionListener ( new OneTouchActionHandler ( false ) );
-                }
 
                 /**
-                 * Add left and right buttons onto the divider.
+                 * Adding them onto the divider.
                  */
-                if ( leftButton != null && rightButton != null )
-                {
-                    add ( leftButton );
-                    add ( rightButton );
-                }
+                add ( leftButton );
+                add ( rightButton );
             }
             else
             {
@@ -329,7 +320,9 @@ public class WebSplitPaneDivider extends WebContainer<WebSplitPaneDivider, WSpli
      */
     protected WebButton createLeftOneTouchButton ()
     {
-        return new OneTouchButton ( StyleId.splitpanedividerOneTouchLeftButton.at ( this ) );
+        final OneTouchButton button = new OneTouchButton ( StyleId.splitpanedividerOneTouchLeftButton.at ( this ) );
+        button.addActionListener ( new OneTouchActionHandler ( true ) );
+        return button;
     }
 
     /**
@@ -339,7 +332,9 @@ public class WebSplitPaneDivider extends WebContainer<WebSplitPaneDivider, WSpli
      */
     protected WebButton createRightOneTouchButton ()
     {
-        return new OneTouchButton ( StyleId.splitpanedividerOneTouchRightButton.at ( this ) );
+        final OneTouchButton button = new OneTouchButton ( StyleId.splitpanedividerOneTouchRightButton.at ( this ) );
+        button.addActionListener ( new OneTouchActionHandler ( false ) );
+        return button;
     }
 
     /**
@@ -801,9 +796,9 @@ public class WebSplitPaneDivider extends WebContainer<WebSplitPaneDivider, WSpli
     protected class DividerLayout extends AbstractLayoutManager
     {
         @Override
-        public void layoutContainer ( final Container c )
+        public void layoutContainer ( final Container container )
         {
-            if ( leftButton != null && rightButton != null && c == WebSplitPaneDivider.this )
+            if ( leftButton != null && rightButton != null && container == WebSplitPaneDivider.this )
             {
                 if ( splitPane.isOneTouchExpandable () )
                 {
@@ -856,20 +851,20 @@ public class WebSplitPaneDivider extends WebContainer<WebSplitPaneDivider, WSpli
         }
 
         @Override
-        public Dimension minimumLayoutSize ( final Container c )
+        public Dimension minimumLayoutSize ( final Container container )
         {
-            return preferredLayoutSize ( c );
+            return preferredLayoutSize ( container );
         }
 
+        /**
+         * NOTE: This isn't really used due to divider being forcefully positioned according to predefined sizes.
+         * I leave a proper implementation for this method in hopes of using it at some point instead of workarounds.
+         */
         @Override
-        public Dimension preferredLayoutSize ( final Container c )
+        public Dimension preferredLayoutSize ( final Container container )
         {
-            /**
-             * NOTE: This isn't really used, refer to {@link WebSplitPaneDivider#getPreferredSize()} for the reason.
-             * I leave it in hopes of having this used at some point.
-             */
             final Dimension ps;
-            if ( c == WebSplitPaneDivider.this && splitPane != null )
+            if ( container == WebSplitPaneDivider.this && splitPane != null )
             {
                 Dimension buttonSize = null;
                 if ( splitPane.isOneTouchExpandable () )

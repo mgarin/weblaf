@@ -49,7 +49,6 @@ public class WebRadioButtonUI<C extends JRadioButton> extends WRadioButtonUI<C> 
      * @param c component that will use UI instance
      * @return instance of the {@link WebRadioButtonUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebRadioButtonUI ();

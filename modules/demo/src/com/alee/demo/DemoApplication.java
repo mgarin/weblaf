@@ -58,7 +58,7 @@ import com.alee.managers.style.StyleManager;
 import com.alee.managers.version.VersionManager;
 import com.alee.skin.dark.DarkSkin;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.XmlUtils;
 
 import javax.swing.*;
@@ -271,7 +271,7 @@ public final class DemoApplication extends WebFrame
         statusBar.addToEnd ( memoryBar );
 
         final WebCanvas resizeCorner = new WebCanvas ( StyleId.canvasGripperSE );
-        ComponentResizeBehavior.install ( resizeCorner, CompassDirection.southEast );
+        new ComponentResizeBehavior ( resizeCorner, CompassDirection.southEast ).install ();
         statusBar.addToEnd ( resizeCorner );
 
         add ( statusBar, BorderLayout.SOUTH );
@@ -318,8 +318,8 @@ public final class DemoApplication extends WebFrame
      */
     public static void main ( final String[] args )
     {
-        SwingUtils.enableEventQueueLogging ();
-        SwingUtils.invokeLater ( new Runnable ()
+        CoreSwingUtils.enableEventQueueLogging ();
+        CoreSwingUtils.invokeLater ( new Runnable ()
         {
             @Override
             public void run ()

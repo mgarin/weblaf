@@ -96,17 +96,17 @@ public class WebSpinnerLayout extends AbstractLayoutManager
     }
 
     @Override
-    public void layoutContainer ( final Container parent )
+    public void layoutContainer ( final Container container )
     {
-        final Insets b = parent.getInsets ();
-        final Dimension s = parent.getSize ();
+        final Insets b = container.getInsets ();
+        final Dimension s = container.getSize ();
         final Dimension next = nextButton != null ? nextButton.getPreferredSize () : new Dimension ( 0, 0 );
         final Dimension prev = previousButton != null ? previousButton.getPreferredSize () : new Dimension ( 0, 0 );
         final int bw = Math.max ( next.width, prev.width );
         final int bah = s.height - b.top - b.bottom;
         final int nh = bah % 2 == 0 ? bah / 2 : ( bah - 1 ) / 2 + 1;
         final int ph = bah % 2 == 0 ? bah / 2 : ( bah - 1 ) / 2;
-        final boolean ltr = parent.getComponentOrientation ().isLeftToRight ();
+        final boolean ltr = container.getComponentOrientation ().isLeftToRight ();
         if ( editor != null )
         {
             editor.setBounds ( b.left + ( ltr ? 0 : bw ), b.top, s.width - b.left - b.right - bw, s.height - b.top - b.bottom );
@@ -122,9 +122,9 @@ public class WebSpinnerLayout extends AbstractLayoutManager
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
+    public Dimension preferredLayoutSize ( final Container container )
     {
-        final Insets b = parent.getInsets ();
+        final Insets b = container.getInsets ();
         final Dimension ed = editor != null ? editor.getPreferredSize () : new Dimension ( 0, 0 );
         final Dimension next = nextButton != null ? nextButton.getPreferredSize () : new Dimension ( 0, 0 );
         final Dimension prev = previousButton != null ? previousButton.getPreferredSize () : new Dimension ( 0, 0 );

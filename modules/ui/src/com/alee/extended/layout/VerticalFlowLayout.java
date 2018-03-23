@@ -166,19 +166,19 @@ public class VerticalFlowLayout extends AbstractLayoutManager
     }
 
     @Override
-    public void layoutContainer ( final Container target )
+    public void layoutContainer ( final Container container )
     {
-        final Insets insets = target.getInsets ();
-        final Dimension size = target.getSize ();
+        final Insets insets = container.getInsets ();
+        final Dimension size = container.getSize ();
         final int maxwidth = size.width - ( insets.left + insets.right );
         final int maxheight = size.height - ( insets.top + insets.bottom );
-        final int numcomp = target.getComponentCount ();
-        final int pheight = !vfill && align != TOP ? calculatePreferredHeight ( target ) : 0;
+        final int numcomp = container.getComponentCount ();
+        final int pheight = !vfill && align != TOP ? calculatePreferredHeight ( container ) : 0;
 
         int y = 0;
         for ( int i = 0; i < numcomp; i++ )
         {
-            final Component component = target.getComponent ( i );
+            final Component component = container.getComponent ( i );
             if ( component.isVisible () )
             {
                 final Dimension ps = component.getPreferredSize ();
@@ -215,12 +215,12 @@ public class VerticalFlowLayout extends AbstractLayoutManager
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container target )
+    public Dimension preferredLayoutSize ( final Container container )
     {
         final Dimension tarsiz = new Dimension ( 0, 0 );
-        for ( int i = 0; i < target.getComponentCount (); i++ )
+        for ( int i = 0; i < container.getComponentCount (); i++ )
         {
-            final Component m = target.getComponent ( i );
+            final Component m = container.getComponent ( i );
             if ( m.isVisible () )
             {
                 final Dimension d = m.getPreferredSize ();
@@ -232,19 +232,19 @@ public class VerticalFlowLayout extends AbstractLayoutManager
                 tarsiz.height += d.height;
             }
         }
-        final Insets insets = target.getInsets ();
+        final Insets insets = container.getInsets ();
         tarsiz.width += insets.left + insets.right;
         tarsiz.height += insets.top + insets.bottom;
         return tarsiz;
     }
 
     @Override
-    public Dimension minimumLayoutSize ( final Container target )
+    public Dimension minimumLayoutSize ( final Container container )
     {
         final Dimension tarsiz = new Dimension ( 0, 0 );
-        for ( int i = 0; i < target.getComponentCount (); i++ )
+        for ( int i = 0; i < container.getComponentCount (); i++ )
         {
-            final Component m = target.getComponent ( i );
+            final Component m = container.getComponent ( i );
             if ( m.isVisible () )
             {
                 final Dimension d = m.getMinimumSize ();
@@ -256,7 +256,7 @@ public class VerticalFlowLayout extends AbstractLayoutManager
                 tarsiz.height += d.height;
             }
         }
-        final Insets insets = target.getInsets ();
+        final Insets insets = container.getInsets ();
         tarsiz.width += insets.left + insets.right;
         tarsiz.height += insets.top + insets.bottom;
         return tarsiz;
@@ -265,16 +265,16 @@ public class VerticalFlowLayout extends AbstractLayoutManager
     /**
      * Calculates preferred height required for components within this layout.
      *
-     * @param target container to calculate components preferred height for
+     * @param container container to calculate components preferred height for
      * @return preferred height required for components within this layout
      */
-    protected int calculatePreferredHeight ( final Container target )
+    protected int calculatePreferredHeight ( final Container container )
     {
         int ph = 0;
-        for ( int i = 0; i < target.getComponentCount (); i++ )
+        for ( int i = 0; i < container.getComponentCount (); i++ )
         {
-            ph += target.getComponent ( i ).getPreferredSize ().height;
-            if ( i < target.getComponentCount () - 1 )
+            ph += container.getComponent ( i ).getPreferredSize ().height;
+            if ( i < container.getComponentCount () - 1 )
             {
                 ph += vgap;
             }

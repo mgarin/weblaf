@@ -17,13 +17,15 @@
 
 package com.alee.extended.tree;
 
-import javax.swing.tree.DefaultMutableTreeNode;
+import com.alee.laf.tree.TreeUtils;
+
+import javax.swing.tree.MutableTreeNode;
 import java.util.Comparator;
 
 /**
  * Comparator for nodes position in the tree.
  * It doesn't rely on the visible row, but the raw position of the nodes within their parents.
- * <p/>
+ *
  * Note that this comparator will only work if provided nodes have access to their parent nodes and children.
  * This always depends on how tree model works with the nodes.
  *
@@ -31,7 +33,7 @@ import java.util.Comparator;
  * @author Mikle Garin
  */
 
-public class NodesPositionComparator<N extends DefaultMutableTreeNode> implements Comparator<N>
+public class NodesPositionComparator<N extends MutableTreeNode> implements Comparator<N>
 {
     @Override
     public int compare ( final N n1, final N n2 )
@@ -41,14 +43,14 @@ public class NodesPositionComparator<N extends DefaultMutableTreeNode> implement
             // Same nodes do not need to be sorted
             return 0;
         }
-        else if ( n1.isNodeAncestor ( n2 ) )
-        {
-            // If first node is ancestor of second one
-            return 1;
-        }
-        else if ( n2.isNodeAncestor ( n1 ) )
+        else if ( TreeUtils.isNodeAncestor ( n1, n2 ) )
         {
             // If second node is ancestor of first one
+            return 1;
+        }
+        else if ( TreeUtils.isNodeAncestor ( n2, n1 ) )
+        {
+            // If first node is ancestor of second one
             return -1;
         }
         else
@@ -57,12 +59,13 @@ public class NodesPositionComparator<N extends DefaultMutableTreeNode> implement
             // So now we have to find a node which is parent for both of them
             N p1 = n1;
             N p2 = n2;
-            while ( p1 != null && p2 != null && ( p1.getLevel () != p2.getLevel () || p1.getParent () != p2.getParent () ) )
+            while ( p1 != null && p2 != null &&
+                    ( TreeUtils.getLevel ( p1 ) != TreeUtils.getLevel ( p2 ) || p1.getParent () != p2.getParent () ) )
             {
                 // We need to acquire levels of both nodes before we change them
                 // This is important to avoid issues in further checks
-                final int l1 = p1.getLevel ();
-                final int l2 = p2.getLevel ();
+                final int l1 = TreeUtils.getLevel ( p1 );
+                final int l2 = TreeUtils.getLevel ( p2 );
                 if ( l1 >= l2 )
                 {
                     // If this node has higher level we need to move to its parent

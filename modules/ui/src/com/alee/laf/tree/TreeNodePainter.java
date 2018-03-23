@@ -122,7 +122,6 @@ public class TreeNodePainter<C extends JTree, U extends WTreeUI, D extends IDeco
      * @param states list to add states to
      * @param path   {@link TreePath} to provide numeration states for
      */
-    @SuppressWarnings ( "unused" )
     protected void addNumerationStates ( final List<String> states, final TreePath path )
     {
         states.add ( row % 2 == 0 ? DecorationState.odd : DecorationState.even );

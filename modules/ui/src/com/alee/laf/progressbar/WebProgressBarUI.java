@@ -65,7 +65,6 @@ public class WebProgressBarUI<C extends JProgressBar> extends WProgressBarUI<C> 
      * @param c component that will use UI instance
      * @return instance of the {@link WebProgressBarUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebProgressBarUI ();

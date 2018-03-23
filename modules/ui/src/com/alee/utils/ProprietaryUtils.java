@@ -222,7 +222,7 @@ public final class ProprietaryUtils
 
                 // todo Possible intersection with styling from skin
                 // Changing opacity of root and content panes
-                final JRootPane rootPane = SwingUtils.getRootPane ( window );
+                final JRootPane rootPane = CoreSwingUtils.getRootPane ( window );
                 if ( rootPane != null )
                 {
                     // Changing root pane background color and opacity
@@ -545,7 +545,7 @@ public final class ProprietaryUtils
      */
     public static Window getWindowAncestorForDialog ( final Component component )
     {
-        final Window window = SwingUtils.getWindowAncestor ( component );
+        final Window window = CoreSwingUtils.getWindowAncestor ( component );
         return window != null && ( window instanceof Dialog || window instanceof Frame ) ? window : getSharedOwnerFrame ();
     }
 }

@@ -27,6 +27,7 @@ import com.alee.painter.Painter;
  * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  */
 
 public final class AdaptiveDockableFramePainter<C extends WebDockableFrame, U extends WDockableFrameUI> extends AdaptivePainter<C, U>

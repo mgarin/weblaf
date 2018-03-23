@@ -195,7 +195,7 @@ public class MagnifierGlass extends JComponent
                     // Forcing later update within EDT
                     // We are already within EDT here, but this is necessary
                     // UI update will look laggy due to event handling specifics without this
-                    SwingUtils.invokeLater ( new Runnable ()
+                    CoreSwingUtils.invokeLater ( new Runnable ()
                     {
                         @Override
                         public void run ()
@@ -503,7 +503,7 @@ public class MagnifierGlass extends JComponent
 
             // Filling-in image content
             final Point mp = CoreSwingUtils.getMouseLocation ();
-            final Rectangle gb = SwingUtils.getBoundsOnScreen ( zoomProvider );
+            final Rectangle gb = CoreSwingUtils.getBoundsOnScreen ( zoomProvider );
             if ( gb.contains ( mp ) )
             {
                 // Configuring graphics
@@ -553,7 +553,7 @@ public class MagnifierGlass extends JComponent
             {
                 // Displaying magnifier straight on top of the cursor
                 final WebGlassPane glassPane = GlassPaneManager.getGlassPane ( zoomProvider );
-                final Point rel = SwingUtils.getRelativeLocation ( zoomProvider, glassPane );
+                final Point rel = CoreSwingUtils.getRelativeLocation ( zoomProvider, glassPane );
                 final Dimension ps = getPreferredSize ();
                 final int mx = mp.x - gb.x + rel.x - ps.width / 2;
                 final int my = mp.y - gb.y + rel.y - ps.height / 2;
@@ -562,7 +562,7 @@ public class MagnifierGlass extends JComponent
             else if ( position == MagnifierPosition.nearCursor )
             {
                 final WebGlassPane glassPane = GlassPaneManager.getGlassPane ( zoomProvider );
-                final Rectangle bos = SwingUtils.getBoundsOnScreen ( glassPane );
+                final Rectangle bos = CoreSwingUtils.getBoundsOnScreen ( glassPane );
                 final Point rmp = new Point ( mp.x - bos.x, mp.y - bos.y );
                 final Dimension ps = getPreferredSize ();
                 final int mx;
@@ -591,8 +591,8 @@ public class MagnifierGlass extends JComponent
             }
 
             // Updating cursor on the window
-            SwingUtils.getWindowAncestor ( zoomProvider )
-                    .setCursor ( position == MagnifierPosition.atCursor ? SystemUtils.getTransparentCursor () : defaultCursor );
+            final Cursor cursor = position == MagnifierPosition.atCursor ? SystemUtils.getTransparentCursor () : defaultCursor;
+            CoreSwingUtils.getWindowAncestor ( zoomProvider ).setCursor ( cursor );
 
             // Repainting magnifier
             // This is required in addition to bounds change repaint
@@ -602,7 +602,7 @@ public class MagnifierGlass extends JComponent
         else if ( buffer != null )
         {
             // Restoring cursor
-            SwingUtils.getWindowAncestor ( zoomProvider ).setCursor ( defaultCursor );
+            CoreSwingUtils.getWindowAncestor ( zoomProvider ).setCursor ( defaultCursor );
 
             // Resetting buffer if magnifier is hidden
             buffer.flush ();
@@ -758,7 +758,7 @@ public class MagnifierGlass extends JComponent
             // Checking that component is currently displayed
             throw new IllegalArgumentException ( "Provided component is not displayed on screen: " + component );
         }
-        if ( SwingUtils.getRootPane ( component ) == null )
+        if ( CoreSwingUtils.getRootPane ( component ) == null )
         {
             // Checking rootpane existence
             throw new IllegalArgumentException ( "Provided component is not placed within any window: " + component );
@@ -769,7 +769,7 @@ public class MagnifierGlass extends JComponent
 
         // Retrieving component that will be providing us the area to use magnifier within
         zoomProvider = component instanceof JRootPane ? ( ( JRootPane ) component ).getLayeredPane () : component;
-        defaultCursor = SwingUtils.getWindowAncestor ( zoomProvider ).getCursor ();
+        defaultCursor = CoreSwingUtils.getWindowAncestor ( zoomProvider ).getCursor ();
 
         // Updating buffer image
         updatePreview ();

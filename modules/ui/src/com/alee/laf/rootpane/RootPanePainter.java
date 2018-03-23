@@ -6,8 +6,8 @@ import com.alee.painter.decoration.AbstractContainerPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.ProprietaryUtils;
-import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -283,7 +283,7 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
         {
             states.add ( DecorationState.maximized );
         }
-        if ( SwingUtils.isFullScreen ( component ) )
+        if ( CoreSwingUtils.isFullScreen ( component ) )
         {
             states.add ( DecorationState.fullscreen );
         }
@@ -473,6 +473,6 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
      */
     protected Window getWindow ()
     {
-        return SwingUtils.getWindowAncestor ( component );
+        return CoreSwingUtils.getWindowAncestor ( component );
     }
 }

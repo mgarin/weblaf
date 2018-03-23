@@ -20,7 +20,7 @@ package com.alee.managers.popup;
 import com.alee.api.jdk.BiConsumer;
 import com.alee.api.jdk.Function;
 import com.alee.managers.style.StyleId;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.swing.WeakComponentData;
 
 import javax.swing.*;
@@ -89,7 +89,7 @@ public final class PopupManager
      */
     public static void hideAllPopups ( final JComponent component )
     {
-        hideAllPopups ( SwingUtils.getRootPane ( component ) );
+        hideAllPopups ( CoreSwingUtils.getRootPane ( component ) );
     }
 
     /**
@@ -149,7 +149,7 @@ public final class PopupManager
      */
     public static void showPopup ( final Component component, final WebInnerPopup popup, final boolean transferFocus )
     {
-        final JRootPane rootPane = SwingUtils.getRootPane ( component );
+        final JRootPane rootPane = CoreSwingUtils.getRootPane ( component );
         if ( rootPane != null )
         {
             showPopup ( rootPane, popup, transferFocus );
@@ -200,7 +200,7 @@ public final class PopupManager
     public static void showModalPopup ( final Component component, final WebInnerPopup popup, final boolean hfill, final boolean vfill,
                                         final boolean blockClose )
     {
-        final JRootPane rootPane = SwingUtils.getRootPane ( component );
+        final JRootPane rootPane = CoreSwingUtils.getRootPane ( component );
         if ( rootPane != null )
         {
             showModalPopup ( rootPane, popup, hfill, vfill, blockClose );
@@ -252,7 +252,7 @@ public final class PopupManager
      */
     public static PopupLayer getPopupLayer ( final Component component )
     {
-        return getPopupLayer ( SwingUtils.getRootPane ( component ) );
+        return getPopupLayer ( CoreSwingUtils.getRootPane ( component ) );
     }
 
     /**
@@ -351,7 +351,7 @@ public final class PopupManager
             }
         } );
 
-        final Window window = SwingUtils.getWindowAncestor ( rootPane );
+        final Window window = CoreSwingUtils.getWindowAncestor ( rootPane );
         if ( window != null )
         {
             window.addWindowStateListener ( new WindowStateListener ()

@@ -20,6 +20,7 @@ package com.alee.extended.inspector;
 import com.alee.extended.behavior.Behavior;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
 
 import java.awt.*;
@@ -88,7 +89,7 @@ public final class ComponentInspectBehavior implements Behavior
                     final MouseEvent mouseEvent = ( MouseEvent ) event;
                     final Component source = ( Component ) event.getSource ();
                     final Component component = SwingUtils.getTopComponentAt ( source, mouseEvent.getPoint () );
-                    if ( SwingUtils.isAncestorOf ( ComponentInspectBehavior.this.root, component ) )
+                    if ( CoreSwingUtils.isAncestorOf ( ComponentInspectBehavior.this.root, component ) )
                     {
                         // Performing on-event actions
                         if ( CompareUtils.equals ( eventId, MouseEvent.MOUSE_PRESSED ) )
@@ -177,7 +178,7 @@ public final class ComponentInspectBehavior implements Behavior
         hideInspector ();
 
         // Displaying inspector
-        if ( SwingUtils.isAncestorOf ( root, component ) && component != hoverHighlighter.getComponent () )
+        if ( CoreSwingUtils.isAncestorOf ( root, component ) && component != hoverHighlighter.getComponent () )
         {
             hoverHighlighter.install ( component );
         }

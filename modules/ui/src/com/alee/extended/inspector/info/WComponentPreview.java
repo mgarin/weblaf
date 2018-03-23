@@ -17,13 +17,12 @@
 
 package com.alee.extended.inspector.info;
 
-import com.alee.managers.style.ComponentDescriptor;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
-import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,15 +39,14 @@ public class WComponentPreview<C extends JComponent> extends AbstractComponentPr
     @Override
     public Icon getIconImpl ( final C component )
     {
-        final JRootPane rootPane = SwingUtils.getRootPane ( component );
+        final JRootPane rootPane = CoreSwingUtils.getRootPane ( component );
         if ( rootPane != null && rootPane.getGlassPane () == component )
         {
             return glassPaneType;
         }
         else
         {
-            final ComponentDescriptor<C> descriptor = StyleManager.getDescriptor ( component );
-            return descriptor.getIcon ();
+            return StyleManager.getDescriptor ( component ).getIcon ();
         }
     }
 

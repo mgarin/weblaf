@@ -24,7 +24,7 @@ import com.alee.laf.tree.WebTree;
 import com.alee.laf.tree.WebTreeCellEditor;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.compare.Filter;
 import com.alee.utils.swing.CellEditorAdapter;
 
@@ -386,7 +386,7 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N> implemen
 
                     // Must update sorting later to avoid interfering with editing
                     // This is important as sorting might cause consequent editing stop event
-                    SwingUtils.invokeLater ( new Runnable ()
+                    CoreSwingUtils.invokeLater ( new Runnable ()
                     {
                         @Override
                         public void run ()

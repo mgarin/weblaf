@@ -17,6 +17,7 @@
 
 package com.alee.managers.focus;
 
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.collection.WeakHashSet;
@@ -217,7 +218,7 @@ public abstract class DefaultFocusTracker implements FocusTracker
                 // JRootPane's window or one of its children involved
                 // Special workaround to include window components into focus checks
                 // This works exclusively for JRootPane components as it basically represents window
-                final Window window = SwingUtils.getWindowAncestor ( tracked );
+                final Window window = CoreSwingUtils.getWindowAncestor ( tracked );
                 involved = window != null && SwingUtils.isEqualOrChild ( window, component );
             }
             else
@@ -238,7 +239,7 @@ public abstract class DefaultFocusTracker implements FocusTracker
                 // JRootPane's window involved directly
                 // Special workaround to include window components into focus checks
                 // This works exclusively for JRootPane components as it basically represents window
-                final Window window = SwingUtils.getWindowAncestor ( tracked );
+                final Window window = CoreSwingUtils.getWindowAncestor ( tracked );
                 involved = window != null && window == component;
             }
             else

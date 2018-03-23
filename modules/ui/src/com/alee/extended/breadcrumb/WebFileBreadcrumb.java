@@ -19,6 +19,7 @@ package com.alee.extended.breadcrumb;
 
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.laf.label.WebLabel;
+import com.alee.laf.list.ListCellParameters;
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.WebListCellRenderer;
 import com.alee.laf.panel.WebPanel;
@@ -30,7 +31,6 @@ import com.alee.managers.style.StyleId;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.FileUtils;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.file.FileComparator;
 import com.alee.utils.swing.AncestorAdapter;
 
@@ -237,7 +237,7 @@ public class WebFileBreadcrumb extends WebBreadcrumb
         while ( !FileUtils.equals ( current, root ) )
         {
             addFile ( current );
-            current = current.getParentFile ();
+            current = FileUtils.getParent ( current );
         }
         addFile ( root );
 
@@ -310,7 +310,7 @@ public class WebFileBreadcrumb extends WebBreadcrumb
 
     private void showFilesPopup ( final File[] files, final WebBreadcrumbButton fileButton )
     {
-        final WebWindow window = new WebWindow ( SwingUtils.getWindowAncestor ( fileButton ) );
+        final WebWindow window = new WebWindow ( CoreSwingUtils.getWindowAncestor ( fileButton ) );
         window.setCloseOnFocusLoss ( true );
         window.setAlwaysOnTop ( true );
 
@@ -318,20 +318,18 @@ public class WebFileBreadcrumb extends WebBreadcrumb
         list.setSelectOnHover ( true );
         list.setSelectedIndex ( 0 );
         list.setVisibleRowCount ( Math.min ( maxVisibleListFiles, files.length ) );
-        list.setCellRenderer ( new WebListCellRenderer<File, WebList> ()
+        list.setCellRenderer ( new WebListCellRenderer<File, WebList, ListCellParameters<File, WebList>> ()
         {
             @Override
-            protected Icon iconForValue ( final WebList list, final File value, final int index,
-                                          final boolean isSelected, final boolean hasFocus )
+            protected Icon iconForValue ( final ListCellParameters<File, WebList> parameters )
             {
-                return FileUtils.getFileIcon ( value );
+                return FileUtils.getFileIcon ( parameters.value () );
             }
 
             @Override
-            protected String textForValue ( final WebList list, final File value, final int index,
-                                            final boolean isSelected, final boolean hasFocus )
+            protected String textForValue ( final ListCellParameters<File, WebList> parameters )
             {
-                final String fileName = FileUtils.getDisplayFileName ( value );
+                final String fileName = FileUtils.getDisplayFileName ( parameters.value () );
                 return FileUtils.getShortFileName ( fileName, listFileNameLength );
             }
         } );

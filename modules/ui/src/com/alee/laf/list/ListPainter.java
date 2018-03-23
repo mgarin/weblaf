@@ -576,7 +576,6 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
      * @param closest whether or not should try finding closest row if exact location doesn't match any
      * @return row at the location specified by X and Y coordinates
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected int convertLocationToRow ( final int x, final int y0, final boolean closest )
     {
         final int size = component.getModel ().getSize ();
@@ -636,7 +635,6 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
      * @param y Y location
      * @return column at the location specified by X and Y coordinates
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected int convertLocationToColumn ( final int x, final int y )
     {
         if ( cellWidth > 0 )
@@ -685,7 +683,6 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
      *
      * @param g2d graphics context
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected void paintDropLocation ( final Graphics2D g2d )
     {
         final JList.DropLocation loc = component.getDropLocation ();

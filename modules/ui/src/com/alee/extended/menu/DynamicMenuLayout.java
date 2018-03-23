@@ -34,9 +34,9 @@ import java.awt.*;
 public class DynamicMenuLayout extends AbstractLayoutManager
 {
     @Override
-    public void layoutContainer ( final Container parent )
+    public void layoutContainer ( final Container container )
     {
-        final WebDynamicMenu menu = ( WebDynamicMenu ) parent;
+        final WebDynamicMenu menu = ( WebDynamicMenu ) container;
         final float displayProgress = MathUtils.sqr ( menu.getVisibilityProgress () );
         final DynamicMenuType type = !menu.isHiding () ? menu.getType () : menu.getHideType ();
 
@@ -228,9 +228,9 @@ public class DynamicMenuLayout extends AbstractLayoutManager
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
+    public Dimension preferredLayoutSize ( final Container container )
     {
-        final WebDynamicMenu menu = ( WebDynamicMenu ) parent;
+        final WebDynamicMenu menu = ( WebDynamicMenu ) container;
         switch ( menu.getType () )
         {
             case roll:

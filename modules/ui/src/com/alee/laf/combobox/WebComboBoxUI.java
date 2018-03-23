@@ -96,7 +96,6 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
      * @param c component that will use UI instance
      * @return instance of the {@link WebComboBoxUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebComboBoxUI ();
@@ -320,7 +319,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     @Override
     protected ListCellRenderer createRenderer ()
     {
-        return new WebComboBoxRenderer.UIResource<Object, JList> ();
+        return new WebComboBoxRenderer.UIResource<Object, JList, ComboBoxCellParameters<Object, JList>> ();
     }
 
     @Override
@@ -774,7 +773,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     protected class WebComboBoxLayout extends AbstractLayoutManager
     {
         @Override
-        public void layoutContainer ( final Container parent )
+        public void layoutContainer ( final Container container )
         {
             // Arrow button
             if ( arrowButton != null )
@@ -796,15 +795,15 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
         }
 
         @Override
-        public Dimension minimumLayoutSize ( final Container parent )
+        public Dimension minimumLayoutSize ( final Container container )
         {
-            return parent.getMinimumSize ();
+            return container.getMinimumSize ();
         }
 
         @Override
-        public Dimension preferredLayoutSize ( final Container parent )
+        public Dimension preferredLayoutSize ( final Container container )
         {
-            return parent.getPreferredSize ();
+            return container.getPreferredSize ();
         }
     }
 
@@ -937,7 +936,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     {
         if ( DEFAULT_RENDERER == null )
         {
-            DEFAULT_RENDERER = new WebComboBoxRenderer.UIResource<Object, JList> ();
+            DEFAULT_RENDERER = new WebComboBoxRenderer.UIResource<Object, JList, ComboBoxCellParameters<Object, JList>> ();
         }
         return DEFAULT_RENDERER;
     }

@@ -17,11 +17,12 @@
 
 package com.alee.demo.frames.examples;
 
-import com.alee.api.IconSupport;
-import com.alee.api.TitleSupport;
+import com.alee.api.ui.IconBridge;
+import com.alee.api.ui.TextBridge;
 import com.alee.demo.api.example.Example;
 import com.alee.demo.api.example.ExampleElement;
 import com.alee.demo.api.example.ExampleGroup;
+import com.alee.laf.tree.TreeNodeParameters;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.managers.language.LM;
 import com.alee.painter.decoration.Stateful;
@@ -35,10 +36,14 @@ import static com.alee.demo.frames.examples.ExamplesTreeNodeType.example;
 import static com.alee.demo.frames.examples.ExamplesTreeNodeType.group;
 
 /**
+ * {@link UniqueNode} representing single {@link ExampleElement}.
+ *
  * @author Mikle Garin
  */
 
-public final class ExamplesTreeNode extends UniqueNode implements Stateful, IconSupport, TitleSupport
+public final class ExamplesTreeNode extends UniqueNode<ExamplesTreeNode, ExampleElement>
+        implements Stateful, IconBridge<TreeNodeParameters<ExamplesTreeNode, JTree>>,
+        TextBridge<TreeNodeParameters<ExamplesTreeNode, JTree>>
 {
     /**
      * Static root node ID.
@@ -126,15 +131,43 @@ public final class ExamplesTreeNode extends UniqueNode implements Stateful, Icon
     }
 
     @Override
-    public Icon getIcon ()
+    public Icon getIcon ( final TreeNodeParameters<ExamplesTreeNode, JTree> parameters )
     {
-        return type == group ? getExampleGroup ().getIcon () : type == example ? getExample ().getIcon () : null;
+        final Icon icon;
+        switch ( type )
+        {
+            case group:
+                icon = getExampleGroup ().getIcon ();
+                break;
+
+            case example:
+                icon = getExample ().getIcon ();
+                break;
+
+            default:
+                icon = null;
+        }
+        return icon;
     }
 
     @Override
-    public String getTitle ()
+    public String getText ( final TreeNodeParameters<ExamplesTreeNode, JTree> parameters )
     {
-        return LM.get ( type == group ? getExampleGroup ().getTitle () : type == example ? getExample ().getTitle () : null );
+        final String title;
+        switch ( type )
+        {
+            case group:
+                title = getExampleGroup ().getTitle ();
+                break;
+
+            case example:
+                title = getExample ().getTitle ();
+                break;
+
+            default:
+                title = null;
+        }
+        return LM.get ( title );
     }
 
     /**
@@ -146,6 +179,6 @@ public final class ExamplesTreeNode extends UniqueNode implements Stateful, Icon
     @Override
     public String toString ()
     {
-        return getTitle ();
+        return getText ( null );
     }
 }

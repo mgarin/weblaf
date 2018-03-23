@@ -32,6 +32,10 @@ import javax.swing.event.TreeSelectionListener;
 public class TreeSelectionExpandBehavior implements TreeSelectionListener, Behavior
 {
     /**
+     * todo 1. Make non-static install/uninstall methods
+     */
+
+    /**
      * Tree using this behavior.
      */
     protected final JTree tree;

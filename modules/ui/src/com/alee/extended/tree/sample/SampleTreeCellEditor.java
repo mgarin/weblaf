@@ -59,7 +59,7 @@ public class SampleTreeCellEditor extends WebTreeCellEditor
     public Component getTreeCellEditorComponent ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded,
                                                   final boolean leaf, final int row )
     {
-        // todo Use delegate instead of direct access!
+        // todo Use delegate instead of direct access?
         this.sampleNode = ( SampleNode ) value;
         final WebTextField editor = ( WebTextField ) super.getTreeCellEditorComponent ( tree, value, isSelected, expanded, leaf, row );
         editor.setText ( sampleNode.getTitle () );
@@ -74,7 +74,7 @@ public class SampleTreeCellEditor extends WebTreeCellEditor
     @Override
     public Object getCellEditorValue ()
     {
-        sampleNode.setTitle ( delegate.getCellEditorValue ().toString () );
+        sampleNode.getUserObject ().setTitle ( delegate.getCellEditorValue ().toString () );
         return sampleNode;
     }
 }

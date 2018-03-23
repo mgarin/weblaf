@@ -138,7 +138,7 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
             if ( !oldValue.getFile ().getAbsolutePath ().equals ( newValue.getFile ().getAbsolutePath () ) )
             {
                 // Updating model value
-                model.setElementAt ( newValue, index );
+                model.set ( index, newValue );
 
                 // Updating list
                 if ( savedSelection != null )

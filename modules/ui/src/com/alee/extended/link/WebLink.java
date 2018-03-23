@@ -17,8 +17,6 @@
 
 package com.alee.extended.link;
 
-import com.alee.api.IconSupport;
-import com.alee.api.TitleSupport;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
@@ -31,15 +29,18 @@ import java.util.List;
 /**
  * Hyperlink-like component based on {@link WebStyledLabel}.
  * Custom {@link LinkAction} listeners can be used to customize link behavior.
- * <p/>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLink">How to use WebLink</a>
- * @see WebStyledLabel
+ * @see LinkDescriptor
+ * @see WLinkUI
  * @see WebLinkUI
+ * @see ILinkPainter
  * @see LinkPainter
+ * @see WebStyledLabel
  * @see LinkAction
  */
 
@@ -293,13 +294,15 @@ public class WebLink extends WebStyledLabel
         {
             if ( getIcon () == null && getText () == null )
             {
-                if ( action instanceof IconSupport )
+                final Icon icon = action.getIcon ();
+                if ( icon != null )
                 {
-                    setIcon ( ( ( IconSupport ) action ).getIcon () );
+                    setIcon ( icon );
                 }
-                if ( action instanceof TitleSupport )
+                final String text = action.getText ();
+                if ( text != null )
                 {
-                    setText ( ( ( TitleSupport ) action ).getTitle () );
+                    setText ( text );
                 }
             }
             listenerList.add ( LinkAction.class, action );

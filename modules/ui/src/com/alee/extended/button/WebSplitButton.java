@@ -45,9 +45,12 @@ import java.util.List;
  * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
- * @see JButton
+ * @see SplitButtonDescriptor
+ * @see WSplitButtonUI
  * @see WebSplitButtonUI
+ * @see ISplitButtonPainter
  * @see SplitButtonPainter
+ * @see JButton
  * @see #setPopupMenu(javax.swing.JPopupMenu)
  */
 

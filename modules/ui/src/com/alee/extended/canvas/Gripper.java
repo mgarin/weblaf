@@ -36,7 +36,6 @@ import java.awt.*;
  */
 
 @XStreamAlias ( "Gripper" )
-@SuppressWarnings ( "UnusedParameters" )
 public class Gripper<C extends JComponent, D extends IDecoration<C, D>, I extends Gripper<C, D, I>>
         extends AbstractContent<C, D, I>
 {

@@ -25,8 +25,8 @@ import com.alee.laf.panel.WebPanel;
 import com.alee.laf.panel.WebPanelUI;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.IDecoration;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.ShapeUtils;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.swing.AncestorAdapter;
 
@@ -360,7 +360,7 @@ public class WebButtonPopup extends WebInnerPopup
     {
         if ( isShowing () && button.isShowing () )
         {
-            final Point rl = SwingUtils.getRelativeLocation ( button, getParent () );
+            final Point rl = CoreSwingUtils.getRelativeLocation ( button, getParent () );
             final Dimension ps = getPreferredSize ();
 
             // Bottom popup

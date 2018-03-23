@@ -45,9 +45,12 @@ import java.util.List;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
- * @see WebContainer
+ * @see DockablePaneDescriptor
+ * @see WDockablePaneUI
  * @see WebDockablePaneUI
+ * @see IDockablePanePainter
  * @see DockablePanePainter
+ * @see WebContainer
  */
 
 public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePaneUI> implements SettingsMethods
@@ -144,7 +147,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     {
         super ();
         this.frames = new ArrayList<WebDockableFrame> ( 3 );
-        setModel ( new WebDockablePaneModel () );
+        setModel ( createDefaultModel () );
         updateUI ();
         setStyleId ( id );
     }
@@ -343,6 +346,16 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
             firePropertyChange ( MODEL_PROPERTY, old, model );
         }
         return this;
+    }
+
+    /**
+     * Returns default {@link DockablePaneModel} implementation to be used.
+     *
+     * @return default {@link DockablePaneModel} implementation to be used
+     */
+    protected DockablePaneModel createDefaultModel ()
+    {
+        return new WebDockablePaneModel ();
     }
 
     /**

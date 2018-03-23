@@ -125,6 +125,46 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
         this.components = new HashMap<String, List<Component>> ( 4 );
     }
 
+    /**
+     * Returns spacing between layout elements.
+     *
+     * @return spacing between layout elements
+     */
+    public int getSpacing ()
+    {
+        return spacing;
+    }
+
+    /**
+     * Sets spacing between layout elements
+     *
+     * @param spacing spacing between layout elements
+     */
+    public void setSpacing ( final int spacing )
+    {
+        this.spacing = spacing;
+    }
+
+    /**
+     * Returns spacing between {@link #START}, {@link #MIDDLE} and {@link #END} layout parts.
+     *
+     * @return spacing between {@link #START}, {@link #MIDDLE} and {@link #END} layout parts
+     */
+    public int getPartsSpacing ()
+    {
+        return partsSpacing;
+    }
+
+    /**
+     * Sets spacing between {@link #START}, {@link #MIDDLE} and {@link #END} layout parts.
+     *
+     * @param partsSpacing spacing between {@link #START}, {@link #MIDDLE} and {@link #END} layout parts
+     */
+    public void setPartsSpacing ( final int partsSpacing )
+    {
+        this.partsSpacing = partsSpacing;
+    }
+
     @Override
     public void addComponent ( final Component component, final Object constraints )
     {
@@ -198,13 +238,13 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
     }
 
     @Override
-    public void layoutContainer ( final Container parent )
+    public void layoutContainer ( final Container container )
     {
-        final int orientation = getOrientation ( parent );
+        final int orientation = getOrientation ( container );
         final boolean horizontal = orientation == HORIZONTAL;
-        final Insets insets = parent.getInsets ();
-        final Dimension size = parent.getSize ();
-        final boolean ltr = parent.getComponentOrientation ().isLeftToRight ();
+        final Insets insets = container.getInsets ();
+        final Dimension size = container.getSize ();
+        final boolean ltr = container.getComponentOrientation ().isLeftToRight ();
         final int lineWidth = horizontal ? size.height - insets.top - insets.bottom : size.width - insets.left - insets.right;
 
         /**
@@ -213,7 +253,7 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
          * We also cache all component preferred sizes to avoid overhead calculations.
          */
         final Map<Component, Dimension> cache = new HashMap<Component, Dimension> ();
-        final Dimension preferredSize = preferredLayoutSize ( parent, cache );
+        final Dimension preferredSize = preferredLayoutSize ( container, cache );
 
         /**
          * Calculating {@link #TRIM} size separately.
@@ -531,19 +571,19 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
+    public Dimension preferredLayoutSize ( final Container container )
     {
-        return preferredLayoutSize ( parent, new HashMap<Component, Dimension> () );
+        return preferredLayoutSize ( container, new HashMap<Component, Dimension> () );
     }
 
     /**
      * Returns preferred layout size.
      *
-     * @param parent layout container
-     * @param cache  {@link Map} containing {@link Component} size caches
+     * @param container layout container
+     * @param cache     {@link Map} containing {@link Component} size caches
      * @return preferred layout size
      */
-    protected Dimension preferredLayoutSize ( final Container parent, final Map<Component, Dimension> cache )
+    protected Dimension preferredLayoutSize ( final Container container, final Map<Component, Dimension> cache )
     {
         final Dimension ps = new Dimension ( 0, 0 );
 
@@ -553,8 +593,8 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
          * Whatever doesn't exist will simply be ignored by having zero sizes.
          * Also {@link #TRIM} part is not included into preferred size at all as it only appears when size is not enough.
          */
-        final int orientation = getOrientation ( parent );
-        final boolean ltr = parent.getComponentOrientation ().isLeftToRight ();
+        final int orientation = getOrientation ( container );
+        final boolean ltr = container.getComponentOrientation ().isLeftToRight ();
         expandSizeFromPart ( ps, START, partsSpacing, orientation, ltr, cache );
         expandSizeFromPart ( ps, MIDDLE, partsSpacing, orientation, ltr, cache );
         expandSizeFromPart ( ps, FILL, partsSpacing, orientation, ltr, cache );
@@ -563,7 +603,7 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
         /**
          * Adding insets afterwards.
          */
-        final Insets insets = parent.getInsets ();
+        final Insets insets = container.getInsets ();
         ps.width += insets.left + insets.right;
         ps.height += insets.top + insets.bottom;
 

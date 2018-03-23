@@ -237,9 +237,10 @@ public final class NinePatchInterval implements Identifiable, Serializable, Clon
     }
 
     /**
-     * Returns cloned {@link NinePatchInterval} with its runtime identifier preserved.
+     * Returns cloned {@link NinePatchInterval}.
+     * It uses {@link #NinePatchInterval(String)} constructor to preserver runtime identifier.
      *
-     * @return cloned {@link NinePatchInterval} with its runtime identifier preserved
+     * @return cloned {@link NinePatchInterval}
      */
     @Override
     public NinePatchInterval clone ()

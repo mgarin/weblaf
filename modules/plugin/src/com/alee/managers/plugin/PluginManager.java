@@ -22,7 +22,8 @@ import com.alee.utils.*;
 import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.compare.Filter;
 import com.alee.utils.filefilter.DirectoriesFilter;
-import com.alee.utils.sort.GraphStructureProvider;
+import com.alee.utils.sort.TopologicalGraphProvider;
+import com.alee.utils.sort.TopologicalSorter;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -880,7 +881,7 @@ public abstract class PluginManager<P extends Plugin>
                 }
 
                 // Creating graph provider for further topological sorting
-                final GraphStructureProvider<DetectedPlugin<P>> graphStructureProvider = new GraphStructureProvider<DetectedPlugin<P>> ()
+                final TopologicalGraphProvider<DetectedPlugin<P>> graph = new TopologicalGraphProvider<DetectedPlugin<P>> ()
                 {
                     @Override
                     public List<DetectedPlugin<P>> getRoots ()
@@ -898,7 +899,7 @@ public abstract class PluginManager<P extends Plugin>
 
                 // Performing topological sorting
                 // Saving result as new recently detected plugins list
-                final List<DetectedPlugin<P>> sorted = SortUtils.doTopologicalSort ( graphStructureProvider );
+                final List<DetectedPlugin<P>> sorted = new TopologicalSorter<DetectedPlugin<P>> ( graph ).list ();
 
                 // Adding plugins which didn't get into graph into the end
                 // There might be such plugin for example in case it has some side dependencies

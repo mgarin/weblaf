@@ -70,20 +70,20 @@ public class NotificationsLayout extends AbstractLayoutManager implements SwingC
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
+    public Dimension preferredLayoutSize ( final Container container )
     {
         return null;
     }
 
     @Override
-    public void layoutContainer ( final Container parent )
+    public void layoutContainer ( final Container container )
     {
         synchronized ( lock )
         {
             if ( notifications.size () > 0 )
             {
                 // Container bounds
-                final Rectangle bounds = BoundsType.margin.bounds ( parent );
+                final Rectangle bounds = BoundsType.margin.bounds ( container );
 
                 // Layout notifications
                 NotificationsLayoutUtils.layout ( notifications, bounds );

@@ -39,9 +39,12 @@ import java.util.Date;
  * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
- * @see WebComponent
+ * @see DateFieldDescriptor
+ * @see WDateFieldUI
  * @see WebDateFieldUI
+ * @see IDateFieldPainter
  * @see DateFieldPainter
+ * @see WebComponent
  */
 
 public class WebDateField extends WebComponent<WebDateField, WDateFieldUI> implements SettingsMethods

@@ -21,8 +21,8 @@ import com.alee.extended.svg.SvgIcon;
 import com.alee.graphics.image.gif.GifIcon;
 import com.alee.laf.edt.ExceptionNonEventThreadHandler;
 import com.alee.laf.edt.NonEventThreadHandler;
+import com.alee.laf.list.ListCellParameters;
 import com.alee.laf.list.WebListCellRenderer;
-import com.alee.laf.tree.WebTreeUI;
 import com.alee.managers.UIManagers;
 import com.alee.managers.icon.Icons;
 import com.alee.managers.icon.LazyIcon;
@@ -57,7 +57,6 @@ import java.util.List;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-build-WebLaF-from-sources">How to build WebLaF from sources</a>
  */
 
-@SuppressWarnings ( "unused" )
 public class WebLookAndFeel extends BasicLookAndFeel
 {
     /**
@@ -464,9 +463,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "html.missingImage", Icons.broken );
 
         // Tree icons
-        table.put ( "Tree.openIcon", WebTreeUI.OPEN_ICON );
-        table.put ( "Tree.closedIcon", WebTreeUI.CLOSED_ICON );
-        table.put ( "Tree.leafIcon", WebTreeUI.LEAF_ICON );
+        table.put ( "Tree.closedIcon", Icons.folder );
+        table.put ( "Tree.openIcon", Icons.folderOpen );
+        table.put ( "Tree.leafIcon", Icons.leaf );
         table.put ( "Tree.collapsedIcon", Icons.squarePlus );
         table.put ( "Tree.expandedIcon", Icons.squareMinus );
         // Tree default selection style
@@ -511,7 +510,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
             @Override
             public Object createValue ( final UIDefaults table )
             {
-                return new WebListCellRenderer.UIResource<Object,JList> ();
+                return new WebListCellRenderer.UIResource<Object, JList, ListCellParameters<Object, JList>> ();
             }
         } );
 
@@ -1023,7 +1022,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     public static void checkEventDispatchThread ()
     {
-        if ( isForceSingleEventsThread () && !SwingUtils.isEventDispatchThread () )
+        if ( isForceSingleEventsThread () && !CoreSwingUtils.isEventDispatchThread () )
         {
             final NonEventThreadHandler handler = getNonEventThreadHandler ();
             if ( handler != null )

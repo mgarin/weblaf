@@ -134,7 +134,7 @@ public class XmlSkin extends AbstractSkin
     @Override
     public void install ()
     {
-        skinInfo.install();
+        skinInfo.install ();
     }
 
     @Override
@@ -159,5 +159,11 @@ public class XmlSkin extends AbstractSkin
     public ComponentStyle getStyle ( final JComponent component )
     {
         return skinInfo.getStyle ( component );
+    }
+
+    @Override
+    public String toString ()
+    {
+        return getTitle ();
     }
 }

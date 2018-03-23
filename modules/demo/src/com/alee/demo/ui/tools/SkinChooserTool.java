@@ -20,13 +20,14 @@ package com.alee.demo.ui.tools;
 import com.alee.demo.DemoApplication;
 import com.alee.demo.skin.DemoIcons;
 import com.alee.demo.skin.DemoStyles;
+import com.alee.laf.combobox.ComboBoxCellParameters;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.combobox.WebComboBoxRenderer;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.CoreSwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,34 +50,33 @@ public final class SkinChooserTool extends WebPanel
         super ( StyleId.panelTransparent, new BorderLayout ( 0, 0 ) );
 
         // Skin chooser combobox
-        final WebComboBox skin = new WebComboBox ( DemoStyles.toolCombobox, DemoApplication.skins );
-        skin.setLanguage ( "demo.tool.skin" );
-        skin.setSelectedItem ( StyleManager.getSkin () );
-        skin.setRenderer ( new WebComboBoxRenderer<Skin, JList> ()
+        final WebComboBox chooser = new WebComboBox ( DemoStyles.toolCombobox, DemoApplication.skins );
+        chooser.setLanguage ( "demo.tool.skin" );
+        chooser.setSelectedItem ( StyleManager.getSkin () );
+        chooser.setRenderer ( new WebComboBoxRenderer<Skin, JList, ComboBoxCellParameters<Skin, JList>> ()
         {
             @Override
-            protected Icon iconForValue ( final JList list, final Skin value, final int index,
-                                          final boolean isSelected, final boolean hasFocus )
+            protected Icon iconForValue ( final ComboBoxCellParameters<Skin, JList> parameters )
             {
-                return index == -1 ? DemoIcons.brush16 : super.iconForValue ( list, value, index, isSelected, hasFocus );
+                return parameters.index () == -1 ? DemoIcons.brush16 : parameters.value ().getIcon ();
             }
         } );
-        skin.addActionListener ( new ActionListener ()
+        chooser.addActionListener ( new ActionListener ()
         {
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
                 // Executing later to avoid any possible interferences
-                SwingUtils.invokeLater ( new Runnable ()
+                CoreSwingUtils.invokeLater ( new Runnable ()
                 {
                     @Override
                     public void run ()
                     {
-                        StyleManager.setSkin ( ( Skin ) skin.getSelectedItem () );
+                        StyleManager.setSkin ( ( Skin ) chooser.getSelectedItem () );
                     }
                 } );
             }
         } );
-        add ( skin, BorderLayout.CENTER );
+        add ( chooser, BorderLayout.CENTER );
     }
 }

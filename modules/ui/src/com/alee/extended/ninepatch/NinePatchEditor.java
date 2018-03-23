@@ -1677,7 +1677,7 @@ public class NinePatchEditor extends WebPanel
         // Mouse coordinates
         if ( showRulerCursorPosition || showAreaCursorPosition )
         {
-            final Point mouse = SwingUtils.getMouseLocation ( this );
+            final Point mouse = CoreSwingUtils.getMouseLocation ( this );
             if ( mouse.x > vr.x + RULER_LENGTH && mouse.x < vr.x + vr.width &&
                     mouse.y > vr.y + RULER_LENGTH && mouse.y < vr.y + vr.height )
             {

@@ -36,7 +36,6 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-@SuppressWarnings ( "UnusedParameters" )
 public abstract class AbstractMenuItemLayout<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractMenuItemLayout<C, D, I>>
         extends AbstractContentLayout<C, D, I>
 {

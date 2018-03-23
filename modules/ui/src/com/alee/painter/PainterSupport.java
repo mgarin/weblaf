@@ -505,19 +505,19 @@ public final class PainterSupport
     public static Dimension getPreferredSize ( final JComponent component, final Dimension preferred, final Painter painter,
                                                final boolean ignoreLayoutSize )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Painter's preferred size
         Dimension ps = SwingUtils.max ( preferred, painter != null ? painter.getPreferredSize () : null );
 
         // Layout preferred size
         if ( !ignoreLayoutSize )
         {
-            synchronized ( component.getTreeLock () )
+            final LayoutManager layout = component.getLayout ();
+            if ( layout != null )
             {
-                final LayoutManager layout = component.getLayout ();
-                if ( layout != null )
-                {
-                    ps = SwingUtils.max ( ps, layout.preferredLayoutSize ( component ) );
-                }
+                ps = SwingUtils.max ( ps, layout.preferredLayoutSize ( component ) );
             }
         }
 

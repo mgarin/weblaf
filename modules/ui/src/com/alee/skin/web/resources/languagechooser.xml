@@ -19,7 +19,7 @@
                                 <SimpleMenuItemLayout textAcceleratorGap="4">
                                     <LabelIcon constraints="icon" />
                                     <LabelText constraints="text" color="black" />
-                                    <LanguageItemLocale constraints="accelerator" padding="0,2,0,2" color="90,90,90" />
+                                    <LocaleTextContent constraints="accelerator" padding="0,2,0,2" color="90,90,90" />
                                 </SimpleMenuItemLayout>
                             </decoration>
                         </decorations>
@@ -37,7 +37,7 @@
                                     <RoundRectangle constraints="accelerator" round="4" opacity="0">
                                         <ColorBackground color="240,240,240" />
                                     </RoundRectangle>
-                                    <LanguageItemLocale constraints="accelerator" padding="0,4,0,4" color="90,90,90" />
+                                    <LocaleTextContent constraints="accelerator" padding="0,4,0,4" color="90,90,90" />
                                 </SimpleMenuItemLayout>
                             </decoration>
                             <decoration states="selected">

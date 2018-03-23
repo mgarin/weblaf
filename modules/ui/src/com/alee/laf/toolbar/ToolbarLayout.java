@@ -38,6 +38,27 @@ public final class ToolbarLayout extends AbstractLineLayout
         super ( 2 );
     }
 
+    /**
+     * Constructs new {@link ToolbarLayout}.
+     *
+     * @param spacing spacing between layout elements
+     */
+    public ToolbarLayout ( final int spacing )
+    {
+        super ( spacing );
+    }
+
+    /**
+     * Constructs new {@link ToolbarLayout}.
+     *
+     * @param spacing      spacing between layout elements
+     * @param partsSpacing spacing between {@link #START}, {@link #MIDDLE} and {@link #END} layout parts
+     */
+    public ToolbarLayout ( final int spacing, final int partsSpacing )
+    {
+        super ( spacing, partsSpacing );
+    }
+
     @Override
     public int getOrientation ( final Container container )
     {

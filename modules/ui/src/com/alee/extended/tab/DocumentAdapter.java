@@ -20,6 +20,7 @@ package com.alee.extended.tab;
 /**
  * Extension for WebDocumentPane documents state listener.
  *
+ * @param <T> {@link DocumentData} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
  * @see com.alee.extended.tab.WebDocumentPane

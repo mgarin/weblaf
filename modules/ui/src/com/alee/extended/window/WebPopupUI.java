@@ -49,7 +49,6 @@ public class WebPopupUI<C extends WebPopup> extends WPopupUI<C> implements Shape
      * @param c component that will use UI instance
      * @return instance of the {@link WebPopupUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebPopupUI ();

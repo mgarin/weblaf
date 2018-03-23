@@ -587,7 +587,6 @@ public abstract class AbstractPopupPainter<C extends JComponent, U extends Compo
      * @param fill      whether it is a fill shape or not
      * @return dropdown style shape
      */
-    @SuppressWarnings ( "ConstantConditions" )
     protected GeneralPath createDropdownShape ( final C popup, final Dimension popupSize, final boolean fill )
     {
         final boolean topCorner = cornerSide == TOP;
@@ -705,7 +704,6 @@ public abstract class AbstractPopupPainter<C extends JComponent, U extends Compo
      * @param fill      whether it is a fill shape or not
      * @return dropdown style corner shape
      */
-    @SuppressWarnings ( "ConstantConditions" )
     protected GeneralPath createDropdownCornerShape ( final C popupMenu, final Dimension menuSize, final boolean fill )
     {
         final boolean topCorner = cornerSide == TOP;

@@ -17,8 +17,6 @@
 
 package com.alee.extended.link;
 
-import com.alee.api.IconSupport;
-import com.alee.api.TitleSupport;
 import com.alee.utils.FileUtils;
 import com.alee.utils.WebUtils;
 
@@ -34,7 +32,7 @@ import java.io.File;
  * @see WebLink
  */
 
-public class FileLinkAction extends AsyncLinkAction implements IconSupport, TitleSupport
+public class FileLinkAction extends AsyncLinkAction
 {
     /**
      * File or folder to be opened.
@@ -69,7 +67,7 @@ public class FileLinkAction extends AsyncLinkAction implements IconSupport, Titl
     }
 
     @Override
-    public String getTitle ()
+    public String getText ()
     {
         return FileUtils.getDisplayFileName ( file );
     }

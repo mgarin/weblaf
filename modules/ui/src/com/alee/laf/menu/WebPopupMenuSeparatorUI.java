@@ -50,7 +50,6 @@ public class WebPopupMenuSeparatorUI<C extends JPopupMenu.Separator> extends WPo
      * @param c component that will use UI instance
      * @return instance of the {@link WebPopupMenuSeparatorUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebPopupMenuSeparatorUI ();

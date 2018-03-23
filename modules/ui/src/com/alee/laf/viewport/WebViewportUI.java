@@ -53,7 +53,6 @@ public class WebViewportUI<C extends JViewport> extends WViewportUI<C> implement
      * @param c component that will use UI instance
      * @return instance of the {@link WebViewportUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebViewportUI ();

@@ -20,7 +20,7 @@ package com.alee.laf.tree;
 import com.alee.managers.tooltip.ComponentArea;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
 import java.awt.*;
 
 /**
@@ -31,7 +31,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class TreeCellArea<V extends DefaultMutableTreeNode, C extends JTree> implements ComponentArea<V, C>
+public class TreeCellArea<V extends MutableTreeNode, C extends JTree> implements ComponentArea<V, C>
 {
     /**
      * Tree row index.

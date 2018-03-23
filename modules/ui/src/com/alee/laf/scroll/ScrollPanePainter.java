@@ -35,13 +35,7 @@ import javax.swing.*;
 public class ScrollPanePainter<C extends JScrollPane, U extends WebScrollPaneUI, D extends IDecoration<C, D>>
         extends AbstractContainerPainter<C, U, D> implements IScrollPanePainter<C, U>
 {
-    @Override
-    protected void orientationChange ()
-    {
-        // Updating scrollpane corners
-        // todo updateCorners ();
-
-        // Performing default actions
-        super.orientationChange ();
-    }
+    /**
+     * Implementation is used completely from {@link AbstractContainerPainter}.
+     */
 }
