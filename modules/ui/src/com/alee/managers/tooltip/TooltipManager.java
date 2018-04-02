@@ -320,7 +320,7 @@ public final class TooltipManager
                 private void displayTooltips ()
                 {
                     final Window window = CoreSwingUtils.getWindowAncestor ( component );
-                    if ( window.isShowing () && window.isActive () )
+                    if ( window.isShowing () )
                     {
                         showTips.start ();
                     }
