@@ -17,6 +17,7 @@
 
 package com.alee.utils;
 
+import com.alee.api.jdk.Objects;
 import com.alee.utils.classes.ClassData;
 import com.alee.utils.reflection.ReflectionException;
 import org.junit.FixMethodOrder;
@@ -116,7 +117,7 @@ public final class ReflectionConstructorTest
      */
     private void checkConstructionResult ( final Object result, final Object expected )
     {
-        if ( !CompareUtils.equals ( result, expected ) )
+        if ( Objects.notEquals ( result, expected ) )
         {
             throw new ReflectionException ( String.format (
                     "Unexpected class construction result: %s" + "\n" + "Expected result: %s",

@@ -30,7 +30,6 @@ import java.lang.reflect.InvocationTargetException;
  *
  * @author Mikle Garin
  */
-
 public final class ProprietaryUtils
 {
     /**
@@ -48,6 +47,14 @@ public final class ProprietaryUtils
      * This might be an unstable feature so it is disabled by default.
      */
     private static boolean allowLinuxTransparency = false;
+
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private ProprietaryUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
 
     /**
      * Returns whether per-pixel transparent windows usage is allowed on Linux systems or not.
@@ -78,35 +85,62 @@ public final class ProprietaryUtils
      *
      * @param table defaults table
      */
-    public static void setupUIDefaults ( final UIDefaults table )
+    public static void setupAATextInfo ( final UIDefaults table )
     {
-        try
+        if ( SystemUtils.isJava9orAbove () )
         {
-            final Class su2 = ReflectUtils.getClass ( "sun.swing.SwingUtilities2" );
-            final Object aaProperty = ReflectUtils.getStaticFieldValue ( su2, "AA_TEXT_PROPERTY_KEY" );
-            final Class aaTextInfo = ReflectUtils.getInnerClass ( su2, "AATextInfo" );
-            final Object aaValue = ReflectUtils.callStaticMethod ( aaTextInfo, "getAATextInfo", true );
-            table.put ( aaProperty, aaValue );
+            try
+            {
+                final Class su2 = ReflectUtils.getClass ( "sun.swing.SwingUtilities2" );
+                ReflectUtils.callStaticMethod ( su2, "putAATextInfo", true,table );
+            }
+            catch ( final NoSuchMethodException e )
+            {
+                LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
+            }
+            catch ( final IllegalAccessException e )
+            {
+                LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
+            }
+            catch ( final InvocationTargetException e )
+            {
+                LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
+            }
+            catch ( final ClassNotFoundException e )
+            {
+                LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
+            }
         }
-        catch ( final ClassNotFoundException e )
+        else
         {
-            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
-        }
-        catch ( final NoSuchFieldException e )
-        {
-            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
-        }
-        catch ( final IllegalAccessException e )
-        {
-            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
-        }
-        catch ( final NoSuchMethodException e )
-        {
-            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
-        }
-        catch ( final InvocationTargetException e )
-        {
-            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
+            try
+            {
+                final Class su2 = ReflectUtils.getClass ( "sun.swing.SwingUtilities2" );
+                final Object aaProperty = ReflectUtils.getStaticFieldValue ( su2, "AA_TEXT_PROPERTY_KEY" );
+                final Class aaTextInfo = ReflectUtils.getInnerClass ( su2, "AATextInfo" );
+                final Object aaValue = ReflectUtils.callStaticMethod ( aaTextInfo, "getAATextInfo", true );
+                table.put ( aaProperty, aaValue );
+            }
+            catch ( final ClassNotFoundException e )
+            {
+                LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
+            }
+            catch ( final NoSuchFieldException e )
+            {
+                LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
+            }
+            catch ( final IllegalAccessException e )
+            {
+                LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
+            }
+            catch ( final NoSuchMethodException e )
+            {
+                LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
+            }
+            catch ( final InvocationTargetException e )
+            {
+                LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
+            }
         }
     }
 

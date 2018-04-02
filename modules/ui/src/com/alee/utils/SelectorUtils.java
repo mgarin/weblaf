@@ -29,9 +29,10 @@ import java.util.Map;
 
 /**
  * @author Mikle Garin
+ * @deprecated This class will be reworked into a seaprate feature
  */
-
-public class SelectorUtils
+@Deprecated
+public final class SelectorUtils
 {
     /**
      * Draws web styled selection using shapes operations.
@@ -42,6 +43,14 @@ public class SelectorUtils
     public static int halfSelector = 2;
     public static int halfLine = 1;
     public static int shadeWidth = 2;
+
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private SelectorUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
 
     public static void drawWebSelection ( final Graphics2D g2d, final Color color, final int x, final int y, final int width,
                                           final int height, final boolean resizableLR, final boolean resizableUD,

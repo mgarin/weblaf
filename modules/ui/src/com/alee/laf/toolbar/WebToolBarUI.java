@@ -18,13 +18,13 @@
 package com.alee.laf.toolbar;
 
 import com.alee.api.jdk.Consumer;
+import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.window.WebDialog;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.ProprietaryUtils;
 
@@ -126,7 +126,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
      */
     protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
     {
-        if ( CompareUtils.equals ( property, WebLookAndFeel.ORIENTATION_PROPERTY ) )
+        if ( Objects.equals ( property, WebLookAndFeel.ORIENTATION_PROPERTY ) )
         {
             /**
              * Search for {@link JSeparator} components and change their

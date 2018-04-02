@@ -22,7 +22,6 @@ package com.alee.utils;
  *
  * @author Mikle Garin
  */
-
 public final class XmlException extends RuntimeException
 {
     /**

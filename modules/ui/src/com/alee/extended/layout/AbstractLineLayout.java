@@ -17,8 +17,8 @@
 
 package com.alee.extended.layout;
 
+import com.alee.api.jdk.Objects;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.TextUtils;
 import com.alee.utils.swing.ZOrderComparator;
 
@@ -169,10 +169,10 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
     public void addComponent ( final Component component, final Object constraints )
     {
         final String value = ( String ) constraints;
-        if ( !TextUtils.isBlank ( value ) && !CompareUtils.equals ( value, START, MIDDLE, FILL, END, TRIM ) )
+        if ( !TextUtils.isBlank ( value ) && Objects.notEquals ( value, START, MIDDLE, FILL, END, TRIM ) )
         {
-            final String msg = "Layout only supports 'null', empty, 'START', 'MIDDLE', 'FILL', 'END' or 'TRIM' constraints";
-            throw new IllegalArgumentException ( msg );
+            final String msg = "Unsupported layout constraints: %s";
+            throw new IllegalArgumentException ( String.format ( msg, value ) );
         }
 
         /**
@@ -183,17 +183,17 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
         /**
          * Checking intersection to ensure layout doesn't get messy.
          */
-        if ( CompareUtils.equals ( actualConstraints, MIDDLE ) &&
+        if ( Objects.equals ( actualConstraints, MIDDLE ) &&
                 this.components.containsKey ( FILL ) )
         {
             throw new RuntimeException ( "Layout already contains element under `FILL` constraints" );
         }
-        else if ( CompareUtils.equals ( actualConstraints, FILL ) &&
+        else if ( Objects.equals ( actualConstraints, FILL ) &&
                 ( this.components.containsKey ( MIDDLE ) || this.components.containsKey ( FILL ) ) )
         {
             throw new RuntimeException ( "Layout already contains element under `MIDDLE` or `FILL` constraints" );
         }
-        else if ( CompareUtils.equals ( actualConstraints, TRIM ) &&
+        else if ( Objects.equals ( actualConstraints, TRIM ) &&
                 this.components.containsKey ( TRIM ) )
         {
             throw new RuntimeException ( "Layout already contains element under `TRIM` constraints" );
@@ -704,11 +704,11 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
     protected String constraints ( final String constraints, final int orientation, final boolean ltr )
     {
         final String c;
-        if ( CompareUtils.equals ( constraints, START ) )
+        if ( Objects.equals ( constraints, START ) )
         {
             c = ltr || orientation != HORIZONTAL ? START : END;
         }
-        else if ( CompareUtils.equals ( constraints, END ) )
+        else if ( Objects.equals ( constraints, END ) )
         {
             c = ltr || orientation != HORIZONTAL ? END : START;
         }

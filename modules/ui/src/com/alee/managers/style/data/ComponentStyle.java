@@ -18,11 +18,11 @@
 package com.alee.managers.style.data;
 
 import com.alee.api.clone.Clone;
+import com.alee.api.jdk.Objects;
 import com.alee.api.merge.Merge;
 import com.alee.managers.style.*;
 import com.alee.painter.Painter;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -679,8 +679,8 @@ public final class ComponentStyle implements Serializable, Cloneable
                 ComponentStyle existing = null;
                 for ( final ComponentStyle nestedStyle : getNestedStyles () )
                 {
-                    if ( CompareUtils.equals ( mergedNestedStyle.getType (), nestedStyle.getType () ) &&
-                            CompareUtils.equals ( mergedNestedStyle.getId (), nestedStyle.getId () ) )
+                    if ( Objects.equals ( mergedNestedStyle.getType (), nestedStyle.getType () ) &&
+                            Objects.equals ( mergedNestedStyle.getId (), nestedStyle.getId () ) )
                     {
                         existing = nestedStyle;
                         break;
@@ -748,7 +748,7 @@ public final class ComponentStyle implements Serializable, Cloneable
         // Overriding provided style with this style child
         for ( final ComponentStyle mergedChild : style.getNestedStyles () )
         {
-            if ( CompareUtils.equals ( child.getExtendsId (), mergedChild.getId () ) )
+            if ( Objects.equals ( child.getExtendsId (), mergedChild.getId () ) )
             {
                 style.getNestedStyles ().add ( child.clone ().extend ( mergedChild ) );
                 return;

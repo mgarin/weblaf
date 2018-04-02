@@ -17,9 +17,9 @@
 
 package com.alee.managers.language;
 
+import com.alee.api.jdk.Objects;
 import com.alee.managers.language.data.*;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.XmlUtils;
 import com.alee.utils.compare.Filter;
 
@@ -234,7 +234,7 @@ public final class LanguageManager
         boolean supported = false;
         for ( final Locale slocale : dictionaries.getSupportedLocales () )
         {
-            if ( CompareUtils.equals ( locale.getLanguage (), slocale.getLanguage () ) )
+            if ( Objects.equals ( locale.getLanguage (), slocale.getLanguage () ) )
             {
                 supported = true;
                 break;
@@ -399,7 +399,7 @@ public final class LanguageManager
         mustBeInitialized ();
 
         // Comparing languages
-        return CompareUtils.equals ( language, getLanguage () );
+        return Objects.equals ( language, getLanguage () );
     }
 
     /**

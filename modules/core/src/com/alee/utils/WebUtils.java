@@ -35,9 +35,16 @@ import java.util.Map;
  *
  * @author Mikle Garin
  */
-
 public final class WebUtils
 {
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private WebUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
     /**
      * Returns normalized url path.
      *

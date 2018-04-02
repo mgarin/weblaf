@@ -17,6 +17,7 @@
 
 package com.alee.laf.combobox;
 
+import com.alee.api.jdk.Objects;
 import com.alee.laf.combobox.behavior.ComboBoxMouseWheelScrollBehavior;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
@@ -32,7 +33,6 @@ import com.alee.managers.tooltip.TooltipWay;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
 
@@ -366,7 +366,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
         for ( i = 0; i < dataModel.getSize (); i++ )
         {
             obj = dataModel.getElementAt ( i );
-            if ( CompareUtils.equals ( obj, sObject ) )
+            if ( Objects.equals ( obj, sObject ) )
             {
                 return i;
             }

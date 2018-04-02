@@ -18,7 +18,7 @@
 package com.alee.api.matcher;
 
 import com.alee.api.Identifiable;
-import com.alee.utils.CompareUtils;
+import com.alee.api.jdk.Objects;
 
 /**
  * Custom {@link Matcher} for {@link Identifiable} objects.
@@ -37,6 +37,6 @@ public final class IdentifiableMatcher extends AbstractMatcher<Identifiable, Ide
     @Override
     protected boolean matchImpl ( final Identifiable first, final Identifiable second )
     {
-        return CompareUtils.equals ( first.getId (), second.getId () );
+        return Objects.equals ( first.getId (), second.getId () );
     }
 }

@@ -19,9 +19,9 @@ package com.alee.painter.decoration.content;
 
 import com.alee.api.data.BoxOrientation;
 import com.alee.api.data.Orientation;
+import com.alee.api.jdk.Objects;
 import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.GraphicsUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -101,7 +101,7 @@ public class Stripes<C extends JComponent, D extends IDecoration<C, D>, I extend
         {
             if ( getOrientation ( c, d ).isVertical () )
             {
-                if ( CompareUtils.equals ( align, BoxOrientation.left, BoxOrientation.center, BoxOrientation.right ) )
+                if ( Objects.equals ( align, BoxOrientation.left, BoxOrientation.center, BoxOrientation.right ) )
                 {
                     return align;
                 }
@@ -112,7 +112,7 @@ public class Stripes<C extends JComponent, D extends IDecoration<C, D>, I extend
             }
             else
             {
-                if ( CompareUtils.equals ( align, BoxOrientation.top, BoxOrientation.center, BoxOrientation.bottom ) )
+                if ( Objects.equals ( align, BoxOrientation.top, BoxOrientation.center, BoxOrientation.bottom ) )
                 {
                     return align;
                 }

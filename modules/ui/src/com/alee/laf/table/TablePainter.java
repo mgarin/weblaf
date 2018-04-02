@@ -1,5 +1,6 @@
 package com.alee.laf.table;
 
+import com.alee.api.jdk.Objects;
 import com.alee.managers.language.Language;
 import com.alee.managers.language.LanguageListener;
 import com.alee.managers.language.LanguageSensitive;
@@ -9,7 +10,6 @@ import com.alee.painter.SectionPainter;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.general.Pair;
@@ -162,7 +162,7 @@ public class TablePainter<C extends JTable, U extends WebTableUI, D extends IDec
                 if ( row != -1 && column != -1 )
                 {
                     final TableCellArea cell = new TableCellArea ( row, column );
-                    if ( !CompareUtils.equals ( rolloverCell, cell ) )
+                    if ( Objects.notEquals ( rolloverCell, cell ) )
                     {
                         updateRolloverCell ( rolloverCell, cell );
                     }

@@ -25,11 +25,20 @@ import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 
 /**
+ * This class provides a set of utilities to work with core Swing components, their settings and events.
+ *
  * @author Mikle Garin
  */
-
 public final class CoreSwingUtils
 {
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private CoreSwingUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
     /**
      * Enables logging of all uncaught exceptions occured within EDT.
      */

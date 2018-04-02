@@ -17,6 +17,7 @@
 
 package com.alee.laf.list;
 
+import com.alee.api.jdk.Objects;
 import com.alee.api.ui.*;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.laf.WebLookAndFeel;
@@ -26,7 +27,6 @@ import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
-import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
 import javax.swing.plaf.ListUI;
@@ -381,13 +381,13 @@ public class WebListCellRenderer<V, C extends JList, P extends ListCellParameter
          * Overridden for performance reasons.
          * {@link WebLookAndFeel#BORDER_PROPERTY} is listened to ensure that custom borders are preserved.
          */
-        if ( CompareUtils.equals ( pn, StyleId.STYLE_PROPERTY, StyleId.PARENT_STYLE_PROPERTY,
+        if ( Objects.equals ( pn, StyleId.STYLE_PROPERTY, StyleId.PARENT_STYLE_PROPERTY,
                 AbstractDecorationPainter.DECORATION_STATES_PROPERTY, WebStyledLabel.STYLE_RANGES_PROPERTY,
                 WebLookAndFeel.TEXT_PROPERTY, WebLookAndFeel.BORDER_PROPERTY, WebLookAndFeel.MODEL_PROPERTY ) )
         {
             super.firePropertyChange ( pn, oldValue, newValue );
         }
-        else if ( CompareUtils.equals ( pn, WebLookAndFeel.FONT_PROPERTY, WebLookAndFeel.FOREGROUND_PROPERTY ) &&
+        else if ( Objects.equals ( pn, WebLookAndFeel.FONT_PROPERTY, WebLookAndFeel.FOREGROUND_PROPERTY ) &&
                 oldValue != newValue && getClientProperty ( BasicHTML.propertyKey ) != null )
         {
             super.firePropertyChange ( pn, oldValue, newValue );

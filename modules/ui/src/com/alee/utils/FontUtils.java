@@ -28,7 +28,6 @@ import java.util.Map;
  *
  * @author Mikle Garin
  */
-
 public final class FontUtils
 {
     /**
@@ -61,6 +60,14 @@ public final class FontUtils
      */
     public static final int HI_SURROGATE_START = 55296;
     public static final int LO_SURROGATE_END = 57343;
+
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private FontUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
 
     /**
      * Clears derived fonts cache.

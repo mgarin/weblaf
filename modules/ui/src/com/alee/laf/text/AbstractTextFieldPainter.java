@@ -1,8 +1,8 @@
 package com.alee.laf.text;
 
+import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -53,7 +53,7 @@ public abstract class AbstractTextFieldPainter<C extends JTextComponent, U exten
         super.propertyChanged ( property, oldValue, newValue );
 
         // Updating leading and trailing components state
-        if ( CompareUtils.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
+        if ( Objects.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
         {
             final boolean enabled = component.isEnabled ();
             SwingUtils.setEnabledRecursively ( getLeadingComponent (), enabled );
@@ -61,7 +61,7 @@ public abstract class AbstractTextFieldPainter<C extends JTextComponent, U exten
         }
 
         // Updating listeners and borders on leading or trailing component change
-        if ( CompareUtils.equals ( property, WebLookAndFeel.LEADING_COMPONENT_PROPERTY, WebLookAndFeel.TRAILING_COMPONENT_PROPERTY ) )
+        if ( Objects.equals ( property, WebLookAndFeel.LEADING_COMPONENT_PROPERTY, WebLookAndFeel.TRAILING_COMPONENT_PROPERTY ) )
         {
             uninstallResizeListener ( ( Component ) oldValue );
             installResizeListener ( ( Component ) newValue );

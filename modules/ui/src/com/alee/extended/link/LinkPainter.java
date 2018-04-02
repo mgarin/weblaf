@@ -17,10 +17,10 @@
 
 package com.alee.extended.link;
 
+import com.alee.api.jdk.Objects;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.CompareUtils;
 
 import java.util.List;
 
@@ -46,7 +46,7 @@ public class LinkPainter<C extends WebLink, U extends WLinkUI, D extends IDecora
         super.propertyChanged ( property, oldValue, newValue );
 
         // Updating visited state
-        if ( CompareUtils.equals ( property, WebLink.VISITABLE_PROPERTY, WebLink.VISITED_PROPERTY ) )
+        if ( Objects.equals ( property, WebLink.VISITABLE_PROPERTY, WebLink.VISITED_PROPERTY ) )
         {
             if ( usesState ( DecorationState.visited ) )
             {

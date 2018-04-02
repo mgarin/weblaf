@@ -25,9 +25,16 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public final class GeometryUtils
 {
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private GeometryUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
     /**
      * Returns rectangle containing all specified points.
      *

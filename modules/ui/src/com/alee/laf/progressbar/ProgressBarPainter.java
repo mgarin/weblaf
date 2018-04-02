@@ -1,5 +1,6 @@
 package com.alee.laf.progressbar;
 
+import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.BoundsType;
 import com.alee.painter.DefaultPainter;
@@ -7,7 +8,6 @@ import com.alee.painter.SectionPainter;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -80,7 +80,7 @@ public class ProgressBarPainter<C extends JProgressBar, U extends WProgressBarUI
         super.propertyChanged ( property, oldValue, newValue );
 
         // Update animator on progress state changes
-        if ( CompareUtils.equals ( property, WebLookAndFeel.INDETERMINATE_PROPERTY, WebLookAndFeel.ORIENTATION_PROPERTY ) )
+        if ( Objects.equals ( property, WebLookAndFeel.INDETERMINATE_PROPERTY, WebLookAndFeel.ORIENTATION_PROPERTY ) )
         {
             updateDecorationState ();
         }

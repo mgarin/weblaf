@@ -17,6 +17,7 @@
 
 package com.alee.demo.content.data.tree;
 
+import com.alee.api.jdk.Objects;
 import com.alee.api.jdk.Predicate;
 import com.alee.demo.api.example.*;
 import com.alee.extended.tree.WebCheckBoxTree;
@@ -25,7 +26,6 @@ import com.alee.laf.tree.UniqueNode;
 import com.alee.laf.tree.WebTreeModel;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
 import java.util.List;
@@ -112,7 +112,7 @@ public class WebCheckBoxTreeExample extends AbstractStylePreviewExample
                 @Override
                 public boolean test ( final UniqueNode node )
                 {
-                    return !node.isLeaf () || !CompareUtils.equals ( node.getParent ().getUserObject ().toString (), "Disabled" );
+                    return !node.isLeaf () || Objects.notEquals ( node.getParent ().getUserObject ().toString (), "Disabled" );
                 }
             } );
             tree.setCheckBoxVisibleStateProvider ( new Predicate<UniqueNode> ()
@@ -120,7 +120,7 @@ public class WebCheckBoxTreeExample extends AbstractStylePreviewExample
                 @Override
                 public boolean test ( final UniqueNode node )
                 {
-                    return !node.isLeaf () || !CompareUtils.equals ( node.getParent ().getUserObject ().toString (), "Hidden" );
+                    return !node.isLeaf () || Objects.notEquals ( node.getParent ().getUserObject ().toString (), "Hidden" );
                 }
             } );
             tree.setEditableStateProvider ( new Predicate<UniqueNode> ()
@@ -128,7 +128,7 @@ public class WebCheckBoxTreeExample extends AbstractStylePreviewExample
                 @Override
                 public boolean test ( final UniqueNode node )
                 {
-                    return node.isLeaf () && CompareUtils.equals ( node.getParent ().getUserObject ().toString (), "Editable" );
+                    return node.isLeaf () && Objects.equals ( node.getParent ().getUserObject ().toString (), "Editable" );
                 }
             } );
             tree.expandAll ();

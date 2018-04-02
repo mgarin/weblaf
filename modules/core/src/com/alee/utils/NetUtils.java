@@ -27,9 +27,16 @@ import java.net.URL;
  *
  * @author Mikle Garin
  */
-
 public final class NetUtils
 {
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private NetUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
     /**
      * Returns address represented by the specified URL object.
      *
@@ -129,7 +136,7 @@ public final class NetUtils
     public static String getBaseAddress ( final String address )
     {
         final URL url = getURL ( address );
-        return url != null ? ( url.getHost () + ( url.getPort () != 80 && url.getPort () != -1 ? ":" + url.getPort () : "" ) ) : null;
+        return url != null ? url.getHost () + ( url.getPort () != 80 && url.getPort () != -1 ? ":" + url.getPort () : "" ) : null;
     }
 
     /**

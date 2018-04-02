@@ -17,9 +17,9 @@
 
 package com.alee.extended.filechooser;
 
+import com.alee.api.jdk.Objects;
 import com.alee.laf.table.renderers.WebTableCellRenderer;
 import com.alee.managers.language.LM;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.FileUtils;
 
 import javax.swing.*;
@@ -42,7 +42,7 @@ public class WebFileTableCellRenderer<V extends File, C extends WebFileTable, P 
     protected int horizontalAlignmentForValue ( final P parameters )
     {
         final int alignment;
-        if ( CompareUtils.equals ( parameters.columnId (), WebFileTableModel.NUMBER_COLUMN, WebFileTableModel.SIZE_COLUMN ) )
+        if ( Objects.equals ( parameters.columnId (), WebFileTableModel.NUMBER_COLUMN, WebFileTableModel.SIZE_COLUMN ) )
         {
             alignment = SwingConstants.TRAILING;
         }
@@ -57,7 +57,7 @@ public class WebFileTableCellRenderer<V extends File, C extends WebFileTable, P 
     protected Icon iconForValue ( final P parameters )
     {
         final Icon icon;
-        if ( CompareUtils.equals ( parameters.columnId (), WebFileTableModel.NAME_COLUMN ) )
+        if ( Objects.equals ( parameters.columnId (), WebFileTableModel.NAME_COLUMN ) )
         {
             icon = FileUtils.getFileIcon ( parameters.value () );
         }
@@ -73,27 +73,27 @@ public class WebFileTableCellRenderer<V extends File, C extends WebFileTable, P 
     {
         final String text;
         final boolean isFile = FileUtils.isFile ( parameters.value () );
-        if ( CompareUtils.equals ( parameters.columnId (), WebFileTableModel.NUMBER_COLUMN ) )
+        if ( Objects.equals ( parameters.columnId (), WebFileTableModel.NUMBER_COLUMN ) )
         {
             text = Integer.toString ( parameters.row () + 1 );
         }
-        else if ( CompareUtils.equals ( parameters.columnId (), WebFileTableModel.NAME_COLUMN ) )
+        else if ( Objects.equals ( parameters.columnId (), WebFileTableModel.NAME_COLUMN ) )
         {
             text = FileUtils.getDisplayFileName ( parameters.value () );
         }
-        else if ( CompareUtils.equals ( parameters.columnId (), WebFileTableModel.SIZE_COLUMN ) )
+        else if ( Objects.equals ( parameters.columnId (), WebFileTableModel.SIZE_COLUMN ) )
         {
             text = isFile ? FileUtils.getDisplayFileSize ( parameters.value () ) : "";
         }
-        else if ( CompareUtils.equals ( parameters.columnId (), WebFileTableModel.EXTENSION_COLUMN ) )
+        else if ( Objects.equals ( parameters.columnId (), WebFileTableModel.EXTENSION_COLUMN ) )
         {
             text = isFile ? FileUtils.getFileExtPart ( parameters.value ().getName (), true ) : LM.get ( "weblaf.file.type.folder" );
         }
-        else if ( CompareUtils.equals ( parameters.columnId (), WebFileTableModel.CREATION_DATE_COLUMN ) )
+        else if ( Objects.equals ( parameters.columnId (), WebFileTableModel.CREATION_DATE_COLUMN ) )
         {
             text = FileUtils.getDisplayFileCreationDate ( parameters.value () );
         }
-        else if ( CompareUtils.equals ( parameters.columnId (), WebFileTableModel.MODIFICATION_DATE_COLUMN ) )
+        else if ( Objects.equals ( parameters.columnId (), WebFileTableModel.MODIFICATION_DATE_COLUMN ) )
         {
             text = FileUtils.getDisplayFileModificationDate ( parameters.value () );
         }

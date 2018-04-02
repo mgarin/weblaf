@@ -17,14 +17,113 @@
 
 package com.alee.api.jdk;
 
+import com.alee.utils.UtilityException;
+
 /**
  * This is a copy of JDK7 {@code java.util.Objects} class for JDK6 support.
  *
  * @author Mikle Garin
  */
-
 public final class Objects
 {
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private Objects ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
+    /**
+     * Returns whether the first Object equals to second one.
+     * This method will compare objects even if they are null without throwing any exceptions.
+     * This method should not be called from any method that overrides object default "equals" method.
+     *
+     * @param object      object to compare
+     * @param compareWith objects to compare with
+     * @return true if the first Object equals to any Object from the specified array, false otherwise
+     */
+    public static boolean equals ( final Object object, final Object compareWith )
+    {
+        return object == compareWith || object != null && compareWith != null && object.equals ( compareWith );
+    }
+
+    /**
+     * Returns whether the first Object equals to any Object from the specified array.
+     * This method will compare objects even if they are null without throwing any exceptions.
+     * This method should not be called from any method that overrides object default "equals" method.
+     *
+     * @param object      object to compare
+     * @param compareWith object to compare with
+     * @return true if the first Object equals to any Object from the specified array, false otherwise
+     */
+    public static boolean equals ( final Object object, final Object... compareWith )
+    {
+        if ( compareWith != null && compareWith.length > 0 )
+        {
+            for ( final Object o : compareWith )
+            {
+                if ( equalsImpl ( object, o ) )
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns whether the first Object is not equals to the second one.
+     * This method will compare objects even if they are null without throwing any exceptions.
+     * This method should not be called from any method that overrides object default "equals" method.
+     *
+     * @param object      object to compare
+     * @param compareWith object to compare with
+     * @return true if the first Object is not equals to any Object from the specified array, false otherwise
+     */
+    public static boolean notEquals ( final Object object, final Object compareWith )
+    {
+        return object != compareWith && ( object == null || compareWith == null || !object.equals ( compareWith ) );
+    }
+
+    /**
+     * Returns whether the first Object is not equals to any Object from the specified array.
+     * This method will compare objects even if they are null without throwing any exceptions.
+     * This method should not be called from any method that overrides object default "equals" method.
+     *
+     * @param object      object to compare
+     * @param compareWith objects to compare with
+     * @return true if the first Object is not equals to any Object from the specified array, false otherwise
+     */
+    public static boolean notEquals ( final Object object, final Object... compareWith )
+    {
+        if ( compareWith != null && compareWith.length > 0 )
+        {
+            for ( final Object o : compareWith )
+            {
+                if ( equalsImpl ( object, o ) )
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Returns whether the first Object equals to the second Object or not.
+     * This method will compare two objects even if they are null without throwing any exceptions.
+     * This method should not be called from any method that overrides object default "equals" method.
+     *
+     * @param o1 first Object
+     * @param o2 second Object
+     * @return true if the first Object equals to the second Object, false otherwise
+     */
+    private static boolean equalsImpl ( final Object o1, final Object o2 )
+    {
+        return o1 == o2 || o1 != null && o2 != null && o1.equals ( o2 );
+    }
+
     /**
      * Checks that the specified object reference is not {@code null}.
      *

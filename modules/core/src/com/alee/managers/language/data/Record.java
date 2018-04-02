@@ -18,8 +18,8 @@
 package com.alee.managers.language.data;
 
 import com.alee.api.clone.Clone;
+import com.alee.api.jdk.Objects;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -276,7 +276,7 @@ public final class Record implements Serializable, Cloneable
         final List<Value> values = new ArrayList<Value> ( 3 );
         for ( final Value value : this.values )
         {
-            if ( CompareUtils.equals ( value.getLocale ().getLanguage (), locale.getLanguage () ) )
+            if ( Objects.equals ( value.getLocale ().getLanguage (), locale.getLanguage () ) )
             {
                 values.add ( value );
             }

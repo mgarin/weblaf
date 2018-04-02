@@ -17,12 +17,12 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.api.jdk.Objects;
 import com.alee.api.merge.Merge;
 import com.alee.managers.icon.IconManager;
 import com.alee.managers.icon.set.IconSet;
 import com.alee.managers.style.*;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -630,8 +630,8 @@ public final class SkinInfo implements Serializable
             for ( int j = i + 1; j < styles.size (); j++ )
             {
                 final ComponentStyle style = styles.get ( j );
-                if ( CompareUtils.equals ( style.getType (), currentStyle.getType () ) &&
-                        CompareUtils.equals ( style.getId (), currentStyle.getId () ) )
+                if ( Objects.equals ( style.getType (), currentStyle.getType () ) &&
+                        Objects.equals ( style.getId (), currentStyle.getId () ) )
                 {
                     currentStyle = currentStyle.clone ().merge ( style );
                     styles.set ( i, currentStyle );
@@ -707,7 +707,7 @@ public final class SkinInfo implements Serializable
 
         // Searching for default style
         // This is made to provide all initial settings properly without leaving any of those empty
-        if ( extendedStyle == null && !CompareUtils.equals ( completeId, defaultStyleId ) )
+        if ( extendedStyle == null && Objects.notEquals ( completeId, defaultStyleId ) )
         {
             // Default style must exist in loaded skin
             // Any non-default style extends default one by default even if it is not specified
@@ -894,7 +894,7 @@ public final class SkinInfo implements Serializable
         if ( levelStyles != null && levelStyles != styles )
         {
             final ComponentStyle style = findStyle ( type, id, levelStyles, maxIndex );
-            if ( style != null && !CompareUtils.equals ( style.getId (), excludeId ) )
+            if ( style != null && Objects.notEquals ( style.getId (), excludeId ) )
             {
                 return style;
             }
@@ -918,7 +918,7 @@ public final class SkinInfo implements Serializable
         for ( int i = 0; i < styles.size () && i < maxIndex; i++ )
         {
             final ComponentStyle style = styles.get ( i );
-            if ( CompareUtils.equals ( style.getType (), type ) && CompareUtils.equals ( style.getId (), id ) )
+            if ( Objects.equals ( style.getType (), type ) && Objects.equals ( style.getId (), id ) )
             {
                 fstyle = style;
             }

@@ -17,7 +17,7 @@
 
 package com.alee.managers.language.data;
 
-import com.alee.utils.CompareUtils;
+import com.alee.api.jdk.Objects;
 import com.alee.utils.TextUtils;
 
 import java.util.Comparator;
@@ -76,8 +76,8 @@ public abstract class AbstractCountryComparator<T> implements Comparator<T>
     protected int sameCountryPriority ( final String country1, final String country2 )
     {
         final int result;
-        final boolean same1 = CompareUtils.equals ( locale.getCountry (), country1 );
-        final boolean same2 = CompareUtils.equals ( locale.getCountry (), country2 );
+        final boolean same1 = Objects.equals ( locale.getCountry (), country1 );
+        final boolean same2 = Objects.equals ( locale.getCountry (), country2 );
         if ( same1 && !same2 )
         {
             result = 1;

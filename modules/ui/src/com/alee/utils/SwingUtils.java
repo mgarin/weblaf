@@ -17,6 +17,7 @@
 
 package com.alee.utils;
 
+import com.alee.api.jdk.Objects;
 import com.alee.extended.date.WebCalendar;
 import com.alee.extended.date.WebDateField;
 import com.alee.extended.filechooser.WebFileChooserField;
@@ -56,7 +57,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public final class SwingUtils
 {
     /**
@@ -121,6 +121,14 @@ public final class SwingUtils
      * Soft cache for the left and right side bearings.
      */
     private static final Set<SoftReference<BearingCacheEntry>> softBearingCache = new HashSet<SoftReference<BearingCacheEntry>> ();
+
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private SwingUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
 
     /**
      * Returns whether or not specified component is opaque.
@@ -1595,7 +1603,7 @@ public final class SwingUtils
             // This toolkit method was added in JDK 7 and later ones
             // It is recommended to use instead of the hardcoded accelerator mask
             final Toolkit toolkit = Toolkit.getDefaultToolkit ();
-            if ( CompareUtils.equals ( toolkit.getClass ().getCanonicalName (), "sun.awt.SunToolkit" ) )
+            if ( Objects.equals ( toolkit.getClass ().getCanonicalName (), "sun.awt.SunToolkit" ) )
             {
                 final Object mask = ReflectUtils.callMethodSafely ( toolkit, "getFocusAcceleratorKeyMask" );
                 if ( mask != null )
@@ -2112,7 +2120,7 @@ public final class SwingUtils
                 checkContent ( text, ( Container ) component, components );
             }
         }
-        catch ( final Exception e )
+        catch ( final Exception ignored )
         {
             //
         }

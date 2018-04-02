@@ -53,11 +53,11 @@ public class AlignLayout<C extends JComponent, D extends IDecoration<C, D>, I ex
     /**
      * Layout constraints.
      */
-    public static final String LEFT = "left";
-    public static final String RIGHT = "right";
-    public static final String TOP = "top";
-    public static final String BOTTOM = "bottom";
-    public static final String CENTER = "center";
+    protected static final String LEFT = "left";
+    protected static final String RIGHT = "right";
+    protected static final String TOP = "top";
+    protected static final String BOTTOM = "bottom";
+    protected static final String CENTER = "center";
 
     /**
      * Horizontal alignment constraints.

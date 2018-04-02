@@ -17,7 +17,7 @@
 
 package com.alee.painter.decoration.shape;
 
-import com.alee.utils.CompareUtils;
+import com.alee.api.jdk.Objects;
 import com.alee.utils.TextUtils;
 import com.alee.utils.XmlException;
 import com.thoughtworks.xstream.converters.ConversionException;
@@ -105,7 +105,7 @@ public final class SidesConverter extends AbstractSingleValueConverter
                 if ( tokenizer.hasMoreTokens () )
                 {
                     final String first = tokenizer.nextToken ().trim ();
-                    if ( CompareUtils.equals ( first, TOP, LEFT, BOTTOM, RIGHT ) )
+                    if ( Objects.equals ( first, TOP, LEFT, BOTTOM, RIGHT ) )
                     {
                         final boolean top = sides.contains ( TOP );
                         final boolean left = sides.contains ( LEFT );

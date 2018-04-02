@@ -39,9 +39,16 @@ import java.util.zip.ZipInputStream;
  *
  * @author Mikle Garin
  */
-
 public final class JarUtils
 {
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private JarUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
     /**
      * Returns JAR archive structure.
      *

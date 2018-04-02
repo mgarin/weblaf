@@ -1,10 +1,10 @@
 package com.alee.laf.button;
 
+import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -45,7 +45,7 @@ public abstract class AbstractButtonPainter<C extends AbstractButton, U extends 
         super.propertyChanged ( property, oldValue, newValue );
 
         // Switching model change listener on button model change
-        if ( CompareUtils.equals ( property, WebLookAndFeel.MODEL_PROPERTY ) )
+        if ( Objects.equals ( property, WebLookAndFeel.MODEL_PROPERTY ) )
         {
             ( ( ButtonModel ) oldValue ).removeChangeListener ( this );
             ( ( ButtonModel ) newValue ).addChangeListener ( this );
@@ -53,7 +53,7 @@ public abstract class AbstractButtonPainter<C extends AbstractButton, U extends 
         }
 
         // Updating hover listener
-        if ( CompareUtils.equals ( property, AbstractButton.ROLLOVER_ENABLED_CHANGED_PROPERTY ) )
+        if ( Objects.equals ( property, AbstractButton.ROLLOVER_ENABLED_CHANGED_PROPERTY ) )
         {
             updateHoverListener ();
         }

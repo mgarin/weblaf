@@ -1,7 +1,7 @@
 package com.alee.managers.style;
 
 import com.alee.api.Identifiable;
-import com.alee.utils.CompareUtils;
+import com.alee.api.jdk.Objects;
 import com.alee.utils.CoreSwingUtils;
 
 import javax.swing.*;
@@ -1058,7 +1058,7 @@ public final class StyleId implements Identifiable
         if ( obj != null && obj instanceof StyleId )
         {
             final StyleId other = ( StyleId ) obj;
-            equals = CompareUtils.equals ( getId (), other.getId () ) && getParent () == other.getParent ();
+            equals = Objects.equals ( getId (), other.getId () ) && getParent () == other.getParent ();
         }
         return equals;
     }

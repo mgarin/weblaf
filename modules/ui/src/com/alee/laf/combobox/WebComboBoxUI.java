@@ -18,6 +18,7 @@
 package com.alee.laf.combobox;
 
 import com.alee.api.jdk.Consumer;
+import com.alee.api.jdk.Objects;
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
@@ -30,7 +31,6 @@ import com.alee.painter.PainterSupport;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.swing.EditabilityListener;
 import com.alee.utils.swing.VisibilityListener;
 
@@ -117,7 +117,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
                 @Override
                 public void propertyChange ( final PropertyChangeEvent evt )
                 {
-                    if ( !CompareUtils.equals ( evt.getOldValue (), evt.getNewValue () ) )
+                    if ( Objects.notEquals ( evt.getOldValue (), evt.getNewValue () ) )
                     {
                         firePopupVisibilityChanged ( ( Boolean ) evt.getNewValue () );
                     }
@@ -130,7 +130,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
-                if ( CompareUtils.equals ( evt.getPropertyName (), WebLookAndFeel.EDITOR_PROPERTY ) )
+                if ( Objects.equals ( evt.getPropertyName (), WebLookAndFeel.EDITOR_PROPERTY ) )
                 {
                     updateEditor ( comboBox.getEditor () );
                 }

@@ -1,10 +1,10 @@
 package com.alee.laf.tabbedpane;
 
+import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.AbstractPainter;
 import com.alee.painter.SectionPainter;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.FocusType;
@@ -93,7 +93,7 @@ public class TabbedPanePainter<C extends JTabbedPane, U extends WTabbedPaneUI> e
         super.propertyChanged ( property, oldValue, newValue );
 
         // Updating border upon style change
-        if ( CompareUtils.equals ( property, WebLookAndFeel.TABBED_PANE_STYLE_PROPERTY ) )
+        if ( Objects.equals ( property, WebLookAndFeel.TABBED_PANE_STYLE_PROPERTY ) )
         {
             updateBorder ();
         }

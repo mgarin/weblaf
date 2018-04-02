@@ -1,11 +1,11 @@
 package com.alee.laf.rootpane;
 
+import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.StyleId;
 import com.alee.painter.decoration.AbstractContainerPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.ProprietaryUtils;
 
@@ -176,7 +176,7 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
         super.propertyChanged ( property, oldValue, newValue );
 
         // Updating decoration according to current state
-        if ( CompareUtils.equals ( property, WebLookAndFeel.WINDOW_DECORATION_STYLE_PROPERTY ) )
+        if ( Objects.equals ( property, WebLookAndFeel.WINDOW_DECORATION_STYLE_PROPERTY ) )
         {
             // Updating decoration state first
             // This is necessary to avoid issues with state-dependant decorations
@@ -185,8 +185,8 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
             // Removing window decoration
             // This is required to disable custom window decoration upon this property change
             // We automatically rollback style here if the property was set from a custom one to JRootPane.NONE
-            if ( !CompareUtils.equals ( oldValue, JRootPane.NONE ) && CompareUtils.equals ( newValue, JRootPane.NONE ) &&
-                    !CompareUtils.equals ( StyleId.get ( component ), StyleId.rootpane, StyleId.dialog, StyleId.frame ) )
+            if ( Objects.notEquals ( oldValue, JRootPane.NONE ) && Objects.equals ( newValue, JRootPane.NONE ) &&
+                    Objects.notEquals ( StyleId.get ( component ), StyleId.rootpane, StyleId.dialog, StyleId.frame ) )
             {
                 // Restoring original undecorated style
                 final Window window = getWindow ();
@@ -214,8 +214,8 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
             // Installing default window decoration
             // This is an important workaround to allow Frame and Dialog decoration to be enabled according to settings
             // We only apply that workaround to non WebFrame/WebDialog based frames and dialogs which have decoration style specified
-            if ( CompareUtils.equals ( oldValue, JRootPane.NONE ) && !CompareUtils.equals ( newValue, JRootPane.NONE ) &&
-                    CompareUtils.equals ( StyleId.get ( component ), StyleId.rootpane, StyleId.dialog, StyleId.frame ) )
+            if ( Objects.equals ( oldValue, JRootPane.NONE ) && Objects.notEquals ( newValue, JRootPane.NONE ) &&
+                    Objects.equals ( StyleId.get ( component ), StyleId.rootpane, StyleId.dialog, StyleId.frame ) )
             {
                 final Window window = getWindow ();
                 if ( window != null )

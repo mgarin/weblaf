@@ -17,6 +17,8 @@
 
 package com.alee.utils;
 
+import com.alee.api.jdk.Objects;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -27,9 +29,16 @@ import java.util.Map;
  *
  * @author Mikle Garin
  */
-
 public final class MapUtils
 {
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private MapUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
     /**
      * Returns whether specified {@link Map} is empty or not.
      *
@@ -227,7 +236,7 @@ public final class MapUtils
         while ( iterator.hasNext () )
         {
             final Map.Entry<K, V> entry = iterator.next ();
-            if ( CompareUtils.equals ( entry.getValue (), value ) )
+            if ( Objects.equals ( entry.getValue (), value ) )
             {
                 iterator.remove ();
             }

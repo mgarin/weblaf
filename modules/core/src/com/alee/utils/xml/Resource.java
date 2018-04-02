@@ -17,7 +17,7 @@
 
 package com.alee.utils.xml;
 
-import com.alee.utils.CompareUtils;
+import com.alee.api.jdk.Objects;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -181,8 +181,8 @@ public class Resource implements Serializable
         {
             final Resource other = ( Resource ) object;
             return other.location == location &&
-                    CompareUtils.equals ( other.className, className ) &&
-                    CompareUtils.equals ( other.path, path );
+                    Objects.equals ( other.className, className ) &&
+                    Objects.equals ( other.path, path );
         }
         else
         {

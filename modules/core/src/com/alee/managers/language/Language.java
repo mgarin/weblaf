@@ -17,11 +17,11 @@
 
 package com.alee.managers.language;
 
+import com.alee.api.jdk.Objects;
 import com.alee.managers.language.data.Dictionary;
 import com.alee.managers.language.data.Record;
 import com.alee.managers.language.data.Text;
 import com.alee.managers.language.data.Value;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.TextUtils;
 
 import java.io.Serializable;
@@ -212,7 +212,7 @@ public class Language implements Serializable
     @Override
     public boolean equals ( final Object language )
     {
-        return language instanceof Language && CompareUtils.equals ( getLocale (), ( ( Language ) language ).getLocale () );
+        return language instanceof Language && Objects.equals ( getLocale (), ( ( Language ) language ).getLocale () );
     }
 
     @Override

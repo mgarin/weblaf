@@ -17,6 +17,7 @@
 
 package com.alee.extended.date;
 
+import com.alee.api.jdk.Objects;
 import com.alee.extended.layout.TableLayout;
 import com.alee.extended.transition.ComponentTransition;
 import com.alee.extended.transition.TransitionAdapter;
@@ -32,7 +33,10 @@ import com.alee.managers.language.Language;
 import com.alee.managers.language.LanguageListener;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.style.StyleId;
-import com.alee.utils.*;
+import com.alee.utils.CollectionUtils;
+import com.alee.utils.SwingUtils;
+import com.alee.utils.SystemUtils;
+import com.alee.utils.TimeUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -789,7 +793,7 @@ public class WebCalendar extends WebPanel implements LanguageListener
      */
     public void setDate ( final Date date, final boolean animate )
     {
-        if ( !CompareUtils.equals ( this.date, date ) )
+        if ( Objects.notEquals ( this.date, date ) )
         {
             setDateImpl ( date, animate );
         }

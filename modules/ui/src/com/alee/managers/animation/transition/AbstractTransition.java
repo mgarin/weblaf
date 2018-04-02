@@ -17,12 +17,12 @@
 
 package com.alee.managers.animation.transition;
 
+import com.alee.api.jdk.Objects;
 import com.alee.managers.animation.AnimationException;
 import com.alee.managers.animation.AnimationManager;
 import com.alee.managers.animation.event.EventHandler;
 import com.alee.managers.animation.framerate.FixedFrameRate;
 import com.alee.managers.animation.framerate.FrameRate;
-import com.alee.utils.CompareUtils;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -272,7 +272,7 @@ public abstract class AbstractTransition<V> implements Transition<V>
     public void fireAdjusted ( final V value )
     {
         // Filter out events for same values if event optimization is enabled
-        if ( !isOptimizeEvents () || !CompareUtils.equals ( value, latest ) )
+        if ( !isOptimizeEvents () || Objects.notEquals ( value, latest ) )
         {
             latest = value;
             submit ( new Runnable ()

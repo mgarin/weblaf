@@ -17,6 +17,7 @@
 
 package com.alee.api.merge;
 
+import com.alee.api.jdk.Objects;
 import com.alee.api.matcher.EqualMatcher;
 import com.alee.api.merge.behavior.BasicMergeBehavior;
 import com.alee.api.merge.behavior.ListMergeBehavior;
@@ -27,7 +28,6 @@ import com.alee.api.merge.type.ExactTypeMergePolicy;
 import com.alee.api.merge.type.RelativeTypeMergePolicy;
 import com.alee.utils.ArrayUtils;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.CompareUtils;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -482,7 +482,7 @@ public final class MergeTest
      */
     private void checkMergeResult ( final Object result, final Object expected )
     {
-        if ( !CompareUtils.equals ( result, expected ) )
+        if ( Objects.notEquals ( result, expected ) )
         {
             throw new MergeException ( String.format (
                     "Unexpected merge result: %s" + "\n" + "Expected result: %s",
@@ -540,7 +540,7 @@ public final class MergeTest
         {
             return object instanceof TestObject &&
                     bool == ( ( TestObject ) object ).bool &&
-                    CompareUtils.equals ( text, ( ( TestObject ) object ).text ) &&
+                    Objects.equals ( text, ( ( TestObject ) object ).text ) &&
                     number == ( ( TestObject ) object ).number &&
                     CollectionUtils.equals ( list, ( ( TestObject ) object ).list, true );
         }

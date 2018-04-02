@@ -29,10 +29,20 @@ import java.util.Locale;
  *
  * @author Mikle Garin
  */
-
 public final class HtmlUtils
 {
+    /**
+     * Default line separator.
+     */
     public static final String DEFAULT_LINE_SEPARATOR = "\n";
+
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private HtmlUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
 
     /**
      * Returns plain text extracted from the specified HTML.

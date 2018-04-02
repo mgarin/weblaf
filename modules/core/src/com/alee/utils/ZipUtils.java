@@ -30,9 +30,16 @@ import java.util.zip.ZipFile;
  *
  * @author Mikle Garin
  */
-
 public final class ZipUtils
 {
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private ZipUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
     /**
      * Extracts ZIP archive contents into destination directory.
      * Any folder required for extraction are created in the process.

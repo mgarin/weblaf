@@ -18,11 +18,11 @@
 package com.alee.extended.split;
 
 import com.alee.api.jdk.Consumer;
+import com.alee.api.jdk.Objects;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -104,13 +104,13 @@ public class WebMultiSplitPaneUI<C extends WebMultiSplitPane> extends WMultiSpli
     public void propertyChange ( final PropertyChangeEvent evt )
     {
         final String property = evt.getPropertyName ();
-        if ( CompareUtils.equals ( property, WebMultiSplitPane.DIVIDER_SIZE_PROPERTY ) )
+        if ( Objects.equals ( property, WebMultiSplitPane.DIVIDER_SIZE_PROPERTY ) )
         {
             // Updating split pane layout
             multisplitpane.revalidate ();
             multisplitpane.repaint ();
         }
-        else if ( CompareUtils.equals ( property, WebMultiSplitPane.ONE_TOUCH_EXPANDABLE_PROPERTY ) )
+        else if ( Objects.equals ( property, WebMultiSplitPane.ONE_TOUCH_EXPANDABLE_PROPERTY ) )
         {
             // Collapsing expanded view upon changes
             if ( !multisplitpane.isOneTouchExpandable () && multisplitpane.isAnyViewExpanded () )

@@ -25,13 +25,20 @@ import java.util.*;
  *
  * @author Mikle Garin
  */
-
 public final class ColorUtils
 {
     /**
      * Colors cache.
      */
     private static final Map<Integer, Color> colors = new HashMap<Integer, Color> ( 50 );
+
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private ColorUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
 
     /**
      * Returns cached {@link Color}.

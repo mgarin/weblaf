@@ -18,6 +18,7 @@
 package com.alee.extended.dock;
 
 import com.alee.api.data.CompassDirection;
+import com.alee.api.jdk.Objects;
 import com.alee.extended.WebContainer;
 import com.alee.extended.dock.data.DockableContainer;
 import com.alee.managers.settings.DefaultValue;
@@ -27,7 +28,6 @@ import com.alee.managers.settings.UISettingsManager;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -456,7 +456,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     {
         for ( final WebDockableFrame frame : frames )
         {
-            if ( CompareUtils.equals ( id, frame.getId () ) )
+            if ( Objects.equals ( id, frame.getId () ) )
             {
                 return frame;
             }

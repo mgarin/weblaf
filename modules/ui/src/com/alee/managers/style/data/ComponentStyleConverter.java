@@ -17,11 +17,11 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.api.jdk.Objects;
 import com.alee.managers.style.ComponentDescriptor;
 import com.alee.managers.style.StyleException;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.Painter;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.xml.InsetsConverter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
@@ -152,7 +152,7 @@ public final class ComponentStyleConverter extends ReflectionConverter
             for ( final Map.Entry<String, Object> property : uiProperties.entrySet () )
             {
                 final String key = property.getKey ();
-                if ( !CompareUtils.equals ( key, MARGIN_ATTRIBUTE, PADDING_ATTRIBUTE ) )
+                if ( Objects.notEquals ( key, MARGIN_ATTRIBUTE, PADDING_ATTRIBUTE ) )
                 {
                     writer.startNode ( key );
                     context.convertAnother ( property.getValue () );

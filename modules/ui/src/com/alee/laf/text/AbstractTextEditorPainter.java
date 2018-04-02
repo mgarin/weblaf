@@ -17,6 +17,7 @@
 
 package com.alee.laf.text;
 
+import com.alee.api.jdk.Objects;
 import com.alee.extended.behavior.DocumentChangeBehavior;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.painter.decoration.AbstractDecorationPainter;
@@ -108,7 +109,7 @@ public abstract class AbstractTextEditorPainter<C extends JTextComponent, U exte
         super.propertyChanged ( property, oldValue, newValue );
 
         // Updating decoration states on editable property change
-        if ( CompareUtils.equals ( property, WebLookAndFeel.EDITABLE_PROPERTY ) )
+        if ( Objects.equals ( property, WebLookAndFeel.EDITABLE_PROPERTY ) )
         {
             updateDecorationState ();
         }

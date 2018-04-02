@@ -18,8 +18,8 @@
 package com.alee.extended.dock.data;
 
 import com.alee.api.data.Orientation;
+import com.alee.api.jdk.Objects;
 import com.alee.extended.dock.WebDockablePane;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -126,7 +126,7 @@ public class DockableListContainer extends AbstractDockableElement implements Do
         {
             for ( final DockableElement e : elements )
             {
-                if ( CompareUtils.equals ( id, e.getId () ) )
+                if ( Objects.equals ( id, e.getId () ) )
                 {
                     element = e;
                     break;

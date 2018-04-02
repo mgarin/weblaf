@@ -17,15 +17,15 @@
 
 package com.alee.laf.text;
 
+import com.alee.api.jdk.Consumer;
+import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -166,7 +166,7 @@ public class WebFormattedTextFieldUI extends WFormattedTextFieldUI implements Sh
     @Override
     public void setInputPrompt ( final String text )
     {
-        if ( !CompareUtils.equals ( text, this.inputPrompt ) )
+        if ( Objects.notEquals ( text, this.inputPrompt ) )
         {
             this.inputPrompt = text;
             field.repaint ();

@@ -17,6 +17,7 @@
 
 package com.alee.extended.magnifier;
 
+import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.glasspane.GlassPaneManager;
 import com.alee.managers.glasspane.WebGlassPane;
@@ -229,7 +230,7 @@ public class MagnifierGlass extends JComponent
      */
     public void setZoomAreaSize ( final Dimension size )
     {
-        if ( !CompareUtils.equals ( this.size, size ) )
+        if ( Objects.notEquals ( this.size, size ) )
         {
             this.size = size;
             updatePreview ();

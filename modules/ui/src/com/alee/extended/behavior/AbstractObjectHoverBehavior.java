@@ -17,10 +17,10 @@
 
 package com.alee.extended.behavior;
 
+import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.drag.DragListener;
 import com.alee.managers.drag.DragManager;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
 
@@ -402,7 +402,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
      */
     protected void checkHoverChange ( final V object )
     {
-        if ( !CompareUtils.equals ( object, hoverObject ) )
+        if ( Objects.notEquals ( object, hoverObject ) )
         {
             final V previousPath = hoverObject;
             this.hoverObject = object;

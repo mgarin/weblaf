@@ -17,6 +17,7 @@
 
 package com.alee.painter;
 
+import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.Bounds;
 import com.alee.utils.*;
@@ -465,19 +466,19 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
     protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
     {
         // Forcing orientation visual updates
-        if ( CompareUtils.equals ( property, WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY ) )
+        if ( Objects.equals ( property, WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY ) )
         {
             orientationChange ();
         }
 
         // Tracking component border changes
-        if ( CompareUtils.equals ( property, WebLookAndFeel.BORDER_PROPERTY ) )
+        if ( Objects.equals ( property, WebLookAndFeel.BORDER_PROPERTY ) )
         {
             borderChange ( ( Border ) newValue );
         }
 
         // Tracking component margin and padding changes
-        if ( CompareUtils.equals ( property, WebLookAndFeel.LAF_MARGIN_PROPERTY, WebLookAndFeel.LAF_PADDING_PROPERTY ) )
+        if ( Objects.equals ( property, WebLookAndFeel.LAF_MARGIN_PROPERTY, WebLookAndFeel.LAF_PADDING_PROPERTY ) )
         {
             updateBorder ();
         }
@@ -670,7 +671,7 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
             if ( border != null )
             {
                 final Border old = component.getBorder ();
-                if ( !( old instanceof WebBorder ) || !CompareUtils.equals ( ( ( WebBorder ) old ).getBorderInsets (), border ) )
+                if ( !( old instanceof WebBorder ) || Objects.notEquals ( ( ( WebBorder ) old ).getBorderInsets (), border ) )
                 {
                     component.setBorder ( new WebBorder ( border ) );
                 }

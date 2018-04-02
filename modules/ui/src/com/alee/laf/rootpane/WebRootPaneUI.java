@@ -20,6 +20,7 @@ package com.alee.laf.rootpane;
 import com.alee.api.data.CompassDirection;
 import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Function;
+import com.alee.api.jdk.Objects;
 import com.alee.extended.behavior.ComponentResizeBehavior;
 import com.alee.extended.image.WebImage;
 import com.alee.laf.WebLookAndFeel;
@@ -591,11 +592,11 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
             public void propertyChange ( final PropertyChangeEvent evt )
             {
                 final String property = evt.getPropertyName ();
-                if ( CompareUtils.equals ( property, WebLookAndFeel.ICON_IMAGE_PROPERTY ) )
+                if ( Objects.equals ( property, WebLookAndFeel.ICON_IMAGE_PROPERTY ) )
                 {
                     titleIcon.setImage ( getWindowImage () );
                 }
-                else if ( CompareUtils.equals ( property, WebLookAndFeel.TITLE_PROPERTY ) )
+                else if ( Objects.equals ( property, WebLookAndFeel.TITLE_PROPERTY ) )
                 {
                     titleLabel.setText ( getWindowTitle () );
                 }

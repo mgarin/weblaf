@@ -17,8 +17,8 @@
 
 package com.alee.extended.svg;
 
+import com.alee.api.jdk.Objects;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.TextUtils;
 import com.alee.utils.collection.ImmutableSet;
 import com.kitfox.svg.SVGElement;
@@ -143,13 +143,13 @@ public final class SvgSelector implements Serializable
         {
             final String id = this.element.substring ( 1 );
             final boolean exist = icon.hasAttribute ( element, SvgElements.ID );
-            return exist && CompareUtils.equals ( id, icon.getAttribute ( element, SvgElements.ID ).getStringValue () );
+            return exist && Objects.equals ( id, icon.getAttribute ( element, SvgElements.ID ).getStringValue () );
         }
         else if ( this.element.startsWith ( "." ) )
         {
             final String style = this.element.substring ( 1 );
             final boolean exist = icon.hasAttribute ( element, SvgElements.CLAZZ );
-            return exist && CompareUtils.equals ( style, icon.getAttribute ( element, SvgElements.CLAZZ ).getStringValue () );
+            return exist && Objects.equals ( style, icon.getAttribute ( element, SvgElements.CLAZZ ).getStringValue () );
         }
         else
         {

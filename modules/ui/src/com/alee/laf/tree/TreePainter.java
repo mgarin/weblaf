@@ -1,5 +1,6 @@
 package com.alee.laf.tree;
 
+import com.alee.api.jdk.Objects;
 import com.alee.api.jdk.Predicate;
 import com.alee.extended.tree.WebAsyncTree;
 import com.alee.extended.tree.WebExTree;
@@ -17,7 +18,6 @@ import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.IDecorationPainter;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.SwingUtils;
 
@@ -644,7 +644,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
         super.propertyChanged ( property, oldValue, newValue );
 
         // Update visual drop location
-        if ( CompareUtils.equals ( property, WebLookAndFeel.DROP_LOCATION ) && dropLocationPainter != null )
+        if ( Objects.equals ( property, WebLookAndFeel.DROP_LOCATION ) && dropLocationPainter != null )
         {
             // Repainting previous drop location
             final JTree.DropLocation oldLocation = ( JTree.DropLocation ) oldValue;

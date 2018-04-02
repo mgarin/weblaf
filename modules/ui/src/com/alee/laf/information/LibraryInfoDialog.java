@@ -17,6 +17,7 @@
 
 package com.alee.laf.information;
 
+import com.alee.api.jdk.Objects;
 import com.alee.extended.behavior.ComponentMoveBehavior;
 import com.alee.extended.image.WebImage;
 import com.alee.extended.layout.VerticalFlowLayout;
@@ -44,7 +45,10 @@ import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.version.VersionInfo;
 import com.alee.managers.version.VersionManager;
-import com.alee.utils.*;
+import com.alee.utils.CoreSwingUtils;
+import com.alee.utils.FileUtils;
+import com.alee.utils.JarUtils;
+import com.alee.utils.SystemUtils;
 import com.alee.utils.jar.JarEntry;
 import com.alee.utils.jar.JarStructure;
 import org.slf4j.LoggerFactory;
@@ -201,7 +205,7 @@ public class LibraryInfoDialog extends WebFrame
             {
                 for ( final JarEntry child : licensesFolder.getChildren () )
                 {
-                    if ( CompareUtils.equals ( library.getKey (), child.getName () ) )
+                    if ( Objects.equals ( library.getKey (), child.getName () ) )
                     {
                         final String data = library.getValue ();
                         final int i = data.indexOf ( LIBRARY_DATA_SEPARATOR );

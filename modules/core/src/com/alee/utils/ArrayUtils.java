@@ -24,9 +24,16 @@ import java.lang.reflect.Array;
  *
  * @author Mikle Garin
  */
-
 public final class ArrayUtils
 {
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private ArrayUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
     /**
      * Returns whether or not data is empty.
      *

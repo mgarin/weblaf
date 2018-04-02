@@ -19,6 +19,7 @@ package com.alee.extended.dock;
 
 import com.alee.api.data.CompassDirection;
 import com.alee.api.jdk.Consumer;
+import com.alee.api.jdk.Objects;
 import com.alee.extended.behavior.ComponentVisibilityBehavior;
 import com.alee.extended.dock.data.DockableFrameElement;
 import com.alee.laf.panel.WebPanel;
@@ -28,7 +29,6 @@ import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
 
@@ -158,30 +158,30 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
     public void propertyChange ( final PropertyChangeEvent evt )
     {
         final String property = evt.getPropertyName ();
-        if ( CompareUtils.equals ( property, WebDockablePane.MODEL_PROPERTY, WebDockablePane.MODEL_STATE_PROPERTY ) )
+        if ( Objects.equals ( property, WebDockablePane.MODEL_PROPERTY, WebDockablePane.MODEL_STATE_PROPERTY ) )
         {
             // Handling model and its state changes
             updateFrameData ();
         }
-        else if ( CompareUtils.equals ( property, WebDockablePane.SIDEBAR_VISIBILITY_PROPERTY ) )
+        else if ( Objects.equals ( property, WebDockablePane.SIDEBAR_VISIBILITY_PROPERTY ) )
         {
             // Handling sidebar visibility change
             updateSidebarsVisibility ();
         }
-        else if ( CompareUtils.equals ( property, WebDockablePane.CONTENT_SPACING_PROPERTY, WebDockablePane.RESIZE_GRIPPER_PROPERTY ) )
+        else if ( Objects.equals ( property, WebDockablePane.CONTENT_SPACING_PROPERTY, WebDockablePane.RESIZE_GRIPPER_PROPERTY ) )
         {
             // Updating dockable pane layout
             pane.revalidate ();
             pane.repaint ();
         }
-        else if ( CompareUtils.equals ( property, WebDockablePane.GLASS_LAYER_PROPERTY ) )
+        else if ( Objects.equals ( property, WebDockablePane.GLASS_LAYER_PROPERTY ) )
         {
             // Handling glass layer change
             final Component oldGlassLayer = ( Component ) evt.getOldValue ();
             final Component newGlassLayer = ( Component ) evt.getNewValue ();
             updateGlassLayerVisibility ( oldGlassLayer, newGlassLayer );
         }
-        else if ( CompareUtils.equals ( property, WebDockablePane.FRAME_PROPERTY ) )
+        else if ( Objects.equals ( property, WebDockablePane.FRAME_PROPERTY ) )
         {
             // Handling addition of new frame
             if ( evt.getNewValue () != null )
@@ -194,14 +194,14 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
                 uninstallFrame ( ( WebDockableFrame ) evt.getOldValue () );
             }
         }
-        else if ( CompareUtils.equals ( property, WebDockablePane.CONTENT_PROPERTY ) )
+        else if ( Objects.equals ( property, WebDockablePane.CONTENT_PROPERTY ) )
         {
             // Handling content change
             final JComponent oldContent = ( JComponent ) evt.getOldValue ();
             final JComponent newContent = ( JComponent ) evt.getNewValue ();
             updateContentVisibility ( oldContent, newContent );
         }
-        else if ( CompareUtils.equals ( property, WebDockablePane.MINIMUM_ELEMENT_SIZE_PROPERTY,
+        else if ( Objects.equals ( property, WebDockablePane.MINIMUM_ELEMENT_SIZE_PROPERTY,
                 WebDockablePane.OCCUPY_MINIMUM_SIZE_FOR_CHILDREN_PROPERTY ) )
         {
             // Validating sizes
@@ -400,14 +400,14 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
             public void propertyChange ( final PropertyChangeEvent evt )
             {
                 final String property = evt.getPropertyName ();
-                if ( CompareUtils.equals ( property, WebDockableFrame.FRAME_ID_PROPERTY ) )
+                if ( Objects.equals ( property, WebDockableFrame.FRAME_ID_PROPERTY ) )
                 {
                     // Since frame ID changed it is almost the same as adding new one
                     // But we skip actual frame addition into dockable pane since it is already there
                     // We also don't need to remove data for old frame ID, we can keep it
                     pane.getModel ().updateFrame ( pane, frame );
                 }
-                else if ( CompareUtils.equals ( property, WebDockableFrame.STATE_PROPERTY ) )
+                else if ( Objects.equals ( property, WebDockableFrame.STATE_PROPERTY ) )
                 {
                     final DockableFrameState oldState = ( DockableFrameState ) evt.getOldValue ();
                     final DockableFrameState newState = ( DockableFrameState ) evt.getNewValue ();
@@ -434,12 +434,12 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
                         showFrameDialog ( frame );
                     }
                 }
-                else if ( CompareUtils.equals ( property, WebDockableFrame.POSITION_PROPERTY ) )
+                else if ( Objects.equals ( property, WebDockableFrame.POSITION_PROPERTY ) )
                 {
                     // Updating frame and its sidebar button visibility
                     updateSidebarsVisibility ();
                 }
-                else if ( CompareUtils.equals ( property, WebDockableFrame.MAXIMIZED_PROPERTY ) )
+                else if ( Objects.equals ( property, WebDockableFrame.MAXIMIZED_PROPERTY ) )
                 {
                     // Ensure none other frame is maximized
                     if ( frame.isMaximized () )
@@ -454,13 +454,13 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
                         }
                     }
                 }
-                else if ( CompareUtils.equals ( property, WebDockableFrame.RESTORE_STATE_PROPERTY ) )
+                else if ( Objects.equals ( property, WebDockableFrame.RESTORE_STATE_PROPERTY ) )
                 {
                     // Updating frame restore state
                     final DockableFrameElement element = pane.getModel ().getElement ( frame.getId () );
                     element.setRestoreState ( frame.getRestoreState () );
                 }
-                else if ( CompareUtils.equals ( property, WebDockableFrame.TITLE_PROPERTY ) )
+                else if ( Objects.equals ( property, WebDockableFrame.TITLE_PROPERTY ) )
                 {
                     // Updating floating frame dialog title
                     if ( frame.isFloating () )
@@ -469,7 +469,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
                         dialog.setTitle ( frame.getTitle () );
                     }
                 }
-                else if ( CompareUtils.equals ( property, WebDockableFrame.ICON_PROPERTY ) )
+                else if ( Objects.equals ( property, WebDockableFrame.ICON_PROPERTY ) )
                 {
                     // Updating floating frame dialog icon
                     if ( frame.isFloating () )

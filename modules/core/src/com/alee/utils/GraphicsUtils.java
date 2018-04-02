@@ -29,9 +29,16 @@ import java.util.Map;
  *
  * @author Mikle Garin
  */
-
 public final class GraphicsUtils
 {
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private GraphicsUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
     /**
      * Setting antialias on
      */

@@ -39,7 +39,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public final class ImageUtils
 {
     /**
@@ -53,6 +52,14 @@ public final class ImageUtils
     public static final List<String> VIEWABLE_IMAGES = new ImmutableList<String> (
             "png", "apng", "gif", "agif", "jpg", "jpeg", "jpeg2000", "bmp"
     );
+
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private ImageUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
 
     /**
      * Returns whether or not image pixel at the specified X and Y coordinates is fully transparent.

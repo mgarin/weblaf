@@ -34,7 +34,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public final class TextUtils
 {
     /**
@@ -83,6 +82,14 @@ public final class TextUtils
     private static String systemLineSeparator;
 
     /**
+     * Private constructor to avoid instantiation.
+     */
+    private TextUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
+    /**
      * Returns preferred system text lines separator.
      *
      * @return preferred system text lines separator
@@ -95,7 +102,7 @@ public final class TextUtils
             {
                 systemLineSeparator = System.getProperty ( "line.separator" );
             }
-            catch ( final SecurityException e )
+            catch ( final SecurityException ignored )
             {
                 // Ignore possible security exception
             }

@@ -17,6 +17,7 @@
 
 package com.alee.utils;
 
+import com.alee.api.jdk.Objects;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -86,7 +87,7 @@ public final class TextUtilsTest
      */
     private void assertWord ( final String sentence, final int location, final String word )
     {
-        assert CompareUtils.equals ( TextUtils.getWord ( sentence, location ), word ) : wordDetectionErrorText ();
+        assert Objects.equals ( TextUtils.getWord ( sentence, location ), word ) : wordDetectionErrorText ();
     }
 
     /**
@@ -145,7 +146,7 @@ public final class TextUtilsTest
      */
     private void assertWordStart ( final String sentence, final int location, final int start )
     {
-        assert CompareUtils.equals ( TextUtils.getWordStart ( sentence, location ), start ) : wordDetectionErrorText ();
+        assert Objects.equals ( TextUtils.getWordStart ( sentence, location ), start ) : wordDetectionErrorText ();
     }
 
     /**

@@ -17,6 +17,7 @@
 
 package com.alee.laf.splitpane;
 
+import com.alee.api.jdk.Objects;
 import com.alee.extended.canvas.WebCanvas;
 import com.alee.laf.UIInputListener;
 import com.alee.laf.WebUI;
@@ -24,7 +25,6 @@ import com.alee.managers.style.BoundsType;
 import com.alee.managers.style.StyleId;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.DecorationUtils;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.LafUtils;
 
 import javax.swing.*;
@@ -381,7 +381,7 @@ public abstract class WSplitPaneUI<C extends JSplitPane> extends SplitPaneUI imp
             @Override
             public void propertyChange ( final PropertyChangeEvent event )
             {
-                if ( getNonContinuousLayoutDivider () != null && CompareUtils.equals ( event.getPropertyName (),
+                if ( getNonContinuousLayoutDivider () != null && Objects.equals ( event.getPropertyName (),
                         JSplitPane.ORIENTATION_PROPERTY, JSplitPane.ONE_TOUCH_EXPANDABLE_PROPERTY ) )
                 {
                     DecorationUtils.fireStatesChanged ( getNonContinuousLayoutDivider () );

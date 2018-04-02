@@ -17,10 +17,10 @@
 
 package com.alee.laf.list.editor;
 
+import com.alee.api.jdk.Objects;
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.WebListModel;
 import com.alee.managers.hotkey.Hotkey;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -354,7 +354,7 @@ public abstract class AbstractListCellEditor<C extends Component, T> implements 
     public boolean updateListModel ( final JList list, final int index, final T oldValue, final T newValue, final boolean updateSelection )
     {
         // Checking if value has changed
-        if ( CompareUtils.equals ( oldValue, newValue ) )
+        if ( Objects.equals ( oldValue, newValue ) )
         {
             return false;
         }

@@ -32,13 +32,20 @@ import java.util.WeakHashMap;
  *
  * @author Mikle Garin
  */
-
 public final class ShapeUtils
 {
     /**
      * Shapes cache map.
      */
     private static final Map<Component, Map<String, CachedShape>> shapeCache = new WeakHashMap<Component, Map<String, CachedShape>> ();
+
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private ShapeUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
 
     /**
      * Returns shape with rounded corners created using specified points.

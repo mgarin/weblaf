@@ -17,10 +17,10 @@
 
 package com.alee.extended.image;
 
+import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageUtils;
 
@@ -75,7 +75,7 @@ public class ImagePainter<C extends WebImage, U extends WImageUI, D extends IDec
         super.propertyChanged ( property, oldValue, newValue );
 
         // Updating visual settings
-        if ( CompareUtils.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
+        if ( Objects.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
         {
             // Updating disabled state image
             if ( !isEnabled () )
@@ -89,7 +89,7 @@ public class ImagePainter<C extends WebImage, U extends WImageUI, D extends IDec
             revalidate ();
             repaint ();
         }
-        else if ( CompareUtils.equals ( property, WebImage.IMAGE_PROPERTY ) )
+        else if ( Objects.equals ( property, WebImage.IMAGE_PROPERTY ) )
         {
             this.disabledImage = null;
             this.lastPreviewImage = null;
@@ -100,7 +100,7 @@ public class ImagePainter<C extends WebImage, U extends WImageUI, D extends IDec
             revalidate ();
             repaint ();
         }
-        else if ( CompareUtils.equals ( property, WebImage.DISPLAY_TYPE_PROPERTY, WebImage.HORIZONTAL_ALIGNMENT_PROPERTY,
+        else if ( Objects.equals ( property, WebImage.DISPLAY_TYPE_PROPERTY, WebImage.HORIZONTAL_ALIGNMENT_PROPERTY,
                 WebImage.VERTICAL_ALIGNMENT_PROPERTY, WebImage.OPACITY_PROPERTY ) )
         {
             repaint ();

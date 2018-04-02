@@ -18,10 +18,10 @@
 package com.alee.managers.language.data;
 
 import com.alee.api.Identifiable;
+import com.alee.api.jdk.Objects;
 import com.alee.api.merge.Mergeable;
 import com.alee.managers.language.LanguageUtils;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.TextUtils;
 import com.alee.utils.XmlUtils;
 import com.alee.utils.collection.ImmutableList;
@@ -436,7 +436,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
         {
             for ( final Record record : records )
             {
-                if ( CompareUtils.equals ( record.getKey (), key ) )
+                if ( Objects.equals ( record.getKey (), key ) )
                 {
                     results.add ( record );
                 }

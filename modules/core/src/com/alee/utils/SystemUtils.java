@@ -17,6 +17,7 @@
 
 package com.alee.utils;
 
+import com.alee.api.jdk.Objects;
 import com.alee.utils.system.JavaVersion;
 import com.alee.utils.system.SystemType;
 import org.slf4j.LoggerFactory;
@@ -39,7 +40,6 @@ import java.util.Locale;
  *
  * @author Mikle Garin
  */
-
 public final class SystemUtils
 {
     /**
@@ -100,6 +100,14 @@ public final class SystemUtils
      * Transparent cursor.
      */
     private static Cursor transparentCursor;
+
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private SystemUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
 
     /**
      * Copies text to system clipboard.
@@ -164,7 +172,7 @@ public final class SystemUtils
     {
         if ( javaVersion == null )
         {
-            javaVersion = new JavaVersion ( getJavaVersionString () );
+            javaVersion = new JavaVersion ();
         }
         return javaVersion;
     }
@@ -174,11 +182,11 @@ public final class SystemUtils
      *
      * @param version version number
      * @param update  update number
-     * @return true if the application is running on the specified java version and above, false otherwise
+     * @return {@code true} if the application is running on the specified java version and above, {@code false} otherwise
      */
     public static boolean isJavaVersion ( final double version, final int update )
     {
-        return getJavaVersion ().compareVersion ( version, 0, update ) >= 0;
+        return getJavaVersion ().compareTo ( version, 0, update ) >= 0;
     }
 
     /**
@@ -187,41 +195,61 @@ public final class SystemUtils
      * @param major  major version
      * @param minor  minor version
      * @param update update number
-     * @return true if the application is running on the specified java version and above, false otherwise
+     * @return {@code true} if the application is running on the specified java version and above, {@code false} otherwise
      */
     public static boolean isJavaVersion ( final double major, final int minor, final int update )
     {
-        return getJavaVersion ().compareVersion ( major, minor, update ) >= 0;
+        return getJavaVersion ().compareTo ( major, minor, update ) >= 0;
     }
 
     /**
      * Returns whether application is running on java 6 version and above or not.
      *
-     * @return true if the application is running on java 6 version and above, false otherwise
+     * @return {@code true} if the application is running on java 6 version and above, {@code false} otherwise
      */
     public static boolean isJava6orAbove ()
     {
-        return getJavaVersion ().compareVersion ( 1.6, 0, 0 ) >= 0;
+        return getJavaVersion ().compareTo ( 1.6, 0, 0 ) >= 0;
     }
 
     /**
      * Returns whether application is running on java 7 version and above or not.
      *
-     * @return true if the application is running on java 7 version and above, false otherwise
+     * @return {@code true} if the application is running on java 7 version and above, {@code false} otherwise
      */
     public static boolean isJava7orAbove ()
     {
-        return getJavaVersion ().compareVersion ( 1.7, 0, 0 ) >= 0;
+        return getJavaVersion ().compareTo ( 1.7, 0, 0 ) >= 0;
     }
 
     /**
      * Returns whether application is running on java 8 version and above or not.
      *
-     * @return true if the application is running on java 8 version and above, false otherwise
+     * @return {@code true} if the application is running on java 8 version and above, {@code false} otherwise
      */
     public static boolean isJava8orAbove ()
     {
-        return getJavaVersion ().compareVersion ( 1.8, 0, 0 ) >= 0;
+        return getJavaVersion ().compareTo ( 1.8, 0, 0 ) >= 0;
+    }
+
+    /**
+     * Returns whether application is running on java 9 version and above or not.
+     *
+     * @return {@code true} if the application is running on java 9 version and above, {@code false} otherwise
+     */
+    public static boolean isJava9orAbove ()
+    {
+        return getJavaVersion ().compareTo ( 9.0, 0, 0 ) >= 0;
+    }
+
+    /**
+     * Returns whether application is running on java 10 version and above or not.
+     *
+     * @return {@code true} if the application is running on java 10 version and above, {@code false} otherwise
+     */
+    public static boolean isJava10orAbove ()
+    {
+        return getJavaVersion ().compareTo ( 10.0, 0, 0 ) >= 0;
     }
 
     /**
@@ -283,15 +311,22 @@ public final class SystemUtils
      * @param color whether return colored icon or not
      * @return OS icon
      */
-    public static ImageIcon getOsIcon ( int size, final boolean color )
+    public static ImageIcon getOsIcon ( final int size, final boolean color )
     {
-        if ( size != 16 && size != 32 )
-        {
-            size = 16;
-        }
+        final ImageIcon icon;
         final String os = getShortOsName ();
-        final String mark = color ? "_colored" : "";
-        return os != null ? new ImageIcon ( SystemUtils.class.getResource ( "icons/os/" + size + "/" + os + mark + ".png" ) ) : null;
+        if ( os != null )
+        {
+            final int iconSize = Objects.equals ( size, 16, 32 ) ? size : 16;
+            final String mark = color ? "_colored" : "";
+            final String path = "icons/os/" + iconSize + "/" + os + mark + ".png";
+            icon = new ImageIcon ( SystemUtils.class.getResource ( path ) );
+        }
+        else
+        {
+            icon = null;
+        }
+        return icon;
     }
 
     /**
@@ -307,7 +342,7 @@ public final class SystemUtils
     /**
      * Returns whether current OS is windows or not.
      *
-     * @return true if current OS is windows, false otherwise
+     * @return {@code true} if current OS is windows, {@code false} otherwise
      */
     public static boolean isWindows ()
     {
@@ -317,7 +352,7 @@ public final class SystemUtils
     /**
      * Returns whether current OS is mac or not.
      *
-     * @return true if current OS is mac, false otherwise
+     * @return {@code true} if current OS is mac, {@code false} otherwise
      */
     public static boolean isMac ()
     {
@@ -327,7 +362,7 @@ public final class SystemUtils
     /**
      * Returns whether current OS is unix or not.
      *
-     * @return true if current OS is unix, false otherwise
+     * @return {@code true} if current OS is unix, {@code false} otherwise
      */
     public static boolean isUnix ()
     {
@@ -337,7 +372,7 @@ public final class SystemUtils
     /**
      * Returns whether current OS is solaris or not.
      *
-     * @return true if current OS is solaris, false otherwise
+     * @return {@code true} if current OS is solaris, {@code false} otherwise
      */
     public static boolean isSolaris ()
     {
@@ -446,7 +481,7 @@ public final class SystemUtils
     /**
      * Returns whether Caps Lock is on or not.
      *
-     * @return true if Caps Lock is on, false otherwise
+     * @return {@code true} if Caps Lock is on, {@code false} otherwise
      */
     public static boolean isCapsLock ()
     {
@@ -456,7 +491,7 @@ public final class SystemUtils
     /**
      * Returns whether Num Lock is on or not.
      *
-     * @return true if Num Lock is on, false otherwise
+     * @return {@code true} if Num Lock is on, {@code false} otherwise
      */
     public static boolean isNumLock ()
     {
@@ -466,7 +501,7 @@ public final class SystemUtils
     /**
      * Returns whether Scroll Lock is on or not.
      *
-     * @return true if Scroll Lock is on, false otherwise
+     * @return {@code true} if Scroll Lock is on, {@code false} otherwise
      */
     public static boolean isScrollLock ()
     {

@@ -18,6 +18,7 @@
 package com.alee.painter.decoration;
 
 import com.alee.api.clone.Clone;
+import com.alee.api.jdk.Objects;
 import com.alee.extended.behavior.AbstractHoverBehavior;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.grouping.GroupingLayout;
@@ -165,19 +166,19 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
         super.propertyChanged ( property, oldValue, newValue );
 
         // Updating focus listener
-        if ( CompareUtils.equals ( property, WebLookAndFeel.FOCUSABLE_PROPERTY ) )
+        if ( Objects.equals ( property, WebLookAndFeel.FOCUSABLE_PROPERTY ) )
         {
             updateFocusListener ();
         }
 
         // Updating custom decoration states
-        if ( CompareUtils.equals ( property, DECORATION_STATES_PROPERTY ) )
+        if ( Objects.equals ( property, DECORATION_STATES_PROPERTY ) )
         {
             updateDecorationState ();
         }
 
         // Updating enabled state
-        if ( CompareUtils.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
+        if ( Objects.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
         {
             if ( usesState ( DecorationState.enabled ) || usesState ( DecorationState.disabled ) )
             {
@@ -377,7 +378,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
             }
             current = current.getParent ();
         }
-        if ( !CompareUtils.equals ( old, inFocusedParent ) )
+        if ( Objects.notEquals ( old, inFocusedParent ) )
         {
             updateDecorationState ();
         }
@@ -862,7 +863,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
                     initialDecoration.activate ( component );
                 }
             }
-            else if ( !CompareUtils.equals ( previous, current ) )
+            else if ( Objects.notEquals ( previous, current ) )
             {
                 // Checking that decoration was actually changed
                 final D previousDecoration = stateDecorationCache.get ( previous );

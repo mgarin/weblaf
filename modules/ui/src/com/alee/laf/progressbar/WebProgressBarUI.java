@@ -17,13 +17,13 @@
 
 package com.alee.laf.progressbar;
 
+import com.alee.api.jdk.Consumer;
+import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.CompareUtils;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -214,7 +214,7 @@ public class WebProgressBarUI<C extends JProgressBar> extends WProgressBarUI<C> 
         public void propertyChange ( final PropertyChangeEvent e )
         {
             final String propertyName = e.getPropertyName ();
-            if ( CompareUtils.equals ( propertyName, WebLookAndFeel.INDETERMINATE_PROPERTY ) )
+            if ( Objects.equals ( propertyName, WebLookAndFeel.INDETERMINATE_PROPERTY ) )
             {
                 progressBar.repaint ();
             }

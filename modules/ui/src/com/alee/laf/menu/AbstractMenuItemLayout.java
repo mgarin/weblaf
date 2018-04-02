@@ -42,10 +42,10 @@ public abstract class AbstractMenuItemLayout<C extends JComponent, D extends IDe
     /**
      * Layout constraints.
      */
-    public static final String ICON = "icon";
-    public static final String TEXT = "text";
-    public static final String ACCELERATOR = "accelerator";
-    public static final String ARROW = "arrow";
+    protected static final String ICON = "icon";
+    protected static final String TEXT = "text";
+    protected static final String ACCELERATOR = "accelerator";
+    protected static final String ARROW = "arrow";
 
     /**
      * Gap between icon and text contents.

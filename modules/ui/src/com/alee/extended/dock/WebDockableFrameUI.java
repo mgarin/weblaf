@@ -18,6 +18,7 @@
 package com.alee.extended.dock;
 
 import com.alee.api.jdk.Consumer;
+import com.alee.api.jdk.Objects;
 import com.alee.extended.behavior.ComponentMoveBehavior;
 import com.alee.extended.dock.drag.DockableFrameTransferHandler;
 import com.alee.extended.label.WebStyledLabel;
@@ -35,7 +36,6 @@ import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.MouseButton;
@@ -348,7 +348,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
     public void propertyChange ( final PropertyChangeEvent evt )
     {
         final String property = evt.getPropertyName ();
-        if ( CompareUtils.equals ( property, WebDockableFrame.STATE_PROPERTY ) )
+        if ( Objects.equals ( property, WebDockableFrame.STATE_PROPERTY ) )
         {
             final DockableFrameState oldState = ( DockableFrameState ) evt.getOldValue ();
             final DockableFrameState newState = ( DockableFrameState ) evt.getNewValue ();
@@ -386,35 +386,34 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
                 requestFocusInFrame ();
             }
         }
-        else if ( CompareUtils.equals ( property, WebDockableFrame.MAXIMIZABLE_PROPERTY ) ||
-                CompareUtils.equals ( property, WebDockableFrame.MAXIMIZED_PROPERTY ) )
+        else if ( Objects.equals ( property, WebDockableFrame.MAXIMIZABLE_PROPERTY, WebDockableFrame.MAXIMIZED_PROPERTY ) )
         {
             // Updating maximizebutton
             updateMaximizeButton ();
         }
-        else if ( CompareUtils.equals ( property, WebDockableFrame.CLOSABLE_PROPERTY ) )
+        else if ( Objects.equals ( property, WebDockableFrame.CLOSABLE_PROPERTY ) )
         {
             // Updating close button
             updateCloseButton ();
         }
-        else if ( CompareUtils.equals ( property, WebDockableFrame.FLOATABLE_PROPERTY ) )
+        else if ( Objects.equals ( property, WebDockableFrame.FLOATABLE_PROPERTY ) )
         {
             // Updating float button
             updateFloatButton ();
         }
-        else if ( CompareUtils.equals ( property, WebDockableFrame.ICON_PROPERTY ) )
+        else if ( Objects.equals ( property, WebDockableFrame.ICON_PROPERTY ) )
         {
             // Updating title and sidebar button icons
             titleLabel.setIcon ( frame.getIcon () );
             sidebarButton.setIcon ( frame.getIcon () );
         }
-        else if ( CompareUtils.equals ( property, WebDockableFrame.TITLE_PROPERTY ) )
+        else if ( Objects.equals ( property, WebDockableFrame.TITLE_PROPERTY ) )
         {
             // Updating title and sidebar button texts
             titleLabel.setText ( frame.getTitle () );
             sidebarButton.setText ( frame.getTitle () );
         }
-        else if ( CompareUtils.equals ( property, WebDockableFrame.POSITION_PROPERTY ) )
+        else if ( Objects.equals ( property, WebDockableFrame.POSITION_PROPERTY ) )
         {
             // Updating sidebar button states
             sidebarButton.updateStates ();

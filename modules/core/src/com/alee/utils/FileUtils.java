@@ -204,6 +204,14 @@ public final class FileUtils
     public static final FileComparator FILE_COMPARATOR = new FileComparator ();
 
     /**
+     * Private constructor to avoid instantiation.
+     */
+    private FileUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
+    /**
      * Clears all caches for specified files.
      *
      * @param files files to process
@@ -560,7 +568,7 @@ public final class FileUtils
             {
                 bis.close ();
             }
-            catch ( final Exception e )
+            catch ( final Exception ignored )
             {
                 //
             }
@@ -1100,7 +1108,7 @@ public final class FileUtils
                 index = Integer.parseInt ( nameStart.substring ( ob + 1, cb ) );
                 index++;
             }
-            catch ( final Exception e )
+            catch ( final Exception ignored )
             {
                 //
             }
@@ -1721,7 +1729,7 @@ public final class FileUtils
             {
                 inputStream.close ();
             }
-            catch ( final IOException e )
+            catch ( final IOException ignored )
             {
                 // Ignore this exception
             }
@@ -1761,7 +1769,7 @@ public final class FileUtils
             {
                 reader.close ();
             }
-            catch ( final IOException e )
+            catch ( final IOException ignored )
             {
                 // Ignore this exception
             }

@@ -17,7 +17,7 @@
 
 package com.alee.api.data;
 
-import com.alee.utils.CompareUtils;
+import com.alee.api.jdk.Objects;
 
 import static javax.swing.ScrollPaneConstants.*;
 
@@ -74,7 +74,7 @@ public enum Corner
     {
         for ( final Corner corner : values () )
         {
-            if ( CompareUtils.equals ( value, corner.scrollPaneConstant ) )
+            if ( Objects.equals ( value, corner.scrollPaneConstant ) )
             {
                 return true;
             }
@@ -92,7 +92,7 @@ public enum Corner
     {
         for ( final Corner corner : values () )
         {
-            if ( CompareUtils.equals ( scrollPaneConstant, corner.scrollPaneConstant ) )
+            if ( Objects.equals ( scrollPaneConstant, corner.scrollPaneConstant ) )
             {
                 return corner;
             }

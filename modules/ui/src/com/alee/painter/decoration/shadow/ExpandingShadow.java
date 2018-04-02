@@ -17,8 +17,8 @@
 
 package com.alee.painter.decoration.shadow;
 
+import com.alee.api.jdk.Objects;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -92,7 +92,7 @@ public class ExpandingShadow<C extends JComponent, D extends IDecoration<C, D>, 
     protected NinePatchIcon getShadow ( final int width, final float opacity )
     {
         final String key = getShadowKey ( width, opacity );
-        if ( shadowImage == null || !CompareUtils.equals ( shadowKey, key ) )
+        if ( shadowImage == null || Objects.notEquals ( shadowKey, key ) )
         {
             final WeakReference<NinePatchIcon> reference = shadowCache.get ( key );
             if ( reference == null || reference.get () == null )

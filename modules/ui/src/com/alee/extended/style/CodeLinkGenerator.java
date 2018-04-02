@@ -17,6 +17,7 @@
 
 package com.alee.extended.style;
 
+import com.alee.api.jdk.Objects;
 import com.alee.extended.window.PopOverDirection;
 import com.alee.extended.window.WebPopOver;
 import com.alee.laf.colorchooser.WebColorChooserPanel;
@@ -28,7 +29,6 @@ import com.alee.managers.style.ComponentDescriptor;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.data.ComponentStyleConverter;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.MathUtils;
 import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.xml.ColorConverter;
@@ -107,7 +107,7 @@ public class CodeLinkGenerator implements LinkGenerator
     public LinkGeneratorResult isLinkAtOffset ( final RSyntaxTextArea source, final int pos )
     {
         final String code = source.getText ();
-        if ( src == null || !CompareUtils.equals ( src, code ) )
+        if ( src == null || Objects.notEquals ( src, code ) )
         {
             text = code;
             src = new Source ( code );
@@ -194,8 +194,8 @@ public class CodeLinkGenerator implements LinkGenerator
                                     final WebScrollPane scrollPane = new WebScrollPane ( StyleId.scrollpanePopup, typesList );
                                     typeChooser.add ( scrollPane );
 
-                                    final Rectangle wb =
-                                            source.getUI ().modelToView ( source, ( content.getBegin () + content.getEnd () ) / 2 );
+                                    final int position = ( content.getBegin () + content.getEnd () ) / 2;
+                                    final Rectangle wb = source.getUI ().modelToView ( source, position );
                                     typeChooser.show ( source, wb.x, wb.y, wb.width, wb.height, PopOverDirection.down );
 
                                     return new HyperlinkEvent ( this, HyperlinkEvent.EventType.EXITED, null );
@@ -242,7 +242,7 @@ public class CodeLinkGenerator implements LinkGenerator
             }
             else
             {
-                if ( CompareUtils.contains ( name.toLowerCase ( Locale.ROOT ), colorContent ) )
+                if ( contains ( name.toLowerCase ( Locale.ROOT ), colorContent ) )
                 {
                     final Color color = ( Color ) colorConverter.fromString ( contentString );
                     if ( color != null || contentString.equals ( ColorConverter.NULL_COLOR ) )
@@ -277,8 +277,8 @@ public class CodeLinkGenerator implements LinkGenerator
                                     } );
                                     colorChooser.add ( colorChooserPanel );
 
-                                    final Rectangle wb =
-                                            source.getUI ().modelToView ( source, ( content.getBegin () + content.getEnd () ) / 2 );
+                                    final int position = ( content.getBegin () + content.getEnd () ) / 2;
+                                    final Rectangle wb = source.getUI ().modelToView ( source, position );
                                     colorChooser.show ( source, wb.x, wb.y, wb.width, wb.height, PopOverDirection.down );
 
                                     return new HyperlinkEvent ( this, HyperlinkEvent.EventType.EXITED, null );
@@ -298,7 +298,7 @@ public class CodeLinkGenerator implements LinkGenerator
                         };
                     }
                 }
-                else if ( CompareUtils.contains ( name.toLowerCase ( Locale.ROOT ), opacityContent ) )
+                else if ( contains ( name.toLowerCase ( Locale.ROOT ), opacityContent ) )
                 {
                     final Float f = ( Float ) floatConverter.fromString ( contentString );
                     if ( f != null )
@@ -336,8 +336,8 @@ public class CodeLinkGenerator implements LinkGenerator
                                     } );
                                     opacityChooser.add ( slider );
 
-                                    final int pos = ( content.getBegin () + content.getEnd () ) / 2;
-                                    final Rectangle wb = source.getUI ().modelToView ( source, pos );
+                                    final int position = ( content.getBegin () + content.getEnd () ) / 2;
+                                    final Rectangle wb = source.getUI ().modelToView ( source, position );
                                     opacityChooser.show ( source, wb.x, wb.y, wb.width, wb.height, PopOverDirection.down );
 
                                     return new HyperlinkEvent ( this, HyperlinkEvent.EventType.EXITED, null );
@@ -357,7 +357,7 @@ public class CodeLinkGenerator implements LinkGenerator
                         };
                     }
                 }
-                else if ( CompareUtils.contains ( name.toLowerCase ( Locale.ROOT ), insetsContent ) )
+                else if ( contains ( name.toLowerCase ( Locale.ROOT ), insetsContent ) )
                 {
                     final Insets insets = ( Insets ) insetsConverter.fromString ( contentString );
                     if ( insets != null )
@@ -385,5 +385,24 @@ public class CodeLinkGenerator implements LinkGenerator
         //        }
 
         return null;
+    }
+
+    /**
+     * Returns whether text contains any of the tokens from the specified list or not.
+     *
+     * @param text   text to look for tokens
+     * @param tokens tokens list
+     * @return true if text contains any of the tokens from the specified list, false otherwise
+     */
+    protected boolean contains ( final String text, final List<String> tokens )
+    {
+        for ( final String token : tokens )
+        {
+            if ( text.contains ( token ) )
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

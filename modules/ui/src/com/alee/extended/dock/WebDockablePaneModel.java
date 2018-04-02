@@ -19,6 +19,7 @@ package com.alee.extended.dock;
 
 import com.alee.api.data.CompassDirection;
 import com.alee.api.data.Orientation;
+import com.alee.api.jdk.Objects;
 import com.alee.extended.dock.data.*;
 import com.alee.extended.dock.drag.FrameDragData;
 import com.alee.extended.dock.drag.FrameDropData;
@@ -26,7 +27,6 @@ import com.alee.extended.dock.drag.FrameTransferable;
 import com.alee.laf.grouping.AbstractGroupingLayout;
 import com.alee.laf.window.WebDialog;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.general.Pair;
 
@@ -328,7 +328,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
             for ( final WebDockableFrame paneFrame : dockablePane.getFrames () )
             {
                 // Ensure frame is showing and it is not the dragged frame
-                if ( paneFrame.isDocked () && !CompareUtils.equals ( paneFrame.getId (), id ) )
+                if ( paneFrame.isDocked () && Objects.notEquals ( paneFrame.getId (), id ) )
                 {
                     final Point location = paneFrame.getLocation ();
                     if ( paneFrame.contains ( dropPoint.x - location.x, dropPoint.y - location.y ) )
@@ -755,7 +755,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
             for ( int i = 0; i < divider; i++ )
             {
                 final DockableElement element = parent.get ( i );
-                if ( CompareUtils.equals ( element.getId (), frame.getId () ) ||
+                if ( Objects.equals ( element.getId (), frame.getId () ) ||
                         element instanceof DockableContainer && ( ( DockableContainer ) element ).contains ( frame.getId () ) )
                 {
                     return parent.getOrientation ().isHorizontal () ? west : north;
@@ -766,7 +766,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
             for ( int i = divider + 1; i < parent.getElementCount (); i++ )
             {
                 final DockableElement element = parent.get ( i );
-                if ( CompareUtils.equals ( element.getId (), frame.getId () ) ||
+                if ( Objects.equals ( element.getId (), frame.getId () ) ||
                         element instanceof DockableContainer && ( ( DockableContainer ) element ).contains ( frame.getId () ) )
                 {
                     return parent.getOrientation ().isHorizontal () ? east : south;

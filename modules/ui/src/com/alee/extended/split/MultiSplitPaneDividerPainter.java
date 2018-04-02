@@ -17,11 +17,11 @@
 
 package com.alee.extended.split;
 
+import com.alee.api.jdk.Objects;
 import com.alee.laf.splitpane.WebSplitPaneDivider;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.CompareUtils;
 
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
@@ -78,7 +78,7 @@ public class MultiSplitPaneDividerPainter<C extends WebMultiSplitPaneDivider, U 
         super.propertyChanged ( property, oldValue, newValue );
 
         // Updating split pane listeners
-        if ( CompareUtils.equals ( property, WebSplitPaneDivider.SPLIT_PANE_PROPERTY ) )
+        if ( Objects.equals ( property, WebSplitPaneDivider.SPLIT_PANE_PROPERTY ) )
         {
             uninstallMultiSplitPaneListeners ( ( WebMultiSplitPane ) oldValue );
             installMultiSplitPaneListeners ( ( WebMultiSplitPane ) newValue );
@@ -99,7 +99,7 @@ public class MultiSplitPaneDividerPainter<C extends WebMultiSplitPaneDivider, U 
                 @Override
                 public void propertyChange ( final PropertyChangeEvent event )
                 {
-                    if ( CompareUtils.equals ( event.getPropertyName (), WebMultiSplitPane.ORIENTATION_PROPERTY,
+                    if ( Objects.equals ( event.getPropertyName (), WebMultiSplitPane.ORIENTATION_PROPERTY,
                             WebMultiSplitPane.CONTINUOUS_LAYOUT_PROPERTY, WebMultiSplitPane.ONE_TOUCH_EXPANDABLE_PROPERTY ) )
                     {
                         updateDecorationState ();

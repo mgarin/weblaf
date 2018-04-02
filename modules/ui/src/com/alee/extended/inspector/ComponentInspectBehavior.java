@@ -17,9 +17,9 @@
 
 package com.alee.extended.inspector;
 
+import com.alee.api.jdk.Objects;
 import com.alee.extended.behavior.Behavior;
 import com.alee.managers.hotkey.Hotkey;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
 
@@ -92,7 +92,7 @@ public final class ComponentInspectBehavior implements Behavior
                     if ( CoreSwingUtils.isAncestorOf ( ComponentInspectBehavior.this.root, component ) )
                     {
                         // Performing on-event actions
-                        if ( CompareUtils.equals ( eventId, MouseEvent.MOUSE_PRESSED ) )
+                        if ( Objects.equals ( eventId, MouseEvent.MOUSE_PRESSED ) )
                         {
                             // Firing events
                             if ( component != null )
@@ -107,8 +107,7 @@ public final class ComponentInspectBehavior implements Behavior
                             // Uninstalling behavior
                             uninstall ();
                         }
-                        else if ( CompareUtils.equals ( eventId, MouseEvent.MOUSE_ENTERED ) ||
-                                CompareUtils.equals ( eventId, MouseEvent.MOUSE_MOVED ) )
+                        else if ( Objects.equals ( eventId, MouseEvent.MOUSE_ENTERED, MouseEvent.MOUSE_MOVED ) )
                         {
                             // Checking that hovered component has actually changed
                             if ( hoverHighlighter != null && hoverHighlighter.getComponent () != component )
@@ -117,7 +116,7 @@ public final class ComponentInspectBehavior implements Behavior
                                 showInspector ( component );
                             }
                         }
-                        else if ( CompareUtils.equals ( eventId, MouseEvent.MOUSE_EXITED ) )
+                        else if ( Objects.equals ( eventId, MouseEvent.MOUSE_EXITED ) )
                         {
                             // Hiding inspector
                             hideInspector ();
@@ -131,7 +130,7 @@ public final class ComponentInspectBehavior implements Behavior
                 {
                     // Uninstalling behavior on ESCAPE press
                     final KeyEvent keyEvent = ( KeyEvent ) event;
-                    if ( CompareUtils.equals ( eventId, KeyEvent.KEY_PRESSED ) && Hotkey.ESCAPE.isTriggered ( keyEvent ) )
+                    if ( Objects.equals ( eventId, KeyEvent.KEY_PRESSED ) && Hotkey.ESCAPE.isTriggered ( keyEvent ) )
                     {
                         // Firing events
                         listener.cancelled ();

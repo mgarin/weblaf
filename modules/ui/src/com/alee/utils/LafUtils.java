@@ -32,9 +32,16 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public final class LafUtils
 {
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private LafUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
     /**
      * Returns whether {@link Window} in which specified {@link Component} located is decorated by LaF or not.
      *

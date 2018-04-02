@@ -17,10 +17,10 @@
 
 package com.alee.laf.button;
 
+import com.alee.api.jdk.Objects;
 import com.alee.laf.AbstractUIInputListener;
 import com.alee.laf.UIAction;
 import com.alee.laf.UIActionMap;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.LafLookup;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
@@ -307,7 +307,7 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>>
         public void actionPerformed ( final ActionEvent e )
         {
             final B button = getComponent ();
-            if ( CompareUtils.equals ( getName (), PRESSED ) )
+            if ( Objects.equals ( getName (), PRESSED ) )
             {
                 final ButtonModel model = button.getModel ();
                 model.setArmed ( true );
@@ -317,7 +317,7 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>>
                     button.requestFocus ();
                 }
             }
-            else if ( CompareUtils.equals ( getName (), RELEASED ) )
+            else if ( Objects.equals ( getName (), RELEASED ) )
             {
                 final ButtonModel model = button.getModel ();
                 model.setPressed ( false );

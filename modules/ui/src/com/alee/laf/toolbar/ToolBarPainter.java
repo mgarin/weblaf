@@ -1,10 +1,10 @@
 package com.alee.laf.toolbar;
 
+import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.painter.decoration.AbstractContainerPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.swing.AncestorAdapter;
 
 import javax.swing.*;
@@ -53,7 +53,7 @@ public class ToolBarPainter<C extends JToolBar, U extends WebToolBarUI, D extend
         super.propertyChanged ( property, oldValue, newValue );
 
         // Toolbar properties change listener for border and layout updates
-        if ( CompareUtils.equals ( property, WebLookAndFeel.FLOATABLE_PROPERTY, WebLookAndFeel.ORIENTATION_PROPERTY ) )
+        if ( Objects.equals ( property, WebLookAndFeel.FLOATABLE_PROPERTY, WebLookAndFeel.ORIENTATION_PROPERTY ) )
         {
             updateDecorationState ();
         }

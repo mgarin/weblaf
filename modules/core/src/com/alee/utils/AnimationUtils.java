@@ -22,9 +22,16 @@ package com.alee.utils;
  *
  * @author Mikle Garin
  */
-
 public final class AnimationUtils
 {
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private AnimationUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
     /**
      * Returns move animation speed depending on the animated object location.
      * Speed provided by this method will ensure smooth movement animation with spring effect.

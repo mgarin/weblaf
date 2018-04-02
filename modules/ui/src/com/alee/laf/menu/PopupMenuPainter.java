@@ -17,6 +17,7 @@
 
 package com.alee.laf.menu;
 
+import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.combobox.WebComboBoxUI;
 import com.alee.utils.*;
@@ -61,7 +62,7 @@ public class PopupMenuPainter<C extends JPopupMenu, U extends WPopupMenuUI> exte
         super.propertyChanged ( property, oldValue, newValue );
 
         // Visibility property changes
-        if ( CompareUtils.equals ( property, WebLookAndFeel.VISIBLE_PROPERTY ) )
+        if ( Objects.equals ( property, WebLookAndFeel.VISIBLE_PROPERTY ) )
         {
             // Updating menu type
             if ( newValue == Boolean.TRUE )

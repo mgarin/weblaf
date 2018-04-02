@@ -17,6 +17,7 @@
 
 package com.alee.extended.style;
 
+import com.alee.api.jdk.Objects;
 import com.alee.extended.button.SplitButtonAdapter;
 import com.alee.extended.button.WebSplitButton;
 import com.alee.extended.checkbox.WebTristateCheckBox;
@@ -1077,7 +1078,7 @@ public class StyleEditor extends WebFrame
                 {
                     final StyleId styleId = ( StyleId ) jc.getClientProperty ( STYLE_ID_KEY );
                     final StyleId sid = styleId != null ? styleId : StyleId.getDefault ( jc );
-                    if ( CompareUtils.equals ( sid.getCompleteId (), id ) )
+                    if ( Objects.equals ( sid.getCompleteId (), id ) )
                     {
                         final Dimension visible = previewPanel.getVisibleRect ().getSize ();
                         final Rectangle bounds = CoreSwingUtils.getRelativeBounds ( component, previewPanel );

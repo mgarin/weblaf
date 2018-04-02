@@ -18,17 +18,27 @@
 package com.alee.demo.util;
 
 import com.alee.demo.api.example.FeatureState;
+import com.alee.utils.UtilityException;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
+ * Utilities for {@link com.alee.demo.api.example.Example}s.
+ *
  * @author Mikle Garin
  */
-
 public final class ExampleUtils
 {
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private ExampleUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
     /**
      * Returns resulting {@link com.alee.demo.api.example.FeatureState} for the specified list.
      *

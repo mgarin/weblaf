@@ -42,10 +42,22 @@ public final class DebugUtils
     private static boolean GLOBAL_DEBUG_ENABLED = false;
 
     /**
-     * Debug option.
+     * Debug {@link Font}.
      */
     public static final Font DEBUG_FONT = new Font ( "Dialog", Font.BOLD, 8 );
+
+    /**
+     * Debug {@link NumberFormat}
+     */
     public static final NumberFormat DEBUG_FORMAT = new DecimalFormat ( "#0.00" );
+
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private DebugUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
 
     /**
      * Returns whether or not global debug information output is enabled.

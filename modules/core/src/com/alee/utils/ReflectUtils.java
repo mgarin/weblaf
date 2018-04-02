@@ -30,7 +30,6 @@ import java.util.*;
  *
  * @author Mikle Garin
  */
-
 public final class ReflectUtils
 {
     /**
@@ -54,6 +53,14 @@ public final class ReflectUtils
      * Methods lookup cache.
      */
     private static final Map<Class, Map<String, Method>> methodsLookupCache = new HashMap<Class, Map<String, Method>> ();
+
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private ReflectUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
 
     /**
      * Returns whether should allow safe methods to log errors or not.

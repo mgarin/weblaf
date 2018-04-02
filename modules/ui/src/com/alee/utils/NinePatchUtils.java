@@ -33,9 +33,16 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public final class NinePatchUtils
 {
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private NinePatchUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
     /**
      * Returns NinePatchIcon which is read from specified ResourceFile.
      *

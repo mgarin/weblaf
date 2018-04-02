@@ -17,8 +17,8 @@
 
 package com.alee.painter.decoration.background;
 
+import com.alee.api.jdk.Objects;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.GraphicsUtils;
 
 import javax.swing.*;
@@ -68,7 +68,7 @@ public abstract class AbstractTextureBackground<C extends JComponent, D extends 
             {
                 // Updating cached texture paint
                 final Rectangle b = shape.getBounds ();
-                if ( paint == null || !CompareUtils.equals ( this.bounds, b ) )
+                if ( paint == null || Objects.notEquals ( this.bounds, b ) )
                 {
                     paint = getTexturePaint ( b );
                 }

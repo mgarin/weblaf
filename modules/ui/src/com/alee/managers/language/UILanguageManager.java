@@ -18,10 +18,10 @@
 package com.alee.managers.language;
 
 import com.alee.api.jdk.BiConsumer;
+import com.alee.api.jdk.Objects;
 import com.alee.managers.language.data.Dictionary;
 import com.alee.managers.language.updaters.*;
 import com.alee.utils.ArrayUtils;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.WeakComponentData;
 import com.alee.utils.swing.WeakComponentDataList;
@@ -821,7 +821,7 @@ public final class UILanguageManager
     {
         final Object[] actualData;
         final TranslationKey oldKey = components.get ( component );
-        if ( CompareUtils.equals ( oldKey.getKey (), key ) )
+        if ( Objects.equals ( oldKey.getKey (), key ) )
         {
             // When keys are identical we want to compare passed data
             // This is just an extra layer of checks to indentify issues with data usage

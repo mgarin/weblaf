@@ -17,7 +17,6 @@
 
 package com.alee.utils.file;
 
-import com.alee.utils.CompareUtils;
 import com.alee.utils.FileUtils;
 
 import java.io.File;
@@ -25,14 +24,26 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 /**
- * File name and type comparator.
- * This comparator is used by some file components by default.
+ * {@link File} name and type comparator.
+ * This comparator is used by some file-related components by default.
  *
  * @author Mikle Garin
  */
-
 public class FileComparator implements Comparator<File>, Serializable
 {
+    /**
+     * {@link File} name comparator.
+     */
+    protected final FileNameComparator fileNameComparator;
+
+    /**
+     * Constructs new {@link FileComparator}.
+     */
+    public FileComparator ()
+    {
+        this.fileNameComparator = new FileNameComparator ();
+    }
+
     /**
      * Compares two files by their names and type.
      *
@@ -61,7 +72,7 @@ public class FileComparator implements Comparator<File>, Serializable
         }
         else
         {
-            return CompareUtils.compareNames ( file1.getName (), file2.getName () );
+            return fileNameComparator.compare ( file1.getName (), file2.getName () );
         }
     }
 }

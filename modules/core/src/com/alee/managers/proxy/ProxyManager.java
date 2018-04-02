@@ -17,8 +17,8 @@
 
 package com.alee.managers.proxy;
 
+import com.alee.api.jdk.Objects;
 import com.alee.managers.settings.SettingsManager;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.EncryptionUtils;
 import com.alee.utils.XmlUtils;
 
@@ -109,8 +109,8 @@ public final class ProxyManager
                 // Checking if system proxy settings are not the same
                 final ProxySettings systemProxySettings = getSystemProxySettings ();
                 if ( proxySettings.isUseProxy () != systemProxySettings.isUseProxy () ||
-                        !CompareUtils.equals ( proxySettings.getProxyHost (), systemProxySettings.getProxyHost () ) ||
-                        !CompareUtils.equals ( proxySettings.getProxyPort (), systemProxySettings.getProxyPort () ) )
+                        Objects.notEquals ( proxySettings.getProxyHost (), systemProxySettings.getProxyHost () ) ||
+                        Objects.notEquals ( proxySettings.getProxyPort (), systemProxySettings.getProxyPort () ) )
                 {
                     // Checking whether we have proxy confirmation support or auto settings are enabled
                     if ( systemProxyConfirmationSupport == null || isAutoSettingsInitialization () )
@@ -445,7 +445,7 @@ public final class ProxyManager
                 }
             }
         }
-        catch ( final Exception e )
+        catch ( final Exception ignored )
         {
             //
         }

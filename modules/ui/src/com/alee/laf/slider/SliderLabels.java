@@ -17,10 +17,10 @@
 
 package com.alee.laf.slider;
 
+import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.style.StyleId;
-import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
 import javax.swing.plaf.UIResource;
@@ -133,7 +133,7 @@ public class SliderLabels extends Hashtable implements PropertyChangeListener
     @Override
     public void propertyChange ( final PropertyChangeEvent e )
     {
-        if ( CompareUtils.equals ( e.getPropertyName (), getProperties () ) )
+        if ( Objects.equals ( e.getPropertyName (), getProperties () ) )
         {
             // Save the labels that were added by the developer
             final Enumeration previousKeys = slider.getLabelTable ().keys ();

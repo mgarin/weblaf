@@ -17,9 +17,9 @@
 
 package com.alee.painter.decoration.layout;
 
+import com.alee.api.jdk.Objects;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.IContent;
-import com.alee.utils.CompareUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -46,11 +46,11 @@ public class BorderLayout<C extends JComponent, D extends IDecoration<C, D>, I e
     /**
      * Layout constraints.
      */
-    public static final String NORTH = "north";
-    public static final String SOUTH = "south";
-    public static final String WEST = "west";
-    public static final String EAST = "east";
-    public static final String CENTER = "center";
+    protected static final String NORTH = "north";
+    protected static final String SOUTH = "south";
+    protected static final String WEST = "west";
+    protected static final String EAST = "east";
+    protected static final String CENTER = "center";
 
     /**
      * Horizontal gap between content elements.
@@ -91,11 +91,11 @@ public class BorderLayout<C extends JComponent, D extends IDecoration<C, D>, I e
         final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
         if ( !ltr )
         {
-            if ( CompareUtils.equals ( constraints, WEST ) )
+            if ( Objects.equals ( constraints, WEST ) )
             {
                 constraints = EAST;
             }
-            if ( CompareUtils.equals ( constraints, EAST ) )
+            if ( Objects.equals ( constraints, EAST ) )
             {
                 constraints = WEST;
             }

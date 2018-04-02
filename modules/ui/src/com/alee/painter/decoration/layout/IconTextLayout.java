@@ -45,12 +45,12 @@ public class IconTextLayout<C extends JComponent, D extends IDecoration<C, D>, I
     /**
      * Layout constraints.
      */
-    public static final String ICON = "icon";
-    public static final String TEXT = "text";
-    public static final String TOP_SPACE = "top-space";
-    public static final String LEFT_SPACE = "left-space";
-    public static final String RIGHT_SPACE = "right-space";
-    public static final String BOTTOM_SPACE = "bottom-space";
+    protected static final String ICON = "icon";
+    protected static final String TEXT = "text";
+    protected static final String TOP_SPACE = "top-space";
+    protected static final String LEFT_SPACE = "left-space";
+    protected static final String RIGHT_SPACE = "right-space";
+    protected static final String BOTTOM_SPACE = "bottom-space";
 
     /**
      * Gap between icon and text contents.

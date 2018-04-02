@@ -28,7 +28,6 @@ import java.util.Date;
  *
  * @author Mikle Garin
  */
-
 public final class TimeUtils
 {
     /**
@@ -61,6 +60,14 @@ public final class TimeUtils
      * Last measured time in nanoseconds.
      */
     private static volatile Long lastNanoTime = null;
+
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private TimeUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
 
     /**
      * Returns last pinned time.

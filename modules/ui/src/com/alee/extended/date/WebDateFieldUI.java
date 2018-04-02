@@ -17,6 +17,8 @@
 
 package com.alee.extended.date;
 
+import com.alee.api.jdk.Consumer;
+import com.alee.api.jdk.Objects;
 import com.alee.extended.window.PopOverAlignment;
 import com.alee.extended.window.PopOverDirection;
 import com.alee.extended.window.WebPopOver;
@@ -28,10 +30,8 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.api.jdk.Consumer;
 import com.alee.utils.swing.extensions.FocusEventRunnable;
 import com.alee.utils.swing.extensions.KeyEventRunnable;
 
@@ -189,7 +189,7 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C>
             public void run ( final FocusEvent e )
             {
                 final Date date = getDate ( field.getText () );
-                if ( !CompareUtils.equals ( date, dateField.getDate () ) )
+                if ( Objects.notEquals ( date, dateField.getDate () ) )
                 {
                     setDate ( date, UpdateSource.field );
                 }
@@ -229,23 +229,23 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C>
     public void propertyChange ( final PropertyChangeEvent evt )
     {
         final String property = evt.getPropertyName ();
-        if ( CompareUtils.equals ( property, WebDateField.ALLOW_USER_INPUT_PROPERTY ) )
+        if ( Objects.equals ( property, WebDateField.ALLOW_USER_INPUT_PROPERTY ) )
         {
             field.setEditable ( ( Boolean ) evt.getNewValue () );
         }
-        if ( CompareUtils.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
+        if ( Objects.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
         {
             updateEnabledState ();
         }
-        if ( CompareUtils.equals ( property, WebDateField.DATE_FORMAT_PROPERTY ) )
+        if ( Objects.equals ( property, WebDateField.DATE_FORMAT_PROPERTY ) )
         {
             updateExpectedFieldLength ();
         }
-        else if ( CompareUtils.equals ( property, WebDateField.DATE_PROPERTY ) )
+        else if ( Objects.equals ( property, WebDateField.DATE_PROPERTY ) )
         {
             setDate ( dateField.getDate (), UpdateSource.datefield );
         }
-        else if ( CompareUtils.equals ( property, WebDateField.CALENDAR_CUSTOMIZER_PROPERTY ) )
+        else if ( Objects.equals ( property, WebDateField.CALENDAR_CUSTOMIZER_PROPERTY ) )
         {
             customizeCalendar ();
         }

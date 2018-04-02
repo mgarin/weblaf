@@ -1,9 +1,9 @@
 package com.alee.laf.desktoppane;
 
+import com.alee.api.jdk.Objects;
 import com.alee.painter.decoration.AbstractContainerPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
 import java.util.List;
@@ -31,7 +31,7 @@ public class InternalFramePainter<C extends JInternalFrame, U extends WebInterna
         super.propertyChanged ( property, oldValue, newValue );
 
         // Decoration update on internal frame state changes
-        if ( CompareUtils.equals ( property, IS_SELECTED_PROPERTY, IS_CLOSED_PROPERTY, IS_ICON_PROPERTY, IS_MAXIMUM_PROPERTY ) )
+        if ( Objects.equals ( property, IS_SELECTED_PROPERTY, IS_CLOSED_PROPERTY, IS_ICON_PROPERTY, IS_MAXIMUM_PROPERTY ) )
         {
             updateDecorationState ();
         }

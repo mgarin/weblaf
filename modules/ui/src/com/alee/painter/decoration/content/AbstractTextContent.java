@@ -17,10 +17,14 @@
 
 package com.alee.painter.decoration.content;
 
+import com.alee.api.jdk.Objects;
 import com.alee.managers.style.StyleException;
 import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.*;
+import com.alee.utils.ColorUtils;
+import com.alee.utils.GraphicsUtils;
+import com.alee.utils.SwingUtils;
+import com.alee.utils.TextUtils;
 import com.alee.utils.swing.BasicHTML;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -357,7 +361,7 @@ public abstract class AbstractTextContent<C extends JComponent, D extends IDecor
         final String settings = text + ";" + font + ";" + foreground;
 
         // Updating HTML view if needed
-        if ( htmlView == null || !CompareUtils.equals ( htmlSettings, settings ) )
+        if ( htmlView == null || Objects.notEquals ( htmlSettings, settings ) )
         {
             htmlSettings = settings;
             htmlView = BasicHTML.createHTMLView ( c, text, font, foreground );

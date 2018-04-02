@@ -1,12 +1,12 @@
 package com.alee.laf.table;
 
+import com.alee.api.jdk.Objects;
 import com.alee.managers.language.Language;
 import com.alee.managers.language.LanguageListener;
 import com.alee.managers.language.LanguageSensitive;
 import com.alee.managers.language.UILanguageManager;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.AbstractPainter;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -302,7 +302,7 @@ public class TableHeaderPainter<C extends JTableHeader, U extends WebTableHeader
      */
     protected Paint getBackgroundPaint ( final int x1, final int y1, final int x2, final int y2 )
     {
-        if ( bottomBgColor == null || CompareUtils.equals ( topBgColor, bottomBgColor ) )
+        if ( bottomBgColor == null || Objects.equals ( topBgColor, bottomBgColor ) )
         {
             return topBgColor;
         }

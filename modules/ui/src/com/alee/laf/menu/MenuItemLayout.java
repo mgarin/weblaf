@@ -17,8 +17,8 @@
 
 package com.alee.laf.menu;
 
+import com.alee.api.jdk.Objects;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.CompareUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -95,12 +95,12 @@ public class MenuItemLayout<C extends JMenuItem, D extends IDecoration<C, D>, I 
         // Extra conditions for menu items
         if ( !empty )
         {
-            if ( CompareUtils.equals ( constraints, ACCELERATOR ) )
+            if ( Objects.equals ( constraints, ACCELERATOR ) )
             {
                 // Accelerator is only displayed for menu items within popup menu and when it is specified
                 empty = !isInPopupMenu ( c, d ) || c.getAccelerator () == null;
             }
-            else if ( CompareUtils.equals ( constraints, ARROW ) )
+            else if ( Objects.equals ( constraints, ARROW ) )
             {
                 // Menu arrow is only displayed for menu items within popup menu
                 empty = !isInPopupMenu ( c, d );

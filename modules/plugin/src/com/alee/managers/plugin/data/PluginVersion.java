@@ -17,7 +17,7 @@
 
 package com.alee.managers.plugin.data;
 
-import com.alee.utils.CompareUtils;
+import com.alee.api.jdk.Objects;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -257,14 +257,14 @@ public class PluginVersion implements Serializable
      */
     public boolean isSame ( final PluginVersion ov )
     {
-        return ov.major == this.major && ov.minor == this.minor && CompareUtils.equals ( ov.patch, this.patch );
+        return ov.major == this.major && ov.minor == this.minor && Objects.equals ( ov.patch, this.patch );
     }
 
     @Override
     public boolean equals ( final Object obj )
     {
         return obj != null && obj instanceof PluginVersion && isSame ( ( PluginVersion ) obj ) &&
-                CompareUtils.equals ( ( ( PluginVersion ) obj ).build, this.patch );
+                Objects.equals ( ( ( PluginVersion ) obj ).build, this.patch );
     }
 
     @Override

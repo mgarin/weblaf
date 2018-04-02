@@ -17,7 +17,7 @@
 
 package com.alee.api.matcher;
 
-import com.alee.utils.CompareUtils;
+import com.alee.api.jdk.Objects;
 
 /**
  * Custom {@link Matcher} for equal objects.
@@ -36,6 +36,6 @@ public final class EqualMatcher extends AbstractMatcher<Object, Object>
     @Override
     protected boolean matchImpl ( final Object first, final Object second )
     {
-        return CompareUtils.equals ( first, second );
+        return Objects.equals ( first, second );
     }
 }

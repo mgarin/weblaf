@@ -25,13 +25,20 @@ import java.util.Random;
  *
  * @author Mikle Garin
  */
-
 public final class MathUtils
 {
     /**
      * Random numbers generator.
      */
     private static final Random random = new Random ();
+
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private MathUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
 
     /**
      * Returns random integer number between 0 (inclusive) and 100 (inclusive).

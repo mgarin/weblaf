@@ -1,8 +1,8 @@
 package com.alee.extended.button;
 
+import com.alee.api.jdk.Objects;
 import com.alee.laf.button.AbstractButtonPainter;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -122,7 +122,7 @@ public class SplitButtonPainter<C extends WebSplitButton, U extends WSplitButton
         super.propertyChanged ( property, oldValue, newValue );
 
         // Updating border on split icon change
-        if ( CompareUtils.equals ( property, WebSplitButton.SPLIT_ICON_PROPERTY ) )
+        if ( Objects.equals ( property, WebSplitButton.SPLIT_ICON_PROPERTY ) )
         {
             updateBorder ();
         }

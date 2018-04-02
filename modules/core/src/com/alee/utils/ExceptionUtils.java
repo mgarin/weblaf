@@ -9,9 +9,16 @@ import java.io.StringWriter;
  *
  * @author Mikle Garin
  */
-
 public final class ExceptionUtils
 {
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private ExceptionUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
     /**
      * Returns the stack trace from a Throwable as a String.
      * <p>

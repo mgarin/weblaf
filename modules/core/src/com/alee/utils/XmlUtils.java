@@ -39,7 +39,6 @@ import java.net.URL;
  *
  * @author Mikle Garin
  */
-
 public final class XmlUtils
 {
     /**
@@ -61,6 +60,14 @@ public final class XmlUtils
      * XStream instance.
      */
     private static XStream xStream = null;
+
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private XmlUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
 
     /**
      * Returns global XStream instance configured with all required aliases and converters.

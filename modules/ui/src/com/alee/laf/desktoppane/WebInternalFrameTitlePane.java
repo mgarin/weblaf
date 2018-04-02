@@ -17,6 +17,7 @@
 
 package com.alee.laf.desktoppane;
 
+import com.alee.api.jdk.Objects;
 import com.alee.extended.image.WebImage;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
@@ -25,7 +26,6 @@ import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.managers.style.StyleId;
-import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,6 +36,7 @@ import java.awt.event.ComponentEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
+import java.io.Serializable;
 
 /**
  * {@link JInternalFrame} and {@link JInternalFrame.JDesktopIcon} title pane.
@@ -240,37 +241,37 @@ public class WebInternalFrameTitlePane extends WebPanel implements SwingConstant
     /**
      * Title pane events handler.
      */
-    protected class Handler implements PropertyChangeListener
+    protected class Handler implements PropertyChangeListener, Serializable
     {
         @Override
         public void propertyChange ( final PropertyChangeEvent evt )
         {
             final String prop = evt.getPropertyName ();
-            if ( CompareUtils.equals ( prop, JInternalFrame.FRAME_ICON_PROPERTY ) )
+            if ( Objects.equals ( prop, JInternalFrame.FRAME_ICON_PROPERTY ) )
             {
                 titleIcon.setImage ( frame.getFrameIcon () );
             }
-            else if ( CompareUtils.equals ( prop, JInternalFrame.TITLE_PROPERTY ) )
+            else if ( Objects.equals ( prop, JInternalFrame.TITLE_PROPERTY ) )
             {
                 titleLabel.setText ( frame.getTitle () );
             }
-            else if ( CompareUtils.equals ( prop, JInternalFrame.IS_SELECTED_PROPERTY ) )
+            else if ( Objects.equals ( prop, JInternalFrame.IS_SELECTED_PROPERTY ) )
             {
                 repaint ();
             }
-            else if ( CompareUtils.equals ( prop, JInternalFrame.IS_ICON_PROPERTY, JInternalFrame.IS_MAXIMUM_PROPERTY ) )
+            else if ( Objects.equals ( prop, JInternalFrame.IS_ICON_PROPERTY, JInternalFrame.IS_MAXIMUM_PROPERTY ) )
             {
                 updateButtonIcons ();
             }
-            else if ( CompareUtils.equals ( prop, WebInternalFrame.ICONABLE_PROPERTY ) )
+            else if ( Objects.equals ( prop, WebInternalFrame.ICONABLE_PROPERTY ) )
             {
                 toggleButton ( evt, minimizeButton );
             }
-            else if ( CompareUtils.equals ( prop, WebInternalFrame.MAXIMIZABLE_PROPERTY ) )
+            else if ( Objects.equals ( prop, WebInternalFrame.MAXIMIZABLE_PROPERTY ) )
             {
                 toggleButton ( evt, maximizeButton );
             }
-            else if ( CompareUtils.equals ( prop, WebInternalFrame.CLOSABLE_PROPERTY ) )
+            else if ( Objects.equals ( prop, WebInternalFrame.CLOSABLE_PROPERTY ) )
             {
                 toggleButton ( evt, closeButton );
             }

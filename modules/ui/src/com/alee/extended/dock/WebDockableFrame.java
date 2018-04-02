@@ -19,12 +19,12 @@ package com.alee.extended.dock;
 
 import com.alee.api.Identifiable;
 import com.alee.api.data.CompassDirection;
+import com.alee.api.jdk.Objects;
 import com.alee.extended.WebContainer;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.decoration.Stateful;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -228,7 +228,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      */
     public WebDockableFrame setId ( final String id )
     {
-        if ( !CompareUtils.equals ( this.frameId, id ) )
+        if ( Objects.notEquals ( this.frameId, id ) )
         {
             final String old = this.frameId;
             this.frameId = id;
@@ -288,7 +288,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      */
     public WebDockableFrame setMaximized ( final boolean maximized )
     {
-        if ( !CompareUtils.equals ( this.maximized, maximized ) )
+        if ( Objects.notEquals ( this.maximized, maximized ) )
         {
             final boolean old = this.maximized;
             this.maximized = maximized;
@@ -396,7 +396,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      */
     public WebDockableFrame setTitle ( final String title )
     {
-        if ( !CompareUtils.equals ( this.title, title ) )
+        if ( Objects.notEquals ( this.title, title ) )
         {
             final String old = this.title;
             this.title = title;

@@ -31,9 +31,16 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public final class LafLookup
 {
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private LafLookup ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
     /**
      * Returns {@link InputMap} for {@code condition} from the specified {@link JComponent}.
      *

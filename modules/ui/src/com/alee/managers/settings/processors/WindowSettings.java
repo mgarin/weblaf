@@ -18,8 +18,8 @@
 package com.alee.managers.settings.processors;
 
 import com.alee.api.clone.Clone;
+import com.alee.api.jdk.Objects;
 import com.alee.api.merge.Mergeable;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SystemUtils;
 import com.alee.utils.xml.DimensionConverter;
@@ -166,7 +166,7 @@ public class WindowSettings implements Mergeable, Cloneable, Serializable
         if ( size != null )
         {
             // Restoring size only if it's not the same
-            if ( !CompareUtils.equals ( size, bounds.getSize () ) )
+            if ( Objects.notEquals ( size, bounds.getSize () ) )
             {
                 if ( size.width > 0 && size.height > 0 )
                 {
@@ -201,7 +201,7 @@ public class WindowSettings implements Mergeable, Cloneable, Serializable
         if ( location != null )
         {
             // Restoring bounds only if they aren't the same
-            if ( !CompareUtils.equals ( location, bounds.getLocation () ) )
+            if ( Objects.notEquals ( location, bounds.getLocation () ) )
             {
                 if ( location.x > 0 && location.y > 0 )
                 {

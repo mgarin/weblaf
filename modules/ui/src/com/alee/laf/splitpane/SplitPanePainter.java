@@ -1,9 +1,9 @@
 package com.alee.laf.splitpane;
 
+import com.alee.api.jdk.Objects;
 import com.alee.painter.decoration.AbstractContainerPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
 import java.util.List;
@@ -28,7 +28,7 @@ public class SplitPanePainter<C extends JSplitPane, U extends WSplitPaneUI, D ex
         super.propertyChanged ( property, oldValue, newValue );
 
         // Updating split pane decoration states
-        if ( CompareUtils.equals ( property, JSplitPane.ORIENTATION_PROPERTY ) )
+        if ( Objects.equals ( property, JSplitPane.ORIENTATION_PROPERTY ) )
         {
             updateDecorationState ();
         }

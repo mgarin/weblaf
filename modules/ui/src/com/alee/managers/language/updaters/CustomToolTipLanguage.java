@@ -17,12 +17,12 @@
 
 package com.alee.managers.language.updaters;
 
+import com.alee.api.jdk.Objects;
 import com.alee.managers.language.Language;
 import com.alee.managers.language.LanguageState;
 import com.alee.managers.language.data.Text;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
-import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
 
@@ -97,7 +97,7 @@ public class CustomToolTipLanguage<C extends JComponent> extends AbstractToolTip
         Text tooltip = language.getText ( key, LanguageState.CUSTOM_TOOLTIP_TEXT );
 
         // Checking default state if custom state was not detected
-        if ( tooltip == null && CompareUtils.equals ( getDefaultToolTipType (), TYPE ) )
+        if ( tooltip == null && Objects.equals ( getDefaultToolTipType (), TYPE ) )
         {
             tooltip = language.getText ( key, LanguageState.TOOLTIP_TEXT );
         }

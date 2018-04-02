@@ -17,8 +17,8 @@
 
 package com.alee.utils.xml;
 
+import com.alee.api.jdk.Objects;
 import com.alee.utils.ColorUtils;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.MapUtils;
 import com.alee.utils.XmlException;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
@@ -108,7 +108,7 @@ public class ColorConverter extends AbstractSingleValueConverter
         {
             for ( final Map.Entry<String, Color> entry : defaultColors.entrySet () )
             {
-                if ( CompareUtils.equals ( color, entry.getValue () ) )
+                if ( Objects.equals ( color, entry.getValue () ) )
                 {
                     return entry.getKey ();
                 }

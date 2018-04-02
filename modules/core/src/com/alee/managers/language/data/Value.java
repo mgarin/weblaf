@@ -18,10 +18,10 @@
 package com.alee.managers.language.data;
 
 import com.alee.api.clone.Clone;
+import com.alee.api.jdk.Objects;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageUtils;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -218,7 +218,7 @@ public final class Value implements Serializable, Cloneable
         {
             for ( final Text text : texts )
             {
-                if ( CompareUtils.equals ( text.getState (), state ) )
+                if ( Objects.equals ( text.getState (), state ) )
                 {
                     result = text;
                     break;

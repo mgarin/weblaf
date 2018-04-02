@@ -17,10 +17,10 @@
 
 package com.alee.managers.style;
 
+import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.painter.Painter;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -468,7 +468,7 @@ public final class StyleData implements PropertyChangeListener
 
         // Perform operation only if different styles are referenced
         final StyleId old = getStyleId ();
-        if ( !CompareUtils.equals ( styleId, old ) )
+        if ( Objects.notEquals ( styleId, old ) )
         {
             // Saving old style identifier reference
             final StyleId oldStyleId = this.styleId;

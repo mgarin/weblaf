@@ -1,5 +1,6 @@
 package com.alee.laf.combobox;
 
+import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.Language;
 import com.alee.managers.language.LanguageListener;
@@ -8,7 +9,6 @@ import com.alee.managers.language.UILanguageManager;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.swing.EditabilityListener;
 import com.alee.utils.swing.VisibilityListener;
 
@@ -63,7 +63,7 @@ public class ComboBoxPainter<C extends JComboBox, U extends WComboBoxUI, D exten
 
         // Updating combobox popup list state
         // This is a workaround to allow box renderer properly inherit enabled state
-        if ( CompareUtils.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
+        if ( Objects.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
         {
             ui.getListBox ().setEnabled ( component.isEnabled () );
         }

@@ -18,6 +18,7 @@
 package com.alee.utils;
 
 import com.alee.api.jdk.Function;
+import com.alee.api.jdk.Objects;
 import com.alee.utils.compare.Filter;
 
 import java.util.*;
@@ -27,9 +28,16 @@ import java.util.*;
  *
  * @author Mikle Garin
  */
-
 public final class CollectionUtils
 {
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private CollectionUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
     /**
      * Returns whether specified {@link Collection} is empty or not.
      *
@@ -680,7 +688,7 @@ public final class CollectionUtils
             {
                 for ( int i = 0; i < list1.size (); i++ )
                 {
-                    if ( !CompareUtils.equals ( list1.get ( i ), list2.get ( i ) ) )
+                    if ( Objects.notEquals ( list1.get ( i ), list2.get ( i ) ) )
                     {
                         return false;
                     }
@@ -751,7 +759,7 @@ public final class CollectionUtils
      * @param <T>          {@link List} elements type
      * @return {@link List} of {@link String}s extracted from the specified elements {@link List}
      */
-    public static <T> ArrayList<String> toStringList ( final List<T> list, final Function<T,String> textProvider )
+    public static <T> ArrayList<String> toStringList ( final List<T> list, final Function<T, String> textProvider )
     {
         final ArrayList<String> stringList = new ArrayList<String> ( list.size () );
         for ( final T element : list )

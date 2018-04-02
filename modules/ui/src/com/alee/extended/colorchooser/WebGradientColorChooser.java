@@ -17,9 +17,13 @@
 
 package com.alee.extended.colorchooser;
 
+import com.alee.api.jdk.Objects;
 import com.alee.laf.colorchooser.WebColorChooser;
 import com.alee.managers.settings.*;
-import com.alee.utils.*;
+import com.alee.utils.ColorUtils;
+import com.alee.utils.GraphicsUtils;
+import com.alee.utils.LafUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.extensions.SizeMethods;
 import com.alee.utils.swing.extensions.SizeMethodsImpl;
 
@@ -347,7 +351,7 @@ public class WebGradientColorChooser extends JComponent
 
     public void setGradientData ( final GradientData gradientData )
     {
-        if ( !CompareUtils.equals ( this.gradientData, gradientData ) )
+        if ( Objects.notEquals ( this.gradientData, gradientData ) )
         {
             this.gradientData = gradientData;
             this.draggedGripper = null;
