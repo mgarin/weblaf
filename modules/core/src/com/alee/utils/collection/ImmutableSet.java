@@ -28,7 +28,6 @@ import java.util.Set;
  * @param <E> data type
  * @author Mikle Garin
  */
-
 public class ImmutableSet<E> extends ImmutableCollection<E> implements Set<E>
 {
     /**
@@ -65,5 +64,11 @@ public class ImmutableSet<E> extends ImmutableCollection<E> implements Set<E>
     protected UnsupportedOperationException createModificationException ()
     {
         return new UnsupportedOperationException ( "Set is unmodifiable" );
+    }
+
+    @Override
+    protected ImmutableSet<E> clone ()
+    {
+        return new ImmutableSet<E> ( this );
     }
 }

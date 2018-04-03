@@ -20,6 +20,7 @@ package com.alee.utils.collection;
 import com.alee.utils.ArrayUtils;
 import com.alee.utils.array.ArrayListIterator;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -33,8 +34,7 @@ import java.util.ListIterator;
  * @param <E> data type
  * @author Mikle Garin
  */
-
-public class ImmutableList<E> extends ImmutableCollection<E> implements List<E>
+public class ImmutableList<E> extends ImmutableCollection<E> implements List<E>, Cloneable, Serializable
 {
     /**
      * Constructs new {@link ImmutableList} based on the specified list data.
@@ -133,5 +133,11 @@ public class ImmutableList<E> extends ImmutableCollection<E> implements List<E>
     protected UnsupportedOperationException createModificationException ()
     {
         return new UnsupportedOperationException ( "List is unmodifiable" );
+    }
+
+    @Override
+    protected ImmutableList<E> clone ()
+    {
+        return new ImmutableList<E> ( this );
     }
 }

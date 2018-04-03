@@ -21,6 +21,7 @@ import com.alee.utils.MapUtils;
 import com.alee.utils.collection.ImmutableCollection;
 import com.alee.utils.collection.ImmutableSet;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,15 +32,16 @@ import java.util.Set;
  * Unlike {@link java.util.Collections#unmodifiableMap(Map)} this implementation keeps map data copy.
  * If you need to provide an unmodifiable reference for your map use {@link java.util.Collections} implementations or write your own.
  *
+ * @param <K> key type
+ * @param <V> value type
  * @author Mikle Garin
  */
-
-public class ImmutableMap<K, V> implements Map<K, V>
+public class ImmutableMap<K, V> implements Map<K, V>, Cloneable, Serializable
 {
     /**
      * Map data.
      */
-    protected final Map<K, V> data;
+    protected final HashMap<K, V> data;
 
     /**
      * Constructs new {@link ImmutableMap} based on the provided data.
@@ -143,5 +145,11 @@ public class ImmutableMap<K, V> implements Map<K, V>
     protected UnsupportedOperationException createModificationException ()
     {
         return new UnsupportedOperationException ( "Map is unmodifiable" );
+    }
+
+    @Override
+    protected ImmutableMap<K,V> clone ()
+    {
+        return new ImmutableMap<K,V> ( this );
     }
 }

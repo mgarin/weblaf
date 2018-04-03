@@ -19,6 +19,8 @@ package com.alee.api.jdk;
 
 import com.alee.utils.UtilityException;
 
+import java.util.Arrays;
+
 /**
  * This is a copy of JDK7 {@code java.util.Objects} class for JDK6 support.
  *
@@ -32,6 +34,20 @@ public final class Objects
     private Objects ()
     {
         throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
+    /**
+     * Generates a hash code for a sequence of input values.
+     * The hash code is generated as if all the input values were placed into an array,
+     * and that array were hashed by calling {@link Arrays#hashCode(Object[])}.
+     *
+     * @param values the values to be hashed
+     * @return a hash value of the sequence of input values
+     * @see Arrays#hashCode(Object[])
+     */
+    public static int hash ( final Object... values )
+    {
+        return Arrays.hashCode ( values );
     }
 
     /**

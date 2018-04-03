@@ -17,9 +17,11 @@
 
 package com.alee.utils.collection;
 
+import com.alee.api.jdk.Objects;
 import com.alee.utils.ArrayUtils;
 import com.alee.utils.array.ArrayIterator;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -32,12 +34,12 @@ import java.util.Iterator;
  * @param <E> data type
  * @author Mikle Garin
  */
-
-public class ImmutableCollection<E> implements Collection<E>
+public class ImmutableCollection<E> implements Collection<E>, Cloneable, Serializable
 {
     /**
      * Collection data.
      */
+    @SuppressWarnings ( "NonSerializableFieldInSerializableClass" )
     protected final E[] data;
 
     /**
@@ -185,6 +187,12 @@ public class ImmutableCollection<E> implements Collection<E>
     }
 
     @Override
+    public int hashCode ()
+    {
+        return Objects.hash ( ( Object[] ) data );
+    }
+
+    @Override
     public boolean equals ( final Object o )
     {
         if ( o == this )
@@ -203,9 +211,9 @@ public class ImmutableCollection<E> implements Collection<E>
     }
 
     @Override
-    public int hashCode ()
+    protected ImmutableCollection<E> clone ()
     {
-        return Arrays.hashCode ( data );
+        return new ImmutableCollection<E> ( this );
     }
 
     @Override
