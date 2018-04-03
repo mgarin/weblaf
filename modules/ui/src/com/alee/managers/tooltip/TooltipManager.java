@@ -278,7 +278,7 @@ public final class TooltipManager
                 public void actionPerformed ( final ActionEvent e )
                 {
                     final Window window = CoreSwingUtils.getWindowAncestor ( component );
-                    if ( window != null && window.isActive () )
+                    if ( window != null && window.isShowing () )
                     {
                         showTooltips ( component, false );
                     }
@@ -320,7 +320,7 @@ public final class TooltipManager
                 private void displayTooltips ()
                 {
                     final Window window = CoreSwingUtils.getWindowAncestor ( component );
-                    if ( window.isShowing () )
+                    if ( window !=null && window.isShowing () )
                     {
                         showTips.start ();
                     }
