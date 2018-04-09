@@ -40,7 +40,6 @@ import java.beans.PropertyChangeListener;
 /**
  * @author Mikle Garin
  */
-
 public class WebButtonPopup extends WebInnerPopup
 {
     private static final ImmutableList<String> BUTTON_PROPERTIES = new ImmutableList<String> (

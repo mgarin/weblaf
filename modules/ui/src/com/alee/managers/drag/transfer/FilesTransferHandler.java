@@ -26,19 +26,20 @@ import java.util.List;
 
 /**
  * Custom {@link TransferHandler} that provides easy and convenient way to support files drag and drop in any Swing component.
- * <p>
+ *
  * To provide drag functionality set {@link #dragEnabled} to {@code true} and override {@link #getDraggedFiles()} or
  * {@link #getDraggedFile()} method to provide list of files or single dragged file.
- * <p>
+ *
  * You will also have to call "exportAsDrag" method of {@link TransferHandler} to initialize drag operation from where you want it to start.
  * That can be done from {@link java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)} method for example.
- * <p>
+ *
  * To provide drop functionality set {@link #dropEnabled} to {@code true} and override {@link #filesDropped(List)} method.
  * In that method you can perform any desired action with the list of dropped files.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-DragManager">How to use DragManager</a>
+ * @see com.alee.managers.drag.DragManager
  */
-
 public class FilesTransferHandler extends AbstractTransferHandler
 {
     /**

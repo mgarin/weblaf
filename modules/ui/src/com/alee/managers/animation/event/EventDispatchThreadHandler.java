@@ -23,8 +23,9 @@ import com.alee.utils.CoreSwingUtils;
  * Event handler that sends tasks into Swing Event Dispatch Thread.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-AnimationManager">How to use AnimationManager</a>
+ * @see com.alee.managers.animation.AnimationManager
  */
-
 public final class EventDispatchThreadHandler implements EventHandler
 {
     /**

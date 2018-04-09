@@ -23,10 +23,10 @@ import javax.swing.*;
  * Custom listener that can be installed into {@link Styleable} components to listen to style changes.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see Styleable
  * @see StyleManager
  */
-
 public interface StyleListener
 {
     /**

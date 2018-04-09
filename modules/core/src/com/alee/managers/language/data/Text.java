@@ -37,7 +37,6 @@ import java.io.Serializable;
  * @see com.alee.managers.language.Language
  * @see Value
  */
-
 @XStreamAlias ( "text" )
 @XStreamConverter ( TextConverter.class )
 public final class Text implements Serializable, Cloneable

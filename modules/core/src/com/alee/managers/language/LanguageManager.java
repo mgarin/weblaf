@@ -36,7 +36,6 @@ import java.util.Locale;
  * @see Language
  * @see Dictionary
  */
-
 public final class LanguageManager
 {
     /**

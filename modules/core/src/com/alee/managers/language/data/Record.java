@@ -39,7 +39,6 @@ import java.util.*;
  * @see Dictionary
  * @see Value
  */
-
 @XStreamAlias ( "record" )
 public final class Record implements Serializable, Cloneable
 {

@@ -23,10 +23,14 @@ import com.alee.utils.swing.extensions.MethodExtension;
  * This interface provides a set of methods that should be added into components that support custom shape methods.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see ShapeSupport
  * @see ShapeMethodsImpl
+ * @see StyleManager
  */
-
 public interface ShapeMethods extends ShapeSupport, MethodExtension
 {
+    /**
+     * This interface doesn't offer any additional methods to implement.
+     */
 }

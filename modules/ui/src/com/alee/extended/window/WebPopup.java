@@ -54,7 +54,6 @@ import java.lang.ref.WeakReference;
  * @see WebPopupUI
  * @see PopupPainter
  */
-
 public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
         implements Popup, PopupMethods, WindowMethods<WebPopupWindow>
 {

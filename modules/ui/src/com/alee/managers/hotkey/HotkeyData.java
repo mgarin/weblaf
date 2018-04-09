@@ -30,8 +30,9 @@ import java.io.Serializable;
  * Single hotkey settings description class.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-HotkeyManager">How to use HotkeyManager</a>
+ * @see HotkeyManager
  */
-
 @XStreamAlias ( "HotkeyData" )
 public class HotkeyData implements Serializable, Cloneable
 {

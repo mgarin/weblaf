@@ -14,7 +14,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public class GroupPane extends WebPanel implements SwingConstants
 {
     /**

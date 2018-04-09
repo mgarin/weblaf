@@ -22,8 +22,9 @@ package com.alee.managers.icon;
  * These icons are only loaded into memory on demand so it is safe to reference them.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-IconManager">How to use IconManager</a>
+ * @see IconManager
  */
-
 public final class Icons
 {
     /**

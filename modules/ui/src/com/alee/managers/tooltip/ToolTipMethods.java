@@ -30,7 +30,6 @@ import java.util.List;
  * @see com.alee.utils.swing.extensions.MethodExtension
  * @see com.alee.managers.tooltip.TooltipManager
  */
-
 public interface ToolTipMethods extends MethodExtension
 {
     /**

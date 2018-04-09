@@ -23,8 +23,9 @@ import com.alee.managers.animation.easing.Easing;
  * {@link Long} values transition support.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-AnimationManager">How to use AnimationManager</a>
+ * @see com.alee.managers.animation.AnimationManager
  */
-
 public final class LongTransitionType implements TransitionType<Long>
 {
     @Override

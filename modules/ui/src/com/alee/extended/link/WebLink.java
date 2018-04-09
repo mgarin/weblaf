@@ -43,7 +43,6 @@ import java.util.List;
  * @see WebStyledLabel
  * @see LinkAction
  */
-
 public class WebLink extends WebStyledLabel
 {
     /**

@@ -17,18 +17,18 @@
 
 package com.alee.managers.settings;
 
+import com.alee.api.jdk.SerializableFunction;
 import com.alee.api.jdk.Supplier;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
-import com.alee.utils.ReflectUtils;
 import com.alee.utils.XmlUtils;
 import com.alee.utils.swing.WebTimer;
 import org.slf4j.LoggerFactory;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,14 +50,18 @@ import java.util.Map;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
  * @see XmlUtils
  */
-
 public final class SettingsManager
 {
     /**
-     * Settings change listeners.
+     * Global settings change listeners.
      */
-    private static final Map<String, Map<String, List<SettingsListener>>> settingsListeners =
-            new HashMap<String, Map<String, List<SettingsListener>>> ();
+    private static final List<SettingsListener> globalSettingsListeners = new ArrayList<SettingsListener> ( 2 );
+
+    /**
+     * Specific settings change listeners.
+     */
+    private static final Map<String, Map<String, List<SettingsListener>>> specificSettingsListeners =
+            new HashMap<String, Map<String, List<SettingsListener>>> ( 20 );
 
     /**
      * Settings files extension.
@@ -154,17 +158,23 @@ public final class SettingsManager
     /**
      * Initializes {@link SettingsManager}.
      */
-    public static synchronized void initialize ()
+    public static void initialize ()
     {
         if ( !initialized )
         {
-            // Aliases
-            XmlUtils.processAnnotations ( SettingsGroup.class );
-            XmlUtils.processAnnotations ( SettingsGroupState.class );
-            XmlUtils.processAnnotations ( ReadState.class );
+            synchronized ( SettingsManager.class )
+            {
+                if ( !initialized )
+                {
+                    // Aliases
+                    XmlUtils.processAnnotations ( SettingsGroup.class );
+                    XmlUtils.processAnnotations ( SettingsGroupState.class );
+                    XmlUtils.processAnnotations ( ReadState.class );
 
-            // Updating initialization mark
-            initialized = true;
+                    // Updating initialization mark
+                    initialized = true;
+                }
+            }
         }
     }
 
@@ -189,333 +199,104 @@ public final class SettingsManager
     }
 
     /**
-     * Returns Boolean value.
+     * Returns stored settings.
+     * The only type of exceptions that is ignored here is {@link ClassCastException}.
+     * Whenever a {@link ClassCastException} there will be a warning logged and default value will be used.
      *
      * @param key settings key
-     * @return Boolean value
-     */
-    public static Boolean getBoolean ( final String key )
-    {
-        return get ( key, ( Boolean ) null );
-    }
-
-    /**
-     * Returns Boolean value.
-     *
-     * @param group settings group
-     * @param key   settings key
-     * @return Boolean value
-     */
-    public static Boolean getBoolean ( final String group, final String key )
-    {
-        return get ( group, key, ( Boolean ) null );
-    }
-
-    /**
-     * Returns String value.
-     *
-     * @param key settings key
-     * @return String value
-     */
-    public static String getString ( final String key )
-    {
-        return get ( key, ( String ) null );
-    }
-
-    /**
-     * Returns String value.
-     *
-     * @param group settings group
-     * @param key   settings key
-     * @return String value
-     */
-    public static String getString ( final String group, final String key )
-    {
-        return get ( group, key, ( String ) null );
-    }
-
-    /**
-     * Returns Integer value.
-     *
-     * @param key settings key
-     * @return Integer value
-     */
-    public static Integer getInteger ( final String key )
-    {
-        return get ( key, ( Integer ) null );
-    }
-
-    /**
-     * Returns Integer value.
-     *
-     * @param group settings group
-     * @param key   settings key
-     * @return Integer value
-     */
-    public static Integer getInteger ( final String group, final String key )
-    {
-        return get ( group, key, ( Integer ) null );
-    }
-
-    /**
-     * Returns Long value.
-     *
-     * @param key settings key
-     * @return Long value
-     */
-    public static Long getLong ( final String key )
-    {
-        return get ( key, ( Long ) null );
-    }
-
-    /**
-     * Returns Long value.
-     *
-     * @param group settings group
-     * @param key   settings key
-     * @return Long value
-     */
-    public static Long getLong ( final String group, final String key )
-    {
-        return get ( group, key, ( Long ) null );
-    }
-
-    /**
-     * Returns Float value.
-     *
-     * @param key settings key
-     * @return Float value
-     */
-    public static Float getFloat ( final String key )
-    {
-        return get ( key, ( Float ) null );
-    }
-
-    /**
-     * Returns Float value.
-     *
-     * @param group settings group
-     * @param key   settings key
-     * @return Float value
-     */
-    public static Float getFloat ( final String group, final String key )
-    {
-        return get ( group, key, ( Float ) null );
-    }
-
-    /**
-     * Returns Double value.
-     *
-     * @param key settings key
-     * @return Double value
-     */
-    public static Double getDouble ( final String key )
-    {
-        return get ( key, ( Double ) null );
-    }
-
-    /**
-     * Returns Double value.
-     *
-     * @param group settings group
-     * @param key   settings key
-     * @return Double value
-     */
-    public static Double getDouble ( final String group, final String key )
-    {
-        return get ( group, key, ( Double ) null );
-    }
-
-    /**
-     * Returns Dimension value.
-     *
-     * @param key settings key
-     * @return Dimension value
-     */
-    public static Dimension getDimension ( final String key )
-    {
-        return get ( key, ( Dimension ) null );
-    }
-
-    /**
-     * Returns Dimension value.
-     *
-     * @param group settings group
-     * @param key   settings key
-     * @return Dimension value
-     */
-    public static Dimension getDimension ( final String group, final String key )
-    {
-        return get ( group, key, ( Dimension ) null );
-    }
-
-    /**
-     * Returns Point value.
-     *
-     * @param key settings key
-     * @return Point value
-     */
-    public static Point getPoint ( final String key )
-    {
-        return get ( key, ( Point ) null );
-    }
-
-    /**
-     * Returns Point value.
-     *
-     * @param group settings group
-     * @param key   settings key
-     * @return Point value
-     */
-    public static Point getPoint ( final String group, final String key )
-    {
-        return get ( group, key, ( Point ) null );
-    }
-
-    /**
-     * Returns Color value.
-     *
-     * @param key settings key
-     * @return Color value
-     */
-    public static Color getColor ( final String key )
-    {
-        return get ( key, ( Color ) null );
-    }
-
-    /**
-     * Returns Color value.
-     *
-     * @param group settings group
-     * @param key   settings key
-     * @return Color value
-     */
-    public static Color getColor ( final String group, final String key )
-    {
-        return get ( group, key, ( Color ) null );
-    }
-
-    /**
-     * Returns Rectangle value.
-     *
-     * @param key settings key
-     * @return Rectangle value
-     */
-    public static Rectangle getRectangle ( final String key )
-    {
-        return get ( key, ( Rectangle ) null );
-    }
-
-    /**
-     * Returns Rectangle value.
-     *
-     * @param group settings group
-     * @param key   settings key
-     * @return Rectangle value
-     */
-    public static Rectangle getRectangle ( final String group, final String key )
-    {
-        return get ( group, key, ( Rectangle ) null );
-    }
-
-    /**
-     * Returns Insets value.
-     *
-     * @param key settings key
-     * @return Insets value
-     */
-    public static Insets getInsets ( final String key )
-    {
-        return get ( key, ( Insets ) null );
-    }
-
-    /**
-     * Returns Insets value.
-     *
-     * @param group settings group
-     * @param key   settings key
-     * @return Insets value
-     */
-    public static Insets getInsets ( final String group, final String key )
-    {
-        return get ( group, key, ( Insets ) null );
-    }
-
-    /**
-     * Returns Object value.
-     *
-     * @param key settings key
-     * @return Object value
+     * @param <T> settings type
+     * @return stored settings
      */
     public static <T> T get ( final String key )
     {
-        return get ( key, ( T ) null );
+        return get ( getDefaultSettingsGroup (), key, null );
     }
 
     /**
-     * Returns typed value.
-     *
-     * @param key               settings key
-     * @param defaultValueClass default value class
-     * @param <T>               default value type
-     * @return typed value
-     */
-    public static <T extends DefaultValue> T get ( final String key, final Class<T> defaultValueClass )
-    {
-        return get ( defaultSettingsGroup, key, getDefaultValue ( defaultValueClass ) );
-    }
-
-    /**
-     * Returns typed value.
+     * Returns stored settings.
+     * The only type of exceptions that is ignored here is {@link ClassCastException}.
+     * Whenever a {@link ClassCastException} there will be a warning logged and default value will be used.
      *
      * @param key          settings key
      * @param defaultValue default value
-     * @param <T>          default value type
-     * @return typed value
+     * @param <T>          settings type
+     * @return stored settings
      */
     public static <T> T get ( final String key, final T defaultValue )
     {
-        return get ( defaultSettingsGroup, key, defaultValue );
+        return get ( getDefaultSettingsGroup (), key, defaultValue != null ? new StaticDefaultValue<T> ( defaultValue ) : null );
     }
 
     /**
-     * Returns typed value.
+     * Returns stored settings.
+     * The only type of exceptions that is ignored here is {@link ClassCastException}.
+     * Whenever a {@link ClassCastException} there will be a warning logged and default value will be used.
      *
-     * @param group             settings group
-     * @param key               settings key
-     * @param defaultValueClass default value class
-     * @param <T>               default value type
-     * @return typed value
+     * @param key                  settings key
+     * @param defaultValueSupplier {@link Supplier} for default value
+     * @param <T>                  settings type
+     * @return stored settings
      */
-    public static <T extends DefaultValue> T get ( final String group, final String key, final Class<T> defaultValueClass )
+    public static <T> T get ( final String key, final Supplier<T> defaultValueSupplier )
     {
-        return get ( group, key, getDefaultValue ( defaultValueClass ) );
+        return get ( getDefaultSettingsGroup (), key, defaultValueSupplier );
     }
 
     /**
-     * Returns typed value.
+     * Returns stored settings.
+     * The only type of exceptions that is ignored here is {@link ClassCastException}.
+     * Whenever a {@link ClassCastException} there will be a warning logged and default value will be used.
      *
      * @param group        settings group
      * @param key          settings key
      * @param defaultValue default value
-     * @param <T>          default value type
-     * @return typed value
+     * @param <T>          settings type
+     * @return stored settings
      */
     public static <T> T get ( final String group, final String key, final T defaultValue )
     {
-        // Check manager initialization
+        return get ( group, key, defaultValue != null ? new StaticDefaultValue<T> ( defaultValue ) : null );
+    }
+
+    /**
+     * Returns stored settings.
+     * The only type of exceptions that is ignored here is {@link ClassCastException}.
+     * Whenever a {@link ClassCastException} there will be a warning logged and default value will be used.
+     *
+     * @param group                settings group
+     * @param key                  settings key
+     * @param defaultValueSupplier {@link Supplier} for default value
+     * @param <T>                  settings type
+     * @return stored settings
+     */
+    public static <T> T get ( final String group, final String key, final Supplier<T> defaultValueSupplier )
+    {
+        // Checking manager initialization
         initialize ();
 
-        // Get SettingsGroup safely
-        final SettingsGroup settingsGroup = getSettingsGroup ( group );
+        // Resulting value
+        T value;
 
-        // Get value
-        Object value = settingsGroup.get ( key );
+        try
+        {
+            // Retrieving stored value
+            value = getSettingsGroup ( group ).get ( key );
+        }
+        catch ( final ClassCastException e )
+        {
+            // Informing about inappropriate settings type found
+            final String msg = "Unable to load settings value for group '%s' and key '%s' because it has inappropriate class type";
+            LoggerFactory.getLogger ( SettingsManager.class ).warn ( String.format ( msg, group, key ) );
+
+            // Value is not available
+            value = null;
+        }
 
         // Applying default value if needed
-        if ( value == null && defaultValue != null )
+        if ( value == null && defaultValueSupplier != null )
         {
-            value = defaultValue;
+            // Retrieving default value
+            value = defaultValueSupplier.get ();
 
             // Saving default value if needed
             if ( saveDefaultValues )
@@ -524,48 +305,7 @@ public final class SettingsManager
             }
         }
 
-        try
-        {
-            // Returning retrieved value
-            return ( T ) value;
-        }
-        catch ( final ClassCastException e )
-        {
-            final String msg = "Unable to load settings value for group '%s' and key '%s' because it has inappropriate class type";
-            final String fmsg = String.format ( msg, group, key );
-            LoggerFactory.getLogger ( SettingsManager.class ).error ( fmsg, e );
-
-            // Saving default value if needed
-            if ( saveDefaultValues )
-            {
-                set ( group, key, defaultValue );
-            }
-
-            // Returning default value if no actual found
-            return defaultValue;
-        }
-    }
-
-    /**
-     * Returns default value for the specified class.
-     *
-     * @param defaultValueClass default value class
-     * @param <T>               default value type
-     * @return default value for the specified class
-     */
-    public static <T extends DefaultValue> T getDefaultValue ( final Class<T> defaultValueClass )
-    {
-        if ( defaultValueClass == null )
-        {
-            // Workaround for cases with accidental method calls
-            // Also works fine if this method was called but class is actually null
-            return null;
-        }
-        else
-        {
-            // Call special static method that should be in each class that implements DefaultValue interface
-            return ReflectUtils.callStaticMethodSafely ( defaultValueClass, "getDefaultValue" );
-        }
+        return value;
     }
 
     /**
@@ -578,7 +318,7 @@ public final class SettingsManager
      */
     public static <T> T set ( final String key, final T object )
     {
-        return set ( defaultSettingsGroup, key, object );
+        return set ( getDefaultSettingsGroup (), key, object );
     }
 
     /**
@@ -592,7 +332,7 @@ public final class SettingsManager
      */
     public static <T> T set ( final String group, final String key, final T object )
     {
-        // Check manager initialization
+        // Checking manager initialization
         initialize ();
 
         // Get SettingsGroup safely
@@ -608,7 +348,7 @@ public final class SettingsManager
         }
 
         // Inform about changes
-        fireSettingsChanged ( group, key, object );
+        fireSettingsChanged ( group, key, oldValue, object );
 
         return oldValue;
     }
@@ -618,7 +358,7 @@ public final class SettingsManager
      */
     public static void resetDefaultGroup ()
     {
-        resetGroup ( defaultSettingsGroup );
+        resetGroup ( getDefaultSettingsGroup () );
     }
 
     /**
@@ -654,7 +394,7 @@ public final class SettingsManager
      */
     public static <T> T resetValue ( final String key )
     {
-        return resetValue ( defaultSettingsGroup, key );
+        return resetValue ( getDefaultSettingsGroup (), key );
     }
 
     /**
@@ -667,7 +407,7 @@ public final class SettingsManager
      */
     public static <T> T resetValue ( final String group, final String key )
     {
-        Object oldValue = null;
+        T oldValue = null;
 
         // Resetting settings under the specified key in the group
         final SettingsGroup settingsGroup = getSettingsGroup ( group );
@@ -682,7 +422,7 @@ public final class SettingsManager
             saveSettingsGroup ( group );
         }
 
-        return ( T ) oldValue;
+        return oldValue;
     }
 
     /**
@@ -704,10 +444,11 @@ public final class SettingsManager
     }
 
     /**
-     * Loads and returns settings group for the specified name.
+     * Attempts to load {@link SettingsGroup} for the specified name and return it.
+     * If {@link SettingsGroup} doesn't exist yet it will be created.
      *
-     * @param group settings group name
-     * @return loaded settings group for the specified name
+     * @param group {@link SettingsGroup} name
+     * @return {@link SettingsGroup} for the specified name
      */
     private static SettingsGroup loadSettingsGroup ( final String group )
     {
@@ -756,6 +497,10 @@ public final class SettingsManager
                     }
                     catch ( final Exception e )
                     {
+                        // todo Probably provide different solution for different errors?
+                        // todo CannotResolveClassException -> Probably settings class changed and not available anymore
+
+                        // Logging cause
                         final String msg = "Unable to load settings group '%s' due to unexpected exception";
                         LoggerFactory.getLogger ( SettingsManager.class ).error ( String.format ( msg, group ), e );
 
@@ -796,7 +541,7 @@ public final class SettingsManager
     }
 
     /**
-     * Saves all settings groups and files.
+     * Saves all {@link SettingsGroup}s and settings files.
      */
     public static void saveSettings ()
     {
@@ -814,9 +559,9 @@ public final class SettingsManager
     }
 
     /**
-     * Saves settings group with the specified name.
+     * Saves {@link SettingsGroup} with the specified name.
      *
-     * @param group name of the settings group to save
+     * @param group name of the {@link SettingsGroup} to save
      */
     public static void saveSettingsGroup ( final String group )
     {
@@ -824,9 +569,9 @@ public final class SettingsManager
     }
 
     /**
-     * Saves specified settings group.
+     * Saves specified {@link SettingsGroup}.
      *
-     * @param settingsGroup settings group to save
+     * @param settingsGroup {@link SettingsGroup} to save
      */
     public static void saveSettingsGroup ( final SettingsGroup settingsGroup )
     {
@@ -882,11 +627,11 @@ public final class SettingsManager
     }
 
     /**
-     * Returns actual settings group file.
+     * Returns actual {@link SettingsGroup} file.
      *
-     * @param group settings group name
+     * @param group {@link SettingsGroup} name
      * @param dir   settings directory
-     * @return actual settings group file
+     * @return actual {@link SettingsGroup} file
      */
     private static File getGroupFile ( final String group, final File dir )
     {
@@ -894,11 +639,11 @@ public final class SettingsManager
     }
 
     /**
-     * Returns backup settings group file.
+     * Returns backup {@link SettingsGroup} file.
      *
-     * @param group settings group name
+     * @param group {@link SettingsGroup} name
      * @param dir   settings directory
-     * @return backup settings group file
+     * @return backup {@link SettingsGroup} file
      */
     private static File getGroupBackupFile ( final String group, final File dir )
     {
@@ -906,9 +651,9 @@ public final class SettingsManager
     }
 
     /**
-     * Delays settings group save or performs it immediately according to settings manager configuration.
+     * Delays {@link SettingsGroup} save or performs it immediately according to {@link SettingsManager} configuration.
      *
-     * @param group name of the settings group to save
+     * @param group name of the {@link SettingsGroup} to save
      */
     private static void delayedSaveSettingsGroup ( final String group )
     {
@@ -962,10 +707,10 @@ public final class SettingsManager
     }
 
     /**
-     * Returns settings group state.
+     * Returns {@link SettingsGroupState} for the {@link SettingsGroup} with the specified name.
      *
-     * @param group settings group name
-     * @return settings group state
+     * @param group {@link SettingsGroup} name to retreive {@link SettingsGroupState} for
+     * @return {@link SettingsGroupState} for the {@link SettingsGroup} with the specified name
      */
     public SettingsGroupState getSettingsGroupState ( final String group )
     {
@@ -1091,7 +836,7 @@ public final class SettingsManager
      * Returns whether settings file with the specified name exists or not.
      *
      * @param fileName settings file name
-     * @return true if settings file with the specified name exists, false otherwise
+     * @return {@code true} if settings file with the specified name exists, {@code false} otherwise
      */
     public static boolean settingsExists ( final String fileName )
     {
@@ -1197,9 +942,9 @@ public final class SettingsManager
     }
 
     /**
-     * Returns default settings group name.
+     * Returns default {@link SettingsGroup} name.
      *
-     * @return default settings group name
+     * @return default {@link SettingsGroup} name
      */
     public static String getDefaultSettingsGroup ()
     {
@@ -1207,9 +952,9 @@ public final class SettingsManager
     }
 
     /**
-     * Sets default settings group name.
+     * Sets default {@link SettingsGroup} name.
      *
-     * @param defaultSettingsGroup new default settings group name
+     * @param defaultSettingsGroup new default {@link SettingsGroup} name
      */
     public static void setDefaultSettingsGroup ( final String defaultSettingsGroup )
     {
@@ -1249,7 +994,7 @@ public final class SettingsManager
     /**
      * Returns whether should save settings right after any changes made or not.
      *
-     * @return true if should save settings right after any changes made, false otherwise
+     * @return {@code true} if should save settings right after any changes made, {@code false} otherwise
      */
     public static boolean isSaveOnChange ()
     {
@@ -1267,9 +1012,9 @@ public final class SettingsManager
     }
 
     /**
-     * Sets whether should save provided default value in "get" calls or not.
+     * Sets whether or not should save default value created as a result of {@code get(...)} calls.
      *
-     * @return true if should save provided default value in "get" calls, false otherwise
+     * @return {@code true} if should save default value created as a result of {@code get(...)} calls, {@code false} otherwise
      */
     public static boolean isSaveDefaultValues ()
     {
@@ -1277,9 +1022,9 @@ public final class SettingsManager
     }
 
     /**
-     * Sets whether should save provided default value in "get" calls or not.
+     * Sets whether or not should save default value created as a result of {@code get(...)} calls.
      *
-     * @param saveDefaultValues whether should save provided default value in "get" calls or not
+     * @param saveDefaultValues whether or not should save default value created as a result of {@code get(...)} calls
      */
     public static void setSaveDefaultValues ( final boolean saveDefaultValues )
     {
@@ -1310,7 +1055,7 @@ public final class SettingsManager
     /**
      * Returns whether settings save log is enabled or not.
      *
-     * @return true if settings save log is enabled, false otherwise
+     * @return {@code true} if settings save log is enabled, {@code false} otherwise
      */
     public static boolean isSaveLoggingEnabled ()
     {
@@ -1330,7 +1075,7 @@ public final class SettingsManager
     /**
      * Returns whether should allow saving settings into files or not.
      *
-     * @return true if should allow saving settings into files, false otherwise
+     * @return {@code true} if should allow saving settings into files, {@code false} otherwise
      */
     public static boolean isAllowSave ()
     {
@@ -1364,10 +1109,20 @@ public final class SettingsManager
     }
 
     /**
-     * Adds setting listener.
+     * Adds new global {@link SettingsListener}.
+     *
+     * @param listener {@link SettingsListener} to add
+     */
+    public static void addSettingsListener ( final SettingsListener listener )
+    {
+        globalSettingsListeners.add ( listener );
+    }
+
+    /**
+     * Adds new specific {@link SettingsListener}.
      *
      * @param key      settings key to listen to
-     * @param listener settings listener to add
+     * @param listener {@link SettingsListener} to add
      */
     public static void addSettingsListener ( final String key, final SettingsListener listener )
     {
@@ -1375,30 +1130,40 @@ public final class SettingsManager
     }
 
     /**
-     * Adds setting listener.
+     * Adds new specific {@link SettingsListener}.
      *
-     * @param group    settings group to listen to
+     * @param group    name of the {@link SettingsGroup} to add {@link SettingsListener} for
      * @param key      settings key to listen to
-     * @param listener settings listener to add
+     * @param listener {@link SettingsListener} to add
      */
     public static void addSettingsListener ( final String group, final String key, final SettingsListener listener )
     {
-        if ( !settingsListeners.containsKey ( group ) )
+        if ( !specificSettingsListeners.containsKey ( group ) )
         {
-            settingsListeners.put ( group, new HashMap<String, List<SettingsListener>> () );
+            specificSettingsListeners.put ( group, new HashMap<String, List<SettingsListener>> () );
         }
-        if ( !settingsListeners.get ( group ).containsKey ( key ) )
+        if ( !specificSettingsListeners.get ( group ).containsKey ( key ) )
         {
-            settingsListeners.get ( group ).put ( key, new ArrayList<SettingsListener> () );
+            specificSettingsListeners.get ( group ).put ( key, new ArrayList<SettingsListener> () );
         }
-        settingsListeners.get ( group ).get ( key ).add ( listener );
+        specificSettingsListeners.get ( group ).get ( key ).add ( listener );
     }
 
     /**
-     * Removes settings listener.
+     * Removes global {@link SettingsListener}.
+     *
+     * @param listener {@link SettingsListener} to remove
+     */
+    public static void removeSettingsListener ( final SettingsListener listener )
+    {
+        globalSettingsListeners.remove ( listener );
+    }
+
+    /**
+     * Removes specific {@link SettingsListener}.
      *
      * @param key      listened settings key
-     * @param listener settings listener to remove
+     * @param listener {@link SettingsListener} to remove
      */
     public static void removeSettingsListener ( final String key, final SettingsListener listener )
     {
@@ -1406,41 +1171,83 @@ public final class SettingsManager
     }
 
     /**
-     * Removes settings listener.
+     * Removes specific {@link SettingsListener}.
      *
-     * @param group    listened settings group
+     * @param group    name of the {@link SettingsGroup} to remove {@link SettingsListener} from
      * @param key      listened settings key
-     * @param listener settings listener to remove
+     * @param listener {@link SettingsListener} to remove
      */
     public static void removeSettingsListener ( final String group, final String key, final SettingsListener listener )
     {
-        if ( settingsListeners.containsKey ( group ) )
+        if ( specificSettingsListeners.containsKey ( group ) )
         {
-            if ( settingsListeners.get ( group ).containsKey ( key ) )
+            if ( specificSettingsListeners.get ( group ).containsKey ( key ) )
             {
-                settingsListeners.get ( group ).get ( key ).remove ( listener );
+                specificSettingsListeners.get ( group ).get ( key ).remove ( listener );
             }
         }
     }
 
     /**
-     * Notifies that value for the specified settings group and key has changed.
+     * Notifies that value for the {@link SettingsGroup} with the specified name and under specified key has changed.
      *
-     * @param group    settings group
+     * @param group    {@link SettingsGroup} name
      * @param key      settings key
+     * @param oldValue old value
      * @param newValue new value
      */
-    private static void fireSettingsChanged ( final String group, final String key, final Object newValue )
+    private static void fireSettingsChanged ( final String group, final String key, final Object oldValue, final Object newValue )
     {
-        if ( settingsListeners.containsKey ( group ) )
+        /**
+         * Firing global listeners.
+         */
+        for ( final SettingsListener listener : CollectionUtils.copy ( globalSettingsListeners ) )
         {
-            if ( settingsListeners.get ( group ).containsKey ( key ) )
+            listener.settingsChanged ( group, key, oldValue, newValue );
+        }
+
+        /**
+         * Firing specific listeners.
+         */
+        if ( specificSettingsListeners.containsKey ( group ) )
+        {
+            if ( specificSettingsListeners.get ( group ).containsKey ( key ) )
             {
-                for ( final SettingsListener listener : CollectionUtils.copy ( settingsListeners.get ( group ).get ( key ) ) )
+                for ( final SettingsListener listener : CollectionUtils.copy ( specificSettingsListeners.get ( group ).get ( key ) ) )
                 {
-                    listener.settingsChanged ( group, key, newValue );
+                    listener.settingsChanged ( group, key, oldValue, newValue );
                 }
             }
+        }
+    }
+
+    /**
+     * Simple {@link SerializableFunction} for holding static default values.
+     *
+     * @param <V> {@link Serializable} value type
+     */
+    private static class StaticDefaultValue<V> implements Supplier<V>
+    {
+        /**
+         * Static value.
+         */
+        private final V value;
+
+        /**
+         * Csontructs new {@link StaticDefaultValue}.
+         *
+         * @param value static value
+         */
+        public StaticDefaultValue ( final V value )
+        {
+            super ();
+            this.value = value;
+        }
+
+        @Override
+        public V get ()
+        {
+            return value;
         }
     }
 }

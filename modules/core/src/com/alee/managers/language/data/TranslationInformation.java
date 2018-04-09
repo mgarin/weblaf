@@ -36,7 +36,6 @@ import java.util.Locale;
  * @see com.alee.managers.language.LanguageManager
  * @see Dictionary
  */
-
 @XStreamAlias ( "Translation" )
 @XStreamConverter ( TranslationInformationConverter.class )
 public final class TranslationInformation implements Mergeable, Cloneable, Serializable

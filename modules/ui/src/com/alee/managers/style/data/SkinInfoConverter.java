@@ -45,7 +45,6 @@ import java.util.Map;
  * @see com.alee.managers.style.StyleManager
  * @see com.alee.managers.style.data.SkinInfo
  */
-
 public final class SkinInfoConverter extends ReflectionConverter
 {
     /**

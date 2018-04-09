@@ -39,9 +39,9 @@ import java.util.List;
  * stuff atop of all components visible in window/applet. It can also be used to bring your own custom features.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-GlassPaneManager">How to use GlassPaneManager</a>
  * @see GlassPaneManager
  */
-
 public class WebGlassPane extends WebPanel
 {
     /**

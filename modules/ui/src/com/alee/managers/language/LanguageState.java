@@ -21,8 +21,9 @@ package com.alee.managers.language;
  * Various common {@link com.alee.managers.language.data.Text} states.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>
+ * @see LanguageManager
  */
-
 public interface LanguageState
 {
     /**

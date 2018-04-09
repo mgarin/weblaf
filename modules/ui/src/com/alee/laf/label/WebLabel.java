@@ -21,6 +21,10 @@ import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.UILanguageManager;
 import com.alee.managers.language.updaters.LanguageUpdater;
+import com.alee.managers.settings.Configuration;
+import com.alee.managers.settings.SettingsMethods;
+import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.settings.UISettingsManager;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
@@ -41,7 +45,7 @@ import java.util.List;
 /**
  * {@link JLabel} extension class.
  * It contains various useful methods to simplify core component usage.
- * <p/>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
@@ -50,9 +54,8 @@ import java.util.List;
  * @see WebLabelUI
  * @see LabelPainter
  */
-
 public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods,
-        ToolTipMethods, LanguageMethods, FontMethods<WebLabel>, SizeMethods<WebLabel>
+        ToolTipMethods, LanguageMethods, SettingsMethods, FontMethods<WebLabel>, SizeMethods<WebLabel>
 {
     /**
      * Constructs empty label.
@@ -710,6 +713,36 @@ public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMetho
     public void removeLanguageUpdater ()
     {
         UILanguageManager.unregisterLanguageUpdater ( this );
+    }
+
+    @Override
+    public void registerSettings ( final Configuration configuration )
+    {
+        UISettingsManager.registerComponent ( this, configuration );
+    }
+
+    @Override
+    public void registerSettings ( final SettingsProcessor processor )
+    {
+        UISettingsManager.registerComponent ( this, processor );
+    }
+
+    @Override
+    public void unregisterSettings ()
+    {
+        UISettingsManager.unregisterComponent ( this );
+    }
+
+    @Override
+    public void loadSettings ()
+    {
+        UISettingsManager.loadSettings ( this );
+    }
+
+    @Override
+    public void saveSettings ()
+    {
+        UISettingsManager.saveSettings ( this );
     }
 
     @Override

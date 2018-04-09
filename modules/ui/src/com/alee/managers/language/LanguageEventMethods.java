@@ -32,7 +32,6 @@ import javax.swing.*;
  * @see LanguageListener
  * @see DictionaryListener
  */
-
 public interface LanguageEventMethods extends MethodExtension
 {
     /**

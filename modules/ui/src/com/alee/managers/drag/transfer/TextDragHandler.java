@@ -25,8 +25,9 @@ import java.awt.event.MouseEvent;
 
 /**
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-DragManager">How to use DragManager</a>
+ * @see com.alee.managers.drag.DragManager
  */
-
 public class TextDragHandler extends TransferHandler
 {
     private String text;

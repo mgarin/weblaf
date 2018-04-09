@@ -17,7 +17,7 @@
 
 package com.alee.painter.decoration.border;
 
-import com.alee.utils.XmlException;
+import com.alee.utils.xml.XmlException;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 import java.util.StringTokenizer;

@@ -23,12 +23,13 @@ import java.awt.datatransfer.Transferable;
 import java.util.List;
 
 /**
- * Custom {@link javax.swing.TransferHandler} that provides easy and convenient way to support images drag and drop in any Swing component.
+ * Custom {@link TransferHandler} that provides easy and convenient way to support images drag and drop in any Swing component.
  * It is based on {@link FilesTransferHandler} and only adds an additional supported flavor.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-DragManager">How to use DragManager</a>
+ * @see com.alee.managers.drag.DragManager
  */
-
 public class ImageTransferHandler extends FilesTransferHandler
 {
     /**

@@ -22,41 +22,52 @@ import java.awt.dnd.DragSourceDropEvent;
 import java.awt.dnd.DragSourceEvent;
 
 /**
- * {@link com.alee.managers.drag.DragListener} adapter.
+ * Adapter for {@link DragListener}.
  *
  * @author Mikle Garin
- * @see com.alee.managers.drag.DragListener
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-DragManager">How to use DragManager</a>
+ * @see DragListener
+ * @see DragManager
  */
-
 public abstract class DragAdapter implements DragListener
 {
     @Override
     public void started ( final DragSourceDragEvent event )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void entered ( final DragSourceDragEvent event )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void moved ( final DragSourceDragEvent event )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void exited ( final DragSourceEvent event )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void finished ( final DragSourceDropEvent event )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

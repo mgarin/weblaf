@@ -20,7 +20,6 @@ import java.lang.ref.WeakReference;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see StyleManager
  */
-
 public final class StyleId implements Identifiable
 {
     /**
@@ -1182,8 +1181,8 @@ public final class StyleId implements Identifiable
 
     /**
      * Returns window root pane.
-     * Used instead of {@link com.alee.utils.SwingUtils#getRootPane(java.awt.Component)} method to throw style exception.
-     * {@link StyleId} can only be installed into windows which use {@link javax.swing.JRootPane} component.
+     * Used instead of {@link CoreSwingUtils#getRootPane(java.awt.Component)} method to throw style exception.
+     * {@link StyleId} can only be installed into windows which use {@link JRootPane} component.
      *
      * @param window window to get root pane from
      * @return window root pane

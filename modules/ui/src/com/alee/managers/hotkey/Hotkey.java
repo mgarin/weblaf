@@ -25,8 +25,9 @@ import java.awt.event.KeyEvent;
  * powerful and useful in various situations.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-HotkeyManager">How to use HotkeyManager</a>
+ * @see HotkeyManager
  */
-
 public final class Hotkey
 {
     /**

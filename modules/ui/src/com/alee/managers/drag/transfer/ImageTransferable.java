@@ -28,15 +28,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Custom transferable that represents {@link java.awt.Image}.
+ * Custom transferable that represents {@link Image}.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-DragManager">How to use DragManager</a>
+ * @see com.alee.managers.drag.DragManager
  */
-
 public class ImageTransferable implements Transferable
 {
     /**
-     * {@link com.alee.managers.drag.transfer.ImageTransferable} data flavors.
+     * {@link ImageTransferable} data flavors.
      */
     public static final DataFlavor[] flavors = new DataFlavor[]{ DataFlavor.imageFlavor };
 
@@ -46,7 +47,7 @@ public class ImageTransferable implements Transferable
     protected final Image image;
 
     /**
-     * Constructs new {@link com.alee.managers.drag.transfer.ImageTransferable} for image.
+     * Constructs new {@link ImageTransferable} for image.
      *
      * @param image transferred image
      */
@@ -69,7 +70,7 @@ public class ImageTransferable implements Transferable
     }
 
     @Override
-    public Object getTransferData ( final DataFlavor flavor ) throws UnsupportedFlavorException, IOException
+    public Object getTransferData ( final DataFlavor flavor ) throws UnsupportedFlavorException
     {
         if ( flavor.equals ( DataFlavor.imageFlavor ) )
         {
@@ -159,11 +160,11 @@ public class ImageTransferable implements Transferable
                     return ( Image ) data;
                 }
             }
-            catch ( final UnsupportedFlavorException e )
+            catch ( final UnsupportedFlavorException ignored )
             {
                 //
             }
-            catch ( final IOException e )
+            catch ( final IOException ignored )
             {
                 //
             }

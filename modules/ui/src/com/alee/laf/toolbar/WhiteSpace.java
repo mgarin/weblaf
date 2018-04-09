@@ -32,7 +32,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public class WhiteSpace extends JComponent implements SwingConstants
 {
     /**

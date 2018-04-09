@@ -39,8 +39,9 @@ import java.util.Map;
  * Simple easing algorithm preview graph.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-AnimationManager">How to use AnimationManager</a>
+ * @see com.alee.managers.animation.AnimationManager
  */
-
 public class EasingViewer extends WebCanvas
 {
     /**
@@ -360,7 +361,7 @@ public class EasingViewer extends WebCanvas
         final String belowBar = progressFormat.format ( ( double ) progress / steps );
         g2d.drawString ( belowBar, mid - fm.stringWidth ( belowBar ) / 2, bounds.y1 + 10 + th );
 
-        final String afterBar = ( duration * progress / steps ) + " ms";
+        final String afterBar = duration * progress / steps + " ms";
         g2d.setPaint ( Color.BLACK );
         g2d.drawString ( afterBar, bounds.x2 + padding.right - fm.stringWidth ( afterBar ) / 2, bounds.y1 + th / 2 );
 

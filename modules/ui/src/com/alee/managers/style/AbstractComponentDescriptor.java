@@ -38,7 +38,6 @@ import java.util.Map;
  * @see StyleManager#unregisterComponentDescriptor(ComponentDescriptor)
  * @see StyleManager#initializeDescriptors()
  */
-
 public abstract class AbstractComponentDescriptor<C extends JComponent> implements ComponentDescriptor<C>
 {
     /**

@@ -34,36 +34,40 @@ import java.util.Properties;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-ProxyManager">How to use ProxyManager</a>
- * @see com.alee.managers.proxy.ProxySettings
- * @see com.alee.managers.proxy.SystemProxyConfirmationSupport
+ * @see ProxySettings
+ * @see SystemProxyConfirmationSupport
  */
-
 public final class ProxyManager
 {
     /**
+     * todo 1. Rework to provide a move covenient API for initializing proxy at any point
+     * todo 2. Allow auto-detection to be enabled in runtime, long after initialization
+     */
+
+    /**
      * Settings group key for proxy settings.
      */
-    public static String SETTINGS_GROUP = "ProxyManager";
+    public static final String SETTINGS_GROUP = "ProxyManager";
 
     /**
      * Settings key for proxy settings.
      */
-    public static String PROXY_SETTINGS = "ProxySettings";
+    public static final String PROXY_SETTINGS = "ProxySettings";
 
     /**
      * Settings key for automated proxy settings option.
      */
-    public static String AUTO_SETTINGS_ON = "AutoSettingsOn";
+    public static final String AUTO_SETTINGS_ON = "AutoSettingsOn";
 
     /**
      * Settings key for system proxy settings usage option.
      */
-    public static String ALWAYS_USE_SYSTEM_SETTINGS = "AlwaysUseSystemSettings";
+    public static final String ALWAYS_USE_SYSTEM_SETTINGS = "AlwaysUseSystemSettings";
 
     /**
      * Settings key for proxy settings save option.
      */
-    public static String SAVE_SETTINGS = "SaveSettings";
+    public static final String SAVE_SETTINGS = "SaveSettings";
 
     /**
      * Whether automatic proxy detection is enabled or not.

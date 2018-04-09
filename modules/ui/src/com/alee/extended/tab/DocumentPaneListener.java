@@ -20,54 +20,54 @@ package com.alee.extended.tab;
 import java.util.EventListener;
 
 /**
- * Documents pane state listener for WebDocumentPane component.
+ * {@link WebDocumentPane} structure change listener.
  *
+ * @param <T> {@link DocumentData} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
- * @see com.alee.extended.tab.WebDocumentPane
+ * @see WebDocumentPane
  */
-
 public interface DocumentPaneListener<T extends DocumentData> extends EventListener
 {
     /**
-     * Informs that specified PaneData was splitted.
+     * Informs that specified {@link PaneData} was splitted.
      *
-     * @param documentPane WebDocumentPane
-     * @param splittedPane splitted PaneData
-     * @param newSplitData newly created SplitData
+     * @param documentPane {@link WebDocumentPane}
+     * @param splittedPane splitted {@link PaneData}
+     * @param newSplitData newly created {@link SplitData}
      */
     public void splitted ( WebDocumentPane<T> documentPane, PaneData<T> splittedPane, SplitData<T> newSplitData );
 
     /**
-     * Informs that specified SplitData was merged.
+     * Informs that specified {@link SplitData} was merged.
      *
-     * @param documentPane     WebDocumentPane
-     * @param mergedSplit      merged SplitData
-     * @param newStructureData newly created StructureData
+     * @param documentPane     {@link WebDocumentPane}
+     * @param mergedSplit      merged {@link SplitData}
+     * @param newStructureData newly created {@link StructureData}
      */
     public void merged ( WebDocumentPane<T> documentPane, SplitData<T> mergedSplit, StructureData<T> newStructureData );
 
     /**
-     * Informs that specified SplitData's orientation was changed.
+     * Informs that specified {@link SplitData}'s orientation was changed.
      *
-     * @param documentPane WebDocumentPane
-     * @param splitData    SplitData which orientation has changed
+     * @param documentPane {@link WebDocumentPane}
+     * @param splitData    {@link SplitData} which orientation has changed
      */
     public void orientationChanged ( WebDocumentPane<T> documentPane, SplitData<T> splitData );
 
     /**
-     * Informs that specified SplitData's sides were swapped.
+     * Informs that specified {@link SplitData}'s sides were swapped.
      *
-     * @param documentPane WebDocumentPane
-     * @param splitData    SplitData which sides were swapped
+     * @param documentPane {@link WebDocumentPane}
+     * @param splitData    {@link SplitData} which sides were swapped
      */
     public void sidesSwapped ( WebDocumentPane<T> documentPane, SplitData<T> splitData );
 
     /**
-     * Informs that specified SplitData's divider location has changed.
+     * Informs that specified {@link SplitData}'s divider location has changed.
      *
-     * @param documentPane WebDocumentPane
-     * @param splitData    SplitData which divider location has changed
+     * @param documentPane {@link WebDocumentPane}
+     * @param splitData    {@link SplitData} which divider location has changed
      */
     public void dividerLocationChanged ( WebDocumentPane<T> documentPane, SplitData<T> splitData );
 }

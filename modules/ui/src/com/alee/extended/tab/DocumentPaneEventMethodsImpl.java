@@ -21,20 +21,22 @@ package com.alee.extended.tab;
  * Common implementations for {@link com.alee.extended.tab.DocumentPaneEventMethods} interface methods.
  *
  * @author Mikle Garin
- * @see com.alee.extended.tab.DocumentPaneEventMethods
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
+ * @see DocumentPaneEventMethods
+ * @see WebDocumentPane
  */
-
 public final class DocumentPaneEventMethodsImpl
 {
     /**
-     * Shortcut method for document open event.
+     * Shortcut method for {@link DocumentListener#opened(DocumentData, PaneData, int)} event.
      *
-     * @param documentPane document pane to handle events for
-     * @param runnable     document data runnable
-     * @return used document adapter
+     * @param documentPane {@link WebDocumentPane}
+     * @param runnable     {@link DocumentDataRunnable}
+     * @param <T>          {@link DocumentData} type
+     * @return created {@link DocumentListener}
      */
-    public static <T extends DocumentData> DocumentAdapter<T> onDocumentOpen ( final WebDocumentPane<T> documentPane,
-                                                                               final DocumentDataRunnable<T> runnable )
+    public static <T extends DocumentData> DocumentListener<T> onDocumentOpen ( final WebDocumentPane<T> documentPane,
+                                                                                final DocumentDataRunnable<T> runnable )
     {
         final DocumentAdapter<T> documentAdapter = new DocumentAdapter<T> ()
         {
@@ -49,14 +51,15 @@ public final class DocumentPaneEventMethodsImpl
     }
 
     /**
-     * Shortcut method for document selection event.
+     * Shortcut method for {@link DocumentListener#selected(DocumentData, PaneData, int)} event.
      *
-     * @param documentPane document pane to handle events for
-     * @param runnable     document data runnable
-     * @return used document adapter
+     * @param documentPane {@link WebDocumentPane}
+     * @param runnable     {@link DocumentDataRunnable}
+     * @param <T>          {@link DocumentData} type
+     * @return created {@link DocumentListener}
      */
-    public static <T extends DocumentData> DocumentAdapter<T> onDocumentSelection ( final WebDocumentPane<T> documentPane,
-                                                                                    final DocumentDataRunnable<T> runnable )
+    public static <T extends DocumentData> DocumentListener<T> onDocumentSelection ( final WebDocumentPane<T> documentPane,
+                                                                                     final DocumentDataRunnable<T> runnable )
     {
         final DocumentAdapter<T> documentAdapter = new DocumentAdapter<T> ()
         {
@@ -71,14 +74,15 @@ public final class DocumentPaneEventMethodsImpl
     }
 
     /**
-     * Shortcut method for document closing event.
+     * Shortcut method for {@link DocumentListener#closing(DocumentData, PaneData, int)} event.
      *
-     * @param documentPane document pane to handle events for
-     * @param runnable     document data cancellable runnable
-     * @return used document adapter
+     * @param documentPane {@link WebDocumentPane}
+     * @param runnable     {@link DocumentDataCancellableRunnable}
+     * @param <T>          {@link DocumentData} type
+     * @return created {@link DocumentListener}
      */
-    public static <T extends DocumentData> DocumentAdapter<T> onDocumentClosing ( final WebDocumentPane<T> documentPane,
-                                                                                  final DocumentDataCancellableRunnable<T> runnable )
+    public static <T extends DocumentData> DocumentListener<T> onDocumentClosing ( final WebDocumentPane<T> documentPane,
+                                                                                   final DocumentDataCancellableRunnable<T> runnable )
     {
         final DocumentAdapter<T> documentAdapter = new DocumentAdapter<T> ()
         {
@@ -93,14 +97,15 @@ public final class DocumentPaneEventMethodsImpl
     }
 
     /**
-     * Shortcut method for document close event.
+     * Shortcut method for {@link DocumentListener#closed(DocumentData, PaneData, int)} event.
      *
-     * @param documentPane document pane to handle events for
-     * @param runnable     document data runnable
-     * @return used document adapter
+     * @param documentPane {@link WebDocumentPane}
+     * @param runnable     {@link DocumentDataRunnable}
+     * @param <T>          {@link DocumentData} type
+     * @return created {@link DocumentListener}
      */
-    public static <T extends DocumentData> DocumentAdapter<T> onDocumentClose ( final WebDocumentPane<T> documentPane,
-                                                                                final DocumentDataRunnable<T> runnable )
+    public static <T extends DocumentData> DocumentListener<T> onDocumentClose ( final WebDocumentPane<T> documentPane,
+                                                                                 final DocumentDataRunnable<T> runnable )
     {
         final DocumentAdapter<T> documentAdapter = new DocumentAdapter<T> ()
         {

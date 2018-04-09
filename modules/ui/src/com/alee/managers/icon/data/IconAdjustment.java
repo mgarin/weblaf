@@ -21,17 +21,19 @@ import javax.swing.*;
 import java.io.Serializable;
 
 /**
- * Basic interface for customizable icon adjustments.
+ * Basic interface for customizable {@link Icon} adjustments.
  *
+ * @param <T> {@link Icon} type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-IconManager">How to use IconManager</a>
+ * @see com.alee.managers.icon.IconManager
  */
-
 public interface IconAdjustment<T extends Icon> extends Serializable
 {
     /**
-     * Applies this adjustment to the specified icon.
+     * Applies this adjustment to the specified {@link Icon}.
      *
-     * @param icon icon to adjust
+     * @param icon {@link Icon} to adjust
      */
     public void apply ( T icon );
 }

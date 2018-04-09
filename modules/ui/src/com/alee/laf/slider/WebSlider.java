@@ -20,7 +20,7 @@ package com.alee.laf.slider;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
 import com.alee.managers.language.updaters.LanguageUpdater;
-import com.alee.managers.settings.DefaultValue;
+import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.UISettingsManager;
@@ -56,9 +56,8 @@ import java.util.List;
  * @see WebSliderUI
  * @see SliderPainter
  */
-
 public class WebSlider extends JSlider implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods,
-        LanguageEventMethods, ToolTipMethods, LanguageMethods, SettingsMethods, FontMethods<WebSlider>, SizeMethods<WebSlider>
+        ToolTipMethods, LanguageMethods, LanguageEventMethods, SettingsMethods, FontMethods<WebSlider>, SizeMethods<WebSlider>
 {
     /**
      * Constructs new slider.
@@ -487,36 +486,6 @@ public class WebSlider extends JSlider implements Styleable, Paintable, ShapeMet
     }
 
     @Override
-    public void addLanguageListener ( final LanguageListener listener )
-    {
-        UILanguageManager.addLanguageListener ( getRootPane (), listener );
-    }
-
-    @Override
-    public void removeLanguageListener ( final LanguageListener listener )
-    {
-        UILanguageManager.removeLanguageListener ( getRootPane (), listener );
-    }
-
-    @Override
-    public void removeLanguageListeners ()
-    {
-        UILanguageManager.removeLanguageListeners ( getRootPane () );
-    }
-
-    @Override
-    public void addDictionaryListener ( final DictionaryListener listener )
-    {
-        UILanguageManager.addDictionaryListener ( getRootPane (), listener );
-    }
-
-    @Override
-    public void removeDictionaryListener ( final DictionaryListener listener )
-    {
-        UILanguageManager.removeDictionaryListener ( getRootPane (), listener );
-    }
-
-    @Override
     public void removeDictionaryListeners ()
     {
         UILanguageManager.removeDictionaryListeners ( getRootPane () );
@@ -715,79 +684,45 @@ public class WebSlider extends JSlider implements Styleable, Paintable, ShapeMet
     }
 
     @Override
-    public void registerSettings ( final String key )
+    public void addLanguageListener ( final LanguageListener listener )
     {
-        UISettingsManager.registerComponent ( this, key );
+        UILanguageManager.addLanguageListener ( getRootPane (), listener );
     }
 
     @Override
-    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
+    public void removeLanguageListener ( final LanguageListener listener )
     {
-        UISettingsManager.registerComponent ( this, key, defaultValueClass );
+        UILanguageManager.removeLanguageListener ( getRootPane (), listener );
     }
 
     @Override
-    public void registerSettings ( final String key, final Object defaultValue )
+    public void removeLanguageListeners ()
     {
-        UISettingsManager.registerComponent ( this, key, defaultValue );
+        UILanguageManager.removeLanguageListeners ( getRootPane () );
     }
 
     @Override
-    public void registerSettings ( final String group, final String key )
+    public void addDictionaryListener ( final DictionaryListener listener )
     {
-        UISettingsManager.registerComponent ( this, group, key );
+        UILanguageManager.addDictionaryListener ( getRootPane (), listener );
     }
 
     @Override
-    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
+    public void removeDictionaryListener ( final DictionaryListener listener )
     {
-        UISettingsManager.registerComponent ( this, group, key, defaultValueClass );
+        UILanguageManager.removeDictionaryListener ( getRootPane (), listener );
     }
 
     @Override
-    public void registerSettings ( final String group, final String key, final Object defaultValue )
+    public void registerSettings ( final Configuration configuration )
     {
-        UISettingsManager.registerComponent ( this, group, key, defaultValue );
+        UISettingsManager.registerComponent ( this, configuration );
     }
 
     @Override
-    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
+    public void registerSettings ( final SettingsProcessor processor )
     {
-        UISettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
-                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
-                                   final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
-                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
-                                   final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public void registerSettings ( final SettingsProcessor settingsProcessor )
-    {
-        UISettingsManager.registerComponent ( this, settingsProcessor );
+        UISettingsManager.registerComponent ( this, processor );
     }
 
     @Override

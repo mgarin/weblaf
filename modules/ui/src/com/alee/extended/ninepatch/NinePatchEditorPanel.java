@@ -17,8 +17,11 @@
 
 package com.alee.extended.ninepatch;
 
+import com.alee.api.data.Orientation;
 import com.alee.extended.layout.TableLayout;
 import com.alee.extended.panel.ResizablePanel;
+import com.alee.extended.split.MultiSplitConstraints;
+import com.alee.extended.split.WebMultiSplitPane;
 import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.tree.WebFileTree;
 import com.alee.laf.button.WebButton;
@@ -32,12 +35,13 @@ import com.alee.laf.optionpane.WebOptionPane;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.slider.WebSlider;
-import com.alee.laf.splitpane.WebSplitPane;
+import com.alee.laf.splitpane.SplitPaneState;
 import com.alee.laf.text.WebTextField;
 import com.alee.laf.toolbar.WebToolBar;
 import com.alee.managers.drag.transfer.FilesTransferHandler;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.LM;
+import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.style.BoundsType;
 import com.alee.managers.style.StyleId;
@@ -78,10 +82,9 @@ import java.util.List;
  * This is a simple panel that contains fully-functional nine-patch image format editor.
  *
  * @author Mikle Garin
- * @see com.alee.extended.ninepatch.NinePatchEditor
- * @see com.alee.extended.ninepatch.NinePatchEditorDialog
+ * @see NinePatchEditor
+ * @see NinePatchEditorFrame
  */
-
 public class NinePatchEditorPanel extends WebPanel
 {
     // todo Should make proper toolbar elements enable/disable
@@ -144,7 +147,8 @@ public class NinePatchEditorPanel extends WebPanel
 
         initializeAliases ();
 
-        fileTree = new WebFileTree ();
+        fileTree = new WebFileTree ( StyleId.filetreeNonOpaque );
+        fileTree.setVisibleRowCount ( 15 );
         fileTree.setSelectionMode ( TreeSelectionModel.SINGLE_TREE_SELECTION );
         fileTree.setFileFilter ( new GroupedFileFilter ( FilterGroupType.OR, new ImageFilesFilter (), new DirectoriesFilter () ) );
         fileTree.addMouseListener ( new MouseAdapter ()
@@ -173,26 +177,22 @@ public class NinePatchEditorPanel extends WebPanel
             }
         } );
 
-        final WebScrollPane filesView = new WebScrollPane ( StyleId.scrollpaneUndecorated, fileTree );
-        filesView.setMinimumWidth ( 200 );
-        filesView.setPreferredHeight ( 0 );
+        final WebScrollPane filesView = new WebScrollPane ( StyleId.scrollpaneTransparentHovering, fileTree );
 
-        final WebSplitPane previewSplit = new WebSplitPane ( WebSplitPane.HORIZONTAL_SPLIT );
-        previewSplit.setLeftComponent ( createEditorPanel () );
-        previewSplit.setRightComponent ( createPreviewPanel () );
-        previewSplit.setOneTouchExpandable ( true );
-        previewSplit.setContinuousLayout ( true );
-        previewSplit.registerSettings ( "NinePatchEditor", "splitLocation" );
-        previewSplit.setResizeWeight ( 1 );
+        //        final WebPanel panel = new WebPanel ( new LineLayout ( LineLayout.HORIZONTAL, 0, 0 ) );
+        //        panel.add ( filesView, LineLayout.START );
+        //        panel.add ( createEditorPanel (), LineLayout.FILL );
+        //        panel.add ( createPreviewPanel (), LineLayout.END );
+        //        add ( panel, BorderLayout.CENTER );
 
-        final WebSplitPane filesSplit = new WebSplitPane ( WebSplitPane.HORIZONTAL_SPLIT );
-        filesSplit.setLeftComponent ( filesView );
-        filesSplit.setRightComponent ( previewSplit );
-        filesSplit.setOneTouchExpandable ( true );
-        filesSplit.setContinuousLayout ( true );
-        filesSplit.setResizeWeight ( 0 );
-        filesSplit.registerSettings ( "NinePatchEditor", "filesSplitLocation", 230 );
-        add ( filesSplit, BorderLayout.CENTER );
+        final WebMultiSplitPane splitPane = new WebMultiSplitPane ( Orientation.horizontal );
+        splitPane.setOneTouchExpandable ( true );
+        splitPane.setContinuousLayout ( true );
+        splitPane.add ( filesView, new MultiSplitConstraints ( 230.0, 0.0 ) );
+        splitPane.add ( createEditorPanel (), new MultiSplitConstraints ( MultiSplitConstraints.FILL, 1.0 ) );
+        splitPane.add ( createPreviewPanel (), new MultiSplitConstraints ( 230.0, 0.0 ) );
+        splitPane.registerSettings ( new Configuration<SplitPaneState> ( "NinePatchEditor", "split" ) );
+        add ( splitPane, BorderLayout.CENTER );
     }
 
     private Component createEditorPanel ()
@@ -225,7 +225,8 @@ public class NinePatchEditorPanel extends WebPanel
                 {
                     wfc.setSelectedFile ( imageSrc );
                 }
-                if ( wfc.showOpenDialog ( CoreSwingUtils.getWindowAncestor ( NinePatchEditorPanel.this ) ) == WebFileChooser.APPROVE_OPTION )
+                if ( wfc.showOpenDialog ( CoreSwingUtils.getWindowAncestor ( NinePatchEditorPanel.this ) ) ==
+                        WebFileChooser.APPROVE_OPTION )
                 {
                     openImage ( wfc.getSelectedFile () );
                 }
@@ -281,7 +282,8 @@ public class NinePatchEditorPanel extends WebPanel
                 {
                     wfc.setSelectedFile ( imageSrc );
                 }
-                if ( wfc.showSaveDialog ( CoreSwingUtils.getWindowAncestor ( NinePatchEditorPanel.this ) ) == WebFileChooser.APPROVE_OPTION )
+                if ( wfc.showSaveDialog ( CoreSwingUtils.getWindowAncestor ( NinePatchEditorPanel.this ) ) ==
+                        WebFileChooser.APPROVE_OPTION )
                 {
                     try
                     {

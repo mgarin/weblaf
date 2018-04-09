@@ -36,10 +36,36 @@ import com.alee.extended.tab.DocumentPaneState;
 import com.alee.extended.tab.WebDocumentPane;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.colorchooser.HSBColor;
+import com.alee.laf.text.*;
 import com.alee.laf.tree.NodeState;
 import com.alee.laf.tree.TreeState;
 import com.alee.laf.tree.WebTree;
-import com.alee.managers.settings.processors.*;
+import com.alee.extended.panel.AccordionSettingsProcessor;
+import com.alee.extended.panel.AccordionState;
+import com.alee.laf.button.ButtonSettingsProcessor;
+import com.alee.laf.button.ButtonState;
+import com.alee.extended.panel.CollapsiblePaneSettingsProcessor;
+import com.alee.extended.panel.CollapsiblePaneState;
+import com.alee.laf.combobox.ComboBoxSettingsProcessor;
+import com.alee.laf.combobox.ComboBoxState;
+import com.alee.extended.date.DateFieldSettingsProcessor;
+import com.alee.extended.date.DateFieldState;
+import com.alee.extended.dock.DockablePaneSettingsProcessor;
+import com.alee.extended.dock.DockablePaneState;
+import com.alee.extended.tab.DocumentPaneSettingsProcessor;
+import com.alee.extended.colorchooser.GradientColorChooserSettingsProcessor;
+import com.alee.extended.colorchooser.GradientColorChooserState;
+import com.alee.laf.rootpane.RootPaneSettingsProcessor;
+import com.alee.laf.rootpane.WindowState;
+import com.alee.laf.scroll.ScrollBarSettingsProcessor;
+import com.alee.laf.scroll.ScrollBarState;
+import com.alee.laf.slider.SliderSettingsProcessor;
+import com.alee.laf.slider.SliderState;
+import com.alee.laf.splitpane.SplitPaneSettingsProcessor;
+import com.alee.laf.splitpane.SplitPaneState;
+import com.alee.laf.tabbedpane.TabbedPaneSettingsProcessor;
+import com.alee.laf.tabbedpane.TabbedPaneState;
+import com.alee.laf.tree.TreeSettingsProcessor;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.XmlUtils;
 import com.alee.utils.swing.WeakComponentData;
@@ -50,19 +76,24 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * {@link SettingsManager} extension that allows registering and processing component settings.
- * It can save and restore settings upon any changes within or outside of the registered components.
+ * {@link SettingsManager} extension that allows registering and processing {@link JComponent} settings.
+ * It can save and restore settings upon any changes within or outside of the registered {@link JComponent}s.
+ * Each registered {@link JComponent} settings are managed by a {@link SettingsProcessor} instance which is assigned to it.
+ * {@link SettingsProcessor} instances are created for each registered {@link JComponent} and handle loading and saving settings.
+ * Which {@link SettingsProcessor} implementation is used for registered {@link JComponent} depends on this manager settings.
+ * You can also explicitly register a {@link SettingsProcessor} for any {@link JComponent} as long as it supports that {@link JComponent}.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
  * @see SettingsManager
+ * @see Configuration
  * @see SettingsProcessor
+ * @see SettingsMethods
  */
-
 public final class UISettingsManager
 {
     /**
-     * todo 1. Add component-bound listeners
+     * todo 1. Add component-bound listeners (current ones may cause memory leaks)
      * todo 2. JListSettingsProcessor
      * todo 3. JTableSettingsProcessorw
      * todo 4. JScrollPaneSettingsProcessor
@@ -71,7 +102,8 @@ public final class UISettingsManager
     /**
      * Registered settings processor classes.
      */
-    private static final Map<Class, Class> settingsProcessorClasses = new LinkedHashMap<Class, Class> ();
+    private static final Map<Class<? extends JComponent>, Class<? extends SettingsProcessor>> settingsProcessorClasses =
+            new LinkedHashMap<Class<? extends JComponent>, Class<? extends SettingsProcessor>> ();
 
     /**
      * Registered component settings processors.
@@ -85,7 +117,7 @@ public final class UISettingsManager
     private static boolean initialized = false;
 
     /**
-     * Initializes SettingsManager.
+     * Initializes {@link UISettingsManager}.
      */
     public static synchronized void initialize ()
     {
@@ -97,14 +129,27 @@ public final class UISettingsManager
             SettingsManager.initialize ();
 
             // Initializing data aliases
-            XmlUtils.processAnnotations ( WindowSettings.class );
+            XmlUtils.processAnnotations ( ButtonState.class );
+            XmlUtils.processAnnotations ( TextComponentState.class );
+            XmlUtils.processAnnotations ( PasswordFieldState.class );
+            XmlUtils.processAnnotations ( DateFieldState.class );
+            XmlUtils.processAnnotations ( ComboBoxState.class );
+            XmlUtils.processAnnotations ( SliderState.class );
+            XmlUtils.processAnnotations ( SplitPaneState.class );
+            XmlUtils.processAnnotations ( ScrollBarState.class );
+            XmlUtils.processAnnotations ( WindowState.class );
+            XmlUtils.processAnnotations ( CollapsiblePaneState.class );
+            XmlUtils.processAnnotations ( AccordionState.class );
             XmlUtils.processAnnotations ( MultiSplitState.class );
+            XmlUtils.processAnnotations ( TabbedPaneState.class );
             XmlUtils.processAnnotations ( DocumentPaneState.class );
             XmlUtils.processAnnotations ( TreeState.class );
             XmlUtils.processAnnotations ( NodeState.class );
+            XmlUtils.processAnnotations ( GradientColorChooserState.class );
             XmlUtils.processAnnotations ( GradientData.class );
             XmlUtils.processAnnotations ( GradientColorData.class );
             XmlUtils.processAnnotations ( HSBColor.class );
+            XmlUtils.processAnnotations ( DockablePaneState.class );
             XmlUtils.processAnnotations ( AbstractDockableElement.class );
             XmlUtils.processAnnotations ( DockableContentElement.class );
             XmlUtils.processAnnotations ( DockableFrameElement.class );
@@ -131,14 +176,37 @@ public final class UISettingsManager
             registerSettingsProcessor ( WebAccordion.class, AccordionSettingsProcessor.class );
             registerSettingsProcessor ( WebGradientColorChooser.class, GradientColorChooserSettingsProcessor.class );
             registerSettingsProcessor ( WebDockablePane.class, DockablePaneSettingsProcessor.class );
+
+            // Settings listener that applies settings changes to components
+            // It is added here instead of being added from processor to avoid memory leaks
+            SettingsManager.addSettingsListener ( new SettingsListener ()
+            {
+                @Override
+                public void settingsChanged ( final String group, final String key, final Object oldValue, final Object newValue )
+                {
+                    settingsProcessors.forEach ( new BiConsumer<JComponent, SettingsProcessor> ()
+                    {
+                        @Override
+                        public void accept ( final JComponent component, final SettingsProcessor processor )
+                        {
+                            final Configuration configuration = processor.configuration ();
+                            if ( configuration.isApplySettingsChanges () &&
+                                    group.equals ( configuration.group () ) && key.equals ( configuration.key () ) )
+                            {
+                                processor.load ();
+                            }
+                        }
+                    } );
+                }
+            } );
         }
     }
 
     /**
-     * Returns whether the specified component is supported or not.
+     * Returns whether the specified {@link JComponent} is supported or not.
      *
      * @param component component
-     * @return true if the specified component is supported, false otherwise
+     * @return {@code true} if the specified {@link JComponent} is supported, {@code false} otherwise
      */
     public static boolean isComponentSupported ( final JComponent component )
     {
@@ -146,332 +214,70 @@ public final class UISettingsManager
     }
 
     /**
-     * Returns whether the specified component is supported or not.
+     * Returns whether the specified {@link JComponent} type is supported or not.
      *
      * @param componentType component type
-     * @return true if the specified component is supported, false otherwise
+     * @return {@code true} if the specified {@link JComponent} type is supported, {@code false} otherwise
      */
     public static boolean isComponentSupported ( final Class<? extends JComponent> componentType )
     {
-        // Checking if a suitable component processor exists
-        return findSuitableSettingsProcessor ( componentType ) != null;
+        return findSuitableSettingsProcessorClass ( componentType ) != null;
     }
 
     /**
-     * Registers specified settings processor class for the specified component type.
+     * Registers specified {@link SettingsProcessor} class for the specified {@link JComponent} type.
      *
-     * @param componentType     component type
-     * @param settingsProcessor settings processor class
-     * @param <T>               settings processor type
+     * @param componentType     {@link JComponent} type
+     * @param settingsProcessor {@link SettingsProcessor} class
+     * @return {@link SettingsProcessor} class previously registered for the specified {@link JComponent} type
      */
-    public static <T extends SettingsProcessor> void registerSettingsProcessor ( final Class<? extends JComponent> componentType,
-                                                                                 final Class<T> settingsProcessor )
+    public static Class<? extends SettingsProcessor> registerSettingsProcessor ( final Class<? extends JComponent> componentType,
+                                                                                 final Class<? extends SettingsProcessor> settingsProcessor )
     {
-        // Saving settings processor under component type
-        settingsProcessorClasses.put ( componentType, settingsProcessor );
+        return settingsProcessorClasses.put ( componentType, settingsProcessor );
     }
 
     /**
-     * Returns settings processor class for the specified component type.
+     * Registers {@link JComponent} for settings auto-save.
      *
-     * @param componentType component type
-     * @return settings processor class for the specified component type
-     */
-    private static Class findSuitableSettingsProcessor ( final Class componentType )
-    {
-        // Looking through map with strict elements order for proper settings processor
-        for ( final Class type : settingsProcessorClasses.keySet () )
-        {
-            if ( ReflectUtils.isAssignable ( type, componentType ) )
-            {
-                return settingsProcessorClasses.get ( type );
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Returns new SettingsProcessor instance for the specified SettingsProcessorData.
-     *
-     * @param data SettingsProcessorData
-     * @return new SettingsProcessor instance for the specified SettingsProcessorData
-     */
-    private static SettingsProcessor createSettingsProcessor ( final SettingsProcessorData data )
-    {
-        final Class settingsProcessorClass = findSuitableSettingsProcessor ( data.getComponent ().getClass () );
-        if ( settingsProcessorClass != null )
-        {
-            try
-            {
-                // Creating new settings processor from registered class
-                return ReflectUtils.createInstance ( settingsProcessorClass, data );
-            }
-            catch ( final Exception e )
-            {
-                // Throw processor instantiation exception
-                final String msg = "Unable to instantiate SettingsProcessor class: %s";
-                throw new SettingsException ( String.format ( msg, settingsProcessorClass ), e );
-            }
-        }
-        else
-        {
-            // Throw missing processor mapping exception
-            final String msg = "Unable to find SettingsProcessor for data: %s";
-            throw new SettingsException ( String.format ( msg, data ) );
-        }
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     *
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
+     * Registered {@link JComponent} will be:
+     * - tracked for settings changes (depends on {@link SettingsProcessor}) to save them when requested
      * - automatically updated with any loaded settings for that key if requested
      * - automatically updated with any changes made in its settings if requested
      *
-     * @param component component to register
-     * @param key       component settings key
+     * @param component {@link JComponent} to register for settings auto-save
+     * @param data      {@link Configuration} for {@link SettingsProcessor}
      */
-    public static void registerComponent ( final JComponent component, final String key )
+    public static void registerComponent ( final JComponent component, final Configuration data )
     {
-        registerComponent ( component, key, ( Object ) null );
+        registerComponent ( component, createSettingsProcessor ( component, data ) );
     }
 
     /**
-     * Registers component for settings auto-save.
+     * Registers {@link JComponent} for settings auto-save.
+     * {@link JComponent} is required here simply to check that registered component is the same as the one in {@link SettingsProcessor}.
      *
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
+     * Registered {@link JComponent} will be:
+     * - tracked for settings changes (depends on {@link SettingsProcessor}) to save them when requested
      * - automatically updated with any loaded settings for that key if requested
      * - automatically updated with any changes made in its settings if requested
      *
-     * @param component         component to register
-     * @param key               component settings key
-     * @param defaultValueClass component default value class
-     * @param <T>               default value type
-     * @see DefaultValue
+     * @param component {@link JComponent} to register for settings auto-save
+     * @param processor {@link SettingsProcessor}
      */
-    public static <T extends DefaultValue> void registerComponent ( final JComponent component, final String key,
-                                                                    final Class<T> defaultValueClass )
-    {
-        registerComponent ( component, key, SettingsManager.getDefaultValue ( defaultValueClass ) );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     *
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component    component to register
-     * @param key          component settings key
-     * @param defaultValue component default value
-     */
-    public static void registerComponent ( final JComponent component, final String key, final Object defaultValue )
-    {
-        registerComponent ( component, SettingsManager.getDefaultSettingsGroup (), key, defaultValue );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     *
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component component to register
-     * @param group     component settings group
-     * @param key       component settings key
-     */
-    public static void registerComponent ( final JComponent component, final String group, final String key )
-    {
-        registerComponent ( component, group, key, ( Object ) null );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     *
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component         component to register
-     * @param group             component settings group
-     * @param key               component settings key
-     * @param defaultValueClass component default value class
-     * @param <T>               default value type
-     * @see DefaultValue
-     */
-    public static <T extends DefaultValue> void registerComponent ( final JComponent component, final String group, final String key,
-                                                                    final Class<T> defaultValueClass )
-    {
-        registerComponent ( component, group, key, SettingsManager.getDefaultValue ( defaultValueClass ) );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     *
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component    component to register
-     * @param group        component settings group
-     * @param key          component settings key
-     * @param defaultValue component default value
-     */
-    public static void registerComponent ( final JComponent component, final String group, final String key, final Object defaultValue )
-    {
-        registerComponent ( component, group, key, defaultValue, true, true );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     *
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component            component to register
-     * @param key                  component settings key
-     * @param loadInitialSettings  whether to load initial available settings into the component or not
-     * @param applySettingsChanges whether to apply settings changes to the component or not
-     */
-    public static void registerComponent ( final JComponent component, final String key, final boolean loadInitialSettings,
-                                           final boolean applySettingsChanges )
-    {
-        registerComponent ( component, key, null, loadInitialSettings, applySettingsChanges );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     *
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component            component to register
-     * @param key                  component settings key
-     * @param defaultValueClass    component default value class
-     * @param loadInitialSettings  whether to load initial available settings into the component or not
-     * @param applySettingsChanges whether to apply settings changes to the component or not
-     * @param <T>                  default value type
-     * @see DefaultValue
-     */
-    public static <T extends DefaultValue> void registerComponent ( final JComponent component, final String key,
-                                                                    final Class<T> defaultValueClass, final boolean loadInitialSettings,
-                                                                    final boolean applySettingsChanges )
-    {
-        registerComponent ( component, key, SettingsManager.getDefaultValue ( defaultValueClass ),
-                loadInitialSettings, applySettingsChanges );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     *
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component            component to register
-     * @param key                  component settings key
-     * @param defaultValue         component default value
-     * @param loadInitialSettings  whether to load initial available settings into the component or not
-     * @param applySettingsChanges whether to apply settings changes to the component or not
-     */
-    public static void registerComponent ( final JComponent component, final String key, final Object defaultValue,
-                                           final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        registerComponent ( component, SettingsManager.getDefaultSettingsGroup (), key, defaultValue,
-                loadInitialSettings, applySettingsChanges );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     *
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component            component to register
-     * @param group                component settings group
-     * @param key                  component settings key
-     * @param defaultValueClass    component default value class
-     * @param loadInitialSettings  whether to load initial available settings into the component or not
-     * @param applySettingsChanges whether to apply settings changes to the component or not
-     * @param <T>                  default value type
-     * @see DefaultValue
-     */
-    public static <T extends DefaultValue> void registerComponent ( final JComponent component, final String group, final String key,
-                                                                    final Class<T> defaultValueClass, final boolean loadInitialSettings,
-                                                                    final boolean applySettingsChanges )
-    {
-        registerComponent ( component, group, key, SettingsManager.getDefaultValue ( defaultValueClass ),
-                loadInitialSettings, applySettingsChanges );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     *
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component            component to register
-     * @param group                component settings group
-     * @param key                  component settings key
-     * @param defaultValue         component default value
-     * @param loadInitialSettings  whether to load initial available settings into the component or not
-     * @param applySettingsChanges whether to apply settings changes to the component or not
-     */
-    public static void registerComponent ( final JComponent component, final String group, final String key, final Object defaultValue,
-                                           final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        registerComponent ( new SettingsProcessorData ( component, group, key, defaultValue, loadInitialSettings, applySettingsChanges ) );
-    }
-
-    /**
-     * Registers component using the specified {@link SettingsProcessorData}.
-     * Any old SettingsProcessor for that component will be unregistered if operation is successful.
-     *
-     * @param data SettingsProcessorData
-     */
-    public static void registerComponent ( final SettingsProcessorData data )
+    public static void registerComponent ( final JComponent component, final SettingsProcessor processor )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
-        // Creating new component settings processor if needed
-        final SettingsProcessor settingsProcessor = createSettingsProcessor ( data );
-
-        // Saving current component settings processor
-        registerComponent ( data.getComponent (), settingsProcessor );
-    }
-
-    /**
-     * Registers component using the specified {@link SettingsProcessor}.
-     * Any old SettingsProcessor for that component will be unregistered if operation is successful.
-     *
-     * @param component         {@link JComponent} to register {@link SettingsProcessor} for
-     * @param settingsProcessor {@link SettingsProcessor}
-     */
-    public static void registerComponent ( final JComponent component, final SettingsProcessor settingsProcessor )
-    {
-        // Event Dispatch Thread check
-        WebLookAndFeel.checkEventDispatchThread ();
+        // Ensure that component within processor is the same one
+        if ( component != processor.component () )
+        {
+            throw new SettingsException ( "SettingsProcessor cannot be referencing different component" );
+        }
 
         // Saving component settings processor
-        settingsProcessors.set ( component, settingsProcessor, new BiConsumer<JComponent, SettingsProcessor> ()
+        settingsProcessors.set ( processor.component (), processor, new BiConsumer<JComponent, SettingsProcessor> ()
         {
             @Override
             public void accept ( final JComponent component, final SettingsProcessor settingsProcessor )
@@ -482,9 +288,30 @@ public final class UISettingsManager
     }
 
     /**
-     * Loads saved settings into the specified {@link JComponent} if it is registered.
+     * Unregisters {@link JComponent} from settings auto-save.
      *
-     * @param component component registered for settings auto-save
+     * @param component component to unregister
+     */
+    public static void unregisterComponent ( final JComponent component )
+    {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Removing component settings processor
+        settingsProcessors.clear ( component, new BiConsumer<JComponent, SettingsProcessor> ()
+        {
+            @Override
+            public void accept ( final JComponent component, final SettingsProcessor settingsProcessor )
+            {
+                settingsProcessor.destroy ();
+            }
+        } );
+    }
+
+    /**
+     * Loads previously saved settings for the specified {@link JComponent} if it is registered.
+     *
+     * @param component {@link JComponent} to load settings for
      */
     public static void loadSettings ( final JComponent component )
     {
@@ -504,7 +331,29 @@ public final class UISettingsManager
     }
 
     /**
-     * Saves all registered components settings.
+     * Saves settings for the specified {@link JComponent} if it is registered.
+     *
+     * @param component {@link JComponent} to save settings for
+     */
+    public static void saveSettings ( final JComponent component )
+    {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Saving settings
+        if ( settingsProcessors.contains ( component ) )
+        {
+            settingsProcessors.get ( component ).save ( false );
+        }
+        else
+        {
+            final String msg = "Processor is not registered for component: %s";
+            throw new SettingsException ( String.format ( msg, component ) );
+        }
+    }
+
+    /**
+     * Saves all registered {@link JComponent}s settings.
      */
     public static void saveSettings ()
     {
@@ -526,44 +375,53 @@ public final class UISettingsManager
     }
 
     /**
-     * Saves component settings.
+     * Returns {@link SettingsProcessor} class for the specified {@link JComponent} type.
      *
-     * @param component component registered for settings auto-save
+     * @param componentType {@link JComponent} type
+     * @return {@link SettingsProcessor} class for the specified {@link JComponent} type
      */
-    public static void saveSettings ( final JComponent component )
+    private static Class<? extends SettingsProcessor> findSuitableSettingsProcessorClass ( final Class<? extends JComponent> componentType )
     {
-        // Event Dispatch Thread check
-        WebLookAndFeel.checkEventDispatchThread ();
-
-        // Saving settings
-        if ( settingsProcessors.contains ( component ) )
+        // Looking through map with strict elements order for proper settings processor
+        for ( final Class type : settingsProcessorClasses.keySet () )
         {
-            settingsProcessors.get ( component ).save ( false );
+            if ( ReflectUtils.isAssignable ( type, componentType ) )
+            {
+                return settingsProcessorClasses.get ( type );
+            }
         }
-        else
-        {
-            final String msg = "Processor is not registered for component: %s";
-            throw new SettingsException ( String.format ( msg, component ) );
-        }
+        return null;
     }
 
     /**
-     * Unregisters component from settings auto-save.
+     * Returns new {@link SettingsProcessor} instance for the specified {@link JComponent} and {@link Configuration}.
      *
-     * @param component component to unregister
+     * @param component     {@link JComponent} to create {@link SettingsProcessor} for
+     * @param configuration {@link Configuration} for {@link SettingsProcessor}
+     * @return new {@link SettingsProcessor} instance for the specified {@link JComponent} and {@link Configuration}
      */
-    public static void unregisterComponent ( final JComponent component )
+    private static SettingsProcessor createSettingsProcessor ( final JComponent component, final Configuration configuration )
     {
-        // Event Dispatch Thread check
-        WebLookAndFeel.checkEventDispatchThread ();
-
-        settingsProcessors.clear ( component, new BiConsumer<JComponent, SettingsProcessor> ()
+        final Class settingsProcessorClass = findSuitableSettingsProcessorClass ( component.getClass () );
+        if ( settingsProcessorClass != null )
         {
-            @Override
-            public void accept ( final JComponent component, final SettingsProcessor settingsProcessor )
+            try
             {
-                settingsProcessor.destroy ();
+                // Creating new settings processor from registered class
+                return ReflectUtils.createInstance ( settingsProcessorClass, component, configuration );
             }
-        } );
+            catch ( final Exception e )
+            {
+                // Throw processor instantiation exception
+                final String msg = "Unable to instantiate SettingsProcessor class: %s";
+                throw new SettingsException ( String.format ( msg, settingsProcessorClass ), e );
+            }
+        }
+        else
+        {
+            // Throw missing processor mapping exception
+            final String msg = "Unable to find SettingsProcessor for data: %s";
+            throw new SettingsException ( String.format ( msg, configuration ) );
+        }
     }
 }

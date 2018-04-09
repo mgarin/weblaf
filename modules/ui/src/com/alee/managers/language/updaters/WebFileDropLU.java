@@ -27,13 +27,12 @@ import com.alee.managers.language.Language;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>
  * @see com.alee.managers.language.LanguageManager
  */
-
 public class WebFileDropLU extends ToolTipLU<WebFileDrop>
 {
     @Override
     public Class getComponentClass ()
     {
-        return WebFileDrop.class ;
+        return WebFileDrop.class;
     }
 
     @Override

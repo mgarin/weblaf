@@ -27,7 +27,6 @@ import java.util.EventListener;
  * @see LanguageManager
  * @see Language
  */
-
 public interface LanguageListener extends EventListener
 {
     /**

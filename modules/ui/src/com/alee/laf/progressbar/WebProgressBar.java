@@ -20,10 +20,14 @@ package com.alee.laf.progressbar;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
 import com.alee.managers.language.updaters.LanguageUpdater;
-import com.alee.managers.tooltip.TooltipWay;
+import com.alee.managers.settings.Configuration;
+import com.alee.managers.settings.SettingsMethods;
+import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.settings.UISettingsManager;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
+import com.alee.managers.tooltip.TooltipWay;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -49,10 +53,9 @@ import java.util.List;
  * @see WebProgressBarUI
  * @see ProgressBarPainter
  */
-
-public class WebProgressBar extends JProgressBar
-        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods, ToolTipMethods, LanguageMethods,
-        LanguageEventMethods, FontMethods<WebProgressBar>, SizeMethods<WebProgressBar>
+public class WebProgressBar extends JProgressBar implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods,
+        EventMethods, ToolTipMethods, LanguageMethods, LanguageEventMethods, SettingsMethods, FontMethods<WebProgressBar>,
+        SizeMethods<WebProgressBar>
 {
     /**
      * Constructs new progress bar.
@@ -665,6 +668,36 @@ public class WebProgressBar extends JProgressBar
     public void removeDictionaryListeners ()
     {
         UILanguageManager.removeDictionaryListeners ( getRootPane () );
+    }
+
+    @Override
+    public void registerSettings ( final Configuration configuration )
+    {
+        UISettingsManager.registerComponent ( this, configuration );
+    }
+
+    @Override
+    public void registerSettings ( final SettingsProcessor processor )
+    {
+        UISettingsManager.registerComponent ( this, processor );
+    }
+
+    @Override
+    public void unregisterSettings ()
+    {
+        UISettingsManager.unregisterComponent ( this );
+    }
+
+    @Override
+    public void loadSettings ()
+    {
+        UISettingsManager.loadSettings ( this );
+    }
+
+    @Override
+    public void saveSettings ()
+    {
+        UISettingsManager.saveSettings ( this );
     }
 
     @Override

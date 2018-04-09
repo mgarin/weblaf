@@ -34,8 +34,8 @@ import java.util.List;
  * listeners to track component focus state.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-FocusManager">How to use FocusManager</a>
  */
-
 public final class FocusManager
 {
     /**

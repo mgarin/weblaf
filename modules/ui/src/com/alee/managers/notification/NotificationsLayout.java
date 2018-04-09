@@ -32,7 +32,6 @@ import java.util.List;
  * @see com.alee.managers.notification.NotificationManager
  * @see com.alee.managers.notification.NotificationsLayoutUtils
  */
-
 public class NotificationsLayout extends AbstractLayoutManager implements SwingConstants
 {
     /**

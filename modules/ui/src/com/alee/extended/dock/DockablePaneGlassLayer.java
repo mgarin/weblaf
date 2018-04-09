@@ -17,7 +17,7 @@
 
 package com.alee.extended.dock;
 
-import com.alee.extended.behavior.ComponentVisibilityBehavior;
+import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.extended.dock.data.DockableElement;
 import com.alee.extended.dock.data.ResizeData;
 import com.alee.extended.dock.drag.FrameDragData;
@@ -45,7 +45,6 @@ import java.awt.event.MouseEvent;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  * @see com.alee.extended.dock.WebDockablePane
  */
-
 public class DockablePaneGlassLayer extends JComponent
 {
     /**
@@ -244,7 +243,7 @@ public class DockablePaneGlassLayer extends JComponent
         final FrameDragViewHandler dragViewHandler = new FrameDragViewHandler ( dockablePane );
 
         // Visibility listener
-        new ComponentVisibilityBehavior ( this )
+        new VisibilityBehavior ( this )
         {
             @Override
             public void displayed ()
@@ -308,7 +307,7 @@ public class DockablePaneGlassLayer extends JComponent
                 final FrameDragData data = ( FrameDragData ) transferable.getTransferData ( FrameTransferable.dataFlavor );
                 return dockablePane.getFrame ( data.getId () ) != null;
             }
-            catch ( final Exception e )
+            catch ( final Exception ignored )
             {
                 //
             }

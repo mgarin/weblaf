@@ -22,6 +22,10 @@ import com.alee.laf.menu.WebPopupMenuUI;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
 import com.alee.managers.language.updaters.LanguageUpdater;
+import com.alee.managers.settings.Configuration;
+import com.alee.managers.settings.SettingsMethods;
+import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.settings.UISettingsManager;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
@@ -53,10 +57,9 @@ import java.util.List;
  * @see JButton
  * @see #setPopupMenu(javax.swing.JPopupMenu)
  */
-
-public class WebSplitButton extends JButton
-        implements ActionListener, Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods, ToolTipMethods,
-        LanguageMethods, LanguageEventMethods, FontMethods<WebSplitButton>, SizeMethods<WebSplitButton>
+public class WebSplitButton extends JButton implements ActionListener, Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods,
+        EventMethods, ToolTipMethods, LanguageMethods, LanguageEventMethods, SettingsMethods, FontMethods<WebSplitButton>,
+        SizeMethods<WebSplitButton>
 {
     /**
      * Default split button icon.
@@ -1021,6 +1024,36 @@ public class WebSplitButton extends JButton
     public void removeDictionaryListeners ()
     {
         UILanguageManager.removeDictionaryListeners ( getRootPane () );
+    }
+
+    @Override
+    public void registerSettings ( final Configuration configuration )
+    {
+        UISettingsManager.registerComponent ( this, configuration );
+    }
+
+    @Override
+    public void registerSettings ( final SettingsProcessor processor )
+    {
+        UISettingsManager.registerComponent ( this, processor );
+    }
+
+    @Override
+    public void unregisterSettings ()
+    {
+        UISettingsManager.unregisterComponent ( this );
+    }
+
+    @Override
+    public void loadSettings ()
+    {
+        UISettingsManager.loadSettings ( this );
+    }
+
+    @Override
+    public void saveSettings ()
+    {
+        UISettingsManager.saveSettings ( this );
     }
 
     @Override

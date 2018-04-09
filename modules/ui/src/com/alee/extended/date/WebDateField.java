@@ -19,10 +19,6 @@ package com.alee.extended.date;
 
 import com.alee.extended.WebComponent;
 import com.alee.managers.language.LanguageManager;
-import com.alee.managers.settings.DefaultValue;
-import com.alee.managers.settings.SettingsMethods;
-import com.alee.managers.settings.SettingsProcessor;
-import com.alee.managers.settings.UISettingsManager;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.swing.Customizer;
@@ -46,8 +42,7 @@ import java.util.Date;
  * @see DateFieldPainter
  * @see WebComponent
  */
-
-public class WebDateField extends WebComponent<WebDateField, WDateFieldUI> implements SettingsMethods
+public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
 {
     /**
      * Component properties.
@@ -246,100 +241,6 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI> imple
         {
             listener.dateChanged ( date );
         }
-    }
-
-    @Override
-    public void registerSettings ( final String key )
-    {
-        UISettingsManager.registerComponent ( this, key );
-    }
-
-    @Override
-    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
-    {
-        UISettingsManager.registerComponent ( this, key, defaultValueClass );
-    }
-
-    @Override
-    public void registerSettings ( final String key, final Object defaultValue )
-    {
-        UISettingsManager.registerComponent ( this, key, defaultValue );
-    }
-
-    @Override
-    public void registerSettings ( final String group, final String key )
-    {
-        UISettingsManager.registerComponent ( this, group, key );
-    }
-
-    @Override
-    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
-    {
-        UISettingsManager.registerComponent ( this, group, key, defaultValueClass );
-    }
-
-    @Override
-    public void registerSettings ( final String group, final String key, final Object defaultValue )
-    {
-        UISettingsManager.registerComponent ( this, group, key, defaultValue );
-    }
-
-    @Override
-    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
-                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
-                                   final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
-                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
-                                   final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public void registerSettings ( final SettingsProcessor settingsProcessor )
-    {
-        UISettingsManager.registerComponent ( this, settingsProcessor );
-    }
-
-    @Override
-    public void unregisterSettings ()
-    {
-        UISettingsManager.unregisterComponent ( this );
-    }
-
-    @Override
-    public void loadSettings ()
-    {
-        UISettingsManager.loadSettings ( this );
-    }
-
-    @Override
-    public void saveSettings ()
-    {
-        UISettingsManager.saveSettings ( this );
     }
 
     /**

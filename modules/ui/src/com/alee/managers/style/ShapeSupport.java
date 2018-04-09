@@ -24,9 +24,10 @@ import java.awt.*;
  * This can be used by components to provide their shape for various usage cases.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see ShapeMethods
+ * @see StyleManager
  */
-
 public interface ShapeSupport
 {
     /**

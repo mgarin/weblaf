@@ -33,20 +33,19 @@ import static com.alee.extended.tab.DocumentTransferable.dataFlavor;
 import static com.alee.extended.tab.DocumentTransferable.transferFlavor;
 
 /**
- * Custom TransferHandler for DocumentData object.
- * This TransferHandler is made specially for WebDocumentPane component.
+ * {@link TransferHandler} implementation for {@link DocumentData}.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
- * @see com.alee.extended.tab.WebDocumentPane
+ * @see DocumentTransferable
+ * @see WebDocumentPane
  */
-
 public class DocumentTransferHandler extends TransferHandler
 {
     /**
      * Distance from pane side within which drop is determined as a split action.
      */
-    private static final int dropSize = 40;
+    protected static final int dropSize = 40;
 
     /**
      * PaneData to which this TransferHandler is attached.

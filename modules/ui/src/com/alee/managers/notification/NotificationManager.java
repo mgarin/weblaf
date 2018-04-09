@@ -45,7 +45,6 @@ import java.util.Map;
  * @see WebInnerNotification
  * @see DisplayType
  */
-
 public final class NotificationManager implements SwingConstants
 {
     /**

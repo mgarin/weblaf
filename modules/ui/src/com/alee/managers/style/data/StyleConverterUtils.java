@@ -31,9 +31,12 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
+ * Set of utilities for serializing and deserializing style files.
+ *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
  */
-
 public final class StyleConverterUtils
 {
     /**
@@ -74,8 +77,8 @@ public final class StyleConverterUtils
      * @param propertyName  property name
      */
     private static void readProperty ( final HierarchicalStreamReader reader, final UnmarshallingContext context, final Mapper mapper,
-                                      final String styleId, final Map<String, Object> properties, final Class propertyClass,
-                                      final String propertyName )
+                                       final String styleId, final Map<String, Object> properties, final Class propertyClass,
+                                       final String propertyName )
     {
         final String ignored = reader.getAttribute ( IGNORED_ATTRIBUTE );
         if ( ignored != null && Boolean.parseBoolean ( ignored ) )

@@ -34,7 +34,6 @@ import javax.swing.plaf.ComponentUI;
  * @see StyleManager#initializeDescriptors()
  * @see AbstractComponentDescriptor
  */
-
 public interface ComponentDescriptor<C extends JComponent> extends Identifiable
 {
     /**

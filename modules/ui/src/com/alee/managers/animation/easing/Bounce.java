@@ -32,9 +32,10 @@ package com.alee.managers.animation.easing;
  *
  * @author George McGinley Smith
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-AnimationManager">How to use AnimationManager</a>
+ * @see com.alee.managers.animation.AnimationManager
  * @see <a href="http://gsgd.co.uk/sandbox/jquery/easing/">jQuery Easing Plugin</a>
  */
-
 public abstract class Bounce extends AbstractEasing
 {
     @Override

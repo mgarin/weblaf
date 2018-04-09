@@ -24,8 +24,9 @@ import com.alee.managers.animation.easing.Easing;
  *
  * @param <V> transition value type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-AnimationManager">How to use AnimationManager</a>
+ * @see com.alee.managers.animation.AnimationManager
  */
-
 public interface TransitionType<V>
 {
     /**

@@ -17,7 +17,7 @@
 
 package com.alee.managers.version;
 
-import com.alee.utils.XmlException;
+import com.alee.utils.xml.XmlException;
 import com.thoughtworks.xstream.converters.SingleValueConverter;
 
 import java.sql.Date;
@@ -29,7 +29,6 @@ import java.text.SimpleDateFormat;
  * @author Mikle Garin
  * @see VersionInfo
  */
-
 public final class VersionDateConverter implements SingleValueConverter
 {
     /**

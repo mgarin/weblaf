@@ -134,7 +134,6 @@ import java.util.*;
  * @see StyleId
  * @see StyleData
  */
-
 public final class StyleManager
 {
     /**

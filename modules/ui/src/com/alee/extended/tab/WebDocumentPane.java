@@ -18,12 +18,12 @@
 package com.alee.extended.tab;
 
 import com.alee.api.jdk.Function;
-import com.alee.extended.behavior.ComponentVisibilityBehavior;
+import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.tabbedpane.WebTabbedPane;
 import com.alee.managers.drag.DragManager;
-import com.alee.managers.settings.DefaultValue;
+import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.UISettingsManager;
@@ -53,16 +53,15 @@ import java.util.Map;
  * @param <T> document type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
- * @see com.alee.extended.tab.PaneData
- * @see com.alee.extended.tab.SplitData
- * @see com.alee.extended.tab.DocumentData
+ * @see PaneData
+ * @see SplitData
+ * @see DocumentData
  */
-
-public class WebDocumentPane<T extends DocumentData> extends WebPanel
-        implements DocumentPaneEventMethods<T>, SettingsMethods, SwingConstants
+public class WebDocumentPane<T extends DocumentData> extends WebPanel implements DocumentPaneEventMethods<T>, SettingsMethods
 {
     /**
-     * todo 1. Possibility to edit tab title
+     * todo 1. Separate UI and make use of styling system
+     * todo 2. Possibility to edit tab title
      */
 
     /**
@@ -295,7 +294,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
         dragViewHandler = new DocumentDragViewHandler ( this );
 
         // Special behavior to keep view handler only while document pane is visible
-        new ComponentVisibilityBehavior ( this )
+        new VisibilityBehavior ( this )
         {
             @Override
             public void displayed ()
@@ -602,8 +601,9 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
         if ( splittedPane != null )
         {
             // Choosing course of action depending on splitted pane parent
-            final boolean ltr = direction == RIGHT || direction == BOTTOM;
-            final int orientation = direction == LEFT || direction == RIGHT ? VERTICAL : HORIZONTAL;
+            final boolean ltr = direction == SwingConstants.RIGHT || direction == SwingConstants.BOTTOM;
+            final int orientation = direction == SwingConstants.LEFT || direction == SwingConstants.RIGHT ?
+                    SwingConstants.VERTICAL : SwingConstants.HORIZONTAL;
             final SplitData<T> splitData;
             if ( splittedPane.getTabbedPane ().getParent () == WebDocumentPane.this )
             {
@@ -621,7 +621,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
                 add ( splitData.getSplitPane (), BorderLayout.CENTER );
 
                 // Restoring split locations
-                splitData.getSplitPane ().setDividerLocation ( orientation == VERTICAL ? size.width / 2 : size.height / 2 );
+                splitData.getSplitPane ().setDividerLocation ( orientation == SwingConstants.VERTICAL ? size.width / 2 : size.height / 2 );
 
                 // Changing root
                 root = splitData;
@@ -661,7 +661,8 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
                     parentSplitData.replace ( splittedPane, splitData );
 
                     // Restoring split locations
-                    splitData.getSplitPane ().setDividerLocation ( orientation == VERTICAL ? size.width / 2 : size.height / 2 );
+                    final int location = orientation == SwingConstants.VERTICAL ? size.width / 2 : size.height / 2;
+                    splitData.getSplitPane ().setDividerLocation ( location );
                     parentSplitData.getSplitPane ().setDividerLocation ( parentSplitLocation );
                 }
             }
@@ -1288,56 +1289,17 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
     }
 
     /**
-     * Returns current document pane state.
-     * This state contains opened document IDs references and structure composition.
-     * It might basically be used to save/restore document pane documents structure.
+     * Returns current {@link DocumentPaneState} for this {@link WebDocumentPane}.
+     * This {@link DocumentPaneState} contains opened document IDs references and structure composition.
+     * It can be used to save and restore {@link WebDocumentPane} structure and opened documents.
      *
-     * @return current document pane state
+     * @return current {@link DocumentPaneState} for this {@link WebDocumentPane}
      * @see DocumentPaneState
      * @see #setDocumentPaneState(DocumentPaneState)
      */
     public DocumentPaneState getDocumentPaneState ()
     {
-        return getDocumentPaneStateImpl ( root );
-    }
-
-    /**
-     * Returns document pane state starting from the specified structure.
-     * This state contains opened document IDs references and structure composition.
-     * It might basically be used to save/restore document pane documents structure.
-     *
-     * @param structure structure level to start retrieving document pane state from
-     * @return document pane state starting from the specified structure
-     */
-    protected DocumentPaneState getDocumentPaneStateImpl ( final StructureData structure )
-    {
-        if ( structure != null )
-        {
-            // Provide proper according to structure type
-            if ( structure instanceof PaneData )
-            {
-                final PaneData<T> paneData = ( PaneData<T> ) structure;
-                final T selected = paneData.getSelected ();
-                return new DocumentPaneState ( selected != null ? selected.getId () : null, paneData.getDocumentIds () );
-            }
-            else
-            {
-                final SplitData<T> splitData = ( SplitData<T> ) structure;
-                final DocumentPaneState first = getDocumentPaneStateImpl ( splitData.getFirst () );
-                final DocumentPaneState last = getDocumentPaneStateImpl ( splitData.getLast () );
-                final Pair<DocumentPaneState, DocumentPaneState> splitState =
-                        new Pair<DocumentPaneState, DocumentPaneState> ( first, last );
-                return new DocumentPaneState ( splitData.getOrientation (), splitData.getDividerLocation (), splitState );
-            }
-        }
-        else
-        {
-            // This null case might occur in case one of split sides doesn't have child
-            // That is the case when last side's document is dragged or moved
-            // Or in case something is splitted/merged
-            // We just pass null state in this case as a workaround
-            return null;
-        }
+        return root != null ? root.getDocumentPaneState () : null;
     }
 
     /**
@@ -1373,11 +1335,11 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
     }
 
     /**
-     * Restores {@link com.alee.extended.tab.StructureData} restored from provided {@link com.alee.extended.tab.DocumentPaneState}.
+     * Restores {@link StructureData} restored from provided {@link DocumentPaneState}.
      *
      * @param state     document pane state to restore
      * @param documents existing documents
-     * @return {@link com.alee.extended.tab.StructureData} restored from provided {@link com.alee.extended.tab.DocumentPaneState}
+     * @return {@link StructureData} restored from provided {@link DocumentPaneState}
      */
     protected StructureData<T> restoreStructureStateImpl ( final DocumentPaneState state, final Map<String, T> documents )
     {
@@ -1620,103 +1582,39 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
     }
 
     @Override
-    public DocumentAdapter<T> onDocumentOpen ( final DocumentDataRunnable<T> runnable )
+    public DocumentListener<T> onDocumentOpen ( final DocumentDataRunnable<T> runnable )
     {
         return DocumentPaneEventMethodsImpl.onDocumentOpen ( this, runnable );
     }
 
     @Override
-    public DocumentAdapter<T> onDocumentSelection ( final DocumentDataRunnable<T> runnable )
+    public DocumentListener<T> onDocumentSelection ( final DocumentDataRunnable<T> runnable )
     {
         return DocumentPaneEventMethodsImpl.onDocumentSelection ( this, runnable );
     }
 
     @Override
-    public DocumentAdapter<T> onDocumentClosing ( final DocumentDataCancellableRunnable<T> runnable )
+    public DocumentListener<T> onDocumentClosing ( final DocumentDataCancellableRunnable<T> runnable )
     {
         return DocumentPaneEventMethodsImpl.onDocumentClosing ( this, runnable );
     }
 
     @Override
-    public DocumentAdapter<T> onDocumentClose ( final DocumentDataRunnable<T> runnable )
+    public DocumentListener<T> onDocumentClose ( final DocumentDataRunnable<T> runnable )
     {
         return DocumentPaneEventMethodsImpl.onDocumentClose ( this, runnable );
     }
 
     @Override
-    public void registerSettings ( final String key )
+    public void registerSettings ( final Configuration configuration )
     {
-        UISettingsManager.registerComponent ( this, key );
+        UISettingsManager.registerComponent ( this, configuration );
     }
 
     @Override
-    public <V extends DefaultValue> void registerSettings ( final String key, final Class<V> defaultValueClass )
+    public void registerSettings ( final SettingsProcessor processor )
     {
-        UISettingsManager.registerComponent ( this, key, defaultValueClass );
-    }
-
-    @Override
-    public void registerSettings ( final String key, final Object defaultValue )
-    {
-        UISettingsManager.registerComponent ( this, key, defaultValue );
-    }
-
-    @Override
-    public void registerSettings ( final String group, final String key )
-    {
-        UISettingsManager.registerComponent ( this, group, key );
-    }
-
-    @Override
-    public <V extends DefaultValue> void registerSettings ( final String group, final String key, final Class<V> defaultValueClass )
-    {
-        UISettingsManager.registerComponent ( this, group, key, defaultValueClass );
-    }
-
-    @Override
-    public void registerSettings ( final String group, final String key, final Object defaultValue )
-    {
-        UISettingsManager.registerComponent ( this, group, key, defaultValue );
-    }
-
-    @Override
-    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public <V extends DefaultValue> void registerSettings ( final String key, final Class<V> defaultValueClass,
-                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
-                                   final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public <V extends DefaultValue> void registerSettings ( final String group, final String key, final Class<V> defaultValueClass,
-                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
-                                   final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public void registerSettings ( final SettingsProcessor settingsProcessor )
-    {
-        UISettingsManager.registerComponent ( this, settingsProcessor );
+        UISettingsManager.registerComponent ( this, processor );
     }
 
     @Override

@@ -26,8 +26,9 @@ import java.util.EventListener;
  * Global drag and drop operations listener.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-DragManager">How to use DragManager</a>
+ * @see DragManager
  */
-
 public interface DragListener extends EventListener
 {
     /**

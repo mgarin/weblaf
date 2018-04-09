@@ -46,7 +46,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebCustomTooltip extends JComponent implements ShapeMethods
 {
     /**

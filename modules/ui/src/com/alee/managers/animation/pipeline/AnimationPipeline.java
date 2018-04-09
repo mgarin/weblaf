@@ -20,9 +20,12 @@ package com.alee.managers.animation.pipeline;
 import com.alee.managers.animation.transition.Transition;
 
 /**
+ * Pipeline for simultaneous playback of multiple {@link Transition}s.
+ *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-AnimationManager">How to use AnimationManager</a>
+ * @see com.alee.managers.animation.AnimationManager
  */
-
 public interface AnimationPipeline
 {
     /**

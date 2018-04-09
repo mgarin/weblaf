@@ -35,8 +35,9 @@ import java.awt.image.BufferedImage;
  *
  * @param <T> dragged data type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-DragManager">How to use DragManager</a>
+ * @see com.alee.managers.drag.DragManager
  */
-
 public abstract class SimpleDragViewHandler<T> implements DragViewHandler<T>
 {
     /**
@@ -125,6 +126,8 @@ public abstract class SimpleDragViewHandler<T> implements DragViewHandler<T>
     @Override
     public void dragEnded ( final T object, final DragSourceDropEvent event )
     {
-        // Do nothing here
+        /**
+         * Don't need to do anything on drag end.
+         */
     }
 }

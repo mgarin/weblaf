@@ -26,8 +26,9 @@ import java.util.concurrent.Executors;
  * {@link EventHandler} that sends tasks into separate daemon thread.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-AnimationManager">How to use AnimationManager</a>
+ * @see com.alee.managers.animation.AnimationManager
  */
-
 public final class DaemonThreadHandler implements EventHandler
 {
     /**

@@ -48,7 +48,6 @@ import java.util.Map;
  * @see StyleManager
  * @see ComponentStyle
  */
-
 public final class ComponentStyleConverter extends ReflectionConverter
 {
     /**

@@ -20,7 +20,7 @@ package com.alee.extended.dock;
 import com.alee.api.data.CompassDirection;
 import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
-import com.alee.extended.behavior.ComponentVisibilityBehavior;
+import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.extended.dock.data.DockableFrameElement;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.window.WebDialog;
@@ -50,9 +50,8 @@ import java.beans.PropertyChangeListener;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  * @see WebDockablePane
  */
-
-public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneUI<C>
-        implements ShapeSupport, MarginSupport, PaddingSupport, PropertyChangeListener
+public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneUI<C> implements ShapeSupport, MarginSupport,
+        PaddingSupport, PropertyChangeListener
 {
     /**
      * UI properties.
@@ -69,7 +68,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
     /**
      * Listeners.
      */
-    protected transient ComponentVisibilityBehavior visibilityBehavior;
+    protected transient VisibilityBehavior visibilityBehavior;
     protected transient DockableFrameListener proxyListener;
 
     /**
@@ -122,7 +121,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
         super.installListeners ();
 
         // Instaling custom listeners
-        visibilityBehavior = new ComponentVisibilityBehavior ( pane )
+        visibilityBehavior = new VisibilityBehavior ( pane )
         {
             @Override
             public void displayed ()

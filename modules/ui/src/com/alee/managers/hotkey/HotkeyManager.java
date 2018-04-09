@@ -46,8 +46,10 @@ import java.util.List;
  * finalized. HotkeyInfo also keeps a weak reference to both top and hotkey components.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-HotkeyManager">How to use HotkeyManager</a>
+ * @deprecated Requires a rework to make use of the common Swing action map but in a more convenient fashion
  */
-
+@Deprecated
 public final class HotkeyManager
 {
     /**

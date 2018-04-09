@@ -22,7 +22,7 @@ import com.alee.laf.combobox.behavior.ComboBoxMouseWheelScrollBehavior;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
 import com.alee.managers.language.updaters.LanguageUpdater;
-import com.alee.managers.settings.DefaultValue;
+import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.UISettingsManager;
@@ -57,9 +57,8 @@ import java.util.Vector;
  * @see WebComboBoxUI
  * @see ComboBoxPainter
  */
-
 public class WebComboBox extends JComboBox implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods,
-        LanguageEventMethods, ToolTipMethods, LanguageMethods, SettingsMethods, FontMethods<WebComboBox>, SizeMethods<WebComboBox>
+        ToolTipMethods, LanguageMethods,LanguageEventMethods,  SettingsMethods, FontMethods<WebComboBox>, SizeMethods<WebComboBox>
 {
     /**
      * Constructs new combobox.
@@ -680,42 +679,6 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
     }
 
     @Override
-    public void addLanguageListener ( final LanguageListener listener )
-    {
-        UILanguageManager.addLanguageListener ( this, listener );
-    }
-
-    @Override
-    public void removeLanguageListener ( final LanguageListener listener )
-    {
-        UILanguageManager.removeLanguageListener ( this, listener );
-    }
-
-    @Override
-    public void removeLanguageListeners ()
-    {
-        UILanguageManager.removeLanguageListeners ( this );
-    }
-
-    @Override
-    public void addDictionaryListener ( final DictionaryListener listener )
-    {
-        UILanguageManager.addDictionaryListener ( this, listener );
-    }
-
-    @Override
-    public void removeDictionaryListener ( final DictionaryListener listener )
-    {
-        UILanguageManager.removeDictionaryListener ( this, listener );
-    }
-
-    @Override
-    public void removeDictionaryListeners ()
-    {
-        UILanguageManager.removeDictionaryListeners ( this );
-    }
-
-    @Override
     public WebCustomTooltip setToolTip ( final String tooltip )
     {
         return TooltipManager.setTooltip ( this, tooltip );
@@ -908,79 +871,51 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
     }
 
     @Override
-    public void registerSettings ( final String key )
+    public void addLanguageListener ( final LanguageListener listener )
     {
-        UISettingsManager.registerComponent ( this, key );
+        UILanguageManager.addLanguageListener ( this, listener );
     }
 
     @Override
-    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
+    public void removeLanguageListener ( final LanguageListener listener )
     {
-        UISettingsManager.registerComponent ( this, key, defaultValueClass );
+        UILanguageManager.removeLanguageListener ( this, listener );
     }
 
     @Override
-    public void registerSettings ( final String key, final Object defaultValue )
+    public void removeLanguageListeners ()
     {
-        UISettingsManager.registerComponent ( this, key, defaultValue );
+        UILanguageManager.removeLanguageListeners ( this );
     }
 
     @Override
-    public void registerSettings ( final String group, final String key )
+    public void addDictionaryListener ( final DictionaryListener listener )
     {
-        UISettingsManager.registerComponent ( this, group, key );
+        UILanguageManager.addDictionaryListener ( this, listener );
     }
 
     @Override
-    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
+    public void removeDictionaryListener ( final DictionaryListener listener )
     {
-        UISettingsManager.registerComponent ( this, group, key, defaultValueClass );
+        UILanguageManager.removeDictionaryListener ( this, listener );
     }
 
     @Override
-    public void registerSettings ( final String group, final String key, final Object defaultValue )
+    public void removeDictionaryListeners ()
     {
-        UISettingsManager.registerComponent ( this, group, key, defaultValue );
+        UILanguageManager.removeDictionaryListeners ( this );
     }
 
     @Override
-    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
+    public void registerSettings ( final Configuration configuration )
     {
-        UISettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
+        UISettingsManager.registerComponent ( this, configuration );
     }
 
     @Override
-    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
-                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
+    public void registerSettings ( final SettingsProcessor processor )
     {
-        UISettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
-                                   final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
-                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
-                                   final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public void registerSettings ( final SettingsProcessor settingsProcessor )
-    {
-        UISettingsManager.registerComponent ( this, settingsProcessor );
+        UISettingsManager.registerComponent ( this, processor );
     }
 
     @Override

@@ -24,75 +24,67 @@ import javax.swing.*;
 import java.io.Serializable;
 
 /**
- * Abstract class that tracks component settings to load and save them on demand.
- * Instance of this class implementations is created for each component which settings are registered to be tracked.
- * Extend this class and register it in SettingsManager or ComponentSettingsManager to provide additional components support.
+ * Abstract class that tracks {@link JComponent} to load and save its settings on demand.
+ * Implementations of this class are instantiated for each {@link JComponent} registered within {@link UISettingsManager}.
+ * Extend this class and register it in {@link UISettingsManager} to enable automated settings support additional {@link JComponent} types.
  *
- * SettingsProcessor is also defended from recursive settings load/save which might occur if component sends additional data change events
- * when new data is loaded into it (doesn't matter from SettingsProcessor or some other source).
+ * {@link SettingsProcessor} is defended from recursive settings load and save which might occur if {@link JComponent} sends additional
+ * settings change events while new settings are being loaded into it (either from {@link SettingsProcessor} itself or some other source).
  *
- * To register new SettingsProcessor use {@code registerSettingsProcessor(Class, Class)} method from SettingsManager or
- * ComponentSettingsManager class (they both do the same).
+ * To register new {@link SettingsProcessor} use {@link UISettingsManager#registerSettingsProcessor(Class, Class)} method.
+ * This will enable automated use of that {@link SettingsProcessor} for specified {@link JComponent} type.
+ * There are also additional options to register {@link SettingsProcessor} for specific {@link JComponent} in {@link UISettingsManager}.
  *
  * @param <C> {@link JComponent} type
- * @param <V> {@link Serializable} data type
+ * @param <V> {@link Serializable} value type
+ * @param <K> {@link Configuration} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
- * @see com.alee.managers.settings.SettingsManager
  * @see UISettingsManager
- * @see UISettingsManager#registerSettingsProcessor(Class, Class)
+ * @see SettingsManager
  */
-
-public abstract class SettingsProcessor<C extends JComponent, V extends Serializable>
+public abstract class SettingsProcessor<C extends JComponent, V extends Serializable, K extends Configuration<V>>
+        implements Serializable
 {
+    /**
+     * {@link JComponent} which settings are being managed.
+     */
+    protected C component;
+
+    /**
+     * {@link Configuration} for this {@link SettingsProcessor}.
+     */
+    protected K configuration;
+
     /**
      * Whether this settings processor is currently loading settings or not.
      */
-    protected boolean loading = false;
+    protected transient boolean loading = false;
 
     /**
      * Whether this settings processor is currently saving settings or not.
      */
-    protected boolean saving = false;
+    protected transient boolean saving = false;
 
     /**
-     * Settings processor data.
-     */
-    protected SettingsProcessorData data;
-
-    /**
-     * Constructs SettingsProcessor using the specified data.
+     * Constructs new {@link SettingsProcessor} for the specified {@link JComponent} and {@link Configuration}.
      *
-     * @param component            component which settings are being managed
-     * @param group                component settings group
-     * @param key                  component settings key
-     * @param defaultValue         component default value
-     * @param loadInitialSettings  whether to load initial available settings into the component or not
-     * @param applySettingsChanges whether to apply settings changes to the component or not
+     * @param component     {@link JComponent} which settings are being managed
+     * @param configuration {@link Configuration}
      */
-    public SettingsProcessor ( final JComponent component, final String group, final String key, final Object defaultValue,
-                               final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        this ( new SettingsProcessorData ( component, group, key, defaultValue, loadInitialSettings, applySettingsChanges ) );
-    }
-
-    /**
-     * Constructs SettingsProcessor using the specified SettingsProcessorData.
-     *
-     * @param data SettingsProcessorData
-     */
-    public SettingsProcessor ( final SettingsProcessorData data )
+    public SettingsProcessor ( final C component, final K configuration )
     {
         super ();
 
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
-        // SettingsProcessor data
-        this.data = data;
+        // Component and configuration
+        this.component = component;
+        this.configuration = configuration;
 
         // Performing initial settings load
-        if ( data.isLoadInitialSettings () )
+        if ( configuration.isLoadInitialSettings () )
         {
             try
             {
@@ -101,90 +93,87 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
             catch ( final Exception e )
             {
                 final String msg = "Unable to load initial component settings for group '%s' and key '%s' due to unexpected exception";
-                final String fmsg = String.format ( msg, data.getGroup (), data.getKey () );
+                final String fmsg = String.format ( msg, configuration.group (), configuration.key () );
                 LoggerFactory.getLogger ( SettingsProcessor.class ).error ( fmsg, e );
             }
         }
 
-        // Initializing specific processor settings
+        // Registering specific processor settings
         try
         {
-            doInit ( getComponent () );
+            register ( component () );
         }
         catch ( final Exception e )
         {
             final String msg = "Unable to initialize specific processor settings for component " +
                     "with group '%s' and key '%s' due to unexpected exception";
-            final String fmsg = String.format ( msg, data.getGroup (), data.getKey () );
+            final String fmsg = String.format ( msg, configuration.group (), configuration.key () );
             LoggerFactory.getLogger ( SettingsProcessor.class ).error ( fmsg, e );
         }
+    }
 
-        // Apply settings changes to the component
-        if ( data.isApplySettingsChanges () )
+    /**
+     * Returns {@link JComponent} which settings are being managed.
+     *
+     * @return {@link JComponent} which settings are being managed
+     */
+    public C component ()
+    {
+        return component;
+    }
+
+    /**
+     * Returns {@link Configuration} for this {@link SettingsProcessor}.
+     *
+     * @return {@link Configuration} for this {@link SettingsProcessor}
+     */
+    public K configuration ()
+    {
+        return configuration;
+    }
+
+    /**
+     * Called when {@link JComponent} is registered in {@link UISettingsManager} and this {@link SettingsProcessor} is attached to it.
+     *
+     * @param component {@link JComponent} to register this {@link SettingsProcessor} for
+     */
+    protected abstract void register ( C component );
+
+    /**
+     * Called when {@link JComponent} is unregistered from {@link UISettingsManager} and this {@link SettingsProcessor} is detached from it.
+     *
+     * @param component {@link JComponent} to unregister this {@link SettingsProcessor} for
+     */
+    protected abstract void unregister ( C component );
+
+    /**
+     * Returns default value for {@link JComponent} which settings are being managed.
+     * This method can return default value provided within settings registration, default {@link SettingsProcessor} value or {@code null}.
+     *
+     * @return default value for {@link JComponent} which settings are being managed
+     */
+    public final V defaultValue ()
+    {
+        V defaultValue = configuration.defaultValue ();
+        if ( defaultValue == null )
         {
-            SettingsManager.addSettingsListener ( getGroup (), getKey (), new SettingsListener ()
-            {
-                @Override
-                public void settingsChanged ( final String group, final String key, final Object newValue )
-                {
-                    load ();
-                }
-            } );
+            defaultValue = createDefaultValue ();
         }
+        return defaultValue;
     }
 
     /**
-     * Returns SettingsProcessorData.
+     * Returns default value for {@link JComponent} provided by {@link SettingsProcessor} implementation.
      *
-     * @return SettingsProcessorData
+     * @return default value for {@link JComponent} provided by {@link SettingsProcessor} implementation
      */
-    public SettingsProcessorData getData ()
+    protected V createDefaultValue ()
     {
-        return data;
+        return null;
     }
 
     /**
-     * Returns managed component.
-     *
-     * @return managed component
-     */
-    public C getComponent ()
-    {
-        return ( C ) data.getComponent ();
-    }
-
-    /**
-     * Returns component settings group.
-     *
-     * @return component settings group
-     */
-    public String getGroup ()
-    {
-        return data.getGroup ();
-    }
-
-    /**
-     * Returns component settings key.
-     *
-     * @return component settings key
-     */
-    public String getKey ()
-    {
-        return data.getKey ();
-    }
-
-    /**
-     * Returns component default value.
-     *
-     * @return component default value
-     */
-    public V getDefaultValue ()
-    {
-        return ( V ) data.getDefaultValue ();
-    }
-
-    /**
-     * Loads saved settings into the component.
+     * Loads saved settings for the {@link JComponent}.
      * Must always be performed on Swing Event Dispatch Thread.
      */
     public final void load ()
@@ -200,13 +189,33 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
 
         // Load settings
         loading = true;
-        doLoad ( getComponent () );
+        loadSettings ( component () );
         loading = false;
     }
 
     /**
-     * Saves settings taken from the component.
-     * This method might be called from the component listeners to provide auto-save functionality.
+     * Loads previously stored settings into the specified {@link JComponent}.
+     * To load actual previously stored settings call {@link #loadSettings()} method.
+     *
+     * @param component {@link JComponent} to load value for
+     * @see #loadSettings()
+     */
+    protected abstract void loadSettings ( C component );
+
+    /**
+     * Loads and returns saved {@link JComponent} settings.
+     *
+     * @return loaded {@link JComponent} settings
+     */
+    protected V loadSettings ()
+    {
+        final K configuration = configuration ();
+        return SettingsManager.get ( configuration.group (), configuration.key (), defaultValue () );
+    }
+
+    /**
+     * Saves settings taken from {@link JComponent}.
+     * This method might be called from the {@link JComponent} listeners to provide auto-save functionality.
      */
     public final void save ()
     {
@@ -214,10 +223,10 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
     }
 
     /**
-     * Saves settings taken from the component.
-     * This method might be called from the component listeners to provide auto-save functionality.
+     * Saves settings taken from {@link JComponent}.
+     * This method might be called from the {@link JComponent} listeners to provide auto-save functionality.
      *
-     * @param onChange whether this save is called from component change listeners
+     * @param onChange whether this save is called from {@link JComponent} change listeners
      */
     public final void save ( final boolean onChange )
     {
@@ -238,8 +247,28 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
 
         // Save settings
         saving = true;
-        doSave ( getComponent () );
+        saveSettings ( component () );
         saving = false;
+    }
+
+    /**
+     * Saves current settings of the specified {@link JComponent}.
+     * To save actual retrieved settings call {@link #saveSettings(java.io.Serializable)} method.
+     *
+     * @param component {@link JComponent} to save settings for
+     * @see #saveSettings(java.io.Serializable)
+     */
+    protected abstract void saveSettings ( C component );
+
+    /**
+     * Saves {@link JComponent} settings.
+     *
+     * @param value new {@link JComponent} settings
+     */
+    protected void saveSettings ( final V value )
+    {
+        final K configuration = configuration ();
+        SettingsManager.set ( configuration.group (), configuration.key (), value );
     }
 
     /**
@@ -250,62 +279,21 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
-        // Destroying processor data
-        doDestroy ( getComponent () );
-        this.data = null;
+        // Unegistering specific processor settings
+        try
+        {
+            unregister ( component () );
+        }
+        catch ( final Exception e )
+        {
+            final String msg = "Unable to unregister specific processor settings for component " +
+                    "with group '%s' and key '%s' due to unexpected exception";
+            final String fmsg = String.format ( msg, configuration.group (), configuration.key () );
+            LoggerFactory.getLogger ( SettingsProcessor.class ).error ( fmsg, e );
+        }
+
+        // Component and configuration
+        this.configuration = null;
+        this.component = null;
     }
-
-    /**
-     * Loads and returns saved component settings.
-     *
-     * @return loaded settings
-     */
-    protected V loadValue ()
-    {
-        return SettingsManager.get ( getGroup (), getKey (), getDefaultValue () );
-    }
-
-    /**
-     * Saves component settings.
-     *
-     * @param value new component settings
-     */
-    protected void saveValue ( final V value )
-    {
-        SettingsManager.set ( getGroup (), getKey (), value );
-    }
-
-    /**
-     * Called when a new component is registered in ComponentSettingsManager.
-     *
-     * @param component registered component
-     */
-    protected abstract void doInit ( C component );
-
-    /**
-     * Called when component is unregistered from ComponentSettingsManager.
-     *
-     * @param component unregistered component
-     */
-    protected abstract void doDestroy ( C component );
-
-    /**
-     * Called on component settings load.
-     * To load actual value call {@link #loadValue()} method.
-     * It doesn't matter if it is invoked by SettingsProcessor or some other source.
-     *
-     * @param component component to load settings into
-     * @see #loadValue()
-     */
-    protected abstract void doLoad ( C component );
-
-    /**
-     * Called on component settings save.
-     * To save actual value call {@link #saveValue(java.io.Serializable)} method.
-     * It doesn't matter if it is invoked by SettingsProcessor or some other source.
-     *
-     * @param component component to save settings from
-     * @see #saveValue(java.io.Serializable)
-     */
-    protected abstract void doSave ( C component );
 }

@@ -20,7 +20,7 @@ package com.alee.extended.panel;
 import com.alee.api.jdk.Supplier;
 import com.alee.extended.layout.AccordionLayout;
 import com.alee.laf.panel.WebPanel;
-import com.alee.managers.settings.DefaultValue;
+import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.UISettingsManager;
@@ -38,9 +38,12 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public class WebAccordion extends WebPanel implements SwingConstants, SettingsMethods
 {
+    /**
+     * todo 1. Separate UI and make use of new styling system
+     */
+
     /**
      * Whether animate transition between states or not.
      */
@@ -401,24 +404,24 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
         final CollapsiblePaneListener cpl = new CollapsiblePaneAdapter ()
         {
             @Override
-            public void expanding ( final WebCollapsiblePane pane )
+            public void expanding ( final WebCollapsiblePane collapsiblePane )
             {
                 // Update selected panes
-                updateSelections ( panes.indexOf ( pane ), true );
+                updateSelections ( panes.indexOf ( collapsiblePane ), true );
             }
 
             @Override
-            public void collapsing ( final WebCollapsiblePane pane )
+            public void collapsing ( final WebCollapsiblePane collapsiblePane )
             {
                 // This hold additional events from firing when panes collapse due to panes selection mode
                 if ( multiplySelectionAllowed || getSelectionCount () == 0 )
                 {
                     // Update selected panes
-                    updateSelections ( panes.indexOf ( pane ), false );
+                    updateSelections ( panes.indexOf ( collapsiblePane ), false );
                 }
 
                 // Update last selected
-                lastExpanded = pane;
+                lastExpanded = collapsiblePane;
             }
         };
         pane.addCollapsiblePaneListener ( cpl );
@@ -730,79 +733,15 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     }
 
     @Override
-    public void registerSettings ( final String key )
+    public void registerSettings ( final Configuration configuration )
     {
-        UISettingsManager.registerComponent ( this, key );
+        UISettingsManager.registerComponent ( this, configuration );
     }
 
     @Override
-    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
+    public void registerSettings ( final SettingsProcessor processor )
     {
-        UISettingsManager.registerComponent ( this, key, defaultValueClass );
-    }
-
-    @Override
-    public void registerSettings ( final String key, final Object defaultValue )
-    {
-        UISettingsManager.registerComponent ( this, key, defaultValue );
-    }
-
-    @Override
-    public void registerSettings ( final String group, final String key )
-    {
-        UISettingsManager.registerComponent ( this, group, key );
-    }
-
-    @Override
-    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
-    {
-        UISettingsManager.registerComponent ( this, group, key, defaultValueClass );
-    }
-
-    @Override
-    public void registerSettings ( final String group, final String key, final Object defaultValue )
-    {
-        UISettingsManager.registerComponent ( this, group, key, defaultValue );
-    }
-
-    @Override
-    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
-                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
-                                   final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
-                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
-                                   final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public void registerSettings ( final SettingsProcessor settingsProcessor )
-    {
-        UISettingsManager.registerComponent ( this, settingsProcessor );
+        UISettingsManager.registerComponent ( this, processor );
     }
 
     @Override

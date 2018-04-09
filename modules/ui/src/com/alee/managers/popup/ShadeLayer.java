@@ -36,7 +36,6 @@ import java.awt.event.MouseEvent;
  * @author Mikle Garin
  * @see PopupManager
  */
-
 public class ShadeLayer extends PopupLayer
 {
     /**

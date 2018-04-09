@@ -18,10 +18,12 @@
 package com.alee.laf.table;
 
 import com.alee.managers.hotkey.HotkeyData;
-import com.alee.managers.language.DictionaryListener;
-import com.alee.managers.language.LanguageEventMethods;
-import com.alee.managers.language.LanguageListener;
-import com.alee.managers.language.UILanguageManager;
+import com.alee.managers.language.*;
+import com.alee.managers.language.updaters.LanguageUpdater;
+import com.alee.managers.settings.Configuration;
+import com.alee.managers.settings.SettingsMethods;
+import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.settings.UISettingsManager;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -52,17 +54,15 @@ import java.util.Vector;
  * @see WebTableUI
  * @see TablePainter
  */
-
-public class WebTable extends JTable
-        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods, LanguageEventMethods,
-        FontMethods<WebTable>, SizeMethods<WebTable>
+public class WebTable extends JTable implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods,
+        LanguageMethods, LanguageEventMethods, SettingsMethods, FontMethods<WebTable>, SizeMethods<WebTable>
 {
     /**
      * Whether or not table is editable.
      * This is an additional global editable state switch for the whole table.
      * It is added for the sake of simplicity as it is missing in common {@link javax.swing.JTable}.
      *
-     * @see javax.swing.table.TableModel#isCellEditable(int, int)
+     * @see TableModel#isCellEditable(int, int)
      */
     protected boolean editable;
 
@@ -817,6 +817,54 @@ public class WebTable extends JTable
     }
 
     @Override
+    public String getLanguage ()
+    {
+        return UILanguageManager.getComponentKey ( this );
+    }
+
+    @Override
+    public void setLanguage ( final String key, final Object... data )
+    {
+        UILanguageManager.registerComponent ( this, key, data );
+    }
+
+    @Override
+    public void updateLanguage ( final Object... data )
+    {
+        UILanguageManager.updateComponent ( this, data );
+    }
+
+    @Override
+    public void updateLanguage ( final String key, final Object... data )
+    {
+        UILanguageManager.updateComponent ( this, key, data );
+    }
+
+    @Override
+    public void removeLanguage ()
+    {
+        UILanguageManager.unregisterComponent ( this );
+    }
+
+    @Override
+    public boolean isLanguageSet ()
+    {
+        return UILanguageManager.isRegisteredComponent ( this );
+    }
+
+    @Override
+    public void setLanguageUpdater ( final LanguageUpdater updater )
+    {
+        UILanguageManager.registerLanguageUpdater ( this, updater );
+    }
+
+    @Override
+    public void removeLanguageUpdater ()
+    {
+        UILanguageManager.unregisterLanguageUpdater ( this );
+    }
+
+    @Override
     public void addLanguageListener ( final LanguageListener listener )
     {
         UILanguageManager.addLanguageListener ( this, listener );
@@ -850,6 +898,36 @@ public class WebTable extends JTable
     public void removeDictionaryListeners ()
     {
         UILanguageManager.removeDictionaryListeners ( this );
+    }
+
+    @Override
+    public void registerSettings ( final Configuration configuration )
+    {
+        UISettingsManager.registerComponent ( this, configuration );
+    }
+
+    @Override
+    public void registerSettings ( final SettingsProcessor processor )
+    {
+        UISettingsManager.registerComponent ( this, processor );
+    }
+
+    @Override
+    public void unregisterSettings ()
+    {
+        UISettingsManager.unregisterComponent ( this );
+    }
+
+    @Override
+    public void loadSettings ()
+    {
+        UISettingsManager.loadSettings ( this );
+    }
+
+    @Override
+    public void saveSettings ()
+    {
+        UISettingsManager.saveSettings ( this );
     }
 
     @Override

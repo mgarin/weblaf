@@ -54,7 +54,6 @@ import java.util.List;
  * @see AsyncTreeModel
  * @see AsyncTreeDataProvider
  */
-
 public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N> implements AsyncTreeModelListener<N>
 {
     /**

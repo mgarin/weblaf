@@ -18,7 +18,7 @@
 package com.alee.painter.decoration.background;
 
 import com.alee.api.data.Orientation;
-import com.alee.extended.behavior.ComponentVisibilityBehavior;
+import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.managers.animation.transition.*;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.ColorUtils;
@@ -82,7 +82,7 @@ public class MovingHighlightBackground<C extends JComponent, D extends IDecorati
     /**
      * Visibility behavior that handles animation.
      */
-    protected transient ComponentVisibilityBehavior<C> visibilityBehavior;
+    protected transient VisibilityBehavior<C> visibilityBehavior;
 
     /**
      * Highlight position.
@@ -97,7 +97,7 @@ public class MovingHighlightBackground<C extends JComponent, D extends IDecorati
     @Override
     public void activate ( final C c, final D d )
     {
-        visibilityBehavior = new ComponentVisibilityBehavior<C> ( c, true )
+        visibilityBehavior = new VisibilityBehavior<C> ( c, true )
         {
             @Override
             public void displayed ()

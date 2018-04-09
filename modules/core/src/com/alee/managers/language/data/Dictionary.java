@@ -47,7 +47,6 @@ import java.util.*;
  * @see Record
  * @see TranslationInformation
  */
-
 @XStreamAlias ( "Dictionary" )
 public final class Dictionary implements Identifiable, Mergeable, Cloneable, Serializable
 {

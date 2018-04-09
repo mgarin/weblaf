@@ -42,7 +42,6 @@ import java.util.*;
  * @see com.alee.managers.style.XmlSkin
  * @see com.alee.managers.style.XmlSkinExtension
  */
-
 @XStreamAlias ( "skin" )
 @XStreamConverter ( SkinInfoConverter.class )
 public final class SkinInfo implements Serializable

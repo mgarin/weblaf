@@ -28,7 +28,6 @@ import java.io.Serializable;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public interface ComponentArea<V, C extends JComponent> extends Serializable
 {
     /**

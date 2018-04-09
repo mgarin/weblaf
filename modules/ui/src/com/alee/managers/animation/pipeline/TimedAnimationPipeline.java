@@ -36,8 +36,9 @@ import java.util.concurrent.ConcurrentSkipListSet;
  * 4. Nanoseconds are used as unit of measurement as a more precise way to determine frames position on the timeline
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-AnimationManager">How to use AnimationManager</a>
+ * @see com.alee.managers.animation.AnimationManager
  */
-
 public final class TimedAnimationPipeline extends AbstractAnimationPipeline implements Runnable
 {
     /**
@@ -136,7 +137,7 @@ public final class TimedAnimationPipeline extends AbstractAnimationPipeline impl
                 }
             }
         }
-        catch ( final InterruptedException e )
+        catch ( final InterruptedException ignored )
         {
             // Interrupted on shutdown
         }

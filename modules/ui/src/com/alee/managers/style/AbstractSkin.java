@@ -29,10 +29,9 @@ import java.util.List;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
- * @see com.alee.managers.style.StyleManager
- * @see com.alee.managers.style.Skin
+ * @see StyleManager
+ * @see Skin
  */
-
 public abstract class AbstractSkin implements Skin
 {
     /**

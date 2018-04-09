@@ -22,45 +22,44 @@ import com.alee.api.data.CompassDirection;
 import java.util.EventListener;
 
 /**
- * {@link com.alee.extended.dock.WebDockableFrame} events listener.
+ * {@link WebDockableFrame} events listener.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
- * @see com.alee.extended.dock.WebDockableFrame
+ * @see WebDockableFrame
  */
-
 public interface DockableFrameListener extends EventListener
 {
     /**
-     * Called when frame is added to {@link com.alee.extended.dock.WebDockablePane}.
+     * Called when frame is added to {@link WebDockablePane}.
      *
-     * @param frame        {@link com.alee.extended.dock.WebDockableFrame} which was added
-     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane} where frame was added
+     * @param frame        {@link WebDockableFrame} which was added
+     * @param dockablePane {@link WebDockablePane} where frame was added
      */
     public void frameAdded ( WebDockableFrame frame, WebDockablePane dockablePane );
 
     /**
      * Called when frame state is changed.
      *
-     * @param frame    {@link com.alee.extended.dock.WebDockableFrame}
+     * @param frame    {@link WebDockableFrame}
      * @param oldState previous frame state
      * @param newState current frame state
      */
     public void frameStateChanged ( WebDockableFrame frame, DockableFrameState oldState, DockableFrameState newState );
 
     /**
-     * Called when frame is moved within {@link com.alee.extended.dock.WebDockablePane}.
+     * Called when frame is moved within {@link WebDockablePane}.
      *
-     * @param frame    {@link com.alee.extended.dock.WebDockableFrame}
+     * @param frame    {@link WebDockableFrame}
      * @param position current frame position relative to content
      */
     public void frameMoved ( WebDockableFrame frame, CompassDirection position );
 
     /**
-     * Called when frame is removed from {@link com.alee.extended.dock.WebDockablePane}.
+     * Called when frame is removed from {@link WebDockablePane}.
      *
-     * @param frame        {@link com.alee.extended.dock.WebDockableFrame} which was removed
-     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane} where frame was removed from
+     * @param frame        {@link WebDockableFrame} which was removed
+     * @param dockablePane {@link WebDockablePane} where frame was removed from
      */
     public void frameRemoved ( WebDockableFrame frame, WebDockablePane dockablePane );
 }

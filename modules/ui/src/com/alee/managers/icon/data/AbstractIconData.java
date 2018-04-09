@@ -34,11 +34,11 @@ import java.util.List;
  *
  * @param <T> icon type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-IconManager">How to use IconManager</a>
  * @see com.alee.managers.icon.IconManager
  * @see com.alee.managers.icon.data.ImageIconData
  * @see SvgIconData
  */
-
 public abstract class AbstractIconData<T extends Icon> implements Serializable, Cloneable, Identifiable
 {
     /**

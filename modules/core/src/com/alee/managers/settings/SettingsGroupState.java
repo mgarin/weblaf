@@ -30,23 +30,22 @@ import java.io.Serializable;
  * @see SettingsManager
  * @see SettingsGroup
  */
-
 @XStreamAlias ( "SettingsGroupState" )
 public class SettingsGroupState implements Serializable
 {
     /**
-     * SettingsGroup read state.
+     * {@link ReadState} for {@link SettingsGroup}.
      */
     @XStreamAsAttribute
     private ReadState readState;
 
     /**
-     * Occurred error.
+     * Occurred exception.
      */
     private Throwable error;
 
     /**
-     * Constructs none SettingsGroupState.
+     * Constructs new {@link SettingsGroupState}.
      */
     public SettingsGroupState ()
     {
@@ -54,9 +53,9 @@ public class SettingsGroupState implements Serializable
     }
 
     /**
-     * Constructs SettingsGroupState with the specified read state.
+     * Constructs new {@link SettingsGroupState}.
      *
-     * @param readState read state
+     * @param readState {@link ReadState}
      */
     public SettingsGroupState ( final ReadState readState )
     {
@@ -64,10 +63,10 @@ public class SettingsGroupState implements Serializable
     }
 
     /**
-     * Constructs SettingsGroupState with the specified read state and occurred error.
+     * Constructs new {@link SettingsGroupState}.
      *
-     * @param readState read state
-     * @param error     occurred error
+     * @param readState {@link ReadState}
+     * @param error     occured exception
      */
     public SettingsGroupState ( final ReadState readState, final Throwable error )
     {
@@ -77,9 +76,9 @@ public class SettingsGroupState implements Serializable
     }
 
     /**
-     * Returns SettingsGroup read state.
+     * Returns {@link ReadState} for {@link SettingsGroup}.
      *
-     * @return SettingsGroup read state
+     * @return {@link ReadState} for {@link SettingsGroup}
      */
     public ReadState getReadState ()
     {
@@ -87,9 +86,9 @@ public class SettingsGroupState implements Serializable
     }
 
     /**
-     * Sets SettingsGroup read state.
+     * Sets {@link ReadState} for {@link SettingsGroup}.
      *
-     * @param readState new SettingsGroup read state
+     * @param readState new {@link ReadState} for {@link SettingsGroup}
      */
     public void setReadState ( final ReadState readState )
     {
@@ -97,9 +96,9 @@ public class SettingsGroupState implements Serializable
     }
 
     /**
-     * Returns occurred error.
+     * Returns occurred exception.
      *
-     * @return occurred error
+     * @return occurred exception
      */
     public Throwable getError ()
     {
@@ -107,9 +106,9 @@ public class SettingsGroupState implements Serializable
     }
 
     /**
-     * Sets occurred error.
+     * Sets occurred exception.
      *
-     * @param error occurred error
+     * @param error occurred exception
      */
     public void setError ( final Throwable error )
     {

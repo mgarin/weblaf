@@ -31,7 +31,6 @@ import java.util.List;
  * @param <C> container type
  * @author Mikle Garin
  */
-
 public abstract class WebContainer<C extends WebContainer<C, U>, U extends ComponentUI> extends WebComponent<C, U>
         implements ContainerMethods<C>
 {

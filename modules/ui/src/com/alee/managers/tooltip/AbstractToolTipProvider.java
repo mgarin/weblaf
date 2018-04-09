@@ -32,7 +32,6 @@ import java.awt.event.ActionListener;
  * @param <A> component area type
  * @author Mikle Garin
  */
-
 public abstract class AbstractToolTipProvider<V, C extends JComponent, A extends ComponentArea<V, C>> implements ToolTipProvider<V, C, A>
 {
     /**

@@ -48,7 +48,6 @@ import com.alee.managers.version.VersionManager;
  * @see UIProxyManager
  * @see DragManager
  */
-
 public final class UIManagers
 {
     /**

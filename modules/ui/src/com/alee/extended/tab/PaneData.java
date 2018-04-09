@@ -46,17 +46,16 @@ import static com.alee.laf.splitpane.WebSplitPane.HORIZONTAL_SPLIT;
  * Data for single tabbed pane within document pane.
  * It basically contains tabbed pane and opened documents list.
  *
- * @param <T> document data type
+ * @param <T> {@link DocumentData} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
- * @see com.alee.extended.tab.WebDocumentPane
+ * @see WebDocumentPane
  */
-
 public final class PaneData<T extends DocumentData> implements StructureData<T>, SwingConstants
 {
     /**
-     * WebDocumentPane this PaneData belongs to.
-     * Referenced to properly act when WebDocumentPane is required to retrieve customizers or perform any operation.
+     * {@link WebDocumentPane} this {@link PaneData} belongs to.
+     * Referenced to properly act when {@link WebDocumentPane} is required to retrieve customizers or perform any operation.
      */
     protected WebDocumentPane<T> documentPane;
 
@@ -76,9 +75,9 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
     protected List<T> data = new ArrayList<T> ();
 
     /**
-     * Constructs new PaneData for the specified WebDocumentPane.
+     * Constructs new {@link PaneData} for the specified {@link WebDocumentPane}.
      *
-     * @param documentPane parent WebDocumentPane
+     * @param documentPane parent {@link WebDocumentPane}
      */
     public PaneData ( final WebDocumentPane<T> documentPane )
     {
@@ -328,6 +327,12 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         return this;
     }
 
+    @Override
+    public DocumentPaneState getDocumentPaneState ()
+    {
+        return new DocumentPaneState ( this );
+    }
+
     /**
      * Returns parent WebDocumentPane.
      *
@@ -449,7 +454,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         tabbedPane.setTabComponentAt ( i, createTabComponent ( document ) );
 
         // Listening to document data changes
-        document.addListener ( new PaneDataAdapter<T> ( this ) );
+        document.addListener ( new PaneUpdater<T> ( this ) );
     }
 
     /**
@@ -776,9 +781,9 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         final List<DocumentDataListener<T>> listeners = document.getListeners ();
         for ( final DocumentDataListener<T> listener : listeners )
         {
-            if ( listener instanceof PaneDataAdapter )
+            if ( listener instanceof PaneUpdater )
             {
-                final PaneData paneData = ( ( PaneDataAdapter ) listener ).getPaneData ();
+                final PaneData paneData = ( ( PaneUpdater ) listener ).getPaneData ();
                 if ( paneData == this )
                 {
                     return listener;

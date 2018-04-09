@@ -34,8 +34,8 @@ import java.util.Map;
  * This manager provides API to play customizable transitions.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-AnimationManager">How to use AnimationManager</a>
  */
-
 public final class AnimationManager
 {
     /**

@@ -32,7 +32,6 @@ import java.awt.*;
  * @see com.alee.managers.popup.PopupManager
  * @see com.alee.managers.popup.WebInnerPopup
  */
-
 public class PopupLayer extends WebPanel
 {
     /**

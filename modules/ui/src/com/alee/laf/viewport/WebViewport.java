@@ -35,7 +35,6 @@ import javax.swing.*;
  * @see WebViewportUI
  * @see ViewportPainter
  */
-
 public class WebViewport extends JViewport implements Styleable, Paintable
 {
     /**

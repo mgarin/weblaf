@@ -37,7 +37,6 @@ import java.util.LinkedHashMap;
  *
  * @author Mikle Garin
  */
-
 public final class PainterStyleConverter extends ReflectionConverter
 {
     /**

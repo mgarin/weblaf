@@ -30,7 +30,6 @@ import java.util.Properties;
  *
  * @author Mikle Garin
  */
-
 public final class VersionUpdater
 {
     /**

@@ -22,7 +22,7 @@ import com.alee.managers.hotkey.HotkeyInfo;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.language.*;
 import com.alee.managers.language.updaters.LanguageUpdater;
-import com.alee.managers.settings.DefaultValue;
+import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.UISettingsManager;
@@ -59,10 +59,9 @@ import java.util.List;
  * @see ToggleButtonPainter
  * @see JToggleButton
  */
-
-public class WebToggleButton extends JToggleButton
-        implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods, ToolTipMethods, LanguageMethods,
-        LanguageEventMethods, SettingsMethods, FontMethods<WebToggleButton>, SizeMethods<WebToggleButton>
+public class WebToggleButton extends JToggleButton implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods,
+        EventMethods, ToolTipMethods, LanguageMethods, LanguageEventMethods, SettingsMethods, FontMethods<WebToggleButton>,
+        SizeMethods<WebToggleButton>
 {
     /**
      * Constructs new {@link JToggleButton}.
@@ -961,79 +960,15 @@ public class WebToggleButton extends JToggleButton
     }
 
     @Override
-    public void registerSettings ( final String key )
+    public void registerSettings ( final Configuration configuration )
     {
-        UISettingsManager.registerComponent ( this, key );
+        UISettingsManager.registerComponent ( this, configuration );
     }
 
     @Override
-    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
+    public void registerSettings ( final SettingsProcessor processor )
     {
-        UISettingsManager.registerComponent ( this, key, defaultValueClass );
-    }
-
-    @Override
-    public void registerSettings ( final String key, final Object defaultValue )
-    {
-        UISettingsManager.registerComponent ( this, key, defaultValue );
-    }
-
-    @Override
-    public void registerSettings ( final String group, final String key )
-    {
-        UISettingsManager.registerComponent ( this, group, key );
-    }
-
-    @Override
-    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
-    {
-        UISettingsManager.registerComponent ( this, group, key, defaultValueClass );
-    }
-
-    @Override
-    public void registerSettings ( final String group, final String key, final Object defaultValue )
-    {
-        UISettingsManager.registerComponent ( this, group, key, defaultValue );
-    }
-
-    @Override
-    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
-                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
-                                   final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
-                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
-                                   final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public void registerSettings ( final SettingsProcessor settingsProcessor )
-    {
-        UISettingsManager.registerComponent ( this, settingsProcessor );
+        UISettingsManager.registerComponent ( this, processor );
     }
 
     @Override

@@ -24,8 +24,9 @@ import java.util.Locale;
  * Special {@link Comparator} implementation for {@link TranslationInformation} based on provided {@link Locale} country.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>
+ * @see com.alee.managers.language.LanguageManager
  */
-
 public final class TranslationInformationComparator extends AbstractCountryComparator<TranslationInformation>
 {
     /**

@@ -31,8 +31,9 @@ import java.util.Map;
  * Abstract {@link IconSet} common method implementations.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-IconManager">How to use IconManager</a>
+ * @see com.alee.managers.icon.IconManager
  */
-
 public abstract class AbstractIconSet implements IconSet
 {
     /**

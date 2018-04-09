@@ -15,7 +15,6 @@ import java.lang.ref.WeakReference;
  * @see com.alee.laf.scroll.WebScrollPane#createVerticalScrollBar
  * @see com.alee.laf.scroll.WebScrollPane#createHorizontalScrollBar
  */
-
 public class WebScrollPaneBar extends WebScrollBar implements UIResource
 {
     /**

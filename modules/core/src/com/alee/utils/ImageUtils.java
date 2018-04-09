@@ -42,6 +42,11 @@ import java.util.List;
 public final class ImageUtils
 {
     /**
+     * todo 1. Rework the way image instances and data are handled within WebLaF
+     * todo 2. Provide an appropriate way to cache images (based on component/
+     */
+
+    /**
      * Image cache keys separator.
      */
     private static final String IMAGE_CACHE_KEYS_SEPARATOR = "|";
@@ -1359,6 +1364,16 @@ public final class ImageUtils
      */
 
     private static final Map<String, ImageIcon> transparentCache = new HashMap<String, ImageIcon> ();
+
+    public static void clearTransparentCache ()
+    {
+        transparentCache.clear ();
+    }
+
+    public static void clearTransparentCache ( final String id )
+    {
+        transparentCache.remove ( id );
+    }
 
     public static ImageIcon getTransparentCopy ( final String id, final ImageIcon imageIcon, final float opacity )
     {

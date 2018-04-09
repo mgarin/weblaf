@@ -19,7 +19,7 @@ package com.alee.extended.split;
 
 import com.alee.api.data.Orientation;
 import com.alee.api.jdk.Consumer;
-import com.alee.extended.behavior.ComponentVisibilityBehavior;
+import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
@@ -69,7 +69,7 @@ public class WebMultiSplitPaneDividerUI<C extends WebMultiSplitPaneDivider> exte
      */
     protected transient PropertyChangeListener multiSplitPanePropertyListener;
     protected transient MultiSplitExpansionListener multiSplitExpansionListener;
-    protected transient ComponentVisibilityBehavior<WebMultiSplitPaneDivider> visibilityBehavior;
+    protected transient VisibilityBehavior<WebMultiSplitPaneDivider> visibilityBehavior;
     protected transient MouseAdapter dragListener;
 
     /**
@@ -165,7 +165,7 @@ public class WebMultiSplitPaneDividerUI<C extends WebMultiSplitPaneDivider> exte
         divider.getMultiSplitPane ().addExpansionListener ( multiSplitExpansionListener );
 
         // Installing visibility behavior
-        visibilityBehavior = new ComponentVisibilityBehavior<WebMultiSplitPaneDivider> ( divider )
+        visibilityBehavior = new VisibilityBehavior<WebMultiSplitPaneDivider> ( divider )
         {
             @Override
             public void displayed ()

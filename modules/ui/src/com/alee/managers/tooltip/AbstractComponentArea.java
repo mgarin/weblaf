@@ -27,7 +27,6 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public abstract class AbstractComponentArea<V, C extends JComponent> implements ComponentArea<V, C>
 {
     /**

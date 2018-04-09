@@ -25,25 +25,25 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DragSourceDragEvent;
 
 /**
- * Custom DragViewHandler for WebDocumentPane document.
+ * {@link SimpleDragViewHandler} implementation for {@link WebDocumentPane} document.
  *
+ * @param <T> {@link DocumentData} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
- * @see com.alee.extended.tab.WebDocumentPane
+ * @see WebDocumentPane
  * @see com.alee.managers.drag.DragManager
  */
-
 public class DocumentDragViewHandler<T extends DocumentData> extends SimpleDragViewHandler<T>
 {
     /**
-     * {@link com.alee.extended.tab.WebDocumentPane} using this drag view handler.
+     * {@link WebDocumentPane} using this drag view handler.
      */
     protected final WebDocumentPane documentPane;
 
     /**
-     * Constructs new {@link com.alee.extended.tab.DocumentDragViewHandler}.
+     * Constructs new {@link DocumentDragViewHandler}.
      *
-     * @param documentPane {@link com.alee.extended.tab.WebDocumentPane} using this drag view handler
+     * @param documentPane {@link WebDocumentPane} using this drag view handler
      */
     public DocumentDragViewHandler ( final WebDocumentPane documentPane )
     {

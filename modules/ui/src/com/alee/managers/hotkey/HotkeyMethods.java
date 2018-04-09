@@ -23,11 +23,13 @@ import com.alee.utils.swing.extensions.MethodExtension;
  * This interface provides a set of methods that should be added into components that might have some kind of hotkeys.
  *
  * @author Mikle Garin
- * @see com.alee.utils.swing.extensions.MethodExtension
- * @see com.alee.managers.hotkey.HotkeyManager
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-HotkeyManager">How to use HotkeyManager</a>
+ * @see HotkeyManager
+ * @see MethodExtension
  */
-
 public interface HotkeyMethods extends MethodExtension
 {
-    // todo
+    /**
+     * todo 1. After reworking {@link HotkeyManager} add common methods here
+     */
 }

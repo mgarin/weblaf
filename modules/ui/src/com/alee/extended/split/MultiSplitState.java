@@ -17,6 +17,8 @@
 
 package com.alee.extended.split;
 
+import com.alee.api.clone.Clone;
+import com.alee.api.merge.Mergeable;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
@@ -30,10 +32,14 @@ import java.util.List;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebMultiSplitPane">How to use WebMultiSplitPane</a>
  * @see WebMultiSplitPane
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
+ * @see MultiSplitPaneSettingsProcessor
+ * @see com.alee.managers.settings.UISettingsManager
+ * @see com.alee.managers.settings.SettingsManager
+ * @see com.alee.managers.settings.SettingsProcessor
  */
-
 @XStreamAlias ( "MultiSplitState" )
-public class MultiSplitState implements Serializable
+public class MultiSplitState implements Mergeable, Cloneable, Serializable
 {
     /**
      * {@link List} of {@link MultiSplitViewState}.
@@ -59,5 +65,11 @@ public class MultiSplitState implements Serializable
     public void setStates ( final List<MultiSplitViewState> states )
     {
         this.states = states;
+    }
+
+    @Override
+    public MultiSplitState clone ()
+    {
+        return Clone.cloneByFieldsSafely ( this );
     }
 }

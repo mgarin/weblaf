@@ -25,9 +25,20 @@ import com.alee.managers.language.LM;
  *
  * @author Mikle Garin
  */
-
 public enum NotificationOption
 {
+    /**
+     * todo Add in future:
+     * todo play
+     * todo pause
+     * todo stop
+     * todo download
+     * todo upload
+     * todo delete
+     * todo find
+     * todo replace
+     */
+
     /**
      * Yes option.
      */
@@ -112,18 +123,6 @@ public enum NotificationOption
      * Uninstall option.
      */
     uninstall;
-
-    /**
-     * todo Add in future:
-     * todo play
-     * todo pause
-     * todo stop
-     * todo download
-     * todo upload
-     * todo delete
-     * todo find
-     * todo replace
-     */
 
     /**
      * Returns language key for this option.

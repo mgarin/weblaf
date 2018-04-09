@@ -43,8 +43,8 @@ import java.util.Map;
  * So far custom DataFlavor view will be displayed only within application window bounds.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-DragManager">How to use DragManager</a>
  */
-
 public final class DragManager
 {
     /**

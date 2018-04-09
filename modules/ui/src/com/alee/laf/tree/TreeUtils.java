@@ -173,11 +173,10 @@ public final class TreeUtils
         {
             throw new RuntimeException ( "To set tree state you must use UniqueNode or any class that extends it as tree elements" );
         }
-        if ( treeState == null )
+        if ( treeState != null )
         {
-            return;
+            restoreTreeStateImpl ( tree, treeState, ( UniqueNode ) root, restoreSelection );
         }
-        restoreTreeStateImpl ( tree, treeState, ( UniqueNode ) root, restoreSelection );
     }
 
     /**

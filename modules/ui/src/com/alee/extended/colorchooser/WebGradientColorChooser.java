@@ -39,10 +39,14 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
-public class WebGradientColorChooser extends JComponent
-        implements MouseListener, MouseMotionListener, FocusListener, SettingsMethods, SizeMethods<WebGradientColorChooser>
+public class WebGradientColorChooser extends JComponent implements MouseListener, MouseMotionListener, FocusListener, SettingsMethods,
+        SizeMethods<WebGradientColorChooser>
 {
+    /**
+     * todo 1. Revamp to make use of UI and styling system
+     * todo 2. Allow having empty data
+     */
+
     // Style constants
     private static final Color borderColor = Color.DARK_GRAY; // new Color ( 51, 51, 51 );
     private static final Color disabledBorderColor = Color.LIGHT_GRAY;
@@ -73,7 +77,7 @@ public class WebGradientColorChooser extends JComponent
 
     public WebGradientColorChooser ()
     {
-        this ( SettingsManager.getDefaultValue ( GradientData.class ) );
+        this ( new GradientData () );
     }
 
     public WebGradientColorChooser ( final GradientData gradientData )
@@ -582,84 +586,16 @@ public class WebGradientColorChooser extends JComponent
         }
     }
 
-    /**
-     * Settings methods
-     */
-
     @Override
-    public void registerSettings ( final String key )
+    public void registerSettings ( final Configuration configuration )
     {
-        UISettingsManager.registerComponent ( this, key );
+        UISettingsManager.registerComponent ( this, configuration );
     }
 
     @Override
-    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
+    public void registerSettings ( final SettingsProcessor processor )
     {
-        UISettingsManager.registerComponent ( this, key, defaultValueClass );
-    }
-
-    @Override
-    public void registerSettings ( final String key, final Object defaultValue )
-    {
-        UISettingsManager.registerComponent ( this, key, defaultValue );
-    }
-
-    @Override
-    public void registerSettings ( final String group, final String key )
-    {
-        UISettingsManager.registerComponent ( this, group, key );
-    }
-
-    @Override
-    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
-    {
-        UISettingsManager.registerComponent ( this, group, key, defaultValueClass );
-    }
-
-    @Override
-    public void registerSettings ( final String group, final String key, final Object defaultValue )
-    {
-        UISettingsManager.registerComponent ( this, group, key, defaultValue );
-    }
-
-    @Override
-    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
-                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
-                                   final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
-                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
-                                   final boolean applySettingsChanges )
-    {
-        UISettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
-    }
-
-    @Override
-    public void registerSettings ( final SettingsProcessor settingsProcessor )
-    {
-        UISettingsManager.registerComponent ( this, settingsProcessor );
+        UISettingsManager.registerComponent ( this,processor );
     }
 
     @Override
@@ -679,10 +615,6 @@ public class WebGradientColorChooser extends JComponent
     {
         UISettingsManager.saveSettings ( this );
     }
-
-    /**
-     * Size methods.
-     */
 
     @Override
     public int getPreferredWidth ()

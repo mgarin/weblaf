@@ -24,7 +24,6 @@ package com.alee.managers.proxy;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-ProxyManager">How to use ProxyManager</a>
  * @see ProxyManager
  */
-
 public final class UIProxyManager
 {
     /**
@@ -42,8 +41,8 @@ public final class UIProxyManager
             initialized = true;
 
             // Default proxy authentificator
-            ProxyManager.setAuthenticator ( new WebProxyAuthenticator () );
-            ProxyManager.setSystemProxyConfirmationSupport ( new WebSystemProxyConfirmationSupport () );
+            ProxyManager.setAuthenticator ( new UIProxyAuthenticator () );
+            ProxyManager.setSystemProxyConfirmationSupport ( new UISystemProxyConfirmationSupport () );
 
             // Ensure ProxyManager is initialized
             ProxyManager.initialize ();

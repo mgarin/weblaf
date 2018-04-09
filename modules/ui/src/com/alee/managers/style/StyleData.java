@@ -36,8 +36,9 @@ import java.util.List;
  * This is basically all {@link com.alee.managers.style.StyleManager} knows about the component styling.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see StyleManager
  */
-
 public final class StyleData implements PropertyChangeListener
 {
     /**

@@ -23,10 +23,11 @@ import com.alee.utils.swing.extensions.MethodExtension;
  * This interface provides a set of methods that should be added into components that support custom padding methods.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see PaddingSupport
  * @see PaddingMethodsImpl
+ * @see StyleManager
  */
-
 public interface PaddingMethods extends PaddingSupport, MethodExtension
 {
     /**

@@ -49,7 +49,6 @@ import java.util.List;
  * @see com.alee.managers.notification.NotificationOption
  * @see com.alee.managers.popup.WebInnerPopup
  */
-
 public class WebInnerNotification extends WebInnerPopup
 {
     /**

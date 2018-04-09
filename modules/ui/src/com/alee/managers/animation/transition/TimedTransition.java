@@ -31,8 +31,9 @@ import com.alee.utils.TimeUtils;
  *
  * @param <V> transition value type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-AnimationManager">How to use AnimationManager</a>
+ * @see com.alee.managers.animation.AnimationManager
  */
-
 public class TimedTransition<V> extends AbstractTransition<V>
 {
     /**

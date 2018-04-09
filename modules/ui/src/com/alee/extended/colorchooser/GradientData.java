@@ -18,7 +18,8 @@
 package com.alee.extended.colorchooser;
 
 import com.alee.api.clone.Clone;
-import com.alee.managers.settings.DefaultValue;
+import com.alee.api.merge.Mergeable;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.ColorUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
@@ -34,17 +35,16 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "GradientData" )
-public class GradientData implements Serializable, Cloneable, DefaultValue
+public class GradientData implements Mergeable, Serializable, Cloneable
 {
     /**
      * Comparator to sort colors data on change.
      */
-    private static final transient GradientColorDataComparator locationsComparator = new GradientColorDataComparator ();
+    private static final GradientColorDataComparator locationsComparator = new GradientColorDataComparator ();
 
     /**
-     * All available colors.
+     * {@link List} of {@link GradientColorData}.
      */
     @XStreamImplicit ( itemFieldName = "Color" )
     private List<GradientColorData> gradientColorsData;
@@ -54,8 +54,39 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
      */
     public GradientData ()
     {
-        super ();
-        gradientColorsData = new ArrayList<GradientColorData> ();
+        gradientColorsData = new ArrayList<GradientColorData> ( 2 );
+    }
+
+    /**
+     * Constructs {@link GradientData} object with empty colors list.
+     *
+     * @param data {@link List} of {@link GradientColorData}
+     */
+    public GradientData ( final GradientData data )
+    {
+        gradientColorsData = new ArrayList<GradientColorData> ( data.getGradientColorsData () );
+    }
+
+    /**
+     * Constructs {@link GradientData} object with empty colors list.
+     *
+     * @param data array of {@link GradientColorData}
+     */
+    public GradientData ( final GradientColorData... data )
+    {
+        gradientColorsData = CollectionUtils.asList ( data );
+        sort ();
+    }
+
+    /**
+     * Constructs {@link GradientData} object with empty colors list.
+     *
+     * @param data {@link List} of {@link GradientColorData}
+     */
+    public GradientData ( final List<GradientColorData> data )
+    {
+        gradientColorsData = new ArrayList<GradientColorData> ( data );
+        sort ();
     }
 
     /**
@@ -312,21 +343,5 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     public GradientData clone ()
     {
         return Clone.cloneByFieldsSafely ( this );
-    }
-
-    /**
-     * Returns default {@link GradientData} value.
-     *
-     * @return default {@link GradientData} value
-     */
-    public static GradientData getDefaultValue ()
-    {
-        final GradientData gradientData = new GradientData ();
-        gradientData.addGradientColorData ( 0f, Color.RED );
-        gradientData.addGradientColorData ( 0.25f, Color.YELLOW );
-        gradientData.addGradientColorData ( 0.5f, Color.GREEN );
-        gradientData.addGradientColorData ( 0.75f, Color.CYAN );
-        gradientData.addGradientColorData ( 1f, Color.BLUE );
-        return gradientData;
     }
 }

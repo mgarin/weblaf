@@ -18,47 +18,60 @@
 package com.alee.managers.animation.transition;
 
 /**
- * {@link TransitionListener} adapter.
+ * Adapter for {@link TransitionListener}.
  *
  * @param <V> transition value type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-AnimationManager">How to use AnimationManager</a>
+ * @see com.alee.managers.animation.AnimationManager
  */
-
 public abstract class TransitionAdapter<V> implements TransitionListener<V>
 {
     @Override
     public void started ( final Transition transition, final V value )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void adjusted ( final Transition transition, final V value )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void finished ( final Transition transition, final V value )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void aborted ( final Transition transition, final V value )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void reset ( final Transition transition, final V value )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void stateChanged ( final Transition transition, final V value, final TransitionState previous, final TransitionState current )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

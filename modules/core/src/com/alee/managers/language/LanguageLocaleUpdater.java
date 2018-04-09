@@ -24,8 +24,9 @@ import java.util.Locale;
  * It is not necessary and by default {@link LanguageManager} doesn't change locale on its own.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>
+ * @see LanguageManager
  */
-
 public final class LanguageLocaleUpdater implements LanguageListener
 {
     @Override

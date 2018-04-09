@@ -33,12 +33,11 @@ import java.util.List;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
- * @see com.alee.managers.style.StyleManager
- * @see com.alee.managers.style.data.SkinInfo
- * @see com.alee.managers.style.AbstractSkin
- * @see com.alee.managers.style.Skin
+ * @see StyleManager
+ * @see AbstractSkin
+ * @see Skin
+ * @see SkinInfo
  */
-
 public class XmlSkin extends AbstractSkin
 {
     /**

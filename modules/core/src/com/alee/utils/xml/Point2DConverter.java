@@ -18,7 +18,6 @@
 package com.alee.utils.xml;
 
 import com.alee.utils.TextUtils;
-import com.alee.utils.XmlException;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 import java.awt.geom.Point2D;

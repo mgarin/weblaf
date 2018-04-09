@@ -24,10 +24,10 @@ import java.awt.event.MouseAdapter;
  * Custom interface used to create document tab title provider.
  * It can be used to completely alter WebDocumentPane tab title components.
  *
+ * @param <T> {@link DocumentData} type
  * @author Mikle Garin
  * @see com.alee.extended.tab.DefaultTabTitleComponentProvider
  */
-
 public interface TabTitleComponentProvider<T extends DocumentData>
 {
     /**

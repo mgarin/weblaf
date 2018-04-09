@@ -44,13 +44,13 @@ import java.util.List;
 /**
  * Custom popup used to display notifications in separate windows.
  *
+ * @param <T> {@link WebNotification} type
  * @author Mikle Garin
  * @see com.alee.managers.notification.NotificationManager
  * @see com.alee.managers.notification.NotificationIcon
  * @see com.alee.managers.notification.NotificationOption
  * @see com.alee.extended.window.WebPopup
  */
-
 public class WebNotification<T extends WebNotification<T>> extends WebPopup<T>
 {
     /**

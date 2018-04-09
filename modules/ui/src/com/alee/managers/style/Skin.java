@@ -37,7 +37,6 @@ import java.util.List;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.StyleManager
  */
-
 public interface Skin extends Identifiable
 {
     /**

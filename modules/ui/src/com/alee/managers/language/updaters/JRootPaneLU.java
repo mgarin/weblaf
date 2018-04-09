@@ -31,7 +31,6 @@ import java.awt.*;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>
  * @see com.alee.managers.language.LanguageManager
  */
-
 public class JRootPaneLU extends ToolTipLU<JRootPane>
 {
     @Override

@@ -44,7 +44,6 @@ import java.util.Locale;
  * @see Record
  * @see Text
  */
-
 @XStreamAlias ( "value" )
 @XStreamConverter ( ValueConverter.class )
 public final class Value implements Serializable, Cloneable

@@ -38,10 +38,7 @@ import com.alee.utils.swing.extensions.KeyEventRunnable;
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.DateFormat;
@@ -53,9 +50,8 @@ import java.util.Date;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C>
-        implements ShapeSupport, MarginSupport, PaddingSupport, PropertyChangeListener
+        implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * todo 1. Change popover to popup-based window
@@ -67,6 +63,12 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C>
      */
     @DefaultPainter ( DateFieldPainter.class )
     protected IDateFieldPainter painter;
+
+    /**
+     * Listeners.
+     */
+    protected transient PropertyChangeListener propertyChangeListener;
+    protected transient FocusAdapter focusListener;
 
     /**
      * UI elements.
@@ -171,8 +173,47 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C>
     protected void installActions ()
     {
         // Date field property listener
-        dateField.addPropertyChangeListener ( this );
+        propertyChangeListener = new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent evt )
+            {
+                final String property = evt.getPropertyName ();
+                if ( Objects.equals ( property, WebDateField.ALLOW_USER_INPUT_PROPERTY ) )
+                {
+                    field.setEditable ( ( Boolean ) evt.getNewValue () );
+                }
+                if ( Objects.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
+                {
+                    updateEnabledState ();
+                }
+                if ( Objects.equals ( property, WebDateField.DATE_FORMAT_PROPERTY ) )
+                {
+                    updateExpectedFieldLength ();
+                }
+                else if ( Objects.equals ( property, WebDateField.DATE_PROPERTY ) )
+                {
+                    setDate ( dateField.getDate (), UpdateSource.datefield );
+                }
+                else if ( Objects.equals ( property, WebDateField.CALENDAR_CUSTOMIZER_PROPERTY ) )
+                {
+                    customizeCalendar ();
+                }
+            }
+        };
+        dateField.addPropertyChangeListener ( propertyChangeListener );
         updateExpectedFieldLength ();
+
+        // Date field focus handling
+        focusListener = new FocusAdapter ()
+        {
+            @Override
+            public void focusGained ( final FocusEvent e )
+            {
+                field.requestFocusInWindow ();
+            }
+        };
+        dateField.addFocusListener ( focusListener );
 
         // UI elements actions
         field.addActionListener ( new ActionListener ()
@@ -222,33 +263,13 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C>
      */
     protected void uninstallActions ()
     {
-        dateField.removePropertyChangeListener ( this );
-    }
+        // Date field focus handling
+        dateField.removeFocusListener ( focusListener );
+        focusListener = null;
 
-    @Override
-    public void propertyChange ( final PropertyChangeEvent evt )
-    {
-        final String property = evt.getPropertyName ();
-        if ( Objects.equals ( property, WebDateField.ALLOW_USER_INPUT_PROPERTY ) )
-        {
-            field.setEditable ( ( Boolean ) evt.getNewValue () );
-        }
-        if ( Objects.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
-        {
-            updateEnabledState ();
-        }
-        if ( Objects.equals ( property, WebDateField.DATE_FORMAT_PROPERTY ) )
-        {
-            updateExpectedFieldLength ();
-        }
-        else if ( Objects.equals ( property, WebDateField.DATE_PROPERTY ) )
-        {
-            setDate ( dateField.getDate (), UpdateSource.datefield );
-        }
-        else if ( Objects.equals ( property, WebDateField.CALENDAR_CUSTOMIZER_PROPERTY ) )
-        {
-            customizeCalendar ();
-        }
+        // Date field property listener
+        dateField.removePropertyChangeListener ( propertyChangeListener );
+        propertyChangeListener = null;
     }
 
     /**

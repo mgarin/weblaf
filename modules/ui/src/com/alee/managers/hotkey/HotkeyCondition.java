@@ -21,8 +21,11 @@ import java.awt.*;
 
 /**
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-HotkeyManager">How to use HotkeyManager</a>
+ * @see HotkeyManager
+ * @deprecated This is too inconvenient for usage, might as well remove or at least rework this
  */
-
+@Deprecated
 public interface HotkeyCondition
 {
     /**

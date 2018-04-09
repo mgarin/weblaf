@@ -40,8 +40,9 @@ import java.util.List;
  *
  * @param <N> node type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-DragManager">How to use DragManager</a>
+ * @see com.alee.managers.drag.DragManager
  */
-
 public abstract class NodesDragViewHandler<N extends MutableTreeNode> implements DragViewHandler<List<N>>
 {
     /**
@@ -176,6 +177,8 @@ public abstract class NodesDragViewHandler<N extends MutableTreeNode> implements
     @Override
     public void dragEnded ( final List<N> nodes, final DragSourceDropEvent event )
     {
-        // Do nothing here
+        /**
+         * Don't need to do anything on drag end.
+         */
     }
 }

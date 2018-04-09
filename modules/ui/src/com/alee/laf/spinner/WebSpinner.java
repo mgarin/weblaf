@@ -20,6 +20,10 @@ package com.alee.laf.spinner;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
 import com.alee.managers.language.updaters.LanguageUpdater;
+import com.alee.managers.settings.Configuration;
+import com.alee.managers.settings.SettingsMethods;
+import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.settings.UISettingsManager;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
@@ -49,9 +53,8 @@ import java.util.List;
  * @see WebSpinnerUI
  * @see SpinnerPainter
  */
-
 public class WebSpinner extends JSpinner implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods,
-        LanguageEventMethods, ToolTipMethods, LanguageMethods, FontMethods<WebSpinner>
+        ToolTipMethods, LanguageMethods, LanguageEventMethods, SettingsMethods, FontMethods<WebSpinner>, SizeMethods<WebSpinner>
 {
     /**
      * Constructs a spinner with an {@link javax.swing.SpinnerNumberModel} with initial value 0 and no minimum or maximum limits.
@@ -346,42 +349,6 @@ public class WebSpinner extends JSpinner implements Styleable, Paintable, ShapeM
     }
 
     @Override
-    public void addLanguageListener ( final LanguageListener listener )
-    {
-        UILanguageManager.addLanguageListener ( this, listener );
-    }
-
-    @Override
-    public void removeLanguageListener ( final LanguageListener listener )
-    {
-        UILanguageManager.removeLanguageListener ( this, listener );
-    }
-
-    @Override
-    public void removeLanguageListeners ()
-    {
-        UILanguageManager.removeLanguageListeners ( this );
-    }
-
-    @Override
-    public void addDictionaryListener ( final DictionaryListener listener )
-    {
-        UILanguageManager.addDictionaryListener ( this, listener );
-    }
-
-    @Override
-    public void removeDictionaryListener ( final DictionaryListener listener )
-    {
-        UILanguageManager.removeDictionaryListener ( this, listener );
-    }
-
-    @Override
-    public void removeDictionaryListeners ()
-    {
-        UILanguageManager.removeDictionaryListeners ( this );
-    }
-
-    @Override
     public WebCustomTooltip setToolTip ( final String tooltip )
     {
         return TooltipManager.setTooltip ( this, tooltip );
@@ -574,6 +541,72 @@ public class WebSpinner extends JSpinner implements Styleable, Paintable, ShapeM
     }
 
     @Override
+    public void addLanguageListener ( final LanguageListener listener )
+    {
+        UILanguageManager.addLanguageListener ( this, listener );
+    }
+
+    @Override
+    public void removeLanguageListener ( final LanguageListener listener )
+    {
+        UILanguageManager.removeLanguageListener ( this, listener );
+    }
+
+    @Override
+    public void removeLanguageListeners ()
+    {
+        UILanguageManager.removeLanguageListeners ( this );
+    }
+
+    @Override
+    public void addDictionaryListener ( final DictionaryListener listener )
+    {
+        UILanguageManager.addDictionaryListener ( this, listener );
+    }
+
+    @Override
+    public void removeDictionaryListener ( final DictionaryListener listener )
+    {
+        UILanguageManager.removeDictionaryListener ( this, listener );
+    }
+
+    @Override
+    public void removeDictionaryListeners ()
+    {
+        UILanguageManager.removeDictionaryListeners ( this );
+    }
+
+    @Override
+    public void registerSettings ( final Configuration configuration )
+    {
+        UISettingsManager.registerComponent ( this, configuration );
+    }
+
+    @Override
+    public void registerSettings ( final SettingsProcessor processor )
+    {
+        UISettingsManager.registerComponent ( this, processor );
+    }
+
+    @Override
+    public void unregisterSettings ()
+    {
+        UISettingsManager.unregisterComponent ( this );
+    }
+
+    @Override
+    public void loadSettings ()
+    {
+        UISettingsManager.loadSettings ( this );
+    }
+
+    @Override
+    public void saveSettings ()
+    {
+        UISettingsManager.saveSettings ( this );
+    }
+
+    @Override
     public WebSpinner setPlainFont ()
     {
         return FontMethodsImpl.setPlainFont ( this );
@@ -679,6 +712,96 @@ public class WebSpinner extends JSpinner implements Styleable, Paintable, ShapeM
     public String getFontName ()
     {
         return FontMethodsImpl.getFontName ( this );
+    }
+
+    @Override
+    public int getPreferredWidth ()
+    {
+        return SizeMethodsImpl.getPreferredWidth ( this );
+    }
+
+    @Override
+    public WebSpinner setPreferredWidth ( final int preferredWidth )
+    {
+        return SizeMethodsImpl.setPreferredWidth ( this, preferredWidth );
+    }
+
+    @Override
+    public int getPreferredHeight ()
+    {
+        return SizeMethodsImpl.getPreferredHeight ( this );
+    }
+
+    @Override
+    public WebSpinner setPreferredHeight ( final int preferredHeight )
+    {
+        return SizeMethodsImpl.setPreferredHeight ( this, preferredHeight );
+    }
+
+    @Override
+    public int getMinimumWidth ()
+    {
+        return SizeMethodsImpl.getMinimumWidth ( this );
+    }
+
+    @Override
+    public WebSpinner setMinimumWidth ( final int minimumWidth )
+    {
+        return SizeMethodsImpl.setMinimumWidth ( this, minimumWidth );
+    }
+
+    @Override
+    public int getMinimumHeight ()
+    {
+        return SizeMethodsImpl.getMinimumHeight ( this );
+    }
+
+    @Override
+    public WebSpinner setMinimumHeight ( final int minimumHeight )
+    {
+        return SizeMethodsImpl.setMinimumHeight ( this, minimumHeight );
+    }
+
+    @Override
+    public int getMaximumWidth ()
+    {
+        return SizeMethodsImpl.getMaximumWidth ( this );
+    }
+
+    @Override
+    public WebSpinner setMaximumWidth ( final int maximumWidth )
+    {
+        return SizeMethodsImpl.setMaximumWidth ( this, maximumWidth );
+    }
+
+    @Override
+    public int getMaximumHeight ()
+    {
+        return SizeMethodsImpl.getMaximumHeight ( this );
+    }
+
+    @Override
+    public WebSpinner setMaximumHeight ( final int maximumHeight )
+    {
+        return SizeMethodsImpl.setMaximumHeight ( this, maximumHeight );
+    }
+
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        return SizeMethodsImpl.getPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    @Override
+    public Dimension getOriginalPreferredSize ()
+    {
+        return SizeMethodsImpl.getOriginalPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    @Override
+    public WebSpinner setPreferredSize ( final int width, final int height )
+    {
+        return SizeMethodsImpl.setPreferredSize ( this, width, height );
     }
 
     /**

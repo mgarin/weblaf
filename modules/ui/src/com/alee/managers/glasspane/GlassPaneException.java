@@ -21,8 +21,9 @@ package com.alee.managers.glasspane;
  * Special exception class used to display various glass pane problems.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-GlassPaneManager">How to use GlassPaneManager</a>
+ * @see GlassPaneManager
  */
-
 public final class GlassPaneException extends RuntimeException
 {
     /**

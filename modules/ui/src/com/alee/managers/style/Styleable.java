@@ -22,10 +22,10 @@ package com.alee.managers.style;
  * It provides only two methods to allow default component style ID modifications.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see StyleManager
  * @see Skin
  */
-
 public interface Styleable
 {
     /**

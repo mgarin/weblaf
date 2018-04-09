@@ -27,7 +27,6 @@ import javax.swing.*;
  * @author Mikle Garin
  * @see NotificationManager
  */
-
 public enum NotificationIcon
 {
     /**

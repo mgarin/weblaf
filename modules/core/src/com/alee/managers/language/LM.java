@@ -28,10 +28,10 @@ import java.util.Locale;
  * To gain access to multiple languages simultaneously use separate {@link Language} instances.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>
  * @see LanguageManager
  * @see Language
  */
-
 public final class LM
 {
     /**

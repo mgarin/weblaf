@@ -21,7 +21,7 @@ import com.alee.demo.api.example.wiki.NoWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.demo.content.ExamplesManager;
 import com.alee.demo.skin.DemoStyles;
-import com.alee.extended.behavior.ComponentVisibilityBehavior;
+import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.toolbar.WebToolBar;
@@ -36,7 +36,6 @@ import java.awt.*;
 /**
  * @author Mikle Garin
  */
-
 public abstract class AbstractExample extends AbstractExampleElement implements Example
 {
     /**
@@ -101,7 +100,7 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
         container.add ( scrollPane, BorderLayout.CENTER );
 
         // Example visibility behavior
-        new ComponentVisibilityBehavior ( container )
+        new VisibilityBehavior ( container )
         {
             @Override
             public void displayed ()

@@ -35,7 +35,6 @@ import java.util.Locale;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>
  * @see LanguageManager
  */
-
 public class Language implements Serializable
 {
     /**

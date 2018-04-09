@@ -43,16 +43,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This editor is not based on the Android dev kit editor - NinePatchEditor is much more advanced and user-friendly. It allows fully visual
- * and quick nine-patch editing, nine-patch information copying and also creation of new nine-patch files based on any image file that
- * could be loaded by WebLookAndFeel library.
- * <p>
- * Android dev kit editor: http://developer.android.com/guide/developing/tools/draw9patch.html
+ * This editor is not based on the Android dev kit editor - {@link NinePatchEditor} is more advanced and user-friendly.
+ * This editor allows quick visual nine-patch editing, nine-patch information copying and also creation of new nine-patch files based on
+ * any image file that could be loaded by WebLookAndFeel library.
  *
  * @author Mikle Garin
- * @see com.alee.extended.ninepatch.NinePatchEditorPanel
+ * @see <a href="http://developer.android.com/guide/developing/tools/draw9patch.html">Android dev kit editor</a>
+ * @see NinePatchEditorPanel
+ * @see NinePatchEditorFrame
  */
-
 public class NinePatchEditor extends WebPanel
 {
     public static final Color STRETCH_GUIDELINES_COLOR = new Color ( 60, 150, 0 );
@@ -104,13 +103,14 @@ public class NinePatchEditor extends WebPanel
         ninePatchIcon = null;
 
         SwingUtils.setOrientation ( this );
+        setOpaque ( false );
         setFocusable ( true );
         setLayout ( new TableLayout ( new double[][]{ { RULER_LENGTH, TableLayout.PREFERRED, TableLayout.FILL },
                 { RULER_LENGTH, TableLayout.PREFERRED, TableLayout.FILL } } ) );
 
         setFont ( new JLabel ().getFont ().deriveFont ( 10f ) );
 
-        view = new WebScrollPane ( StyleId.scrollpaneUndecorated, this );
+        view = new WebScrollPane ( StyleId.scrollpaneTransparentHovering, this );
 
         final NinePatchEditorMouseAdapter mouseAdapter = new NinePatchEditorMouseAdapter ();
         addMouseListener ( mouseAdapter );

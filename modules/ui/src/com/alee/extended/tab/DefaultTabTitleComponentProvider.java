@@ -34,10 +34,12 @@ import java.lang.ref.WeakReference;
  * Default document tab title provider.
  * It is used in all WebDocumentPanes by default but can be easily replaced.
  *
+ * @param <T> {@link DocumentData} type
  * @author Mikle Garin
- * @see com.alee.extended.tab.TabTitleComponentProvider
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
+ * @see TabTitleComponentProvider
+ * @see WebDocumentPane
  */
-
 public class DefaultTabTitleComponentProvider<T extends DocumentData> implements TabTitleComponentProvider<T>
 {
     @Override

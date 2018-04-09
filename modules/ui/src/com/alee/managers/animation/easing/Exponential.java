@@ -21,8 +21,9 @@ package com.alee.managers.animation.easing;
  * Exponential easing implementation.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-AnimationManager">How to use AnimationManager</a>
+ * @see com.alee.managers.animation.AnimationManager
  */
-
 public abstract class Exponential extends AbstractEasing
 {
     @Override

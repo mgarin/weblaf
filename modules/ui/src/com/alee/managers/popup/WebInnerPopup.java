@@ -52,7 +52,6 @@ import java.util.List;
  * @see com.alee.managers.popup.PopupManager
  * @see com.alee.managers.popup.PopupLayer
  */
-
 public class WebInnerPopup extends WebPanel implements Popup, PopupMethods
 {
     // Popup constants

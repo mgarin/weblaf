@@ -30,7 +30,6 @@ import com.alee.utils.swing.extensions.MethodExtension;
  * @see LanguageManager
  * @see LanguageUpdater
  */
-
 public interface LanguageMethods extends MethodExtension
 {
     /**

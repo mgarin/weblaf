@@ -28,9 +28,10 @@ import java.awt.*;
  * Class describing inner component bounds.
  *
  * @author Mikle Garin
- * @see com.alee.managers.style.BoundsType
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see BoundsType
+ * @see StyleManager
  */
-
 public final class Bounds
 {
     /**

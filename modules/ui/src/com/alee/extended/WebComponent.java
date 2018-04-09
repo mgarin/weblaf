@@ -20,6 +20,10 @@ package com.alee.extended;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
 import com.alee.managers.language.updaters.LanguageUpdater;
+import com.alee.managers.settings.Configuration;
+import com.alee.managers.settings.SettingsMethods;
+import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.settings.UISettingsManager;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
@@ -45,9 +49,9 @@ import java.util.List;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public abstract class WebComponent<C extends WebComponent<C, U>, U extends ComponentUI> extends JComponent implements Styleable, Paintable,
-        ShapeMethods, MarginMethods, PaddingMethods, ToolTipMethods, LanguageMethods, EventMethods, LanguageEventMethods, SizeMethods<C>
+        ShapeMethods, MarginMethods, PaddingMethods, EventMethods, ToolTipMethods, LanguageMethods, LanguageEventMethods, SettingsMethods,
+        FontMethods<C>, SizeMethods<C>
 {
     @Override
     public StyleId getStyleId ()
@@ -173,6 +177,126 @@ public abstract class WebComponent<C extends WebComponent<C, U>, U extends Compo
     public void setPadding ( final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
+    }
+
+    @Override
+    public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMousePress ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMousePress ( this, mouseButton, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseEnter ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseExit ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseDrag ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseDrag ( this, mouseButton, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseClick ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseClick ( this, mouseButton, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDoubleClick ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMenuTrigger ( this, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyType ( this, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyType ( this, hotkey, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyPress ( this, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyPress ( this, hotkey, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyRelease ( this, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyRelease ( this, hotkey, runnable );
+    }
+
+    @Override
+    public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
+    {
+        return EventMethodsImpl.onFocusGain ( this, runnable );
+    }
+
+    @Override
+    public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
+    {
+        return EventMethodsImpl.onFocusLoss ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDragStart ( final int shift, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDragStart ( this, shift, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDragStart ( final int shift, final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDragStart ( this, shift, mouseButton, runnable );
     }
 
     @Override
@@ -368,126 +492,6 @@ public abstract class WebComponent<C extends WebComponent<C, U>, U extends Compo
     }
 
     @Override
-    public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
-    {
-        return EventMethodsImpl.onMousePress ( this, runnable );
-    }
-
-    @Override
-    public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
-    {
-        return EventMethodsImpl.onMousePress ( this, mouseButton, runnable );
-    }
-
-    @Override
-    public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
-    {
-        return EventMethodsImpl.onMouseEnter ( this, runnable );
-    }
-
-    @Override
-    public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
-    {
-        return EventMethodsImpl.onMouseExit ( this, runnable );
-    }
-
-    @Override
-    public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
-    {
-        return EventMethodsImpl.onMouseDrag ( this, runnable );
-    }
-
-    @Override
-    public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
-    {
-        return EventMethodsImpl.onMouseDrag ( this, mouseButton, runnable );
-    }
-
-    @Override
-    public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
-    {
-        return EventMethodsImpl.onMouseClick ( this, runnable );
-    }
-
-    @Override
-    public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
-    {
-        return EventMethodsImpl.onMouseClick ( this, mouseButton, runnable );
-    }
-
-    @Override
-    public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
-    {
-        return EventMethodsImpl.onDoubleClick ( this, runnable );
-    }
-
-    @Override
-    public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
-    {
-        return EventMethodsImpl.onMenuTrigger ( this, runnable );
-    }
-
-    @Override
-    public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
-    {
-        return EventMethodsImpl.onKeyType ( this, runnable );
-    }
-
-    @Override
-    public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
-    {
-        return EventMethodsImpl.onKeyType ( this, hotkey, runnable );
-    }
-
-    @Override
-    public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
-    {
-        return EventMethodsImpl.onKeyPress ( this, runnable );
-    }
-
-    @Override
-    public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
-    {
-        return EventMethodsImpl.onKeyPress ( this, hotkey, runnable );
-    }
-
-    @Override
-    public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
-    {
-        return EventMethodsImpl.onKeyRelease ( this, runnable );
-    }
-
-    @Override
-    public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
-    {
-        return EventMethodsImpl.onKeyRelease ( this, hotkey, runnable );
-    }
-
-    @Override
-    public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
-    {
-        return EventMethodsImpl.onFocusGain ( this, runnable );
-    }
-
-    @Override
-    public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
-    {
-        return EventMethodsImpl.onFocusLoss ( this, runnable );
-    }
-
-    @Override
-    public MouseAdapter onDragStart ( final int shift, final MouseEventRunnable runnable )
-    {
-        return EventMethodsImpl.onDragStart ( this, shift, runnable );
-    }
-
-    @Override
-    public MouseAdapter onDragStart ( final int shift, final MouseButton mouseButton, final MouseEventRunnable runnable )
-    {
-        return EventMethodsImpl.onDragStart ( this, shift, mouseButton, runnable );
-    }
-
-    @Override
     public void addLanguageListener ( final LanguageListener listener )
     {
         UILanguageManager.addLanguageListener ( this, listener );
@@ -521,6 +525,144 @@ public abstract class WebComponent<C extends WebComponent<C, U>, U extends Compo
     public void removeDictionaryListeners ()
     {
         UILanguageManager.removeDictionaryListeners ( this );
+    }
+
+    @Override
+    public void registerSettings ( final Configuration configuration )
+    {
+        UISettingsManager.registerComponent ( this, configuration );
+    }
+
+    @Override
+    public void registerSettings ( final SettingsProcessor processor )
+    {
+        UISettingsManager.registerComponent ( this, processor );
+    }
+
+    @Override
+    public void unregisterSettings ()
+    {
+        UISettingsManager.unregisterComponent ( this );
+    }
+
+    @Override
+    public void loadSettings ()
+    {
+        UISettingsManager.loadSettings ( this );
+    }
+
+    @Override
+    public void saveSettings ()
+    {
+        UISettingsManager.saveSettings ( this );
+    }
+
+    @Override
+    public C setPlainFont ()
+    {
+        return FontMethodsImpl.setPlainFont ( this );
+    }
+
+    @Override
+    public C setPlainFont ( final boolean apply )
+    {
+        return FontMethodsImpl.setPlainFont ( this, apply );
+    }
+
+    @Override
+    public boolean isPlainFont ()
+    {
+        return FontMethodsImpl.isPlainFont ( this );
+    }
+
+    @Override
+    public C setBoldFont ()
+    {
+        return FontMethodsImpl.setBoldFont ( this );
+    }
+
+    @Override
+    public C setBoldFont ( final boolean apply )
+    {
+        return FontMethodsImpl.setBoldFont ( this, apply );
+    }
+
+    @Override
+    public boolean isBoldFont ()
+    {
+        return FontMethodsImpl.isBoldFont ( this );
+    }
+
+    @Override
+    public C setItalicFont ()
+    {
+        return FontMethodsImpl.setItalicFont ( this );
+    }
+
+    @Override
+    public C setItalicFont ( final boolean apply )
+    {
+        return FontMethodsImpl.setItalicFont ( this, apply );
+    }
+
+    @Override
+    public boolean isItalicFont ()
+    {
+        return FontMethodsImpl.isItalicFont ( this );
+    }
+
+    @Override
+    public C setFontStyle ( final boolean bold, final boolean italic )
+    {
+        return FontMethodsImpl.setFontStyle ( this, bold, italic );
+    }
+
+    @Override
+    public C setFontStyle ( final int style )
+    {
+        return FontMethodsImpl.setFontStyle ( this, style );
+    }
+
+    @Override
+    public C setFontSize ( final int fontSize )
+    {
+        return FontMethodsImpl.setFontSize ( this, fontSize );
+    }
+
+    @Override
+    public C changeFontSize ( final int change )
+    {
+        return FontMethodsImpl.changeFontSize ( this, change );
+    }
+
+    @Override
+    public int getFontSize ()
+    {
+        return FontMethodsImpl.getFontSize ( this );
+    }
+
+    @Override
+    public C setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
+    {
+        return FontMethodsImpl.setFontSizeAndStyle ( this, fontSize, bold, italic );
+    }
+
+    @Override
+    public C setFontSizeAndStyle ( final int fontSize, final int style )
+    {
+        return FontMethodsImpl.setFontSizeAndStyle ( this, fontSize, style );
+    }
+
+    @Override
+    public C setFontName ( final String fontName )
+    {
+        return FontMethodsImpl.setFontName ( this, fontName );
+    }
+
+    @Override
+    public String getFontName ()
+    {
+        return FontMethodsImpl.getFontName ( this );
     }
 
     @Override

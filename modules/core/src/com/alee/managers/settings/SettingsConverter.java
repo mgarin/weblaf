@@ -31,13 +31,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Custom XStream converter for SettingsManager groups.
+ * Custom XStream converter for {@link SettingsGroup}.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
- * @see com.alee.managers.settings.SettingsManager
+ * @see SettingsManager
  */
-
 public class SettingsConverter extends ReflectionConverter
 {
     /**
@@ -46,10 +45,10 @@ public class SettingsConverter extends ReflectionConverter
     private static final String NULL_TYPE = "null";
 
     /**
-     * Constructs SettingsConverter with the specified mapper and reflection provider.
+     * Constructs new {@link SettingsConverter}.
      *
-     * @param mapper             mapper
-     * @param reflectionProvider reflection provider
+     * @param mapper             {@link Mapper}
+     * @param reflectionProvider {@link ReflectionProvider}
      */
     public SettingsConverter ( final Mapper mapper, final ReflectionProvider reflectionProvider )
     {
@@ -72,7 +71,7 @@ public class SettingsConverter extends ReflectionConverter
         writer.addAttribute ( "name", settingsGroup.getName () );
 
         // Converting settings
-        for ( final Map.Entry<String, Object> entry : settingsGroup.getSettings ().entrySet () )
+        for ( final Map.Entry<String, Object> entry : settingsGroup.settings ().entrySet () )
         {
             // If key text is proper for node name it will be used, otherwise it will be separated
             final String key = entry.getKey ();
@@ -123,7 +122,7 @@ public class SettingsConverter extends ReflectionConverter
         final SettingsGroup settingsGroup = new SettingsGroup ( reader.getAttribute ( "id" ), reader.getAttribute ( "name" ) );
 
         // Collecting readable settings
-        final Map<String, Object> settings = new HashMap<String, Object> ();
+        final HashMap<String, Object> settings = new HashMap<String, Object> ();
         while ( reader.hasMoreChildren () )
         {
             // Read next map entry

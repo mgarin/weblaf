@@ -24,7 +24,6 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,11 +31,12 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 /**
- * Custom transferable that represents {@link java.util.List} of {@link java.io.File} in a few different ways.
+ * Custom transferable that represents {@link List} of {@link File} in a few different ways.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-DragManager">How to use DragManager</a>
+ * @see com.alee.managers.drag.DragManager
  */
-
 public class FilesTransferable implements Transferable
 {
     /**
@@ -105,7 +105,7 @@ public class FilesTransferable implements Transferable
     }
 
     @Override
-    public Object getTransferData ( final DataFlavor flavor ) throws UnsupportedFlavorException, IOException
+    public Object getTransferData ( final DataFlavor flavor ) throws UnsupportedFlavorException
     {
         if ( flavor.equals ( DataFlavor.javaFileListFlavor ) )
         {
@@ -152,7 +152,7 @@ public class FilesTransferable implements Transferable
                 return textURIListToFileList ( ( String ) transferable.getTransferData ( getUriListDataFlavor () ) );
             }
         }
-        catch ( final Exception e )
+        catch ( final Exception ignored )
         {
             //
         }
@@ -170,7 +170,7 @@ public class FilesTransferable implements Transferable
                 return CollectionUtils.asList ( file );
             }
         }
-        catch ( final Exception e )
+        catch ( final Exception ignored )
         {
             //
         }
@@ -184,7 +184,7 @@ public class FilesTransferable implements Transferable
                 return ( List<File> ) transferable.getTransferData ( DataFlavor.javaFileListFlavor );
             }
         }
-        catch ( final Exception e )
+        catch ( final Exception ignored )
         {
             //
         }
@@ -213,7 +213,7 @@ public class FilesTransferable implements Transferable
             {
                 list.add ( new File ( new URI ( s ) ) );
             }
-            catch ( final Exception e )
+            catch ( final Exception ignored )
             {
                 //
             }

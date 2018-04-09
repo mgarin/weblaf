@@ -39,7 +39,6 @@ import java.awt.event.WindowStateListener;
  * @see com.alee.managers.popup.WebButtonPopup
  * @see com.alee.managers.notification.WebInnerNotification
  */
-
 public final class PopupManager
 {
     /**

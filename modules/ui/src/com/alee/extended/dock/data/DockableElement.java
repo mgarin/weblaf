@@ -18,6 +18,7 @@
 package com.alee.extended.dock.data;
 
 import com.alee.api.Identifiable;
+import com.alee.api.merge.Mergeable;
 import com.alee.extended.dock.WebDockablePane;
 
 import java.awt.*;
@@ -31,8 +32,7 @@ import java.util.List;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  * @see com.alee.extended.dock.WebDockablePane
  */
-
-public interface DockableElement extends Identifiable, Serializable
+public interface DockableElement extends Mergeable, Identifiable, Serializable
 {
     /**
      * Called upon this element addition to {@link com.alee.extended.dock.data.DockableContainer}.

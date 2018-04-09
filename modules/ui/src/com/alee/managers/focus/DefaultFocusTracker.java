@@ -33,8 +33,9 @@ import java.util.Set;
  * This implementation also offers customization of additional focusable {@link Component}s attached to tracked {@link JComponent}.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-FocusManager">How to use FocusManager</a>
+ * @see com.alee.managers.focus.FocusManager
  */
-
 public abstract class DefaultFocusTracker implements FocusTracker
 {
     /**

@@ -44,7 +44,6 @@ import java.util.List;
  * @see Dictionary
  * @see LanguageUpdater
  */
-
 public final class UILanguageManager
 {
     /**

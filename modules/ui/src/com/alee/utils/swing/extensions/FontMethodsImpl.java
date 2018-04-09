@@ -20,19 +20,18 @@ package com.alee.utils.swing.extensions;
 import java.awt.*;
 
 /**
- * Common implementations for {@link com.alee.utils.swing.extensions.FontMethods} interface methods.
+ * Common implementations for {@link FontMethods} interface methods.
  *
  * @author Mikle Garin
- * @see com.alee.utils.swing.extensions.FontMethods
+ * @see FontMethods
  */
-
 public final class FontMethodsImpl
 {
     /**
      * Returns whether component font is plain or not.
      *
      * @param component component to process
-     * @return true if component font is plain, false otherwise
+     * @return {@code true} if component font is plain, {@code false} otherwise
      */
     public static boolean isPlainFont ( final Component component )
     {
@@ -46,7 +45,7 @@ public final class FontMethodsImpl
      * @param <C>       component type
      * @return modified component
      */
-    public static <C extends Component> C setPlainFont ( final C component )
+    public static <C extends Component> C setPlainFont ( final Component component )
     {
         return setPlainFont ( component, true );
     }
@@ -59,20 +58,20 @@ public final class FontMethodsImpl
      * @param <C>       component type
      * @return modified component
      */
-    public static <C extends Component> C setPlainFont ( final C component, final boolean apply )
+    public static <C extends Component> C setPlainFont ( final Component component, final boolean apply )
     {
         if ( apply && component != null && component.getFont () != null )
         {
             component.setFont ( component.getFont ().deriveFont ( Font.PLAIN ) );
         }
-        return component;
+        return ( C ) component;
     }
 
     /**
      * Returns whether component font is bold or not.
      *
      * @param component component to process
-     * @return true if component font is bold, false otherwise
+     * @return {@code true} if component font is bold, {@code false} otherwise
      */
     public static boolean isBoldFont ( final Component component )
     {
@@ -86,7 +85,7 @@ public final class FontMethodsImpl
      * @param <C>       component type
      * @return modified component
      */
-    public static <C extends Component> C setBoldFont ( final C component )
+    public static <C extends Component> C setBoldFont ( final Component component )
     {
         return setBoldFont ( component, true );
     }
@@ -99,20 +98,20 @@ public final class FontMethodsImpl
      * @param <C>       component type
      * @return modified component
      */
-    public static <C extends Component> C setBoldFont ( final C component, final boolean apply )
+    public static <C extends Component> C setBoldFont ( final Component component, final boolean apply )
     {
         if ( apply && component != null && component.getFont () != null )
         {
             component.setFont ( component.getFont ().deriveFont ( Font.BOLD ) );
         }
-        return component;
+        return ( C ) component;
     }
 
     /**
      * Returns whether component font is italic or not.
      *
      * @param component component to process
-     * @return true if component font is italic, false otherwise
+     * @return {@code true} if component font is italic, {@code false} otherwise
      */
     public static boolean isItalicFont ( final Component component )
     {
@@ -126,7 +125,7 @@ public final class FontMethodsImpl
      * @param <C>       component type
      * @return modified component
      */
-    public static <C extends Component> C setItalicFont ( final C component )
+    public static <C extends Component> C setItalicFont ( final Component component )
     {
         return setItalicFont ( component, true );
     }
@@ -139,13 +138,13 @@ public final class FontMethodsImpl
      * @param <C>       component type
      * @return modified component
      */
-    public static <C extends Component> C setItalicFont ( final C component, final boolean apply )
+    public static <C extends Component> C setItalicFont ( final Component component, final boolean apply )
     {
         if ( apply && component != null && component.getFont () != null )
         {
             component.setFont ( component.getFont ().deriveFont ( Font.ITALIC ) );
         }
-        return component;
+        return ( C ) component;
     }
 
     /**
@@ -157,7 +156,7 @@ public final class FontMethodsImpl
      * @param <C>       component type
      * @return modified component
      */
-    public static <C extends Component> C setFontStyle ( final C component, final boolean bold, final boolean italic )
+    public static <C extends Component> C setFontStyle ( final Component component, final boolean bold, final boolean italic )
     {
         final int style = bold && italic ? Font.BOLD | Font.ITALIC : bold ? Font.BOLD : italic ? Font.ITALIC : Font.PLAIN;
         return setFontStyle ( component, style );
@@ -171,13 +170,13 @@ public final class FontMethodsImpl
      * @param <C>       component type
      * @return modified component
      */
-    public static <C extends Component> C setFontStyle ( final C component, final int style )
+    public static <C extends Component> C setFontStyle ( final Component component, final int style )
     {
         if ( component != null && component.getFont () != null )
         {
             component.setFont ( component.getFont ().deriveFont ( style ) );
         }
-        return component;
+        return ( C ) component;
     }
 
     /**
@@ -203,13 +202,13 @@ public final class FontMethodsImpl
      * @param <C>       component type
      * @return modified component
      */
-    public static <C extends Component> C setFontSize ( final C component, final int fontSize )
+    public static <C extends Component> C setFontSize ( final Component component, final int fontSize )
     {
         if ( component != null && component.getFont () != null )
         {
             component.setFont ( component.getFont ().deriveFont ( ( float ) fontSize ) );
         }
-        return component;
+        return ( C ) component;
     }
 
     /**
@@ -220,14 +219,14 @@ public final class FontMethodsImpl
      * @param <C>       component type
      * @return modified component
      */
-    public static <C extends Component> C changeFontSize ( final C component, final int change )
+    public static <C extends Component> C changeFontSize ( final Component component, final int change )
     {
         if ( component != null && component.getFont () != null )
         {
             final Font font = component.getFont ();
             component.setFont ( font.deriveFont ( ( float ) font.getSize () + change ) );
         }
-        return component;
+        return ( C ) component;
     }
 
     /**
@@ -240,7 +239,7 @@ public final class FontMethodsImpl
      * @param <C>       component type
      * @return modified component
      */
-    public static <C extends Component> C setFontSizeAndStyle ( final C component, final int fontSize, final boolean bold,
+    public static <C extends Component> C setFontSizeAndStyle ( final Component component, final int fontSize, final boolean bold,
                                                                 final boolean italic )
     {
         final int style = bold && italic ? Font.BOLD | Font.ITALIC : bold ? Font.BOLD : italic ? Font.ITALIC : Font.PLAIN;
@@ -256,13 +255,13 @@ public final class FontMethodsImpl
      * @param <C>       component type
      * @return modified component
      */
-    public static <C extends Component> C setFontSizeAndStyle ( final C component, final int fontSize, final int style )
+    public static <C extends Component> C setFontSizeAndStyle ( final Component component, final int fontSize, final int style )
     {
         if ( component != null && component.getFont () != null )
         {
             component.setFont ( component.getFont ().deriveFont ( style, ( float ) fontSize ) );
         }
-        return component;
+        return ( C ) component;
     }
 
     /**
@@ -288,13 +287,13 @@ public final class FontMethodsImpl
      * @param <C>       component type
      * @return modified component
      */
-    public static <C extends Component> C setFontName ( final C component, final String fontName )
+    public static <C extends Component> C setFontName ( final Component component, final String fontName )
     {
         if ( component != null && component.getFont () != null )
         {
             final Font oldFont = component.getFont ();
             component.setFont ( new Font ( fontName, oldFont.getStyle (), oldFont.getSize () ) );
         }
-        return component;
+        return ( C ) component;
     }
 }

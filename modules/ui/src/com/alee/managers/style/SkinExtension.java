@@ -29,8 +29,9 @@ import java.util.List;
  * You can find basic implementation within {@link com.alee.managers.style.data.SkinInfo#applyExtension(SkinExtension)} method.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see StyleManager
  */
-
 public interface SkinExtension extends Identifiable
 {
     /**

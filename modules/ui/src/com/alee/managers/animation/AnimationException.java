@@ -21,8 +21,9 @@ package com.alee.managers.animation;
  * Special exception class used to display various animation problems.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-AnimationManager">How to use AnimationManager</a>
+ * @see AnimationManager
  */
-
 public final class AnimationException extends RuntimeException
 {
     /**

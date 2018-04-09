@@ -5,17 +5,18 @@ import java.awt.*;
 /**
  * This interface is implemented by classes which provide customizable padding.
  * Margin is a spacing between element view border and its content.
- * <p>
+ *
  * It might have different implementation depending on the component.
  * For example for {@link javax.swing.JButton} it is a spacing between its decoration border and its content.
  * For {@link javax.swing.JTabbedPane} it is a spacing between tab content area borders and content inside.
- * <p>
+ *
  * Padding might be supported through either custom borders in WebLaF-decorated components or component layout.
  * Be aware that if you specify your own border into those components this option might have no effect.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see StyleManager
  */
-
 public interface PaddingSupport
 {
     /**

@@ -20,11 +20,12 @@ package com.alee.managers.drag.transfer;
 import javax.swing.*;
 
 /**
- * Abstract {@link javax.swing.TransferHandler} providing simplified API for transfer handler implementation.
+ * Abstract {@link TransferHandler} providing simplified API for transfer handler implementation.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-DragManager">How to use DragManager</a>
+ * @see com.alee.managers.drag.DragManager
  */
-
 public abstract class AbstractTransferHandler extends TransferHandler
 {
     /**
@@ -104,9 +105,9 @@ public abstract class AbstractTransferHandler extends TransferHandler
      *
      * @param component component holding data to be transferred
      * @return desired drag action
-     * @see javax.swing.TransferHandler#COPY
-     * @see javax.swing.TransferHandler#MOVE
-     * @see javax.swing.TransferHandler#LINK
+     * @see TransferHandler#COPY
+     * @see TransferHandler#MOVE
+     * @see TransferHandler#LINK
      */
     @Override
     public int getSourceActions ( final JComponent component )
@@ -118,9 +119,9 @@ public abstract class AbstractTransferHandler extends TransferHandler
      * Sets desired drag action.
      *
      * @param action new desired drag action
-     * @see javax.swing.TransferHandler#COPY
-     * @see javax.swing.TransferHandler#MOVE
-     * @see javax.swing.TransferHandler#LINK
+     * @see TransferHandler#COPY
+     * @see TransferHandler#MOVE
+     * @see TransferHandler#LINK
      */
     public void setSourceAction ( final int action )
     {

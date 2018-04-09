@@ -49,7 +49,6 @@ import java.util.List;
  * @see SplitPanePainter
  * @see WebSplitPane
  */
-
 public class WebSplitPaneDivider extends WebContainer<WebSplitPaneDivider, WSplitPaneDividerUI> implements PropertyChangeListener
 {
     /**

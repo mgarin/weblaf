@@ -21,8 +21,9 @@ package com.alee.managers.drag;
  * Special exception class used to display various drag problems.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-DragManager">How to use DragManager</a>
+ * @see DragManager
  */
-
 public final class DragException extends RuntimeException
 {
     /**

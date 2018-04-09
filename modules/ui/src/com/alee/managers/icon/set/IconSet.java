@@ -28,8 +28,9 @@ import java.util.List;
  * Its API has only a few methods to add and retrieve {@link Icon}s from the set.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-IconManager">How to use IconManager</a>
+ * @see com.alee.managers.icon.IconManager
  */
-
 public interface IconSet extends Identifiable
 {
     /**

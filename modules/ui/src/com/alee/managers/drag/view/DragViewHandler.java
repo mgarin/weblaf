@@ -28,9 +28,9 @@ import java.awt.image.BufferedImage;
  *
  * @param <T> dragged object type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-DragManager">How to use DragManager</a>
  * @see com.alee.managers.drag.DragManager
  */
-
 public interface DragViewHandler<T>
 {
     /**

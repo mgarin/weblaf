@@ -46,7 +46,6 @@ import java.util.List;
  * @see com.alee.managers.glasspane.GlassPaneManager
  * @see com.alee.managers.hotkey.HotkeyManager
  */
-
 public final class TooltipManager
 {
     /**
@@ -320,7 +319,7 @@ public final class TooltipManager
                 private void displayTooltips ()
                 {
                     final Window window = CoreSwingUtils.getWindowAncestor ( component );
-                    if ( window !=null && window.isShowing () )
+                    if ( window != null && window.isShowing () )
                     {
                         showTips.start ();
                     }

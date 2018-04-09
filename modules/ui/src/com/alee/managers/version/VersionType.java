@@ -20,7 +20,6 @@ package com.alee.managers.version;
 /**
  * @author Mikle Garin
  */
-
 public final class VersionType
 {
     public static final String ALPHA = "alpha";

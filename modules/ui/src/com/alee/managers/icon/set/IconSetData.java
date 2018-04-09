@@ -30,8 +30,9 @@ import java.util.List;
  * Basic icon set (collection) information.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-IconManager">How to use IconManager</a>
+ * @see com.alee.managers.icon.IconManager
  */
-
 @XStreamAlias ( "IconSet" )
 public final class IconSetData implements Identifiable, Serializable
 {

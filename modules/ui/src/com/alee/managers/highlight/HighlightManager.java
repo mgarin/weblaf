@@ -30,8 +30,9 @@ import java.util.List;
  * This manager allows you to quickly highlight multiply visual Swing components in any window
  *
  * @author Mikle Garin
+ * @deprecated will be reworked in the future to provide a clean API for highlighting UI elements
  */
-
+@Deprecated
 public final class HighlightManager
 {
     /**

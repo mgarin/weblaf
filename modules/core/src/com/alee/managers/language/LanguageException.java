@@ -22,9 +22,8 @@ package com.alee.managers.language;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>
- * @see com.alee.managers.language.LanguageManager
+ * @see LanguageManager
  */
-
 public final class LanguageException extends RuntimeException
 {
     /**

@@ -25,7 +25,6 @@ import com.alee.utils.XmlUtils;
  *
  * @author Mikle Garin
  */
-
 public final class VersionManager
 {
     /**

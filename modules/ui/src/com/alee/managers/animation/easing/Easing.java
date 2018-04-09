@@ -28,8 +28,9 @@ package com.alee.managers.animation.easing;
  * long `total` - time gate we want transition to be finished within
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-AnimationManager">How to use AnimationManager</a>
+ * @see com.alee.managers.animation.AnimationManager
  */
-
 public interface Easing
 {
     /**

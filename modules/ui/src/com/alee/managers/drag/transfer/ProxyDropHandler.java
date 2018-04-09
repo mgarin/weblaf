@@ -21,15 +21,16 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * This {@link javax.swing.TransferHandler} allows you to proxify drop event to another {@link javax.swing.JComponent}.
+ * This {@link TransferHandler} allows you to proxify drop event to another {@link JComponent}.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-DragManager">How to use DragManager</a>
+ * @see com.alee.managers.drag.DragManager
  */
-
 public class ProxyDropHandler extends TransferHandler
 {
     /**
-     * {@link javax.swing.JComponent} onto which drop should be proxified.
+     * {@link JComponent} onto which drop should be proxified.
      */
     private JComponent component;
 

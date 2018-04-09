@@ -27,10 +27,10 @@ import com.alee.managers.focus.FocusManager;
  * There is also a {@link DefaultFocusTracker} implementation with all basic methods and which also contains a few additional features.
  *
  * @author Mikle Garin
- * @see FocusManager
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-FocusManager">How to use FocusManager</a>
  * @see DefaultFocusTracker
+ * @see FocusManager
  */
-
 public interface FocusTracker
 {
     /**

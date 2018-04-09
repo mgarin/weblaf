@@ -19,7 +19,7 @@ package com.alee.painter.decoration.shape;
 
 import com.alee.api.jdk.Objects;
 import com.alee.utils.TextUtils;
-import com.alee.utils.XmlException;
+import com.alee.utils.xml.XmlException;
 import com.thoughtworks.xstream.converters.ConversionException;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 

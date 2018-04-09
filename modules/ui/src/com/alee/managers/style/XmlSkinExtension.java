@@ -33,8 +33,10 @@ import java.util.List;
  * Its data is stored in the same XML format used for skins.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see StyleManager
+ * @see SkinExtension
  */
-
 public class XmlSkinExtension implements SkinExtension
 {
     /**

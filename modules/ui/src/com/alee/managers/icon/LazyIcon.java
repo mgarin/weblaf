@@ -26,9 +26,9 @@ import java.awt.*;
  * Actual {@link Icon} is referenced through {@link #id} which is unique for all icons within {@link IconManager}.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-IconManager">How to use IconManager</a>
  * @see IconManager
  */
-
 public final class LazyIcon implements Icon
 {
     /**

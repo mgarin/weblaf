@@ -17,13 +17,13 @@
 
 package com.alee.extended.split;
 
+import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsProcessor;
-import com.alee.managers.settings.SettingsProcessorData;
 
 import java.awt.*;
 
 /**
- * {@link SettingsProcessor} for {@link WebMultiSplitPane}.
+ * {@link SettingsProcessor} implementation that handles {@link WebMultiSplitPane} settings.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebMultiSplitPane">How to use WebMultiSplitPane</a>
@@ -32,78 +32,79 @@ import java.awt.*;
  * @see com.alee.managers.settings.SettingsManager
  * @see com.alee.managers.settings.SettingsProcessor
  */
-
-public class MultiSplitPaneSettingsProcessor extends SettingsProcessor<WebMultiSplitPane, MultiSplitState>
-        implements MultiSplitResizeListener, MultiSplitExpansionListener
+public class MultiSplitPaneSettingsProcessor extends SettingsProcessor<WebMultiSplitPane, MultiSplitState, Configuration<MultiSplitState>>
 {
+    /**
+     * {@link MultiSplitResizeListener} for tracking {@link WebMultiSplitPane} size changes.
+     */
+    protected transient MultiSplitResizeAdapter multiSplitResizeListener;
+
+    /**
+     * {@link MultiSplitExpansionListener} for tracking {@link WebMultiSplitPane} parts expansion.
+     */
+    protected transient MultiSplitExpansionAdapter multiSplitExpansionListener;
+
     /**
      * Constructs new {@link MultiSplitPaneSettingsProcessor}.
      *
-     * @param data {@link SettingsProcessorData}
+     * @param multiSplitPane {@link WebMultiSplitPane} which settings are being managed
+     * @param configuration  {@link Configuration}
      */
-    public MultiSplitPaneSettingsProcessor ( final SettingsProcessorData data )
+    public MultiSplitPaneSettingsProcessor ( final WebMultiSplitPane multiSplitPane, final Configuration configuration )
     {
-        super ( data );
+        super ( multiSplitPane, configuration );
     }
 
     @Override
-    protected void doInit ( final WebMultiSplitPane multiSplitPane )
+    protected void register ( final WebMultiSplitPane multiSplitPane )
     {
-        multiSplitPane.addResizeListener ( this );
-        multiSplitPane.addExpansionListener ( this );
+        multiSplitResizeListener = new MultiSplitResizeAdapter ()
+        {
+            @Override
+            public void viewResizeEnded ( final WebMultiSplitPane multiSplitPane, final WebMultiSplitPaneDivider divider )
+            {
+                save ();
+            }
+
+            @Override
+            public void viewSizeAdjusted ( final WebMultiSplitPane multiSplitPane )
+            {
+                save ();
+            }
+        };
+        multiSplitPane.addResizeListener ( multiSplitResizeListener );
+
+        multiSplitExpansionListener = new MultiSplitExpansionAdapter ()
+        {
+            @Override
+            public void viewExpanded ( final WebMultiSplitPane multiSplitPane, final Component view )
+            {
+                save ();
+            }
+
+            @Override
+            public void viewCollapsed ( final WebMultiSplitPane multiSplitPane, final Component view )
+            {
+                save ();
+            }
+        };
+        multiSplitPane.addExpansionListener ( multiSplitExpansionListener );
     }
 
     @Override
-    protected void doDestroy ( final WebMultiSplitPane multiSplitPane )
+    protected void unregister ( final WebMultiSplitPane multiSplitPane )
     {
-        multiSplitPane.removeExpansionListener ( this );
-        multiSplitPane.removeResizeListener ( this );
+        multiSplitPane.removeExpansionListener ( multiSplitExpansionListener );
+        multiSplitExpansionListener = null;
+
+        multiSplitPane.removeResizeListener ( multiSplitResizeListener );
+        multiSplitResizeListener = null;
     }
 
     @Override
-    public void viewResizeStarted ( final WebMultiSplitPane multiSplitPane, final WebMultiSplitPaneDivider divider )
+    protected void loadSettings ( final WebMultiSplitPane multiSplitPane )
     {
-        /**
-         * Only save upon resize completion.
-         */
-    }
-
-    @Override
-    public void viewResized ( final WebMultiSplitPane multiSplitPane, final WebMultiSplitPaneDivider divider )
-    {
-        /**
-         * Only save upon resize completion.
-         */
-    }
-
-    @Override
-    public void viewResizeEnded ( final WebMultiSplitPane multiSplitPane, final WebMultiSplitPaneDivider divider )
-    {
-        save ();
-    }
-
-    @Override
-    public void viewSizeAdjusted ( final WebMultiSplitPane multiSplitPane )
-    {
-        save ();
-    }
-
-    @Override
-    public void viewExpanded ( final WebMultiSplitPane multiSplitPane, final Component view )
-    {
-        save ();
-    }
-
-    @Override
-    public void viewCollapsed ( final WebMultiSplitPane multiSplitPane, final Component view )
-    {
-        save ();
-    }
-
-    @Override
-    protected void doLoad ( final WebMultiSplitPane multiSplitPane )
-    {
-        final MultiSplitState state = loadValue ();
+        final MultiSplitState state = loadSettings ();
         if ( state != null )
         {
             multiSplitPane.setMultiSplitState ( state );
@@ -111,12 +112,12 @@ public class MultiSplitPaneSettingsProcessor extends SettingsProcessor<WebMultiS
     }
 
     @Override
-    protected void doSave ( final WebMultiSplitPane multiSplitPane )
+    protected void saveSettings ( final WebMultiSplitPane multiSplitPane )
     {
         final MultiSplitState state = multiSplitPane.getMultiSplitState ();
         if ( state != null )
         {
-            saveValue ( state );
+            saveSettings ( state );
         }
     }
 }

@@ -34,12 +34,16 @@ import javax.swing.*;
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-IconManager">How to use IconManager</a>
  * @see IconManager
  */
-
 @XStreamAlias ( "SetIcon" )
 public class SetIcon<C extends JComponent, D extends IDecoration<C, D>, I extends SetIcon<C, D, I>> extends AbstractIconContent<C, D, I>
 {
+    /**
+     * todo 1. Rename to something more convenient
+     */
+
     /**
      * Unique set icon ID.
      */

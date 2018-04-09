@@ -27,7 +27,6 @@ import com.alee.managers.language.data.Dictionary;
  * @see LanguageManager
  * @see Dictionary
  */
-
 public interface DictionaryListener
 {
     /**

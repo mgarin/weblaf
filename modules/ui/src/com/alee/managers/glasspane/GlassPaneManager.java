@@ -25,12 +25,12 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * This manager provides an instance of WebGlassPane for specified JRootPane instance.
+ * This manager provides an instance of {@link WebGlassPane} for specified {@link JRootPane} instance.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-GlassPaneManager">How to use GlassPaneManager</a>
  * @see WebGlassPane
  */
-
 public final class GlassPaneManager
 {
     /**
@@ -40,12 +40,12 @@ public final class GlassPaneManager
             new WeakComponentData<JComponent, WebGlassPane> ( "GlassPaneManager.WebGlassPane", 3 );
 
     /**
-     * Returns registered WebGlassPane for JRootPane under the specified component.
-     * If WebGlassPane is not yet registered for that JRootPane then it will be created.
-     * Might return null if no WebGlassPane could be registered for that JRootPane.
+     * Returns registered {@link WebGlassPane} for {@link JRootPane} under the specified component.
+     * If {@link WebGlassPane} is not yet registered for that {@link JRootPane} then it will be created.
+     * Might return null if no {@link WebGlassPane} could be registered for that {@link JRootPane}.
      *
      * @param component component to process
-     * @return registered WebGlassPane for JRootPane under the specified component or null if it cannot be registered
+     * @return registered {@link WebGlassPane} for {@link JRootPane} under the specified component or null if it cannot be registered
      */
     public static WebGlassPane getGlassPane ( final Component component )
     {
@@ -53,12 +53,12 @@ public final class GlassPaneManager
     }
 
     /**
-     * Returns registered WebGlassPane for the specified JRootPane.
-     * If WebGlassPane is not yet registered for that JRootPane then it will be created.
-     * Might return null if no WebGlassPane could be registered for that JRootPane.
+     * Returns registered {@link WebGlassPane} for the specified {@link JRootPane}.
+     * If {@link WebGlassPane} is not yet registered for that {@link JRootPane} then it will be created.
+     * Might return null if no {@link WebGlassPane} could be registered for that {@link JRootPane}.
      *
-     * @param rootPane JRootPane to process
-     * @return registered WebGlassPane for JRootPane under the specified component or null if it cannot be registered
+     * @param rootPane {@link JRootPane} to process
+     * @return registered {@link WebGlassPane} for {@link JRootPane} under the specified component or null if it cannot be registered
      */
     public static WebGlassPane getGlassPane ( final JRootPane rootPane )
     {

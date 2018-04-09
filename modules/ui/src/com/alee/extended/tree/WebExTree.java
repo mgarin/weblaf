@@ -47,7 +47,6 @@ import java.util.List;
  * @see ExTreeModel
  * @see ExTreeDataProvider
  */
-
 public class WebExTree<N extends UniqueNode> extends WebTree<N>
 {
     /**

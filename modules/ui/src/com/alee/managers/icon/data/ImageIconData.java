@@ -26,9 +26,10 @@ import java.net.URL;
  * {@link AbstractIconData} implementation for {@link ImageIcon} icon type.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-IconManager">How to use IconManager</a>
  * @see ImageIcon
+ * @see com.alee.managers.icon.IconManager
  */
-
 @XStreamAlias ( "ImageIcon" )
 public class ImageIconData extends AbstractIconData<ImageIcon>
 {

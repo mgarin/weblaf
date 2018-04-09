@@ -22,9 +22,8 @@ package com.alee.managers.settings;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
- * @see com.alee.managers.settings.SettingsManager
+ * @see SettingsManager
  */
-
 public final class SettingsException extends RuntimeException
 {
     /**
@@ -49,7 +48,7 @@ public final class SettingsException extends RuntimeException
      * Constructs a new {@link SettingsException} with the specified detail message and cause.
      *
      * @param message exception message
-     * @param cause   exception cause
+     * @param cause   {@link Throwable} cause
      */
     public SettingsException ( final String message, final Throwable cause )
     {
@@ -59,7 +58,7 @@ public final class SettingsException extends RuntimeException
     /**
      * Constructs a new {@link SettingsException} with the specified cause.
      *
-     * @param cause exception cause
+     * @param cause {@link Throwable} cause
      */
     public SettingsException ( final Throwable cause )
     {

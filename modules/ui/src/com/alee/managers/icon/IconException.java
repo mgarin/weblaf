@@ -22,13 +22,12 @@ package com.alee.managers.icon;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-IconManager">How to use IconManager</a>
- * @see com.alee.managers.icon.IconManager
+ * @see IconManager
  */
-
 public final class IconException extends RuntimeException
 {
     /**
-     * Constructs a new IconException with {@code null} as its detail message.
+     * Constructs a new {@link IconException} with {@code null} as its detail message.
      */
     public IconException ()
     {
@@ -36,7 +35,7 @@ public final class IconException extends RuntimeException
     }
 
     /**
-     * Constructs a new IconException with the specified detail message.
+     * Constructs a new {@link IconException} with the specified detail message.
      *
      * @param message exception message
      */
@@ -46,7 +45,7 @@ public final class IconException extends RuntimeException
     }
 
     /**
-     * Constructs a new IconException with the specified detail message and cause.
+     * Constructs a new {@link IconException} with the specified detail message and cause.
      *
      * @param message exception message
      * @param cause   exception cause
@@ -57,7 +56,7 @@ public final class IconException extends RuntimeException
     }
 
     /**
-     * Constructs a new IconException with the specified cause.
+     * Constructs a new {@link IconException} with the specified cause.
      *
      * @param cause exception cause
      */

@@ -20,7 +20,6 @@ package com.alee.utils.xml;
 import com.alee.api.jdk.Objects;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.MapUtils;
-import com.alee.utils.XmlException;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 import java.awt.*;

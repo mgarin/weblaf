@@ -19,7 +19,7 @@ package com.alee.extended.inspector;
 
 import com.alee.api.data.CompassDirection;
 import com.alee.api.jdk.Objects;
-import com.alee.extended.behavior.ComponentVisibilityBehavior;
+import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.glasspane.GlassPaneManager;
 import com.alee.managers.glasspane.WebGlassPane;
@@ -73,7 +73,7 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
     /**
      * Highlighted component visibility listener.
      */
-    private transient ComponentVisibilityBehavior visibilityListener;
+    private transient VisibilityBehavior visibilityListener;
 
     /**
      * Constructs new component highlighter.
@@ -106,7 +106,7 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
             // Adding highligthed component listeners
             component.addComponentListener ( this );
             component.addHierarchyBoundsListener ( this );
-            visibilityListener = new ComponentVisibilityBehavior ( component )
+            visibilityListener = new VisibilityBehavior ( component )
             {
                 @Override
                 public void displayed ()

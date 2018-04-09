@@ -5,14 +5,15 @@ import java.awt.*;
 /**
  * This interface is implemented by classes which provide customizable margin.
  * Margin is a spacing between element bounds and its view.
- * <p>
+ *
  * Margin is supported through custom borders in WebLaF-decorated components.
  * Be aware that if you specify your own border into those components this option will have no effect.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see MarginMethods
+ * @see StyleManager
  */
-
 public interface MarginSupport
 {
     /**

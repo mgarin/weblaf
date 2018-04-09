@@ -33,8 +33,9 @@ import java.lang.ref.WeakReference;
  * @param <C> dragged component type
  * @param <T> dragged data type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-DragManager">How to use DragManager</a>
+ * @see com.alee.managers.drag.DragManager
  */
-
 public abstract class ComponentDragViewHandler<C extends JComponent, T> implements DragViewHandler<T>
 {
     /**

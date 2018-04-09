@@ -29,8 +29,9 @@ import java.io.File;
  * Simple icon set that could be created based on a custom XML data file.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-IconManager">How to use IconManager</a>
+ * @see com.alee.managers.icon.IconManager
  */
-
 public class XmlIconSet extends AbstractIconSet
 {
     /**

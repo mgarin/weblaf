@@ -34,8 +34,8 @@ import java.util.*;
  * All {@link Icon}s are provided through {@link IconSet} implementations that can be added and removed here.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-IconManager">How to use IconManager</a>
  */
-
 public final class IconManager
 {
     /**
