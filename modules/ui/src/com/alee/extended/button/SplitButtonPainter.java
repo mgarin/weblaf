@@ -1,13 +1,18 @@
 package com.alee.extended.button;
 
 import com.alee.api.jdk.Objects;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.AbstractButtonPainter;
+import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.List;
 
 /**
  * Basic painter for {@link WebSplitButton} component.
@@ -40,6 +45,7 @@ public class SplitButtonPainter<C extends WebSplitButton, U extends WSplitButton
      * Listeners.
      */
     protected transient MouseAdapter splitButtonTracker;
+    protected transient PropertyChangeListener popupMenuPropertyChangeListener;
 
     /**
      * Runtime variables.
@@ -65,6 +71,7 @@ public class SplitButtonPainter<C extends WebSplitButton, U extends WSplitButton
      */
     protected void installSplitButtonListeners ()
     {
+        // todo Should be replaced with state-based settings
         onSplit = false;
         splitButtonTracker = new MouseAdapter ()
         {
@@ -102,6 +109,19 @@ public class SplitButtonPainter<C extends WebSplitButton, U extends WSplitButton
         };
         component.addMouseListener ( splitButtonTracker );
         component.addMouseMotionListener ( splitButtonTracker );
+
+        popupMenuPropertyChangeListener = new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent event )
+            {
+                if ( Objects.equals ( event.getPropertyName (), WebLookAndFeel.VISIBLE_PROPERTY ) )
+                {
+                    updateDecorationState ();
+                }
+            }
+        };
+        installPopupMenuPropertyChangeListener ( component.getPopupMenu () );
     }
 
     /**
@@ -109,6 +129,8 @@ public class SplitButtonPainter<C extends WebSplitButton, U extends WSplitButton
      */
     protected void uninstallSplitButtonListeners ()
     {
+        uninstallPopupMenuPropertyChangeListener ( component.getPopupMenu () );
+        popupMenuPropertyChangeListener = null;
         component.removeMouseMotionListener ( splitButtonTracker );
         component.removeMouseListener ( splitButtonTracker );
         splitButtonTracker = null;
@@ -126,6 +148,47 @@ public class SplitButtonPainter<C extends WebSplitButton, U extends WSplitButton
         {
             updateBorder ();
         }
+
+        // Updating border on split icon change
+        if ( Objects.equals ( property, WebSplitButton.POPUP_MENU_PROPERTY ) )
+        {
+            uninstallPopupMenuPropertyChangeListener ( ( JPopupMenu ) oldValue );
+            installPopupMenuPropertyChangeListener ( ( JPopupMenu ) newValue );
+        }
+    }
+
+    /**
+     * Installs {@link PropertyChangeListener} into {@link JPopupMenu} of the {@link WebSplitButton}.
+     *
+     * @param popupMenu {@link JPopupMenu} to install {@link PropertyChangeListener} into
+     */
+    protected void installPopupMenuPropertyChangeListener ( final JPopupMenu popupMenu )
+    {
+        if ( popupMenu != null )
+        {
+            popupMenu.addPropertyChangeListener ( popupMenuPropertyChangeListener );
+        }
+    }
+
+    /**
+     * Uninstalls {@link PropertyChangeListener} from {@link JPopupMenu} of the {@link WebSplitButton}.
+     *
+     * @param popupMenu {@link JPopupMenu} to uninstall {@link PropertyChangeListener} from
+     */
+    protected void uninstallPopupMenuPropertyChangeListener ( final JPopupMenu popupMenu )
+    {
+        if ( popupMenu != null )
+        {
+            popupMenu.removePropertyChangeListener ( popupMenuPropertyChangeListener );
+        }
+    }
+
+    @Override
+    public List<String> getDecorationStates ()
+    {
+        final List<String> states = super.getDecorationStates ();
+        states.add ( component.isPopupMenuVisible () ? DecorationState.popupVisible : DecorationState.popupHidden );
+        return states;
     }
 
     /**

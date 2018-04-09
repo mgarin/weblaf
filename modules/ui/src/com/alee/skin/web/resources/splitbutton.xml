@@ -31,6 +31,11 @@
                     <WebShadow type="inner" width="6" />
                     <ColorBackground color="210,210,210" />
                 </decoration>
+                <decoration states="popup-visible">
+                    <WebShadow type="outer" opacity="0" />
+                    <WebShadow type="inner" width="6" />
+                    <ColorBackground color="210,210,210" />
+                </decoration>
                 <decoration states="disabled">
                     <WebShadow type="outer" opacity="0" />
                     <LineBorder color="lightGray" />
@@ -80,6 +85,7 @@
                 <decoration opacity="0" />
                 <decoration states="enabled,hover" opacity="1" />
                 <decoration states="enabled,pressed" opacity="1" />
+                <decoration states="enabled,popup-visible" opacity="1" />
             </decorations>
         </painter>
     </style>
@@ -91,6 +97,7 @@
                 <decoration opacity="0" />
                 <decoration states="enabled,hover" opacity="1" />
                 <decoration states="enabled,pressed" opacity="1" />
+                <decoration states="enabled,popup-visible" opacity="1" />
             </decorations>
         </painter>
     </style>

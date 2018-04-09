@@ -33,6 +33,7 @@ import com.alee.managers.tooltip.TooltipWay;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
 
@@ -62,13 +63,19 @@ public class WebSplitButton extends JButton implements ActionListener, Styleable
         SizeMethods<WebSplitButton>
 {
     /**
+     * todo 1. All menu-related stuff should be moved into UI
+     * todo 2. Need to provide appropriate property changes
+     */
+
+    /**
      * Default split button icon.
      */
     public static final ImageIcon defaultSplitIcon = new ImageIcon ( WebSplitButton.class.getResource ( "icons/splitIcon.png" ) );
 
     /**
-     * Custom component properties.
+     * Component properties.
      */
+    public static final String POPUP_MENU_PROPERTY = "popupMenu";
     public static final String SPLIT_ICON_PROPERTY = "splitIcon";
 
     /**
@@ -475,7 +482,9 @@ public class WebSplitButton extends JButton implements ActionListener, Styleable
      */
     public void setPopupMenu ( final JPopupMenu popupMenu )
     {
+        final JPopupMenu old = this.popupMenu;
         this.popupMenu = popupMenu;
+        SwingUtils.firePropertyChanged ( this, POPUP_MENU_PROPERTY, old, popupMenu );
     }
 
     /**
@@ -586,6 +595,16 @@ public class WebSplitButton extends JButton implements ActionListener, Styleable
             }
             fireButtonClicked ( e );
         }
+    }
+
+    /**
+     * Returns whether or not {@link #popupMenu} is currently visible.
+     *
+     * @return {@code true} if {@link #popupMenu} is currently visible, {@code false} otherwise
+     */
+    public boolean isPopupMenuVisible ()
+    {
+        return popupMenu != null && popupMenu.isShowing ();
     }
 
     /**

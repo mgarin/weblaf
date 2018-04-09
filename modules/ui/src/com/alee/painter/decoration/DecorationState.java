@@ -508,4 +508,18 @@ public interface DecorationState
      * @see com.alee.extended.tree.WebCheckBoxTreeCellRenderer#getStates()
      */
     public static final String checkHidden = "check-hidden";
+
+    /**
+     * Visible popup component.
+     *
+     * @see com.alee.extended.button.SplitButtonPainter#getDecorationStates()
+     */
+    public static final String popupVisible = "popup-visible";
+
+    /**
+     * Hidden popup component.
+     *
+     * @see com.alee.extended.button.SplitButtonPainter#getDecorationStates()
+     */
+    public static final String popupHidden = "popup-hidden";
 }
