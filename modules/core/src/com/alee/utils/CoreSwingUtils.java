@@ -277,7 +277,25 @@ public final class CoreSwingUtils
      */
     public static PointerInfo getPointerInfo ()
     {
-        return MouseInfo.getPointerInfo ();
+        PointerInfo pointerInfo = MouseInfo.getPointerInfo ();
+
+        /**
+         * Workaround for some cases when {@link MouseInfo} returns a {@code null} {@link PointerInfo}.
+         * One of the known cases is when it is requested under Windows OS while user is on the lock screen.
+         * There are also some other cases, possibly when OS display device configuration is being modified.
+         */
+        if ( pointerInfo == null )
+        {
+            /**
+             * Unfortunately {@link PointerInfo} constructor is not accessible so we have to resort to Reflection.
+             * In the worst case if {@link PointerInfo} constructor changes - this will result in {@code null}.
+             */
+            final GraphicsDevice device = SystemUtils.getDefaultScreenDevice ();
+            final Point location = new Point ( 0, 0 );
+            pointerInfo = ReflectUtils.createInstanceSafely ( PointerInfo.class, device, location );
+        }
+
+        return pointerInfo;
     }
 
     /**
