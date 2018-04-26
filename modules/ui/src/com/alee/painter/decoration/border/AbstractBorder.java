@@ -17,7 +17,6 @@
 
 package com.alee.painter.decoration.border;
 
-import com.alee.api.clone.Clone;
 import com.alee.painter.decoration.IDecoration;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -31,7 +30,6 @@ import javax.swing.*;
  * @param <I> border type
  * @author Mikle Garin
  */
-
 public abstract class AbstractBorder<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractBorder<C, D, I>>
         implements IBorder<C, D, I>
 {
@@ -81,19 +79,5 @@ public abstract class AbstractBorder<C extends JComponent, D extends IDecoration
     public float getOpacity ()
     {
         return opacity != null ? opacity : 1f;
-    }
-
-    @Override
-    public I merge ( final I border )
-    {
-        overwrite = overwrite != null && overwrite || border.overwrite != null && border.overwrite;
-        opacity = border.isOverwrite () || border.opacity != null ? border.opacity : opacity;
-        return ( I ) this;
-    }
-
-    @Override
-    public I clone ()
-    {
-        return ( I ) Clone.cloneByFieldsSafely ( this );
     }
 }

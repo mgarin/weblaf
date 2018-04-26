@@ -17,7 +17,6 @@
 
 package com.alee.painter.decoration;
 
-import com.alee.api.merge.Merge;
 import com.alee.managers.style.Bounds;
 import com.alee.managers.style.BoundsType;
 import com.alee.painter.decoration.content.IContent;
@@ -39,7 +38,6 @@ import java.util.List;
  * @param <I> decoration type
  * @author Mikle Garin
  */
-
 public abstract class ContentDecoration<C extends JComponent, I extends ContentDecoration<C, I>> extends AbstractDecoration<C, I>
 {
     /**
@@ -183,13 +181,5 @@ public abstract class ContentDecoration<C extends JComponent, I extends ContentD
             }
             return ps;
         }
-    }
-
-    @Override
-    public I merge ( final I decoration )
-    {
-        super.merge ( decoration );
-        contents = decoration.isOverwrite () ? decoration.contents : Merge.COMMON.<List<IContent>>merge ( contents, decoration.contents );
-        return ( I ) this;
     }
 }

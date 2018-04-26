@@ -32,7 +32,6 @@ import javax.swing.*;
  * @param <I> content type
  * @author Alexandr Zernov
  */
-
 @XStreamAlias ( "LabelIcon" )
 public class LabelIcon<C extends JLabel, D extends IDecoration<C, D>, I extends LabelIcon<C, D, I>>
         extends AbstractIconContent<C, D, I>

@@ -25,7 +25,12 @@ import com.alee.utils.ReflectUtils;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Merge behavior for various primitive types.
@@ -34,17 +39,16 @@ import java.util.Date;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
  * @see Merge
  */
-
-public final class BasicMergeBehavior implements GlobalMergeBehavior<Object, Object, Object>
+public class BasicMergeBehavior implements GlobalMergeBehavior<Object, Object, Object>
 {
     @Override
-    public boolean supports ( final Merge merge, final Object base, final Object merged )
+    public boolean supports ( final Merge merge, final Class<Object> type, final Object base, final Object merged )
     {
-        return isBasic ( base ) || isBasic ( merged );
+        return ( isBasic ( base ) || isBasic ( merged ) ) && base.getClass () == merged.getClass ();
     }
 
     @Override
-    public Object merge ( final Merge merge, final Object base, final Object merged )
+    public Object merge ( final Merge merge, final Class<Object> type, final Object base, final Object merged )
     {
         if ( isSimpleMutable ( merged ) )
         {
@@ -89,6 +93,21 @@ public final class BasicMergeBehavior implements GlobalMergeBehavior<Object, Obj
                 final Rectangle2D.Double m = ( Rectangle2D.Double ) merged;
                 return new Rectangle2D.Double ( m.x, m.y, m.width, m.height );
             }
+            else if ( clazz == AtomicBoolean.class )
+            {
+                final AtomicBoolean ab = ( AtomicBoolean ) merged;
+                return new AtomicBoolean ( ab.get () );
+            }
+            else if ( clazz == AtomicInteger.class )
+            {
+                final AtomicInteger ai = ( AtomicInteger ) merged;
+                return new AtomicInteger ( ai.get () );
+            }
+            else if ( clazz == AtomicLong.class )
+            {
+                final AtomicLong al = ( AtomicLong ) merged;
+                return new AtomicLong ( al.get () );
+            }
             else
             {
                 throw new MergeException ( "Unsupported mutable type merge requested: " + clazz );
@@ -122,10 +141,13 @@ public final class BasicMergeBehavior implements GlobalMergeBehavior<Object, Obj
         final Class<?> clazz = object.getClass ();
         return clazz.isEnum () ||
                 clazz == Class.class ||
+                clazz == BigInteger.class ||
+                clazz == BigDecimal.class ||
                 clazz == String.class ||
                 clazz == Date.class ||
                 clazz == Color.class ||
-                clazz == Font.class;
+                clazz == Font.class ||
+                clazz == BasicStroke.class;
     }
 
     /**
@@ -140,6 +162,9 @@ public final class BasicMergeBehavior implements GlobalMergeBehavior<Object, Obj
         return clazz == Insets.class ||
                 clazz == Dimension.class ||
                 Point2D.class.isAssignableFrom ( clazz ) ||
-                Rectangle2D.class.isAssignableFrom ( clazz );
+                Rectangle2D.class.isAssignableFrom ( clazz ) ||
+                clazz == AtomicBoolean.class ||
+                clazz == AtomicInteger.class ||
+                clazz == AtomicLong.class;
     }
 }

@@ -17,26 +17,27 @@
 
 package com.alee.api.merge;
 
+import com.alee.api.clone.Clone;
+
 import java.io.Serializable;
 
 /**
- * Objects merge restriction policy.
- * It is asked whether or not specified objects can be merged.
+ * Merged objects cloning policy.
+ * It is asked whether or not merged objects should be cloned before merge operation.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
  * @see Merge
+ * @see Clone
  */
-
-public interface MergePolicy extends Serializable
+public interface ClonePolicy extends Serializable
 {
     /**
-     * Returns whether or not specified objects can be merged.
+     * Returns source object or cloned object, depending on implementation.
      *
-     * @param merge  {@link Merge} algorithm
-     * @param object base object
-     * @param merged object to merge
-     * @return {@code true} if specified objects can be merged, {@code false} otherwise
+     * @param clone  {@link Clone} algorithm
+     * @param source source object to be cloned
+     * @return source object or cloned object, depending on implementation
      */
-    public boolean accept ( Merge merge, Object object, Object merged );
+    public Object clone ( Clone clone, Object source );
 }

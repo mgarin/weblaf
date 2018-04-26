@@ -31,7 +31,6 @@ import javax.swing.*;
  * @param <I> layout type
  * @author Alexandr Zernov
  */
-
 @XStreamAlias ( "LabelLayout" )
 public class LabelLayout<C extends JLabel, D extends IDecoration<C, D>, I extends IconTextLayout<C, D, I>> extends IconTextLayout<C, D, I>
 {

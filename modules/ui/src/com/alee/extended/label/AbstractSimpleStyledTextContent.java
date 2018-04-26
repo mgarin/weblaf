@@ -37,7 +37,6 @@ import java.util.List;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  */
-
 public abstract class AbstractSimpleStyledTextContent<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractSimpleStyledTextContent<C, D, I>>
         extends AbstractStyledTextContent<C, D, I>
 {
@@ -236,13 +235,4 @@ public abstract class AbstractSimpleStyledTextContent<C extends JComponent, D ex
      * @return actual component mnemonic or {@code -1} if it shouldn't be displayed
      */
     protected abstract int getComponentMnemonic ( C c, D d );
-
-    @Override
-    public I merge ( final I content )
-    {
-        super.merge ( content );
-        wrap = content.isOverwrite () || content.wrap != null ? content.wrap : wrap;
-        maximumRows = content.isOverwrite () || content.maximumRows != null ? content.maximumRows : maximumRows;
-        return ( I ) this;
-    }
 }

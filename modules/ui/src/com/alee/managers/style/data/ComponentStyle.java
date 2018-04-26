@@ -18,13 +18,15 @@
 package com.alee.managers.style.data;
 
 import com.alee.api.clone.Clone;
+import com.alee.api.clone.behavior.*;
+import com.alee.api.clone.unknownresolver.ExceptionUnknownResolver;
 import com.alee.api.jdk.Objects;
 import com.alee.api.merge.Merge;
 import com.alee.managers.style.*;
 import com.alee.painter.Painter;
-import com.alee.utils.CollectionUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.reflection.ModifierType;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -50,12 +52,29 @@ import java.util.Map;
  */
 @XStreamAlias ( "style" )
 @XStreamConverter ( ComponentStyleConverter.class )
-public final class ComponentStyle implements Serializable, Cloneable
+public final class ComponentStyle implements Cloneable, Serializable
 {
     /**
      * Component painter identifier.
      */
     public static final String COMPONENT_PAINTER_ID = "painter";
+
+    /**
+     * {@link Clone} algorithm for {@link ComponentStyle}.
+     * It is similar to {@link Clone#deep()} but uses {@link ComponentStyleCloneBehavior} in addition to other behaviors.
+     * This is necessary to preserve parent-child relations between nested {@link ComponentStyle}s.
+     */
+    public static final Clone CLONE = new Clone (
+            new ExceptionUnknownResolver (),
+            new BasicCloneBehavior (),
+            new CloneableCloneBehavior ( CloneableCloneBehavior.Policy.strict ),
+            new ArrayCloneBehavior (),
+            new MapCloneBehavior (),
+            new SetCloneBehavior (),
+            new CollectionCloneBehavior (),
+            new ComponentStyleCloneBehavior (),
+            new ReflectionCloneBehavior ( ReflectionCloneBehavior.Policy.cloneable, ModifierType.STATIC )
+    );
 
     /**
      * Style component type.
@@ -113,6 +132,7 @@ public final class ComponentStyle implements Serializable, Cloneable
      * Parent {@link ComponentStyle}.
      * This variable is only set in runtime for style usage convenience.
      */
+    @PreserveOnClone
     private transient ComponentStyle parent;
 
     /**
@@ -508,14 +528,21 @@ public final class ComponentStyle implements Serializable, Cloneable
         // Creating separate usable value to avoid source object modifications
         // We have limited options here, so for now we simply clone objects which are defined as Cloneable
         final Object usable;
-        try
+        if ( value instanceof Painter )
         {
-            usable = Clone.clone ( value );
+            usable = value;
         }
-        catch ( final Exception e )
+        else
         {
-            final String msg = "Unable to clone value: %s";
-            throw new StyleException ( String.format ( msg, value ), e );
+            try
+            {
+                usable = Clone.deep ().clone ( value );
+            }
+            catch ( final Exception e )
+            {
+                final String msg = "Unable to clone value: %s";
+                throw new StyleException ( String.format ( msg, value ), e );
+            }
         }
 
         try
@@ -707,7 +734,7 @@ public final class ComponentStyle implements Serializable, Cloneable
         else if ( mergedCount > 0 )
         {
             // Simply set merged styles
-            final List<ComponentStyle> mergedStylesClone = Clone.clone ( style.getNestedStyles () );
+            final List<ComponentStyle> mergedStylesClone = Clone.deep ().clone ( style.getNestedStyles () );
             for ( final ComponentStyle mergedStyleClone : mergedStylesClone )
             {
                 mergedStyleClone.setParent ( this );
@@ -717,7 +744,7 @@ public final class ComponentStyle implements Serializable, Cloneable
         else if ( nestedCount > 0 )
         {
             // Simply set base styles
-            final List<ComponentStyle> baseStylesClone = Clone.clone ( getNestedStyles () );
+            final List<ComponentStyle> baseStylesClone = Clone.deep ().clone ( getNestedStyles () );
             for ( final ComponentStyle baseStyleClone : baseStylesClone )
             {
                 baseStyleClone.setParent ( this );
@@ -791,13 +818,13 @@ public final class ComponentStyle implements Serializable, Cloneable
                 else
                 {
                     // Adding a full copy of merged painter style
-                    resultPainterStyle = mergedPainterStyle.clone ();
+                    resultPainterStyle = Clone.deep ().clone ( mergedPainterStyle );
                 }
             }
             else
             {
                 // Adding a full copy of base painter style
-                resultPainterStyle = painterStyle.clone ();
+                resultPainterStyle = Clone.deep ().clone ( painterStyle );
             }
         }
         else
@@ -805,7 +832,7 @@ public final class ComponentStyle implements Serializable, Cloneable
             if ( mergedPainterStyle != null )
             {
                 // Adding a full copy of merged painter style
-                resultPainterStyle = mergedPainterStyle.clone ();
+                resultPainterStyle = Clone.deep ().clone ( mergedPainterStyle );
             }
             else
             {
@@ -829,16 +856,13 @@ public final class ComponentStyle implements Serializable, Cloneable
         for ( final Map.Entry<String, Object> property : merged.entrySet () )
         {
             final String key = property.getKey ();
-            final Object e = properties.get ( key );
-            final Object m = property.getValue ();
+            final Object existingValue = properties.get ( key );
+            final Object mergedValue = property.getValue ();
 
             try
             {
-                // Cloning existing property value properly
-                final Object existing = Clone.clone ( e );
-
-                // Merging another one on top of it
-                final Object result = Merge.DEEP.merge ( existing, m );
+                // Merging value on top of existing one
+                final Object result = Merge.deep ().merge ( existingValue, mergedValue );
 
                 // Saving merge result
                 properties.put ( key, result );
@@ -846,7 +870,7 @@ public final class ComponentStyle implements Serializable, Cloneable
             catch ( final Exception ex )
             {
                 final String msg = "Unable to merge property '%s' values: '%s' and '%s'";
-                LoggerFactory.getLogger ( ComponentStyle.class ).error ( String.format ( msg, key, e, m ), ex );
+                LoggerFactory.getLogger ( ComponentStyle.class ).error ( String.format ( msg, key, existingValue, mergedValue ), ex );
             }
         }
     }
@@ -854,22 +878,7 @@ public final class ComponentStyle implements Serializable, Cloneable
     @Override
     public ComponentStyle clone ()
     {
-        // Creating style clone
-        final ComponentStyle clone = Clone.cloneByFieldsSafely ( this );
-
-        // Updating transient parent field
-        clone.setParent ( getParent () );
-
-        // Updating transient parent field for children to cloned one
-        if ( CollectionUtils.notEmpty ( clone.getNestedStyles () ) )
-        {
-            for ( final ComponentStyle style : clone.getNestedStyles () )
-            {
-                style.setParent ( clone );
-            }
-        }
-
-        return clone;
+        return CLONE.clone ( this );
     }
 
     @Override

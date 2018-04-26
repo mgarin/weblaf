@@ -17,7 +17,6 @@
 
 package com.alee.painter.decoration.content;
 
-import com.alee.api.merge.Merge;
 import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.background.IBackground;
@@ -41,7 +40,6 @@ import java.util.List;
  * @param <I> content type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "RoundRectangle" )
 public class RoundRectangle<C extends JComponent, D extends IDecoration<C, D>, I extends RoundRectangle<C, D, I>>
         extends AbstractContent<C, D, I>
@@ -125,15 +123,5 @@ public class RoundRectangle<C extends JComponent, D extends IDecoration<C, D>, I
         final int w = Math.max ( phor, round * 2 );
         final int h = Math.max ( pver, round * 2 );
         return new Dimension ( w, h );
-    }
-
-    @Override
-    public I merge ( final I content )
-    {
-        super.merge ( content );
-        round = content.isOverwrite () || content.round != null ? content.round : round;
-        backgrounds = content.isOverwrite () ? content.backgrounds :
-                Merge.COMMON.<List<IBackground>>merge ( backgrounds, content.backgrounds );
-        return ( I ) this;
     }
 }

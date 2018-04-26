@@ -17,7 +17,6 @@
 
 package com.alee.laf.button;
 
-import com.alee.api.clone.Clone;
 import com.alee.api.merge.Mergeable;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -83,11 +82,5 @@ public class ButtonState implements Mergeable, Cloneable, Serializable
         {
             button.setSelected ( selected );
         }
-    }
-
-    @Override
-    public ButtonState clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

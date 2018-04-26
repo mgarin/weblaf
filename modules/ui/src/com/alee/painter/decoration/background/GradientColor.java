@@ -17,7 +17,6 @@
 
 package com.alee.painter.decoration.background;
 
-import com.alee.api.clone.Clone;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -31,10 +30,9 @@ import java.io.Serializable;
  *
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "GradientColor" )
 @XStreamConverter ( value = ToAttributedValueConverter.class, strings = { "color" } )
-public class GradientColor implements Serializable, Cloneable
+public class GradientColor implements Cloneable, Serializable
 {
     /**
      * Position of the color between the starting and end points.
@@ -88,11 +86,5 @@ public class GradientColor implements Serializable, Cloneable
     public void setColor ( final Color color )
     {
         this.color = color;
-    }
-
-    @Override
-    public GradientColor clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

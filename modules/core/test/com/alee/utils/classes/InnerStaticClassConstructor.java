@@ -18,9 +18,10 @@
 package com.alee.utils.classes;
 
 /**
+ * Sample test class.
+ *
  * @author Mikle Garin
  */
-
 public final class InnerStaticClassConstructor
 {
     /**

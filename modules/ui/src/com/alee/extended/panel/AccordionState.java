@@ -17,7 +17,6 @@
 
 package com.alee.extended.panel;
 
-import com.alee.api.clone.Clone;
 import com.alee.api.merge.Mergeable;
 import com.alee.utils.xml.ListToStringConverter;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -73,11 +72,5 @@ public class AccordionState implements Mergeable, Cloneable, Serializable
     public void apply ( final WebAccordion accordion )
     {
         accordion.setSelectedIndices ( selectedIndices );
-    }
-
-    @Override
-    public AccordionState clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

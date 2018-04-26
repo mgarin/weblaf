@@ -34,7 +34,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebHotkeyField extends WebTextField
 {
     /**
@@ -163,12 +162,7 @@ public class WebHotkeyField extends WebTextField
 
     public HotkeyData getHotkeyData ()
     {
-        final HotkeyData hd = new HotkeyData ();
-        hd.setKeyCode ( getKeyCode () );
-        hd.setCtrl ( isCtrl () );
-        hd.setAlt ( isAlt () );
-        hd.setShift ( isShift () );
-        return hd;
+        return new HotkeyData ( isCtrl (), isAlt (), isShift (), getKeyCode () );
     }
 
     public void setHotkeyData ( final HotkeyData hotkeyData )

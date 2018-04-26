@@ -17,9 +17,7 @@
 
 package com.alee.painter.decoration;
 
-import com.alee.api.clone.Clone;
-import com.alee.api.merge.Merge;
-import com.alee.api.merge.MergeBehavior;
+import com.alee.api.merge.Overwriting;
 import com.alee.utils.collection.EmptyIterator;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -38,10 +36,9 @@ import java.util.List;
  * @author Mikle Garin
  * @see IDecoration
  */
-
 @XStreamAlias ( "Decorations" )
 public final class Decorations<C extends JComponent, D extends IDecoration<C, D>>
-        implements Iterable<D>, MergeBehavior<Decorations<C, D>>, Cloneable, Serializable
+        implements Iterable<D>, Overwriting, Cloneable, Serializable
 {
     /**
      * Whether or not these decorations should overwrite previous ones when merged.
@@ -71,27 +68,9 @@ public final class Decorations<C extends JComponent, D extends IDecoration<C, D>
         return decorations != null ? decorations.iterator () : EmptyIterator.<D>instance ();
     }
 
-    /**
-     * Returns whether or not these decorations should overwrite any previous ones when merged.
-     *
-     * @return true if these decorations should overwrite any previous ones when merged, false otherwise
-     */
-    private boolean isOverwrite ()
+    @Override
+    public boolean isOverwrite ()
     {
         return overwrite != null && overwrite;
-    }
-
-    @Override
-    public Decorations<C, D> merge ( final Decorations<C, D> object )
-    {
-        overwrite = overwrite != null && overwrite || object.overwrite != null && object.overwrite;
-        decorations = object.isOverwrite () ? object.decorations : Merge.COMMON.<List<D>>merge ( decorations, object.decorations );
-        return this;
-    }
-
-    @Override
-    public Object clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

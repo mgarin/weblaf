@@ -38,7 +38,6 @@ import java.util.List;
  * @see AbstractContentLayout
  * @see IContentLayout
  */
-
 @XStreamAlias ( "BorderLayout" )
 public class BorderLayout<C extends JComponent, D extends IDecoration<C, D>, I extends BorderLayout<C, D, I>>
         extends AbstractContentLayout<C, D, I>
@@ -193,14 +192,5 @@ public class BorderLayout<C extends JComponent, D extends IDecoration<C, D>, I e
         ps.width = Math.max ( ps.width, centerWidth );
         ps.height += centerHeight;
         return ps;
-    }
-
-    @Override
-    public I merge ( final I layout )
-    {
-        super.merge ( layout );
-        hgap = layout.isOverwrite () || layout.hgap != null ? layout.hgap : hgap;
-        vgap = layout.isOverwrite () || layout.vgap != null ? layout.vgap : vgap;
-        return ( I ) this;
     }
 }

@@ -900,7 +900,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
         }
         for ( final ResizeData resizeData : resizableAreas )
         {
-            if ( resizeData.getBounds ().contains ( x, y ) )
+            if ( resizeData.bounds ().contains ( x, y ) )
             {
                 return resizeData;
             }

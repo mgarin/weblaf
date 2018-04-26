@@ -35,7 +35,6 @@ import java.awt.geom.GeneralPath;
  * @param <I> content type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "CheckIcon" )
 public class CheckIcon<C extends AbstractButton, D extends IDecoration<C, D>, I extends CheckIcon<C, D, I>> extends AbstractContent<C, D, I>
 {
@@ -97,15 +96,5 @@ public class CheckIcon<C extends AbstractButton, D extends IDecoration<C, D>, I 
     protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
     {
         return size != null ? new Dimension ( size ) : new Dimension ( 0, 0 );
-    }
-
-    @Override
-    public I merge ( final I icon )
-    {
-        super.merge ( icon );
-        size = icon.isOverwrite () || icon.size != null ? icon.size : size;
-        stroke = icon.isOverwrite () || icon.stroke != null ? icon.stroke : stroke;
-        color = icon.isOverwrite () || icon.color != null ? icon.color : color;
-        return ( I ) this;
     }
 }

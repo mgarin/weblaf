@@ -31,7 +31,6 @@ import javax.swing.*;
  * @param <I> content type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "LocaleTextContent" )
 public class LocaleTextContent<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractTextContent<C, D, I>>
         extends AbstractTextContent<C, D, I>

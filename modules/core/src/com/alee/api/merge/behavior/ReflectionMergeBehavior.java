@@ -20,7 +20,7 @@ package com.alee.api.merge.behavior;
 import com.alee.api.merge.GlobalMergeBehavior;
 import com.alee.api.merge.Merge;
 import com.alee.api.merge.MergeException;
-import com.alee.api.merge.Overwriting;
+import com.alee.api.merge.Mergeable;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.reflection.ClassRelationType;
@@ -37,12 +37,16 @@ import java.util.List;
  * @see Merge
  * @see ClassRelationType#isRelated()
  */
-
-public final class ReflectionMergeBehavior implements GlobalMergeBehavior<Object, Object, Object>
+public class ReflectionMergeBehavior implements GlobalMergeBehavior<Object, Object, Object>
 {
     /**
      * todo 1. Make result of merging objects with related (but not equal) classes configurable?
      */
+
+    /**
+     * Behavior {@link Policy}.
+     */
+    private final Policy policy;
 
     /**
      * Modifiers of fields to ignore.
@@ -52,66 +56,66 @@ public final class ReflectionMergeBehavior implements GlobalMergeBehavior<Object
     /**
      * Constructs new {@link ReflectionMergeBehavior} ignoring fields with specified modifiers.
      *
+     * @param policy           behavior {@link Policy}
      * @param ignoredModifiers modifiers of fields to ignore
      */
-    public ReflectionMergeBehavior ( final ModifierType... ignoredModifiers )
+    public ReflectionMergeBehavior ( final Policy policy, final ModifierType... ignoredModifiers )
     {
-        super ();
+        this.policy = policy;
         this.ignoredModifiers = CollectionUtils.asList ( ignoredModifiers );
     }
 
     @Override
-    public boolean supports ( final Merge merge, final Object base, final Object merged )
+    public boolean supports ( final Merge merge, final Class<Object> type, final Object base, final Object merged )
     {
-        return ClassRelationType.of ( base, merged ).isRelated ();
+        return ( policy == Policy.all || base instanceof Mergeable && merged instanceof Mergeable ) &&
+                type.isAssignableFrom ( base.getClass () ) && type.isAssignableFrom ( merged.getClass () );
     }
 
     @Override
-    public Object merge ( final Merge merge, final Object base, final Object merged )
+    public Object merge ( final Merge merge, final Class<Object> type, final Object base, final Object merged )
     {
         // Resolving object classes relation
         final ClassRelationType relation = ClassRelationType.of ( base, merged );
 
         // Choosing resulting object based on relation
         final Object result;
-        if ( relation.isDescendant () )
+        if ( relation.isSame () || relation.isAncestor () )
         {
-            // When base object class is parent to merged object class we simply return merged object
-            // We can in theory merge fields that exist in parent object, but that wouldn't be too obvious
-            result = merged;
-        }
-        else
-        {
-            // Using fields from merged object as it either has the same class as base object or parent class
+            // Using fields from merged object as it is either an instance of the same or parent class
             final List<Field> fields = ReflectUtils.getFields ( merged.getClass () );
 
             // Continue only if there are any fields to merge
             if ( CollectionUtils.notEmpty ( fields ) )
             {
-                // Checking whether values should be overwritten instead of being merged
-                final boolean overwrite = merged instanceof Overwriting && ( ( Overwriting ) merged ).isOverwrite ();
-
                 // Performing merge for each separate field
                 for ( final Field field : fields )
                 {
                     // Ensure that this field should not be ignored
-                    if ( ReflectUtils.hasNoneOfModifiers ( field, ignoredModifiers ) )
+                    if ( ReflectUtils.hasNoneOfModifiers ( field, ignoredModifiers ) &&
+                            field.getAnnotation ( PreserveOnMerge.class ) == null )
                     {
                         try
                         {
                             // Resolving merge result
                             final Object mergeResult;
-                            if ( overwrite )
+                            final Object baseValue = field.get ( base );
+                            final Object mergedValue = field.get ( merged );
+                            if ( field.getAnnotation ( OverwriteOnMerge.class ) == null )
                             {
-                                // Overwriting value if requested
-                                mergeResult = field.get ( merged );
+                                /**
+                                 * Allowing {@link Merge} to merge field values.
+                                 * It is important to delegate this task to {@link Merge} as soon as possible to preserve its behavior.
+                                 */
+                                mergeResult = merge.mergeRaw ( field.getType (), baseValue, mergedValue );
                             }
                             else
                             {
-                                // Merging non-primitive values
-                                final Object objectValue = field.get ( base );
-                                final Object mergedValue = field.get ( merged );
-                                mergeResult = mergedValue != null ? merge.merge ( objectValue, mergedValue ) : objectValue;
+                                /**
+                                 * Allowing {@link Merge} to overwrite field value.
+                                 * We have to rely on {@link Merge} due to merged object possibly being {@code null}.
+                                 */
+                                mergeResult = merge.overwrite ( baseValue, mergedValue );
                             }
 
                             // Saving merged value
@@ -130,6 +134,28 @@ public final class ReflectionMergeBehavior implements GlobalMergeBehavior<Object
             // Return base object where we merged field values
             result = base;
         }
+        else
+        {
+            // When base object class is parent to merged object class we simply return merged object
+            // We can in theory merge fields that exist in parent object, but that wouldn't be too obvious
+            result = merged;
+        }
         return result;
+    }
+
+    /**
+     * Behavior policy.
+     */
+    public static enum Policy
+    {
+        /**
+         * Only merges objects implementing {@link Mergeable}.
+         */
+        mergeable,
+
+        /**
+         * Merges any objects.
+         */
+        all
     }
 }

@@ -28,7 +28,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "SvgFill" )
 public class SvgFill extends AbstractSvgAttributeAdjustment
 {

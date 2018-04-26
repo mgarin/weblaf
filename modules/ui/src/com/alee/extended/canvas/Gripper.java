@@ -34,7 +34,6 @@ import java.awt.*;
  * @param <I> content type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "Gripper" )
 public class Gripper<C extends JComponent, D extends IDecoration<C, D>, I extends Gripper<C, D, I>>
         extends AbstractContent<C, D, I>
@@ -299,17 +298,5 @@ public class Gripper<C extends JComponent, D extends IDecoration<C, D>, I extend
         final int w = ( int ) Math.round ( part.width * 1.5 * 3 + spacing * 4 );
         final int h = ( int ) Math.round ( part.height * 1.5 * 3 + spacing * 4 );
         return new Dimension ( w, h );
-    }
-
-    @Override
-    public I merge ( final I content )
-    {
-        super.merge ( content );
-        direction = content.isOverwrite () || content.direction != null ? content.direction : direction;
-        part = content.isOverwrite () || content.part != null ? content.part : part;
-        spacing = content.isOverwrite () || content.spacing != null ? content.spacing : spacing;
-        color = content.isOverwrite () || content.color != null ? content.color : color;
-        shadow = content.isOverwrite () || content.shadow != null ? content.shadow : shadow;
-        return ( I ) this;
     }
 }

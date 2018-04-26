@@ -17,7 +17,6 @@
 
 package com.alee.laf.scroll;
 
-import com.alee.api.clone.Clone;
 import com.alee.api.merge.Mergeable;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -83,11 +82,5 @@ public class ScrollBarState implements Mergeable, Cloneable, Serializable
         {
             scrollBar.setValue ( value );
         }
-    }
-
-    @Override
-    public ScrollBarState clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

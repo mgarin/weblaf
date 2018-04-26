@@ -36,7 +36,6 @@ import java.awt.image.BufferedImage;
  * @param <I> background type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "AlphaLayerBackground" )
 public class AlphaLayerBackground<C extends JComponent, D extends IDecoration<C, D>, I extends AlphaLayerBackground<C, D, I>>
         extends AbstractTextureBackground<C, D, I>
@@ -130,15 +129,5 @@ public class AlphaLayerBackground<C extends JComponent, D extends IDecoration<C,
         }
         g2d.dispose ();
         return image;
-    }
-
-    @Override
-    public I merge ( final I bg )
-    {
-        super.merge ( bg );
-        size = bg.isOverwrite () || bg.size != null ? bg.size : size;
-        darkColor = bg.isOverwrite () || bg.darkColor != null ? bg.darkColor : darkColor;
-        lightColor = bg.isOverwrite () || bg.lightColor != null ? bg.lightColor : lightColor;
-        return ( I ) this;
     }
 }

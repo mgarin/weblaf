@@ -17,8 +17,7 @@
 
 package com.alee.painter.decoration.border;
 
-import com.alee.api.clone.Clone;
-import com.alee.api.merge.MergeBehavior;
+import com.alee.api.merge.Mergeable;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 import java.io.Serializable;
@@ -28,9 +27,8 @@ import java.io.Serializable;
  *
  * @author Mikle Garin
  */
-
 @XStreamConverter ( BorderWidthConverter.class )
-public final class BorderWidth implements MergeBehavior<BorderWidth>, Cloneable, Serializable
+public final class BorderWidth implements Mergeable, Cloneable, Serializable
 {
     /**
      * Empty border width constant.
@@ -40,33 +38,29 @@ public final class BorderWidth implements MergeBehavior<BorderWidth>, Cloneable,
     /**
      * Top border width.
      */
-    public int top;
+    public final int top;
 
     /**
      * Right border width.
      */
-    public int right;
+    public final  int right;
 
     /**
      * Bottom border width.
      */
-    public int bottom;
+    public final int bottom;
 
     /**
      * Left border width.
      */
-    public int left;
+    public final int left;
 
     /**
      * Constructs border widths data.
      */
     public BorderWidth ()
     {
-        super ();
-        this.top = 0;
-        this.right = 0;
-        this.bottom = 0;
-        this.left = 0;
+        this ( 0, 0, 0, 0 );
     }
 
     /**
@@ -79,7 +73,6 @@ public final class BorderWidth implements MergeBehavior<BorderWidth>, Cloneable,
      */
     public BorderWidth ( final int top, final int right, final int bottom, final int left )
     {
-        super ();
         this.top = top;
         this.right = right;
         this.bottom = bottom;
@@ -89,7 +82,7 @@ public final class BorderWidth implements MergeBehavior<BorderWidth>, Cloneable,
     /**
      * Returns whether or not border is empty.
      *
-     * @return true if border is empty, false otherwise
+     * @return {@code true} if border is empty, {@code false} otherwise
      */
     public boolean isEmpty ()
     {
@@ -100,33 +93,5 @@ public final class BorderWidth implements MergeBehavior<BorderWidth>, Cloneable,
     public String toString ()
     {
         return BorderWidthConverter.borderWidthToString ( this );
-    }
-
-    @Override
-    public BorderWidth merge ( final BorderWidth merged )
-    {
-        if ( merged.top != -1 )
-        {
-            top = merged.top;
-        }
-        if ( merged.right != -1 )
-        {
-            right = merged.right;
-        }
-        if ( merged.bottom != -1 )
-        {
-            bottom = merged.bottom;
-        }
-        if ( merged.left != -1 )
-        {
-            left = merged.left;
-        }
-        return this;
-    }
-
-    @Override
-    public BorderWidth clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

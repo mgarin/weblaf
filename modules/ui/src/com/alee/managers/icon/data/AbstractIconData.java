@@ -18,7 +18,7 @@
 package com.alee.managers.icon.data;
 
 import com.alee.api.Identifiable;
-import com.alee.api.clone.Clone;
+import com.alee.api.merge.Overwriting;
 import com.alee.extended.svg.SvgIconData;
 import com.alee.utils.xml.ClassConverter;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -31,6 +31,7 @@ import java.util.List;
 
 /**
  * Abstract {@link AbstractIconData} containing basic {@link Icon} information.
+ * Implements {@link Overwriting} instead of {@link com.alee.api.merge.Mergeable} to avoid merging any icon data ever.
  *
  * @param <T> icon type
  * @author Mikle Garin
@@ -39,7 +40,7 @@ import java.util.List;
  * @see com.alee.managers.icon.data.ImageIconData
  * @see SvgIconData
  */
-public abstract class AbstractIconData<T extends Icon> implements Serializable, Cloneable, Identifiable
+public abstract class AbstractIconData<T extends Icon> implements Identifiable, Overwriting, Cloneable, Serializable
 {
     /**
      * Unique icon identifier.
@@ -107,6 +108,12 @@ public abstract class AbstractIconData<T extends Icon> implements Serializable, 
     public String getId ()
     {
         return id;
+    }
+
+    @Override
+    public boolean isOverwrite ()
+    {
+        return true;
     }
 
     /**
@@ -183,10 +190,4 @@ public abstract class AbstractIconData<T extends Icon> implements Serializable, 
      * @return loaded icon
      */
     protected abstract T loadIcon ();
-
-    @Override
-    public AbstractIconData clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
-    }
 }

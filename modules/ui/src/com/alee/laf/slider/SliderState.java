@@ -17,7 +17,6 @@
 
 package com.alee.laf.slider;
 
-import com.alee.api.clone.Clone;
 import com.alee.api.merge.Mergeable;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -83,11 +82,5 @@ public class SliderState implements Mergeable, Cloneable, Serializable
         {
             slider.setValue ( value );
         }
-    }
-
-    @Override
-    public SliderState clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

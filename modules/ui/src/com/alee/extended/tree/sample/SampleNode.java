@@ -17,6 +17,9 @@
 
 package com.alee.extended.tree.sample;
 
+import com.alee.api.clone.Clone;
+import com.alee.api.clone.CloneBehavior;
+import com.alee.api.clone.RecursiveClone;
 import com.alee.api.ui.TextBridge;
 import com.alee.extended.tree.AsyncUniqueNode;
 import com.alee.extended.tree.WebAsyncTree;
@@ -30,9 +33,8 @@ import javax.swing.*;
  *
  * @author Mikle Garin
  */
-
 public class SampleNode extends AsyncUniqueNode<SampleNode, SampleObject>
-        implements TextBridge<TreeNodeParameters<SampleNode, WebAsyncTree>>
+        implements TextBridge<TreeNodeParameters<SampleNode, WebAsyncTree>>, CloneBehavior<SampleNode>
 {
     /**
      * Time spent to load node children.
@@ -70,6 +72,16 @@ public class SampleNode extends AsyncUniqueNode<SampleNode, SampleObject>
         this.time = time;
     }
 
+    /**
+     * Returns node title.
+     *
+     * @return node title
+     */
+    public String getTitle ()
+    {
+        return getUserObject ().getTitle ();
+    }
+
     @Override
     public Icon getNodeIcon ( final TreeNodeParameters<SampleNode, WebAsyncTree> parameters )
     {
@@ -100,33 +112,25 @@ public class SampleNode extends AsyncUniqueNode<SampleNode, SampleObject>
         return getTitle ();
     }
 
-    /**
-     * Returns node title.
-     *
-     * @return node title
-     */
-    public String getTitle ()
+    @Override
+    public SampleNode clone ( final RecursiveClone clone, final int depth )
     {
-        return getUserObject ().getTitle ();
+        final SampleObject userObject = clone.clone ( getUserObject (), depth + 1 );
+        final SampleNode nodeCopy = new SampleNode ( userObject );
+        nodeCopy.setId ( getId () );
+        nodeCopy.setTime ( getTime () );
+        return nodeCopy;
+    }
+
+    @Override
+    public SampleNode clone ()
+    {
+        return Clone.deep ().clone ( this );
     }
 
     @Override
     public String toString ()
     {
         return getTitle ();
-    }
-
-    @Override
-    public SampleNode clone ()
-    {
-        // Cloning object and node
-        final SampleObject object = getUserObject ().clone ();
-        final SampleNode clone = new SampleNode ( object );
-
-        // Copying settings
-        clone.setId ( getId () );
-        clone.setTime ( getTime () );
-
-        return clone;
     }
 }

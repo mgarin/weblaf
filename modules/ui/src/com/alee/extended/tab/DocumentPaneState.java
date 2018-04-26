@@ -17,7 +17,6 @@
 
 package com.alee.extended.tab;
 
-import com.alee.api.clone.Clone;
 import com.alee.api.merge.Mergeable;
 import com.alee.utils.general.Pair;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -250,11 +249,5 @@ public class DocumentPaneState implements Mergeable, Cloneable, Serializable
     public void setSplitState ( final Pair<DocumentPaneState, DocumentPaneState> splitState )
     {
         this.splitState = splitState;
-    }
-
-    @Override
-    public DocumentPaneState clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

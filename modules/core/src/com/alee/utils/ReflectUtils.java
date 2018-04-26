@@ -1912,11 +1912,7 @@ public final class ReflectUtils
     public static <T extends Cloneable> T clone ( final T object )
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
     {
-        if ( object == null )
-        {
-            return null;
-        }
-        return ReflectUtils.callMethod ( object, "clone" );
+        return object != null ? ( T ) ReflectUtils.callMethod ( object, "clone" ) : null;
     }
 
     /**
@@ -1928,11 +1924,7 @@ public final class ReflectUtils
      */
     public static <T extends Cloneable> T cloneSafely ( final T object )
     {
-        if ( object == null )
-        {
-            return null;
-        }
-        return ReflectUtils.callMethodSafely ( object, "clone" );
+        return object != null ? ( T ) ReflectUtils.callMethodSafely ( object, "clone" ) : null;
     }
 
     /**
@@ -2045,13 +2037,14 @@ public final class ReflectUtils
     {
         return clazz.isPrimitive () ||
                 Boolean.class.isAssignableFrom ( clazz ) ||
-                Integer.class.isAssignableFrom ( clazz ) ||
                 Character.class.isAssignableFrom ( clazz ) ||
                 Byte.class.isAssignableFrom ( clazz ) ||
                 Short.class.isAssignableFrom ( clazz ) ||
+                Integer.class.isAssignableFrom ( clazz ) ||
                 Long.class.isAssignableFrom ( clazz ) ||
                 Float.class.isAssignableFrom ( clazz ) ||
-                Double.class.isAssignableFrom ( clazz );
+                Double.class.isAssignableFrom ( clazz ) ||
+                Void.class.isAssignableFrom ( clazz );
     }
 
     /**
@@ -2081,9 +2074,21 @@ public final class ReflectUtils
     /**
      * Returns closest superclass for both of the specified classes.
      *
-     * @param class1 first class
-     * @param class2 second class
+     * @param object1 first object to retrieve {@link Class} of
+     * @param object2 second object to retrieve {@link Class} of
      * @return closest superclass for both of the specified classes
+     */
+    public static Class getClosestSuperclass ( final Object object1, final Object object2 )
+    {
+        return getClosestSuperclass ( object1.getClass (), object2.getClass () );
+    }
+
+    /**
+     * Returns closest super {@link Class} for both of the specified {@link Class}es.
+     *
+     * @param class1 first {@link Class}
+     * @param class2 second {@link Class}
+     * @return closest super {@link Class} for both of the specified {@link Class}es
      */
     public static Class getClosestSuperclass ( final Class class1, final Class class2 )
     {

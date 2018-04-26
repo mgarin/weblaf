@@ -26,7 +26,6 @@ import java.awt.geom.GeneralPath;
  * @author nsofronov
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "WebShape" )
 public class WebShape<C extends JComponent, D extends WebDecoration<C, D>, I extends WebShape<C, D, I>> extends AbstractShape<C, D, I>
         implements IPartialShape<C, D, I>
@@ -408,15 +407,5 @@ public class WebShape<C extends JComponent, D extends WebDecoration<C, D>, I ext
         final Pair<Integer, Integer> ver = y0 < y1 ? new Pair<Integer, Integer> ( y0, y1 ) : null;
 
         return new StretchInfo ( hor, ver );
-    }
-
-    @Override
-    public I merge ( final I shape )
-    {
-        super.merge ( shape );
-        round = shape.isOverwrite () || shape.round != null ? shape.round : round;
-        sides = shape.isOverwrite () || shape.sides != null ? shape.sides : sides;
-        lines = shape.isOverwrite () || shape.lines != null ? shape.lines : lines;
-        return ( I ) this;
     }
 }

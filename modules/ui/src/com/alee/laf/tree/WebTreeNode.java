@@ -38,7 +38,6 @@ import java.util.*;
  * @author Rob Davis
  * @author Mikle Garin
  */
-
 public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeNode, Cloneable, Serializable
 {
     /**

@@ -17,7 +17,6 @@
 
 package com.alee.painter.decoration.background;
 
-import com.alee.api.clone.Clone;
 import com.alee.painter.decoration.IDecoration;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -31,7 +30,6 @@ import javax.swing.*;
  * @param <I> background type
  * @author Mikle Garin
  */
-
 public abstract class AbstractBackground<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractBackground<C, D, I>>
         implements IBackground<C, D, I>
 {
@@ -85,19 +83,5 @@ public abstract class AbstractBackground<C extends JComponent, D extends IDecora
     public float getOpacity ()
     {
         return opacity != null ? opacity : 1f;
-    }
-
-    @Override
-    public I merge ( final I bg )
-    {
-        overwrite = overwrite != null && overwrite || bg.overwrite != null && bg.overwrite;
-        opacity = bg.isOverwrite () || bg.opacity != null ? bg.opacity : opacity;
-        return ( I ) this;
-    }
-
-    @Override
-    public I clone ()
-    {
-        return ( I ) Clone.cloneByFieldsSafely ( this );
     }
 }

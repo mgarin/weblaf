@@ -29,28 +29,27 @@ import java.util.List;
  * @author Alexandr Zernov
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  */
-
 public class StyledTextRow
 {
     /**
      * List of styled text fragments.
      */
-    public List<TextRange> fragments = new ArrayList<TextRange> ();
+    public List<TextRange> fragments;
 
     /**
      * Row width.
      */
-    public int width = 0;
+    public int width;
 
     /**
      * Row height.
      */
-    public int height = 0;
+    public int height;
 
     /**
      * Mnemonic index.
      */
-    public int mnemonic = -1;
+    public int mnemonic;
 
     /**
      * Constructs row with the specified height.
@@ -59,7 +58,10 @@ public class StyledTextRow
      */
     public StyledTextRow ( final int height )
     {
+        this.fragments = new ArrayList<TextRange> ();
+        this.width = 0;
         this.height = height;
+        this.mnemonic = -1;
     }
 
     /**

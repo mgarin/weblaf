@@ -24,7 +24,6 @@ package com.alee.api.merge;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
  * @see Merge
  */
-
 public final class MergeException extends RuntimeException
 {
     /**

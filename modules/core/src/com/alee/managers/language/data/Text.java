@@ -17,7 +17,6 @@
 
 package com.alee.managers.language.data;
 
-import com.alee.api.clone.Clone;
 import com.alee.api.jdk.Supplier;
 import com.alee.utils.ArrayUtils;
 import com.alee.utils.HtmlUtils;
@@ -39,7 +38,7 @@ import java.io.Serializable;
  */
 @XStreamAlias ( "text" )
 @XStreamConverter ( TextConverter.class )
-public final class Text implements Serializable, Cloneable
+public final class Text implements Cloneable, Serializable
 {
     /**
      * State this translation is used for.
@@ -209,12 +208,6 @@ public final class Text implements Serializable, Cloneable
     public void setMnemonic ( final int mnemonic )
     {
         this.mnemonic = mnemonic;
-    }
-
-    @Override
-    public Text clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 
     @Override

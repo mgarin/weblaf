@@ -17,7 +17,8 @@
 
 package com.alee.extended.label;
 
-import com.alee.api.merge.MergeBehavior;
+import com.alee.api.merge.Mergeable;
+import com.alee.api.merge.behavior.OverwriteOnMerge;
 import com.alee.utils.CollectionUtils;
 
 import java.awt.*;
@@ -31,8 +32,7 @@ import java.util.List;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  * @see com.alee.extended.label.WebStyledLabel
  */
-
-public class StyleRange implements MergeBehavior<StyleRange>, Cloneable
+public class StyleRange implements Mergeable, Cloneable
 {
     /**
      * Text style start index.
@@ -65,6 +65,7 @@ public class StyleRange implements MergeBehavior<StyleRange>, Cloneable
      *
      * @see com.alee.extended.label.CustomStyle
      */
+    @OverwriteOnMerge
     protected final List<CustomStyle> customStyles;
 
     /**
@@ -321,23 +322,5 @@ public class StyleRange implements MergeBehavior<StyleRange>, Cloneable
     public List<CustomStyle> getCustomStyle ()
     {
         return customStyles;
-    }
-
-    @Override
-    public StyleRange merge ( final StyleRange merged )
-    {
-        final int startIndex = merged.startIndex;
-        final int length = merged.length;
-        final int style = merged.style != -1 ? merged.style : this.style;
-        final Color foreground = merged.foreground != null ? merged.foreground : this.foreground;
-        final Color background = merged.background != null ? merged.background : this.background;
-        final List<CustomStyle> customStyles = merged.customStyles.size () > 0 ? merged.customStyles : this.customStyles;
-        return new StyleRange ( startIndex, length, style, foreground, background, customStyles );
-    }
-
-    @Override
-    public StyleRange clone ()
-    {
-        return new StyleRange ( startIndex, length, style, foreground, background, CollectionUtils.copy ( customStyles ) );
     }
 }

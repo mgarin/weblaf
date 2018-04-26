@@ -33,7 +33,6 @@ import javax.swing.*;
  * @param <I> content type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "SeparatorStripes" )
 public class SeparatorStripes<C extends JSeparator, D extends IDecoration<C, D>, I extends SeparatorStripes<C, D, I>>
         extends Stripes<C, D, I>

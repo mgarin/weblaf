@@ -17,7 +17,6 @@
 
 package com.alee.painter.decoration.shadow;
 
-import com.alee.api.clone.Clone;
 import com.alee.painter.decoration.IDecoration;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -32,7 +31,6 @@ import java.awt.*;
  * @param <I> shadow type
  * @author Mikle Garin
  */
-
 public abstract class AbstractShadow<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractShadow<C, D, I>>
         implements IShadow<C, D, I>
 {
@@ -120,21 +118,5 @@ public abstract class AbstractShadow<C extends JComponent, D extends IDecoration
     public Color getColor ()
     {
         return color != null ? color : Color.BLACK;
-    }
-
-    @Override
-    public I merge ( final I shadow )
-    {
-        overwrite = overwrite != null && overwrite || shadow.overwrite != null && shadow.overwrite;
-        opacity = shadow.isOverwrite () || shadow.opacity != null ? shadow.opacity : opacity;
-        width = shadow.isOverwrite () || shadow.width != null ? shadow.width : width;
-        color = shadow.isOverwrite () || shadow.color != null ? shadow.color : color;
-        return ( I ) this;
-    }
-
-    @Override
-    public I clone ()
-    {
-        return ( I ) Clone.cloneByFieldsSafely ( this );
     }
 }

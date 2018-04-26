@@ -34,7 +34,7 @@ import java.io.Serializable;
  * @see ProxyManager
  */
 @XStreamAlias ( "ProxySettings" )
-public class ProxySettings implements Serializable, Cloneable
+public class ProxySettings implements Cloneable, Serializable
 {
     /**
      * Whether should use proxy settings or not.
@@ -292,6 +292,12 @@ public class ProxySettings implements Serializable, Cloneable
     }
 
     @Override
+    public ProxySettings clone ()
+    {
+        return Clone.deep ().clone ( this );
+    }
+
+    @Override
     public String toString ()
     {
         if ( isUseProxy () )
@@ -304,11 +310,5 @@ public class ProxySettings implements Serializable, Cloneable
         {
             return "ProxySettings [ no proxy ]";
         }
-    }
-
-    @Override
-    protected ProxySettings clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

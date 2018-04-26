@@ -31,7 +31,6 @@ import javax.swing.*;
  * @param <I> content type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "ProgressBarText" )
 public class ProgressBarText<C extends JProgressBar, D extends IDecoration<C, D>, I extends ProgressBarText<C, D, I>>
         extends AbstractTextContent<C, D, I>

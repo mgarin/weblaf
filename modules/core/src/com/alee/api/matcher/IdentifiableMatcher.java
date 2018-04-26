@@ -25,7 +25,6 @@ import com.alee.api.jdk.Objects;
  *
  * @author Mikle Garin
  */
-
 public final class IdentifiableMatcher extends AbstractMatcher<Identifiable, Identifiable>
 {
     @Override

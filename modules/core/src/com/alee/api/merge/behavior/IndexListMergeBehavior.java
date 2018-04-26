@@ -37,25 +37,16 @@ import java.util.List;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
  * @see Merge
  */
-
-public final class IndexListMergeBehavior<T extends List> implements GlobalMergeBehavior<T, T, T>
+public class IndexListMergeBehavior<T extends List> implements GlobalMergeBehavior<T, T, T>
 {
-    /**
-     * Constructs new {@link IndexListMergeBehavior}.
-     */
-    public IndexListMergeBehavior ()
-    {
-        super ();
-    }
-
     @Override
-    public boolean supports ( final Merge merge, final Object base, final Object merged )
+    public boolean supports ( final Merge merge, final Class<T> type, final Object base, final Object merged )
     {
         return base instanceof List && merged instanceof List;
     }
 
     @Override
-    public T merge ( final Merge merge, final T base, final T merged )
+    public T merge ( final Merge merge, final Class<T> type, final T base, final T merged )
     {
         try
         {
@@ -89,7 +80,7 @@ public final class IndexListMergeBehavior<T extends List> implements GlobalMerge
                 {
                     final Object ev = base.get ( i );
                     final Object mv = merged.get ( i );
-                    list.set ( i, merge.merge ( ev, mv ) );
+                    list.set ( i, merge.mergeRaw ( Object.class, ev, mv ) );
                 }
                 else if ( i < el )
                 {

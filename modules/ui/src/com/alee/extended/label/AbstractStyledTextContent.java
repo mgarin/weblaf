@@ -17,6 +17,8 @@
 
 package com.alee.extended.label;
 
+import com.alee.api.clone.behavior.OmitOnClone;
+import com.alee.api.merge.behavior.PreserveOnMerge;
 import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractTextContent;
@@ -38,7 +40,6 @@ import java.util.List;
  * @author Alexandr Zernov
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  */
-
 public abstract class AbstractStyledTextContent<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractStyledTextContent<C, D, I>>
         extends AbstractTextContent<C, D, I>
 {
@@ -91,6 +92,8 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
     /**
      * Runtime variables.
      */
+    @OmitOnClone
+    @PreserveOnMerge
     protected transient List<TextRange> textRanges;
 
     @Override
@@ -800,17 +803,5 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
             }
         }
         return ps;
-    }
-
-    @Override
-    public I merge ( final I content )
-    {
-        super.merge ( content );
-        ignoreStyleColors = content.isOverwrite () || content.ignoreStyleColors != null ? content.ignoreStyleColors : ignoreStyleColors;
-        scriptFontRatio = content.isOverwrite () || content.scriptFontRatio != null ? content.scriptFontRatio : scriptFontRatio;
-        preserveLineBreaks = content.isOverwrite () || content.preserveLineBreaks != null ? content.preserveLineBreaks : preserveLineBreaks;
-        rowGap = content.isOverwrite () || content.rowGap != null ? content.rowGap : rowGap;
-        globalStyle = content.isOverwrite () || content.globalStyle != null ? content.globalStyle : globalStyle;
-        return ( I ) this;
     }
 }

@@ -17,7 +17,6 @@
 
 package com.alee.laf.splitpane;
 
-import com.alee.api.clone.Clone;
 import com.alee.api.merge.Mergeable;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -83,11 +82,5 @@ public class SplitPaneState implements Mergeable, Cloneable, Serializable
         {
             splitPane.setDividerLocation ( dividerLocation );
         }
-    }
-
-    @Override
-    public SplitPaneState clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

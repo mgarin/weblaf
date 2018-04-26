@@ -17,7 +17,6 @@
 
 package com.alee.painter.decoration;
 
-import com.alee.api.merge.Merge;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.background.IBackground;
 import com.alee.painter.decoration.border.BorderWidth;
@@ -48,7 +47,6 @@ import java.util.List;
  * @param <I> decoration type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "decoration" )
 public class WebDecoration<C extends JComponent, I extends WebDecoration<C, I>> extends ContentDecoration<C, I>
 {
@@ -498,17 +496,5 @@ public class WebDecoration<C extends JComponent, I extends WebDecoration<C, I>> 
 
         // Painting neighbours border
         // todo PainterSupport.
-    }
-
-    @Override
-    public I merge ( final I decoration )
-    {
-        super.merge ( decoration );
-        shapes = decoration.isOverwrite () ? decoration.shapes : Merge.COMMON.<List<IShape>>merge ( shapes, decoration.shapes );
-        shadows = decoration.isOverwrite () ? decoration.shadows : Merge.COMMON.<List<IShadow>>merge ( shadows, decoration.shadows );
-        borders = decoration.isOverwrite () ? decoration.borders : Merge.COMMON.<List<IBorder>>merge ( borders, decoration.borders );
-        backgrounds = decoration.isOverwrite () ? decoration.backgrounds :
-                Merge.COMMON.<List<IBackground>>merge ( backgrounds, decoration.backgrounds );
-        return ( I ) this;
     }
 }

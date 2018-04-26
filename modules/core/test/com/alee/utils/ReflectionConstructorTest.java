@@ -31,7 +31,6 @@ import java.lang.reflect.InvocationTargetException;
  *
  * @author Mikle Garin
  */
-
 @FixMethodOrder ( MethodSorters.JVM )
 public final class ReflectionConstructorTest
 {

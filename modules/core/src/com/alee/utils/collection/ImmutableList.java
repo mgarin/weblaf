@@ -134,10 +134,4 @@ public class ImmutableList<E> extends ImmutableCollection<E> implements List<E>,
     {
         return new UnsupportedOperationException ( "List is unmodifiable" );
     }
-
-    @Override
-    protected ImmutableList<E> clone ()
-    {
-        return new ImmutableList<E> ( this );
-    }
 }

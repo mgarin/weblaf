@@ -42,7 +42,6 @@ import java.util.List;
  * @see WebMultiSplitPane
  * @see MultiSplitPaneModel
  */
-
 public class WebMultiSplitPaneModel extends AbstractLayoutManager implements MultiSplitPaneModel, PropertyChangeListener
 {
     /**
@@ -351,7 +350,7 @@ public class WebMultiSplitPaneModel extends AbstractLayoutManager implements Mul
     @Override
     public List<MultiSplitView> getViews ()
     {
-        return Clone.clone ( views );
+        return Clone.deep ().clone ( views );
     }
 
     @Override

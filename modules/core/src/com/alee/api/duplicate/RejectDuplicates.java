@@ -26,7 +26,6 @@ import java.util.Collection;
  *
  * @author Mikle Garin
  */
-
 public final class RejectDuplicates extends AbstractDuplicateResolver
 {
     /**

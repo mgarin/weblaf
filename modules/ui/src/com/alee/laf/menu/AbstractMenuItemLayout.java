@@ -35,7 +35,6 @@ import java.awt.*;
  * @param <I> layout type
  * @author Mikle Garin
  */
-
 public abstract class AbstractMenuItemLayout<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractMenuItemLayout<C, D, I>>
         extends AbstractContentLayout<C, D, I>
 {
@@ -200,16 +199,5 @@ public abstract class AbstractMenuItemLayout<C extends JComponent, D extends IDe
             ps.height = Math.max ( ps.height, aps.height );
         }
         return ps;
-    }
-
-    @Override
-    public I merge ( final I layout )
-    {
-        super.merge ( layout );
-        iconTextGap = isOverwrite () ? layout.iconTextGap : layout.iconTextGap != null ? layout.iconTextGap : iconTextGap;
-        textAcceleratorGap = isOverwrite () ? layout.textAcceleratorGap :
-                layout.textAcceleratorGap != null ? layout.textAcceleratorGap : textAcceleratorGap;
-        textArrowGap = isOverwrite () ? layout.textArrowGap : layout.textArrowGap != null ? layout.textArrowGap : textArrowGap;
-        return ( I ) this;
     }
 }

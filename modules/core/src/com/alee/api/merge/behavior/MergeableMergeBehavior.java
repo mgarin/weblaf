@@ -30,17 +30,16 @@ import com.alee.api.merge.MergeBehavior;
  * @see Merge
  * @see MergeBehavior
  */
-
-public final class MergeableMergeBehavior<T extends MergeBehavior<T>> implements GlobalMergeBehavior<T, T, T>
+public class MergeableMergeBehavior<T extends MergeBehavior<T>> implements GlobalMergeBehavior<T, T, T>
 {
     @Override
-    public boolean supports ( final Merge merge, final Object base, final Object merged )
+    public boolean supports ( final Merge merge, final Class<T> type, final Object base, final Object merged )
     {
-        return base instanceof MergeBehavior && merged instanceof MergeBehavior;
+        return base.getClass () == merged.getClass () && base instanceof MergeBehavior && merged instanceof MergeBehavior;
     }
 
     @Override
-    public T merge ( final Merge merge, final T base, final T merged )
+    public T merge ( final Merge merge, final Class<T> type, final T base, final T merged )
     {
         return base.merge ( merged );
     }

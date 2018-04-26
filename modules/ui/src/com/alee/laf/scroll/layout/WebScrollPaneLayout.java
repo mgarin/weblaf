@@ -17,7 +17,6 @@
 
 package com.alee.laf.scroll.layout;
 
-import com.alee.api.clone.Clone;
 import com.alee.api.merge.Mergeable;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -36,9 +35,8 @@ import java.io.Serializable;
  *
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "WebScrollPaneLayout" )
-public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneConstants, Mergeable, Serializable, Cloneable
+public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneConstants, Mergeable, Cloneable, Serializable
 {
     /**
      * {@link ScrollBarSettings} for vertical scroll bar.
@@ -759,12 +757,6 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
         }
 
         return new Dimension ( minWidth, minHeight );
-    }
-
-    @Override
-    public WebScrollPaneLayout clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 
     /**

@@ -32,7 +32,6 @@ import javax.swing.*;
  * @param <I> layout type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "SimpleMenuItemLayout" )
 public class SimpleMenuItemLayout<C extends JComponent, D extends IDecoration<C, D>, I extends SimpleMenuItemLayout<C, D, I>>
         extends AbstractMenuItemLayout<C, D, I>

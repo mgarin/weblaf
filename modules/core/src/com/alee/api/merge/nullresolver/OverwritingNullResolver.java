@@ -18,17 +18,16 @@
 package com.alee.api.merge.nullresolver;
 
 import com.alee.api.merge.Merge;
-import com.alee.api.merge.MergeNullResolver;
+import com.alee.api.merge.NullResolver;
 
 /**
- * Always overwrites base object.
+ * {@link NullResolver} that always overwrites base object.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
  * @see Merge
  */
-
-public final class OverwritingNullResolver implements MergeNullResolver
+public final class OverwritingNullResolver implements NullResolver
 {
     @Override
     public Object resolve ( final Merge merge, final Object object, final Object merged )

@@ -26,7 +26,6 @@ import java.util.Collection;
  *
  * @author Mikle Garin
  */
-
 public interface DuplicateResolver extends Serializable
 {
     /**

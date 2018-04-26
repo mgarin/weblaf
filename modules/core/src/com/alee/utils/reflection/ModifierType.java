@@ -30,7 +30,6 @@ import java.util.Locale;
  *
  * @author Mikle Garin
  */
-
 public enum ModifierType
 {
     /**

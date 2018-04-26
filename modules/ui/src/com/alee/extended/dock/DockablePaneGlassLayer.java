@@ -102,9 +102,9 @@ public class DockablePaneGlassLayer extends JComponent
                 {
                     initialPoint = e.getPoint ();
                     resizeData = getResizeData ( e.getX (), e.getY () );
-                    left = dockablePane.getModel ().getElement ( resizeData.getLeftId () );
+                    left = dockablePane.getModel ().getElement ( resizeData.leftElementId () );
                     initialLeftSize = left.getBounds ().getSize ();
-                    right = dockablePane.getModel ().getElement ( resizeData.getRightId () );
+                    right = dockablePane.getModel ().getElement ( resizeData.rightElementId () );
                     initialRightSize = right.getBounds ().getSize ();
                 }
             }
@@ -117,7 +117,7 @@ public class DockablePaneGlassLayer extends JComponent
                     // Resizing elements
                     final Dimension minLeft = left.getMinimumSize ( dockablePane );
                     final Dimension minRight = right.getMinimumSize ( dockablePane );
-                    if ( resizeData.getOrientation ().isHorizontal () )
+                    if ( resizeData.orientation ().isHorizontal () )
                     {
                         final int m = e.getX () - initialPoint.x;
                         final int change = m < 0 ? Math.max ( minLeft.width - initialLeftSize.width, m ) :
@@ -170,7 +170,7 @@ public class DockablePaneGlassLayer extends JComponent
                 if ( data != null )
                 {
                     // todo Decide cursor direction based on resized frames?
-                    if ( data.getOrientation ().isVertical () )
+                    if ( data.orientation ().isVertical () )
                     {
                         DockablePaneGlassLayer.this.setCursor ( Cursor.getPredefinedCursor ( Cursor.S_RESIZE_CURSOR ) );
                     }

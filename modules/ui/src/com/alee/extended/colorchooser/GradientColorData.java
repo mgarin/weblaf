@@ -29,7 +29,6 @@ import java.io.Serializable;
  *
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "GradientColorData" )
 public class GradientColorData implements Cloneable, Serializable
 {
@@ -50,9 +49,7 @@ public class GradientColorData implements Cloneable, Serializable
      */
     public GradientColorData ()
     {
-        super ();
-        this.location = 0f;
-        this.color = Color.WHITE;
+        this ( 0f, Color.WHITE );
     }
 
     /**
@@ -63,7 +60,6 @@ public class GradientColorData implements Cloneable, Serializable
      */
     public GradientColorData ( final float location, final Color color )
     {
-        super ();
         this.location = location;
         this.color = color;
     }
@@ -109,20 +105,24 @@ public class GradientColorData implements Cloneable, Serializable
     }
 
     @Override
-    public boolean equals ( final Object obj )
+    public GradientColorData clone ()
     {
-        if ( obj == null || !( obj instanceof GradientColorData ) )
-        {
-            return false;
-        }
-
-        final GradientColorData other = ( GradientColorData ) obj;
-        return Float.compare ( getLocation (), other.getLocation () ) == 0 && getColor ().equals ( other.getColor () );
+        return Clone.deep ().clone ( this );
     }
 
     @Override
-    public GradientColorData clone ()
+    public boolean equals ( final Object obj )
     {
-        return Clone.cloneByFieldsSafely ( this );
+        final boolean equals;
+        if ( obj instanceof GradientColorData )
+        {
+            final GradientColorData other = ( GradientColorData ) obj;
+            equals = Float.compare ( getLocation (), other.getLocation () ) == 0 && getColor ().equals ( other.getColor () );
+        }
+        else
+        {
+            equals = false;
+        }
+        return equals;
     }
 }

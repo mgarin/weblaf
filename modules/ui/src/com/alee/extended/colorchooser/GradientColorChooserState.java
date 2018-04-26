@@ -17,7 +17,6 @@
 
 package com.alee.extended.colorchooser;
 
-import com.alee.api.clone.Clone;
 import com.alee.api.merge.Mergeable;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -77,11 +76,5 @@ public class GradientColorChooserState implements Mergeable, Cloneable, Serializ
     public void apply ( final WebGradientColorChooser gradientColorChooser )
     {
         gradientColorChooser.setGradientData ( gradientData );
-    }
-
-    @Override
-    public GradientColorChooserState clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

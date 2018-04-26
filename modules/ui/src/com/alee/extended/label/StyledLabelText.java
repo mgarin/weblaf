@@ -17,6 +17,8 @@
 
 package com.alee.extended.label;
 
+import com.alee.api.clone.behavior.OmitOnClone;
+import com.alee.api.merge.behavior.PreserveOnMerge;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.ContentPropertyListener;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -32,7 +34,6 @@ import java.util.List;
  * @author Alexandr Zernov
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  */
-
 @XStreamAlias ( "StyledLabelText" )
 public class StyledLabelText<C extends WebStyledLabel, D extends IDecoration<C, D>, I extends StyledLabelText<C, D, I>>
         extends AbstractStyledTextContent<C, D, I>
@@ -40,6 +41,8 @@ public class StyledLabelText<C extends WebStyledLabel, D extends IDecoration<C, 
     /**
      * Component property change listener.
      */
+    @OmitOnClone
+    @PreserveOnMerge
     protected transient ContentPropertyListener<C, D> listener;
 
     @Override

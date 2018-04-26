@@ -33,7 +33,6 @@ import java.awt.*;
  * @author Mikle Garin
  * @see WebHotkeyLabel
  */
-
 @XStreamAlias ( "HotkeyLabelBackground" )
 public class HotkeyLabelBackground<C extends WebHotkeyLabel, D extends IDecoration<C, D>, I extends HotkeyLabelBackground<C, D, I>>
         extends AbstractBackground<C, D, I>
@@ -87,16 +86,5 @@ public class HotkeyLabelBackground<C extends WebHotkeyLabel, D extends IDecorati
         g2d.setPaint ( border );
         g2d.drawRoundRect ( bounds.x, bounds.y, bounds.width - 1, bounds.height - 2, round, round );
         g2d.drawRoundRect ( bounds.x, bounds.y, bounds.width - 1, bounds.height - 1, round, round );
-    }
-
-    @Override
-    public I merge ( final I bg )
-    {
-        super.merge ( bg );
-        round = bg.isOverwrite () || bg.round != null ? bg.round : round;
-        border = bg.isOverwrite () || bg.border != null ? bg.border : border;
-        spacing = bg.isOverwrite () || bg.spacing != null ? bg.spacing : spacing;
-        color = bg.isOverwrite () || bg.color != null ? bg.color : color;
-        return ( I ) this;
     }
 }

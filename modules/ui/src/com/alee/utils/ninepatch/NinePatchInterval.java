@@ -33,9 +33,8 @@ import java.io.Serializable;
  *
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "NinePatchInterval" )
-public final class NinePatchInterval implements Identifiable, Serializable, Cloneable
+public final class NinePatchInterval implements Identifiable, Cloneable, Serializable
 {
     /**
      * Unique runtime interval identifier.
@@ -109,24 +108,10 @@ public final class NinePatchInterval implements Identifiable, Serializable, Clon
      */
     public NinePatchInterval ( final int start, final int end, final boolean pixel )
     {
-        super ();
         this.id = TextUtils.generateId ( "NPINT" );
-        setPixel ( pixel );
-        setStart ( start );
-        setEnd ( end );
-    }
-
-    /**
-     * Constructs new {@link NinePatchInterval} with the predefined identifier.
-     * This is a special constructor for internal use only.
-     *
-     * @param id unique runtime interval identifier
-     */
-    @SuppressWarnings ( "unused" )
-    private NinePatchInterval ( final String id )
-    {
-        super ();
-        this.id = id;
+        this.start = start;
+        this.end = end;
+        this.pixel = pixel;
     }
 
     /**
@@ -223,28 +208,24 @@ public final class NinePatchInterval implements Identifiable, Serializable, Clon
     }
 
     @Override
-    public boolean equals ( final Object obj )
+    public NinePatchInterval clone ()
     {
-        if ( obj != null && obj instanceof NinePatchInterval )
+        return Clone.deep ().clone ( this );
+    }
+
+    @Override
+    public boolean equals ( final Object object )
+    {
+        final boolean equals;
+        if ( object instanceof NinePatchInterval )
         {
-            final NinePatchInterval npi = ( NinePatchInterval ) obj;
-            return isPixel () == npi.isPixel () && getStart () == npi.getStart () && getEnd () == npi.getEnd ();
+            final NinePatchInterval npi = ( NinePatchInterval ) object;
+            equals = isPixel () == npi.isPixel () && getStart () == npi.getStart () && getEnd () == npi.getEnd ();
         }
         else
         {
-            return false;
+            equals = false;
         }
-    }
-
-    /**
-     * Returns cloned {@link NinePatchInterval}.
-     * It uses {@link #NinePatchInterval(String)} constructor to preserver runtime identifier.
-     *
-     * @return cloned {@link NinePatchInterval}
-     */
-    @Override
-    public NinePatchInterval clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this, getId () );
+        return equals;
     }
 }

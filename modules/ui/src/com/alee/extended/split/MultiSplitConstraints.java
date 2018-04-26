@@ -32,8 +32,7 @@ import java.util.List;
  * @see WebMultiSplitPaneModel
  * @see WebMultiSplitPane
  */
-
-public class MultiSplitConstraints implements Serializable
+public class MultiSplitConstraints implements Cloneable, Serializable
 {
     /**
      * Indicates that the row/column should be taking all of the remaining space in the split pane.

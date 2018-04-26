@@ -18,7 +18,6 @@
 package com.alee.utils.general;
 
 
-import com.alee.api.clone.Clone;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -31,9 +30,8 @@ import java.io.Serializable;
  * @param <V> value type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "Pair" )
-public class Pair<K, V> implements Serializable, Cloneable
+public class Pair<K, V> implements Cloneable, Serializable
 {
     /**
      * Key of this {@code Pair}.
@@ -144,11 +142,5 @@ public class Pair<K, V> implements Serializable, Cloneable
                     !( value != null ? !value.equals ( pair.value ) : pair.value != null );
         }
         return false;
-    }
-
-    @Override
-    public Pair<K, V> clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

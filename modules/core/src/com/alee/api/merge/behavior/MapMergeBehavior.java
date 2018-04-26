@@ -17,8 +17,8 @@
 
 package com.alee.api.merge.behavior;
 
-import com.alee.api.merge.Merge;
 import com.alee.api.merge.GlobalMergeBehavior;
+import com.alee.api.merge.Merge;
 
 import java.util.Map;
 
@@ -32,21 +32,20 @@ import java.util.Map;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
  * @see Merge
  */
-
-public final class MapMergeBehavior<T extends Map> implements GlobalMergeBehavior<T, T, T>
+public class MapMergeBehavior<T extends Map> implements GlobalMergeBehavior<T, T, T>
 {
     /**
      * todo 1. Provide a different merge behavior similar to {@link ListMergeBehavior} for {@link java.util.LinkedHashMap}
      */
 
     @Override
-    public boolean supports ( final Merge merge, final Object base, final Object merged )
+    public boolean supports ( final Merge merge, final Class<T> type, final Object base, final Object merged )
     {
         return base instanceof Map && merged instanceof Map;
     }
 
     @Override
-    public T merge ( final Merge merge, final T base, final T merged )
+    public T merge ( final Merge merge, final Class<T> type, final T base, final T merged )
     {
         for ( final Object e : merged.entrySet () )
         {
@@ -54,7 +53,7 @@ public final class MapMergeBehavior<T extends Map> implements GlobalMergeBehavio
             final Object key = entry.getKey ();
             final Object value = entry.getValue ();
             final Object baseValue = base.get ( key );
-            base.put ( key, merge.merge ( baseValue, value ) );
+            base.put ( key, merge.mergeRaw ( Object.class, baseValue, value ) );
         }
         return base;
     }

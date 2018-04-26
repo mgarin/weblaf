@@ -17,7 +17,6 @@
 
 package com.alee.managers.language.data;
 
-import com.alee.api.clone.Clone;
 import com.alee.api.jdk.Objects;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageUtils;
@@ -46,7 +45,7 @@ import java.util.Locale;
  */
 @XStreamAlias ( "value" )
 @XStreamConverter ( ValueConverter.class )
-public final class Value implements Serializable, Cloneable
+public final class Value implements Cloneable, Serializable
 {
     /**
      * {@link Locale} of this {@link Value}.
@@ -225,12 +224,6 @@ public final class Value implements Serializable, Cloneable
             }
         }
         return result;
-    }
-
-    @Override
-    public Value clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 
     @Override

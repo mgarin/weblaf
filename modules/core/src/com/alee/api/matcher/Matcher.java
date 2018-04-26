@@ -24,7 +24,6 @@ import java.io.Serializable;
  *
  * @author Mikle Garin
  */
-
 public interface Matcher extends Serializable
 {
     /**

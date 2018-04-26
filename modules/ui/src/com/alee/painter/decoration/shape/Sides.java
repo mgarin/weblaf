@@ -17,8 +17,7 @@
 
 package com.alee.painter.decoration.shape;
 
-import com.alee.api.clone.Clone;
-import com.alee.api.merge.MergeBehavior;
+import com.alee.api.merge.Mergeable;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 import java.io.Serializable;
@@ -46,9 +45,8 @@ import java.io.Serializable;
  * @author Mikle Garin
  * @see SidesConverter
  */
-
 @XStreamConverter ( SidesConverter.class )
-public final class Sides implements Serializable, Cloneable, MergeBehavior<Sides>
+public final class Sides implements Mergeable, Cloneable, Serializable
 {
     /**
      * Sides constants.
@@ -61,22 +59,22 @@ public final class Sides implements Serializable, Cloneable, MergeBehavior<Sides
     /**
      * Whether or not top (north) side should be displayed.
      */
-    public boolean top;
+    public final boolean top;
 
     /**
      * Whether or not left (west) side should be displayed.
      */
-    public boolean left;
+    public final boolean left;
 
     /**
      * Whether or not botton (south) side should be displayed.
      */
-    public boolean bottom;
+    public final boolean bottom;
 
     /**
      * Whether or not right (east) side should be displayed.
      */
-    public boolean right;
+    public final boolean right;
 
     /**
      * Constructs sides display settings.
@@ -129,7 +127,6 @@ public final class Sides implements Serializable, Cloneable, MergeBehavior<Sides
      */
     public Sides ( final boolean top, final boolean left, final boolean bottom, final boolean right )
     {
-        super ();
         this.top = top;
         this.left = left;
         this.bottom = bottom;
@@ -140,21 +137,5 @@ public final class Sides implements Serializable, Cloneable, MergeBehavior<Sides
     public String toString ()
     {
         return SidesConverter.sidesToString ( this );
-    }
-
-    @Override
-    public Sides merge ( final Sides merged )
-    {
-        top = merged.top;
-        left = merged.left;
-        bottom = merged.bottom;
-        right = merged.right;
-        return this;
-    }
-
-    @Override
-    public Sides clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

@@ -40,7 +40,6 @@ import java.util.Map;
  * @see AbstractContentLayout
  * @see IContentLayout
  */
-
 @XStreamAlias ( "AlignLayout" )
 public class AlignLayout<C extends JComponent, D extends IDecoration<C, D>, I extends AlignLayout<C, D, I>>
         extends AbstractContentLayout<C, D, I>
@@ -367,16 +366,5 @@ public class AlignLayout<C extends JComponent, D extends IDecoration<C, D>, I ex
     protected String constraints ( final String horizontal, final String vertical )
     {
         return horizontal + SEPARATOR + vertical;
-    }
-
-    @Override
-    public I merge ( final I layout )
-    {
-        super.merge ( layout );
-        hgap = layout.isOverwrite () || layout.hgap != null ? layout.hgap : hgap;
-        vgap = layout.isOverwrite () || layout.vgap != null ? layout.vgap : vgap;
-        hfill = layout.isOverwrite () || layout.hfill != null ? layout.hfill : hfill;
-        vfill = layout.isOverwrite () || layout.vfill != null ? layout.vfill : vfill;
-        return ( I ) this;
     }
 }

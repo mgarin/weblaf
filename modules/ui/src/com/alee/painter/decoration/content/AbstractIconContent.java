@@ -31,7 +31,6 @@ import java.awt.*;
  * @param <I> content type
  * @author Mikle Garin
  */
-
 public abstract class AbstractIconContent<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractIconContent<C, D, I>>
         extends AbstractContent<C, D, I>
 {

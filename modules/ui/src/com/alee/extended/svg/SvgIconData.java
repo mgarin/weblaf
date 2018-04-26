@@ -35,7 +35,6 @@ import java.util.Map;
  * @see SvgIcon
  * @see SVGUniverse
  */
-
 @XStreamAlias ( "SvgIcon" )
 public class SvgIconData extends AbstractIconData<SvgIcon>
 {

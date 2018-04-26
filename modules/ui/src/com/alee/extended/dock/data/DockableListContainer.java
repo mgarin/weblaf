@@ -36,7 +36,6 @@ import java.util.List;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  * @see com.alee.extended.dock.WebDockablePane
  */
-
 @XStreamAlias ( "DockableList" )
 public class DockableListContainer extends AbstractDockableElement implements DockableContainer
 {

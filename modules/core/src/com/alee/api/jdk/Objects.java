@@ -150,11 +150,7 @@ public final class Objects
      */
     public static <T> T requireNonNull ( final T obj )
     {
-        if ( obj == null )
-        {
-            throw new NullPointerException ();
-        }
-        return obj;
+        return requireNonNull ( obj, "Object must not be null" );
     }
 
     /**

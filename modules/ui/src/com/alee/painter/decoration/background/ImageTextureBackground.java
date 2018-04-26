@@ -36,7 +36,6 @@ import java.awt.image.BufferedImage;
  * @author Mikle Garin
  * @see AbstractImageTextureBackground
  */
-
 @XStreamAlias ( "ImageTextureBackground" )
 public class ImageTextureBackground<C extends JComponent, D extends IDecoration<C, D>, I extends ImageTextureBackground<C, D, I>>
         extends AbstractImageTextureBackground<C, D, I>
@@ -58,13 +57,5 @@ public class ImageTextureBackground<C extends JComponent, D extends IDecoration<
     {
         final Icon icon = IconManager.getIcon ( iconId );
         return ImageUtils.getBufferedImage ( icon );
-    }
-
-    @Override
-    public I merge ( final I bg )
-    {
-        super.merge ( bg );
-        iconId = bg.isOverwrite () || bg.iconId != null ? bg.iconId : iconId;
-        return ( I ) this;
     }
 }

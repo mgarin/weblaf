@@ -29,7 +29,6 @@ import com.alee.utils.TextUtils;
  * @param <T> stored object type
  * @author Mikle Garin
  */
-
 public class UniqueNode<N extends UniqueNode<N, T>, T> extends WebTreeNode<N, T> implements Identifiable
 {
     /**

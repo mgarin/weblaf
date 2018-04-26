@@ -17,7 +17,6 @@
 
 package com.alee.extended.dock;
 
-import com.alee.api.clone.Clone;
 import com.alee.api.merge.Mergeable;
 import com.alee.extended.dock.data.DockableContainer;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -85,11 +84,5 @@ public class DockablePaneState implements Mergeable, Cloneable, Serializable
         {
             dockablePane.setState ( root );
         }
-    }
-
-    @Override
-    public DockablePaneState clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

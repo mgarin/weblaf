@@ -17,194 +17,231 @@
 
 package com.alee.api.clone;
 
-import com.alee.utils.ReflectUtils;
+import com.alee.api.clone.behavior.*;
+import com.alee.api.clone.unknownresolver.ExceptionUnknownResolver;
+import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.reflection.ModifierType;
-import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Configurable algorithm for cloning object instances.
  * It can be customized through the settings provided in its constructor once on creation.
- * To clone any object using this class instance simply call {@link #clone(Object)} method.
+ * To clone any object using this class instance call {@link #clone(Object)} method.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Clone">How to use Clone</a>
  * @see Clone
+ * @see UnknownResolver
+ * @see GlobalCloneBehavior
+ * @see CloneBehavior
+ * @see Cloneable
  */
-
-public class Clone implements Serializable
+public final class Clone implements Serializable
 {
     /**
-     * todo 1. Change this class to a {@link com.alee.api.merge.Merge}-like object
-     * todo 2. Add support for all types which were previously supported
+     * Common lazy {@link Clone} instances cache.
+     *
+     * @see #basic()
+     * @see #deep()
      */
+    private static Map<String, Clone> commons;
 
     /**
-     * Returns object clone if it is possible to clone it, otherwise returns original object.
-     * Arrays, maps and collections are checked before {@link Cloneable} since we use recursive clone implementation.
-     * Otherwise objects like {@link java.util.ArrayList} will use their own clone method implementation which would cause issues.
+     * Unknown object types case resolver.
+     * It is used to resolve clone outcome when cloned objects are not supported by behaviors.
      *
-     * @param object object to clone
-     * @param <T>    object type
-     * @return object clone if it is possible to clone it, otherwise returns original object
+     * @see UnknownResolver
      */
-    public static <T> T clone ( final T object )
+    private final UnknownResolver unknownResolver;
+
+    /**
+     * List of behaviors taking part in this clone algorithm instance.
+     * These behaviors define which object types can actually be clone and which ones will simply be retained.
+     *
+     * @see GlobalCloneBehavior
+     */
+    private final List<GlobalCloneBehavior> behaviors;
+
+    /**
+     * Constructs new {@link Clone} algorithm.
+     *
+     * @param unknownResolver unknown object types case resolver
+     * @param behaviors       behaviors taking part in this clone algorithm instance
+     */
+    public Clone ( final UnknownResolver unknownResolver, final GlobalCloneBehavior... behaviors )
     {
-        final T clone;
-        if ( object == null )
+        this ( unknownResolver, new ImmutableList<GlobalCloneBehavior> ( behaviors ) );
+    }
+
+    /**
+     * Constructs new {@link Clone} algorithm.
+     *
+     * @param unknownResolver unknown object types case resolver
+     * @param behaviors       behaviors taking part in this clone algorithm instance
+     */
+    public Clone ( final UnknownResolver unknownResolver, final List<GlobalCloneBehavior> behaviors )
+    {
+        this.unknownResolver = unknownResolver;
+        this.behaviors = behaviors instanceof ImmutableList ? behaviors : new ImmutableList<GlobalCloneBehavior> ( behaviors );
+    }
+
+    /**
+     * Returns clone of the specified object.
+     * New {@link InternalClone} instance is used for every separate clone operation.
+     * That is necessary because {@link InternalClone} stores cloned object references internally to preserve object links.
+     *
+     * @param object object to clone, should never be {@code null}
+     * @return clone of the specified object
+     */
+    public <T> T clone ( final T object )
+    {
+        return new InternalClone ().clone ( object, 0 );
+    }
+
+    /**
+     * {@link RecursiveClone} implementation providing access to different {@link Clone} methods.
+     * It is used to process recursive clone calls differently from how public {@link RecursiveClone#clone(Object, int)} processes them.
+     */
+    private class InternalClone extends RecursiveClone
+    {
+        @Override
+        public <T> T clone ( final T object, final int depth )
         {
-            // Return null if object is null
-            clone = null;
-        }
-        else if ( object.getClass ().isEnum () || ReflectUtils.isPrimitive ( object ) )
-        {
-            // Return object itself if it is enumeration or primitive
-            clone = object;
-        }
-        else if ( object.getClass ().isArray () )
-        {
-            try
+            final T result;
+            if ( object != null )
             {
-                // Creating new array instance
-                final Class<?> type = object.getClass ().getComponentType ();
-                final int length = Array.getLength ( object );
-                final Object newArray = Array.newInstance ( type, length );
-                for ( int i = 0; i < length; i++ )
+                // Checking cached copy references
+                final Object cached = retrieve ( object );
+                if ( cached == null )
                 {
-                    // Recursive clone call
-                    Array.set ( newArray, i, clone ( Array.get ( object, i ) ) );
+                    // Trying to find fitting clone behavior
+                    Object cloneResult = null;
+                    GlobalCloneBehavior resultBehavior = null;
+                    for ( final GlobalCloneBehavior behavior : behaviors )
+                    {
+                        // Checking that behavior supports object
+                        if ( behavior.supports ( this, object ) )
+                        {
+                            // Executing clone behavior
+                            cloneResult = behavior.clone ( this, object, depth );
+                            resultBehavior = behavior;
+                            break;
+                        }
+                    }
+
+                    // Resolving result object
+                    if ( resultBehavior != null )
+                    {
+                        // Result acquired
+                        result = ( T ) cloneResult;
+
+                        // Storing object if it not root
+                        if ( depth > 0 && resultBehavior.isStorable () )
+                        {
+                            store ( object, result );
+                        }
+                    }
+                    else
+                    {
+                        // Unknown type, trying to resolve it
+                        result = ( T ) unknownResolver.resolve ( this, object );
+
+                        // Storing object if it not root
+                        if ( depth > 0 )
+                        {
+                            store ( object, result );
+                        }
+                    }
                 }
-                clone = object;
-            }
-            catch ( final Exception e )
-            {
-                throw new CloneException ( "Unable to instantiate array: " + object.getClass (), e );
-            }
-        }
-        else if ( object instanceof Map )
-        {
-            try
-            {
-                // Trying to properly clone map
-                final Map map = ReflectUtils.createInstance ( object.getClass () );
-                for ( final Object e : ( ( Map ) object ).entrySet () )
+                else
                 {
-                    // Recursive clone call
-                    // We will oly clone value here as this is sufficient
-                    final Map.Entry entry = ( Map.Entry ) e;
-                    map.put ( entry.getKey (), clone ( entry.getValue () ) );
+                    // Returning cached copy reference
+                    result = ( T ) cached;
                 }
-                clone = ( T ) map;
             }
-            catch ( final Exception e )
+            else
             {
-                throw new CloneException ( "Unable to instantiate map: " + object.getClass (), e );
+                // Result is null
+                result = null;
             }
+            return result;
         }
-        // todo else if ( object instanceof ImmutableList )
-        // todo else if ( object instanceof ImmutableCollection )
-        else if ( object instanceof Collection )
+    }
+
+    /**
+     * Returns {@link Clone} algorithm that is able to clone basic object types.
+     *
+     * @return {@link Clone} algorithm that is able to clone basic object types
+     */
+    public static Clone basic ()
+    {
+        final String identifier = "basic";
+        Clone clone = commonInstance ( identifier );
+        if ( clone == null )
         {
-            try
-            {
-                // Trying to properly clone collection
-                final Collection collection = ReflectUtils.createInstance ( object.getClass () );
-                for ( final Object element : ( Collection ) object )
-                {
-                    // Recursive clone call
-                    collection.add ( clone ( element ) );
-                }
-                clone = ( T ) collection;
-            }
-            catch ( final Exception e )
-            {
-                throw new CloneException ( "Unable to instantiate collection: " + object.getClass (), e );
-            }
-        }
-        else if ( object instanceof Cloneable )
-        {
-            try
-            {
-                // Trying to directly clone an object
-                clone = ReflectUtils.callMethod ( object, "clone" );
-            }
-            catch ( final Exception e )
-            {
-                throw new CloneException ( "Unable to clone object: " + object, e );
-            }
-        }
-        else
-        {
-            clone = object;
+            clone = new Clone (
+                    new ExceptionUnknownResolver (),
+                    new BasicCloneBehavior (),
+                    new CloneableCloneBehavior ( CloneableCloneBehavior.Policy.strict ),
+                    new ArrayCloneBehavior (),
+                    new MapCloneBehavior (),
+                    new SetCloneBehavior (),
+                    new CollectionCloneBehavior ()
+            );
+            commons.put ( identifier, clone );
         }
         return clone;
     }
 
     /**
-     * Returns cloned object instance.
-     * This method will clone fields directly instead of calling clone method on the object.
-     * Object fields will be cloned normally through clone method if they implement Cloneable interface.
+     * Returns {@link Clone} algorithm that can also clone custom objects through {@link ReflectionCloneBehavior}.
+     * Be careful when using this clone algorithm as it will go through all object references and will clone any existing fields.
      *
-     * @param object    object to clone
-     * @param arguments class constructor arguments
-     * @param <T>       cloned object type
-     * @return cloned object instance
-     * @throws java.lang.InstantiationException            if the class is abstract
-     * @throws java.lang.NoSuchMethodException             if method was not found
-     * @throws java.lang.reflect.InvocationTargetException if method throws an exception
-     * @throws java.lang.IllegalAccessException            if method is inaccessible
+     * @return {@link Clone} algorithm that can also clone custom objects through {@link ReflectionCloneBehavior}
      */
-    public static <T> T cloneByFields ( final T object, final Object... arguments )
-            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
+    public static Clone deep ()
     {
-        final T copy = ReflectUtils.createInstance ( object.getClass (), arguments );
-        final List<Field> fields = ReflectUtils.getFields ( object );
-        for ( final Field field : fields )
+        final String identifier = "deep";
+        Clone clone = commonInstance ( identifier );
+        if ( clone == null )
         {
-            // Only clone non-transient fields
-            if ( ReflectUtils.hasNoneOfModifiers ( field, ModifierType.TRANSIENT ) )
-            {
-                // Retrieving original object field value
-                final Object value = field.get ( object );
-
-                // Creating value clone if possible
-                final Object clone = Clone.clone ( value );
-
-                // Updating field
-                ReflectUtils.setFieldValue ( copy, field, clone );
-            }
+            clone = new Clone (
+                    new ExceptionUnknownResolver (),
+                    new BasicCloneBehavior (),
+                    new CloneableCloneBehavior ( CloneableCloneBehavior.Policy.strict ),
+                    new ArrayCloneBehavior (),
+                    new MapCloneBehavior (),
+                    new SetCloneBehavior (),
+                    new CollectionCloneBehavior (),
+                    new ReflectionCloneBehavior ( ReflectionCloneBehavior.Policy.cloneable, ModifierType.STATIC )
+            );
+            commons.put ( identifier, clone );
         }
-        return copy;
+        return clone;
     }
 
     /**
-     * Returns cloned object instance.
-     * This method will clone fields directly instead of calling clone method on the object.
-     * Object fields will be cloned normally through clone method if they implement Cloneable interface.
+     * Returns common {@link Clone} instance by its indentifier.
      *
-     * @param object    object to clone
-     * @param arguments class constructor arguments
-     * @param <T>       cloned object type
-     * @return cloned object instance
+     * @param identifier {@link Clone} instance indentifier
+     * @return common {@link Clone} instance by its indentifier
      */
-    public static <T> T cloneByFieldsSafely ( final T object, final Object... arguments )
+    private static Clone commonInstance ( final String identifier )
     {
-        try
+        if ( commons == null )
         {
-            return cloneByFields ( object, arguments );
+            synchronized ( Clone.class )
+            {
+                if ( commons == null )
+                {
+                    commons = new ConcurrentHashMap<String, Clone> ( 4 );
+                }
+            }
         }
-        catch ( final Exception e )
-        {
-            final String msg = "Unable to clone object by its fields: %s";
-            LoggerFactory.getLogger ( Clone.class ).warn ( String.format ( msg, object ), e );
-            return null;
-        }
+        return commons.get ( identifier );
     }
 }

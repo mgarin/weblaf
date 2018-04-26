@@ -33,7 +33,6 @@ import java.util.List;
  * @param <I> layout type
  * @author Mikle Garin
  */
-
 public interface IContentLayout<C extends JComponent, D extends IDecoration<C, D>, I extends IContentLayout<C, D, I>>
         extends IContent<C, D, I>
 {

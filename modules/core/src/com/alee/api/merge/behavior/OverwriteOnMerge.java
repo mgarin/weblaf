@@ -15,29 +15,25 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.api.merge;
+package com.alee.api.merge.behavior;
 
-import java.io.Serializable;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Object merge {@code null} case resolver.
- * It is asked to choose one of the specified objects.
+ * Runtime annotation for forcing object field value overwrite for {@link ReflectionMergeBehavior}.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
- * @see Merge
+ * @see com.alee.api.merge.Merge
  */
-
-public interface MergeNullResolver extends Serializable
+@Retention ( RetentionPolicy.RUNTIME )
+@Target ( ElementType.FIELD )
+public @interface OverwriteOnMerge
 {
     /**
-     * Returns one of the specified objects.
-     * One of the passed objects will always be {@code null}.
-     *
-     * @param merge  {@link Merge} algorithm
-     * @param object base object
-     * @param merged object to merge
-     * @return either {@code object} or {@code merged} object
+     * Doesn't have any settings.
      */
-    public Object resolve ( Merge merge, Object object, Object merged );
 }

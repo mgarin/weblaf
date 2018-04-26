@@ -17,7 +17,6 @@
 
 package com.alee.laf.viewport;
 
-import com.alee.api.clone.Clone;
 import com.alee.api.merge.Mergeable;
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.laf.scroll.layout.ScrollBarSettings;
@@ -34,9 +33,8 @@ import java.io.Serializable;
  *
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "WebViewportLayout" )
-public class WebViewportLayout extends AbstractLayoutManager implements Mergeable, Serializable, Cloneable
+public class WebViewportLayout extends AbstractLayoutManager implements Mergeable, Cloneable, Serializable
 {
     /**
      * Called by the AWT when the specified container needs to be laid out.
@@ -247,12 +245,6 @@ public class WebViewportLayout extends AbstractLayoutManager implements Mergeabl
     public Dimension minimumLayoutSize ( final Container container )
     {
         return new Dimension ( 4, 4 );
-    }
-
-    @Override
-    public WebViewportLayout clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 
     /**

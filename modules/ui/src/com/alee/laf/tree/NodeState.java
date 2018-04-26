@@ -17,7 +17,6 @@
 
 package com.alee.laf.tree;
 
-import com.alee.api.clone.Clone;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -28,9 +27,8 @@ import java.io.Serializable;
  *
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "NodeState" )
-public class NodeState implements Serializable, Cloneable
+public class NodeState implements Cloneable, Serializable
 {
     /**
      * Whether node is expanded or not.
@@ -105,11 +103,5 @@ public class NodeState implements Serializable, Cloneable
     public void setSelected ( final boolean selected )
     {
         this.selected = selected;
-    }
-
-    @Override
-    protected NodeState clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

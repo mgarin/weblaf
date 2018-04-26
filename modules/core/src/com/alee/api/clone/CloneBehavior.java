@@ -25,13 +25,14 @@ package com.alee.api.clone;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Clone">How to use Clone</a>
  * @see Clone
  */
-
 public interface CloneBehavior<T> extends Cloneable
 {
     /**
-     * Returns cloned instance of this object.
+     * Returns cloned instance of the object implementing {@link CloneBehavior}.
      *
-     * @return cloned instance of this object
+     * @param clone {@link RecursiveClone} algorithm
+     * @param depth clone calls stack depth
+     * @return cloned instance of the object implementing {@link CloneBehavior}
      */
-    public T clone ();
+    public T clone ( RecursiveClone clone, int depth );
 }

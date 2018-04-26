@@ -23,9 +23,12 @@ import java.awt.*;
 import java.io.Serializable;
 
 /**
+ * Sample data object used for {@link com.alee.extended.dock.WebDockablePane} resize operations.
+ *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
+ * @see com.alee.extended.dock.WebDockablePane
  */
-
 public final class ResizeData implements Cloneable, Serializable
 {
     /**
@@ -39,30 +42,31 @@ public final class ResizeData implements Cloneable, Serializable
     private final Orientation orientation;
 
     /**
-     * Left resizable element ID.
+     * Left resizable element identifier.
      */
-    private final String leftId;
+    private final String leftElementId;
 
     /**
-     * Right resizable element ID.
+     * Right resizable element identifier.
      */
-    private final String rightId;
+    private final String rightElementId;
 
     /**
      * Constructs new resizable area data.
      *
-     * @param bounds      resizable area bounds
-     * @param orientation resize orientation
-     * @param leftId      left resizable element ID
-     * @param rightId     right resizable element ID
+     * @param bounds         resizable area bounds
+     * @param orientation    resize orientation
+     * @param leftElementId  left resizable element identifier
+     * @param rightElementId right resizable element identifier
      */
-    public ResizeData ( final Rectangle bounds, final Orientation orientation, final String leftId, final String rightId )
+    public ResizeData ( final Rectangle bounds, final Orientation orientation,
+                        final String leftElementId, final String rightElementId )
     {
         super ();
         this.bounds = bounds;
         this.orientation = orientation;
-        this.leftId = leftId;
-        this.rightId = rightId;
+        this.leftElementId = leftElementId;
+        this.rightElementId = rightElementId;
     }
 
     /**
@@ -70,7 +74,7 @@ public final class ResizeData implements Cloneable, Serializable
      *
      * @return resizable area bounds
      */
-    public Rectangle getBounds ()
+    public Rectangle bounds ()
     {
         return bounds;
     }
@@ -80,34 +84,28 @@ public final class ResizeData implements Cloneable, Serializable
      *
      * @return resize orientation
      */
-    public Orientation getOrientation ()
+    public Orientation orientation ()
     {
         return orientation;
     }
 
     /**
-     * Returns left resizable element ID.
+     * Returns left resizable element identifier.
      *
-     * @return left resizable element ID
+     * @return left resizable element identifier
      */
-    public String getLeftId ()
+    public String leftElementId ()
     {
-        return leftId;
+        return leftElementId;
     }
 
     /**
-     * Returns right resizable element ID.
+     * Returns right resizable element identifier.
      *
-     * @return right resizable element ID
+     * @return right resizable element identifier
      */
-    public String getRightId ()
+    public String rightElementId ()
     {
-        return rightId;
-    }
-
-    @Override
-    public ResizeData clone ()
-    {
-        return new ResizeData ( new Rectangle ( bounds ), orientation, leftId, rightId );
+        return rightElementId;
     }
 }

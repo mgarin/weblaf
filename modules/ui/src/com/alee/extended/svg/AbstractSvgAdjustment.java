@@ -28,7 +28,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public abstract class AbstractSvgAdjustment implements IconAdjustment<SvgIcon>
 {
     /**

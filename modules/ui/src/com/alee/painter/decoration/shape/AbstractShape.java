@@ -17,7 +17,6 @@
 
 package com.alee.painter.decoration.shape;
 
-import com.alee.api.clone.Clone;
 import com.alee.painter.decoration.IDecoration;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -32,7 +31,6 @@ import java.awt.*;
  * @param <I> shape type
  * @author Mikle Garin
  */
-
 public abstract class AbstractShape<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractShape<C, D, I>>
         implements IShape<C, D, I>
 {
@@ -100,18 +98,5 @@ public abstract class AbstractShape<C extends JComponent, D extends IDecoration<
     protected Point p ( final int x, final int y )
     {
         return new Point ( x, y );
-    }
-
-    @Override
-    public I merge ( final I shape )
-    {
-        overwrite = overwrite != null && overwrite || shape.overwrite != null && shape.overwrite;
-        return ( I ) this;
-    }
-
-    @Override
-    public I clone ()
-    {
-        return ( I ) Clone.cloneByFieldsSafely ( this );
     }
 }

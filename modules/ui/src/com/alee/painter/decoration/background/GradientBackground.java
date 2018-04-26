@@ -17,9 +17,9 @@
 
 package com.alee.painter.decoration.background;
 
+import com.alee.api.merge.behavior.OverwriteOnMerge;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.CollectionUtils;
 import com.alee.utils.GraphicsUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -39,7 +39,6 @@ import java.util.List;
  * @param <I> background type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "GradientBackground" )
 public class GradientBackground<C extends JComponent, D extends IDecoration<C, D>, I extends GradientBackground<C, D, I>>
         extends AbstractBackground<C, D, I>
@@ -70,6 +69,7 @@ public class GradientBackground<C extends JComponent, D extends IDecoration<C, D
      * Must always be provided to properly render separator.
      */
     @XStreamImplicit ( itemFieldName = "color" )
+    @OverwriteOnMerge
     protected List<GradientColor> colors;
 
     /**
@@ -122,16 +122,5 @@ public class GradientBackground<C extends JComponent, D extends IDecoration<C, D
             GraphicsUtils.restorePaint ( g2d, op );
             GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );
         }
-    }
-
-    @Override
-    public I merge ( final I bg )
-    {
-        super.merge ( bg );
-        type = bg.isOverwrite () || bg.type != null ? bg.type : type;
-        from = bg.isOverwrite () || bg.from != null ? bg.from : from;
-        to = bg.isOverwrite () || bg.to != null ? bg.to : to;
-        colors = bg.isOverwrite () || CollectionUtils.notEmpty ( bg.colors ) ? CollectionUtils.copy ( bg.colors ) : colors;
-        return ( I ) this;
     }
 }

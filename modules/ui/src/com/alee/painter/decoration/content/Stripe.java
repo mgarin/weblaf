@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration.content;
 
+import com.alee.api.merge.Mergeable;
 import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.background.GradientColor;
@@ -35,9 +36,8 @@ import java.util.List;
  * @author Mikle Garin
  * @see Stripes
  */
-
 @XStreamAlias ( "Stripe" )
-public class Stripe implements Serializable
+public class Stripe implements Mergeable, Cloneable, Serializable
 {
     /**
      * Stripe stroke.

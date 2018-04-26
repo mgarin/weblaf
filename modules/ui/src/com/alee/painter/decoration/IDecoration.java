@@ -18,7 +18,6 @@
 package com.alee.painter.decoration;
 
 import com.alee.api.Identifiable;
-import com.alee.api.merge.MergeBehavior;
 import com.alee.api.merge.Overwriting;
 import com.alee.managers.style.Bounds;
 import com.alee.managers.style.PainterShapeProvider;
@@ -35,9 +34,8 @@ import java.util.List;
  * @param <I> decoration type
  * @author Mikle Garin
  */
-
 public interface IDecoration<C extends JComponent, I extends IDecoration<C, I>>
-        extends Identifiable, PainterShapeProvider<C>, MergeBehavior<I>, Overwriting, Cloneable, Serializable
+        extends Identifiable, PainterShapeProvider<C>, Overwriting, Cloneable, Serializable
 {
     /**
      * States separator.

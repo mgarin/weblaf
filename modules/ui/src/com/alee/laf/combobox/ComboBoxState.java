@@ -17,7 +17,6 @@
 
 package com.alee.laf.combobox;
 
-import com.alee.api.clone.Clone;
 import com.alee.api.merge.Mergeable;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -84,11 +83,5 @@ public class ComboBoxState implements Mergeable, Cloneable, Serializable
         {
             comboBox.setSelectedIndex ( selectedIndex );
         }
-    }
-
-    @Override
-    public ComboBoxState clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

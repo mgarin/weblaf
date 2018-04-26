@@ -17,7 +17,6 @@
 
 package com.alee.laf.rootpane;
 
-import com.alee.api.clone.Clone;
 import com.alee.api.jdk.Objects;
 import com.alee.api.merge.Mergeable;
 import com.alee.utils.CoreSwingUtils;
@@ -255,11 +254,5 @@ public class WindowState implements Mergeable, Cloneable, Serializable
             state &= ~Frame.ICONIFIED;
             ( ( Frame ) window ).setExtendedState ( state );
         }
-    }
-
-    @Override
-    public WindowState clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

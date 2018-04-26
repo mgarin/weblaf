@@ -18,6 +18,7 @@
 package com.alee.laf.tabbedpane;
 
 import com.alee.api.clone.Clone;
+import com.alee.api.jdk.Consumer;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
@@ -25,7 +26,6 @@ import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.SectionPainter;
 import com.alee.utils.SwingUtils;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -41,7 +41,6 @@ import java.util.Vector;
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
-
 public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -295,7 +294,7 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
     @Override
     protected Insets getTabInsets ( final int tabPlacement, final int tabIndex )
     {
-        final Insets insets = Clone.clone ( tabInsets );
+        final Insets insets = Clone.basic ().clone ( tabInsets );
         if ( tabIndex == 0 && tabPane.getSelectedIndex () == 0 )
         {
             // Fix for 1st element

@@ -27,7 +27,6 @@ import org.junit.runners.MethodSorters;
  *
  * @author Mikle Garin
  */
-
 @FixMethodOrder ( MethodSorters.JVM )
 public final class TextUtilsTest
 {

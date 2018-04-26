@@ -17,7 +17,6 @@
 
 package com.alee.extended.split;
 
-import com.alee.api.clone.Clone;
 import com.alee.api.merge.Mergeable;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
@@ -65,11 +64,5 @@ public class MultiSplitState implements Mergeable, Cloneable, Serializable
     public void setStates ( final List<MultiSplitViewState> states )
     {
         this.states = states;
-    }
-
-    @Override
-    public MultiSplitState clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

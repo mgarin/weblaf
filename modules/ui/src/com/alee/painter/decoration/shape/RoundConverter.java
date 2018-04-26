@@ -27,7 +27,6 @@ import java.util.StringTokenizer;
  *
  * @author Mikle Garin
  */
-
 public final class RoundConverter extends AbstractSingleValueConverter
 {
     /**

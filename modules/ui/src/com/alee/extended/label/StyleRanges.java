@@ -32,7 +32,6 @@ import java.util.List;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  * @see IStyleSettings
  */
-
 public class StyleRanges implements IStyleRanges
 {
     /**
@@ -192,7 +191,7 @@ public class StyleRanges implements IStyleRanges
                 }
             }
         }
-        catch ( final Exception e )
+        catch ( final Exception ignored )
         {
             // Ignoring any exceptions in style parsing
         }

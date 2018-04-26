@@ -17,6 +17,7 @@
 
 package com.alee.utils.ninepatch;
 
+import com.alee.api.merge.Overwriting;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.NinePatchUtils;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -35,9 +36,8 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 @XStreamConverter ( NinePatchIconConverter.class )
-public class NinePatchIcon implements Icon
+public class NinePatchIcon implements Icon, Overwriting
 {
     /**
      * Raw image without patches.
@@ -199,6 +199,17 @@ public class NinePatchIcon implements Icon
             horizontalStretch = new ArrayList<NinePatchInterval> ();
             verticalStretch = new ArrayList<NinePatchInterval> ();
         }
+    }
+
+    /**
+     * Always returns {@code true} to avoid any merge operations between {@link NinePatchIcon} instances.
+     *
+     * @return always {@code true} to avoid any merge operations between {@link NinePatchIcon} instances
+     */
+    @Override
+    public boolean isOverwrite ()
+    {
+        return true;
     }
 
     /**

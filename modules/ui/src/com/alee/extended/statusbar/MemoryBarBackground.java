@@ -35,7 +35,6 @@ import java.awt.geom.RoundRectangle2D;
  * @author Mikle Garin
  * @see WebMemoryBar
  */
-
 @XStreamAlias ( "MemoryBarBackground" )
 public class MemoryBarBackground<C extends WebMemoryBar, D extends IDecoration<C, D>, I extends MemoryBarBackground<C, D, I>>
         extends AbstractBackground<C, D, I>
@@ -49,16 +48,19 @@ public class MemoryBarBackground<C extends WebMemoryBar, D extends IDecoration<C
     /**
      * Used border color.
      */
+    @XStreamAsAttribute
     protected Color usedBorderColor;
 
     /**
      * Used fill color.
      */
+    @XStreamAsAttribute
     protected Color usedFillColor;
 
     /**
      * Allocated mark color.
      */
+    @XStreamAsAttribute
     protected Color allocatedMarkColor;
 
     @Override
@@ -126,16 +128,5 @@ public class MemoryBarBackground<C extends WebMemoryBar, D extends IDecoration<C
     protected int getProgressWidth ( final Rectangle bounds, final long progress, final long max, final boolean fill )
     {
         return Math.round ( ( float ) ( bounds.width - ( fill ? 0 : 1 ) ) * progress / max );
-    }
-
-    @Override
-    public I merge ( final I bg )
-    {
-        super.merge ( bg );
-        round = bg.isOverwrite () || bg.round != null ? bg.round : round;
-        usedBorderColor = bg.isOverwrite () || bg.usedBorderColor != null ? bg.usedBorderColor : usedBorderColor;
-        usedFillColor = bg.isOverwrite () || bg.usedFillColor != null ? bg.usedFillColor : usedFillColor;
-        allocatedMarkColor = bg.isOverwrite () || bg.allocatedMarkColor != null ? bg.allocatedMarkColor : allocatedMarkColor;
-        return ( I ) this;
     }
 }

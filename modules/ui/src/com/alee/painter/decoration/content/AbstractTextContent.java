@@ -17,7 +17,9 @@
 
 package com.alee.painter.decoration.content;
 
+import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.jdk.Objects;
+import com.alee.api.merge.behavior.PreserveOnMerge;
 import com.alee.managers.style.StyleException;
 import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
@@ -42,7 +44,6 @@ import java.util.Map;
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
-
 public abstract class AbstractTextContent<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractTextContent<C, D, I>>
         extends AbstractContent<C, D, I> implements SwingConstants
 {
@@ -112,6 +113,8 @@ public abstract class AbstractTextContent<C extends JComponent, D extends IDecor
      * @see #getHtml(javax.swing.JComponent, com.alee.painter.decoration.IDecoration)
      * @see #cleanupHtml(javax.swing.JComponent, com.alee.painter.decoration.IDecoration)
      */
+    @OmitOnClone
+    @PreserveOnMerge
     protected transient String htmlSettings;
 
     /**
@@ -122,6 +125,8 @@ public abstract class AbstractTextContent<C extends JComponent, D extends IDecor
      * @see #getHtml(javax.swing.JComponent, com.alee.painter.decoration.IDecoration)
      * @see #cleanupHtml(javax.swing.JComponent, com.alee.painter.decoration.IDecoration)
      */
+    @OmitOnClone
+    @PreserveOnMerge
     protected transient View htmlView;
 
     @Override
@@ -802,20 +807,5 @@ public abstract class AbstractTextContent<C extends JComponent, D extends IDecor
         final int w = SwingUtils.stringWidth ( fm, text );
         final int h = fm.getHeight ();
         return new Dimension ( w, h );
-    }
-
-    @Override
-    public I merge ( final I content )
-    {
-        super.merge ( content );
-        rasterization = content.isOverwrite () || content.rasterization != null ? content.rasterization : rasterization;
-        color = content.isOverwrite () || content.color != null ? content.color : color;
-        halign = content.isOverwrite () || content.halign != null ? content.halign : halign;
-        valign = content.isOverwrite () || content.valign != null ? content.valign : valign;
-        truncate = content.isOverwrite () || content.truncate != null ? content.truncate : truncate;
-        shadow = content.isOverwrite () || content.shadow != null ? content.shadow : shadow;
-        shadowColor = content.isOverwrite () || content.shadowColor != null ? content.shadowColor : shadowColor;
-        shadowSize = content.isOverwrite () || content.shadowSize != null ? content.shadowSize : shadowSize;
-        return ( I ) this;
     }
 }

@@ -32,7 +32,6 @@ import javax.swing.*;
  * @param <I> content type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "AcceleratorText" )
 public class AcceleratorText<C extends JMenuItem, D extends IDecoration<C, D>, I extends AcceleratorText<C, D, I>>
         extends AbstractTextContent<C, D, I>

@@ -22,7 +22,6 @@ package com.alee.api.duplicate;
  *
  * @author Mikle Garin
  */
-
 public final class DuplicateException extends RuntimeException
 {
     /**

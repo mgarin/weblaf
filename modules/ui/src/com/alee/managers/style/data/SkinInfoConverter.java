@@ -209,7 +209,7 @@ public final class SkinInfoConverter extends ReflectionConverter
                     final IconSet iconSet = readIconSet ( realClass );
 
                     // Merging icon sets to avoid duplicates
-                    iconSets = Merge.COMMON.merge ( iconSets, CollectionUtils.asList ( iconSet ) );
+                    iconSets = Merge.basicRaw ().merge ( iconSets, CollectionUtils.asList ( iconSet ) );
                 }
                 else if ( nodeName.equals ( STYLE_NODE ) && !metaDataOnly )
                 {
@@ -229,7 +229,7 @@ public final class SkinInfoConverter extends ReflectionConverter
                     final SkinInfo include = readInclude ( skinInfo, resource );
 
                     // Merging icon sets to avoid duplicates
-                    iconSets = Merge.COMMON.merge ( iconSets, include.getIconSets () );
+                    iconSets = Merge.basicRaw ().merge ( iconSets, include.getIconSets () );
 
                     // Simply adding additional styles to the end
                     styles.addAll ( include.getStyles () );

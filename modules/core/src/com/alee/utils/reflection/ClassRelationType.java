@@ -18,9 +18,12 @@
 package com.alee.utils.reflection;
 
 /**
+ * Enumeration representing {@link Class} relation types.
+ * Use {@link #of(Class, Class)} method to determine {@link ClassRelationType} of two {@link Class}es.
+ * Use {@link #of(Object, Object)} method to determine {@link ClassRelationType} of two {@link Object}s.
+ *
  * @author Mikle Garin
  */
-
 public enum ClassRelationType
 {
     /**

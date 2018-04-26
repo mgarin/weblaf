@@ -17,7 +17,6 @@
 
 package com.alee.extended.colorchooser;
 
-import com.alee.api.clone.Clone;
 import com.alee.api.merge.Mergeable;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ColorUtils;
@@ -36,7 +35,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 @XStreamAlias ( "GradientData" )
-public class GradientData implements Mergeable, Serializable, Cloneable
+public class GradientData implements Mergeable, Cloneable, Serializable
 {
     /**
      * Comparator to sort colors data on change.
@@ -337,11 +336,5 @@ public class GradientData implements Mergeable, Serializable, Cloneable
             }
         }
         return true;
-    }
-
-    @Override
-    public GradientData clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

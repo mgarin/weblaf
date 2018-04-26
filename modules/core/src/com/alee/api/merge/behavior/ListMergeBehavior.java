@@ -37,8 +37,7 @@ import java.util.List;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
  * @see Merge
  */
-
-public final class ListMergeBehavior<T extends List> implements GlobalMergeBehavior<T, T, T>
+public class ListMergeBehavior<T extends List> implements GlobalMergeBehavior<T, T, T>
 {
     /**
      * todo 1. Merging two lists of Identifiable elements gives unexpected results (https://github.com/mgarin/weblaf/issues/448)
@@ -81,20 +80,19 @@ public final class ListMergeBehavior<T extends List> implements GlobalMergeBehav
     public ListMergeBehavior ( final Matcher matcher, final DuplicateResolver baseDuplicateResolver,
                                final DuplicateResolver mergedDuplicateResolver )
     {
-        super ();
         this.matcher = matcher;
         this.baseDuplicateResolver = baseDuplicateResolver;
         this.mergedDuplicateResolver = mergedDuplicateResolver;
     }
 
     @Override
-    public boolean supports ( final Merge merge, final Object base, final Object merged )
+    public boolean supports ( final Merge merge, final Class<T> type, final Object base, final Object merged )
     {
         return base instanceof List && merged instanceof List;
     }
 
     @Override
-    public T merge ( final Merge merge, final T base, final T merged )
+    public T merge ( final Merge merge, final Class<T> type, final T base, final T merged )
     {
         // Checking for duplicates in base list according to specified matcher
         // This might do nothing, modify base list or even throw an exception depending on implementation
@@ -118,7 +116,7 @@ public final class ListMergeBehavior<T extends List> implements GlobalMergeBehav
                     final Object existingObject = base.get ( j );
                     if ( matcher.match ( mergedObject, existingObject ) )
                     {
-                        base.set ( j, merge.merge ( existingObject, mergedObject ) );
+                        base.set ( j, merge.mergeRaw ( Object.class, existingObject, mergedObject ) );
                         matched = true;
                         break;
                     }

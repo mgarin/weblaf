@@ -591,7 +591,7 @@ public final class SkinInfo implements Serializable
     private void updateCache ( final SkinInfo extension )
     {
         // Merging icon sets from extension
-        iconSets = Merge.COMMON.merge ( iconSets, extension.getIconSets () );
+        iconSets = Merge.basic ().merge ( iconSets, extension.getIconSets () );
 
         // Installing extension icon sets
         installIconSets ( extension.getIconSets () );

@@ -146,10 +146,4 @@ public class ImmutableMap<K, V> implements Map<K, V>, Cloneable, Serializable
     {
         return new UnsupportedOperationException ( "Map is unmodifiable" );
     }
-
-    @Override
-    protected ImmutableMap<K,V> clone ()
-    {
-        return new ImmutableMap<K,V> ( this );
-    }
 }

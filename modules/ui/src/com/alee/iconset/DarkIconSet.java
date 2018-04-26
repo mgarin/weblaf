@@ -24,11 +24,10 @@ import com.alee.managers.icon.set.XmlIconSet;
  *
  * @author Mikle Garin
  */
-
-public class DarkIconSet extends XmlIconSet
+public final class DarkIconSet extends XmlIconSet
 {
     /**
-     * Constructs new dark WebLaF icon set.
+     * Constructs new {@link DarkIconSet}.
      */
     public DarkIconSet ()
     {

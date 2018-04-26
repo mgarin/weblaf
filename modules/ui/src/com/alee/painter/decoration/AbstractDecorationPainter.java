@@ -19,6 +19,7 @@ package com.alee.painter.decoration;
 
 import com.alee.api.clone.Clone;
 import com.alee.api.jdk.Objects;
+import com.alee.api.merge.Merge;
 import com.alee.extended.behavior.AbstractHoverBehavior;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.grouping.GroupingLayout;
@@ -52,7 +53,6 @@ import java.util.List;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-
 public abstract class AbstractDecorationPainter<C extends JComponent, U extends ComponentUI, D extends IDecoration<C, D>>
         extends AbstractPainter<C, U> implements IDecorationPainter<C, U, D>, PainterShapeProvider<C>
 {
@@ -811,7 +811,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
                     else if ( decorations.size () == 1 )
                     {
                         // Single existing decoration for the states
-                        decoration = Clone.clone ( decorations.get ( 0 ) );
+                        decoration = Clone.deep ().clone ( decorations.get ( 0 ) );
                     }
                     else
                     {
@@ -829,12 +829,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
                         }
 
                         // Merging multiple decorations together
-                        decoration = Clone.clone ( decorations.get ( 0 ) );
-                        for ( int i = 1; i < decorations.size (); i++ )
-                        {
-                            final D merged = Clone.clone ( decorations.get ( i ) );
-                            decoration.merge ( merged );
-                        }
+                        decoration = Merge.deep ().merge ( decorations );
                     }
 
                     // Updating built decoration settings

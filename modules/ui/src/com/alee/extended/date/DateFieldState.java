@@ -17,7 +17,6 @@
 
 package com.alee.extended.date;
 
-import com.alee.api.clone.Clone;
 import com.alee.api.merge.Mergeable;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -80,11 +79,5 @@ public class DateFieldState implements Mergeable, Cloneable, Serializable
     public void apply ( final WebDateField dateField )
     {
         dateField.setDate ( time != null ? new Date ( time ) : null );
-    }
-
-    @Override
-    public DateFieldState clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

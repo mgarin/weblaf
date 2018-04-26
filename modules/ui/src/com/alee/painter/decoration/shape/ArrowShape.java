@@ -36,7 +36,6 @@ import java.awt.geom.GeneralPath;
  * @param <I> shape type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "ArrowShape" )
 public class ArrowShape<C extends JComponent, D extends WebDecoration<C, D>, I extends ArrowShape<C, D, I>> extends AbstractShape<C, D, I>
 {
@@ -128,13 +127,5 @@ public class ArrowShape<C extends JComponent, D extends WebDecoration<C, D>, I e
     public Object[] getShapeSettings ( final Rectangle bounds, final C c, final D d )
     {
         return new Object[]{ getDirection ( c ) };
-    }
-
-    @Override
-    public I merge ( final I shape )
-    {
-        super.merge ( shape );
-        direction = shape.isOverwrite () || shape.direction != null ? shape.direction : direction;
-        return ( I ) this;
     }
 }

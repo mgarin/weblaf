@@ -28,7 +28,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "SvgStroke" )
 public class SvgStroke extends AbstractSvgAttributeAdjustment
 {

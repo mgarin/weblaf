@@ -72,12 +72,4 @@ public class SetIcon<C extends JComponent, D extends IDecoration<C, D>, I extend
     {
         return IconManager.getIcon ( getIconId () );
     }
-
-    @Override
-    public I merge ( final I content )
-    {
-        super.merge ( content );
-        icon = isOverwrite () ? content.icon : content.icon != null ? content.icon : icon;
-        return ( I ) this;
-    }
 }

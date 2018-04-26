@@ -15,24 +15,23 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.api.merge.type;
+package com.alee.api.merge.unknownresolver;
 
 import com.alee.api.merge.Merge;
-import com.alee.api.merge.MergePolicy;
+import com.alee.api.merge.UnknownResolver;
 
 /**
- * Allows merge of any objects.
+ * {@link UnknownResolver} that doesn't merge objects of unknown types.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
  * @see Merge
  */
-
-public final class AnyTypeMergePolicy implements MergePolicy
+public final class SkippingUnknownResolver implements UnknownResolver
 {
     @Override
-    public boolean accept ( final Merge merge, final Object object, final Object merged )
+    public Object resolve ( final Merge merge, final Object object, final Object merged )
     {
-        return true;
+        return object;
     }
 }

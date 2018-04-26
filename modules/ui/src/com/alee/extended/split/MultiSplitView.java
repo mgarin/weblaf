@@ -17,6 +17,8 @@
 
 package com.alee.extended.split;
 
+import com.alee.api.clone.behavior.PreserveOnClone;
+
 import java.awt.*;
 import java.io.Serializable;
 
@@ -30,12 +32,12 @@ import java.io.Serializable;
  * @see WebMultiSplitPaneModel
  * @see WebMultiSplitPane
  */
-
 public class MultiSplitView implements Cloneable, Serializable
 {
     /**
      * Immutable {@link Component} which this {@link MultiSplitView} describes.
      */
+    @PreserveOnClone
     protected final Component component;
 
     /**
@@ -59,18 +61,6 @@ public class MultiSplitView implements Cloneable, Serializable
         this.component = component;
         this.constraints = constraints;
         this.state = new MultiSplitViewState ();
-    }
-
-    /**
-     * Constructs new {@link MultiSplitView}.
-     *
-     * @param view {@link MultiSplitView} to copy values from
-     */
-    public MultiSplitView ( final MultiSplitView view )
-    {
-        this.component = view.component ();
-        this.constraints = view.constraints ();
-        this.state = view.state ().clone ();
     }
 
     /**
@@ -111,11 +101,5 @@ public class MultiSplitView implements Cloneable, Serializable
     public void setState ( final MultiSplitViewState state )
     {
         this.state = state;
-    }
-
-    @Override
-    public MultiSplitView clone ()
-    {
-        return new MultiSplitView ( this );
     }
 }

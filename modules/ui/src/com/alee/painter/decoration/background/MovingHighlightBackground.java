@@ -17,7 +17,9 @@
 
 package com.alee.painter.decoration.background;
 
+import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.data.Orientation;
+import com.alee.api.merge.behavior.PreserveOnMerge;
 import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.managers.animation.transition.*;
 import com.alee.painter.decoration.IDecoration;
@@ -38,7 +40,6 @@ import java.awt.*;
  * @param <I> background type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "MovingHighlightBackground" )
 public class MovingHighlightBackground<C extends JComponent, D extends IDecoration<C, D>, I extends MovingHighlightBackground<C, D, I>>
         extends AbstractBackground<C, D, I>
@@ -82,16 +83,22 @@ public class MovingHighlightBackground<C extends JComponent, D extends IDecorati
     /**
      * Visibility behavior that handles animation.
      */
+    @OmitOnClone
+    @PreserveOnMerge
     protected transient VisibilityBehavior<C> visibilityBehavior;
 
     /**
      * Highlight position.
      */
+    @OmitOnClone
+    @PreserveOnMerge
     protected transient float position;
 
     /**
      * Transition used for background animations.
      */
+    @OmitOnClone
+    @PreserveOnMerge
     protected transient QueueTransition transitionsQueue;
 
     @Override
@@ -233,18 +240,5 @@ public class MovingHighlightBackground<C extends JComponent, D extends IDecorati
             GraphicsUtils.restorePaint ( g2d, op );
             GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );
         }
-    }
-
-    @Override
-    public I merge ( final I bg )
-    {
-        super.merge ( bg );
-        orientation = bg.isOverwrite () || bg.orientation != null ? bg.orientation : orientation;
-        width = bg.isOverwrite () || bg.width != null ? bg.width : width;
-        color = bg.isOverwrite () || bg.color != null ? bg.color : color;
-        passes = bg.isOverwrite () || bg.passes != null ? bg.passes : passes;
-        duration = bg.isOverwrite () || bg.duration != null ? bg.duration : duration;
-        delay = bg.isOverwrite () || bg.delay != null ? bg.delay : delay;
-        return ( I ) this;
     }
 }

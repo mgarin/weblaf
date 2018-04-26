@@ -20,6 +20,7 @@ package com.alee.painter.decoration.content;
 import com.alee.api.data.BoxOrientation;
 import com.alee.api.data.Orientation;
 import com.alee.api.jdk.Objects;
+import com.alee.api.merge.behavior.OverwriteOnMerge;
 import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.GraphicsUtils;
@@ -39,7 +40,6 @@ import java.util.List;
  * @param <I> content type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "Stripes" )
 public class Stripes<C extends JComponent, D extends IDecoration<C, D>, I extends Stripes<C, D, I>> extends AbstractContent<C, D, I>
 {
@@ -61,6 +61,7 @@ public class Stripes<C extends JComponent, D extends IDecoration<C, D>, I extend
      * At least one {@link Stripe} must always be provided.
      */
     @XStreamImplicit
+    @OverwriteOnMerge
     protected List<Stripe> stripes;
 
     @Override
@@ -213,15 +214,5 @@ public class Stripes<C extends JComponent, D extends IDecoration<C, D>, I extend
         final int stripes = getStripesCount ();
         final Orientation orientation = getOrientation ( c, d );
         return new Dimension ( orientation.isVertical () ? stripes : 0, orientation.isVertical () ? 0 : stripes );
-    }
-
-    @Override
-    public I merge ( final I content )
-    {
-        super.merge ( content );
-        orientation = content.isOverwrite () || content.orientation != null ? content.orientation : orientation;
-        align = content.isOverwrite () || content.align != null ? content.align : align;
-        stripes = content.isOverwrite () || content.stripes != null ? content.stripes : stripes;
-        return ( I ) this;
     }
 }

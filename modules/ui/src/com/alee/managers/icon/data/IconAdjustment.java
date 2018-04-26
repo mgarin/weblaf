@@ -17,6 +17,8 @@
 
 package com.alee.managers.icon.data;
 
+import com.alee.api.merge.Mergeable;
+
 import javax.swing.*;
 import java.io.Serializable;
 
@@ -28,7 +30,7 @@ import java.io.Serializable;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-IconManager">How to use IconManager</a>
  * @see com.alee.managers.icon.IconManager
  */
-public interface IconAdjustment<T extends Icon> extends Serializable
+public interface IconAdjustment<T extends Icon> extends Mergeable, Cloneable, Serializable
 {
     /**
      * Applies this adjustment to the specified {@link Icon}.

@@ -65,10 +65,4 @@ public class ImmutableSet<E> extends ImmutableCollection<E> implements Set<E>
     {
         return new UnsupportedOperationException ( "Set is unmodifiable" );
     }
-
-    @Override
-    protected ImmutableSet<E> clone ()
-    {
-        return new ImmutableSet<E> ( this );
-    }
 }

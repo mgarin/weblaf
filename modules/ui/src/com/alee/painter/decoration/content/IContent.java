@@ -18,7 +18,6 @@
 package com.alee.painter.decoration.content;
 
 import com.alee.api.Identifiable;
-import com.alee.api.merge.MergeBehavior;
 import com.alee.api.merge.Overwriting;
 import com.alee.managers.style.BoundsType;
 import com.alee.painter.decoration.IDecoration;
@@ -36,9 +35,8 @@ import java.io.Serializable;
  * @param <I> content type
  * @author Mikle Garin
  */
-
 public interface IContent<C extends JComponent, D extends IDecoration<C, D>, I extends IContent<C, D, I>>
-        extends Identifiable, IDecoratonElement<C, D, I>, MergeBehavior<I>, Overwriting, Cloneable, Serializable
+        extends Identifiable, IDecoratonElement<C, D, I>, Overwriting, Cloneable, Serializable
 {
     /**
      * todo 1. Remove {@link IDecoration} usage from all methods?

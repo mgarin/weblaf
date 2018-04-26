@@ -17,7 +17,6 @@
 
 package com.alee.managers.language.data;
 
-import com.alee.api.clone.Clone;
 import com.alee.api.jdk.Objects;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.TextUtils;
@@ -40,7 +39,7 @@ import java.util.*;
  * @see Value
  */
 @XStreamAlias ( "record" )
-public final class Record implements Serializable, Cloneable
+public final class Record implements Cloneable, Serializable
 {
     /**
      * {@link Record} key within its {@link Dictionary}.
@@ -281,12 +280,6 @@ public final class Record implements Serializable, Cloneable
             }
         }
         return values;
-    }
-
-    @Override
-    public Record clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 
     @Override

@@ -31,9 +31,8 @@ import java.io.Serializable;
  * @see WebMultiSplitPaneModel
  * @see WebMultiSplitPane
  */
-
 @XStreamAlias ( "ViewState" )
-public class MultiSplitViewState implements Serializable, Cloneable
+public class MultiSplitViewState implements Cloneable, Serializable
 {
     /**
      * Current size of the {@link MultiSplitView} within {@link WebMultiSplitPane}.
@@ -58,17 +57,6 @@ public class MultiSplitViewState implements Serializable, Cloneable
     {
         this.size = 0;
         this.expanded = false;
-    }
-
-    /**
-     * Constructs new {@link MultiSplitViewState}.
-     *
-     * @param state {@link MultiSplitViewState} to copy values from
-     */
-    public MultiSplitViewState ( final MultiSplitViewState state )
-    {
-        this.size = state.size ();
-        this.expanded = state.isExpanded ();
     }
 
     /**
@@ -109,11 +97,5 @@ public class MultiSplitViewState implements Serializable, Cloneable
     public void setExpanded ( final boolean expanded )
     {
         this.expanded = expanded;
-    }
-
-    @Override
-    public MultiSplitViewState clone ()
-    {
-        return new MultiSplitViewState ( this );
     }
 }

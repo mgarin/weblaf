@@ -19,7 +19,10 @@ package com.alee.extended.colorchooser;
 
 import com.alee.api.jdk.Objects;
 import com.alee.laf.colorchooser.WebColorChooser;
-import com.alee.managers.settings.*;
+import com.alee.managers.settings.Configuration;
+import com.alee.managers.settings.SettingsMethods;
+import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.settings.UISettingsManager;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
@@ -595,7 +598,7 @@ public class WebGradientColorChooser extends JComponent implements MouseListener
     @Override
     public void registerSettings ( final SettingsProcessor processor )
     {
-        UISettingsManager.registerComponent ( this,processor );
+        UISettingsManager.registerComponent ( this, processor );
     }
 
     @Override

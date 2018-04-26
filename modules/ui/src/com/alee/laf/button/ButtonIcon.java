@@ -32,7 +32,6 @@ import javax.swing.*;
  * @param <I> content type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "ButtonIcon" )
 public class ButtonIcon<C extends AbstractButton, D extends IDecoration<C, D>, I extends ButtonIcon<C, D, I>>
         extends AbstractIconContent<C, D, I>

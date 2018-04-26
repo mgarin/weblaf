@@ -51,7 +51,6 @@ import java.util.Set;
  * @author Mikle Garin
  * @see SvgIcon
  */
-
 public final class SvgSelector implements Serializable
 {
     /**

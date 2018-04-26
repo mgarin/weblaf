@@ -15,25 +15,26 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.api.merge.type;
+package com.alee.api.clone;
 
-import com.alee.api.merge.Merge;
-import com.alee.api.merge.MergePolicy;
-import com.alee.utils.reflection.ClassRelationType;
+import java.io.Serializable;
 
 /**
- * Restricts merge to objects with related class types only.
+ * Unknown object type clone case resolver.
+ * It is asked to choose clone result for objects of unknown type.
  *
  * @author Mikle Garin
- * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
- * @see Merge
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Clone">How to use Clone</a>
+ * @see Clone
  */
-
-public final class RelativeTypeMergePolicy implements MergePolicy
+public interface UnknownResolver extends Serializable
 {
-    @Override
-    public boolean accept ( final Merge merge, final Object object, final Object merged )
-    {
-        return ClassRelationType.of ( object, merged ).isRelated ();
-    }
+    /**
+     * Returns clone result for object of unknown type.
+     *
+     * @param clone  {@link Clone} algorithm
+     * @param object object to clone
+     * @return clone result for object of unknown type.
+     */
+    public Object resolve ( RecursiveClone clone, Object object );
 }

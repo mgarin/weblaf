@@ -27,7 +27,6 @@ package com.alee.api.merge;
  * @see Merge
  * @see Mergeable
  */
-
 public interface MergeBehavior<T extends MergeBehavior<T>> extends Mergeable
 {
     /**

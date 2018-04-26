@@ -24,11 +24,10 @@ import com.alee.managers.icon.set.XmlIconSet;
  *
  * @author Mikle Garin
  */
-
-public class WebIconSet extends XmlIconSet
+public final class WebIconSet extends XmlIconSet
 {
     /**
-     * Constructs new default WebLaF icon set.
+     * Constructs new {@link WebIconSet}.
      */
     public WebIconSet ()
     {

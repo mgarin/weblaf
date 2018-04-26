@@ -17,6 +17,8 @@
 
 package com.alee.extended.svg;
 
+import com.alee.api.clone.CloneBehavior;
+import com.alee.api.clone.RecursiveClone;
 import com.alee.managers.icon.data.IconAdjustment;
 import com.alee.utils.NetUtils;
 import com.kitfox.svg.*;
@@ -45,8 +47,7 @@ import java.util.List;
  * @author Mikle Garin
  * @see SvgSelector
  */
-
-public class SvgIcon extends SVGIcon implements Cloneable
+public class SvgIcon extends SVGIcon implements CloneBehavior<SvgIcon>
 {
     /**
      * Cached raster image.
@@ -567,7 +568,7 @@ public class SvgIcon extends SVGIcon implements Cloneable
     }
 
     @Override
-    public SvgIcon clone ()
+    public SvgIcon clone ( final RecursiveClone clone, final int depth )
     {
         return new SvgIcon ( new SVGUniverse (), getSvgURI (), getIconWidth (), getIconHeight () );
     }

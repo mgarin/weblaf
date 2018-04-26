@@ -33,7 +33,6 @@ import java.awt.*;
  * @param <I> shape type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "BoundsShape" )
 public class BoundsShape<C extends JComponent, D extends WebDecoration<C, D>, I extends BoundsShape<C, D, I>> extends AbstractShape<C, D, I>
 {

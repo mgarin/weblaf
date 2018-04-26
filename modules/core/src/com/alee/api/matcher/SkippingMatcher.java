@@ -22,7 +22,6 @@ package com.alee.api.matcher;
  *
  * @author Mikle Garin
  */
-
 public final class SkippingMatcher extends AbstractMatcher<Object, Object>
 {
     @Override

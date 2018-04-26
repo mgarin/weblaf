@@ -17,6 +17,8 @@
 
 package com.alee.painter.decoration.background;
 
+import com.alee.api.clone.behavior.OmitOnClone;
+import com.alee.api.merge.behavior.PreserveOnMerge;
 import com.alee.managers.style.StyleException;
 import com.alee.painter.decoration.IDecoration;
 
@@ -35,7 +37,6 @@ import java.awt.image.BufferedImage;
  * @param <I> background type
  * @author Mikle Garin
  */
-
 public abstract class AbstractImageTextureBackground<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractImageTextureBackground<C, D, I>>
         extends AbstractTextureBackground<C, D, I>
 {
@@ -44,6 +45,8 @@ public abstract class AbstractImageTextureBackground<C extends JComponent, D ext
      * It is only cleared upon object destruction to optimize its usage performance.
      * If we would clean it up every time this background is deactivated it would not work well in some cases.
      */
+    @OmitOnClone
+    @PreserveOnMerge
     protected transient BufferedImage image;
 
     @Override

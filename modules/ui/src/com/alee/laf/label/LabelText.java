@@ -31,7 +31,6 @@ import javax.swing.*;
  * @param <I> content type
  * @author Alexandr Zernov
  */
-
 @XStreamAlias ( "LabelText" )
 public class LabelText<C extends JLabel, D extends IDecoration<C, D>, I extends LabelText<C, D, I>> extends AbstractTextContent<C, D, I>
 {

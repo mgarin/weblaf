@@ -17,7 +17,6 @@
 
 package com.alee.painter.decoration.layout;
 
-import com.alee.api.merge.Merge;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractContent;
 import com.alee.painter.decoration.content.IContent;
@@ -37,7 +36,6 @@ import java.util.List;
  * @param <I> layout type
  * @author Mikle Garin
  */
-
 public abstract class AbstractContentLayout<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractContentLayout<C, D, I>>
         extends AbstractContent<C, D, I> implements IContentLayout<C, D, I>
 {
@@ -271,13 +269,5 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
             }
         }
         return ps;
-    }
-
-    @Override
-    public I merge ( final I layout )
-    {
-        super.merge ( layout );
-        contents = layout.isOverwrite () ? layout.contents : Merge.COMMON.<List<IContent>>merge ( contents, layout.contents );
-        return ( I ) this;
     }
 }

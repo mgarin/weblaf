@@ -140,8 +140,8 @@ public class TextRanges implements ITextRanges
                                 final int styleEnd = styleStart + style.getLength ();
                                 if ( Math.max ( styleStart, start ) < Math.min ( styleEnd, end ) )
                                 {
-                                    // Merging styles
-                                    styleRange = Merge.COMMON.merge ( styleRange, style );
+                                    // Merging style ranges
+                                    styleRange = Merge.basic ().merge ( styleRange, style );
                                 }
                             }
                         }

@@ -24,7 +24,6 @@ package com.alee.api.clone;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Clone">How to use Clone</a>
  * @see Clone
  */
-
 public final class CloneException extends RuntimeException
 {
     /**

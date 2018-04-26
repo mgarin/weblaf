@@ -17,7 +17,6 @@
 
 package com.alee.laf.text;
 
-import com.alee.api.clone.Clone;
 import com.alee.api.merge.Mergeable;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -92,11 +91,5 @@ public class TextComponentState implements Mergeable, Cloneable, Serializable
         {
             textComponent.setCaretPosition ( caretPosition );
         }
-    }
-
-    @Override
-    public TextComponentState clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

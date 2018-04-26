@@ -21,13 +21,14 @@ import com.alee.api.jdk.Objects;
 import com.alee.api.matcher.EqualMatcher;
 import com.alee.api.merge.behavior.BasicMergeBehavior;
 import com.alee.api.merge.behavior.ListMergeBehavior;
+import com.alee.api.merge.behavior.PreserveOnMerge;
 import com.alee.api.merge.behavior.ReflectionMergeBehavior;
 import com.alee.api.merge.nullresolver.OverwritingNullResolver;
 import com.alee.api.merge.nullresolver.SkippingNullResolver;
-import com.alee.api.merge.type.ExactTypeMergePolicy;
-import com.alee.api.merge.type.RelativeTypeMergePolicy;
+import com.alee.api.merge.unknownresolver.ExceptionUnknownResolver;
 import com.alee.utils.ArrayUtils;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.reflection.ModifierType;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -43,22 +44,25 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 @FixMethodOrder ( MethodSorters.JVM )
 public final class MergeTest
 {
     /**
-     * Testing common merge configuration on basic objects.
-     * Common configuration should never be changed to avoid compatibility issues therefore we are adding these tests.
+     * Testing custom merge configuration on basic objects.
      */
     @Test
-    public void commonBasicMerge ()
+    public void customBasicMerge ()
     {
-        final Merge merge = Merge.COMMON;
+        final Merge merge = new Merge (
+                new SkippingNullResolver (),
+                new ExceptionUnknownResolver (),
+                new BasicMergeBehavior ()
+        );
+
         checkMergeResult ( merge.merge ( null, null ), null );
         checkMergeResult ( merge.merge ( 1, null ), 1 );
         checkMergeResult ( merge.merge ( null, 2 ), 2 );
-        checkMergeResult ( merge.merge ( 1, "text" ), "text" );
+        checkMergeException ( merge, 1, "text", MergeException.class );
         checkMergeResult ( merge.merge ( 1, 2 ), 2 );
         checkMergeResult ( merge.merge ( false, true ), true );
         checkMergeResult ( merge.merge ( true, false ), false );
@@ -137,11 +141,16 @@ public final class MergeTest
     @Test
     public void skippingBasicMerge ()
     {
-        final Merge merge = new Merge ( new SkippingNullResolver (), new ExactTypeMergePolicy (), new BasicMergeBehavior () );
+        final Merge merge = new Merge (
+                new SkippingNullResolver (),
+                new ExceptionUnknownResolver (),
+                new BasicMergeBehavior ()
+        );
+
         checkMergeResult ( merge.merge ( null, null ), null );
         checkMergeResult ( merge.merge ( 1, null ), 1 );
         checkMergeResult ( merge.merge ( null, 2 ), 2 );
-        checkMergeResult ( merge.merge ( 1, "text" ), "text" );
+        checkMergeException ( merge, 1, "text", MergeException.class );
         checkMergeResult ( merge.merge ( 1, 2 ), 2 );
         checkMergeResult ( merge.merge ( false, true ), true );
         checkMergeResult ( merge.merge ( true, false ), false );
@@ -220,11 +229,16 @@ public final class MergeTest
     @Test
     public void overwritingBasicMerge ()
     {
-        final Merge merge = new Merge ( new OverwritingNullResolver (), new ExactTypeMergePolicy (), new BasicMergeBehavior () );
+        final Merge merge = new Merge (
+                new OverwritingNullResolver (),
+                new ExceptionUnknownResolver (),
+                new BasicMergeBehavior ()
+        );
+
         checkMergeResult ( merge.merge ( null, null ), null );
         checkMergeResult ( merge.merge ( 1, null ), null );
         checkMergeResult ( merge.merge ( null, 2 ), 2 );
-        checkMergeResult ( merge.merge ( 1, "text" ), "text" );
+        checkMergeException ( merge, 1, "text", MergeException.class );
         checkMergeResult ( merge.merge ( 1, 2 ), 2 );
         checkMergeResult ( merge.merge ( false, true ), true );
         checkMergeResult ( merge.merge ( true, false ), false );
@@ -298,13 +312,14 @@ public final class MergeTest
     }
 
     /**
-     * Testing common merge configuration on custom objects.
-     * Common configuration should never be changed to avoid compatibility issues therefore we are adding these tests.
+     * Testing {@link Merge#basicRaw()} configuration on custom objects.
+     * These tests are important as outcome of predefined configurations shouldn't normally be changed.
      */
     @Test
-    public void commonObjectMerge ()
+    public void basicObjectMerge ()
     {
-        final Merge merge = Merge.COMMON;
+        final Merge merge = Merge.basicRaw ();
+
         checkMergeResult (
                 merge.merge (
                         new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) ),
@@ -319,37 +334,35 @@ public final class MergeTest
                 ),
                 new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) )
         );
-        checkMergeResult (
-                merge.merge (
-                        new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) ),
-                        "text"
-                ),
-                "text"
+        checkMergeException (
+                merge,
+                new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) ),
+                "text",
+                MergeException.class
         );
-        checkMergeResult (
-                merge.merge (
-                        "text",
-                        new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) )
-                ),
-                new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) )
+        checkMergeException (
+                merge,
+                "text",
+                new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) ),
+                MergeException.class
         );
-        checkMergeResult (
-                merge.merge (
-                        new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) ),
-                        new TestObject ( false, null, 2, CollectionUtils.asList ( "2", "3" ) )
-                ),
-                new TestObject ( false, null, 2, CollectionUtils.asList ( "2", "3" ) )
+        checkMergeException (
+                merge,
+                new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) ),
+                new TestObject ( false, null, 2, CollectionUtils.asList ( "2", "3" ) ),
+                MergeException.class
         );
     }
 
     /**
-     * Testing common deep merge configuration on custom objects.
-     * Common configuration should never be changed to avoid compatibility issues therefore we are adding these tests.
+     * Testing {@link Merge#deepRaw()} configuration on custom objects.
+     * These tests are important as outcome of predefined configurations shouldn't normally be changed.
      */
     @Test
     public void deepObjectMerge ()
     {
-        final Merge merge = Merge.DEEP;
+        final Merge merge = Merge.deepRaw ();
+
         checkMergeResult (
                 merge.merge (
                         new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) ),
@@ -364,26 +377,24 @@ public final class MergeTest
                 ),
                 new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) )
         );
-        checkMergeResult (
-                merge.merge (
-                        new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) ),
-                        "text"
-                ),
-                "text"
+        checkMergeException (
+                merge,
+                new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) ),
+                "text",
+                MergeException.class
         );
-        checkMergeResult (
-                merge.merge (
-                        "text",
-                        new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) )
-                ),
-                new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) )
+        checkMergeException (
+                merge,
+                "text",
+                new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) ),
+                MergeException.class
         );
         checkMergeResult (
                 merge.merge (
                         new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) ),
                         new TestObject ( false, null, 2, CollectionUtils.asList ( "2", "3" ) )
                 ),
-                new TestObject ( false, "text", 2, CollectionUtils.asList ( "1", "2", "2", "3" ) )
+                new TestObject ( true, "text", 2, CollectionUtils.asList ( "1", "2", "2", "3" ) )
         );
     }
 
@@ -395,11 +406,12 @@ public final class MergeTest
     {
         final Merge merge = new Merge (
                 new SkippingNullResolver (),
-                new ExactTypeMergePolicy (),
+                new ExceptionUnknownResolver (),
                 new BasicMergeBehavior (),
                 new ListMergeBehavior ( new EqualMatcher () ),
-                new ReflectionMergeBehavior ()
+                new ReflectionMergeBehavior ( ReflectionMergeBehavior.Policy.mergeable, ModifierType.STATIC )
         );
+
         checkMergeResult (
                 merge.merge (
                         new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) ),
@@ -414,26 +426,24 @@ public final class MergeTest
                 ),
                 new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) )
         );
-        checkMergeResult (
-                merge.merge (
-                        new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) ),
-                        "text"
-                ),
-                "text"
+        checkMergeException (
+                merge,
+                new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) ),
+                "text",
+                MergeException.class
         );
-        checkMergeResult (
-                merge.merge (
-                        "text",
-                        new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) )
-                ),
-                new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) )
+        checkMergeException (
+                merge,
+                "text",
+                new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) ),
+                MergeException.class
         );
         checkMergeResult (
                 merge.merge (
                         new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) ),
                         new TestObject ( false, null, 2, CollectionUtils.asList ( "2", "3" ) )
                 ),
-                new TestObject ( false, "text", 2, CollectionUtils.asList ( "1", "2", "3" ) )
+                new TestObject ( true, "text", 2, CollectionUtils.asList ( "1", "2", "3" ) )
         );
     }
 
@@ -445,10 +455,10 @@ public final class MergeTest
     {
         final Merge merge = new Merge (
                 new SkippingNullResolver (),
-                new RelativeTypeMergePolicy (),
+                new ExceptionUnknownResolver (),
                 new BasicMergeBehavior (),
                 new ListMergeBehavior ( new EqualMatcher () ),
-                new ReflectionMergeBehavior ()
+                new ReflectionMergeBehavior ( ReflectionMergeBehavior.Policy.mergeable, ModifierType.STATIC )
         );
 
         /**
@@ -456,10 +466,10 @@ public final class MergeTest
          */
         checkMergeResult (
                 merge.merge (
-                        new TestObject ( true, "text", 1, CollectionUtils.asList ( "1", "2" ) ),
-                        new ParentTestObject ( false, null, 2, CollectionUtils.asList ( "2", "3" ), new Object[]{ "123", 1 } )
+                        new TestObject ( false, "text", 1, CollectionUtils.asList ( "1", "2" ) ),
+                        new ParentTestObject ( true, null, 2, CollectionUtils.asList ( "2", "3" ), new Object[]{ "123", 1 } )
                 ),
-                new ParentTestObject ( false, null, 2, CollectionUtils.asList ( "2", "3" ), new Object[]{ "123", 1 } )
+                new ParentTestObject ( true, null, 2, CollectionUtils.asList ( "2", "3" ), new Object[]{ "123", 1 } )
         );
 
         /**
@@ -470,7 +480,7 @@ public final class MergeTest
                         new ParentTestObject ( true, "text", 1, CollectionUtils.asList ( "2", "3" ), new Object[]{ "123", 1 } ),
                         new TestObject ( false, null, 2, CollectionUtils.asList ( "1", "2" ) )
                 ),
-                new ParentTestObject ( false, "text", 2, CollectionUtils.asList ( "2", "3", "1" ), new Object[]{ "123", 1 } )
+                new ParentTestObject ( true, "text", 2, CollectionUtils.asList ( "2", "3", "1" ), new Object[]{ "123", 1 } )
         );
     }
 
@@ -492,14 +502,43 @@ public final class MergeTest
     }
 
     /**
+     * Asserts merge result.
+     *
+     * @param merge     {@link Merge}
+     * @param base      base object
+     * @param merged    merged object
+     * @param exception expected {@link Exception} class
+     */
+    private void checkMergeException ( final Merge merge, final Object base, final Object merged,
+                                       final Class<? extends Exception> exception )
+    {
+        try
+        {
+            final Object result = merge.merge ( base, merged );
+            throw new MergeException ( String.format (
+                    "Merge succeeded when it shouldn't: %s with %s" + "\n" + "Resulting object is: %s",
+                    base, merged, result
+            ) );
+        }
+        catch ( final Exception e )
+        {
+            if ( Objects.notEquals ( e.getClass (), exception ) )
+            {
+                throw new MergeException ( "Unknown merge exception", e );
+            }
+        }
+    }
+
+    /**
      * Sample object for merging.
      */
-    public static class TestObject
+    public static class TestObject implements Mergeable, Cloneable
     {
         /**
          * Sample {@link boolean} data.
          */
-        protected final boolean bool;
+        @PreserveOnMerge
+        private final boolean bool;
 
         /**
          * Sample {@link String} data.
@@ -509,12 +548,12 @@ public final class MergeTest
         /**
          * Sample {@link int} data.
          */
-        protected final int number;
+        final int number;
 
         /**
          * Sample {@link List} data.
          */
-        protected final List<String> list;
+        public transient final List<String> list;
 
         /**
          * Constructs new {@link TestObject}.
@@ -543,6 +582,13 @@ public final class MergeTest
                     Objects.equals ( text, ( ( TestObject ) object ).text ) &&
                     number == ( ( TestObject ) object ).number &&
                     CollectionUtils.equals ( list, ( ( TestObject ) object ).list, true );
+        }
+
+        @Override
+        public String toString ()
+        {
+            return getClass ().getSimpleName () + "{" + "bool=" + bool + ", " + "text='" + text + "', " +
+                    "number=" + number + ", " + "list=" + list + "}";
         }
     }
 

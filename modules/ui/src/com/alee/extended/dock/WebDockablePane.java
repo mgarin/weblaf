@@ -607,7 +607,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     {
         if ( orientation == null )
         {
-            throw new NullPointerException ();
+            throw new NullPointerException ( "ComponentOrientation must not be null" );
         }
         setComponentOrientation ( orientation );
         synchronized ( getTreeLock () )

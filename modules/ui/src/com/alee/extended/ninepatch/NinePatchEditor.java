@@ -362,9 +362,9 @@ public class NinePatchEditor extends WebPanel
         }
 
         // Update NinePatchIcon data
-        ninePatchIcon.setMargin ( Clone.clone ( state.getMargin () ) );
-        ninePatchIcon.setHorizontalStretch ( Clone.clone ( state.getHorizontalStretch () ) );
-        ninePatchIcon.setVerticalStretch ( Clone.clone ( state.getVerticalStretch () ) );
+        ninePatchIcon.setMargin ( Clone.basic ().clone ( state.getMargin () ) );
+        ninePatchIcon.setHorizontalStretch ( Clone.deep ().clone ( state.getHorizontalStretch () ) );
+        ninePatchIcon.setVerticalStretch ( Clone.deep ().clone ( state.getVerticalStretch () ) );
 
         // Updates shown image
         validateIcon ();
@@ -388,9 +388,9 @@ public class NinePatchEditor extends WebPanel
             // Adding new state
             final NinePatchInfo info = new NinePatchInfo ();
             info.setImageSize ( ninePatchIcon.getRealImageSize () );
-            info.setMargin ( Clone.clone ( ninePatchIcon.getMargin () ) );
-            info.setHorizontalStretch ( Clone.clone ( ninePatchIcon.getHorizontalStretch () ) );
-            info.setVerticalStretch ( Clone.clone ( ninePatchIcon.getVerticalStretch () ) );
+            info.setMargin ( Clone.basic ().clone ( ninePatchIcon.getMargin () ) );
+            info.setHorizontalStretch ( Clone.deep ().clone ( ninePatchIcon.getHorizontalStretch () ) );
+            info.setVerticalStretch ( Clone.deep ().clone ( ninePatchIcon.getVerticalStretch () ) );
             history.add ( info );
             historyState = history.size () - 1;
 

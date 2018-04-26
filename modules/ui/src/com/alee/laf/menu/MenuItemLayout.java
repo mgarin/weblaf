@@ -35,7 +35,6 @@ import java.awt.*;
  * @param <I> layout type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "MenuItemLayout" )
 public class MenuItemLayout<C extends JMenuItem, D extends IDecoration<C, D>, I extends MenuItemLayout<C, D, I>>
         extends AbstractMenuItemLayout<C, D, I>
@@ -120,14 +119,5 @@ public class MenuItemLayout<C extends JMenuItem, D extends IDecoration<C, D>, I 
     protected boolean isInPopupMenu ( final C c, final D d )
     {
         return c.getParent () != null && c.getParent () instanceof JPopupMenu;
-    }
-
-    @Override
-    public I merge ( final I layout )
-    {
-        super.merge ( layout );
-        alignTextByIcons = isOverwrite () ? layout.alignTextByIcons :
-                layout.alignTextByIcons != null ? layout.alignTextByIcons : alignTextByIcons;
-        return ( I ) this;
     }
 }

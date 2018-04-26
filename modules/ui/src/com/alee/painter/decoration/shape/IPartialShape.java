@@ -30,7 +30,6 @@ import javax.swing.*;
  * @param <I> shape type
  * @author Mikle Garin
  */
-
 public interface IPartialShape<C extends JComponent, D extends IDecoration<C, D>, I extends IPartialShape<C, D, I>> extends IShape<C, D, I>
 {
     /**

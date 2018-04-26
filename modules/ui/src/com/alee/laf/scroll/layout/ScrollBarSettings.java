@@ -17,7 +17,6 @@
 
 package com.alee.laf.scroll.layout;
 
-import com.alee.api.clone.Clone;
 import com.alee.api.merge.Mergeable;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -30,7 +29,6 @@ import java.io.Serializable;
  *
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "ScrollBarSettings" )
 public class ScrollBarSettings implements Mergeable, Cloneable, Serializable
 {
@@ -130,11 +128,5 @@ public class ScrollBarSettings implements Mergeable, Cloneable, Serializable
     public boolean isExtending ()
     {
         return extending != null && extending;
-    }
-
-    @Override
-    public ScrollBarSettings clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

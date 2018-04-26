@@ -26,7 +26,6 @@ import com.alee.utils.ReflectUtils;
  * @param <T> object type
  * @author Mikle Garin
  */
-
 public final class LazyInstance<T>
 {
     /**

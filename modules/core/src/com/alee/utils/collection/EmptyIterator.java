@@ -18,7 +18,6 @@
 package com.alee.utils.collection;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 /**
  * {@link Iterator} implementation that has no elements.
@@ -26,13 +25,12 @@ import java.util.NoSuchElementException;
  * @param <E> elements type
  * @author Mikle Garin
  */
-
 public final class EmptyIterator<E> implements Iterator<E>
 {
     /**
      * {@link EmptyIterator} singleton instance.
      */
-    private static Iterator instance;
+    private static EmptyIterator instance;
 
     /**
      * Returns {@link EmptyIterator} instance.
@@ -40,11 +38,17 @@ public final class EmptyIterator<E> implements Iterator<E>
      * @param <E> elements type
      * @return {@link EmptyIterator} instance
      */
-    public static synchronized <E> Iterator<E> instance ()
+    public static <E> EmptyIterator<E> instance ()
     {
         if ( instance == null )
         {
-            instance = new EmptyIterator ();
+            synchronized ( EmptyIterator.class )
+            {
+                if ( instance == null )
+                {
+                    instance = new EmptyIterator ();
+                }
+            }
         }
         return instance;
     }
@@ -64,7 +68,7 @@ public final class EmptyIterator<E> implements Iterator<E>
     }
 
     @Override
-    public E next () throws NoSuchElementException
+    public E next ()
     {
         throw new UnsupportedOperationException ( "EmptyIterator does not contain any elements" );
     }

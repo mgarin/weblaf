@@ -17,8 +17,6 @@
 
 package com.alee.managers.style.data;
 
-import com.alee.api.clone.Clone;
-import com.alee.api.merge.Mergeable;
 import com.alee.api.merge.Overwriting;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -35,13 +33,13 @@ import java.util.LinkedHashMap;
  * @see com.alee.managers.style.StyleManager
  */
 @XStreamConverter ( PainterStyleConverter.class )
-public final class PainterStyle implements Mergeable, Overwriting, Serializable, Cloneable
+public final class PainterStyle implements Overwriting, Cloneable, Serializable
 {
     /**
      * Whether or not this {@link com.alee.painter.Painter} should overwrite another one when merged.
      */
     @XStreamAsAttribute
-    protected Boolean overwrite;
+    private Boolean overwrite;
 
     /**
      * Painter class canonical name.
@@ -118,11 +116,5 @@ public final class PainterStyle implements Mergeable, Overwriting, Serializable,
     public void setProperties ( final LinkedHashMap<String, Object> properties )
     {
         this.properties = properties;
-    }
-
-    @Override
-    public PainterStyle clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

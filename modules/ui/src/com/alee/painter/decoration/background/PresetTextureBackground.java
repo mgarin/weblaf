@@ -34,7 +34,6 @@ import java.awt.image.BufferedImage;
  * @author Mikle Garin
  * @see AbstractImageTextureBackground
  */
-
 @XStreamAlias ( "PresetTextureBackground" )
 public class PresetTextureBackground<C extends JComponent, D extends IDecoration<C, D>, I extends PresetTextureBackground<C, D, I>>
         extends AbstractImageTextureBackground<C, D, I>
@@ -55,13 +54,5 @@ public class PresetTextureBackground<C extends JComponent, D extends IDecoration
     protected BufferedImage getTextureImage ()
     {
         return preset.getTexture ();
-    }
-
-    @Override
-    public I merge ( final I bg )
-    {
-        super.merge ( bg );
-        preset = bg.isOverwrite () || bg.preset != null ? bg.preset : preset;
-        return ( I ) this;
     }
 }

@@ -26,7 +26,6 @@ package com.alee.api.merge;
  * @see Merge
  * @see Mergeable
  */
-
 public interface Overwriting extends Mergeable
 {
     /**

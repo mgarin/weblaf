@@ -31,7 +31,6 @@ import javax.swing.*;
  * @param <I> layout type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "ButtonLayout" )
 public class ButtonLayout<C extends AbstractButton, D extends IDecoration<C, D>, I extends ButtonLayout<C, D, I>>
         extends IconTextLayout<C, D, I>

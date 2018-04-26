@@ -37,7 +37,6 @@ import java.awt.*;
  * @param <I> layout type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "IconTextLayout" )
 public class IconTextLayout<C extends JComponent, D extends IDecoration<C, D>, I extends IconTextLayout<C, D, I>>
         extends AbstractContentLayout<C, D, I> implements SwingConstants
@@ -356,17 +355,5 @@ public class IconTextLayout<C extends JComponent, D extends IDecoration<C, D>, I
             size = new Dimension ( 0, 0 );
         }
         return size;
-    }
-
-    @Override
-    public I merge ( final I layout )
-    {
-        super.merge ( layout );
-        gap = layout.isOverwrite () || layout.gap != null ? layout.gap : gap;
-        valign = layout.isOverwrite () || layout.valign != null ? layout.valign : valign;
-        halign = layout.isOverwrite () || layout.halign != null ? layout.halign : halign;
-        hpos = layout.isOverwrite () || layout.hpos != null ? layout.hpos : hpos;
-        vpos = layout.isOverwrite () || layout.vpos != null ? layout.vpos : vpos;
-        return ( I ) this;
     }
 }

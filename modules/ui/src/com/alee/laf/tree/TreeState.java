@@ -17,7 +17,6 @@
 
 package com.alee.laf.tree;
 
-import com.alee.api.clone.Clone;
 import com.alee.api.merge.Mergeable;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -35,7 +34,7 @@ import java.util.Map;
  */
 @XStreamAlias ( "TreeState" )
 @XStreamConverter ( TreeStateConverter.class )
-public class TreeState implements Mergeable, Serializable, Cloneable
+public class TreeState implements Mergeable, Cloneable, Serializable
 {
     /**
      * Tree node states.
@@ -118,11 +117,5 @@ public class TreeState implements Mergeable, Serializable, Cloneable
     {
         final NodeState state = states.get ( nodeId );
         return state != null && state.isSelected ();
-    }
-
-    @Override
-    public TreeState clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

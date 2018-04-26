@@ -27,10 +27,11 @@ import java.util.*;
  * Map implementation that holds soft references its values.
  * This map might be useful to hold memory-sensitive cache.
  *
+ * @param <K> key type
+ * @param <V> value type
  * @author Dr. Heinz M. Kabutz
  * @see <a href="http://www.javaspecialists.co.za/archive/Issue098.html">The Java Specialists' Newsletter [Issue 098]</a>
  */
-
 public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Serializable
 {
     /**

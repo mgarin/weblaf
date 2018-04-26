@@ -22,7 +22,6 @@ package com.alee.utils.reflection;
  *
  * @author Mikle Garin
  */
-
 public final class ReflectionException extends RuntimeException
 {
     /**

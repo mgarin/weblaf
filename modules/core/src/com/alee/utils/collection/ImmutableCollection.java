@@ -51,7 +51,7 @@ public class ImmutableCollection<E> implements Collection<E>, Cloneable, Seriali
     {
         if ( data == null )
         {
-            throw new NullPointerException ();
+            throw new NullPointerException ( "Collection data must not be null" );
         }
         this.data = data;
     }
@@ -65,7 +65,7 @@ public class ImmutableCollection<E> implements Collection<E>, Cloneable, Seriali
     {
         if ( collection == null )
         {
-            throw new NullPointerException ();
+            throw new NullPointerException ( "Collection data must not be null" );
         }
         this.data = ( E[] ) collection.toArray ();
     }
@@ -208,12 +208,6 @@ public class ImmutableCollection<E> implements Collection<E>, Cloneable, Seriali
         {
             return false;
         }
-    }
-
-    @Override
-    protected ImmutableCollection<E> clone ()
-    {
-        return new ImmutableCollection<E> ( this );
     }
 
     @Override

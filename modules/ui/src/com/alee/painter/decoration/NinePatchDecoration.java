@@ -33,7 +33,6 @@ import java.awt.*;
  * @param <I> decoration type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "ninepatch" )
 public class NinePatchDecoration<C extends JComponent, I extends NinePatchDecoration<C, I>> extends ContentDecoration<C, I>
 {
@@ -91,13 +90,5 @@ public class NinePatchDecoration<C extends JComponent, I extends NinePatchDecora
 
         // Painting contents
         paintContent ( g2d, bounds, c );
-    }
-
-    @Override
-    public I merge ( final I decoration )
-    {
-        super.merge ( decoration );
-        icon = decoration.isOverwrite () || decoration.icon != null ? decoration.icon : icon;
-        return ( I ) this;
     }
 }

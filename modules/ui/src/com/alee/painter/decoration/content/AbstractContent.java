@@ -17,7 +17,6 @@
 
 package com.alee.painter.decoration.content;
 
-import com.alee.api.clone.Clone;
 import com.alee.api.data.Rotation;
 import com.alee.managers.style.BoundsType;
 import com.alee.painter.decoration.IDecoration;
@@ -38,7 +37,6 @@ import java.awt.geom.AffineTransform;
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
-
 public abstract class AbstractContent<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractContent<C, D, I>>
         implements IContent<C, D, I>
 {
@@ -410,24 +408,5 @@ public abstract class AbstractContent<C extends JComponent, D extends IDecoratio
     protected boolean isLeftToRight ( final C c, final D d )
     {
         return c.getComponentOrientation ().isLeftToRight ();
-    }
-
-    @Override
-    public I merge ( final I content )
-    {
-        overwrite = overwrite != null && overwrite || content.overwrite != null && content.overwrite;
-        bounds = content.isOverwrite () || content.bounds != null ? content.bounds : bounds;
-        constraints = content.isOverwrite () || content.constraints != null ? content.constraints : constraints;
-        padding = content.isOverwrite () || content.padding != null ? content.padding : padding;
-        size = content.isOverwrite () || content.size != null ? content.size : size;
-        rotation = content.isOverwrite () || content.rotation != null ? content.rotation : rotation;
-        opacity = content.isOverwrite () || content.opacity != null ? content.opacity : opacity;
-        return ( I ) this;
-    }
-
-    @Override
-    public I clone ()
-    {
-        return ( I ) Clone.cloneByFieldsSafely ( this );
     }
 }

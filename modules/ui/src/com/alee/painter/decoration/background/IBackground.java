@@ -18,7 +18,6 @@
 package com.alee.painter.decoration.background;
 
 import com.alee.api.Identifiable;
-import com.alee.api.merge.MergeBehavior;
 import com.alee.api.merge.Overwriting;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.IShapedElement;
@@ -34,9 +33,8 @@ import java.io.Serializable;
  * @param <I> background type
  * @author Mikle Garin
  */
-
 public interface IBackground<C extends JComponent, D extends IDecoration<C, D>, I extends IBackground<C, D, I>>
-        extends IShapedElement<C, D, I>, Identifiable, MergeBehavior<I>, Overwriting, Cloneable, Serializable
+        extends IShapedElement<C, D, I>, Identifiable, Overwriting, Cloneable, Serializable
 {
     /**
      * This interface doesn't offer any additional methods to implement.

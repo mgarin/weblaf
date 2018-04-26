@@ -24,7 +24,6 @@ package com.alee.api.matcher;
  * @param <V> second matched object type
  * @author Mikle Garin
  */
-
 public abstract class AbstractMatcher<T, V> implements Matcher
 {
     @Override

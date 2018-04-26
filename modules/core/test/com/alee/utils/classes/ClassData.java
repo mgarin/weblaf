@@ -22,7 +22,6 @@ package com.alee.utils.classes;
  *
  * @author Mikle Garin
  */
-
 public interface ClassData
 {
     /**

@@ -31,7 +31,6 @@ package com.alee.api.merge;
  * @see Merge
  * @see MergeBehavior
  */
-
 public interface Mergeable
 {
     /**

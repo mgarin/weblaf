@@ -33,7 +33,6 @@ import java.awt.*;
  * @param <I> border type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "LineBorder" )
 public class LineBorder<C extends JComponent, D extends IDecoration<C, D>, I extends LineBorder<C, D, I>> extends AbstractBorder<C, D, I>
 {
@@ -98,14 +97,5 @@ public class LineBorder<C extends JComponent, D extends IDecoration<C, D>, I ext
             GraphicsUtils.restoreStroke ( g2d, os, stroke != null );
             GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );
         }
-    }
-
-    @Override
-    public I merge ( final I border )
-    {
-        super.merge ( border );
-        stroke = border.isOverwrite () || border.stroke != null ? border.stroke : stroke;
-        color = border.isOverwrite () || border.color != null ? border.color : color;
-        return ( I ) this;
     }
 }

@@ -33,7 +33,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "SvgGrayscale" )
 public class SvgGrayscale implements IconAdjustment<SvgIcon>
 {

@@ -35,7 +35,6 @@ import java.awt.*;
  * @param <I> content type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "DashFocus" )
 public class DashFocus<C extends JComponent, D extends IDecoration<C, D>, I extends DashFocus<C, D, I>> extends AbstractContent<C, D, I>
 {
@@ -133,15 +132,5 @@ public class DashFocus<C extends JComponent, D extends IDecoration<C, D>, I exte
     protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
     {
         return new Dimension ( 0, 0 );
-    }
-
-    @Override
-    public I merge ( final I content )
-    {
-        super.merge ( content );
-        round = content.isOverwrite () || content.round != null ? content.round : round;
-        stroke = content.isOverwrite () || content.stroke != null ? content.stroke : stroke;
-        color = content.isOverwrite () || content.color != null ? content.color : color;
-        return ( I ) this;
     }
 }

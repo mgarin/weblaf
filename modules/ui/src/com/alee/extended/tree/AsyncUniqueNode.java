@@ -40,7 +40,6 @@ import java.util.WeakHashMap;
  * @param <T> stored object type
  * @author Mikle Garin
  */
-
 public abstract class AsyncUniqueNode<N extends UniqueNode<N, T>, T> extends UniqueNode<N, T>
         implements IconBridge<TreeNodeParameters<N, WebAsyncTree>>
 {

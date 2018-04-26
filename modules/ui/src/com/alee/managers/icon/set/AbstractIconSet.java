@@ -17,11 +17,13 @@
 
 package com.alee.managers.icon.set;
 
+import com.alee.api.merge.Overwriting;
 import com.alee.managers.icon.IconException;
 import com.alee.managers.icon.data.AbstractIconData;
 import com.alee.utils.TextUtils;
 
 import javax.swing.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +36,7 @@ import java.util.Map;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-IconManager">How to use IconManager</a>
  * @see com.alee.managers.icon.IconManager
  */
-public abstract class AbstractIconSet implements IconSet
+public abstract class AbstractIconSet implements IconSet, Overwriting, Cloneable, Serializable
 {
     /**
      * Unique {@link IconSet} identifier.
@@ -80,6 +82,12 @@ public abstract class AbstractIconSet implements IconSet
     public String getId ()
     {
         return id;
+    }
+
+    @Override
+    public boolean isOverwrite ()
+    {
+        return true;
     }
 
     @Override

@@ -25,7 +25,6 @@ import java.util.Collection;
  *
  * @author Mikle Garin
  */
-
 public final class IgnoreDuplicates implements DuplicateResolver
 {
     /**

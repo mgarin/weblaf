@@ -17,7 +17,6 @@
 
 package com.alee.extended.panel;
 
-import com.alee.api.clone.Clone;
 import com.alee.api.merge.Mergeable;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -82,11 +81,5 @@ public class CollapsiblePaneState implements Mergeable, Cloneable, Serializable
         {
             collapsiblePane.setExpanded ( expanded, false );
         }
-    }
-
-    @Override
-    public CollapsiblePaneState clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 }

@@ -32,7 +32,6 @@ import javax.swing.*;
  * @param <I> content type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "StyledToolTipText" )
 public class StyledToolTipText<C extends JToolTip, D extends IDecoration<C, D>, I extends StyledToolTipText<C, D, I>>
         extends AbstractSimpleStyledTextContent<C, D, I>

@@ -17,7 +17,6 @@
 
 package com.alee.managers.language.data;
 
-import com.alee.api.clone.Clone;
 import com.alee.api.merge.Mergeable;
 import com.alee.managers.language.LanguageUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -140,12 +139,6 @@ public final class TranslationInformation implements Mergeable, Cloneable, Seria
     public void setAuthor ( final String author )
     {
         this.author = author;
-    }
-
-    @Override
-    public TranslationInformation clone ()
-    {
-        return Clone.cloneByFieldsSafely ( this );
     }
 
     @Override

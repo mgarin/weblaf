@@ -17,8 +17,8 @@
 
 package com.alee.api.merge.behavior;
 
-import com.alee.api.merge.Merge;
 import com.alee.api.merge.GlobalMergeBehavior;
+import com.alee.api.merge.Merge;
 import com.alee.utils.ReflectUtils;
 
 import java.lang.reflect.Array;
@@ -33,21 +33,20 @@ import java.lang.reflect.Array;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
  * @see Merge
  */
-
-public final class IndexArrayMergeBehavior implements GlobalMergeBehavior<Object, Object, Object>
+public class IndexArrayMergeBehavior implements GlobalMergeBehavior<Object, Object, Object>
 {
     /**
      * todo 1. Provide a different merge behavior similar to {@link ListMergeBehavior}
      */
 
     @Override
-    public boolean supports ( final Merge merge, final Object base, final Object merged )
+    public boolean supports ( final Merge merge, final Class<Object> type, final Object base, final Object merged )
     {
         return base.getClass ().isArray () && merged.getClass ().isArray ();
     }
 
     @Override
-    public Object merge ( final Merge merge, final Object base, final Object merged )
+    public Object merge ( final Merge merge, final Class<Object> type, final Object base, final Object merged )
     {
         // Calculating resulting array size
         final int el = Array.getLength ( base );
@@ -55,12 +54,12 @@ public final class IndexArrayMergeBehavior implements GlobalMergeBehavior<Object
         final int rl = Math.max ( el, ml );
 
         // Determining resulting array type
-        final Class et = base.getClass ().getComponentType ();
-        final Class mt = merged.getClass ().getComponentType ();
-        final Class type = et == mt ? et : ReflectUtils.getClosestSuperclass ( et, mt );
+        final Class baseType = base.getClass ().getComponentType ();
+        final Class mergedType = merged.getClass ().getComponentType ();
+        final Class resultingType = baseType == mergedType ? baseType : ReflectUtils.getClosestSuperclass ( baseType, mergedType );
 
         // Picking resulting array instance
-        final Object result = et == mt && el >= ml ? base : Array.newInstance ( type, rl );
+        final Object result = baseType == mergedType && el >= ml ? base : Array.newInstance ( resultingType, rl );
 
         // Merging two arrays
         for ( int i = 0; i < rl; i++ )
@@ -69,7 +68,7 @@ public final class IndexArrayMergeBehavior implements GlobalMergeBehavior<Object
             {
                 final Object ev = Array.get ( base, i );
                 final Object mv = Array.get ( merged, i );
-                Array.set ( result, i, merge.merge ( ev, mv ) );
+                Array.set ( result, i, merge.mergeRaw ( resultingType, ev, mv ) );
             }
             else if ( i < el )
             {

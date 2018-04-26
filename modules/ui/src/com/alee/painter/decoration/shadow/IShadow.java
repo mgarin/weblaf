@@ -18,7 +18,6 @@
 package com.alee.painter.decoration.shadow;
 
 import com.alee.api.Identifiable;
-import com.alee.api.merge.MergeBehavior;
 import com.alee.api.merge.Overwriting;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.IShapedElement;
@@ -34,9 +33,8 @@ import java.io.Serializable;
  * @param <I> shadow type
  * @author Mikle Garin
  */
-
 public interface IShadow<C extends JComponent, D extends IDecoration<C, D>, I extends IShadow<C, D, I>>
-        extends IShapedElement<C, D, I>, Serializable, Cloneable, MergeBehavior<I>, Overwriting, Identifiable
+        extends IShapedElement<C, D, I>, Identifiable, Overwriting, Cloneable, Serializable
 {
     /**
      * Returns shadow type.

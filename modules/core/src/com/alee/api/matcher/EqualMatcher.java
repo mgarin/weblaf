@@ -24,7 +24,6 @@ import com.alee.api.jdk.Objects;
  *
  * @author Mikle Garin
  */
-
 public final class EqualMatcher extends AbstractMatcher<Object, Object>
 {
     @Override

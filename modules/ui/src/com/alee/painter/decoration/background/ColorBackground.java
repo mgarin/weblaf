@@ -34,7 +34,6 @@ import java.awt.*;
  * @param <I> background type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "ColorBackground" )
 public class ColorBackground<C extends JComponent, D extends IDecoration<C, D>, I extends ColorBackground<C, D, I>>
         extends AbstractBackground<C, D, I>
@@ -67,13 +66,5 @@ public class ColorBackground<C extends JComponent, D extends IDecoration<C, D>, 
             GraphicsUtils.restorePaint ( g2d, op );
             GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );
         }
-    }
-
-    @Override
-    public I merge ( final I bg )
-    {
-        super.merge ( bg );
-        color = bg.isOverwrite () || bg.color != null ? bg.color : color;
-        return ( I ) this;
     }
 }

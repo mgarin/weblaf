@@ -17,7 +17,7 @@
 
 package com.alee.painter.decoration;
 
-import com.alee.api.clone.Clone;
+import com.alee.api.merge.behavior.OverwriteOnMerge;
 import com.alee.managers.style.Bounds;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ReflectUtils;
@@ -38,7 +38,6 @@ import java.util.List;
  * @param <I> decoration type
  * @author Mikle Garin
  */
-
 public abstract class AbstractDecoration<C extends JComponent, I extends AbstractDecoration<C, I>> implements IDecoration<C, I>
 {
     /**
@@ -53,6 +52,7 @@ public abstract class AbstractDecoration<C extends JComponent, I extends Abstrac
      */
     @XStreamAsAttribute
     @XStreamConverter ( ListToStringConverter.class )
+    @OverwriteOnMerge
     protected List<String> states;
 
     /**
@@ -233,24 +233,6 @@ public abstract class AbstractDecoration<C extends JComponent, I extends Abstrac
     public Dimension getPreferredSize ( final C c )
     {
         return size;
-    }
-
-    @Override
-    public I merge ( final I decoration )
-    {
-        overwrite = overwrite != null && overwrite || decoration.overwrite != null && decoration.overwrite;
-        states = decoration.isOverwrite () || decoration.states != null ? decoration.states : states;
-        visible = decoration.isOverwrite () || decoration.visible != null ? decoration.visible : visible;
-        size = decoration.isOverwrite () || decoration.size != null ? decoration.size : size;
-        opacity = decoration.isOverwrite () || decoration.opacity != null ? decoration.opacity : opacity;
-        cursor = decoration.isOverwrite () || decoration.cursor != null ? decoration.cursor : cursor;
-        return ( I ) this;
-    }
-
-    @Override
-    public I clone ()
-    {
-        return ( I ) Clone.cloneByFieldsSafely ( this );
     }
 
     @Override

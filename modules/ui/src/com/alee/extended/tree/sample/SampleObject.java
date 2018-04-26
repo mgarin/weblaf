@@ -20,10 +20,11 @@ package com.alee.extended.tree.sample;
 import java.io.Serializable;
 
 /**
+ * {@link SampleNode} object type.
+ *
  * @author Mikle Garin
  */
-
-public class SampleObject implements Serializable, Cloneable
+public class SampleObject implements Cloneable, Serializable
 {
     /**
      * {@link SampleObject} type.
@@ -43,7 +44,6 @@ public class SampleObject implements Serializable, Cloneable
      */
     public SampleObject ( final SampleObjectType type, final String title )
     {
-        super ();
         this.type = type;
         this.title = title;
     }
@@ -86,11 +86,5 @@ public class SampleObject implements Serializable, Cloneable
     public void setTitle ( final String title )
     {
         this.title = title;
-    }
-
-    @Override
-    protected SampleObject clone ()
-    {
-        return new SampleObject ( getType (), getTitle () );
     }
 }
