@@ -20,6 +20,7 @@ package com.alee.api.merge.behavior;
 import com.alee.api.merge.GlobalMergeBehavior;
 import com.alee.api.merge.Merge;
 import com.alee.api.merge.MergeBehavior;
+import com.alee.api.merge.RecursiveMerge;
 
 /**
  * Merge behavior for objects implementing {@link MergeBehavior}.
@@ -33,14 +34,14 @@ import com.alee.api.merge.MergeBehavior;
 public class MergeableMergeBehavior<T extends MergeBehavior<T>> implements GlobalMergeBehavior<T, T, T>
 {
     @Override
-    public boolean supports ( final Merge merge, final Class<T> type, final Object base, final Object merged )
+    public boolean supports ( final RecursiveMerge merge, final Class<T> type, final Object base, final Object merged )
     {
         return base.getClass () == merged.getClass () && base instanceof MergeBehavior && merged instanceof MergeBehavior;
     }
 
     @Override
-    public T merge ( final Merge merge, final Class<T> type, final T base, final T merged )
+    public T merge ( final RecursiveMerge merge, final Class type, final T base, final T merged, final int depth )
     {
-        return base.merge ( merged );
+        return base.merge ( merge, type, merged, depth );
     }
 }

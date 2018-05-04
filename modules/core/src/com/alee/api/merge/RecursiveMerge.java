@@ -20,23 +20,33 @@ package com.alee.api.merge;
 import java.io.Serializable;
 
 /**
- * Object merge {@code null} case resolver.
- * It is asked to choose one of the specified objects.
+ * Recursive merge providing some extra options for {@link GlobalMergeBehavior}s.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
  * @see Merge
  */
-public interface NullResolver extends Serializable
+public interface RecursiveMerge extends Serializable
 {
     /**
-     * Returns one of the specified objects.
-     * One of the passed objects will always be {@code null}.
+     * Returns overwrite operation resulting object.
+     * This is an utility method mostly for {@link GlobalMergeBehavior} implementations.
      *
-     * @param merge  {@link RecursiveMerge} algorithm
-     * @param object base object
-     * @param merged object to merge
-     * @return either {@code object} or {@code merged} object
+     * @param base   object to overwrite
+     * @param merged overwriting object
+     * @return overwrite operation resulting object
      */
-    public Object resolve ( RecursiveMerge merge, Object object, Object merged );
+    public Object overwrite ( Object base, Object merged );
+
+    /**
+     * Performs merge of the two provided objects and returns resulting object.
+     *
+     * @param type   expected resulting object {@link Class} type
+     * @param base   base object
+     * @param merged object to merge
+     * @param depth  merge calls stack depth
+     * @param <T>    resulting object type
+     * @return merge result
+     */
+    public abstract <T> T merge ( Class type, Object base, Object merged, int depth );
 }

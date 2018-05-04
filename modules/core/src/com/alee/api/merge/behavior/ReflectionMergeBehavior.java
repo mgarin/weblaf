@@ -17,10 +17,7 @@
 
 package com.alee.api.merge.behavior;
 
-import com.alee.api.merge.GlobalMergeBehavior;
-import com.alee.api.merge.Merge;
-import com.alee.api.merge.MergeException;
-import com.alee.api.merge.Mergeable;
+import com.alee.api.merge.*;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.reflection.ClassRelationType;
@@ -66,14 +63,14 @@ public class ReflectionMergeBehavior implements GlobalMergeBehavior<Object, Obje
     }
 
     @Override
-    public boolean supports ( final Merge merge, final Class<Object> type, final Object base, final Object merged )
+    public boolean supports ( final RecursiveMerge merge, final Class<Object> type, final Object base, final Object merged )
     {
         return ( policy == Policy.all || base instanceof Mergeable && merged instanceof Mergeable ) &&
                 type.isAssignableFrom ( base.getClass () ) && type.isAssignableFrom ( merged.getClass () );
     }
 
     @Override
-    public Object merge ( final Merge merge, final Class<Object> type, final Object base, final Object merged )
+    public Object merge ( final RecursiveMerge merge, final Class type, final Object base, final Object merged, final int depth )
     {
         // Resolving object classes relation
         final ClassRelationType relation = ClassRelationType.of ( base, merged );
@@ -107,7 +104,7 @@ public class ReflectionMergeBehavior implements GlobalMergeBehavior<Object, Obje
                                  * Allowing {@link Merge} to merge field values.
                                  * It is important to delegate this task to {@link Merge} as soon as possible to preserve its behavior.
                                  */
-                                mergeResult = merge.mergeRaw ( field.getType (), baseValue, mergedValue );
+                                mergeResult = merge.merge ( field.getType (), baseValue, mergedValue, depth + 1 );
                             }
                             else
                             {

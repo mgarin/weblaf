@@ -32,8 +32,11 @@ public interface MergeBehavior<T extends MergeBehavior<T>> extends Mergeable
     /**
      * Returns object as a result of merging another {@code object} on top of this one.
      *
+     * @param merge  {@link RecursiveMerge} algorithm
+     * @param type   expected resulting object {@link Class} type
      * @param object object to merge into this one, it might also be {@code null}
+     * @param depth  merge calls stack depth
      * @return object as a result of merging another {@code object} on top of this one
      */
-    public T merge ( T object );
+    public T merge ( RecursiveMerge merge, Class type, T object, int depth );
 }

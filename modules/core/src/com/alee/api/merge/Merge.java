@@ -177,7 +177,8 @@ public final class Merge implements Serializable
     {
         final Object baseCopy = cloneBase ( base );
         final Object mergedCopy = cloneMerged ( merged );
-        return ( T ) mergeRaw ( Object.class, baseCopy, mergedCopy );
+        final InternalMerge internalMerge = new InternalMerge ();
+        return internalMerge.merge ( Object.class, baseCopy, mergedCopy, 0 );
     }
 
     /**
@@ -195,11 +196,12 @@ public final class Merge implements Serializable
     {
         final Object baseCopy = cloneBase ( base );
         final Object mergedCopy = cloneMerged ( merged );
-        Object result = mergeRaw ( Object.class, baseCopy, mergedCopy );
+        final InternalMerge internalMerge = new InternalMerge ();
+        Object result = internalMerge.merge ( Object.class, baseCopy, mergedCopy, 0 );
         for ( final Object another : more )
         {
             final Object anotherCopy = cloneMerged ( another );
-            result = mergeRaw ( Object.class, result, anotherCopy );
+            result = internalMerge.merge ( Object.class, result, anotherCopy, 0 );
         }
         return ( T ) result;
     }
@@ -218,11 +220,12 @@ public final class Merge implements Serializable
         if ( objects.size () > 0 )
         {
             final Iterator<?> iterator = objects.iterator ();
+            final InternalMerge internalMerge = new InternalMerge ();
             Object result = cloneBase ( iterator.next () );
             while ( iterator.hasNext () )
             {
                 final Object mergedCopy = cloneMerged ( iterator.next () );
-                result = mergeRaw ( Object.class, result, mergedCopy );
+                result = internalMerge.merge ( Object.class, result, mergedCopy, 0 );
             }
             return ( T ) result;
         }
@@ -233,62 +236,13 @@ public final class Merge implements Serializable
     }
 
     /**
-     * Performs merge of the two provided objects and returns resulting object.
-     * Depending on the case it might be one of the two provided objects or their merge result.
-     * This method will never copy {@code base} and {@code merged} objects and can be used to avoid excessive copy operations.
-     *
-     * @param type   expected resulting object {@link Class} type
-     * @param base   base object
-     * @param merged object to merge
-     * @param <T>    resulting object type
-     * @return merge result
-     */
-    public <T> T mergeRaw ( final Class<T> type, final Object base, final Object merged )
-    {
-        final T result;
-        if ( base != null && merged != null )
-        {
-            // Ensuring that merged object doesn't want to fully overwrite source one
-            if ( !isOverwrite ( merged ) )
-            {
-                // Trying to find fitting merge behavior
-                Object mergeResult = null;
-                for ( final GlobalMergeBehavior behavior : behaviors )
-                {
-                    // Checking that behavior supports objects
-                    if ( behavior.supports ( this, type, base, merged ) )
-                    {
-                        // Executing merge behavior
-                        mergeResult = behavior.merge ( this, type, base, merged );
-                        break;
-                    }
-                }
-
-                // Resolving result object
-                result = mergeResult != null ? ( T ) mergeResult : ( T ) unknownResolver.resolve ( this, base, merged );
-            }
-            else
-            {
-                // Merged fully overwrites base
-                result = ( T ) merged;
-            }
-        }
-        else
-        {
-            // Resolving null case outcome
-            result = ( T ) nullResolver.resolve ( this, base, merged );
-        }
-        return result;
-    }
-
-    /**
      * Returns either object or its clone based on {@link #baseClonePolicy}.
      * This is an utility method mostly for {@link GlobalMergeBehavior} implementations.
      *
      * @param base object to clone
      * @return either object or its clone based on {@link #baseClonePolicy}
      */
-    public Object cloneBase ( final Object base )
+    private Object cloneBase ( final Object base )
     {
         return baseClonePolicy.clone ( clone, base );
     }
@@ -300,40 +254,68 @@ public final class Merge implements Serializable
      * @param merged object to clone
      * @return either object or its clone based on {@link #mergedClonePolicy}
      */
-    public Object cloneMerged ( final Object merged )
+    private Object cloneMerged ( final Object merged )
     {
         return mergedClonePolicy.clone ( clone, merged );
     }
 
     /**
-     * Returns overwrite operation resulting object.
-     * This is an utility method mostly for {@link GlobalMergeBehavior} implementations.
-     *
-     * @param base   object to overwrite
-     * @param merged overwriting object
-     * @return overwrite operation resulting object
+     * {@link RecursiveMerge} implementation providing access to different {@link Merge} methods.
+     * It is used to process recursive merge calls differently from how public {@link Merge} methods process them.
      */
-    public Object overwrite ( final Object base, final Object merged )
+    private class InternalMerge implements RecursiveMerge
     {
-        if ( base != null && merged != null )
+        @Override
+        public Object overwrite ( final Object base, final Object merged )
         {
-            return merged;
+            if ( base != null && merged != null )
+            {
+                return merged;
+            }
+            else
+            {
+                return nullResolver.resolve ( this, base, merged );
+            }
         }
-        else
-        {
-            return nullResolver.resolve ( this, base, merged );
-        }
-    }
 
-    /**
-     * Returns whether or not specified object should overwrite another one upon merge.
-     *
-     * @param object object to check overwrite flag for
-     * @return {@code true} if specified object should overwrite another one upon merge, {@code false} otherwise
-     */
-    private boolean isOverwrite ( final Object object )
-    {
-        return object instanceof Overwriting && ( ( Overwriting ) object ).isOverwrite ();
+        @Override
+        public <T> T merge ( final Class type, final Object base, final Object merged, final int depth )
+        {
+            final T result;
+            if ( base != null && merged != null )
+            {
+                // Ensuring that merged object doesn't want to fully overwrite source one
+                if ( !( merged instanceof Overwriting && ( ( Overwriting ) merged ).isOverwrite () ) )
+                {
+                    // Trying to find fitting merge behavior
+                    Object mergeResult = null;
+                    for ( final GlobalMergeBehavior behavior : behaviors )
+                    {
+                        // Checking that behavior supports objects
+                        if ( behavior.supports ( this, type, base, merged ) )
+                        {
+                            // Executing merge behavior
+                            mergeResult = behavior.merge ( this, type, base, merged, depth );
+                            break;
+                        }
+                    }
+
+                    // Resolving result object
+                    result = mergeResult != null ? ( T ) mergeResult : ( T ) unknownResolver.resolve ( this, base, merged );
+                }
+                else
+                {
+                    // Merged fully overwrites base
+                    result = ( T ) merged;
+                }
+            }
+            else
+            {
+                // Resolving null case outcome
+                result = ( T ) nullResolver.resolve ( this, base, merged );
+            }
+            return result;
+        }
     }
 
     /**

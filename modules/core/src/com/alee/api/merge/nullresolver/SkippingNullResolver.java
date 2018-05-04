@@ -19,6 +19,7 @@ package com.alee.api.merge.nullresolver;
 
 import com.alee.api.merge.Merge;
 import com.alee.api.merge.NullResolver;
+import com.alee.api.merge.RecursiveMerge;
 
 /**
  * {@link NullResolver} that overwrites base object only if merged object is not {@code null}.
@@ -30,7 +31,7 @@ import com.alee.api.merge.NullResolver;
 public final class SkippingNullResolver implements NullResolver
 {
     @Override
-    public Object resolve ( final Merge merge, final Object object, final Object merged )
+    public Object resolve ( final RecursiveMerge merge, final Object object, final Object merged )
     {
         return merged != null ? merged : object;
     }

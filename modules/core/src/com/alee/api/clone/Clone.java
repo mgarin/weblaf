@@ -106,7 +106,7 @@ public final class Clone implements Serializable
      * {@link RecursiveClone} implementation providing access to different {@link Clone} methods.
      * It is used to process recursive clone calls differently from how public {@link RecursiveClone#clone(Object, int)} processes them.
      */
-    private class InternalClone extends RecursiveClone
+    private class InternalClone extends AbstractRecursiveClone
     {
         @Override
         public <T> T clone ( final T object, final int depth )

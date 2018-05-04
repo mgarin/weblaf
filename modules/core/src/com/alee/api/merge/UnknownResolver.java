@@ -32,10 +32,10 @@ public interface UnknownResolver extends Serializable
     /**
      * Returns merge result of two objects of unknown type.
      *
-     * @param merge  {@link Merge} algorithm
+     * @param merge  {@link RecursiveMerge} algorithm
      * @param object base object
      * @param merged object to merge
      * @return merge result of two objects of unknown type
      */
-    public Object resolve ( Merge merge, Object object, Object merged );
+    public Object resolve ( RecursiveMerge merge, Object object, Object merged );
 }

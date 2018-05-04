@@ -17,39 +17,24 @@
 
 package com.alee.api.clone;
 
-import com.alee.utils.map.StrictHashMap;
-
 import java.io.Serializable;
-import java.util.Map;
 
 /**
- * Recursive clone behavior providing some extra options for {@link GlobalCloneBehavior}s.
+ * Recursive clone providing some extra options for {@link GlobalCloneBehavior}s.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Clone">How to use Clone</a>
  * @see Clone
  */
-public abstract class RecursiveClone implements Serializable
+public interface RecursiveClone extends Serializable
 {
-    /**
-     * Lazy cloned objects references map.
-     */
-    private StrictHashMap<Object, Object> references;
-
     /**
      * Stores reference to object clone.
      *
      * @param object object
      * @param clone  object clone
      */
-    public void store ( final Object object, final Object clone )
-    {
-        if ( references == null )
-        {
-            references = new StrictHashMap<Object, Object> ();
-        }
-        references.put ( object, clone );
-    }
+    public void store ( Object object, Object clone );
 
     /**
      * Returns object clone if it is already available, {@code null} otherwise.
@@ -57,18 +42,14 @@ public abstract class RecursiveClone implements Serializable
      * @param object object to retrieve cached clone for
      * @return object clone if it is already available, {@code null} otherwise
      */
-    public Object retrieve ( final Object object )
-    {
-        return references != null ? references.get ( object ) : null;
-    }
+    public Object retrieve ( Object object );
 
     /**
      * Returns clone of the specified object.
-     * {@link Map} of all cloned objects is passed for any subsequent clone operations
      *
      * @param object object to clone
      * @param depth  clone calls stack depth
      * @return clone of the specified object
      */
-    public abstract <T> T clone ( T object, int depth );
+    public <T> T clone ( T object, int depth );
 }

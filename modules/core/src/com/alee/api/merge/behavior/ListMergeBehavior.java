@@ -23,6 +23,7 @@ import com.alee.api.matcher.Matcher;
 import com.alee.api.merge.GlobalMergeBehavior;
 import com.alee.api.merge.Merge;
 import com.alee.api.merge.MergeException;
+import com.alee.api.merge.RecursiveMerge;
 
 import java.util.List;
 
@@ -86,13 +87,13 @@ public class ListMergeBehavior<T extends List> implements GlobalMergeBehavior<T,
     }
 
     @Override
-    public boolean supports ( final Merge merge, final Class<T> type, final Object base, final Object merged )
+    public boolean supports ( final RecursiveMerge merge, final Class<T> type, final Object base, final Object merged )
     {
         return base instanceof List && merged instanceof List;
     }
 
     @Override
-    public T merge ( final Merge merge, final Class<T> type, final T base, final T merged )
+    public T merge ( final RecursiveMerge merge, final Class type, final T base, final T merged, final int depth )
     {
         // Checking for duplicates in base list according to specified matcher
         // This might do nothing, modify base list or even throw an exception depending on implementation
@@ -116,7 +117,7 @@ public class ListMergeBehavior<T extends List> implements GlobalMergeBehavior<T,
                     final Object existingObject = base.get ( j );
                     if ( matcher.match ( mergedObject, existingObject ) )
                     {
-                        base.set ( j, merge.mergeRaw ( Object.class, existingObject, mergedObject ) );
+                        base.set ( j, merge.merge ( Object.class, existingObject, mergedObject, depth + 1 ) );
                         matched = true;
                         break;
                     }

@@ -20,6 +20,7 @@ package com.alee.api.merge.behavior;
 import com.alee.api.merge.GlobalMergeBehavior;
 import com.alee.api.merge.Merge;
 import com.alee.api.merge.MergeException;
+import com.alee.api.merge.RecursiveMerge;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.collection.ImmutableList;
 
@@ -40,13 +41,13 @@ import java.util.List;
 public class IndexListMergeBehavior<T extends List> implements GlobalMergeBehavior<T, T, T>
 {
     @Override
-    public boolean supports ( final Merge merge, final Class<T> type, final Object base, final Object merged )
+    public boolean supports ( final RecursiveMerge merge, final Class<T> type, final Object base, final Object merged )
     {
         return base instanceof List && merged instanceof List;
     }
 
     @Override
-    public T merge ( final Merge merge, final Class<T> type, final T base, final T merged )
+    public T merge ( final RecursiveMerge merge, final Class type, final T base, final T merged, final int depth )
     {
         try
         {
@@ -80,7 +81,7 @@ public class IndexListMergeBehavior<T extends List> implements GlobalMergeBehavi
                 {
                     final Object ev = base.get ( i );
                     final Object mv = merged.get ( i );
-                    list.set ( i, merge.mergeRaw ( Object.class, ev, mv ) );
+                    list.set ( i, merge.merge ( Object.class, ev, mv, depth + 1 ) );
                 }
                 else if ( i < el )
                 {

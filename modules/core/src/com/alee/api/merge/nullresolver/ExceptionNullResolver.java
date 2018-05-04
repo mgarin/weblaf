@@ -20,6 +20,7 @@ package com.alee.api.merge.nullresolver;
 import com.alee.api.merge.Merge;
 import com.alee.api.merge.MergeException;
 import com.alee.api.merge.NullResolver;
+import com.alee.api.merge.RecursiveMerge;
 
 /**
  * {@link NullResolver} that always throws a {@link MergeException}.
@@ -31,7 +32,7 @@ import com.alee.api.merge.NullResolver;
 public final class ExceptionNullResolver implements NullResolver
 {
     @Override
-    public Object resolve ( final Merge merge, final Object object, final Object merged )
+    public Object resolve ( final RecursiveMerge merge, final Object object, final Object merged )
     {
         if ( object == null )
         {

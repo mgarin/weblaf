@@ -20,6 +20,7 @@ package com.alee.api.merge.behavior;
 import com.alee.api.merge.GlobalMergeBehavior;
 import com.alee.api.merge.Merge;
 import com.alee.api.merge.MergeException;
+import com.alee.api.merge.RecursiveMerge;
 import com.alee.utils.ReflectUtils;
 
 import java.awt.*;
@@ -42,13 +43,13 @@ import java.util.concurrent.atomic.AtomicLong;
 public class BasicMergeBehavior implements GlobalMergeBehavior<Object, Object, Object>
 {
     @Override
-    public boolean supports ( final Merge merge, final Class<Object> type, final Object base, final Object merged )
+    public boolean supports ( final RecursiveMerge merge, final Class<Object> type, final Object base, final Object merged )
     {
         return ( isBasic ( base ) || isBasic ( merged ) ) && base.getClass () == merged.getClass ();
     }
 
     @Override
-    public Object merge ( final Merge merge, final Class<Object> type, final Object base, final Object merged )
+    public Object merge ( final RecursiveMerge merge, final Class type, final Object base, final Object merged, final int depth )
     {
         if ( isSimpleMutable ( merged ) )
         {

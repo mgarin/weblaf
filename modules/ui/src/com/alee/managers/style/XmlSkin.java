@@ -74,7 +74,6 @@ public class XmlSkin extends AbstractSkin
      */
     public XmlSkin ( final SkinInfo skinInfo )
     {
-        super ();
         this.skinInfo = skinInfo;
     }
 
