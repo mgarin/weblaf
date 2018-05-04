@@ -38,7 +38,7 @@
             <!-- Basic supported contents -->
             <xs:element name="AcceleratorText" type="AcceleratorText" />
             <xs:element name="BorderLayout" type="BorderLayout" />
-            <xs:element name="BorderLayout" type="OverflowLineLayout" />
+            <xs:element name="OverflowLineLayout" type="OverflowLineLayout" />
             <xs:element name="AlignLayout" type="AlignLayout" />
             <xs:element name="ButtonIcon" type="ButtonIcon" />
             <xs:element name="ButtonLayout" type="ButtonLayout" />
