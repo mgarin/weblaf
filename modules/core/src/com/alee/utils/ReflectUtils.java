@@ -2030,21 +2030,74 @@ public final class ReflectUtils
      * Returns whether or not specified class type is primitive.
      * Specified {@code clazz} must never be {@code null}.
      *
-     * @param clazz class type to check
+     * @param type class type to check
      * @return {@code true} if specified class type is primitive, {@code false} otherwise
      */
-    public static boolean isPrimitive ( final Class<?> clazz )
+    public static boolean isPrimitive ( final Class<?> type )
     {
-        return clazz.isPrimitive () ||
-                Boolean.class.isAssignableFrom ( clazz ) ||
-                Character.class.isAssignableFrom ( clazz ) ||
-                Byte.class.isAssignableFrom ( clazz ) ||
-                Short.class.isAssignableFrom ( clazz ) ||
-                Integer.class.isAssignableFrom ( clazz ) ||
-                Long.class.isAssignableFrom ( clazz ) ||
-                Float.class.isAssignableFrom ( clazz ) ||
-                Double.class.isAssignableFrom ( clazz ) ||
-                Void.class.isAssignableFrom ( clazz );
+        return type.isPrimitive () ||
+                Boolean.class.isAssignableFrom ( type ) ||
+                Character.class.isAssignableFrom ( type ) ||
+                Byte.class.isAssignableFrom ( type ) ||
+                Short.class.isAssignableFrom ( type ) ||
+                Integer.class.isAssignableFrom ( type ) ||
+                Long.class.isAssignableFrom ( type ) ||
+                Float.class.isAssignableFrom ( type ) ||
+                Double.class.isAssignableFrom ( type ) ||
+                Void.class.isAssignableFrom ( type );
+    }
+
+    /**
+     * Returns default primitive type value.
+     *
+     * @param type primitive class type
+     * @return default primitive type value
+     */
+    public static Object getDefaultPrimitiveValue ( final Class<?> type )
+    {
+        if ( type.isPrimitive () )
+        {
+            if ( type == boolean.class )
+            {
+                return false;
+            }
+            else if ( type == int.class )
+            {
+                return 0;
+            }
+            else if ( type == char.class )
+            {
+                return '\u0000';
+            }
+            else if ( type == byte.class )
+            {
+                return ( byte ) 0;
+            }
+            else if ( type == short.class )
+            {
+                return ( short ) 0;
+            }
+            else if ( type == long.class )
+            {
+                return 0L;
+            }
+            else if ( type == float.class )
+            {
+                return 0.0f;
+            }
+            else if ( type == double.class )
+            {
+                return 0.0d;
+            }
+            else
+            {
+                throw new IllegalArgumentException ( "Unknown primitive type: " + type );
+            }
+        }
+        else
+        {
+            throw new IllegalArgumentException ( "Type is not primitive: " + type );
+        }
     }
 
     /**

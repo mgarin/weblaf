@@ -19,7 +19,7 @@ package com.alee.painter.decoration.background;
 
 import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.data.Orientation;
-import com.alee.api.merge.behavior.PreserveOnMerge;
+import com.alee.api.merge.behavior.OmitOnMerge;
 import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.managers.animation.transition.*;
 import com.alee.painter.decoration.IDecoration;
@@ -84,21 +84,21 @@ public class MovingHighlightBackground<C extends JComponent, D extends IDecorati
      * Visibility behavior that handles animation.
      */
     @OmitOnClone
-    @PreserveOnMerge
+    @OmitOnMerge
     protected transient VisibilityBehavior<C> visibilityBehavior;
 
     /**
      * Highlight position.
      */
     @OmitOnClone
-    @PreserveOnMerge
+    @OmitOnMerge
     protected transient float position;
 
     /**
      * Transition used for background animations.
      */
     @OmitOnClone
-    @PreserveOnMerge
+    @OmitOnMerge
     protected transient QueueTransition transitionsQueue;
 
     @Override

@@ -18,7 +18,7 @@
 package com.alee.painter.decoration.background;
 
 import com.alee.api.clone.behavior.OmitOnClone;
-import com.alee.api.merge.behavior.PreserveOnMerge;
+import com.alee.api.merge.behavior.OmitOnMerge;
 import com.alee.managers.style.StyleException;
 import com.alee.painter.decoration.IDecoration;
 
@@ -46,7 +46,7 @@ public abstract class AbstractImageTextureBackground<C extends JComponent, D ext
      * If we would clean it up every time this background is deactivated it would not work well in some cases.
      */
     @OmitOnClone
-    @PreserveOnMerge
+    @OmitOnMerge
     protected transient BufferedImage image;
 
     @Override

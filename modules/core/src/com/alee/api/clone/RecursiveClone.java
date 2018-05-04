@@ -49,7 +49,18 @@ public interface RecursiveClone extends Serializable
      *
      * @param object object to clone
      * @param depth  clone calls stack depth
+     * @param <T> cloned object type
      * @return clone of the specified object
      */
     public <T> T clone ( T object, int depth );
+
+    /**
+     * Returns clone of the current object.
+     *
+     * @param object object to clone
+     * @param depth  clone calls stack depth
+     * @param <T> cloned object type
+     * @return clone of the current object
+     */
+    public <T> T cloneThis ( T object, int depth );
 }

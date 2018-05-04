@@ -18,7 +18,7 @@
 package com.alee.extended.label;
 
 import com.alee.api.clone.behavior.OmitOnClone;
-import com.alee.api.merge.behavior.PreserveOnMerge;
+import com.alee.api.merge.behavior.OmitOnMerge;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.ContentPropertyListener;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -42,7 +42,7 @@ public class StyledLabelText<C extends WebStyledLabel, D extends IDecoration<C, 
      * Component property change listener.
      */
     @OmitOnClone
-    @PreserveOnMerge
+    @OmitOnMerge
     protected transient ContentPropertyListener<C, D> listener;
 
     @Override

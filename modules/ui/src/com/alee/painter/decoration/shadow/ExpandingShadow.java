@@ -19,7 +19,7 @@ package com.alee.painter.decoration.shadow;
 
 import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.jdk.Objects;
-import com.alee.api.merge.behavior.PreserveOnMerge;
+import com.alee.api.merge.behavior.OmitOnMerge;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.ninepatch.NinePatchIcon;
@@ -55,14 +55,14 @@ public class ExpandingShadow<C extends JComponent, D extends IDecoration<C, D>, 
      * Last shadow image cache key.
      */
     @OmitOnClone
-    @PreserveOnMerge
+    @OmitOnMerge
     protected transient String shadowKey;
 
     /**
      * Currently used shadow image.
      */
     @OmitOnClone
-    @PreserveOnMerge
+    @OmitOnMerge
     protected transient NinePatchIcon shadowImage;
 
     @Override

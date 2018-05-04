@@ -19,7 +19,7 @@ package com.alee.painter.decoration.background;
 
 import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.jdk.Objects;
-import com.alee.api.merge.behavior.PreserveOnMerge;
+import com.alee.api.merge.behavior.OmitOnMerge;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.GraphicsUtils;
 
@@ -43,14 +43,14 @@ public abstract class AbstractTextureBackground<C extends JComponent, D extends 
      * You can clean the cache at any time in implementation of this abstract class.
      */
     @OmitOnClone
-    @PreserveOnMerge
+    @OmitOnMerge
     protected transient TexturePaint paint = null;
 
     /**
      * Cached texture bounds.
      */
     @OmitOnClone
-    @PreserveOnMerge
+    @OmitOnMerge
     protected transient Rectangle bounds = null;
 
     /**

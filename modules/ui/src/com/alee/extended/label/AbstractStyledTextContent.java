@@ -18,7 +18,7 @@
 package com.alee.extended.label;
 
 import com.alee.api.clone.behavior.OmitOnClone;
-import com.alee.api.merge.behavior.PreserveOnMerge;
+import com.alee.api.merge.behavior.OmitOnMerge;
 import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractTextContent;
@@ -93,7 +93,7 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
      * Runtime variables.
      */
     @OmitOnClone
-    @PreserveOnMerge
+    @OmitOnMerge
     protected transient List<TextRange> textRanges;
 
     @Override

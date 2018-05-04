@@ -18,7 +18,7 @@
 package com.alee.painter.decoration.shadow;
 
 import com.alee.api.clone.behavior.OmitOnClone;
-import com.alee.api.merge.behavior.PreserveOnMerge;
+import com.alee.api.merge.behavior.OmitOnMerge;
 import com.alee.graphics.filters.ShadowFilter;
 import com.alee.painter.decoration.WebDecoration;
 import com.alee.painter.decoration.shape.IShape;
@@ -77,14 +77,14 @@ public class WebShadow<C extends JComponent, D extends WebDecoration<C, D>, I ex
      * Reference keeping shadow icon in memory.
      */
     @OmitOnClone
-    @PreserveOnMerge
+    @OmitOnMerge
     protected transient NinePatchIcon shadowIcon;
 
     /**
      * Reference keeping shadow image in memory.
      */
     @OmitOnClone
-    @PreserveOnMerge
+    @OmitOnMerge
     protected transient BufferedImage shadowImage;
 
     @Override

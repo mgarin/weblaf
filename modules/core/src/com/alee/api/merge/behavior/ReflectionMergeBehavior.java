@@ -89,40 +89,68 @@ public class ReflectionMergeBehavior implements GlobalMergeBehavior<Object, Obje
                 for ( final Field field : fields )
                 {
                     // Ensure that this field should not be ignored
-                    if ( ReflectUtils.hasNoneOfModifiers ( field, ignoredModifiers ) &&
-                            field.getAnnotation ( PreserveOnMerge.class ) == null )
+                    if ( ReflectUtils.hasNoneOfModifiers ( field, ignoredModifiers ) )
                     {
-                        try
+                        final Class<?> fieldType = field.getType ();
+                        if ( field.getAnnotation ( OmitOnMerge.class ) != null )
                         {
-                            // Resolving merge result
-                            final Object mergeResult;
-                            final Object baseValue = field.get ( base );
-                            final Object mergedValue = field.get ( merged );
-                            if ( field.getAnnotation ( OverwriteOnMerge.class ) == null )
+                            try
                             {
-                                /**
-                                 * Allowing {@link Merge} to merge field values.
-                                 * It is important to delegate this task to {@link Merge} as soon as possible to preserve its behavior.
-                                 */
-                                mergeResult = merge.merge ( field.getType (), baseValue, mergedValue, depth + 1 );
-                            }
-                            else
-                            {
-                                /**
-                                 * Allowing {@link Merge} to overwrite field value.
-                                 * We have to rely on {@link Merge} due to merged object possibly being {@code null}.
-                                 */
-                                mergeResult = merge.overwrite ( baseValue, mergedValue );
-                            }
+                                // Retrieving default value
+                                final Object value;
+                                if ( fieldType.isPrimitive () )
+                                {
+                                    value = ReflectUtils.getDefaultPrimitiveValue ( fieldType );
+                                }
+                                else
+                                {
+                                    value = null;
+                                }
 
-                            // Saving merged value
-                            ReflectUtils.setFieldValue ( base, field, mergeResult );
+                                // Nullifying field value
+                                ReflectUtils.setFieldValue ( base, field, value );
+                            }
+                            catch ( final Exception e )
+                            {
+                                // Throwing merge exception
+                                final String message = "Unable to omit field {%s} value";
+                                throw new MergeException ( String.format ( message, field ), e );
+                            }
                         }
-                        catch ( final Exception e )
+                        else if ( field.getAnnotation ( PreserveOnMerge.class ) == null )
                         {
-                            // Throwing merge exception
-                            final String message = "Unable to merge field {%s} values for objects {%s} and {%s}";
-                            throw new MergeException ( String.format ( message, field, base, merged ), e );
+                            try
+                            {
+                                // Resolving merge result
+                                final Object mergeResult;
+                                final Object baseValue = field.get ( base );
+                                final Object mergedValue = field.get ( merged );
+                                if ( field.getAnnotation ( OverwriteOnMerge.class ) == null )
+                                {
+                                    /**
+                                     * Allowing {@link Merge} to merge field values.
+                                     * It is important to delegate this task to {@link Merge} as soon as possible to preserve its behavior.
+                                     */
+                                    mergeResult = merge.merge ( fieldType, baseValue, mergedValue, depth + 1 );
+                                }
+                                else
+                                {
+                                    /**
+                                     * Allowing {@link Merge} to overwrite field value.
+                                     * We have to rely on {@link Merge} due to merged object possibly being {@code null}.
+                                     */
+                                    mergeResult = merge.overwrite ( baseValue, mergedValue );
+                                }
+
+                                // Saving merged value
+                                ReflectUtils.setFieldValue ( base, field, mergeResult );
+                            }
+                            catch ( final Exception e )
+                            {
+                                // Throwing merge exception
+                                final String message = "Unable to merge field {%s} values for objects {%s} and {%s}";
+                                throw new MergeException ( String.format ( message, field, base, merged ), e );
+                            }
                         }
                     }
                 }

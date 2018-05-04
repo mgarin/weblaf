@@ -19,7 +19,7 @@ package com.alee.painter.decoration.content;
 
 import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.jdk.Objects;
-import com.alee.api.merge.behavior.PreserveOnMerge;
+import com.alee.api.merge.behavior.OmitOnMerge;
 import com.alee.managers.style.StyleException;
 import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
@@ -114,7 +114,7 @@ public abstract class AbstractTextContent<C extends JComponent, D extends IDecor
      * @see #cleanupHtml(javax.swing.JComponent, com.alee.painter.decoration.IDecoration)
      */
     @OmitOnClone
-    @PreserveOnMerge
+    @OmitOnMerge
     protected transient String htmlSettings;
 
     /**
@@ -126,7 +126,7 @@ public abstract class AbstractTextContent<C extends JComponent, D extends IDecor
      * @see #cleanupHtml(javax.swing.JComponent, com.alee.painter.decoration.IDecoration)
      */
     @OmitOnClone
-    @PreserveOnMerge
+    @OmitOnMerge
     protected transient View htmlView;
 
     @Override

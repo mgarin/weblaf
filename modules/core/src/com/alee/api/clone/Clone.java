@@ -170,6 +170,19 @@ public final class Clone implements Serializable
             }
             return result;
         }
+
+        @Override
+        public <T> T cloneThis ( final T object, final int depth )
+        {
+            for ( final GlobalCloneBehavior behavior : behaviors )
+            {
+                if ( behavior instanceof ReflectionCloneBehavior )
+                {
+                    return ( T ) behavior.clone ( this, object, depth );
+                }
+            }
+            throw new CloneException ( "There is no ReflectionCloneBehavior in Clone algorithm" );
+        }
     }
 
     /**
