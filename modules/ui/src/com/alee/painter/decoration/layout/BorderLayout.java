@@ -87,14 +87,14 @@ public class BorderLayout<C extends JComponent, D extends IDecoration<C, D>, I e
     public List<IContent> getContents ( final C c, final D d, String constraints )
     {
         // Handling constraints depending on component orientation
-        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
+        final boolean ltr = isLeftToRight ( c, d );
         if ( !ltr )
         {
             if ( Objects.equals ( constraints, WEST ) )
             {
                 constraints = EAST;
             }
-            if ( Objects.equals ( constraints, EAST ) )
+            else if ( Objects.equals ( constraints, EAST ) )
             {
                 constraints = WEST;
             }
@@ -110,10 +110,10 @@ public class BorderLayout<C extends JComponent, D extends IDecoration<C, D>, I e
         final ContentLayoutData layoutData = new ContentLayoutData ( 5 );
         final int hgap = getHorizontalGap ();
         final int vgap = getVerticalGap ();
-        int y = bounds.y;
-        int height = bounds.height;
         int x = bounds.x;
+        int y = bounds.y;
         int width = bounds.width;
+        int height = bounds.height;
         if ( !isEmpty ( c, d, NORTH ) )
         {
             final Dimension ps = getPreferredSize ( c, d, NORTH, new Dimension ( width, height ) );
@@ -167,8 +167,8 @@ public class BorderLayout<C extends JComponent, D extends IDecoration<C, D>, I e
             ps.height += cps.height + vgap;
             available.height -= ps.height + vgap;
         }
-        int centerHeight = 0;
         int centerWidth = 0;
+        int centerHeight = 0;
         if ( !isEmpty ( c, d, EAST ) )
         {
             final Dimension cps = getPreferredSize ( c, d, EAST, available );

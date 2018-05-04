@@ -25,7 +25,6 @@ import java.util.HashMap;
  *
  * @author Mikle Garin
  */
-
 public class ContentLayoutData extends HashMap<String, Rectangle>
 {
     /**

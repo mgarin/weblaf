@@ -311,7 +311,7 @@ public abstract class AbstractTextContent<C extends JComponent, D extends IDecor
      */
     protected int getShadowSize ( final C c, final D d )
     {
-        return shadowSize !=null ? shadowSize : 2;
+        return shadowSize != null ? shadowSize : 2;
     }
 
     /**
