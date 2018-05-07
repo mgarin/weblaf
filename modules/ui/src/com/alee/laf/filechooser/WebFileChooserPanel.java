@@ -21,7 +21,7 @@ import com.alee.api.jdk.Function;
 import com.alee.api.jdk.Supplier;
 import com.alee.api.ui.RenderingParameters;
 import com.alee.extended.filechooser.*;
-import com.alee.extended.layout.LineLayout;
+import com.alee.extended.layout.TableLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.list.FileElement;
 import com.alee.extended.list.WebFileList;
@@ -77,13 +77,13 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public class WebFileChooserPanel extends WebPanel
 {
     /**
-     * todo 1. When setting "show hidden files" to false - move out from hidden directories
-     * todo 2. Proper hotkeys usage within window
-     * todo 3. Context menus for file selection components
+     * todo 1. Replace cancel and accept listeners with FileChooserListener methods
+     * todo 2. When setting "show hidden files" to false - move out from hidden directories
+     * todo 3. Proper hotkeys usage within window
+     * todo 4. Context menus for file selection components
      */
 
     /**
@@ -178,11 +178,6 @@ public class WebFileChooserPanel extends WebPanel
      * By default panel does nothing on cancel button press.
      */
     protected ActionListener cancelListener;
-
-    /**
-     * File chooser listeners.
-     */
-    protected List<FileChooserListener> chooserListeners = new ArrayList<FileChooserListener> ( 1 );
 
     /**
      * Preferred width of the tree on the left.
@@ -1014,11 +1009,16 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected Component createControls ()
     {
-        final LineLayout layout = new LineLayout ( SwingConstants.HORIZONTAL, 4, 4 );
+        final TableLayout layout = new TableLayout ( new double[][]{
+                { TableLayout.PREFERRED, TableLayout.FILL, TableLayout.PREFERRED, TableLayout.PREFERRED },
+                { TableLayout.PREFERRED }
+        }, 4, 4 );
         controlsPanel = new WebPanel ( StyleId.filechooserSouthPanel.at ( this ), layout );
         add ( controlsPanel, BorderLayout.SOUTH );
 
-        controlsPanel.add ( new WebLabel ( StyleId.filechooserSelectedLabel.at ( controlsPanel ), "weblaf.filechooser.files.selected" ) );
+        final StyleId captionStyleId = StyleId.filechooserSelectedLabel.at ( controlsPanel );
+        final WebLabel captionLabel = new WebLabel ( captionStyleId, "weblaf.filechooser.files.selected" );
+        controlsPanel.add ( captionLabel, "0,0" );
 
         selectedFilesViewField = new WebFileChooserField ( false );
         selectedFilesViewField.setPreferredWidth ( 10 );
@@ -1044,7 +1044,7 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        controlsPanel.add ( chooserType == FileChooserType.save ? selectedFilesTextField : selectedFilesViewField, LineLayout.FILL );
+        controlsPanel.add ( chooserType == FileChooserType.save ? selectedFilesTextField : selectedFilesViewField, "1,0" );
 
         fileFilters = new WebComboBox ();
         fileFilters.addActionListener ( new ActionListener ()
@@ -1058,7 +1058,7 @@ public class WebFileChooserPanel extends WebPanel
                 fireFileFilterChanged ( oldFilter, newFilter );
             }
         } );
-        controlsPanel.add ( fileFilters, LineLayout.END );
+        controlsPanel.add ( fileFilters, "2,0" );
 
         acceptButton = new WebButton ( StyleId.filechooserAcceptButton.at ( controlsPanel ), Icons.accept );
         acceptButton.addHotkey ( WebFileChooserPanel.this, Hotkey.CTRL_ENTER, TooltipWay.up );
@@ -1088,7 +1088,11 @@ public class WebFileChooserPanel extends WebPanel
         final List<String> properties = new ImmutableList<String> ( AbstractButton.TEXT_CHANGED_PROPERTY );
         SwingUtils.equalizeComponentsWidth ( properties, acceptButton, cancelButton );
 
-        updateControls ();
+        if ( showControlButtons )
+        {
+            controlsPanel.add ( acceptButton, "3,0" );
+            controlsPanel.add ( cancelButton, "4,0" );
+        }
 
         return controlsPanel;
     }
@@ -1570,8 +1574,9 @@ public class WebFileChooserPanel extends WebPanel
     protected void updateSelectedFilesFieldPanel ()
     {
         controlsPanel.remove ( selectedFilesTextField, selectedFilesViewField );
-        controlsPanel.add ( chooserType == FileChooserType.save ? selectedFilesTextField : selectedFilesViewField, LineLayout.FILL );
+        controlsPanel.add ( chooserType == FileChooserType.save ? selectedFilesTextField : selectedFilesViewField, "1,0" );
         controlsPanel.revalidate ();
+        controlsPanel.repaint ();
     }
 
     /**
@@ -2058,10 +2063,11 @@ public class WebFileChooserPanel extends WebPanel
         controlsPanel.remove ( acceptButton, cancelButton );
         if ( showControlButtons )
         {
-            controlsPanel.add ( acceptButton, LineLayout.END );
-            controlsPanel.add ( cancelButton, LineLayout.END );
+            controlsPanel.add ( acceptButton, "3,0" );
+            controlsPanel.add ( cancelButton, "4,0" );
         }
         controlsPanel.revalidate ();
+        controlsPanel.repaint ();
     }
 
     /**
@@ -2187,7 +2193,7 @@ public class WebFileChooserPanel extends WebPanel
      */
     public void addFileChooserListener ( final FileChooserListener listener )
     {
-        chooserListeners.add ( listener );
+        listenerList.add ( FileChooserListener.class, listener );
     }
 
     /**
@@ -2197,7 +2203,7 @@ public class WebFileChooserPanel extends WebPanel
      */
     public void removeFileChooserListener ( final FileChooserListener listener )
     {
-        chooserListeners.remove ( listener );
+        listenerList.remove ( FileChooserListener.class, listener );
     }
 
     /**
@@ -2207,7 +2213,7 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected void fireDirectoryChanged ( final File newDirectory )
     {
-        for ( final FileChooserListener listener : CollectionUtils.copy ( chooserListeners ) )
+        for ( final FileChooserListener listener : listenerList.getListeners ( FileChooserListener.class ) )
         {
             listener.directoryChanged ( newDirectory );
         }
@@ -2220,7 +2226,7 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected void fireFileSelectionChanged ( final List<File> selectedFiles )
     {
-        for ( final FileChooserListener listener : CollectionUtils.copy ( chooserListeners ) )
+        for ( final FileChooserListener listener : listenerList.getListeners ( FileChooserListener.class ) )
         {
             listener.selectionChanged ( selectedFiles );
         }
@@ -2235,7 +2241,7 @@ public class WebFileChooserPanel extends WebPanel
     protected void fireFileFilterChanged ( final javax.swing.filechooser.FileFilter oldFilter,
                                            final javax.swing.filechooser.FileFilter newFilter )
     {
-        for ( final FileChooserListener listener : CollectionUtils.copy ( chooserListeners ) )
+        for ( final FileChooserListener listener : listenerList.getListeners ( FileChooserListener.class ) )
         {
             listener.fileFilterChanged ( oldFilter, newFilter );
         }

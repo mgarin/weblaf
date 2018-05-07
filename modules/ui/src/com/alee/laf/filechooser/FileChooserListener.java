@@ -27,7 +27,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public interface FileChooserListener extends EventListener
 {
     /**

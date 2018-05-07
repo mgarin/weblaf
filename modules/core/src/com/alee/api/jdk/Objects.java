@@ -61,7 +61,7 @@ public final class Objects
      */
     public static boolean equals ( final Object object, final Object compareWith )
     {
-        return object == compareWith || object != null && compareWith != null && object.equals ( compareWith );
+        return object == compareWith || object != null && object.equals ( compareWith );
     }
 
     /**
@@ -99,7 +99,7 @@ public final class Objects
      */
     public static boolean notEquals ( final Object object, final Object compareWith )
     {
-        return object != compareWith && ( object == null || compareWith == null || !object.equals ( compareWith ) );
+        return object != compareWith && ( object == null || !object.equals ( compareWith ) );
     }
 
     /**
@@ -137,7 +137,7 @@ public final class Objects
      */
     private static boolean equalsImpl ( final Object o1, final Object o2 )
     {
-        return o1 == o2 || o1 != null && o2 != null && o1.equals ( o2 );
+        return o1 == o2 || o1 != null && o1.equals ( o2 );
     }
 
     /**
