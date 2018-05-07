@@ -30,7 +30,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebTableHeaderCellRenderer extends WebLabel implements TableCellRenderer, UIResource
 {
     /**
@@ -129,7 +128,7 @@ public class WebTableHeaderCellRenderer extends WebLabel implements TableCellRen
      * A subclass of {@link WebTableHeaderCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
      */
-    public static class UIResource extends WebTableHeaderCellRenderer implements javax.swing.plaf.UIResource
+    public static final class UIResource extends WebTableHeaderCellRenderer implements javax.swing.plaf.UIResource
     {
         /**
          * Implementation is used completely from {@link WebTableHeaderCellRenderer}.

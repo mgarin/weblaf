@@ -19,10 +19,7 @@ package com.alee.api.merge;
 
 import com.alee.api.jdk.Objects;
 import com.alee.api.matcher.EqualMatcher;
-import com.alee.api.merge.behavior.BasicMergeBehavior;
-import com.alee.api.merge.behavior.ListMergeBehavior;
-import com.alee.api.merge.behavior.PreserveOnMerge;
-import com.alee.api.merge.behavior.ReflectionMergeBehavior;
+import com.alee.api.merge.behavior.*;
 import com.alee.api.merge.nullresolver.OverwritingNullResolver;
 import com.alee.api.merge.nullresolver.SkippingNullResolver;
 import com.alee.api.merge.unknownresolver.ExceptionUnknownResolver;
@@ -399,6 +396,23 @@ public final class MergeTest
     }
 
     /**
+     * Testing {@link Merge#deepRaw()} configuration on custom object with fields annotated with {@link OmitOnMerge}.
+     */
+    @Test
+    public void omitFieldsTest ()
+    {
+        final Merge merge = Merge.deepRaw ();
+
+        checkMergeResult (
+                merge.merge (
+                        new OmitTestObject ( true, 15, 'c', ( byte ) 10, ( short ) 1, 2L, 3f, 4d, "Test1", 1 ),
+                        new OmitTestObject ( true, 16, 'd', ( byte ) 10, ( short ) 2, 3L, 4f, 5d, "Test2", 2 )
+                ),
+                new OmitTestObject ( false, 0, '\u0000', ( byte ) 0, ( short ) 0, 0L, 0.0f, 0d, null, 2 )
+        );
+    }
+
+    /**
      * Testing custom merge configuration with nulls skipping, only exact types merging and multiple merge behaviors.
      */
     @Test
@@ -626,6 +640,124 @@ public final class MergeTest
             return object instanceof ParentTestObject &&
                     super.equals ( object ) &&
                     ArrayUtils.equals ( data, ( ( ParentTestObject ) object ).data );
+        }
+    }
+
+    /**
+     * Class for testing {@link OmitOnMerge} annotation.
+     */
+    public static class OmitTestObject implements Mergeable, Cloneable
+    {
+        /**
+         * Omitted {@link boolean} field.
+         */
+        @OmitOnMerge
+        private final boolean v1;
+
+        /**
+         * Omitted {@link int} field.
+         */
+        @OmitOnMerge
+        private final int v2;
+
+        /**
+         * Omitted {@link char} field.
+         */
+        @OmitOnMerge
+        private final char v3;
+
+        /**
+         * Omitted {@link byte} field.
+         */
+        @OmitOnMerge
+        private final byte v4;
+
+        /**
+         * Omitted {@link short} field.
+         */
+        @OmitOnMerge
+        private final short v5;
+
+        /**
+         * Omitted {@link long} field.
+         */
+        @OmitOnMerge
+        private final long v6;
+
+        /**
+         * Omitted {@link float} field.
+         */
+        @OmitOnMerge
+        private final float v7;
+
+        /**
+         * Omitted {@link double} field.
+         */
+        @OmitOnMerge
+        private final double v8;
+
+        /**
+         * Omitted {@link Object} field.
+         */
+        @OmitOnMerge
+        private final Object object;
+
+        /**
+         * Non-omitted {@link Object} field.
+         */
+        private final Object object2;
+
+        /**
+         * Constructs new {@link OmitTestObject}.
+         *
+         * @param v1      {@link boolean}
+         * @param v2      {@link int}
+         * @param v3      {@link char}
+         * @param v4      {@link byte}
+         * @param v5      {@link short}
+         * @param v6      {@link long}
+         * @param v7      {@link float}
+         * @param v8      {@link double}
+         * @param object  {@link Object}
+         * @param object2 {@link Object}
+         */
+        public OmitTestObject ( final boolean v1, final int v2, final char v3, final byte v4, final short v5, final long v6, final float v7,
+                                final double v8, final Object object, final Object object2 )
+        {
+            this.v1 = v1;
+            this.v2 = v2;
+            this.v3 = v3;
+            this.v4 = v4;
+            this.v5 = v5;
+            this.v6 = v6;
+            this.v7 = v7;
+            this.v8 = v8;
+            this.object = object;
+            this.object2 = object2;
+        }
+
+        @Override
+        public boolean equals ( final Object o )
+        {
+            if ( this == o )
+            {
+                return true;
+            }
+            if ( o == null || getClass () != o.getClass () )
+            {
+                return false;
+            }
+            final OmitTestObject omitTestObject = ( OmitTestObject ) o;
+            return v1 == omitTestObject.v1 &&
+                    v2 == omitTestObject.v2 &&
+                    v3 == omitTestObject.v3 &&
+                    v4 == omitTestObject.v4 &&
+                    v5 == omitTestObject.v5 &&
+                    v6 == omitTestObject.v6 &&
+                    Float.compare ( omitTestObject.v7, v7 ) == 0 &&
+                    Double.compare ( omitTestObject.v8, v8 ) == 0 &&
+                    Objects.equals ( object, omitTestObject.object ) &&
+                    Objects.equals ( object2, omitTestObject.object2 );
         }
     }
 }

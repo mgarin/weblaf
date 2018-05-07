@@ -48,7 +48,6 @@ import java.util.List;
  * @author Mikle Garin
  * @see TableCellParameters
  */
-
 public class WebTableCellRenderer<V, C extends JTable, P extends TableCellParameters<V, C>>
         extends WebStyledLabel implements TableCellRenderer, Stateful
 {
@@ -322,7 +321,7 @@ public class WebTableCellRenderer<V, C extends JTable, P extends TableCellParame
     }
 
     @Override
-    public void validate ()
+    public final void validate ()
     {
         /**
          * Overridden for performance reasons.
@@ -330,7 +329,7 @@ public class WebTableCellRenderer<V, C extends JTable, P extends TableCellParame
     }
 
     @Override
-    public void invalidate ()
+    public final void invalidate ()
     {
         /**
          * Overridden for performance reasons.
@@ -338,7 +337,7 @@ public class WebTableCellRenderer<V, C extends JTable, P extends TableCellParame
     }
 
     @Override
-    public void revalidate ()
+    public final void revalidate ()
     {
         /**
          * Overridden for performance reasons.
@@ -346,7 +345,7 @@ public class WebTableCellRenderer<V, C extends JTable, P extends TableCellParame
     }
 
     @Override
-    public void repaint ( final long tm, final int x, final int y, final int width, final int height )
+    public final void repaint ( final long tm, final int x, final int y, final int width, final int height )
     {
         /**
          * Overridden for performance reasons.
@@ -354,7 +353,7 @@ public class WebTableCellRenderer<V, C extends JTable, P extends TableCellParame
     }
 
     @Override
-    public void repaint ( final Rectangle r )
+    public final void repaint ( final Rectangle r )
     {
         /**
          * Overridden for performance reasons.
@@ -362,95 +361,100 @@ public class WebTableCellRenderer<V, C extends JTable, P extends TableCellParame
     }
 
     @Override
-    public void repaint ()
+    public final void repaint ()
     {
         /**
          * Overridden for performance reasons.
          */
     }
 
-    @Override
-    protected void firePropertyChange ( final String pn, final Object oldValue, final Object newValue )
+    /**
+     * Checks whether or not specified property change should actually be fired.
+     * All property fire methods are overridden and made final for performance reasons.
+     *
+     * @param propertyName changed property name
+     * @param oldValue     old property value
+     * @param newValue     new property value
+     */
+    protected void checkPropertyChange ( final String propertyName, final Object oldValue, final Object newValue )
     {
-        /**
-         * Overridden for performance reasons.
-         * {@link WebLookAndFeel#BORDER_PROPERTY} is listened to ensure that custom borders are preserved.
-         */
-        if ( Objects.equals ( pn, StyleId.STYLE_PROPERTY, StyleId.PARENT_STYLE_PROPERTY,
+        if ( Objects.equals ( propertyName, StyleId.STYLE_PROPERTY, StyleId.PARENT_STYLE_PROPERTY,
                 AbstractDecorationPainter.DECORATION_STATES_PROPERTY, WebStyledLabel.STYLE_RANGES_PROPERTY,
                 WebLookAndFeel.TEXT_PROPERTY, WebLookAndFeel.BORDER_PROPERTY, WebLookAndFeel.MODEL_PROPERTY ) )
         {
-            super.firePropertyChange ( pn, oldValue, newValue );
+            allowPropertyChange ( propertyName, oldValue, newValue );
         }
-        else if ( Objects.equals ( pn, WebLookAndFeel.FONT_PROPERTY, WebLookAndFeel.FOREGROUND_PROPERTY ) &&
+        else if ( Objects.equals ( propertyName, WebLookAndFeel.FONT_PROPERTY, WebLookAndFeel.FOREGROUND_PROPERTY ) &&
                 oldValue != newValue && getClientProperty ( BasicHTML.propertyKey ) != null )
         {
-            super.firePropertyChange ( pn, oldValue, newValue );
+            allowPropertyChange ( propertyName, oldValue, newValue );
         }
     }
 
-    @Override
-    public void firePropertyChange ( final String propertyName, final byte oldValue, final byte newValue )
+    /**
+     * Allows property change event to be fired.
+     *
+     * @param propertyName changed property name
+     * @param oldValue     old property value
+     * @param newValue     new property value
+     */
+    protected void allowPropertyChange ( final String propertyName, final Object oldValue, final Object newValue )
     {
-        /**
-         * Overridden for performance reasons.
-         */
+        super.firePropertyChange ( propertyName, oldValue, newValue );
     }
 
     @Override
-    public void firePropertyChange ( final String propertyName, final char oldValue, final char newValue )
+    protected final void firePropertyChange ( final String propertyName, final Object oldValue, final Object newValue )
     {
-        /**
-         * Overridden for performance reasons.
-         */
+        checkPropertyChange ( propertyName, oldValue, newValue );
     }
 
     @Override
-    public void firePropertyChange ( final String propertyName, final short oldValue, final short newValue )
+    public final void firePropertyChange ( final String propertyName, final byte oldValue, final byte newValue )
     {
-        /**
-         * Overridden for performance reasons.
-         */
+        checkPropertyChange ( propertyName, oldValue, newValue );
     }
 
     @Override
-    public void firePropertyChange ( final String propertyName, final int oldValue, final int newValue )
+    public final void firePropertyChange ( final String propertyName, final char oldValue, final char newValue )
     {
-        /**
-         * Overridden for performance reasons.
-         */
+        checkPropertyChange ( propertyName, oldValue, newValue );
     }
 
     @Override
-    public void firePropertyChange ( final String propertyName, final long oldValue, final long newValue )
+    public final void firePropertyChange ( final String propertyName, final short oldValue, final short newValue )
     {
-        /**
-         * Overridden for performance reasons.
-         */
+        checkPropertyChange ( propertyName, oldValue, newValue );
     }
 
     @Override
-    public void firePropertyChange ( final String propertyName, final float oldValue, final float newValue )
+    public final void firePropertyChange ( final String propertyName, final int oldValue, final int newValue )
     {
-        /**
-         * Overridden for performance reasons.
-         */
+        checkPropertyChange ( propertyName, oldValue, newValue );
     }
 
     @Override
-    public void firePropertyChange ( final String propertyName, final double oldValue, final double newValue )
+    public final void firePropertyChange ( final String propertyName, final long oldValue, final long newValue )
     {
-        /**
-         * Overridden for performance reasons.
-         */
+        checkPropertyChange ( propertyName, oldValue, newValue );
     }
 
     @Override
-    public void firePropertyChange ( final String propertyName, final boolean oldValue, final boolean newValue )
+    public final void firePropertyChange ( final String propertyName, final float oldValue, final float newValue )
     {
-        /**
-         * Overridden for performance reasons.
-         */
+        checkPropertyChange ( propertyName, oldValue, newValue );
+    }
+
+    @Override
+    public final void firePropertyChange ( final String propertyName, final double oldValue, final double newValue )
+    {
+        checkPropertyChange ( propertyName, oldValue, newValue );
+    }
+
+    @Override
+    public final void firePropertyChange ( final String propertyName, final boolean oldValue, final boolean newValue )
+    {
+        checkPropertyChange ( propertyName, oldValue, newValue );
     }
 
     /**
@@ -461,7 +465,7 @@ public class WebTableCellRenderer<V, C extends JTable, P extends TableCellParame
      * @param <C> {@link JTable} type
      * @param <P> {@link TableCellParameters} type
      */
-    public static class UIResource<V, C extends JTable, P extends TableCellParameters<V, C>>
+    public static final class UIResource<V, C extends JTable, P extends TableCellParameters<V, C>>
             extends WebTableCellRenderer<V, C, P> implements javax.swing.plaf.UIResource
     {
         /**

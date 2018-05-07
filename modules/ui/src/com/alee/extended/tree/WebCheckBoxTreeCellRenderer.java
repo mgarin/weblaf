@@ -46,7 +46,6 @@ import java.util.List;
  * @author Mikle Garin
  * @see CheckBoxTreeNodeParameters
  */
-
 public class WebCheckBoxTreeCellRenderer<N extends MutableTreeNode, C extends WebCheckBoxTree<N>, P extends CheckBoxTreeNodeParameters<N, C>>
         extends WebPanel implements CheckBoxTreeCellRenderer, Stateful
 {
@@ -227,7 +226,7 @@ public class WebCheckBoxTreeCellRenderer<N extends MutableTreeNode, C extends We
                                                     final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         // Forming rendering parameters
-        final P parameters =  getRenderingParameters ( ( C ) tree, ( N ) node, isSelected, expanded, leaf, row, hasFocus );
+        final P parameters = getRenderingParameters ( ( C ) tree, ( N ) node, isSelected, expanded, leaf, row, hasFocus );
 
         // Updating custom states
         updateStates ( parameters );
@@ -263,7 +262,7 @@ public class WebCheckBoxTreeCellRenderer<N extends MutableTreeNode, C extends We
     }
 
     @Override
-    public void repaint ( final long tm, final int x, final int y, final int width, final int height )
+    public final void repaint ( final long tm, final int x, final int y, final int width, final int height )
     {
         /**
          * Overridden for performance reasons.
@@ -271,7 +270,7 @@ public class WebCheckBoxTreeCellRenderer<N extends MutableTreeNode, C extends We
     }
 
     @Override
-    public void repaint ( final Rectangle r )
+    public final void repaint ( final Rectangle r )
     {
         /**
          * Overridden for performance reasons.
@@ -279,7 +278,7 @@ public class WebCheckBoxTreeCellRenderer<N extends MutableTreeNode, C extends We
     }
 
     @Override
-    public void repaint ()
+    public final void repaint ()
     {
         /**
          * Overridden for performance reasons.
@@ -294,7 +293,7 @@ public class WebCheckBoxTreeCellRenderer<N extends MutableTreeNode, C extends We
      * @param <C> {@link WebCheckBoxTree} type
      * @param <P> {@link CheckBoxTreeNodeParameters} type
      */
-    public static class UIResource<N extends MutableTreeNode, C extends WebCheckBoxTree<N>, P extends CheckBoxTreeNodeParameters<N, C>>
+    public static final class UIResource<N extends MutableTreeNode, C extends WebCheckBoxTree<N>, P extends CheckBoxTreeNodeParameters<N, C>>
             extends WebCheckBoxTreeCellRenderer<N, C, P> implements javax.swing.plaf.UIResource
     {
         /**

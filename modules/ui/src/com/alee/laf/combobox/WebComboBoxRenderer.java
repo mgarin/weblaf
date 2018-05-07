@@ -36,7 +36,6 @@ import java.awt.*;
  * @author Mikle Garin
  * @see ComboBoxCellParameters
  */
-
 public class WebComboBoxRenderer<V, C extends JList, P extends ComboBoxCellParameters<V, C>>
         extends WebListCellRenderer<V, C, P>
 {

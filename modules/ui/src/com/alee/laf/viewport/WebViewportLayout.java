@@ -251,7 +251,7 @@ public class WebViewportLayout extends AbstractLayoutManager implements Mergeabl
      * The UI resource version of {@link WebViewportLayout}.
      */
     @XStreamAlias ( "WebViewportLayout$UIResource" )
-    public static class UIResource extends WebViewportLayout implements javax.swing.plaf.UIResource
+    public static final class UIResource extends WebViewportLayout implements javax.swing.plaf.UIResource
     {
         /**
          * Implementation is used completely from {@link WebViewportLayout}.

@@ -34,7 +34,6 @@ import java.io.File;
  * @author Mikle Garin
  * @see FileTableCellParameters
  */
-
 public class WebFileTableCellRenderer<V extends File, C extends WebFileTable, P extends FileTableCellParameters<V, C>>
         extends WebTableCellRenderer<V, C, P>
 {
@@ -119,7 +118,7 @@ public class WebFileTableCellRenderer<V extends File, C extends WebFileTable, P 
      * @param <C> {@link WebFileTable} type
      * @param <P> {@link FileTableCellParameters} type
      */
-    public static class UIResource<V extends File, C extends WebFileTable, P extends FileTableCellParameters<V, C>>
+    public static final class UIResource<V extends File, C extends WebFileTable, P extends FileTableCellParameters<V, C>>
             extends WebFileTableCellRenderer<V, C, P> implements javax.swing.plaf.UIResource
     {
         /**

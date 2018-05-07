@@ -68,7 +68,7 @@ public class WebComboBoxEditor extends BasicComboBoxEditor
      * A subclass of {@link WebComboBoxEditor} that implements {@link javax.swing.plaf.UIResource}.
      * It is used to determine editor provided by the UI class to properly uninstall it on UI uninstall.
      */
-    public static class UIResource extends WebComboBoxEditor implements javax.swing.plaf.UIResource
+    public static final class UIResource extends WebComboBoxEditor implements javax.swing.plaf.UIResource
     {
         /**
          * Implementation is used completely from {@link WebComboBoxEditor}.

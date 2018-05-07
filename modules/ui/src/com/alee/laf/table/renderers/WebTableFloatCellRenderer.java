@@ -31,7 +31,6 @@ import java.text.NumberFormat;
  * @param <P> {@link TableCellParameters} type
  * @author Mikle Garin
  */
-
 public class WebTableFloatCellRenderer<V extends Float, C extends JTable, P extends TableCellParameters<V, C>>
         extends WebTableNumberCellRenderer<V, C, P>
 {
@@ -74,7 +73,7 @@ public class WebTableFloatCellRenderer<V extends Float, C extends JTable, P exte
      * @param <C> {@link JTable} type
      * @param <P> {@link TableCellParameters} type
      */
-    public static class UIResource<V extends Float, C extends JTable, P extends TableCellParameters<V, C>>
+    public static final class UIResource<V extends Float, C extends JTable, P extends TableCellParameters<V, C>>
             extends WebTableFloatCellRenderer<V, C, P> implements javax.swing.plaf.UIResource
     {
         /**

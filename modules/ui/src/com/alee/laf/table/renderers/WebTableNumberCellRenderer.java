@@ -30,7 +30,6 @@ import javax.swing.*;
  * @param <P> {@link TableCellParameters} type
  * @author Mikle Garin
  */
-
 public class WebTableNumberCellRenderer<V extends Number, C extends JTable, P extends TableCellParameters<V, C>>
         extends WebTableCellRenderer<V, C, P>
 {
@@ -54,7 +53,7 @@ public class WebTableNumberCellRenderer<V extends Number, C extends JTable, P ex
      * @param <C> {@link JTable} type
      * @param <P> {@link TableCellParameters} type
      */
-    public static class UIResource<V extends Number, C extends JTable, P extends TableCellParameters<V, C>>
+    public static final class UIResource<V extends Number, C extends JTable, P extends TableCellParameters<V, C>>
             extends WebTableNumberCellRenderer<V, C, P> implements javax.swing.plaf.UIResource
     {
         /**

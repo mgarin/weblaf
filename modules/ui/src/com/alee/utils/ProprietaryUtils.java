@@ -92,7 +92,7 @@ public final class ProprietaryUtils
             try
             {
                 final Class su2 = ReflectUtils.getClass ( "sun.swing.SwingUtilities2" );
-                ReflectUtils.callStaticMethod ( su2, "putAATextInfo", true,table );
+                ReflectUtils.callStaticMethod ( su2, "putAATextInfo", true, table );
             }
             catch ( final NoSuchMethodException e )
             {
@@ -141,6 +141,21 @@ public final class ProprietaryUtils
             {
                 LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
             }
+        }
+    }
+
+    /**
+     * Setups parameters that can improve Swing performance on some JDK versions.
+     */
+    public static void setupPerformanceParameters ()
+    {
+        if ( SystemUtils.isJava8orAbove () )
+        {
+            /**
+             * Uses faster color management module instead of default one.
+             * This is only needed for Java 8 and later versions, in older versions KcmsServiceProvider was used by default.
+             */
+            System.setProperty ( "sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider" );
         }
     }
 

@@ -29,11 +29,11 @@ import java.util.Map;
  *
  * @author Mikle Garin
  */
-
 public class WebCheckBoxListCellRenderer implements ListCellRenderer
 {
     /**
      * todo 1. Revamp according to {@link com.alee.laf.list.WebListCellRenderer} implementation
+     * todo 2. Provide a UIResource instance within UI by default
      */
 
     /**

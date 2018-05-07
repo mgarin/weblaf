@@ -44,7 +44,6 @@ import java.awt.event.ContainerEvent;
  *
  * @author Mikle Garin
  */
-
 public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
         implements IconBridge<TreeNodeParameters<InterfaceTreeNode, InterfaceTree>>,
         TextBridge<TreeNodeParameters<InterfaceTreeNode, InterfaceTree>>

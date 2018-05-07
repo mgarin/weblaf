@@ -29,7 +29,6 @@ import java.io.File;
  *
  * @author Mikle Garin
  */
-
 public class FileTreeNode extends AsyncUniqueNode<FileTreeNode, File>
         implements TextBridge<TreeNodeParameters<FileTreeNode, WebAsyncTree>>
 {

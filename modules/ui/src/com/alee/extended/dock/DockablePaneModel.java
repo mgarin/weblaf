@@ -35,7 +35,6 @@ import java.io.Serializable;
  * @see WebDockablePane
  * @see WebDockablePaneModel
  */
-
 public interface DockablePaneModel extends LayoutManager, Serializable
 {
     /**

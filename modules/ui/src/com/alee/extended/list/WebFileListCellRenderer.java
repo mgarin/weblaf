@@ -39,13 +39,11 @@ import java.io.File;
  *
  * @author Mikle Garin
  */
-
 public class WebFileListCellRenderer extends WebPanel implements ListCellRenderer
 {
     /**
-     * todo 1. Move thumbnail generation into `WebImage` component as a feature?
-     * todo 2. Replace icon label with `WebImage` for usage convenience?
-     * todo 3. Replace all parts with single component and IContent acting as parts?
+     * todo 1. Replace all parts with single component and IContent acting as parts
+     * todo 2. Move thumbnail generation into `WebImage` component as a feature?
      */
 
     /**
