@@ -39,14 +39,26 @@ public interface RecursiveMerge extends Serializable
     public Object overwrite ( Object base, Object merged );
 
     /**
-     * Performs merge of the two provided objects and returns resulting object.
+     * Performs merge result of the two provided objects and returns resulting object.
      *
      * @param type   expected resulting object {@link Class} type
      * @param base   base object
      * @param merged object to merge
      * @param depth  merge calls stack depth
      * @param <T>    resulting object type
-     * @return merge result
+     * @return merge result of the two provided objects and returns resulting object
      */
-    public abstract <T> T merge ( Class type, Object base, Object merged, int depth );
+    public <T> T merge ( Class type, Object base, Object merged, int depth );
+
+    /**
+     * Performs merge result of the two provided objects with all field values merged according to {@link Merge} settings.
+     *
+     * @param type   expected resulting object {@link Class} type
+     * @param base   base object
+     * @param merged object to merge
+     * @param depth  merge calls stack depth
+     * @param <T>    resulting object type
+     * @return merge result of the two provided objects with all field values merged according to {@link Merge} settings
+     */
+    public <T> T mergeFields ( Class type, Object base, Object merged, int depth );
 }

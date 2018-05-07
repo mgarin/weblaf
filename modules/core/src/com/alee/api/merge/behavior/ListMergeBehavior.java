@@ -109,20 +109,21 @@ public class ListMergeBehavior<T extends List> implements GlobalMergeBehavior<T,
             // Ensure we haven't encountered a null object
             if ( mergedObject != null )
             {
-                // We only merge matched objects
+                // Ensure merged object is supported by matcher
                 if ( matcher.supports ( mergedObject ) )
                 {
-                    // Looking for object of the same type which is also identifiable in the existing list
-                    // Then we compare their IDs and merge them using the same algorithm if IDs are equal
+                    // Looking for matching object in the existing list
                     boolean matched = false;
                     for ( int j = 0; j < base.size (); j++ )
                     {
-                        final Object existingObject = base.get ( j );
-                        if ( existingObject != null )
+                        // Ensure we haven't encountered a null object
+                        final Object baseObject = base.get ( j );
+                        if ( baseObject != null )
                         {
-                            if ( matcher.supports ( existingObject ) && matcher.match ( mergedObject, existingObject ) )
+                            // Only merge matched objects
+                            if ( matcher.supports ( baseObject ) && matcher.match ( mergedObject, baseObject ) )
                             {
-                                base.set ( j, merge.merge ( Object.class, existingObject, mergedObject, depth + 1 ) );
+                                base.set ( j, merge.merge ( Object.class, baseObject, mergedObject, depth + 1 ) );
                                 matched = true;
                                 break;
                             }

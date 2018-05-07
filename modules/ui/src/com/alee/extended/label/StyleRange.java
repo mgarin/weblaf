@@ -17,8 +17,12 @@
 
 package com.alee.extended.label;
 
-import com.alee.api.merge.Mergeable;
+import com.alee.api.jdk.Objects;
+import com.alee.api.merge.MergeBehavior;
+import com.alee.api.merge.RecursiveMerge;
+import com.alee.api.merge.behavior.PreserveOnMerge;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.ReflectUtils;
 
 import java.awt.*;
 import java.util.List;
@@ -31,7 +35,7 @@ import java.util.List;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  * @see com.alee.extended.label.WebStyledLabel
  */
-public class StyleRange implements Mergeable, Cloneable
+public class StyleRange implements MergeBehavior<StyleRange>, Cloneable
 {
     /**
      * Text style start index.
@@ -57,6 +61,7 @@ public class StyleRange implements Mergeable, Cloneable
      * Basic text style.
      * Either {@link Font#ITALIC} or {@link Font#BOLD} or their combination.
      */
+    @PreserveOnMerge
     protected final int style;
 
     /**
@@ -193,7 +198,10 @@ public class StyleRange implements Mergeable, Cloneable
         {
             throw new IllegalArgumentException ( "Style length cannot be zero or less than zero" );
         }
-
+        if ( Objects.notEquals ( style, -1, Font.PLAIN, Font.BOLD, Font.BOLD | Font.ITALIC ) )
+        {
+            throw new IllegalArgumentException ( "Unknown font style: " + style );
+        }
         this.startIndex = startIndex;
         this.length = length;
         this.foreground = foreground;
@@ -320,5 +328,35 @@ public class StyleRange implements Mergeable, Cloneable
     public List<CustomStyle> getCustomStyle ()
     {
         return customStyles;
+    }
+
+    @Override
+    public StyleRange merge ( final RecursiveMerge merge, final Class type, final StyleRange object, final int depth )
+    {
+        final StyleRange result = merge.mergeFields ( type, this, object, depth );
+
+        /**
+         * Special merge algorithm for {@link Font} style field.
+         * It is important to avoid simple overwriting of the {@link #style} field in this class.
+         */
+        final int fontStyle;
+        if ( object.style != -1 )
+        {
+            if ( this.style != -1 )
+            {
+                fontStyle = this.style | object.style;
+            }
+            else
+            {
+                fontStyle = object.style;
+            }
+        }
+        else
+        {
+            fontStyle = this.style;
+        }
+        ReflectUtils.setFieldValueSafely ( result, "style", fontStyle );
+
+        return result;
     }
 }

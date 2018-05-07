@@ -29,7 +29,7 @@ public abstract class AbstractMatcher<T, V> implements Matcher
     @Override
     public final boolean match ( final Object first, final Object second )
     {
-        return first == null && second == null || supports ( first ) && supports ( second ) && matchImpl ( ( T ) first, ( V ) second );
+        return first == null && second == null || matchImpl ( ( T ) first, ( V ) second );
     }
 
     /**

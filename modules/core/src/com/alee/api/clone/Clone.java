@@ -172,7 +172,7 @@ public final class Clone implements Serializable
         }
 
         @Override
-        public <T> T cloneThis ( final T object, final int depth )
+        public <T> T cloneFields ( final T object, final int depth )
         {
             for ( final GlobalCloneBehavior behavior : behaviors )
             {

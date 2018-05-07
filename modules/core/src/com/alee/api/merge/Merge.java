@@ -18,6 +18,7 @@
 package com.alee.api.merge;
 
 import com.alee.api.clone.Clone;
+import com.alee.api.clone.CloneException;
 import com.alee.api.matcher.IdentifiableMatcher;
 import com.alee.api.merge.behavior.*;
 import com.alee.api.merge.clonepolicy.PerformClonePolicy;
@@ -315,6 +316,19 @@ public final class Merge implements Serializable
                 result = ( T ) nullResolver.resolve ( this, base, merged );
             }
             return result;
+        }
+
+        @Override
+        public <T> T mergeFields ( final Class type, final Object base, final Object merged, final int depth )
+        {
+            for ( final GlobalMergeBehavior behavior : behaviors )
+            {
+                if ( behavior instanceof ReflectionMergeBehavior )
+                {
+                    return ( T ) behavior.merge ( this, type, base, merged, depth );
+                }
+            }
+            throw new CloneException ( "There is no ReflectionMergeBehavior in Merge algorithm" );
         }
     }
 
