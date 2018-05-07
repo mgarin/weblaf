@@ -4,6 +4,13 @@
 
     <!-- File chooser field -->
     <style type="panel" id="filechooserfield" extends="focusable">
+        <painter>
+            <decorations>
+                <decoration>
+                    <ColorBackground color="white" />
+                </decoration>
+            </decorations>
+        </painter>
 
         <!-- Selected files scroll -->
         <style type="scrollpane" id="scroll" extends="transparent" padding="1,1,1,1">
@@ -54,6 +61,9 @@
 
     <!-- Undecorated file chooser field -->
     <style type="panel" id="filechooserfield-undecorated" extends="filechooserfield">
+        <component>
+            <background>white</background>
+        </component>
         <painter>
             <decorations>
                 <decoration visible="false" />
