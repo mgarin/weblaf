@@ -763,7 +763,7 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
      * The UI resource version of {@link WebScrollPaneLayout}.
      */
     @XStreamAlias ( "WebScrollPaneLayout$UIResource" )
-    public static class UIResource extends WebScrollPaneLayout implements javax.swing.plaf.UIResource
+    public static final class UIResource extends WebScrollPaneLayout implements javax.swing.plaf.UIResource
     {
         /**
          * Implementation is used completely from {@link WebScrollPaneLayout}.
