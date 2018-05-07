@@ -24,7 +24,6 @@ package com.alee.extended.label;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  */
-
 public class TextRange
 {
     /**

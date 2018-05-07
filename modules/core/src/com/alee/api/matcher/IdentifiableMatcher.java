@@ -21,21 +21,41 @@ import com.alee.api.Identifiable;
 import com.alee.api.jdk.Objects;
 
 /**
- * Custom {@link Matcher} for {@link Identifiable} objects.
+ * Custom {@link Matcher} for {@link Identifiable} objects and {@link Enum}s.
  *
  * @author Mikle Garin
  */
-public final class IdentifiableMatcher extends AbstractMatcher<Identifiable, Identifiable>
+public final class IdentifiableMatcher extends AbstractMatcher<Object, Object>
 {
+    /**
+     * todo 1. Split into multiple Matcher implementations grouped by grouping implementation
+     * todo 2. Add matcher for basic types like int, boolean, String etc
+     * todo 3. Add matcher for simple immutable types?
+     */
+
     @Override
     public boolean supports ( final Object object )
     {
-        return object instanceof Identifiable;
+        return object instanceof Identifiable || object instanceof Enum;
     }
 
     @Override
-    protected boolean matchImpl ( final Identifiable first, final Identifiable second )
+    protected boolean matchImpl ( final Object first, final Object second )
     {
-        return Objects.equals ( first.getId (), second.getId () );
+        if ( first instanceof Identifiable && second instanceof Identifiable )
+        {
+            final String id1 = ( ( Identifiable ) first ).getId ();
+            final String id2 = ( ( Identifiable ) second ).getId ();
+            return Objects.equals ( id1, id2 );
+        }
+        else if ( first instanceof Enum && second instanceof Enum )
+        {
+            return first == second;
+        }
+        else
+        {
+            final String message = "Cannot match objects: %s and %s";
+            throw new MatchingException ( String.format ( message, first, second ) );
+        }
     }
 }

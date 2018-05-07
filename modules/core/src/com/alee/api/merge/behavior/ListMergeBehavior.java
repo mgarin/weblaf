@@ -106,38 +106,51 @@ public class ListMergeBehavior<T extends List> implements GlobalMergeBehavior<T,
         // Merging list objects
         for ( final Object mergedObject : merged )
         {
-            // We only merge matched objects
-            if ( matcher.supports ( mergedObject ) )
+            // Ensure we haven't encountered a null object
+            if ( mergedObject != null )
             {
-                // Looking for object of the same type which is also identifiable in the existing list
-                // Then we compare their IDs and merge them using the same algorithm if IDs are equal
-                boolean matched = false;
-                for ( int j = 0; j < base.size (); j++ )
+                // We only merge matched objects
+                if ( matcher.supports ( mergedObject ) )
                 {
-                    final Object existingObject = base.get ( j );
-                    if ( matcher.match ( mergedObject, existingObject ) )
+                    // Looking for object of the same type which is also identifiable in the existing list
+                    // Then we compare their IDs and merge them using the same algorithm if IDs are equal
+                    boolean matched = false;
+                    for ( int j = 0; j < base.size (); j++ )
                     {
-                        base.set ( j, merge.merge ( Object.class, existingObject, mergedObject, depth + 1 ) );
-                        matched = true;
-                        break;
+                        final Object existingObject = base.get ( j );
+                        if ( existingObject != null )
+                        {
+                            if ( matcher.supports ( existingObject ) && matcher.match ( mergedObject, existingObject ) )
+                            {
+                                base.set ( j, merge.merge ( Object.class, existingObject, mergedObject, depth + 1 ) );
+                                matched = true;
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            // Throw an exception for null list elements
+                            // todo Probably add some options to resolve this case?
+                            throw new MergeException ( "Base list contains null element(s)" );
+                        }
+                    }
+                    if ( !matched )
+                    {
+                        // Simply adding object to the end of the list
+                        base.add ( mergedObject );
                     }
                 }
-                if ( !matched )
+                else if ( mergedObject != null )
                 {
-                    // Simply adding object to the end of the list
+                    // Simply adding non-identifiable object to the end of the list
                     base.add ( mergedObject );
                 }
-            }
-            else if ( mergedObject != null )
-            {
-                // Simply adding non-identifiable object to the end of the list
-                base.add ( mergedObject );
             }
             else
             {
                 // Throw an exception for null list elements
                 // todo Probably add some options to resolve this case?
-                throw new MergeException ( "ListMergeBehavior doesn't support merging null list elements" );
+                throw new MergeException ( "Merged list contains null element(s)" );
             }
         }
 

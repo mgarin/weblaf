@@ -17,7 +17,9 @@
 
 package com.alee.extended.label;
 
+import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.merge.Merge;
+import com.alee.api.merge.behavior.OmitOnMerge;
 import com.alee.utils.CollectionUtils;
 
 import java.util.ArrayList;
@@ -33,7 +35,6 @@ import java.util.List;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  */
-
 public class TextRanges implements ITextRanges
 {
     /**
@@ -59,7 +60,9 @@ public class TextRanges implements ITextRanges
     /**
      * Cached text ranges built using {@link #plainText} and {@link #styleRanges}.
      */
-    protected List<TextRange> textRanges;
+    @OmitOnClone
+    @OmitOnMerge
+    protected transient List<TextRange> textRanges;
 
     /**
      * Constructs new text ranges.
@@ -141,7 +144,7 @@ public class TextRanges implements ITextRanges
                                 if ( Math.max ( styleStart, start ) < Math.min ( styleEnd, end ) )
                                 {
                                     // Merging style ranges
-                                    styleRange = Merge.basic ().merge ( styleRange, style );
+                                    styleRange = Merge.deep ().merge ( styleRange, style );
                                 }
                             }
                         }

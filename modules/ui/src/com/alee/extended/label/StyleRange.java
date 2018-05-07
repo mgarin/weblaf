@@ -18,7 +18,6 @@
 package com.alee.extended.label;
 
 import com.alee.api.merge.Mergeable;
-import com.alee.api.merge.behavior.OverwriteOnMerge;
 import com.alee.utils.CollectionUtils;
 
 import java.awt.*;
@@ -65,7 +64,6 @@ public class StyleRange implements Mergeable, Cloneable
      *
      * @see com.alee.extended.label.CustomStyle
      */
-    @OverwriteOnMerge
     protected final List<CustomStyle> customStyles;
 
     /**
