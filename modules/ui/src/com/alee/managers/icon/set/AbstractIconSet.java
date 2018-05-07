@@ -17,7 +17,9 @@
 
 package com.alee.managers.icon.set;
 
+import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.merge.Overwriting;
+import com.alee.api.merge.behavior.OmitOnMerge;
 import com.alee.managers.icon.IconException;
 import com.alee.managers.icon.data.AbstractIconData;
 import com.alee.utils.TextUtils;
@@ -25,9 +27,9 @@ import com.alee.utils.TextUtils;
 import javax.swing.*;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Abstract {@link IconSet} common method implementations.
@@ -53,7 +55,9 @@ public abstract class AbstractIconSet implements IconSet, Overwriting, Cloneable
      * Loaded {@link Icon}s cache.
      * It contains: {@link Icon} identifier -> weak reference to loaded {@link Icon}.
      */
-    private final Map<String, Icon> cache;
+    @OmitOnClone
+    @OmitOnMerge
+    private volatile transient Map<String, Icon> cache;
 
     /**
      * Constructs new {@link AbstractIconSet}.
@@ -72,10 +76,7 @@ public abstract class AbstractIconSet implements IconSet, Overwriting, Cloneable
         this.id = id;
 
         // Initializing icon information cache
-        iconsData = new HashMap<String, AbstractIconData> ( 100 );
-
-        // Initializing loaded icons cache
-        cache = new HashMap<String, Icon> ( 30 );
+        this.iconsData = new ConcurrentHashMap<String, AbstractIconData> ( 100 );
     }
 
     @Override
@@ -99,17 +100,26 @@ public abstract class AbstractIconSet implements IconSet, Overwriting, Cloneable
     @Override
     public void addIcon ( final AbstractIconData icon )
     {
-        // Saving lazy icon information
-        iconsData.put ( icon.getId (), icon );
-
-        // Clearing icon cache
-        cache.remove ( icon.getId () );
+        final String id = icon.getId ();
+        if ( id == null )
+        {
+            throw new IconException ( "Icon identifier must not be nul" );
+        }
+        iconsData.put ( id, icon );
+        if ( cache != null )
+        {
+            cache.remove ( id );
+        }
     }
 
     @Override
     public Icon getIcon ( final String id )
     {
-        Icon icon = cache.get ( id );
+        if ( id == null )
+        {
+            throw new IconException ( "Icon identifier must not be nul" );
+        }
+        Icon icon = cache != null ? cache.get ( id ) : null;
         if ( icon == null )
         {
             final AbstractIconData iconData = iconsData.get ( id );
@@ -118,6 +128,20 @@ public abstract class AbstractIconSet implements IconSet, Overwriting, Cloneable
                 try
                 {
                     icon = iconData.getIcon ();
+                    if ( cache == null )
+                    {
+                        synchronized ( this )
+                        {
+                            if ( cache == null )
+                            {
+                                cache = new ConcurrentHashMap<String, Icon> ( 30 );
+                            }
+                        }
+                    }
+                    if ( icon == null )
+                    {
+                        throw new IconException ( "Unable to load icon: " + id );
+                    }
                     cache.put ( id, icon );
                 }
                 catch ( final Exception e )
