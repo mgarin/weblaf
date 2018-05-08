@@ -18,15 +18,16 @@
 package com.alee.managers.style.data;
 
 import com.alee.api.clone.Clone;
-import com.alee.api.clone.behavior.*;
-import com.alee.api.clone.unknownresolver.ExceptionUnknownResolver;
+import com.alee.api.clone.CloneBehavior;
+import com.alee.api.clone.RecursiveClone;
+import com.alee.api.clone.behavior.PreserveOnClone;
 import com.alee.api.jdk.Objects;
 import com.alee.api.merge.Merge;
 import com.alee.managers.style.*;
 import com.alee.painter.Painter;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
-import com.alee.utils.reflection.ModifierType;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -52,29 +53,12 @@ import java.util.Map;
  */
 @XStreamAlias ( "style" )
 @XStreamConverter ( ComponentStyleConverter.class )
-public final class ComponentStyle implements Cloneable, Serializable
+public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Serializable
 {
     /**
      * Component painter identifier.
      */
     public static final String COMPONENT_PAINTER_ID = "painter";
-
-    /**
-     * {@link Clone} algorithm for {@link ComponentStyle}.
-     * It is similar to {@link Clone#deep()} but uses {@link ComponentStyleCloneBehavior} in addition to other behaviors.
-     * This is necessary to preserve parent-child relations between nested {@link ComponentStyle}s.
-     */
-    public static final Clone CLONE = new Clone (
-            new ExceptionUnknownResolver (),
-            new BasicCloneBehavior (),
-            new CloneableCloneBehavior ( CloneableCloneBehavior.Policy.strict ),
-            new ArrayCloneBehavior (),
-            new MapCloneBehavior (),
-            new SetCloneBehavior (),
-            new CollectionCloneBehavior (),
-            new ComponentStyleCloneBehavior (),
-            new ReflectionCloneBehavior ( ReflectionCloneBehavior.Policy.cloneable, ModifierType.STATIC )
-    );
 
     /**
      * Style component type.
@@ -876,9 +860,30 @@ public final class ComponentStyle implements Cloneable, Serializable
     }
 
     @Override
+    public ComponentStyle clone ( final RecursiveClone clone, final int depth )
+    {
+        final ComponentStyle styleCopy = clone.cloneFields ( this, depth );
+
+        /**
+         * Updating transient parent field for child {@link ComponentStyle}s.
+         * This is important since their parent have been cloned and needs to be updated.
+         * Zero depth cloned object doesn't need parent to be updated, it is preserved upon clone.
+         */
+        if ( CollectionUtils.notEmpty ( styleCopy.getNestedStyles () ) )
+        {
+            for ( final ComponentStyle styleCopyChild : styleCopy.getNestedStyles () )
+            {
+                styleCopyChild.setParent ( styleCopy );
+            }
+        }
+
+        return styleCopy;
+    }
+
+    @Override
     public ComponentStyle clone ()
     {
-        return CLONE.clone ( this );
+        return Clone.deep ().clone ( this );
     }
 
     @Override
