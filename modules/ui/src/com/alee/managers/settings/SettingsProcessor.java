@@ -47,6 +47,11 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
         implements Serializable
 {
     /**
+     * todo 1. Separate initialization into install & destruction into uninstall methods
+     * todo 2. Enclose {@link #loadSettings()} and {@link #saveSettings(Serializable)} and pass into abstract methods for convenient use
+     */
+
+    /**
      * {@link JComponent} which settings are being managed.
      */
     protected C component;
@@ -74,8 +79,6 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
      */
     public SettingsProcessor ( final C component, final K configuration )
     {
-        super ();
-
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
@@ -86,16 +89,7 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
         // Performing initial settings load
         if ( configuration.isLoadInitialSettings () )
         {
-            try
-            {
-                load ();
-            }
-            catch ( final Exception e )
-            {
-                final String msg = "Unable to load initial component settings for group '%s' and key '%s' due to unexpected exception";
-                final String fmsg = String.format ( msg, configuration.group (), configuration.key () );
-                LoggerFactory.getLogger ( SettingsProcessor.class ).error ( fmsg, e );
-            }
+            load ();
         }
 
         // Registering specific processor settings
@@ -111,6 +105,46 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
             LoggerFactory.getLogger ( SettingsProcessor.class ).error ( fmsg, e );
         }
     }
+
+    /**
+     * Called when {@link JComponent} is registered in {@link UISettingsManager} and this {@link SettingsProcessor} is attached to it.
+     *
+     * @param component {@link JComponent} to register this {@link SettingsProcessor} for
+     */
+    protected abstract void register ( C component );
+
+    /**
+     * Destroys this SettingsProcessor.
+     */
+    public final void destroy ()
+    {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Unegistering specific processor settings
+        try
+        {
+            unregister ( component () );
+        }
+        catch ( final Exception e )
+        {
+            final String msg = "Unable to unregister specific processor settings for component " +
+                    "with group '%s' and key '%s' due to unexpected exception";
+            final String fmsg = String.format ( msg, configuration.group (), configuration.key () );
+            LoggerFactory.getLogger ( SettingsProcessor.class ).error ( fmsg, e );
+        }
+
+        // Component and configuration
+        this.configuration = null;
+        this.component = null;
+    }
+
+    /**
+     * Called when {@link JComponent} is unregistered from {@link UISettingsManager} and this {@link SettingsProcessor} is detached from it.
+     *
+     * @param component {@link JComponent} to unregister this {@link SettingsProcessor} for
+     */
+    protected abstract void unregister ( C component );
 
     /**
      * Returns {@link JComponent} which settings are being managed.
@@ -131,20 +165,6 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
     {
         return configuration;
     }
-
-    /**
-     * Called when {@link JComponent} is registered in {@link UISettingsManager} and this {@link SettingsProcessor} is attached to it.
-     *
-     * @param component {@link JComponent} to register this {@link SettingsProcessor} for
-     */
-    protected abstract void register ( C component );
-
-    /**
-     * Called when {@link JComponent} is unregistered from {@link UISettingsManager} and this {@link SettingsProcessor} is detached from it.
-     *
-     * @param component {@link JComponent} to unregister this {@link SettingsProcessor} for
-     */
-    protected abstract void unregister ( C component );
 
     /**
      * Returns default value for {@link JComponent} which settings are being managed.
@@ -188,9 +208,21 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
         }
 
         // Load settings
-        loading = true;
-        loadSettings ( component () );
-        loading = false;
+        try
+        {
+            loading = true;
+            loadSettings ( component () );
+        }
+        catch ( final Exception e )
+        {
+            final String msg = "Unable to load component settings for group '%s' and key '%s' due to unexpected exception";
+            final String fmsg = String.format ( msg, configuration.group (), configuration.key () );
+            LoggerFactory.getLogger ( SettingsProcessor.class ).error ( fmsg, e );
+        }
+        finally
+        {
+            loading = false;
+        }
     }
 
     /**
@@ -246,9 +278,21 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
         }
 
         // Save settings
-        saving = true;
-        saveSettings ( component () );
-        saving = false;
+        try
+        {
+            saving = true;
+            saveSettings ( component () );
+        }
+        catch ( final Exception e )
+        {
+            final String msg = "Unable to save component settings for group '%s' and key '%s' due to unexpected exception";
+            final String fmsg = String.format ( msg, configuration.group (), configuration.key () );
+            LoggerFactory.getLogger ( SettingsProcessor.class ).error ( fmsg, e );
+        }
+        finally
+        {
+            saving = false;
+        }
     }
 
     /**
@@ -269,31 +313,5 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
     {
         final K configuration = configuration ();
         SettingsManager.set ( configuration.group (), configuration.key (), value );
-    }
-
-    /**
-     * Destroys this SettingsProcessor.
-     */
-    public final void destroy ()
-    {
-        // Event Dispatch Thread check
-        WebLookAndFeel.checkEventDispatchThread ();
-
-        // Unegistering specific processor settings
-        try
-        {
-            unregister ( component () );
-        }
-        catch ( final Exception e )
-        {
-            final String msg = "Unable to unregister specific processor settings for component " +
-                    "with group '%s' and key '%s' due to unexpected exception";
-            final String fmsg = String.format ( msg, configuration.group (), configuration.key () );
-            LoggerFactory.getLogger ( SettingsProcessor.class ).error ( fmsg, e );
-        }
-
-        // Component and configuration
-        this.configuration = null;
-        this.component = null;
     }
 }
