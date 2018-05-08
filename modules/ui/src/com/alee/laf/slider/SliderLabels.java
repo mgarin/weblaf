@@ -217,20 +217,5 @@ public class SliderLabels extends Hashtable implements PropertyChangeListener
             }
             return slider.getFont ();
         }
-
-        @Override
-        public Color getForeground ()
-        {
-            final Color fg = super.getForeground ();
-            if ( fg != null && !( fg instanceof UIResource ) )
-            {
-                return fg;
-            }
-            if ( !( slider.getForeground () instanceof UIResource ) )
-            {
-                return slider.getForeground ();
-            }
-            return fg;
-        }
     }
 }

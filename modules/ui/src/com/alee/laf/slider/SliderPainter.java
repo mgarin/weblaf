@@ -1013,7 +1013,7 @@ public class SliderPainter<C extends JSlider, U extends WebSliderUI> extends Abs
     {
         final Rectangle tickBounds = tickRect;
 
-        g.setColor ( /*DefaultLookup.getColor ( component, this, "Slider.tickColor",*/ Color.black/* ) */ );
+        g.setColor ( component.isEnabled () ? Color.BLACK : Color.LIGHT_GRAY );
 
         if ( component.getOrientation () == JSlider.HORIZONTAL )
         {

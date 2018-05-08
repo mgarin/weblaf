@@ -81,7 +81,7 @@ public final class StyleConverterUtils
                                        final String propertyName )
     {
         final String ignored = reader.getAttribute ( IGNORED_ATTRIBUTE );
-        if ( ignored != null && Boolean.parseBoolean ( ignored ) )
+        if ( Boolean.parseBoolean ( ignored ) )
         {
             // Adding special value that will be ignored when values are applied
             // This is generally a tricky way to provide
