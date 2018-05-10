@@ -32,7 +32,6 @@ import java.util.*;
  * @author Mikle Garin
  * @see com.alee.laf.list.WebList
  */
-
 public class WebListModel<T> extends AbstractListModel
 {
     /**
@@ -55,7 +54,6 @@ public class WebListModel<T> extends AbstractListModel
      */
     public WebListModel ( final T... data )
     {
-        super ();
         Collections.addAll ( delegate, data );
     }
 
@@ -66,7 +64,6 @@ public class WebListModel<T> extends AbstractListModel
      */
     public WebListModel ( final Collection<T> data )
     {
-        super ();
         delegate.addAll ( data );
     }
 
@@ -465,6 +462,7 @@ public class WebListModel<T> extends AbstractListModel
 
     /**
      * Removes the specified elements from this list.
+     * todo If two+ non-distinct objects are provided - only one will be removed at a time
      *
      * @param objects the components to be removed
      */
@@ -513,13 +511,17 @@ public class WebListModel<T> extends AbstractListModel
             }
             else
             {
-                // We reached range border
-                // Firing interval removal event
-                fireIntervalRemoved ( this, rangeStart, rangeEnd );
-
                 // Updating range with new values
                 rangeStart = index;
                 rangeEnd = index;
+            }
+
+            // Firing on range end
+            if ( i == 0 || rangeStart - 1 != indices.get ( i - 1 ) )
+            {
+                // We reached range border
+                // Firing interval removal event
+                fireIntervalRemoved ( this, rangeStart, rangeEnd );
             }
         }
     }
