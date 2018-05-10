@@ -24,8 +24,8 @@ import com.alee.api.clone.RecursiveClone;
 import com.alee.utils.ReflectUtils;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
+import java.awt.geom.*;
+import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
@@ -79,6 +79,16 @@ public class BasicCloneBehavior implements GlobalCloneBehavior<Object>
                 final Point2D.Double m = ( Point2D.Double ) object;
                 return new Point2D.Double ( m.x, m.y );
             }
+            else if ( clazz == Line2D.Float.class )
+            {
+                final Line2D.Float m = ( Line2D.Float ) object;
+                return new Line2D.Float ( m.x1, m.y1, m.x2, m.y2 );
+            }
+            else if ( clazz == Line2D.Double.class )
+            {
+                final Line2D.Double m = ( Line2D.Double ) object;
+                return new Line2D.Double ( m.x1, m.y1, m.x2, m.y2 );
+            }
             else if ( clazz == Rectangle.class )
             {
                 final Rectangle m = ( Rectangle ) object;
@@ -93,6 +103,16 @@ public class BasicCloneBehavior implements GlobalCloneBehavior<Object>
             {
                 final Rectangle2D.Double m = ( Rectangle2D.Double ) object;
                 return new Rectangle2D.Double ( m.x, m.y, m.width, m.height );
+            }
+            else if ( clazz == Ellipse2D.Float.class )
+            {
+                final Ellipse2D.Float m = ( Ellipse2D.Float ) object;
+                return new Ellipse2D.Float ( m.x, m.y, m.width, m.height );
+            }
+            else if ( clazz == Ellipse2D.Double.class )
+            {
+                final Ellipse2D.Double m = ( Ellipse2D.Double ) object;
+                return new Ellipse2D.Double ( m.x, m.y, m.width, m.height );
             }
             else if ( clazz == AtomicBoolean.class )
             {
@@ -139,6 +159,7 @@ public class BasicCloneBehavior implements GlobalCloneBehavior<Object>
 
     /**
      * Returns whether or not specified object has simple immutable type.
+     * todo Add "java.nio.file.Path" as one of the options
      *
      * @param object object to check
      * @return {@code true} if specified object has simple immutable type, {@code false} otherwise
@@ -154,7 +175,8 @@ public class BasicCloneBehavior implements GlobalCloneBehavior<Object>
                 clazz == Date.class ||
                 clazz == Color.class ||
                 clazz == Font.class ||
-                clazz == BasicStroke.class;
+                clazz == BasicStroke.class ||
+                clazz == File.class;
     }
 
     /**
@@ -167,9 +189,11 @@ public class BasicCloneBehavior implements GlobalCloneBehavior<Object>
     {
         final Class<?> clazz = object.getClass ();
         return clazz == Insets.class ||
-                clazz == Dimension.class ||
+                Dimension2D.class.isAssignableFrom ( clazz ) ||
                 Point2D.class.isAssignableFrom ( clazz ) ||
+                Line2D.class.isAssignableFrom ( clazz ) ||
                 Rectangle2D.class.isAssignableFrom ( clazz ) ||
+                Ellipse2D.class.isAssignableFrom ( clazz ) ||
                 clazz == AtomicBoolean.class ||
                 clazz == AtomicInteger.class ||
                 clazz == AtomicLong.class;
