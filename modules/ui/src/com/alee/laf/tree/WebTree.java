@@ -48,6 +48,7 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 
@@ -265,6 +266,57 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
         {
             this.cellEditor.addCellEditorListener ( listener );
         }
+    }
+
+    /**
+     * Unlike {@link JTree#getToolTipText()} this implementation takes row selection style into account.
+     * That means that tooltips for {@link TreeSelectionStyle#line} will be displayed at any point in the row, not just on the node.
+     *
+     * @param event {@link MouseEvent}
+     * @return tooltip text
+     */
+    @Override
+    public String getToolTipText ( final MouseEvent event )
+    {
+        String tip = null;
+        if ( event != null )
+        {
+            final Point point = event.getPoint ();
+            final WTreeUI ui = getUI ();
+            final int row = ui.getExactRowForLocation ( point );
+            final TreeCellRenderer cellRenderer = getCellRenderer ();
+            if ( row != -1 && cellRenderer != null )
+            {
+                final TreePath path = getPathForRow ( row );
+                final Object value = path.getLastPathComponent ();
+                final boolean selected = isRowSelected ( row );
+                final boolean expanded = isExpanded ( row );
+                final boolean leaf = getModel ().isLeaf ( value );
+                final Component renderer = cellRenderer.getTreeCellRendererComponent ( this, value, selected, expanded, leaf, row, true );
+                if ( renderer instanceof JComponent )
+                {
+                    final Rectangle pathBounds = getPathBounds ( path );
+                    final MouseEvent newEvent = new MouseEvent ( renderer, event.getID (),
+                            event.getWhen (),
+                            event.getModifiers (),
+                            point.x - pathBounds.x,
+                            point.y - pathBounds.y,
+                            event.getXOnScreen (),
+                            event.getYOnScreen (),
+                            event.getClickCount (),
+                            event.isPopupTrigger (),
+                            MouseEvent.NOBUTTON );
+
+                    final JComponent jComponent = ( JComponent ) renderer;
+                    tip = jComponent.getToolTipText ( newEvent );
+                }
+            }
+        }
+        if ( tip == null )
+        {
+            tip = getToolTipText ();
+        }
+        return tip;
     }
 
     /**
