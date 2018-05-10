@@ -17,6 +17,7 @@
 
 package com.alee.utils;
 
+import com.alee.utils.reflection.ReflectionException;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -595,6 +596,30 @@ public final class ProprietaryUtils
     public static Window getWindowAncestorForDialog ( final Component component )
     {
         final Window window = CoreSwingUtils.getWindowAncestor ( component );
-        return window != null && ( window instanceof Dialog || window instanceof Frame ) ? window : getSharedOwnerFrame ();
+        return window instanceof Dialog || window instanceof Frame ? window : getSharedOwnerFrame ();
+    }
+
+    /**
+     * Sets specified {@link Window} type to {@code Window.Type.POPUP}.
+     * Temporary substitute for JDK7+ {@code Window#setType(Window.Type)} method.
+     *
+     * @param window {@link Window} to change type for
+     */
+    public static void setPopupWindowType ( final Window window )
+    {
+        if ( SystemUtils.isJava7orAbove () )
+        {
+            try
+            {
+                //
+                final Class type = ReflectUtils.getInnerClass ( Window.class, "Type" );
+                final Object popup = ReflectUtils.getStaticFieldValue ( type, "POPUP" );
+                ReflectUtils.callMethod ( window, "setType", popup );
+            }
+            catch ( final Exception e )
+            {
+                throw new ReflectionException ( "Unable to setup Window type: " + window );
+            }
+        }
     }
 }

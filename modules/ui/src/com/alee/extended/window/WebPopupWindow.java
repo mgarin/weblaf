@@ -18,6 +18,7 @@
 package com.alee.extended.window;
 
 import com.alee.laf.window.WebWindow;
+import com.alee.utils.ProprietaryUtils;
 
 import java.awt.*;
 
@@ -26,7 +27,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public class WebPopupWindow extends WebWindow
 {
     /**
@@ -39,6 +39,7 @@ public class WebPopupWindow extends WebWindow
         super ( owner );
         setName ( "###focusableSwingPopup###" );
         setFocusableWindowState ( false );
+        ProprietaryUtils.setPopupWindowType ( this );
         setModalExclusionType ( Dialog.ModalExclusionType.APPLICATION_EXCLUDE );
     }
 
@@ -48,9 +49,14 @@ public class WebPopupWindow extends WebWindow
         // Updating visibility
         super.setVisible ( b );
 
-        // Enabling focusable state after window display
-        // We have to do that after due to minor issues with window focus
-        // Otherwise it causes native window decoration blink on some OS
+        /**
+         * Enabling focusable state AFTER window display.
+         * We have to do it in that specific order due to issues with window focus state on some OS.
+         * For instance it causes native window decoration to blink sometimes under Windows OS.
+         *
+         * todo In JDK7+ releases there was a new Window "type" option introduced that can be set to "POPUP".
+         * todo Maybe it can solve some of the focusing issues appearing on the later JDK releases, but that needs to be tested.
+         */
         setFocusableWindowState ( b );
     }
 }
