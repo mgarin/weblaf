@@ -30,7 +30,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class JTreeExample extends AbstractStylePreviewExample
 {
     @Override

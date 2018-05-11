@@ -28,7 +28,6 @@ import javax.swing.tree.MutableTreeNode;
  * @param <V> node type
  * @author Mikle Garin
  */
-
 public abstract class TreeToolTipProvider<V extends MutableTreeNode>
         extends AbstractToolTipProvider<V, JTree, TreeCellArea<V, JTree>>
 {

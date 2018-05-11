@@ -23,7 +23,6 @@ package com.alee.api.ui;
  * @author Mikle Garin
  * @see RenderingBridge
  */
-
 public interface RenderingParameters
 {
     /**

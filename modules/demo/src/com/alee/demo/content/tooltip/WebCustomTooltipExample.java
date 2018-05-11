@@ -36,7 +36,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebCustomTooltipExample extends AbstractStylePreviewExample
 {
     @Override
@@ -61,12 +60,12 @@ public class WebCustomTooltipExample extends AbstractStylePreviewExample
     protected List<Preview> createPreviews ()
     {
         // todo Change styleId to something that com.alee.managers.tooltip.WebCustomTooltip will actually use
-        final BasicTooltip e1 = new BasicTooltip ( FeatureState.updated, StyleId.tooltip );
-        final InstantTooltip e2 = new InstantTooltip ( FeatureState.updated, StyleId.tooltip );
-        final MultipleTooltips e3 = new MultipleTooltips ( FeatureState.updated, StyleId.tooltip );
-        final HotkeyTooltip e4 = new HotkeyTooltip ( FeatureState.updated, StyleId.tooltip );
-        final OneTimeTooltip e5 = new OneTimeTooltip ( FeatureState.updated, StyleId.tooltip );
-        final CustomTooltip e6 = new CustomTooltip ( FeatureState.updated, StyleId.tooltip );
+        final BasicTooltip e1 = new BasicTooltip ( FeatureState.updated, StyleId.customtooltip );
+        final InstantTooltip e2 = new InstantTooltip ( FeatureState.updated, StyleId.customtooltip );
+        final MultipleTooltips e3 = new MultipleTooltips ( FeatureState.updated, StyleId.customtooltip );
+        final HotkeyTooltip e4 = new HotkeyTooltip ( FeatureState.updated, StyleId.customtooltip );
+        final OneTimeTooltip e5 = new OneTimeTooltip ( FeatureState.updated, StyleId.customtooltip );
+        final CustomTooltip e6 = new CustomTooltip ( FeatureState.updated, StyleId.customtooltip );
         return CollectionUtils.<Preview>asList ( e1, e2, e3, e4, e5, e6 );
     }
 

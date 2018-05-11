@@ -29,7 +29,6 @@ import javax.swing.*;
  * @param <C> {@link JTable} type
  * @author Mikle Garin
  */
-
 public class TableCellParameters<V, C extends JTable> implements RenderingParameters
 {
     /**
@@ -61,6 +60,18 @@ public class TableCellParameters<V, C extends JTable> implements RenderingParame
      * Whether or not cell has focus.
      */
     protected final boolean focused;
+
+    /**
+     * Constructs new {@link TableCellParameters}.
+     * Parameters are calculated within this constuctor when used.
+     *
+     * @param table {@link JTable}
+     * @param area  {@link TableCellArea}
+     */
+    public TableCellParameters ( final C table, final TableCellArea<V, C> area )
+    {
+        this ( table, area.row (), area.column () );
+    }
 
     /**
      * Constructs new {@link TableCellParameters}.

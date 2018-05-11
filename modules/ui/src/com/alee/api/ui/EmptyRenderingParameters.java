@@ -24,7 +24,6 @@ import com.alee.laf.WebLookAndFeel;
  *
  * @author Mikle Garin
  */
-
 public final class EmptyRenderingParameters implements RenderingParameters
 {
     /**

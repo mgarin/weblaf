@@ -28,7 +28,6 @@ import javax.swing.*;
  * @param <V> cell value type
  * @author Mikle Garin
  */
-
 public abstract class TableToolTipProvider<V> extends AbstractToolTipProvider<V, JTable, TableCellArea<V, JTable>>
 {
     @Override

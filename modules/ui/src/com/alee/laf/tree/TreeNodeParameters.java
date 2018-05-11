@@ -31,7 +31,6 @@ import javax.swing.tree.TreePath;
  * @param <C> {@link JTree} type
  * @author Mikle Garin
  */
-
 public class TreeNodeParameters<N extends TreeNode, C extends JTree> implements RenderingParameters
 {
     /**
@@ -68,6 +67,18 @@ public class TreeNodeParameters<N extends TreeNode, C extends JTree> implements 
      * Whether or not {@link TreeNode} has focus.
      */
     protected final boolean focused;
+
+    /**
+     * Constructs new {@link TreeNodeParameters}.
+     * Parameters are calculated within this constuctor when used.
+     *
+     * @param tree {@link JTree}
+     * @param area {@link TreeCellArea}
+     */
+    public TreeNodeParameters ( final C tree, final TreeCellArea<? extends N, C> area )
+    {
+        this ( tree, ( N ) tree.getPathForRow ( area.row () ).getLastPathComponent () );
+    }
 
     /**
      * Constructs new {@link TreeNodeParameters}.

@@ -26,12 +26,11 @@ import java.awt.*;
 /**
  * {@link ComponentArea} implementation describing {@link JTree} cell area.
  *
- * @param <V> node type
+ * @param <N> node type
  * @param <C> component type
  * @author Mikle Garin
  */
-
-public class TreeCellArea<V extends MutableTreeNode, C extends JTree> implements ComponentArea<V, C>
+public class TreeCellArea<N extends MutableTreeNode, C extends JTree> implements ComponentArea<N, C>
 {
     /**
      * Tree row index.
@@ -66,14 +65,15 @@ public class TreeCellArea<V extends MutableTreeNode, C extends JTree> implements
     }
 
     @Override
-    public V getValue ( final C component )
+    public N getValue ( final C component )
     {
-        return ( V ) component.getPathForRow ( row ).getLastPathComponent ();
+        return ( N ) component.getPathForRow ( row ).getLastPathComponent ();
     }
 
     @Override
     public boolean equals ( final Object other )
     {
-        return other != null && other instanceof TreeCellArea && this.row == ( ( TreeCellArea ) other ).row;
+        return other instanceof TreeCellArea &&
+                this.row == ( ( TreeCellArea ) other ).row;
     }
 }

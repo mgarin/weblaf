@@ -29,7 +29,6 @@ import javax.swing.tree.MutableTreeNode;
  * @param <C> {@link WebCheckBoxTree} type
  * @author Mikle Garin
  */
-
 public class CheckBoxTreeNodeParameters<N extends MutableTreeNode, C extends WebCheckBoxTree<N>> extends TreeNodeParameters<N, C>
 {
     /**

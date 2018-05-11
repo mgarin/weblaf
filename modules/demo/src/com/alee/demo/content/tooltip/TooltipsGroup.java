@@ -39,7 +39,10 @@ public class TooltipsGroup extends AbstractExampleGroup
     {
         return CollectionUtils.<Class>asList (
                 JTooltipExample.class,
-                WebCustomTooltipExample.class
+                WebCustomTooltipExample.class,
+                ListTooltipExample.class,
+                TableTooltipExample.class,
+                TreeTooltipExample.class
         );
     }
 }

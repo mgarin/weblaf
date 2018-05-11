@@ -206,7 +206,7 @@ public final class SampleData
      * Sample list item object.
      * It supports translation based on the provided language key in combination with example key.
      */
-    private static class ListItem implements TextBridge<ListCellParameters<ListItem, JList>>
+    public static class ListItem implements TextBridge<ListCellParameters<ListItem, JList>>
     {
         /**
          * Item language key.

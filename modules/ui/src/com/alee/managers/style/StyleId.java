@@ -698,6 +698,7 @@ public final class StyleId implements Identifiable
      * {@link com.alee.managers.tooltip.WebCustomTooltip} style identifiers.
      * todo Add proper parent (WebCustomTooltip should become a panel or have its own styles)
      */
+    public static final StyleId customtooltip = StyleId.of ( "customtooltip" );
     public static final StyleId customtooltipLabel = StyleId.of ( "customtooltip-label" );
     public static final StyleId customtooltipHotkeyLabel = StyleId.of ( "customtooltip-hotkey" );
 
@@ -1054,7 +1055,7 @@ public final class StyleId implements Identifiable
     public boolean equals ( final Object obj )
     {
         boolean equals = false;
-        if ( obj != null && obj instanceof StyleId )
+        if ( obj instanceof StyleId )
         {
             final StyleId other = ( StyleId ) obj;
             equals = Objects.equals ( getId (), other.getId () ) && getParent () == other.getParent ();

@@ -32,7 +32,7 @@ public abstract class AbstractPreview implements Preview
     protected Example example;
 
     /**
-     * Preview id.
+     * Preview identifier.
      */
     protected final String id;
 

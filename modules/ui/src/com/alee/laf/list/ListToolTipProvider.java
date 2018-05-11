@@ -27,7 +27,6 @@ import javax.swing.*;
  * @param <V> cell value type
  * @author Mikle Garin
  */
-
 public abstract class ListToolTipProvider<V> extends AbstractToolTipProvider<V, JList, ListCellArea<V, JList>>
 {
     /**

@@ -30,7 +30,6 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public class ListCellArea<V, C extends JList> extends AbstractComponentArea<V, C>
 {
     /**
@@ -85,6 +84,7 @@ public class ListCellArea<V, C extends JList> extends AbstractComponentArea<V, C
     @Override
     public boolean equals ( final Object other )
     {
-        return other != null && other instanceof ListCellArea && this.index == ( ( ListCellArea ) other ).index;
+        return other instanceof ListCellArea &&
+                this.index == ( ( ListCellArea ) other ).index;
     }
 }

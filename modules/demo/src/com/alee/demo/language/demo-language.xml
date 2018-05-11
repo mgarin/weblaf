@@ -435,6 +435,66 @@
                     </record>
                 </Dictionary>
             </Dictionary>
+            <Dictionary prefix="listtooltip">
+                <record key="title">
+                    <value lang="en">Tooltips in JList</value>
+                    <value lang="ru">Подсказки в JList</value>
+                </record>
+                <Dictionary prefix="swing">
+                    <record key="title">
+                        <value lang="en">Swing tooltips</value>
+                        <value lang="ru">Swing подсказки</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="custom">
+                    <record key="title">
+                        <value lang="en">Custom tooltips</value>
+                        <value lang="ru">Кастомные подсказки</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="tabletooltip">
+                <record key="title">
+                    <value lang="en">Tooltips in JTable</value>
+                    <value lang="ru">Подсказки в JTable</value>
+                </record>
+                <Dictionary prefix="swing">
+                    <record key="title">
+                        <value lang="en">Swing tooltips</value>
+                        <value lang="ru">Swing подсказки</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="custom">
+                    <record key="title">
+                        <value lang="en">Custom tooltips</value>
+                        <value lang="ru">Кастомные подсказки</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="treetooltip">
+                <record key="title">
+                    <value lang="en">Tooltips in JTree</value>
+                    <value lang="ru">Подсказки в JTree</value>
+                </record>
+                <Dictionary prefix="swing">
+                    <record key="title">
+                        <value lang="en">Swing tooltips</value>
+                        <value lang="ru">Swing подсказки</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="advanced">
+                    <record key="title">
+                        <value lang="en">Advanced Swing tooltips</value>
+                        <value lang="ru">Улучшенные Swing подсказки</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="custom">
+                    <record key="title">
+                        <value lang="en">Custom tooltips</value>
+                        <value lang="ru">Кастомные подсказки</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
         </Dictionary>
         <Dictionary prefix="buttons">
             <record key="title">

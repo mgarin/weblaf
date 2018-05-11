@@ -29,7 +29,6 @@ import javax.swing.*;
  * @param <C> {@link JList} type
  * @author Mikle Garin
  */
-
 public class ListCellParameters<V, C extends JList> implements RenderingParameters
 {
     /**
@@ -56,6 +55,18 @@ public class ListCellParameters<V, C extends JList> implements RenderingParamete
      * Whether or not cell has focus.
      */
     protected final boolean focused;
+
+    /**
+     * Constructs new {@link ListCellParameters}.
+     * Parameters are calculated within this constuctor when used.
+     *
+     * @param list {@link JList}
+     * @param area {@link ListCellArea}
+     */
+    public ListCellParameters ( final C list, final ListCellArea<V, C> area )
+    {
+        this ( list, area.index () );
+    }
 
     /**
      * Constructs new {@link ListCellParameters}.

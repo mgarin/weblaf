@@ -31,7 +31,6 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public class TableCellArea<V, C extends JTable> extends AbstractComponentArea<V, C>
 {
     /**
@@ -100,7 +99,8 @@ public class TableCellArea<V, C extends JTable> extends AbstractComponentArea<V,
     @Override
     public boolean equals ( final Object other )
     {
-        return other != null && other instanceof TableCellArea &&
-                this.row == ( ( TableCellArea ) other ).row && this.column == ( ( TableCellArea ) other ).column;
+        return other instanceof TableCellArea &&
+                this.row == ( ( TableCellArea ) other ).row &&
+                this.column == ( ( TableCellArea ) other ).column;
     }
 }

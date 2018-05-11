@@ -28,7 +28,6 @@ import javax.swing.*;
  * @param <C> {@link JList} type
  * @author Mikle Garin
  */
-
 public class ComboBoxCellParameters<V, C extends JList> extends ListCellParameters<V, C>
 {
     /**

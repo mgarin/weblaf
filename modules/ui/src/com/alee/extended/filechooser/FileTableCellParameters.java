@@ -28,7 +28,6 @@ import java.io.File;
  * @param <C> {@link WebFileTable} type
  * @author Mikle Garin
  */
-
 public class FileTableCellParameters<V extends File, C extends WebFileTable> extends TableCellParameters<V, C>
 {
     /**
