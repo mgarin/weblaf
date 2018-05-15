@@ -379,6 +379,13 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C>
                 calendar.setDate ( date );
             }
 
+            // Passing focus into the field
+            if ( source == UpdateSource.calendar )
+            {
+                field.setCaretPosition ( field.getText ().length () );
+                field.requestFocusInWindow ();
+            }
+
             // Resetting mark
             updating = false;
         }

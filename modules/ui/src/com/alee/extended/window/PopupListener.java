@@ -26,7 +26,6 @@ import java.util.EventListener;
  * @see com.alee.extended.window.WebPopup
  * @see com.alee.managers.popup.WebInnerPopup
  */
-
 public interface PopupListener extends EventListener
 {
     /**
