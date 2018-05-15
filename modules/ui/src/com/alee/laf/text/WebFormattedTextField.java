@@ -33,6 +33,7 @@ import com.alee.managers.tooltip.TooltipWay;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
+import com.alee.utils.ReflectUtils;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
 
@@ -40,6 +41,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.text.Format;
 import java.util.List;
@@ -189,6 +191,62 @@ public class WebFormattedTextField extends JFormattedTextField implements IInput
     {
         super ( formatter );
         setStyleId ( id );
+    }
+
+    /**
+     * Overridden to avoid consuming Enter ans ESC key events if text and value were not changed.
+     * This should allow these hotkeys to be used in other key bindings even if this field is focused.
+     * This fix was taken from JDK-4741926 bug report and it seems that bug is still there in all Java versions.
+     *
+     * @see <a href="https://bugs.openjdk.java.net/browse/JDK-4741926">JDK-4741926</a>
+     */
+    @Override
+    protected boolean processKeyBinding ( final KeyStroke ks, final KeyEvent e, final int condition, final boolean pressed )
+    {
+        final Object oldValue = getValue ();
+        final String oldText = getText ();
+        boolean b = super.processKeyBinding ( ks, e, condition, pressed );
+        final InputMap map = getInputMap ( condition );
+        if ( map != null )
+        {
+            final Object binding = map.get ( ks );
+            if ( binding != null && ( binding.equals ( "notify-field-accept" ) || binding.equals ( "reset-field-edit" ) ) &&
+                    !( Boolean ) ReflectUtils.callMethodSafely ( this, "isEdited" ) )
+            {
+                boolean isValueChanged = true;
+                if ( oldValue != null )
+                {
+                    if ( oldValue.equals ( getValue () ) )
+                    {
+                        isValueChanged = false;
+                    }
+                }
+                else if ( getValue () == null )
+                {
+                    isValueChanged = false;
+                }
+                if ( !isValueChanged )
+                {
+                    boolean isTextChanged = true;
+                    if ( oldText != null )
+                    {
+                        if ( oldText.equals ( getText () ) )
+                        {
+                            isTextChanged = false;
+                        }
+                    }
+                    else if ( getText () == null )
+                    {
+                        isTextChanged = false;
+                    }
+                    if ( !isTextChanged )
+                    {
+                        b = false;
+                    }
+                }
+            }
+        }
+        return b;
     }
 
     /**

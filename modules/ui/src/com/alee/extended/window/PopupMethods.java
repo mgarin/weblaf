@@ -26,7 +26,6 @@ import com.alee.utils.swing.extensions.MethodExtension;
  * @see com.alee.utils.swing.extensions.MethodExtension
  * @see com.alee.extended.window.PopupMethodsImpl
  */
-
 public interface PopupMethods extends MethodExtension
 {
     /**
