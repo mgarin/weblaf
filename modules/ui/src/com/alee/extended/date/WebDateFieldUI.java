@@ -246,6 +246,7 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C>
             public void run ( final KeyEvent e )
             {
                 showDateChooserPopup ();
+                e.consume ();
             }
         } );
         button.addActionListener ( new ActionListener ()
