@@ -21,7 +21,6 @@ import com.alee.utils.SystemUtils;
 import com.alee.utils.system.JavaVersion;
 import org.junit.Test;
 
-
 /**
  * Simple JVM version test.
  *

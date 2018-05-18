@@ -37,7 +37,6 @@ import javax.swing.plaf.ComponentUI;
  *
  * @author Mikle Garin
  */
-
 @FixMethodOrder ( MethodSorters.JVM )
 public final class ComponentDescriptorTest
 {
@@ -111,7 +110,7 @@ public final class ComponentDescriptorTest
     /**
      * Custom {@link ComponentDescriptor} for {@link JLabel}.
      */
-    public static class MyLabelDescriptor extends AbstractComponentDescriptor<JLabel>
+    public static class MyLabelDescriptor extends AbstractComponentDescriptor<JLabel, WLabelUI>
     {
         /**
          * Constrcuts new {@link MyLabelDescriptor}.
@@ -135,6 +134,7 @@ public final class ComponentDescriptorTest
          * @param c component that will use UI instance
          * @return instance of the {@link MyLabelUI}
          */
+        @SuppressWarnings ( "unused" )
         public static ComponentUI createUI ( final JComponent c )
         {
             return new MyLabelUI ();

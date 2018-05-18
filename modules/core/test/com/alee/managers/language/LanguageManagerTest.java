@@ -34,7 +34,6 @@ import java.util.Locale;
  *
  * @author Mikle Garin
  */
-
 @FixMethodOrder ( MethodSorters.JVM )
 public final class LanguageManagerTest
 {
