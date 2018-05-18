@@ -18,20 +18,24 @@
 package com.alee.laf.text;
 
 import com.alee.managers.style.AbstractComponentDescriptor;
-import com.alee.managers.style.ComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
-import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.TextUI;
 import javax.swing.text.JTextComponent;
 
 /**
- * {@link ComponentDescriptor} implementation that provides UI update operation common for all {@link JTextComponent}s.
+ * Abstract descriptor for {@link JTextComponent} implementations.
+ * Extend this class for creating custom {@link JTextComponent} descriptors.
  *
  * @param <C> {@link JTextComponent} type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public class AbstractTextComponentDescriptor<C extends JTextComponent> extends AbstractComponentDescriptor<C>
+public class AbstractTextComponentDescriptor<C extends JTextComponent, U extends TextUI> extends AbstractComponentDescriptor<C, U>
 {
     /**
      * Constructs new {@link AbstractTextComponentDescriptor}.
@@ -44,9 +48,7 @@ public class AbstractTextComponentDescriptor<C extends JTextComponent> extends A
      * @param defaultStyleId component default style ID
      */
     public AbstractTextComponentDescriptor ( final String id, final Class<C> componentClass, final String uiClassID,
-                                             final Class<? extends ComponentUI> baseUIClass,
-                                             final Class<? extends ComponentUI> uiClass,
-                                             final StyleId defaultStyleId )
+                                             final Class<U> baseUIClass, final Class<? extends U> uiClass, final StyleId defaultStyleId )
     {
         super ( id, componentClass, uiClassID, baseUIClass, uiClass, defaultStyleId );
     }

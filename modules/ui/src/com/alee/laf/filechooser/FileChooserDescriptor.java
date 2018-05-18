@@ -17,21 +17,22 @@
 
 package com.alee.laf.filechooser;
 
-import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
-import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileSystemView;
-import javax.swing.filechooser.FileView;
 
 /**
- * Custom descriptor for {@link JFileChooser} component.
+ * Basic descriptor for {@link JFileChooser} component.
+ * For creating custom {@link JFileChooser} descriptor {@link AbstractFileChooserDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class FileChooserDescriptor extends AbstractComponentDescriptor<JFileChooser>
+public final class FileChooserDescriptor extends AbstractFileChooserDescriptor<JFileChooser, WFileChooserUI>
 {
     /**
      * Constructs new descriptor for {@link JFileChooser} component.
@@ -39,34 +40,5 @@ public final class FileChooserDescriptor extends AbstractComponentDescriptor<JFi
     public FileChooserDescriptor ()
     {
         super ( "filechooser", JFileChooser.class, "FileChooserUI", WFileChooserUI.class, WebFileChooserUI.class, StyleId.filechooser );
-    }
-
-    @Override
-    public void updateUI ( final JFileChooser component )
-    {
-        // Removing all files filter
-        if ( component.isAcceptAllFileFilterUsed () )
-        {
-            component.removeChoosableFileFilter ( component.getAcceptAllFileFilter () );
-        }
-
-        // Update file view as file chooser was probably deserialized
-        if ( component.getFileSystemView () == null )
-        {
-            component.setFileSystemView ( FileSystemView.getFileSystemView () );
-        }
-
-        // Updating component UI
-        super.updateUI ( component );
-
-        // Updating UI file view for this file chooser
-        final FileView fileView = component.getUI ().getFileView ( component );
-        ReflectUtils.setFieldValueSafely ( component, "uiFileView", fileView );
-
-        // Adding all files filter
-        if ( component.isAcceptAllFileFilterUsed () )
-        {
-            component.addChoosableFileFilter ( component.getAcceptAllFileFilter () );
-        }
     }
 }

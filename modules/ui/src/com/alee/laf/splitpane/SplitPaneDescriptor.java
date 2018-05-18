@@ -17,18 +17,22 @@
 
 package com.alee.laf.splitpane;
 
-import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 
 /**
- * Custom descriptor for {@link JSplitPane} component.
+ * Basic descriptor for {@link JSplitPane} component.
+ * For creating custom {@link JSplitPane} descriptor {@link AbstractSplitPaneDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class SplitPaneDescriptor extends AbstractComponentDescriptor<JSplitPane>
+public final class SplitPaneDescriptor extends AbstractSplitPaneDescriptor<JSplitPane, WSplitPaneUI>
 {
     /**
      * Constructs new descriptor for {@link JSplitPane} component.
@@ -36,15 +40,5 @@ public final class SplitPaneDescriptor extends AbstractComponentDescriptor<JSpli
     public SplitPaneDescriptor ()
     {
         super ( "splitpane", JSplitPane.class, "SplitPaneUI", WSplitPaneUI.class, WebSplitPaneUI.class, StyleId.splitpane );
-    }
-
-    @Override
-    public void updateUI ( final JSplitPane component )
-    {
-        // Updating component UI
-        super.updateUI ( component );
-
-        // Updating component layout and view
-        component.revalidate ();
     }
 }

@@ -17,17 +17,22 @@
 
 package com.alee.extended.dock;
 
-import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
 /**
- * Custom descriptor for {@link WebDockablePane} component.
+ * Basic descriptor for {@link WebDockablePane} component.
+ * For creating custom {@link WebDockablePane} descriptor {@link AbstractDockablePaneDescriptor} class can be extended.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
+ * @see WebDockablePane
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class DockablePaneDescriptor extends AbstractComponentDescriptor<WebDockablePane>
+public final class DockablePaneDescriptor extends AbstractDockablePaneDescriptor<WebDockablePane, WDockablePaneUI>
 {
     /**
      * Constructs new descriptor for {@link WebDockablePane} component.
@@ -36,16 +41,5 @@ public final class DockablePaneDescriptor extends AbstractComponentDescriptor<We
     {
         super ( "dockablepane", WebDockablePane.class, "DockablePaneUI", WDockablePaneUI.class, WebDockablePaneUI.class,
                 StyleId.dockablepane );
-    }
-
-    @Override
-    public void updateUI ( final WebDockablePane component )
-    {
-        // Updating component UI
-        super.updateUI ( component );
-
-        // Updating dockable pane glass layer
-        final WDockablePaneUI ui = component.getUI ();
-        component.setGlassLayer ( ui.createGlassLayer () );
     }
 }

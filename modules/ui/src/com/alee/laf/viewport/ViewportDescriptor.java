@@ -17,18 +17,22 @@
 
 package com.alee.laf.viewport;
 
-import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 
 /**
- * Custom descriptor for {@link JViewport} component.
+ * Basic descriptor for {@link JViewport} component.
+ * For creating custom {@link JViewport} descriptor {@link AbstractViewportDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class ViewportDescriptor extends AbstractComponentDescriptor<JViewport>
+public final class ViewportDescriptor extends AbstractViewportDescriptor<JViewport, WViewportUI>
 {
     /**
      * Constructs new descriptor for {@link JViewport} component.

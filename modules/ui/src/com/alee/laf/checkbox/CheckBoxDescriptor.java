@@ -17,18 +17,23 @@
 
 package com.alee.laf.checkbox;
 
-import com.alee.managers.style.AbstractComponentDescriptor;
+import com.alee.laf.button.AbstractCheckBoxDescriptor;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 
 /**
- * Custom descriptor for {@link JCheckBox} component.
+ * Basic descriptor for {@link JCheckBox} component.
+ * For creating custom {@link JCheckBox} descriptor {@link AbstractCheckBoxDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class CheckBoxDescriptor extends AbstractComponentDescriptor<JCheckBox>
+public final class CheckBoxDescriptor extends AbstractCheckBoxDescriptor<JCheckBox, WCheckBoxUI>
 {
     /**
      * Constructs new descriptor for {@link JCheckBox} component.

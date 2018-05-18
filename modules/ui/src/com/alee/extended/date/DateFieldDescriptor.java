@@ -17,16 +17,20 @@
 
 package com.alee.extended.date;
 
-import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
 /**
- * Custom descriptor for {@link WebDateField} component.
+ * Basic descriptor for {@link WebDateField} component.
+ * For creating custom {@link WebDateField} descriptor {@link AbstractDateFieldDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class DateFieldDescriptor extends AbstractComponentDescriptor<WebDateField>
+public final class DateFieldDescriptor extends AbstractDateFieldDescriptor<WebDateField, WDateFieldUI>
 {
     /**
      * Constructs new descriptor for {@link WebDateField} component.

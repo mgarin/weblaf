@@ -17,19 +17,22 @@
 
 package com.alee.laf.combobox;
 
-import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
- * Custom descriptor for {@link JComboBox} component.
+ * Basic descriptor for {@link JComboBox} component.
+ * For creating custom {@link JComboBox} descriptor {@link AbstractComboBoxDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class ComboBoxDescriptor extends AbstractComponentDescriptor<JComboBox>
+public final class ComboBoxDescriptor extends AbstractComboBoxDescriptor<JComboBox, WComboBoxUI>
 {
     /**
      * Constructs new descriptor for {@link JComboBox} component.
@@ -37,19 +40,5 @@ public final class ComboBoxDescriptor extends AbstractComponentDescriptor<JCombo
     public ComboBoxDescriptor ()
     {
         super ( "combobox", JComboBox.class, "ComboBoxUI", WComboBoxUI.class, WebComboBoxUI.class, StyleId.combobox );
-    }
-
-    @Override
-    public void updateUI ( final JComboBox component )
-    {
-        // Updating component UI
-        super.updateUI ( component );
-
-        // Updating renderer UI
-        final ListCellRenderer renderer = component.getRenderer ();
-        if ( renderer instanceof Component )
-        {
-            SwingUtilities.updateComponentTreeUI ( ( Component ) renderer );
-        }
     }
 }

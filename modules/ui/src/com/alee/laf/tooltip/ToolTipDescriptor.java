@@ -17,18 +17,22 @@
 
 package com.alee.laf.tooltip;
 
-import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 
 /**
- * Custom descriptor for {@link JToolTip} component.
+ * Basic descriptor for {@link JToolTip} component.
+ * For creating custom {@link JToolTip} descriptor {@link AbstractToolTipDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class ToolTipDescriptor extends AbstractComponentDescriptor<JToolTip>
+public final class ToolTipDescriptor extends AbstractToolTipDescriptor<JToolTip, WToolTipUI>
 {
     /**
      * Constructs new descriptor for {@link JToolTip} component.

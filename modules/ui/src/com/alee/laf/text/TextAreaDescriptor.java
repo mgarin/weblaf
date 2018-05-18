@@ -22,12 +22,17 @@ import com.alee.managers.style.StyleId;
 import javax.swing.*;
 
 /**
- * Custom descriptor for {@link JTextArea} component.
+ * Basic descriptor for {@link JTextArea} component.
+ * For creating custom {@link JTextArea} descriptor {@link AbstractTextAreaDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class TextAreaDescriptor extends AbstractTextComponentDescriptor<JTextArea>
+public final class TextAreaDescriptor extends AbstractTextAreaDescriptor<JTextArea, WTextAreaUI>
 {
     /**
      * Constructs new descriptor for {@link JTextArea} component.

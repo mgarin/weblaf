@@ -28,9 +28,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * {@link ComponentDescriptor} implementation that stores various common information about the component.
+ * Abstract {@link ComponentDescriptor} implementation that stores various common information about the component.
+ * It is used by all abstract and basic descriptors within WebLaF.
+ * It can also be used for creating descriptors for any custom {@link JComponent} implementations.
  *
  * @param <C> {@link JComponent} type
+ * @param <U> base {@link ComponentUI} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see StyleManager
@@ -38,7 +41,7 @@ import java.util.Map;
  * @see StyleManager#unregisterComponentDescriptor(ComponentDescriptor)
  * @see StyleManager#initializeDescriptors()
  */
-public abstract class AbstractComponentDescriptor<C extends JComponent> implements ComponentDescriptor<C>
+public abstract class AbstractComponentDescriptor<C extends JComponent, U extends ComponentUI> implements ComponentDescriptor<C, U>
 {
     /**
      * todo 1. Add specific painter class definition
@@ -70,12 +73,12 @@ public abstract class AbstractComponentDescriptor<C extends JComponent> implemen
     /**
      * Base UI class applicable to this component.
      */
-    protected final Class<? extends ComponentUI> baseUIClass;
+    protected final Class<U> baseUIClass;
 
     /**
      * UI class applied to the component by default.
      */
-    protected final Class<? extends ComponentUI> uiClass;
+    protected final Class<? extends U> uiClass;
 
     /**
      * Component default style ID.
@@ -93,9 +96,7 @@ public abstract class AbstractComponentDescriptor<C extends JComponent> implemen
      * @param defaultStyleId component default style ID
      */
     public AbstractComponentDescriptor ( final String id, final Class<C> componentClass, final String uiClassId,
-                                         final Class<? extends ComponentUI> baseUIClass,
-                                         final Class<? extends ComponentUI> uiClass,
-                                         final StyleId defaultStyleId )
+                                         final Class<U> baseUIClass, final Class<? extends U> uiClass, final StyleId defaultStyleId )
     {
         super ();
         this.id = id;
@@ -119,13 +120,13 @@ public abstract class AbstractComponentDescriptor<C extends JComponent> implemen
     }
 
     @Override
-    public Class<? extends ComponentUI> getBaseUIClass ()
+    public Class<U> getBaseUIClass ()
     {
         return baseUIClass;
     }
 
     @Override
-    public Class<? extends ComponentUI> getUIClass ()
+    public Class<? extends U> getUIClass ()
     {
         return uiClass;
     }
@@ -221,7 +222,7 @@ public abstract class AbstractComponentDescriptor<C extends JComponent> implemen
             {
                 // Using default UI class
                 // We don't need to get it from LaF as descriptor value considered to be more important
-                final Class<? extends ComponentUI> uiClass = getUIClass ();
+                final Class<? extends U> uiClass = getUIClass ();
 
                 // Creating UI instance using common Swing way
                 final ComponentUI uiInstance = createUI ( component, uiClass );
@@ -251,7 +252,7 @@ public abstract class AbstractComponentDescriptor<C extends JComponent> implemen
      * @param uiClass   {@link ComponentUI} class
      * @return {@code ComponentUI} implementation instance for the specified component
      */
-    protected ComponentUI createUI ( final C component, final Class<? extends ComponentUI> uiClass )
+    protected ComponentUI createUI ( final C component, final Class<? extends U> uiClass )
     {
         final ComponentUI ui;
         if ( uiClass != null )

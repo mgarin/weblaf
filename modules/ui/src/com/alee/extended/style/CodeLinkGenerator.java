@@ -44,6 +44,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.HyperlinkEvent;
+import javax.swing.plaf.ComponentUI;
 import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -141,7 +142,7 @@ public class CodeLinkGenerator implements LinkGenerator
                     {
                         final Segment content = attribute.getValueSegment ();
                         final String type = element.getAttributeValue ( ComponentStyleConverter.COMPONENT_TYPE_ATTRIBUTE );
-                        final ComponentDescriptor<JComponent> descriptor = StyleManager.getDescriptor ( type );
+                        final ComponentDescriptor<JComponent, ComponentUI> descriptor = StyleManager.getDescriptor ( type );
 
                         return new LinkGeneratorResult ()
                         {

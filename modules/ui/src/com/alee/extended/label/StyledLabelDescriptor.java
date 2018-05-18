@@ -17,16 +17,20 @@
 
 package com.alee.extended.label;
 
-import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
 /**
- * Custom descriptor for {@link WebStyledLabel} component.
+ * Basic descriptor for {@link WebStyledLabel} component.
+ * For creating custom {@link WebStyledLabel} descriptor {@link AbstractStyledLabelDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class StyledLabelDescriptor extends AbstractComponentDescriptor<WebStyledLabel>
+public final class StyledLabelDescriptor extends AbstractStyledLabelDescriptor<WebStyledLabel, WStyledLabelUI>
 {
     /**
      * Constructs new descriptor for {@link WebStyledLabel} component.

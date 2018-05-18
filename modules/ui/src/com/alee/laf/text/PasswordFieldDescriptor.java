@@ -22,17 +22,18 @@ import com.alee.managers.style.StyleId;
 import javax.swing.*;
 
 /**
- * Custom descriptor for {@link JPasswordField} component.
+ * Basic descriptor for {@link JPasswordField} component.
+ * For creating custom {@link JPasswordField} descriptor {@link AbstractPasswordFieldDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class PasswordFieldDescriptor extends AbstractTextComponentDescriptor<JPasswordField>
+public final class PasswordFieldDescriptor extends AbstractPasswordFieldDescriptor<JPasswordField, WPasswordFieldUI>
 {
-    /**
-     * todo 1. Retrieve echo char from style variables or component settings?
-     */
-
     /**
      * Constructs new descriptor for {@link JPasswordField} component.
      */
@@ -40,18 +41,5 @@ public final class PasswordFieldDescriptor extends AbstractTextComponentDescript
     {
         super ( "passwordfield", JPasswordField.class, "PasswordFieldUI", WPasswordFieldUI.class, WebPasswordFieldUI.class,
                 StyleId.passwordfield );
-    }
-
-    @Override
-    public void updateUI ( final JPasswordField component )
-    {
-        // Default echo char
-        if ( !component.echoCharIsSet () )
-        {
-            component.setEchoChar ( '*' );
-        }
-
-        // Updating component UI
-        super.updateUI ( component );
     }
 }

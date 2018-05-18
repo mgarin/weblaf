@@ -17,16 +17,21 @@
 
 package com.alee.extended.checkbox;
 
-import com.alee.managers.style.AbstractComponentDescriptor;
+import com.alee.laf.button.AbstractTristateCheckBoxDescriptor;
 import com.alee.managers.style.StyleId;
 
 /**
- * Custom descriptor for {@link WebTristateCheckBox} component.
+ * Basic descriptor for {@link WebTristateCheckBox} component.
+ * For creating custom {@link WebTristateCheckBox} descriptor {@link AbstractTristateCheckBoxDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class TristateCheckBoxDescriptor extends AbstractComponentDescriptor<WebTristateCheckBox>
+public final class TristateCheckBoxDescriptor extends AbstractTristateCheckBoxDescriptor<WebTristateCheckBox, WTristateCheckBoxUI>
 {
     /**
      * Constructs new descriptor for {@link WebTristateCheckBox} component.

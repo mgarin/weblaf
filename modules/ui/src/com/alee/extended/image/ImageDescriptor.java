@@ -17,16 +17,20 @@
 
 package com.alee.extended.image;
 
-import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
 /**
- * Custom descriptor for {@link WebImage} component.
+ * Basic descriptor for {@link WebImage} component.
+ * For creating custom {@link WebImage} descriptor {@link AbstractImageDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class ImageDescriptor extends AbstractComponentDescriptor<WebImage>
+public final class ImageDescriptor extends AbstractImageDescriptor<WebImage, WImageUI>
 {
     /**
      * Constructs new descriptor for {@link WebImage} component.

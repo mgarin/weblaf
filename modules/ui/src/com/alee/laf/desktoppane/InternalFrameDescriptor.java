@@ -17,19 +17,22 @@
 
 package com.alee.laf.desktoppane;
 
-import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
-import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
 
 /**
- * Custom descriptor for {@link JInternalFrame} component.
+ * Basic descriptor for {@link JInternalFrame} component.
+ * For creating custom {@link JInternalFrame} descriptor {@link AbstractInternalFrameDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class InternalFrameDescriptor extends AbstractComponentDescriptor<JInternalFrame>
+public final class InternalFrameDescriptor extends AbstractInternalFrameDescriptor<JInternalFrame, WebInternalFrameUI>
 {
     /**
      * Constructs new descriptor for {@link JInternalFrame} component.
@@ -38,22 +41,5 @@ public final class InternalFrameDescriptor extends AbstractComponentDescriptor<J
     {
         super ( "internalframe", JInternalFrame.class, "InternalFrameUI", WebInternalFrameUI.class, WebInternalFrameUI.class,
                 StyleId.internalframe );
-    }
-
-    @Override
-    public void updateUI ( final JInternalFrame component )
-    {
-        // Updating component UI
-        super.updateUI ( component );
-
-        // Invalidating component
-        component.invalidate ();
-
-        // Updating frame icon UI
-        final JInternalFrame.JDesktopIcon desktopIcon = component.getDesktopIcon ();
-        if ( desktopIcon != null )
-        {
-            ReflectUtils.callMethodSafely ( desktopIcon, "updateUIWhenHidden" );
-        }
     }
 }

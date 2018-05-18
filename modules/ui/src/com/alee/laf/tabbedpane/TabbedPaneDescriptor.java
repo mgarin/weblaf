@@ -17,18 +17,22 @@
 
 package com.alee.laf.tabbedpane;
 
-import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 
 /**
- * Custom descriptor for {@link JTabbedPane} component.
+ * Basic descriptor for {@link JTabbedPane} component.
+ * For creating custom {@link JTabbedPane} descriptor {@link AbstractTabbedPaneDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class TabbedPaneDescriptor extends AbstractComponentDescriptor<JTabbedPane>
+public final class TabbedPaneDescriptor extends AbstractTabbedPaneDescriptor<JTabbedPane, WTabbedPaneUI>
 {
     /**
      * Constructs new descriptor for {@link JTabbedPane} component.

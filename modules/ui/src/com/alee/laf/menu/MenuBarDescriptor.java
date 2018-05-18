@@ -17,18 +17,22 @@
 
 package com.alee.laf.menu;
 
-import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 
 /**
- * Custom descriptor for {@link JMenuBar} component.
+ * Basic descriptor for {@link JMenuBar} component.
+ * For creating custom {@link JMenuBar} descriptor {@link AbstractMenuBarDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class MenuBarDescriptor extends AbstractComponentDescriptor<JMenuBar>
+public final class MenuBarDescriptor extends AbstractMenuBarDescriptor<JMenuBar, WebMenuBarUI>
 {
     /**
      * Constructs new descriptor for {@link JMenuBar} component.

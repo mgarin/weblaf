@@ -22,12 +22,17 @@ import com.alee.managers.style.StyleId;
 import javax.swing.*;
 
 /**
- * Custom descriptor for {@link JFormattedTextField} component.
+ * Basic descriptor for {@link JFormattedTextField} component.
+ * For creating custom {@link JFormattedTextField} descriptor {@link AbstractFormattedTextFieldDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class FormattedTextFieldDescriptor extends AbstractTextComponentDescriptor<JFormattedTextField>
+public final class FormattedTextFieldDescriptor extends AbstractFormattedTextFieldDescriptor<JFormattedTextField, WFormattedTextFieldUI>
 {
     /**
      * Constructs new descriptor for {@link JFormattedTextField} component.

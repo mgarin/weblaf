@@ -5,6 +5,7 @@ import com.alee.api.jdk.Objects;
 import com.alee.utils.CoreSwingUtils;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 import java.lang.ref.WeakReference;
 
@@ -1020,7 +1021,7 @@ public final class StyleId implements Identifiable
     private String getPathId ( final JComponent component )
     {
         // Full identifier for this part of the path
-        final ComponentDescriptor<JComponent> descriptor = StyleManager.getDescriptor ( component );
+        final ComponentDescriptor<JComponent, ComponentUI> descriptor = StyleManager.getDescriptor ( component );
         final String fullId = descriptor.getId () + ":" + getId ();
 
         // Combined identifiers path

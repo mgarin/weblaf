@@ -17,18 +17,22 @@
 
 package com.alee.laf.label;
 
-import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 
 /**
- * Custom descriptor for {@link JLabel} component.
+ * Basic descriptor for {@link JLabel} component.
+ * For creating custom {@link JLabel} descriptor {@link AbstractLabelDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class LabelDescriptor extends AbstractComponentDescriptor<JLabel>
+public final class LabelDescriptor extends AbstractLabelDescriptor<JLabel, WLabelUI>
 {
     /**
      * Constructs new descriptor for {@link JLabel} component.

@@ -17,19 +17,22 @@
 
 package com.alee.laf.desktoppane;
 
-import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
- * Custom descriptor for {@link JInternalFrame.JDesktopIcon} component.
+ * Basic descriptor for {@link JInternalFrame.JDesktopIcon} component.
+ * For creating custom {@link JInternalFrame.JDesktopIcon} descriptor {@link AbstractDesktopIconDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class DesktopIconDescriptor extends AbstractComponentDescriptor<JInternalFrame.JDesktopIcon>
+public final class DesktopIconDescriptor extends AbstractDesktopIconDescriptor<JInternalFrame.JDesktopIcon, WebDesktopIconUI>
 {
     /**
      * Constructs new descriptor for {@link JInternalFrame.JDesktopIcon} component.
@@ -38,27 +41,5 @@ public final class DesktopIconDescriptor extends AbstractComponentDescriptor<JIn
     {
         super ( "desktopicon", JInternalFrame.JDesktopIcon.class, "DesktopIconUI", WebDesktopIconUI.class, WebDesktopIconUI.class,
                 StyleId.desktopicon );
-    }
-
-    @Override
-    public void updateUI ( final JInternalFrame.JDesktopIcon component )
-    {
-        // Updating component UI
-        super.updateUI ( component );
-
-        // Invalidating component
-        component.invalidate ();
-
-        // Updating component size
-        final Dimension ps = component.getPreferredSize ();
-        component.setSize ( ps.width, ps.height );
-
-        // Updating internal frame UI
-        // Don't do this if UI not created yet
-        final JInternalFrame internalFrame = component.getInternalFrame ();
-        if ( internalFrame != null && internalFrame.getUI () != null )
-        {
-            SwingUtilities.updateComponentTreeUI ( internalFrame );
-        }
     }
 }

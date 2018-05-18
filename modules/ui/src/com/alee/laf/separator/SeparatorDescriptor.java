@@ -17,18 +17,22 @@
 
 package com.alee.laf.separator;
 
-import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 
 /**
- * Custom descriptor for {@link JSeparator} component.
+ * Basic descriptor for {@link JSeparator} component.
+ * For creating custom {@link JSeparator} descriptor {@link AbstractSeparatorDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class SeparatorDescriptor extends AbstractComponentDescriptor<JSeparator>
+public final class SeparatorDescriptor extends AbstractSeparatorDescriptor<JSeparator, WSeparatorUI>
 {
     /**
      * Constructs new descriptor for {@link JSeparator} component.

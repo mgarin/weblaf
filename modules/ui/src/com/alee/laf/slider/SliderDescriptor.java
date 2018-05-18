@@ -17,19 +17,22 @@
 
 package com.alee.laf.slider;
 
-import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
-import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
 
 /**
- * Custom descriptor for {@link JSlider} component.
+ * Basic descriptor for {@link JSlider} component.
+ * For creating custom {@link JSlider} descriptor {@link AbstractSliderDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class SliderDescriptor extends AbstractComponentDescriptor<JSlider>
+public final class SliderDescriptor extends AbstractSliderDescriptor<JSlider, WebSliderUI>
 {
     /**
      * Constructs new descriptor for {@link JSlider} component.
@@ -37,15 +40,5 @@ public final class SliderDescriptor extends AbstractComponentDescriptor<JSlider>
     public SliderDescriptor ()
     {
         super ( "slider", JSlider.class, "SliderUI", WebSliderUI.class, WebSliderUI.class, StyleId.slider );
-    }
-
-    @Override
-    public void updateUI ( final JSlider component )
-    {
-        // Updating component UI
-        super.updateUI ( component );
-
-        // Updating label UIs
-        ReflectUtils.callMethodSafely ( component, "updateLabelUIs" );
     }
 }

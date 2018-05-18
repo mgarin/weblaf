@@ -17,21 +17,22 @@
 
 package com.alee.laf.tree;
 
-import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
-import javax.swing.tree.TreeCellEditor;
-import javax.swing.tree.TreeCellRenderer;
-import java.awt.*;
 
 /**
- * Custom descriptor for {@link JTree} component.
+ * Basic descriptor for {@link JTree} component.
+ * For creating custom {@link JTree} descriptor {@link AbstractTreeDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class TreeDescriptor extends AbstractComponentDescriptor<JTree>
+public final class TreeDescriptor extends AbstractTreeDescriptor<JTree, WTreeUI>
 {
     /**
      * Constructs new descriptor for {@link JTree} component.
@@ -39,34 +40,5 @@ public final class TreeDescriptor extends AbstractComponentDescriptor<JTree>
     public TreeDescriptor ()
     {
         super ( "tree", JTree.class, "TreeUI", WTreeUI.class, WebTreeUI.class, StyleId.tree );
-    }
-
-    @Override
-    public void updateUI ( final JTree component )
-    {
-        // Updating component UI
-        super.updateUI ( component );
-
-        // Updating renderer UI
-        final TreeCellRenderer renderer = component.getCellRenderer ();
-        if ( renderer instanceof Component )
-        {
-            SwingUtilities.updateComponentTreeUI ( ( Component ) renderer );
-        }
-
-        // Updating editor UI
-        final TreeCellEditor editor = component.getCellEditor ();
-        if ( editor instanceof Component )
-        {
-            SwingUtilities.updateComponentTreeUI ( ( Component ) editor );
-        }
-        else if ( editor instanceof DefaultCellEditor )
-        {
-            final Component editorComponent = ( ( DefaultCellEditor ) editor ).getComponent ();
-            if ( editorComponent != null )
-            {
-                SwingUtilities.updateComponentTreeUI ( editorComponent );
-            }
-        }
     }
 }

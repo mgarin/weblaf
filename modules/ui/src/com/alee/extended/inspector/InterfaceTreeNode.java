@@ -25,7 +25,7 @@ import com.alee.extended.inspector.info.JComponentPreview;
 import com.alee.extended.inspector.info.WComponentPreview;
 import com.alee.laf.tree.TreeNodeParameters;
 import com.alee.laf.tree.UniqueNode;
-import com.alee.managers.style.Skin;
+import com.alee.managers.style.StyleAdapter;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleListener;
 import com.alee.managers.style.StyleManager;
@@ -218,20 +218,8 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
                 final JComponent jComponent = ( JComponent ) component;
                 if ( LafUtils.hasWebLafUI ( jComponent ) )
                 {
-                    styleListener = new StyleListener ()
+                    styleListener = new StyleAdapter ()
                     {
-                        @Override
-                        public void skinChanged ( final JComponent component, final Skin oldSkin, final Skin newSkin )
-                        {
-                            // We don't need to react to visual updates
-                        }
-
-                        @Override
-                        public void styleChanged ( final JComponent component, final StyleId oldStyleId, final StyleId newStyleId )
-                        {
-                            // We don't need to react to visual updates
-                        }
-
                         @Override
                         public void skinUpdated ( final JComponent component, final StyleId styleId )
                         {

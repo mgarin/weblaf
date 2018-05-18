@@ -26,6 +26,7 @@ import javax.swing.plaf.ComponentUI;
  * Interface for various information and behavior providers for {@link JComponent} implementations.
  *
  * @param <C> {@link JComponent} type
+ * @param <U> base {@link ComponentUI} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see StyleManager
@@ -34,7 +35,7 @@ import javax.swing.plaf.ComponentUI;
  * @see StyleManager#initializeDescriptors()
  * @see AbstractComponentDescriptor
  */
-public interface ComponentDescriptor<C extends JComponent> extends Identifiable
+public interface ComponentDescriptor<C extends JComponent, U extends ComponentUI> extends Identifiable
 {
     /**
      * Returns {@link JComponent} class.
@@ -56,7 +57,7 @@ public interface ComponentDescriptor<C extends JComponent> extends Identifiable
      *
      * @return base UI class applicable to this component
      */
-    public Class<? extends ComponentUI> getBaseUIClass ();
+    public Class<U> getBaseUIClass ();
 
     /**
      * Returns UI class applied to the component by default.
@@ -64,7 +65,7 @@ public interface ComponentDescriptor<C extends JComponent> extends Identifiable
      *
      * @return UI class applied to the component by default
      */
-    public Class<? extends ComponentUI> getUIClass ();
+    public Class<? extends U> getUIClass ();
 
     /**
      * Returns component default style ID.

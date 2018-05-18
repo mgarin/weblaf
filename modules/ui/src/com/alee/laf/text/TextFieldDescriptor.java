@@ -22,12 +22,17 @@ import com.alee.managers.style.StyleId;
 import javax.swing.*;
 
 /**
- * Custom descriptor for {@link JTextField} component.
+ * Basic descriptor for {@link JTextField} component.
+ * For creating custom {@link JTextField} descriptor {@link AbstractTextFieldDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class TextFieldDescriptor extends AbstractTextComponentDescriptor<JTextField>
+public final class TextFieldDescriptor extends AbstractTextFieldDescriptor<JTextField, WTextFieldUI>
 {
     /**
      * Constructs new descriptor for {@link JTextField} component.

@@ -17,18 +17,23 @@
 
 package com.alee.laf.menu;
 
-import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 
 /**
- * Custom descriptor for {@link JRadioButtonMenuItem} component.
+ * Basic descriptor for {@link JRadioButtonMenuItem} component.
+ * For creating custom {@link JRadioButtonMenuItem} descriptor {@link AbstractRadioButtonMenuItemDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class RadioButtonMenuItemDescriptor extends AbstractComponentDescriptor<JRadioButtonMenuItem>
+public final class RadioButtonMenuItemDescriptor
+        extends AbstractRadioButtonMenuItemDescriptor<JRadioButtonMenuItem, WebRadioButtonMenuItemUI>
 {
     /**
      * Constructs new descriptor for {@link JRadioButtonMenuItem} component.

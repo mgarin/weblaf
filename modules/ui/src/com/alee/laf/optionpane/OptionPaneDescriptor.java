@@ -17,18 +17,22 @@
 
 package com.alee.laf.optionpane;
 
-import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 
 /**
- * Custom descriptor for {@link JOptionPane} component.
+ * Basic descriptor for {@link JOptionPane} component.
+ * For creating custom {@link JOptionPane} descriptor {@link AbstractOptionPaneDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
+ * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-
-public final class OptionPaneDescriptor extends AbstractComponentDescriptor<JOptionPane>
+public final class OptionPaneDescriptor extends AbstractOptionPaneDescriptor<JOptionPane, WebOptionPaneUI>
 {
     /**
      * Constructs new descriptor for {@link JOptionPane} component.
