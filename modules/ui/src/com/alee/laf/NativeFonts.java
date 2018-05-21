@@ -24,6 +24,8 @@ import com.alee.utils.SystemUtils;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.plaf.FontUIResource;
+import javax.swing.plaf.synth.Region;
+import javax.swing.plaf.synth.SynthConstants;
 import java.awt.*;
 
 /**
@@ -32,11 +34,12 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public final class NativeFonts
 {
     /**
-     * todo 1. Should only be working as a fallback for a more convenient style-related implementation instead of default implementation
+     * todo 1. Separate native font retrieval into NativeFonts interface implementations
+     * todo 2. Should only be working as a fallback for a more convenient style-related implementation instead of default implementation
+     * todo 3. Don't use generalized fonts for {@link ControlType}s, they do not fit all possible use cases on different OS
      */
 
     /**
@@ -59,6 +62,36 @@ public final class NativeFonts
      * Whether or not native OS fonts should be used when possible.
      */
     private static boolean useNativeFonts = true;
+
+    /**
+     * Whether or not GTK is available.
+     * It is {@code null} until availability is checked.
+     */
+    private static volatile Boolean gtkAvailable = null;
+
+    /**
+     * Whether or not {@code com.sun.java.swing.plaf.gtk.GTKStyleFactory} is available.
+     * It is {@code null} until factory instantiation is attempted.
+     */
+    private static volatile Boolean gtkStyleFactoryAvailable = null;
+
+    /**
+     * {@code com.sun.java.swing.plaf.gtk.GTKStyleFactory} instance.
+     * Can be {@code null} if it was not requested yet or not available.
+     */
+    private static Object gtkStyleFactory = null;
+
+    /**
+     * Whether or not default GTK {@code Font} is available.
+     * It is {@code null} until default GTK {@link Font} is requested for the first time.
+     */
+    private static volatile Boolean defaultGTKFontAvailable = null;
+
+    /**
+     * Default GTK {@code Font}.
+     * Can be {@code null} if it was not requested yet or not available.
+     */
+    private static Font defaultGTKFont = null;
 
     /**
      * Returns whether or not native OS fonts should be used when possible.
@@ -305,6 +338,97 @@ public final class NativeFonts
             }
             case UNIX:
             case SOLARIS:
+            {
+                switch ( control )
+                {
+                    default:
+                    case CONTROL:
+                    {
+                        font = getUnixFont ( Region.BUTTON, new Supplier<FontUIResource> ()
+                        {
+                            @Override
+                            public FontUIResource get ()
+                            {
+                                return new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 );
+                            }
+                        } );
+                        break;
+                    }
+                    case TEXT:
+                    {
+                        font = getUnixFont ( Region.TEXT_FIELD, new Supplier<FontUIResource> ()
+                        {
+                            @Override
+                            public FontUIResource get ()
+                            {
+                                return new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 );
+                            }
+                        } );
+                        break;
+                    }
+                    case TOOLTIP:
+                    {
+                        font = getUnixFont ( Region.TOOL_TIP, new Supplier<FontUIResource> ()
+                        {
+                            @Override
+                            public FontUIResource get ()
+                            {
+                                return new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 );
+                            }
+                        } );
+                        break;
+                    }
+                    case MESSAGE:
+                    {
+                        font = getUnixFont ( Region.OPTION_PANE, new Supplier<FontUIResource> ()
+                        {
+                            @Override
+                            public FontUIResource get ()
+                            {
+                                return new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 );
+                            }
+                        } );
+                        break;
+                    }
+                    case MENU:
+                    {
+                        font = getUnixFont ( Region.MENU_ITEM, new Supplier<FontUIResource> ()
+                        {
+                            @Override
+                            public FontUIResource get ()
+                            {
+                                return new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 );
+                            }
+                        } );
+                        break;
+                    }
+                    case MENU_SMALL:
+                    {
+                        font = getUnixFont ( Region.MENU_ITEM_ACCELERATOR, new Supplier<FontUIResource> ()
+                        {
+                            @Override
+                            public FontUIResource get ()
+                            {
+                                return new FontUIResource ( SANS_SERIF, Font.PLAIN, 11 );
+                            }
+                        } );
+                        break;
+                    }
+                    case WINDOW:
+                    {
+                        font = getUnixFont ( Region.INTERNAL_FRAME_TITLE_PANE, new Supplier<FontUIResource> ()
+                        {
+                            @Override
+                            public FontUIResource get ()
+                            {
+                                return new FontUIResource ( SANS_SERIF, Font.BOLD, 12 );
+                            }
+                        } );
+                        break;
+                    }
+                }
+                break;
+            }
             case UNKNOWN:
             default:
             {
@@ -410,8 +534,7 @@ public final class NativeFonts
             final Class fontManager = ReflectUtils.getClass ( "sun.font.FontManager" );
             try
             {
-                final Boolean defaultEncoding = ReflectUtils.callStaticMethod ( fontManager, "fontSupportsDefaultEncoding", font );
-                if ( !defaultEncoding )
+                if ( !( Boolean ) ReflectUtils.callStaticMethod ( fontManager, "fontSupportsDefaultEncoding", font ) )
                 {
                     try
                     {
@@ -513,5 +636,233 @@ public final class NativeFonts
             fontUIResource = new FontUIResource ( font );
         }
         return fontUIResource;
+    }
+
+    /**
+     * Returns native Mac OS X {@link FontUIResource} using the specified retrieval method name.
+     *
+     * @param region   {@link Region} to retrieve font for
+     * @param fallback {@link Supplier} for the fallback {@link FontUIResource}
+     * @return native Mac OS X {@link FontUIResource} using the specified retrieval method name
+     */
+    private static FontUIResource getUnixFont ( final Region region, final Supplier<FontUIResource> fallback )
+    {
+        Font font;
+        if ( isUseNativeFonts () && isGTKAvailable () )
+        {
+            final Object factory = getGTKStyleFactory ();
+            if ( factory != null )
+            {
+                try
+                {
+                    final Object style = ReflectUtils.callMethod ( factory, "getStyle", null, region );
+                    try
+                    {
+                        if ( SystemUtils.isJava9orAbove () )
+                        {
+                            font = ReflectUtils.callMethod ( style, "getDefaultFont" );
+                        }
+                        else if ( SystemUtils.isJava7orAbove () )
+                        {
+                            final Object[] args = { null };
+                            font = ReflectUtils.callMethod ( style, "getFontForState", args );
+                        }
+                        else
+                        {
+                            final Object[] args = { null, region, SynthConstants.ENABLED };
+                            font = ReflectUtils.callMethod ( style, "getFontForState", args );
+                        }
+                    }
+                    catch ( final Exception e )
+                    {
+                        final String msg = "Unable to retrieve region Font: %s";
+                        LoggerFactory.getLogger ( NativeFonts.class ).error ( String.format ( msg, region ) );
+                        font = fallback.get ();
+                    }
+                }
+                catch ( final Exception e )
+                {
+                    final String msg = "Unable to retrieve region style: %s";
+                    LoggerFactory.getLogger ( NativeFonts.class ).error ( String.format ( msg, region ) );
+                    font = fallback.get ();
+                }
+            }
+            else
+            {
+                font = fallback.get ();
+            }
+        }
+        else
+        {
+            font = fallback.get ();
+        }
+
+        // Enclosing font in FontUIResource if needed
+        final FontUIResource fontUIResource;
+        if ( font instanceof FontUIResource )
+        {
+            fontUIResource = ( FontUIResource ) font;
+        }
+        else
+        {
+            fontUIResource = new FontUIResource ( font );
+        }
+        return fontUIResource;
+    }
+
+    /**
+     * Returns whether or not GTK is available.
+     *
+     * @return {@code true} if GTK is available, {@code false} otherwise
+     */
+    private static boolean isGTKAvailable ()
+    {
+        if ( gtkAvailable == null )
+        {
+            synchronized ( NativeFonts.class )
+            {
+                if ( gtkAvailable == null )
+                {
+                    if ( SystemUtils.isJava7orAbove () )
+                    {
+                        try
+                        {
+                            gtkAvailable = ReflectUtils.callMethod ( Toolkit.getDefaultToolkit (), "isNativeGTKAvailable" );
+                            if ( gtkAvailable )
+                            {
+                                try
+                                {
+                                    gtkAvailable = ReflectUtils.callMethod ( Toolkit.getDefaultToolkit (), "loadGTK" );
+                                }
+                                catch ( final Exception e )
+                                {
+                                    final String msg = "Unable to load GTK libraries";
+                                    LoggerFactory.getLogger ( NativeFonts.class ).error ( msg );
+                                    gtkAvailable = false;
+                                }
+                            }
+                        }
+                        catch ( final Exception e )
+                        {
+                            final String msg = "Unable to check GTK availability";
+                            LoggerFactory.getLogger ( NativeFonts.class ).error ( msg );
+                            gtkAvailable = false;
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            gtkAvailable = ReflectUtils.callMethod ( Toolkit.getDefaultToolkit (), "checkGTK" );
+                        }
+                        catch ( final Exception e )
+                        {
+                            final String msg = "Unable to check GTK availability";
+                            LoggerFactory.getLogger ( NativeFonts.class ).error ( msg );
+                            gtkAvailable = false;
+                        }
+                    }
+                }
+            }
+        }
+        return gtkAvailable;
+    }
+
+    /**
+     * Returns {@code com.sun.java.swing.plaf.gtk.GTKStyleFactory} instance or {@code null} if it cannot be instantiated.
+     * Note that this method will only attempt {@code com.sun.java.swing.plaf.gtk.GTKStyleFactory} instantiation once and will cache result.
+     *
+     * @return {@code com.sun.java.swing.plaf.gtk.GTKStyleFactory} instance or {@code null} if it cannot be instantiated
+     */
+    private static Object getGTKStyleFactory ()
+    {
+        if ( gtkStyleFactoryAvailable == null )
+        {
+            synchronized ( NativeFonts.class )
+            {
+                if ( gtkStyleFactoryAvailable == null )
+                {
+                    try
+                    {
+                        gtkStyleFactory = ReflectUtils.createInstance ( "com.sun.java.swing.plaf.gtk.GTKStyleFactory" );
+                        final Font defaultGTKFont = getDefaultGTKFont ();
+                        if ( defaultGTKFont != null )
+                        {
+                            try
+                            {
+                                ReflectUtils.callMethod ( gtkStyleFactory, "initStyles", defaultGTKFont );
+                                gtkStyleFactoryAvailable = true;
+                            }
+                            catch ( final Exception e )
+                            {
+                                final String msg = "Unable to initialize GTKStyleFactory styles";
+                                LoggerFactory.getLogger ( NativeFonts.class ).error ( msg );
+                                gtkStyleFactory = null;
+                                gtkStyleFactoryAvailable = false;
+                            }
+                        }
+                        else
+                        {
+                            gtkStyleFactory = null;
+                            gtkStyleFactoryAvailable = false;
+                        }
+                    }
+                    catch ( final Exception e )
+                    {
+                        final String msg = "Unable to instantiate GTK style factory";
+                        LoggerFactory.getLogger ( NativeFonts.class ).error ( msg );
+                        gtkStyleFactory = null;
+                        gtkStyleFactoryAvailable = false;
+                    }
+                }
+            }
+        }
+        return gtkStyleFactory;
+    }
+
+    /**
+     * Returns default GTK {@link Font}.
+     *
+     * @return default GTK {@link Font}
+     */
+    private static Font getDefaultGTKFont ()
+    {
+        if ( defaultGTKFontAvailable == null )
+        {
+            synchronized ( NativeFonts.class )
+            {
+                if ( defaultGTKFontAvailable == null )
+                {
+                    try
+                    {
+                        // Desktop property appears to have preference over rc font
+                        Object fontName = Toolkit.getDefaultToolkit ().getDesktopProperty ( "gnome.Gtk/FontName" );
+                        if ( !( fontName instanceof String ) )
+                        {
+                            final Class ec = ReflectUtils.getClass ( "com.sun.java.swing.plaf.gtk.GTKEngine" );
+                            final Object engine = ReflectUtils.getStaticFieldValue ( ec, "INSTANCE" );
+                            final Class settings = ReflectUtils.getInnerClass ( ec, "Settings" );
+                            final Object fontKey = ReflectUtils.getStaticFieldValue ( settings, "GTK_FONT_NAME" );
+                            fontName = ReflectUtils.callMethod ( engine, "getSetting", fontKey );
+                            if ( !( fontName instanceof String ) )
+                            {
+                                fontName = "SansSerif 12";
+                            }
+                        }
+                        defaultGTKFont = ReflectUtils.callStaticMethod ( "com.sun.java.swing.plaf.gtk.PangoFonts",
+                                "lookupFont", ( String ) fontName );
+                        defaultGTKFontAvailable = true;
+                    }
+                    catch ( final Exception e )
+                    {
+                        final String msg = "Unable retrieve default GTK font";
+                        LoggerFactory.getLogger ( NativeFonts.class ).error ( msg );
+                        defaultGTKFont = null;
+                        defaultGTKFontAvailable = false;
+                    }
+                }
+            }
+        }
+        return defaultGTKFont;
     }
 }

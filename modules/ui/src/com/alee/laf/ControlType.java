@@ -22,9 +22,13 @@ package com.alee.laf;
  *
  * @author Mikle Garin
  */
-
 public enum ControlType
 {
+    /**
+     * todo 1. Replace with specific control types usage?
+     * todo    This is generally a simplification for available types for some use cases, but it is not fully correct.
+     */
+
     /**
      * @see com.alee.extended.canvas.WebCanvas
      * @see com.alee.extended.image.WebImage
