@@ -602,12 +602,13 @@ public final class ProprietaryUtils
     /**
      * Sets specified {@link Window} type to {@code Window.Type.POPUP}.
      * Temporary substitute for JDK7+ {@code Window#setType(Window.Type)} method.
+     * Also {@code Window.Type.POPUP} is not set for Unix systems due to window prioritization issues.
      *
      * @param window {@link Window} to change type for
      */
     public static void setPopupWindowType ( final Window window )
     {
-        if ( SystemUtils.isJava7orAbove () )
+        if ( SystemUtils.isJava7orAbove () && !SystemUtils.isUnix () )
         {
             try
             {
