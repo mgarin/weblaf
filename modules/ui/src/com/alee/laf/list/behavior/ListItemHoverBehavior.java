@@ -29,7 +29,6 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public abstract class ListItemHoverBehavior<C extends JList> extends AbstractObjectHoverBehavior<C, Integer>
 {
     /**

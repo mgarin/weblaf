@@ -27,7 +27,6 @@ import com.alee.utils.swing.HoverListener;
  *
  * @author Mikle Garin
  */
-
 public class ListHoverSelectionBehavior implements HoverListener<Integer>, Behavior
 {
     /**

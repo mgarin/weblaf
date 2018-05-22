@@ -49,7 +49,6 @@ import java.beans.PropertyChangeListener;
  * @param <V> hovered element type
  * @author Mikle Garin
  */
-
 public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> extends AbstractComponentBehavior<C>
         implements MouseListener, MouseMotionListener, ComponentListener, AncestorListener, DragListener, PropertyChangeListener
 {

@@ -44,7 +44,6 @@ import java.awt.event.MouseEvent;
  * @see #install()
  * @see #uninstall()
  */
-
 public class ComponentResizeBehavior extends MouseAdapter implements Behavior, SwingConstants
 {
     /**

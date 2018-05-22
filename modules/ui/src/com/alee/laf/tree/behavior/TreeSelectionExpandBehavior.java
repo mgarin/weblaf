@@ -28,7 +28,6 @@ import javax.swing.event.TreeSelectionListener;
  *
  * @author Mikle Garin
  */
-
 public class TreeSelectionExpandBehavior implements TreeSelectionListener, Behavior
 {
     /**

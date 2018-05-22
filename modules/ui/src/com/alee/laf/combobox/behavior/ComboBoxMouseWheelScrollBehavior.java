@@ -17,7 +17,7 @@
 
 package com.alee.laf.combobox.behavior;
 
-import com.alee.extended.behavior.Behavior;
+import com.alee.extended.behavior.AbstractComponentBehavior;
 import com.alee.utils.MathUtils;
 import com.alee.utils.SwingUtils;
 
@@ -30,13 +30,11 @@ import java.awt.event.MouseWheelListener;
  *
  * @author Mikle Garin
  */
-
-public class ComboBoxMouseWheelScrollBehavior implements MouseWheelListener, Behavior
+public class ComboBoxMouseWheelScrollBehavior extends AbstractComponentBehavior<JComboBox> implements MouseWheelListener
 {
     /**
-     * Combobox using this behavior.
+     * todo 1. Replace static methods with non-static ones
      */
-    protected final JComboBox comboBox;
 
     /**
      * Constructs new combobox mouse wheel scroll behavior.
@@ -45,21 +43,20 @@ public class ComboBoxMouseWheelScrollBehavior implements MouseWheelListener, Beh
      */
     public ComboBoxMouseWheelScrollBehavior ( final JComboBox comboBox )
     {
-        super ();
-        this.comboBox = comboBox;
+        super ( comboBox );
     }
 
     @Override
     public void mouseWheelMoved ( final MouseWheelEvent e )
     {
-        if ( comboBox.isEnabled () && SwingUtils.hasFocusOwner ( comboBox ) )
+        if ( component.isEnabled () && SwingUtils.hasFocusOwner ( component ) )
         {
             // Changing selection in case index actually changed
-            final int index = comboBox.getSelectedIndex ();
-            final int newIndex = MathUtils.limit ( 0, index + e.getWheelRotation (), comboBox.getModel ().getSize () - 1 );
+            final int index = component.getSelectedIndex ();
+            final int newIndex = MathUtils.limit ( 0, index + e.getWheelRotation (), component.getModel ().getSize () - 1 );
             if ( newIndex != index )
             {
-                comboBox.setSelectedIndex ( newIndex );
+                component.setSelectedIndex ( newIndex );
             }
         }
     }

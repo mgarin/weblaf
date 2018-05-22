@@ -41,7 +41,6 @@ import java.beans.PropertyChangeListener;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public abstract class AbstractHoverBehavior<C extends JComponent> extends AbstractComponentBehavior<C>
         implements MouseListener, ComponentListener, HierarchyListener, AncestorListener, DragListener, PropertyChangeListener
 {

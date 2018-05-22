@@ -17,30 +17,28 @@
 
 package com.alee.extended.behavior;
 
-import javax.swing.*;
+import java.awt.*;
 
 /**
- * Simple abstract {@link Behavior} implementation that keeps {@link JComponent} reference and has its type generic.
+ * Simple abstract {@link Behavior} implementation that keeps {@link Component} reference and has its type generic.
  *
- * @param <C> component type
+ * @param <C> {@link Component} type
  * @author Mikle Garin
  */
-
-public abstract class AbstractComponentBehavior<C extends JComponent> implements Behavior
+public abstract class AbstractComponentBehavior<C extends Component> implements Behavior
 {
     /**
-     * {@link JComponent} into which this behavior is installed.
+     * {@link Component} into which this behavior is installed.
      */
     protected final C component;
 
     /**
-     * Constructs new {@link AbstractComponentBehavior} for the specified {@link JComponent}.
+     * Constructs new {@link AbstractComponentBehavior} for the specified {@link Component}.
      *
-     * @param component {@link JComponent} into which this behavior is installed
+     * @param component {@link Component} into which this behavior is installed
      */
     public AbstractComponentBehavior ( final C component )
     {
-        super ();
         this.component = component;
     }
 }

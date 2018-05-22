@@ -29,14 +29,8 @@ import java.awt.event.HierarchyListener;
  * @param <C> {@link Component} type
  * @author Mikle Garin
  */
-public abstract class VisibilityBehavior<C extends Component> implements HierarchyListener, Behavior
+public abstract class VisibilityBehavior<C extends Component> extends AbstractComponentBehavior<C> implements HierarchyListener
 {
-    /**
-     * {@link Component} into which this behavior is installed.
-     * It can be a {@link Window} as well since {@link HierarchyListener} works properly for them.
-     */
-    protected final C component;
-
     /**
      * Whether or not should artificially trigger events on {@link #install()} and {@link #uninstall()}.
      * If set to {@code true} - {@link #displayed()} and {@link #hidden()} will be triggered according to {@link #component} visibility.
@@ -69,8 +63,7 @@ public abstract class VisibilityBehavior<C extends Component> implements Hierarc
      */
     public VisibilityBehavior ( final C component, final boolean initTriggers )
     {
-        super ();
-        this.component = component;
+        super ( component );
         this.initTriggers = initTriggers;
         this.visible = false;
     }

@@ -32,7 +32,6 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public abstract class TreePathHoverBehavior<C extends JTree> extends AbstractObjectHoverBehavior<C, TreePath>
 {
     /**

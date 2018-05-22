@@ -155,6 +155,9 @@ public class WebFileTable extends WebTable implements FileTableColumns
         // todo Move this into UI as well?
         setDefaultRenderer ( File.class, new WebFileTableCellRenderer () );
         setDefaultEditor ( File.class, new WebFileTableCellEditor () );
+
+        // Optimizing row height according to table data and renderers
+        setOptimizeRowHeight ( true );
     }
 
     @Override

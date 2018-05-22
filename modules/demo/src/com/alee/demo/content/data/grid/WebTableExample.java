@@ -30,7 +30,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebTableExample extends AbstractStylePreviewExample
 {
     @Override
@@ -80,6 +79,7 @@ public class WebTableExample extends AbstractStylePreviewExample
         {
             final WebTable table = new WebTable ( getStyleId (), SampleData.createShortTableModel ( false ) );
             table.optimizeColumnWidths ( true );
+            table.setOptimizeRowHeight ( true );
             return CollectionUtils.asList ( table );
         }
     }
@@ -106,6 +106,7 @@ public class WebTableExample extends AbstractStylePreviewExample
             table.setAutoResizeMode ( JTable.AUTO_RESIZE_OFF );
             table.setVisibleRowCount ( 5 );
             table.optimizeColumnWidths ( true );
+            table.setOptimizeRowHeight ( true );
             return CollectionUtils.asList ( new WebScrollPane ( table ).setPreferredWidth ( 300 ) );
         }
     }
@@ -132,6 +133,7 @@ public class WebTableExample extends AbstractStylePreviewExample
             table.setAutoResizeMode ( JTable.AUTO_RESIZE_OFF );
             table.setVisibleRowCount ( 5 );
             table.optimizeColumnWidths ( true );
+            table.setOptimizeRowHeight ( true );
             table.setEditable ( true );
             return CollectionUtils.asList ( new WebScrollPane ( table ).setPreferredWidth ( 300 ) );
         }

@@ -48,7 +48,6 @@ import static com.alee.extended.syntax.SyntaxPreset.*;
  *
  * @author Mikle Garin
  */
-
 public class LazyLoadBehavior implements Behavior
 {
     /**

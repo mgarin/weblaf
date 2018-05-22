@@ -32,7 +32,6 @@ import java.util.Arrays;
  *
  * @author Mikle Garin
  */
-
 public class TreeSingleChildExpandBehavior implements TreeExpansionListener, Behavior
 {
     /**

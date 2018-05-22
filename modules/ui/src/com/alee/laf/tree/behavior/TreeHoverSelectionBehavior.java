@@ -30,7 +30,6 @@ import javax.swing.tree.MutableTreeNode;
  * @param <N> node type
  * @author Mikle Garin
  */
-
 public class TreeHoverSelectionBehavior<N extends MutableTreeNode> implements HoverListener<N>, Behavior
 {
     /**

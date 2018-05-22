@@ -33,7 +33,6 @@ import java.awt.event.ComponentEvent;
  *
  * @author Mikle Garin
  */
-
 public class WindowFollowBehavior extends ComponentAdapter implements Behavior
 {
     /**

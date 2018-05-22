@@ -41,7 +41,6 @@ import java.awt.event.MouseEvent;
  * @see #install()
  * @see #uninstall()
  */
-
 public class ComponentMoveBehavior extends MouseAdapter implements Behavior
 {
     /**

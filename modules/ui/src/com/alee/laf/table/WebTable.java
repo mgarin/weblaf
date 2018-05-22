@@ -78,6 +78,11 @@ public class WebTable extends JTable implements Styleable, Paintable, ShapeMetho
     protected transient TableToolTipProvider toolTipProvider = null;
 
     /**
+     * {@link TableRowHeightOptimizer} if it is enabled, {@code null} otherwise.
+     */
+    protected transient TableRowHeightOptimizer rowHeightOptimizer;
+
+    /**
      * Constructs new table.
      */
     public WebTable ()
@@ -267,6 +272,41 @@ public class WebTable extends JTable implements Styleable, Paintable, ShapeMetho
     public void setToolTipProvider ( final TableToolTipProvider provider )
     {
         this.toolTipProvider = provider;
+    }
+
+    /**
+     * Returns whether or not {@link TableRowHeightOptimizer} is enabled.
+     *
+     * @return {@code true} if {@link TableRowHeightOptimizer} is enabled, {@code false} otherwise
+     */
+    public boolean isOptimizeRowHeight ()
+    {
+        return rowHeightOptimizer != null;
+    }
+
+    /**
+     * Sets whether or not {@link TableRowHeightOptimizer} should be enabled.
+     *
+     * @param optimize whether or not {@link TableRowHeightOptimizer} should be enabled
+     */
+    public void setOptimizeRowHeight ( final boolean optimize )
+    {
+        if ( optimize )
+        {
+            if ( rowHeightOptimizer == null )
+            {
+                rowHeightOptimizer = new TableRowHeightOptimizer ( this );
+                rowHeightOptimizer.install ();
+            }
+        }
+        else
+        {
+            if ( rowHeightOptimizer != null )
+            {
+                rowHeightOptimizer.uninstall ();
+                rowHeightOptimizer = null;
+            }
+        }
     }
 
     /**

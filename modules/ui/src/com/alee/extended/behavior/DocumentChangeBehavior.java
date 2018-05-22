@@ -35,7 +35,6 @@ import java.lang.ref.WeakReference;
  * @param <C> {@link JTextComponent} type
  * @author Mikle Garin
  */
-
 public abstract class DocumentChangeBehavior<C extends JTextComponent> implements DocumentListener, PropertyChangeListener, Behavior
 {
     /**

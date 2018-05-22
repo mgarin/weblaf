@@ -29,7 +29,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public class ListSelectionScrollBehavior implements ListSelectionListener, Behavior
 {
     /**

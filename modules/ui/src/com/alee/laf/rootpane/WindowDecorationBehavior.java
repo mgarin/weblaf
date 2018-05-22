@@ -40,7 +40,6 @@ import java.awt.event.MouseEvent;
  *
  * @author Mikle Garin
  */
-
 public class WindowDecorationBehavior extends ComponentMoveBehavior
 {
     /**
