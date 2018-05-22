@@ -17,14 +17,18 @@
 
 package com.alee.managers.focus;
 
+import com.alee.extended.window.WebPopup;
 import com.alee.utils.CoreSwingUtils;
+import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.collection.WeakHashSet;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.FocusManager;
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -206,26 +210,29 @@ public abstract class DefaultFocusTracker implements FocusTracker
      */
     protected boolean isChildInvolved ( final Component tracked, final Component component )
     {
-        final boolean involved;
+        boolean involved;
         if ( isUniteWithChildren () )
         {
-            if ( SwingUtils.isEqualOrChild ( tracked, component ) )
+            // Checking component is one of children tracked component
+            involved = isEqualOrChild ( tracked, component );
+
+            if ( !involved )
             {
-                // Component or one of its children involved
-                involved = true;
+                // Checking tracked component window is blocked
+                final Window trackedWindow = SwingUtilities.getWindowAncestor ( tracked );
+                involved = trackedWindow != null && ( Boolean ) ReflectUtils.callMethodSafely ( trackedWindow, "isModalBlocked" );
             }
-            else if ( tracked instanceof JRootPane )
+
+            if ( !involved )
             {
-                // JRootPane's window or one of its children involved
-                // Special workaround to include window components into focus checks
-                // This works exclusively for JRootPane components as it basically represents window
-                final Window window = CoreSwingUtils.getWindowAncestor ( tracked );
-                involved = window != null && SwingUtils.isEqualOrChild ( window, component );
+                // Checking any of tracked children is invoker of component popup
+                involved = isPopupInvoker ( tracked, component );
             }
-            else
+
+            if ( !involved )
             {
-                // None involved
-                involved = false;
+                // Checking any of tracked children is invoker of popup menu
+                involved = isPopupMenuInvoker ( tracked );
             }
         }
         else
@@ -250,5 +257,129 @@ public abstract class DefaultFocusTracker implements FocusTracker
             }
         }
         return involved;
+    }
+
+    /**
+     * Checks whether the specified component is tracked or any child of tracked component.
+     *
+     * @param tracked   tracked {@link Component}
+     * @param component {@link Component} to check
+     * @return {@code true} if specified {@link Component} is equal or any child of tracked {@link Component}, {@code false} otherwise
+     */
+    protected boolean isEqualOrChild ( final Component tracked, final Component component )
+    {
+        final boolean isEqual;
+        if ( SwingUtils.isEqualOrChild ( tracked, component ) )
+        {
+            // Component or one of its children involved
+            isEqual = true;
+        }
+        else if ( tracked instanceof JRootPane )
+        {
+            // JRootPane's window or one of its children involved
+            // Special workaround to include window components into focus checks
+            // This works exclusively for JRootPane components as it basically represents window
+            final Window window = CoreSwingUtils.getWindowAncestor ( tracked );
+            isEqual = window != null && SwingUtils.isEqualOrChild ( window, component );
+        }
+        else
+        {
+            // None involved
+            isEqual = false;
+        }
+        return isEqual;
+    }
+
+    /**
+     * Checks any of tracked {@link Component} children is invoker of component popup or any parent popups.
+     *
+     * @param tracked   tracked {@link Component}
+     * @param component {@link Component} to check
+     * @return {@code true} if specified {@link Component} is equal or any child of tracked {@link Component}, {@code false} otherwise
+     */
+    protected boolean isPopupInvoker ( final Component tracked, final Component component )
+    {
+        boolean isInvoker = false;
+        WebPopup popup = findPopup ( component );
+        while ( popup != null && popup.isShowing () )
+        {
+            final Component invoker = popup.getInvoker ();
+            if ( invoker != null )
+            {
+                if ( isEqualOrChild ( tracked, invoker ) )
+                {
+                    isInvoker = true;
+                    break;
+                }
+                else
+                {
+                    popup = findPopup ( invoker.getParent () );
+                }
+            }
+            else
+            {
+                LoggerFactory.getLogger ( getClass () ).warn ( "Popup invoker is null: {}", popup );
+                break;
+            }
+        }
+        return isInvoker;
+    }
+
+    /**
+     * Searches popup in parents of the specified component.
+     *
+     * @param component target component
+     * @return last {@link WebPopup} in path to target component or {@code null}
+     */
+    protected WebPopup findPopup ( Component component )
+    {
+        while ( component != null && !( component instanceof WebPopup ) )
+        {
+            component = component.getParent ();
+        }
+
+        return ( WebPopup ) component;
+    }
+
+    /**
+     * Checks any of tracked {@link Component} children is invoker of any currently showing popup menu.
+     *
+     * @param tracked tracked {@link Component}
+     * @return {@code true} if specified {@link Component} children is invoker of any currently showing popup menu, {@code false} otherwise
+     */
+    protected boolean isPopupMenuInvoker ( final Component tracked )
+    {
+        boolean isInvoker = false;
+        for ( final JPopupMenu popup : getPopupMenus () )
+        {
+            final Component invoker = popup.getInvoker ();
+            if ( invoker != null && ( isEqualOrChild ( tracked, invoker ) || isPopupInvoker ( tracked, invoker ) ) )
+            {
+                isInvoker = true;
+                break;
+            }
+        }
+        return isInvoker;
+    }
+
+    /**
+     * Returns list of showing popup menus.
+     *
+     * @return list of showing popup menus
+     */
+    protected List<JPopupMenu> getPopupMenus ()
+    {
+        final MenuSelectionManager msm = MenuSelectionManager.defaultManager ();
+        final MenuElement[] p = msm.getSelectedPath ();
+
+        final List<JPopupMenu> list = new ArrayList<JPopupMenu> ( p.length );
+        for ( final MenuElement element : p )
+        {
+            if ( element instanceof JPopupMenu )
+            {
+                list.add ( ( JPopupMenu ) element );
+            }
+        }
+        return list;
     }
 }
