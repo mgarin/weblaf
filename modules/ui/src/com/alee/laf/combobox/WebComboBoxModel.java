@@ -33,7 +33,6 @@ import java.util.Collection;
  * @param <T> element type
  * @author Mikle Garin
  */
-
 public class WebComboBoxModel<T> extends WebListModel<T> implements MutableComboBoxModel
 {
     /**
@@ -199,5 +198,12 @@ public class WebComboBoxModel<T> extends WebListModel<T> implements MutableCombo
             setSelectedItem ( index != -1 ? get ( index ) : null );
         }
         super.removeAll ( objects );
+    }
+
+    @Override
+    public void clear ()
+    {
+        setSelectedItem ( null );
+        super.clear ();
     }
 }
