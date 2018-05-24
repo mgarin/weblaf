@@ -30,41 +30,41 @@ import java.util.*;
  *
  * @param <T> element type
  * @author Mikle Garin
- * @see com.alee.laf.list.WebList
  */
 public class WebListModel<T> extends AbstractListModel
 {
     /**
      * List data vector.
      */
-    protected Vector<T> delegate = new Vector<T> ();
+    protected Vector<T> delegate;
 
     /**
      * Constructs empty model.
      */
     public WebListModel ()
     {
-        super ();
+        this ( Collections.<T>emptyList () );
     }
 
     /**
      * Constructs model with the specified elements.
      *
-     * @param data list data
+     * @param data model data
      */
     public WebListModel ( final T... data )
     {
-        Collections.addAll ( delegate, data );
+        this ( CollectionUtils.asList ( data ) );
     }
 
     /**
      * Constructs model with the specified elements.
      *
-     * @param data list data
+     * @param data model data
      */
     public WebListModel ( final Collection<T> data )
     {
-        delegate.addAll ( data );
+        delegate = new Vector<T> ();
+        addAll ( data );
     }
 
     @Override
@@ -76,13 +76,13 @@ public class WebListModel<T> extends AbstractListModel
     @Override
     public T getElementAt ( final int index )
     {
-        return delegate.elementAt ( index );
+        return get ( index );
     }
 
     /**
-     * Returns list of all elements.
+     * Returns all elements available in the model.
      *
-     * @return list of all elements
+     * @return all elements available in the model
      */
     public List<T> getElements ()
     {
@@ -90,10 +90,10 @@ public class WebListModel<T> extends AbstractListModel
     }
 
     /**
-     * Copies the components of this list into the specified array.
-     * The array must be big enough to hold all the objects in this list, else an {@code IndexOutOfBoundsException} is thrown.
+     * Copies all elements from this model into the specified array.
      *
-     * @param array the array into which the components get copied
+     * @param array array into which all elements from this model will be copied
+     * @throws IndexOutOfBoundsException if array is not big enough to hold all model elements
      */
     public void copyInto ( final T[] array )
     {
@@ -101,9 +101,7 @@ public class WebListModel<T> extends AbstractListModel
     }
 
     /**
-     * Trims the capacity of this list to be the list's current size.
-     *
-     * @see Vector#trimToSize()
+     * Trims capacity of this model delegate to fit current model size.
      */
     public void trimToSize ()
     {
@@ -111,42 +109,19 @@ public class WebListModel<T> extends AbstractListModel
     }
 
     /**
-     * Increases the capacity of this list, if necessary, to ensure that it can hold at least the number of components specified by the
-     * minimum capacity argument.
+     * Increases capacity of this model delegate, if necessary, to ensure that it can hold specified amount of elements.
      *
-     * @param minCapacity the desired minimum capacity
-     * @see Vector#ensureCapacity(int)
+     * @param capacity desired minimum capacity
      */
-    public void ensureCapacity ( final int minCapacity )
+    public void ensureCapacity ( final int capacity )
     {
-        delegate.ensureCapacity ( minCapacity );
+        delegate.ensureCapacity ( capacity );
     }
 
     /**
-     * Sets the size of this list.
+     * Returns current model delegate capacity.
      *
-     * @param newSize the new size of this list
-     * @see Vector#setSize(int)
-     */
-    public void setSize ( final int newSize )
-    {
-        final int oldSize = delegate.size ();
-        delegate.setSize ( newSize );
-        if ( oldSize > newSize )
-        {
-            fireIntervalRemoved ( this, newSize, oldSize - 1 );
-        }
-        else if ( oldSize < newSize )
-        {
-            fireIntervalAdded ( this, oldSize, newSize - 1 );
-        }
-    }
-
-    /**
-     * Returns the current capacity of this list.
-     *
-     * @return the current capacity
-     * @see Vector#capacity()
+     * @return current model delegate capacity
      */
     public int capacity ()
     {
@@ -154,10 +129,9 @@ public class WebListModel<T> extends AbstractListModel
     }
 
     /**
-     * Returns the number of components in this list.
+     * Returns amount of elements in this model.
      *
-     * @return the number of components in this list
-     * @see Vector#size()
+     * @return amount of elements in this model
      */
     public int size ()
     {
@@ -165,10 +139,9 @@ public class WebListModel<T> extends AbstractListModel
     }
 
     /**
-     * Tests whether this list has any components.
+     * Returns whether or not this model has no elements.
      *
-     * @return {@code true} if and only if this list has no components, that is, its size is zero; {@code false} otherwise
-     * @see Vector#isEmpty()
+     * @return {@code true} if this model has no elements, {@code false} otherwise
      */
     public boolean isEmpty ()
     {
@@ -176,10 +149,9 @@ public class WebListModel<T> extends AbstractListModel
     }
 
     /**
-     * Returns an enumeration of the components of this list.
+     * Returns {@link Enumeration} for all elements of this model.
      *
-     * @return an enumeration of the components of this list
-     * @see Vector#elements()
+     * @return {@link Enumeration} for all elements of this model
      */
     public Enumeration<T> elements ()
     {
@@ -187,74 +159,67 @@ public class WebListModel<T> extends AbstractListModel
     }
 
     /**
-     * Tests whether the specified object is a component in this list.
+     * Returns whether or not this model contains specified element.
      *
-     * @param elem an object
-     * @return {@code true} if the specified object is the same as a component in this list
-     * @see Vector#contains(Object)
+     * @param element element to find
+     * @return {@code true} if this model contains specified element, {@code false} otherwise
      */
-    public boolean contains ( final T elem )
+    public boolean contains ( final T element )
     {
-        return delegate.contains ( elem );
+        return delegate.contains ( element );
     }
 
     /**
-     * Searches for the first occurrence of {@code elem}.
+     * Returns index of the specified element in this model, {@code -1} if it cannot be found.
      *
-     * @param elem an object
-     * @return the index of the first occurrence of the argument in this list; returns {@code -1} if the object is not found
-     * @see Vector#indexOf(Object)
+     * @param element element to find index for
+     * @return index of the specified element in this model, {@code -1} if it cannot be found
      */
-    public int indexOf ( final T elem )
+    public int indexOf ( final T element )
     {
-        return delegate.indexOf ( elem );
+        return delegate.indexOf ( element );
     }
 
     /**
-     * Searches for the first occurrence of {@code elem}, beginning the search at {@code index}.
+     * Returns index of the specified element in this model starting from the specified index, {@code -1} if it cannot be found.
      *
-     * @param elem  an desired component
-     * @param index the index from which to begin searching
-     * @return the index where the first occurrence of {@code elem} is found after {@code index}; returns {@code -1} if the
-     * {@code elem} is not found in the list
-     * @see Vector#indexOf(Object, int)
+     * @param element element to find index for
+     * @param index   index to begin search from
+     * @return index of the specified element in this model starting from the specified index, {@code -1} if it cannot be found.
      */
-    public int indexOf ( final T elem, final int index )
+    public int indexOf ( final T element, final int index )
     {
-        return delegate.indexOf ( elem, index );
+        return delegate.indexOf ( element, index );
     }
 
     /**
-     * Returns the index of the last occurrence of {@code elem}.
+     * Returns last index of the specified element in this model, {@code -1} if it cannot be found.
      *
-     * @param elem the desired component
-     * @return the index of the last occurrence of {@code elem} in the list; returns {@code -1} if the object is not found
-     * @see Vector#lastIndexOf(Object)
+     * @param element element to find index for
+     * @return last index of the specified element in this model, {@code -1} if it cannot be found
      */
-    public int lastIndexOf ( final T elem )
+    public int lastIndexOf ( final T element )
     {
-        return delegate.lastIndexOf ( elem );
+        return delegate.lastIndexOf ( element );
     }
 
     /**
-     * Searches backwards for {@code elem}, starting from the specified index, and returns an index to it.
+     * Returns last index of the specified element in this model starting from the specified index, {@code -1} if it cannot be found.
      *
-     * @param elem  the desired component
-     * @param index the index to start searching from
-     * @return the index of the last occurrence of the {@code elem} in this list at position less than {@code index}; returns
-     * {@code -1} if the object is not found
-     * @see Vector#lastIndexOf(Object, int)
+     * @param element element to find index for
+     * @param index   index to begin search from
+     * @return last index of the specified element in this model starting from the specified index, {@code -1} if it cannot be found
      */
-    public int lastIndexOf ( final T elem, final int index )
+    public int lastIndexOf ( final T element, final int index )
     {
-        return delegate.lastIndexOf ( elem, index );
+        return delegate.lastIndexOf ( element, index );
     }
 
     /**
-     * Returns the first component of this list. Throws a {@code NoSuchElementException} if this vector has no components.
+     * Returns first element in this model.
      *
-     * @return the first component of this list
-     * @see Vector#firstElement()
+     * @return first element in this model
+     * @throws NoSuchElementException if model is empty
      */
     public T first ()
     {
@@ -262,10 +227,10 @@ public class WebListModel<T> extends AbstractListModel
     }
 
     /**
-     * Returns the last component of the list. Throws a {@code NoSuchElementException} if this vector has no components.
+     * Returns last element in this model.
      *
-     * @return the last component of the list
-     * @see Vector#lastElement()
+     * @return last element in this model
+     * @throws NoSuchElementException if model is empty
      */
     public T last ()
     {
@@ -273,45 +238,9 @@ public class WebListModel<T> extends AbstractListModel
     }
 
     /**
-     * Removes all elements from this list which has index lower than the specified one.
+     * Returns an array containing all of the elements from this model.
      *
-     * @param index index to process
-     */
-    public void removeAllBefore ( final int index )
-    {
-        for ( int i = 0; i < index; i++ )
-        {
-            delegate.removeElementAt ( index );
-        }
-        if ( index > 0 )
-        {
-            fireIntervalRemoved ( this, 0, index - 1 );
-        }
-    }
-
-    /**
-     * Removes all elements from this list which has index larger than the specified one.
-     *
-     * @param index index to process
-     */
-    public void removeAllAfter ( final int index )
-    {
-        final int lastIndex = getSize () - 1;
-        for ( int i = lastIndex; i > index; i-- )
-        {
-            delegate.removeElementAt ( i );
-        }
-        if ( lastIndex > index )
-        {
-            fireIntervalRemoved ( this, index + 1, lastIndex );
-        }
-    }
-
-    /**
-     * Returns an array containing all of the elements in this list in the correct order.
-     *
-     * @return an array containing the elements of the list
-     * @see Vector#toArray()
+     * @return an array containing all of the elements from this model
      */
     public Object[] toArray ()
     {
@@ -321,11 +250,11 @@ public class WebListModel<T> extends AbstractListModel
     }
 
     /**
-     * Returns the element at the specified position in this list.
-     * Throws an {@code ArrayIndexOutOfBoundsException} if the index is out of range ({@code index &lt; 0 || index &gt;= size()}).
+     * Returns element contained at the specified index in this model.
      *
-     * @param index index of element to return
-     * @return element at the specified position in this list
+     * @param index element index
+     * @return element contained at the specified index in this model
+     * @throws ArrayIndexOutOfBoundsException if specified index is out of model bounds
      */
     public T get ( final int index )
     {
@@ -333,12 +262,80 @@ public class WebListModel<T> extends AbstractListModel
     }
 
     /**
-     * Replaces the element at the specified position in this list with the specified element.
-     * Throws an {@code ArrayIndexOutOfBoundsException} if the index is out of range ({@code index &lt; 0 || index &gt;= size()}).
+     * Adds specified element to this model.
+     *
+     * @param element element to add
+     */
+    public void add ( final T element )
+    {
+        add ( getSize (), element );
+    }
+
+    /**
+     * Inserts the specified element at the specified index into this model.
+     *
+     * @param index   index to insert element at
+     * @param element element to insert
+     * @throws ArrayIndexOutOfBoundsException if specified index is out of model bounds
+     */
+    public void add ( final int index, final T element )
+    {
+        addAll ( index, element );
+    }
+
+    /**
+     * Adds all specified elements to the end of this model.
+     *
+     * @param elements elements to add
+     */
+    public void addAll ( final T... elements )
+    {
+        addAll ( CollectionUtils.asList ( elements ) );
+    }
+
+    /**
+     * Adds all specified elements to the end of this model.
+     *
+     * @param elements elements to add
+     */
+    public void addAll ( final Collection<T> elements )
+    {
+        addAll ( delegate.size (), elements );
+    }
+
+    /**
+     * Adds all specified elements at the specified index.
+     *
+     * @param index    index to add elements at
+     * @param elements elements to add
+     */
+    public void addAll ( final int index, final T... elements )
+    {
+        addAll ( index, CollectionUtils.asList ( elements ) );
+    }
+
+    /**
+     * Adds all specified elements at the specified index.
+     *
+     * @param index    index to add elements at
+     * @param elements elements to add
+     */
+    public void addAll ( final int index, final Collection<T> elements )
+    {
+        if ( elements.size () > 0 )
+        {
+            delegate.addAll ( index, elements );
+            fireIntervalAdded ( this, index, delegate.size () - 1 );
+        }
+    }
+
+    /**
+     * Replaces element at the specified index within this model with new element.
      *
      * @param index   index of element to replace
-     * @param element element to be stored at the specified position
-     * @return the element previously at the specified position
+     * @param element element to store at the specified position
+     * @return element previously stored at the specified index in this model
+     * @throws ArrayIndexOutOfBoundsException if specified index is out of model bounds
      */
     public T set ( final int index, final T element )
     {
@@ -349,9 +346,9 @@ public class WebListModel<T> extends AbstractListModel
     }
 
     /**
-     * Clears list data and adds specified elements.
+     * Replaces all elements in this model with the specified ones.
      *
-     * @param elements elements to be added
+     * @param elements elements to replace all existing ones with
      */
     public void setAll ( final T... elements )
     {
@@ -359,70 +356,18 @@ public class WebListModel<T> extends AbstractListModel
     }
 
     /**
-     * Clears list data and adds specified elements.
+     * Replaces all elements in this model with the specified ones.
      *
-     * @param elements elements to be added
+     * @param elements elements to replace all existing ones with
      */
     public void setAll ( final Collection<T> elements )
     {
-        clear ();
-        if ( elements.size () > 0 )
-        {
-            delegate.addAll ( elements );
-            fireIntervalAdded ( this, 0, delegate.size () - 1 );
-        }
+        removeAll ();
+        addAll ( elements );
     }
 
     /**
-     * Adds the specified element to this list.
-     *
-     * @param element element to be added
-     */
-    public void add ( final T element )
-    {
-        add ( getSize (), element );
-    }
-
-    /**
-     * Inserts the specified element at the specified position in this list.
-     * Throws an {@code ArrayIndexOutOfBoundsException} if the index is out of range ({@code index &lt; 0 || index &gt; size()}).
-     *
-     * @param index   index at which the specified element is to be inserted
-     * @param element element to be inserted
-     */
-    public void add ( final int index, final T element )
-    {
-        delegate.insertElementAt ( element, index );
-        fireIntervalAdded ( this, index, index );
-    }
-
-    /**
-     * Adds specified elements to the end of this list.
-     *
-     * @param elements elements to be added
-     */
-    public void add ( final T... elements )
-    {
-        add ( CollectionUtils.asList ( elements ) );
-    }
-
-    /**
-     * Adds specified elements to the end of this list.
-     *
-     * @param elements elements to be added
-     */
-    public void add ( final Collection<T> elements )
-    {
-        if ( elements.size () > 0 )
-        {
-            final int index = delegate.size ();
-            delegate.addAll ( elements );
-            fireIntervalAdded ( this, index, delegate.size () - 1 );
-        }
-    }
-
-    /**
-     * Removes the specified element from this list.
+     * Removes the specified element from this model and returns it.
      *
      * @param element element to remove
      * @return removed element
@@ -434,45 +379,78 @@ public class WebListModel<T> extends AbstractListModel
     }
 
     /**
-     * Removes the element at the specified position in this list.
-     * Returns the element that was removed from the list.
-     * Throws an {@code ArrayIndexOutOfBoundsException} if the index is out of range ({@code index &lt; 0 || index &gt;= size()}).
+     * Removes element at the specified index from this model and returns it.
      *
      * @param index the index of the element to removed
      * @return removed element
+     * @throws ArrayIndexOutOfBoundsException if the specified index is out of model bounds
      */
     public T remove ( final int index )
     {
-        final T rv = delegate.elementAt ( index );
-        delegate.removeElementAt ( index );
-        fireIntervalRemoved ( this, index, index );
-        return rv;
+        final T element = delegate.elementAt ( index );
+        removeInterval ( index, index );
+        return element;
     }
 
     /**
-     * Removes the specified elements from this list.
+     * Removes all elements from this model which have index lower than the specified one.
+     *
+     * @param index index to remove all elements before
+     */
+    public void removeAllBefore ( final int index )
+    {
+        if ( index > 0 )
+        {
+            removeInterval ( 0, index - 1 );
+        }
+        else
+        {
+            throw new IllegalArgumentException ( "There are no elements below zero index" );
+        }
+    }
+
+    /**
+     * Removes all elements from this model which have index larger than the specified one.
+     *
+     * @param index index to remove all elements after
+     */
+    public void removeAllAfter ( final int index )
+    {
+        if ( index < delegate.size () - 1 )
+        {
+            removeInterval ( index + 1, delegate.size () - 1 );
+        }
+        else
+        {
+            throw new IllegalArgumentException ( "There are no elements after " + index + " index" );
+        }
+    }
+
+    /**
+     * Removes all specified elements from this model.
      * It ensures that minimal amount of {@link #fireIntervalRemoved(Object, int, int)} calls are made.
      *
-     * @param objects the components to be removed
+     * @param elements the components to be removed
      */
-    public void removeAll ( final T... objects )
+    public void removeAll ( final T... elements )
     {
-        removeAll ( CollectionUtils.asList ( objects ) );
+        removeAll ( CollectionUtils.asList ( elements ) );
     }
 
     /**
-     * Removes the specified elements from this list.
-     * todo If two+ non-distinct objects are provided - only one will be removed at a time
+     * Removes the specified elements from this model.
+     * It ensures that minimal amount of {@link #fireIntervalRemoved(Object, int, int)} calls are made.
+     * todo If two+ non-distinct elements are provided - only one will be removed at a time
      *
-     * @param objects the components to be removed
+     * @param elements the components to be removed
      */
-    public void removeAll ( final Collection<T> objects )
+    public void removeAll ( final Collection<T> elements )
     {
         // Collecting indices to remove
-        final List<Integer> indices = new ArrayList<Integer> ( objects.size () );
-        for ( final T object : objects )
+        final List<Integer> indices = new ArrayList<Integer> ( elements.size () );
+        for ( final T element : elements )
         {
-            final int index = delegate.indexOf ( object );
+            final int index = delegate.indexOf ( element );
             if ( index != -1 )
             {
                 indices.add ( index );
@@ -491,9 +469,6 @@ public class WebListModel<T> extends AbstractListModel
         for ( int i = indices.size () - 1; i >= 0; i-- )
         {
             final int index = indices.get ( i );
-
-            // Removing element
-            delegate.remove ( index );
 
             // Checking range
             if ( rangeStart == -1 || rangeEnd == -1 )
@@ -516,52 +491,44 @@ public class WebListModel<T> extends AbstractListModel
                 rangeEnd = index;
             }
 
-            // Firing on range end
+            // Removing interval
             if ( i == 0 || rangeStart - 1 != indices.get ( i - 1 ) )
             {
-                // We reached range border
-                // Firing interval removal event
-                fireIntervalRemoved ( this, rangeStart, rangeEnd );
+                removeInterval ( rangeStart, rangeEnd );
             }
         }
     }
 
     /**
-     * Removes all of the elements from this list.
-     * The list will be empty after this call returns (unless it throws an exception).
+     * Removes all elements from the model
      */
-    public void clear ()
+    public void removeAll ()
     {
-        final int index1 = delegate.size () - 1;
-        delegate.removeAllElements ();
-        if ( index1 >= 0 )
+        if ( delegate.size () > 0 )
         {
-            fireIntervalRemoved ( this, 0, index1 );
+            removeInterval ( 0, delegate.size () - 1 );
         }
     }
 
     /**
-     * Deletes the components at the specified range of indexes. The removal is inclusive, so specifying a range of (1,5) removes the
-     * component at index 1 and the component at index 5, as well as all components in between.
+     * Removes all elements between specified indices including elements at the specified indices.
      *
-     * Throws an {@code ArrayIndexOutOfBoundsException} if the index was invalid.
-     * Throws an {@code IllegalArgumentException} if {@code fromIndex &gt; toIndex}.
-     *
-     * @param fromIndex the index of the lower end of the range
-     * @param toIndex   the index of the upper end of the range
-     * @see #remove(int)
+     * @param start interval start index, inclusive
+     * @param end   interval end index, inclusive
+     * @throws ArrayIndexOutOfBoundsException if interval is invalid
+     * @throws IllegalArgumentException       if {@code from} is larger than {@code to}
      */
-    public void removeRange ( final int fromIndex, final int toIndex )
+    public void removeInterval ( final int start, final int end )
     {
-        if ( fromIndex > toIndex )
+        if ( start > end )
         {
-            throw new IllegalArgumentException ( "fromIndex must be <= toIndex" );
+            throw new IllegalArgumentException ( "Interval end index cannot be less than start index" );
         }
-        for ( int i = toIndex; i >= fromIndex; i-- )
+        for ( int i = end; i >= start; i-- )
         {
             delegate.removeElementAt ( i );
         }
-        fireIntervalRemoved ( this, fromIndex, toIndex );
+        fireIntervalRemoved ( this, start, end );
     }
 
     /**
