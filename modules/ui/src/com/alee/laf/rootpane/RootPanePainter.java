@@ -5,6 +5,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.StyleId;
 import com.alee.painter.decoration.AbstractContainerPainter;
 import com.alee.painter.decoration.DecorationState;
+import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.ProprietaryUtils;
@@ -274,7 +275,11 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
     public List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
+
+        // Window decoration type state
         states.add ( getWindowDecorationState () );
+
+        // Window state
         if ( ui.isIconified () )
         {
             states.add ( DecorationState.iconified );
@@ -287,6 +292,11 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
         {
             states.add ( DecorationState.fullscreen );
         }
+
+        // Additional root pane window states
+        final Window window = SwingUtilities.getWindowAncestor ( component );
+        states.addAll ( DecorationUtils.getExtraStates ( window ) );
+
         return states;
     }
 
