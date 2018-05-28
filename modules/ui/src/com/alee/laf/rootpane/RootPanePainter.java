@@ -27,7 +27,6 @@ import java.util.List;
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
-
 public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D extends IDecoration<C, D>>
         extends AbstractContainerPainter<C, U, D> implements IRootPanePainter<C, U>
 {
@@ -294,8 +293,7 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
         }
 
         // Additional root pane window states
-        final Window window = SwingUtilities.getWindowAncestor ( component );
-        states.addAll ( DecorationUtils.getExtraStates ( window ) );
+        states.addAll ( DecorationUtils.getExtraStates ( getWindow () ) );
 
         return states;
     }
@@ -448,7 +446,7 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
     protected void installWindowStateListener ()
     {
         final Window window = getWindow ();
-        if ( window != null && window instanceof Frame )
+        if ( window instanceof Frame )
         {
             frameStateListener = new WindowStateListener ()
             {
