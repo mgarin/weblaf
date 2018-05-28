@@ -116,6 +116,16 @@ public class WindowState implements Mergeable, Cloneable, Serializable
     }
 
     /**
+     * Constructs new {@link WindowState} with preferred size, location relative to parent and in specified state.
+     *
+     * @param state {@link Frame}-exclusive state
+     */
+    public WindowState ( final Integer state )
+    {
+        this ( null, null, state );
+    }
+
+    /**
      * Constructs new {@link WindowState} with preferred size, specified location and in specified state.
      *
      * @param location {@link Window} location
