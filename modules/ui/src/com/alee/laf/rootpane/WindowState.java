@@ -47,20 +47,23 @@ import java.util.List;
 public class WindowState implements Mergeable, Cloneable, Serializable
 {
     /**
-     * todo 1. Unify all constructors to avoid issues in future
-     * todo 2. Current saving way is lacking options for packed/non-resizable windows and might even break size
-     * todo 3. Add support for custom west/east maximized states which are not natively supported in extended states
+     * todo 1. Current saving way is lacking options for packed/non-resizable windows and might even break size
+     * todo 2. Add support for custom west/east maximized states which are not natively supported in extended states
      */
 
     /**
-     * {@link Window} location for non-maximized window state.
+     * {@link Window} location.
+     * In case of {@link Frame} it is only used for non-maximized state.
+     * {@code null} value will position {@link Window} relative to its parent.
      */
     @XStreamAsAttribute
     @XStreamConverter ( PointConverter.class )
     protected Point location;
 
     /**
-     * {@link Window} bounds for non-maximized state.
+     * {@link Window} bounds.
+     * In case of {@link Frame} it is only used for non-maximized state.
+     * {@code null} value will pack {@link Window} to its preferred size.
      */
     @XStreamAsAttribute
     @XStreamConverter ( DimensionConverter.class )
@@ -68,12 +71,13 @@ public class WindowState implements Mergeable, Cloneable, Serializable
 
     /**
      * {@link Frame}-exclusive state.
+     * {@code null} value will ensure that {@link Frame} state is not affected.
      */
     @XStreamAsAttribute
     protected Integer state;
 
     /**
-     * Constructs default {@link WindowState}.
+     * Constructs new {@link WindowState} with preferred size, location relative to parent and in default state.
      */
     public WindowState ()
     {
@@ -81,22 +85,64 @@ public class WindowState implements Mergeable, Cloneable, Serializable
     }
 
     /**
-     * Constructs new {@link WindowState} with the specified {@link Window} width and height.
+     * Constructs new {@link WindowState} with preferred size, specified location and in default state.
      *
-     * @param location {@link Window} location for non-maximized {@link Window} state
-     * @param size     {@link Window} bounds for non-maximized state
+     * @param location {@link Window} location,
      */
-    public WindowState ( final Point location, final Dimension size )
+    public WindowState ( final Point location )
     {
-        this ( location, size, Frame.NORMAL );
+        this ( location, null, null );
     }
 
     /**
-     * Constructs new {@link WindowState} with the specified window width and height.
+     * Constructs new {@link WindowState} with specified size, location relative to parent and in default state.
      *
-     * @param location {@link Window} location for non-maximized {@link Window} state
-     * @param size     {@link Window} bounds for non-maximized state
-     * @param state    frame-exclusive state
+     * @param size {@link Window} size
+     */
+    public WindowState ( final Dimension size )
+    {
+        this ( null, size, null );
+    }
+
+    /**
+     * Constructs new {@link WindowState} with specified size, specified location and in default state.
+     *
+     * @param location {@link Window} location
+     * @param size     {@link Window} size
+     */
+    public WindowState ( final Point location, final Dimension size )
+    {
+        this ( location, size, null );
+    }
+
+    /**
+     * Constructs new {@link WindowState} with preferred size, specified location and in specified state.
+     *
+     * @param location {@link Window} location
+     * @param state    {@link Frame}-exclusive state
+     */
+    public WindowState ( final Point location, final Integer state )
+    {
+        this ( location, null, state );
+    }
+
+    /**
+     * Constructs new {@link WindowState} with specified size, location relative to parent and in specified state.
+     *
+     * @param size  {@link Window} size
+     * @param state {@link Frame}-exclusive state
+     */
+    public WindowState ( final Dimension size, final Integer state )
+    {
+        this ( null, size, state );
+    }
+
+    /**
+     * Constructs new {@link WindowState} with specified size, location and in specified state.
+     *
+     * @param location {@link Window} location
+     * @param size     {@link Window} size
+     * @param state    {@link Frame}-exclusive state
      */
     public WindowState ( final Point location, final Dimension size, final Integer state )
     {
@@ -106,7 +152,7 @@ public class WindowState implements Mergeable, Cloneable, Serializable
     }
 
     /**
-     * Constructs new {@link WindowState} with settings from {@link Window}.
+     * Constructs new {@link WindowState} with settings from the specified {@link Window}.
      *
      * @param window {@link Window} to retreive settings from
      */
@@ -116,9 +162,9 @@ public class WindowState implements Mergeable, Cloneable, Serializable
     }
 
     /**
-     * Constructs new {@link WindowState} with settings from {@link JRootPane}.
+     * Constructs new {@link WindowState} with settings from the specified {@link JRootPane}'s {@link Window}.
      *
-     * @param rootPane {@link JRootPane} to retreive settings from
+     * @param rootPane {@link JRootPane} used to find {@link Window} to retreive settings from
      */
     public WindowState ( final JRootPane rootPane )
     {
@@ -126,17 +172,18 @@ public class WindowState implements Mergeable, Cloneable, Serializable
     }
 
     /**
-     * Returns settings retrieved from the specified {@link JRootPane}.
-     * This will apply specified {@link JRootPane} settings on top of existing ones.
+     * Returns settings retrieved from the specified {@link JRootPane}'s {@link Window}.
+     * Calling this method when this {@link WindowState} is not empty will apply settings from the specified {@link JRootPane}'s
+     * {@link Window} on top of settings in this {@link WindowState}.
      *
-     * @param rootPane {@link JRootPane} to retrieve settings from
-     * @return settings retrieved from the specified {@link JRootPane}
+     * @param rootPane {@link JRootPane} used to find {@link Window} to retreive settings from
+     * @return settings retrieved from the specified {@link JRootPane}'s {@link Window}
      */
     public WindowState retrieve ( final JRootPane rootPane )
     {
         final Window window = CoreSwingUtils.getWindowAncestor ( rootPane );
 
-        // Saving frame state
+        // Saving frame-exclusive settings
         if ( window instanceof Frame )
         {
             state = ( ( Frame ) window ).getExtendedState ();
@@ -154,12 +201,13 @@ public class WindowState implements Mergeable, Cloneable, Serializable
     }
 
     /**
-     * Applies this {@link WindowState} to the specified {@link JRootPane}.
+     * Applies this {@link WindowState} to the specified {@link JRootPane}'s {@link Window}.
      *
-     * @param rootPane {@link JRootPane} to apply this {@link WindowState} to
+     * @param rootPane {@link JRootPane} used to find {@link Window} to apply this {@link WindowState} to
      */
     public void apply ( final JRootPane rootPane )
     {
+        // Searching for window
         final Window window = CoreSwingUtils.getWindowAncestor ( rootPane );
         final Rectangle bounds = window.getBounds ();
 
@@ -248,11 +296,15 @@ public class WindowState implements Mergeable, Cloneable, Serializable
             location = window.getLocation ();
         }
 
-        // Restoring frame state
-        if ( state != null && window instanceof Frame )
+        // Frame-exclusive settings
+        if ( window instanceof Frame )
         {
-            state &= ~Frame.ICONIFIED;
-            ( ( Frame ) window ).setExtendedState ( state );
+            // Restoring frame state
+            if ( state != null )
+            {
+                state &= ~Frame.ICONIFIED;
+                ( ( Frame ) window ).setExtendedState ( state );
+            }
         }
     }
 }
