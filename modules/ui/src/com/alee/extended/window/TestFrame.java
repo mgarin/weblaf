@@ -273,7 +273,7 @@ public class TestFrame extends JFrame
         container = new JPanel ( layout );
         if ( margin != null )
         {
-            container.setBorder ( new WebBorder ( margin ) );
+            container.setBorder ( BorderFactory.createEmptyBorder ( margin.top, margin.left, margin.bottom, margin.right ) );
         }
         if ( constraints != null )
         {
