@@ -37,6 +37,11 @@ public class StyledTextRow
     public List<TextRange> fragments;
 
     /**
+     * Whether the row is leading (first in text or after hard break) or not.
+     */
+    public boolean leading;
+
+    /**
      * Row width.
      */
     public int width;
@@ -54,11 +59,13 @@ public class StyledTextRow
     /**
      * Constructs row with the specified height.
      *
-     * @param height row height
+     * @param height  row height
+     * @param leading whether the row is leading (first in text or after hard break) or not
      */
-    public StyledTextRow ( final int height )
+    public StyledTextRow ( final int height, final boolean leading )
     {
         this.fragments = new ArrayList<TextRange> ();
+        this.leading = leading;
         this.width = 0;
         this.height = height;
         this.mnemonic = -1;
@@ -85,7 +92,7 @@ public class StyledTextRow
                 mnemonic += fragment.text.length ();
             }
         }
-        if ( fragments.isEmpty () )
+        if ( fragments.isEmpty () && !leading )
         {
             // Trimming left first fragment
             final int fw = TextUtils.findFirstWordFromIndex ( s, 0 );
