@@ -335,9 +335,10 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
         int rowCount = 0;
         int charDisplayed = 0;
         int nextRowStartIndex = 0;
-        StyledTextRow row = new StyledTextRow ( maxRowHeight );
+        StyledTextRow row = new StyledTextRow ( maxRowHeight, true );
 
         boolean readyToPaint = false;
+        boolean leadingRow = false;
         final List<StyledTextRow> rows = new ArrayList<StyledTextRow> ();
 
         // Painting the text
@@ -368,12 +369,12 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
                     i++;
                     charDisplayed += 1;
                     readyToPaint = true;
+                    leadingRow = true;
                 }
             }
             else if ( nextRowStartIndex == 0 || nextRowStartIndex < textRange.text.length () )
             {
                 String s = textRange.text.substring ( nextRowStartIndex, textRange.text.length () );
-
 
                 int strWidth = cfm.stringWidth ( s );
                 final int widthLeft = endX - x;
@@ -490,8 +491,9 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
                 rows.add ( row );
 
                 rowCount++;
-                row = new StyledTextRow ( maxRowHeight );
+                row = new StyledTextRow ( maxRowHeight, leadingRow );
                 readyToPaint = false;
+                leadingRow = false;
 
                 // Setting up next row
                 y += maxRowHeight + Math.max ( 0, rowGap );
