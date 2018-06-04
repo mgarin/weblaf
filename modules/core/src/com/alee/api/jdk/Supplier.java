@@ -26,7 +26,6 @@ package com.alee.api.jdk;
  * @param <T> the type of results supplied by this supplier
  * @author Mikle Garin
  */
-
 public interface Supplier<T>
 {
     /**

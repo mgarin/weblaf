@@ -25,7 +25,6 @@ package com.alee.api.jdk;
  * @param <T> the type of the input to the predicate
  * @author Mikle Garin
  */
-
 public interface Predicate<T>
 {
     /**

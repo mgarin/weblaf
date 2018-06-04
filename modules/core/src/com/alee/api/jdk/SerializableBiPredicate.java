@@ -17,21 +17,19 @@
 
 package com.alee.api.jdk;
 
+import java.io.Serializable;
+
 /**
- * Represents an operation that accepts a single input argument and returns no result.
- * Unlike most other functional interfaces, {@code Consumer} is expected to operate via side-effects.
+ * {@link BiPredicate} marked as {@link Serializable}.
  *
- * This is a custom consumer for JDK6 support.
- *
- * @param <T> the type of the input to the operation
+ * @param <T> first input argument type
+ * @param <U> second input argument type
  * @author Mikle Garin
+ * @see Predicate
  */
-public interface Consumer<T>
+public interface SerializableBiPredicate<T, U> extends BiPredicate<T, U>, Serializable
 {
     /**
-     * Performs this operation on the given argument.
-     *
-     * @param t the input argument
+     * This interface doesn't offer any additional methods to implement.
      */
-    public void accept ( T t );
 }

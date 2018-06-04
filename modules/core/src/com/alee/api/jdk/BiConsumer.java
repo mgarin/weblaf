@@ -23,11 +23,11 @@ package com.alee.api.jdk;
  *
  * This is a custom bi-consumer for JDK6 support.
  *
- * @param <T> the type of the input to the operation
+ * @param <T> the type of the first input to the operation
+ * @param <U> the type of the second input to the operation
  * @author Mikle Garin
  * @see Consumer
  */
-
 public interface BiConsumer<T, U>
 {
     /**

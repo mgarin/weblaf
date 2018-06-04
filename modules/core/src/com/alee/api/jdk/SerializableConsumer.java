@@ -17,21 +17,17 @@
 
 package com.alee.api.jdk;
 
+import java.io.Serializable;
+
 /**
- * Represents an operation that accepts a single input argument and returns no result.
- * Unlike most other functional interfaces, {@code Consumer} is expected to operate via side-effects.
- *
- * This is a custom consumer for JDK6 support.
+ * {@link Consumer} marked as {@link Serializable}.
  *
  * @param <T> the type of the input to the operation
  * @author Mikle Garin
  */
-public interface Consumer<T>
+public interface SerializableConsumer<T> extends Consumer<T>, Serializable
 {
     /**
-     * Performs this operation on the given argument.
-     *
-     * @param t the input argument
+     * This interface doesn't offer any additional methods to implement.
      */
-    public void accept ( T t );
 }

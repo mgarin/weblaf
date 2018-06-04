@@ -17,21 +17,20 @@
 
 package com.alee.api.jdk;
 
+import java.io.Serializable;
+
 /**
- * Represents an operation that accepts a single input argument and returns no result.
- * Unlike most other functional interfaces, {@code Consumer} is expected to operate via side-effects.
+ * {@link BiFunction} marked as {@link Serializable}.
  *
- * This is a custom consumer for JDK6 support.
- *
- * @param <T> the type of the input to the operation
+ * @param <T> the type of the first argument to the function
+ * @param <U> the type of the second argument to the function
+ * @param <R> the type of the result of the function
  * @author Mikle Garin
+ * @see Function
  */
-public interface Consumer<T>
+public interface SerializableBiFunction<T, U, R> extends BiFunction<T, U, T>, Serializable
 {
     /**
-     * Performs this operation on the given argument.
-     *
-     * @param t the input argument
+     * This interface doesn't offer any additional methods to implement.
      */
-    public void accept ( T t );
 }

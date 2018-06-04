@@ -29,7 +29,6 @@ package com.alee.api.jdk;
  * @author Mikle Garin
  * @see Function
  */
-
 public interface BiFunction<T, U, R>
 {
     /**

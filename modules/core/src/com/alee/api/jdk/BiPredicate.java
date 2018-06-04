@@ -28,7 +28,6 @@ package com.alee.api.jdk;
  * @author Mikle Garin
  * @see Predicate
  */
-
 public interface BiPredicate<T, U>
 {
     /**

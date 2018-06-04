@@ -26,7 +26,6 @@ package com.alee.api.jdk;
  * @param <R> the type of the result of the function
  * @author Mikle Garin
  */
-
 public interface Function<T, R>
 {
     /**
