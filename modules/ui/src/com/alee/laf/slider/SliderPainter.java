@@ -106,8 +106,11 @@ public class SliderPainter<C extends JSlider, U extends WebSliderUI> extends Abs
             @Override
             public void mouseWheelMoved ( final MouseWheelEvent e )
             {
-                final int v = component.getValue () - e.getWheelRotation ();
-                component.setValue ( MathUtils.limit ( component.getMinimum (), v, component.getMaximum () ) );
+                if ( component.isEnabled () )
+                {
+                    final int v = component.getValue () - e.getWheelRotation ();
+                    component.setValue ( MathUtils.limit ( component.getMinimum (), v, component.getMaximum () ) );
+                }
             }
         };
         component.addMouseWheelListener ( mouseWheelListener );
