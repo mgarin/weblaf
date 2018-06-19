@@ -44,7 +44,6 @@ import java.awt.geom.GeneralPath;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public abstract class AbstractPopupPainter<C extends JComponent, U extends ComponentUI> extends AbstractPainter<C, U>
         implements PainterShapeProvider<C>, SwingConstants
 {
@@ -394,7 +393,7 @@ public abstract class AbstractPopupPainter<C extends JComponent, U extends Compo
             final Pair<Integer, Integer> ver = new Pair<Integer, Integer> ( b.y + shadeWidth * 2, b.y + b.height - shadeWidth * 2 );
             final StretchInfo info = new StretchInfo ( hor, ver );
             final Shape shape = getBorderShape ( popup, popupSize, true );
-            shade = WebShadow.getShadowIcon ( info, b, shadeWidth, opacity, Color.BLACK, shape, cornerSide, relativeCorner );
+            shade = WebShadow.getShadowIcon ( info, b, shadeWidth, opacity, Color.BLACK, shape, popupStyle, cornerSide, relativeCorner );
             shade.paintIcon ( g2d, getShadeBounds ( popupSize ) );
         }
         else
