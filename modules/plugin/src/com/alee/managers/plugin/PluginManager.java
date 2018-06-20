@@ -785,6 +785,7 @@ public abstract class PluginManager<P extends Plugin>
                     {
                         // List of resulting dependencies
                         // There could be less resulting dependenies due to missing optional ones
+                        // It will also not contain any dependencies that are already loaded prior to this operation
                         final List<String> dependencyIds = new ArrayList<String> ( dependencies.size () );
 
                         // List of missing dependencies
@@ -794,44 +795,19 @@ public abstract class PluginManager<P extends Plugin>
                         boolean allDependenciesLoaded = true;
                         for ( final PluginDependency dependency : dependencies )
                         {
-                            // Checking that dependency is already loaded
-                            final boolean dependencyLoaded = isAvailable ( dependency );
-
-                            // Checking whether dependency is in detected list
-                            final boolean dependencyDetected = !dependencyLoaded && isDetected ( dependency );
-
-                            // Different solutions for optional and non-optional dependencies
-                            // It contains important differences in dependencies mapping
-                            if ( dependency.isOptional () )
+                            // Checking that dependency is not yet loaded
+                            if ( !isAvailable ( dependency ) )
                             {
-                                // Optional dependency is not loaded only when exists in detected list
-                                if ( dependencyDetected )
+                                // Checking whether dependency is in detected list
+                                if ( isDetected ( dependency ) )
                                 {
+                                    // Dependency is not loaded when its not in available list
                                     allDependenciesLoaded = false;
-                                }
-
-                                // We perform this only if it is already loaded or at least detected
-                                if ( dependencyLoaded || dependencyDetected )
-                                {
-                                    // Saving resulting dependency ID
-                                    dependencyIds.add ( dependency.getPluginId () );
-                                }
-                            }
-                            else
-                            {
-                                // Checking dependency existence
-                                if ( dependencyLoaded || dependencyDetected )
-                                {
-                                    // Required dependency is not loaded when its not in available list
-                                    if ( !dependencyLoaded )
-                                    {
-                                        allDependenciesLoaded = false;
-                                    }
 
                                     // Saving resulting dependency ID
                                     dependencyIds.add ( dependency.getPluginId () );
                                 }
-                                else
+                                else if ( !dependency.isOptional () )
                                 {
                                     // Plugin cannot be loaded due to missing required dependency
                                     missingDependencies.add ( dependency );
@@ -858,7 +834,7 @@ public abstract class PluginManager<P extends Plugin>
                             }
 
                             // Adding plugin into root plugins list if its dependencies are met
-                            if ( !allDependenciesLoaded )
+                            if ( allDependenciesLoaded )
                             {
                                 root.add ( plugin );
                             }
