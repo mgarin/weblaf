@@ -112,6 +112,9 @@
                     <executions>
                         <execution>
                             <id>attach-javadocs</id>
+                            <configuration>
+                                <additionalparam>${javadoc.opts}</additionalparam>
+                            </configuration>
                             <phase>package</phase>
                             <goals>
                                 <goal>jar</goal>
@@ -144,6 +147,15 @@
     </build>
 
     <profiles>
+        <profile>
+            <id>doclint-java8-disable</id>
+            <activation>
+                <jdk>[1.8,)</jdk>
+            </activation>
+                <properties>
+                    <javadoc.opts>-Xdoclint:none</javadoc.opts>
+                </properties>
+        </profile>
         <profile>
             <id>sign-artifacts</id>
             <activation>
