@@ -19,6 +19,7 @@ package com.alee.extended.window;
 
 import com.alee.api.jdk.Supplier;
 import com.alee.extended.behavior.ComponentMoveBehavior;
+import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.menu.AbstractPopupPainter;
 import com.alee.laf.menu.PopupStyle;
@@ -43,17 +44,22 @@ import java.beans.PropertyChangeListener;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "PopOverPainter" )
 public class PopOverPainter<C extends JRootPane, U extends WRootPaneUI> extends AbstractPopupPainter<C, U>
         implements IPopOverPainter<C, U>
 {
+    /**
+     * todo 1. This painter must extend {@link com.alee.laf.rootpane.RootPanePainter}
+     * todo 2. All {@link AbstractPopupPainter} stuff should be done by proper decoration elements instead
+     */
+
     /**
      * Listeners.
      */
     protected transient ComponentMoveBehavior moveAdapter;
     protected transient WindowFocusListener focusListener;
     protected transient ComponentAdapter resizeAdapter;
+    protected transient VisibilityBehavior windowVisibilityBehavior;
 
     /**
      * Whether or not popover is focused.
@@ -136,6 +142,7 @@ public class PopOverPainter<C extends JRootPane, U extends WRootPaneUI> extends 
                     attached = false;
                     preferredDirection = null;
                     setPopupStyle ( PopupStyle.simple );
+                    repaint ();
                     popOver.fireDetached ();
                 }
 
@@ -160,11 +167,58 @@ public class PopOverPainter<C extends JRootPane, U extends WRootPaneUI> extends 
             };
             popOver.addComponentListener ( resizeAdapter );
         }
+
+        // Installs behavior that informs L&F about window visibility changes
+        // todo Remove this behavior as soon as this painter extends RootPanePainter
+        windowVisibilityBehavior = new VisibilityBehavior ( component )
+        {
+            @Override
+            public void displayed ()
+            {
+                if ( popOver != null )
+                {
+                    /**
+                     * Notifying popover listeners.
+                     * Note that if this pop-over is modal this event will be fired only after it is closed.
+                     * Unfortunately there is no good way to provide this event after dialog is opened but before it is closed in that case.
+                     */
+                    popOver.fireOpened ();
+
+                    /**
+                     * Notifying L&F about opened window.
+                     */
+                    WebLookAndFeel.fireWindowDisplayed ( popOver );
+                }
+            }
+
+            @Override
+            public void hidden ()
+            {
+                if ( popOver != null )
+                {
+                    /**
+                     * Notifying popover listeners.
+                     */
+                    popOver.fireClosed ();
+
+                    /**
+                     * Notifying L&F about closed window.
+                     */
+                    WebLookAndFeel.fireWindowHidden ( popOver );
+                }
+            }
+        };
+        windowVisibilityBehavior.install ();
     }
 
     @Override
     protected void uninstallPropertiesAndListeners ()
     {
+        // Uninstalls behavior that informs L&F about window visibility changes
+        // todo Remove this behavior as soon as this painter extends RootPanePainter
+        windowVisibilityBehavior.uninstall ();
+        windowVisibilityBehavior = null;
+
         // Retrieving popover instance
         final WebPopOver popOver = getPopOver ( component );
 
@@ -420,24 +474,8 @@ public class PopOverPainter<C extends JRootPane, U extends WRootPaneUI> extends 
      */
     protected void updatePopOverLocation ( final WebPopOver popOver, final Component invoker )
     {
-        if ( invoker instanceof Window )
+        if ( invoker.isShowing () )
         {
-            // Applying proper painter style
-            setPopupStyle ( PopupStyle.simple );
-
-            // Determining final WebPopOver position
-            final Rectangle ib = invoker.getBounds ();
-            final Dimension size = popOver.getSize ();
-
-            // Updating current direction
-            currentDirection = null;
-
-            // Updating WebPopOver location
-            popOver.setLocation ( ib.x + ib.width / 2 - size.width / 2, ib.y + ib.height / 2 - size.height / 2 );
-        }
-        else if ( invoker.isShowing () )
-        {
-            // Updating WebPopOver location in a smarter way
             updatePopOverLocation ( popOver, invoker, CoreSwingUtils.getBoundsOnScreen ( invoker ) );
         }
     }

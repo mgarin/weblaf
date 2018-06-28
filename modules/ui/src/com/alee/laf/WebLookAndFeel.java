@@ -17,6 +17,7 @@
 
 package com.alee.laf;
 
+import com.alee.api.jdk.BiConsumer;
 import com.alee.extended.svg.SvgIcon;
 import com.alee.graphics.image.gif.GifIcon;
 import com.alee.laf.edt.ExceptionNonEventThreadHandler;
@@ -34,8 +35,10 @@ import com.alee.utils.*;
 import com.alee.utils.laf.WebBorder;
 import com.alee.utils.reflection.LazyInstance;
 import com.alee.utils.swing.SwingLazyValue;
+import com.alee.utils.swing.WeakComponentDataList;
 
 import javax.swing.*;
+import javax.swing.event.EventListenerList;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.basic.BasicLookAndFeel;
 import javax.swing.text.DefaultEditorKit;
@@ -172,6 +175,37 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * Whether to hide component mnemonics by default or not.
      */
     protected static boolean isMnemonicHidden = true;
+
+    /**
+     * Global {@link EventListenerList} for various listeners that can be registered for some global events.
+     *
+     * @see #visibleWindowListeners
+     * @see #addVisibleWindowListener(VisibleWindowListener)
+     * @see #removeVisibleWindowListener(VisibleWindowListener)
+     */
+    protected static final EventListenerList globalListeners = new EventListenerList ();
+
+    /**
+     * Special per-{@link JComponent} listeners for tracking visibility changes of any Swing windows within application.
+     * Since there is no good way to track Swing {@link Window}s creation and destruction {@link com.alee.laf.rootpane.WebRootPaneUI}
+     * has the tracking implementation instead as the closest element to almost any common {@link Window} being opened.
+     *
+     * Due to specifics of the implementation it only tracks next types of components:
+     * - {@link JDialog}
+     * - {@link JFrame}
+     * - {@link JWindow}
+     * - {@link JPopupMenu} all of its use cases
+     *
+     * Next types of components are not tracked (basically raw AWT types):
+     * - {@link Window}
+     * - {@link Dialog}
+     * - {@link Frame}
+     *
+     * @see #addVisibleWindowListener(JComponent, VisibleWindowListener)
+     * @see #removeVisibleWindowListener(JComponent, VisibleWindowListener)
+     */
+    protected static final WeakComponentDataList<JComponent, VisibleWindowListener> visibleWindowListeners =
+            new WeakComponentDataList<JComponent, VisibleWindowListener> ( "WebLookAndFeel.VisibleWindowListener", 50 );
 
     /**
      * Previously installed {@link LookAndFeel}.
@@ -1255,5 +1289,89 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static void changeOrientation ()
     {
         setOrientation ( !getOrientation ().isLeftToRight () );
+    }
+
+    /**
+     * Adds global {@link VisibleWindowListener}.
+     *
+     * @param listener {@link VisibleWindowListener}
+     */
+    public static void addVisibleWindowListener ( final VisibleWindowListener listener )
+    {
+        globalListeners.add ( VisibleWindowListener.class, listener );
+    }
+
+    /**
+     * Removes global {@link VisibleWindowListener}.
+     *
+     * @param listener {@link VisibleWindowListener}
+     */
+    public static void removeVisibleWindowListener ( final VisibleWindowListener listener )
+    {
+        globalListeners.remove ( VisibleWindowListener.class, listener );
+    }
+
+    /**
+     * Adds global {@link VisibleWindowListener}.
+     *
+     * @param component {@link JComponent} using the listener
+     * @param listener  {@link VisibleWindowListener}
+     */
+    public static void addVisibleWindowListener ( final JComponent component, final VisibleWindowListener listener )
+    {
+        visibleWindowListeners.add ( component, listener );
+    }
+
+    /**
+     * Removes global {@link VisibleWindowListener}.
+     *
+     * @param component {@link JComponent} using the listener
+     * @param listener  {@link VisibleWindowListener}
+     */
+    public static void removeVisibleWindowListener ( final JComponent component, final VisibleWindowListener listener )
+    {
+        visibleWindowListeners.remove ( component, listener );
+    }
+
+    /**
+     * Inform about {@link Window} becoming visible.
+     *
+     * @param window {@link Window}
+     */
+    public static void fireWindowDisplayed ( final Window window )
+    {
+        for ( final VisibleWindowListener listener : globalListeners.getListeners ( VisibleWindowListener.class ) )
+        {
+            listener.windowDisplayed ( window );
+        }
+        visibleWindowListeners.forEachData ( new BiConsumer<JComponent, VisibleWindowListener> ()
+        {
+            @Override
+            public void accept ( final JComponent component, final VisibleWindowListener listener )
+            {
+                listener.windowDisplayed ( window );
+            }
+        } );
+    }
+
+    /**
+     * Inform about {@link Window} becoming hidden or disposed.
+     *
+     * @param window {@link Window}
+     */
+    public static void fireWindowHidden ( final Window window )
+    {
+        for ( final VisibleWindowListener listener : globalListeners.getListeners ( VisibleWindowListener.class ) )
+        {
+            listener.windowHidden ( window );
+        }
+        visibleWindowListeners.forEachData ( new BiConsumer<JComponent, VisibleWindowListener> ()
+        {
+            @Override
+            public void accept ( final JComponent component, final VisibleWindowListener listener )
+            {
+                listener.windowHidden ( window );
+            }
+        } );
     }
 }

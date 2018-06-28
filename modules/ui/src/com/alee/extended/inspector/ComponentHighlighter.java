@@ -43,7 +43,6 @@ import java.util.Map;
  *
  * @author Mikle Garin
  */
-
 public final class ComponentHighlighter extends JComponent implements ComponentListener, HierarchyBoundsListener
 {
     /**
@@ -490,5 +489,15 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
     {
         g2d.setPaint ( contentColor );
         g2d.fill ( bounds );
+    }
+
+    /**
+     * Ensure we are as hidden as possible.
+     * This will also ensure that other {@link ComponentHighlighter}s cannot see us.
+     */
+    @Override
+    public boolean contains ( final int x, final int y )
+    {
+        return false;
     }
 }

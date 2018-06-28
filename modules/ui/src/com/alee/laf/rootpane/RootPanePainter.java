@@ -1,6 +1,7 @@
 package com.alee.laf.rootpane;
 
 import com.alee.api.jdk.Objects;
+import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.StyleId;
 import com.alee.painter.decoration.AbstractContainerPainter;
@@ -35,6 +36,7 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
      */
     protected transient WindowFocusListener windowFocusListener;
     protected transient WindowStateListener frameStateListener;
+    protected transient VisibilityBehavior windowVisibilityBehavior;
 
     /**
      * Runtime variables.
@@ -76,11 +78,13 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
     {
         super.installPropertiesAndListeners ();
         installWindowStateListener ();
+        installVisibilityListener ();
     }
 
     @Override
     protected void uninstallPropertiesAndListeners ()
     {
+        uninstallVisibilityListener ();
         uninstallWindowStateListener ();
         super.uninstallPropertiesAndListeners ();
     }
@@ -475,12 +479,52 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
     }
 
     /**
+     * Installs {@link VisibilityBehavior} that informs {@link WebLookAndFeel} about {@link Window} visibility changes.
+     */
+    protected void installVisibilityListener ()
+    {
+        windowVisibilityBehavior = new VisibilityBehavior ( component )
+        {
+            @Override
+            public void displayed ()
+            {
+                final Window window = getWindow ();
+                if ( window != null )
+                {
+                    WebLookAndFeel.fireWindowDisplayed ( window );
+                }
+            }
+
+            @Override
+            public void hidden ()
+            {
+                final Window window = getWindow ();
+                if ( window != null )
+                {
+                    WebLookAndFeel.fireWindowHidden ( window );
+                }
+            }
+        };
+        windowVisibilityBehavior.install ();
+    }
+
+    /**
+     * Uninstalls {@link VisibilityBehavior} that informs {@link WebLookAndFeel} about {@link Window} visibility changes.
+     */
+    protected void uninstallVisibilityListener ()
+    {
+        windowVisibilityBehavior.uninstall ();
+        windowVisibilityBehavior = null;
+    }
+
+    /**
      * Returns {@link Window} that uses {@link JRootPane} represented by this painter.
      *
      * @return {@link Window} that uses {@link JRootPane} represented by this painter
      */
     protected Window getWindow ()
     {
-        return CoreSwingUtils.getWindowAncestor ( component );
+        final Container parent = component.getParent ();
+        return parent instanceof Window ? ( Window ) parent : null;
     }
 }

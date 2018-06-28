@@ -240,7 +240,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     {
         if ( root.getWindowDecorationStyle () != JRootPane.NONE && isDecorated () )
         {
-            window = CoreSwingUtils.getWindowAncestor ( root );
+            window = getWindow ();
             frame = window instanceof Frame ? ( Frame ) window : null;
             dialog = window instanceof Dialog ? ( Dialog ) window : null;
             installSettings ();

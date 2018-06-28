@@ -19,6 +19,7 @@ package com.alee.extended.window;
 
 import com.alee.laf.window.WebWindow;
 import com.alee.utils.ProprietaryUtils;
+import com.alee.utils.SystemUtils;
 
 import java.awt.*;
 
@@ -37,9 +38,32 @@ public class WebPopupWindow extends WebWindow
     public WebPopupWindow ( final Window owner )
     {
         super ( owner );
+
+        /**
+         * Special {@link Window} name used to trigger some Swing workarounds.
+         * In most cases it is not necessary but it doesn't hurt either.
+         */
         setName ( "###focusableSwingPopup###" );
+
+        /**
+         * Disabled to ensure we do not force {@link Window} to request focus upon display.
+         * It is reenabled within {@link #setVisible(boolean)} method.
+         */
         setFocusableWindowState ( false );
-        ProprietaryUtils.setPopupWindowType ( this );
+
+        /**
+         * Configuring {@link Window} type to be {@code Window.Type.POPUP} to ensure better OS behavior.
+         * {@code Window.Type.POPUP} is not set for Unix systems due to window prioritization issues.
+         */
+        if ( !SystemUtils.isUnix () )
+        {
+            ProprietaryUtils.setPopupWindowType ( this );
+        }
+
+        /**
+         * Modal exclusion is disabled to avoid our popups being blocked by modal dialogs.
+         * This can be reenabled if necessary but in most cases it shouldn't be needed.
+         */
         setModalExclusionType ( Dialog.ModalExclusionType.APPLICATION_EXCLUDE );
     }
 

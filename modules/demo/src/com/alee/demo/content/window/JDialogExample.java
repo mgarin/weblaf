@@ -38,7 +38,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class JDialogExample extends AbstractStylePreviewExample
 {
     @Override
@@ -108,6 +107,7 @@ public class JDialogExample extends AbstractStylePreviewExample
                     dialog.add ( new WebLabel ( title, WebLabel.CENTER ) );
                     dialog.setSize ( 500, 400 );
                     dialog.setLocationRelativeTo ( DemoApplication.getInstance () );
+                    dialog.setDefaultCloseOperation ( WindowConstants.DISPOSE_ON_CLOSE );
                     dialog.setVisible ( true );
                 }
             } );

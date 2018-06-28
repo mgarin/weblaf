@@ -51,7 +51,7 @@ public final class InspectorFrame extends WebDockableFrame
         setPreferredWidth ( 300 );
         setPreferredHeight ( 400 );
 
-        final InterfaceInspector inspector = new InterfaceInspector ( application );
+        final InterfaceInspector inspector = new InterfaceInspector ();
         add ( inspector );
 
         addFrameListener ( new DockableFrameAdapter ()

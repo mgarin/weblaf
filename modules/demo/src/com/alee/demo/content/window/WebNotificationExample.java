@@ -38,7 +38,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebNotificationExample extends AbstractStylePreviewExample
 {
     @Override

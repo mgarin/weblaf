@@ -24,11 +24,13 @@ import java.awt.*;
  * Special border used by WebLaF to provide proper component content sides spacing.
  * It usually replaces default/user component border but you can provide a special client property that will disable that behavior.
  *
+ * It is not recommended to use this border with WebLaF components as it is a {@link javax.swing.plaf.UIResource} by default and will be
+ * replaced by any {@link com.alee.laf.WebUI} implementation as soon as any border changes are made.
+ *
  * @author Mikle Garin
  * @see com.alee.laf.WebLookAndFeel#PROPERTY_HONOR_USER_BORDER
  * @see com.alee.laf.WebLookAndFeel#PROPERTY_HONOR_USER_BORDERS
  */
-
 public final class WebBorder extends BorderUIResource.EmptyBorderUIResource
 {
     /**

@@ -70,7 +70,6 @@ import java.util.ArrayList;
  *
  * @author Mikle Garin
  */
-
 public final class DemoApplication extends WebFrame
 {
     /**
@@ -352,9 +351,6 @@ public final class DemoApplication extends WebFrame
 
                 // Starting demo application
                 DemoApplication.getInstance ().display ();
-
-                // Interface inspector used for demo aplication testing
-                // InterfaceInspector.showPopOver ( DemoApplication.getInstance ().getRootPane () );
             }
         } );
     }

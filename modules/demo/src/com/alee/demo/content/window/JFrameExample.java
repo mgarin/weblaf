@@ -36,7 +36,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class JFrameExample extends AbstractStylePreviewExample
 {
     @Override
@@ -106,6 +105,7 @@ public class JFrameExample extends AbstractStylePreviewExample
                     frame.setAlwaysOnTop ( true );
                     frame.setSize ( 500, 400 );
                     frame.setLocationRelativeTo ( DemoApplication.getInstance () );
+                    frame.setDefaultCloseOperation ( WindowConstants.DISPOSE_ON_CLOSE );
                     frame.setVisible ( true );
                 }
             } );

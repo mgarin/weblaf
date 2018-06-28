@@ -15,37 +15,33 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.inspector.info;
+package com.alee.laf;
 
-import javax.swing.*;
 import java.awt.*;
+import java.util.EventListener;
 
 /**
- * Short component information provider interface.
+ * Global Swing listener for tracking visible {@link Window} instances.
+ * It fires {@link #windowDisplayed(Window)} whenever any {@link Window} becomes visible.
+ * It fires {@link #windowHidden(Window)} whenever any {@link Window} becomes hidden or disposed.
  *
- * @param <C> component type
+ * Be careful using this listener not to create hard references to any {@link Window} passed to avoid major memory leaks.
+ *
  * @author Mikle Garin
  */
-public interface ComponentPreview<C extends Component>
+public interface VisibleWindowListener extends EventListener
 {
     /**
-     * Windows root icon.
+     * Informs about {@link Window} becoming visible.
+     *
+     * @param window {@link Window}
      */
-    public static final ImageIcon windows = new ImageIcon ( ComponentPreview.class.getResource ( "icons/windows.png" ) );
+    public void windowDisplayed ( Window window );
 
     /**
-     * Returns icon for the specified {@link Component}.
+     * Informs about {@link Window} becoming hidden or disposed.
      *
-     * @param component {@link Component} to provide icon for
-     * @return icon for the specified {@link Component}
+     * @param window {@link Window}
      */
-    public Icon getIcon ( C component );
-
-    /**
-     * Returns text value for the specified {@link Component}.
-     *
-     * @param component {@link Component} to provide text for
-     * @return text value for the specified {@link Component}
-     */
-    public String getText ( C component );
+    public void windowHidden ( Window window );
 }

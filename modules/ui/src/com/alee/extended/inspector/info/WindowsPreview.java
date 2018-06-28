@@ -17,38 +17,27 @@
 
 package com.alee.extended.inspector.info;
 
-import com.alee.extended.heatmap.HeatMap;
+import com.alee.managers.language.LM;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Default {@link JComponent} information provider.
  *
- * @param <C> component type
  * @author Mikle Garin
  */
-public class JComponentPreview<C extends JComponent> extends AWTComponentPreview<C>
+public class WindowsPreview implements ComponentPreview<Component>
 {
-    /**
-     * Additional type icons.
-     */
-    public static final ImageIcon layeredPaneType = new ImageIcon ( JComponentPreview.class.getResource ( "icons/layeredpane.png" ) );
-    public static final ImageIcon heatMapType = new ImageIcon ( JComponentPreview.class.getResource ( "icons/heatmap.png" ) );
+    @Override
+    public Icon getIcon ( final Component component )
+    {
+        return windows;
+    }
 
     @Override
-    public Icon getIconImpl ( final C component )
+    public String getText ( final Component component )
     {
-        if ( component instanceof JLayeredPane )
-        {
-            return layeredPaneType;
-        }
-        else if ( component instanceof HeatMap )
-        {
-            return heatMapType;
-        }
-        else
-        {
-            return super.getIconImpl ( component );
-        }
+        return LM.get ("weblaf.ex.inspector.windows");
     }
 }

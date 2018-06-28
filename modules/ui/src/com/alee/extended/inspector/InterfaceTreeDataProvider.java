@@ -18,6 +18,8 @@
 package com.alee.extended.inspector;
 
 import com.alee.extended.tree.AbstractExTreeDataProvider;
+import com.alee.laf.VisibleWindowListener;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.compare.Filter;
 
 import javax.swing.*;
@@ -29,7 +31,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<InterfaceTreeNode> implements Filter<Component>
 {
     /**
@@ -63,47 +64,116 @@ public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<Interf
                 final Component component1 = node1.getUserObject ();
                 final Component component2 = node2.getUserObject ();
 
-                // Checking that parent is the same
-                final Container parent = component1.getParent ();
-                if ( parent != component2.getParent () )
+                final int result;
+                if ( component1 instanceof Window && component2 instanceof Window )
                 {
-                    throw new RuntimeException ( "Compared nodes cannot have different parent" );
+                    // No point to compare windows
+                    result = 0;
                 }
-
-                // Comparing component's Z-index
-                final int zIndex1 = parent.getComponentZOrder ( component1 );
-                final int zIndex2 = parent.getComponentZOrder ( component2 );
-                return new Integer ( zIndex1 ).compareTo ( zIndex2 );
+                else
+                {
+                    // Checking that parent is the same
+                    final Container parent1 = component1.getParent ();
+                    final Container parent2 = component2.getParent ();
+                    if ( parent1 == null || parent2 == null || parent1 == parent2 )
+                    {
+                        // Comparing component's Z-index
+                        final int zIndex1 = parent1 != null ? parent1.getComponentZOrder ( component1 ) : 0;
+                        final int zIndex2 = parent2 != null ? parent2.getComponentZOrder ( component2 ) : 0;
+                        result = new Integer ( zIndex2 ).compareTo ( zIndex1 );
+                    }
+                    else
+                    {
+                        throw new RuntimeException ( "Compared nodes cannot have different parent" );
+                    }
+                }
+                return result;
             }
         } );
+
+        if ( inspected == null )
+        {
+            WebLookAndFeel.addVisibleWindowListener ( tree, new VisibleWindowListener ()
+            {
+                @Override
+                public void windowDisplayed ( final Window window )
+                {
+                    if ( window.isShowing () )
+                    {
+                        final InterfaceTreeNode root = tree.getRootNode ();
+                        final InterfaceTreeNode node = new InterfaceTreeNode ( tree, window );
+                        tree.addChildNode ( root, node );
+                    }
+                }
+
+                @Override
+                public void windowHidden ( final Window window )
+                {
+                    final InterfaceTreeNode root = tree.getRootNode ();
+                    for ( int i = 0; i < root.getChildCount (); i++ )
+                    {
+                        final InterfaceTreeNode child = root.getChildAt ( i );
+                        if ( child.getUserObject () == window )
+                        {
+                            child.uninstall ();
+                            tree.removeNode ( child );
+                            break;
+                        }
+                    }
+                }
+            } );
+        }
     }
 
     @Override
     public InterfaceTreeNode getRoot ()
     {
-        return new InterfaceTreeNode ( tree, inspected );
+        if ( inspected != null )
+        {
+            return new InterfaceTreeNode ( tree, inspected );
+        }
+        else
+        {
+            return new InterfaceTreeNode ( tree, null );
+        }
     }
 
     @Override
     public List<InterfaceTreeNode> getChildren ( final InterfaceTreeNode parent )
     {
-        final Container container = ( Container ) parent.getUserObject ();
         final List<InterfaceTreeNode> nodes;
-        if ( !( container instanceof CellRendererPane ) )
+        final Component component = parent.getUserObject ();
+        if ( component != null )
         {
-            nodes = new ArrayList<InterfaceTreeNode> ( container.getComponentCount () );
-            for ( int i = 0; i < container.getComponentCount (); i++ )
+            if ( !( component instanceof CellRendererPane ) )
             {
-                final Component component = container.getComponent ( i );
-                if ( accept ( component ) )
+                final Container container = ( Container ) component;
+                nodes = new ArrayList<InterfaceTreeNode> ( container.getComponentCount () );
+                for ( int i = 0; i < container.getComponentCount (); i++ )
                 {
-                    nodes.add ( new InterfaceTreeNode ( tree, component ) );
+                    final Component child = container.getComponent ( i );
+                    if ( accept ( child ) )
+                    {
+                        nodes.add ( new InterfaceTreeNode ( tree, child ) );
+                    }
                 }
+            }
+            else
+            {
+                nodes = new ArrayList<InterfaceTreeNode> ( 0 );
             }
         }
         else
         {
-            nodes = new ArrayList<InterfaceTreeNode> ( 0 );
+            final Window[] windows = Window.getWindows ();
+            nodes = new ArrayList<InterfaceTreeNode> ( windows.length );
+            for ( final Window window : windows )
+            {
+                if ( window.isShowing () )
+                {
+                    nodes.add ( new InterfaceTreeNode ( tree, window ) );
+                }
+            }
         }
         return nodes;
     }

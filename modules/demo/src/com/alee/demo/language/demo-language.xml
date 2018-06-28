@@ -2095,6 +2095,54 @@
                     </record>
                 </Dictionary>
             </Dictionary>
+            <Dictionary prefix="popup">
+                <record key="title">
+                    <value lang="en">WebPopup</value>
+                    <value lang="ru">WebPopup</value>
+                </record>
+                <record key="show">
+                    <value lang="en">Show popup</value>
+                    <value lang="ru">Показать попап</value>
+                </record>
+                <record key="label">
+                    <value lang="en">Sample popup with text field</value>
+                    <value lang="ru">Образец попапа с текстовым полем</value>
+                </record>
+                <record key="text">
+                    <value lang="en">Editable text</value>
+                    <value lang="ru">Редактируемый текст</value>
+                </record>
+                <Dictionary prefix="basic">
+                    <record key="title">
+                        <value lang="en">Basic popup</value>
+                        <value lang="ru">Базовый попап</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="undecorated">
+                    <record key="title">
+                        <value lang="en">Undecorated popup</value>
+                        <value lang="ru">Попап без декорации</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="popover">
+                <record key="title">
+                    <value lang="en">WebPopOver</value>
+                    <value lang="ru">WebPopOver</value>
+                </record>
+                <record key="show">
+                    <value lang="en">Show popover</value>
+                    <value lang="ru">Показать поповер</value>
+                </record>
+                <record key="label">
+                    <value lang="en">Sample popover with text field</value>
+                    <value lang="ru">Образец поповера с текстовым полем</value>
+                </record>
+                <record key="text">
+                    <value lang="en">Editable text</value>
+                    <value lang="ru">Редактируемый текст</value>
+                </record>
+            </Dictionary>
             <Dictionary prefix="joptionpane">
                 <record key="title">
                     <value lang="en">JOptionPane</value>
@@ -2170,36 +2218,6 @@
                     <value lang="en">You have closed the dialog</value>
                     <value lang="ru">Вы закрыли диалог</value>
                 </record>
-            </Dictionary>
-            <Dictionary prefix="webpopup">
-                <record key="title">
-                    <value lang="en">WebPopup</value>
-                    <value lang="ru">WebPopup</value>
-                </record>
-                <record key="show">
-                    <value lang="en">Show popup</value>
-                    <value lang="ru">Показать попап</value>
-                </record>
-                <record key="label">
-                    <value lang="en">Sample popup with text field</value>
-                    <value lang="ru">Образец попапа с текстовым полем</value>
-                </record>
-                <record key="text">
-                    <value lang="en">Editable text</value>
-                    <value lang="ru">Редактируемый текст</value>
-                </record>
-                <Dictionary prefix="basic">
-                    <record key="title">
-                        <value lang="en">Basic popup</value>
-                        <value lang="ru">Базовый попап</value>
-                    </record>
-                </Dictionary>
-                <Dictionary prefix="undecorated">
-                    <record key="title">
-                        <value lang="en">Undecorated popup</value>
-                        <value lang="ru">Попап без декорации</value>
-                    </record>
-                </Dictionary>
             </Dictionary>
             <Dictionary prefix="webnotification">
                 <record key="title">

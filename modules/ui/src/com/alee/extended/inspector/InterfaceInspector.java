@@ -32,6 +32,7 @@ import com.alee.laf.window.WebFrame;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.icon.Icons;
 import com.alee.managers.style.StyleId;
+import com.alee.utils.ProprietaryUtils;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -43,12 +44,11 @@ import java.awt.event.ActionListener;
  *
  * @author Mikle Garin
  * @see InterfaceTree
- * @see #showDialog(Component)
  * @see #showFrame(Component)
- * @see #showPopOver(Component)
- * @see #showPopOver(Component, PopOverDirection)
+ * @see #showDialog(Component, Component)
+ * @see #showPopOver(Component, Component)
+ * @see #showPopOver(Component, Component, PopOverDirection)
  */
-
 public class InterfaceInspector extends WebPanel
 {
     /**
@@ -158,8 +158,8 @@ public class InterfaceInspector extends WebPanel
         final WebSeparator separator = new WebSeparator ( StyleId.inspectorSeparator.at ( InterfaceInspector.this ) );
         add ( new GroupPanel ( GroupingType.fillLast, 0, false, filter, separator, scrollPane ) );
 
-        // Expanding tree
-        tree.expandAll ();
+        // Expanding tree root by default
+        tree.expandRoot ();
     }
 
     /**
@@ -181,23 +181,14 @@ public class InterfaceInspector extends WebPanel
     }
 
     /**
-     * Returns separate {@link WebDialog} with inspector for the specified {@link Component}.
-     * That {@link WebDialog} will be displayed straight away on the screen.
+     * Returns separate {@link WebFrame} with inspector for all visible {@link Component}s.
+     * That {@link WebFrame} will be displayed straight away on the screen.
      *
-     * @param inspected {@link Component} to inspect
-     * @return separate {@link WebDialog} with inspector for the specified {@link Component}
+     * @return separate {@link WebFrame} with inspector for all visible {@link Component}s
      */
-    public static WebDialog showDialog ( final Component inspected )
+    public static WebFrame showFrame ()
     {
-        final WebDialog dialog = new WebDialog ( inspected );
-        dialog.setIconImages ( WebLookAndFeel.getImages () );
-        dialog.add ( new InterfaceInspector ( inspected ) );
-        dialog.setModal ( false );
-        dialog.pack ();
-        dialog.setLocationRelativeTo ( inspected );
-        // dialog.setAttachedTo ( ? );
-        dialog.setVisible ( true );
-        return dialog;
+        return showFrame ( null );
     }
 
     /**
@@ -212,6 +203,8 @@ public class InterfaceInspector extends WebPanel
         final WebFrame frame = new WebFrame ();
         frame.setIconImages ( WebLookAndFeel.getImages () );
         frame.add ( new InterfaceInspector ( inspected ) );
+        ProprietaryUtils.setUtilityWindowType ( frame );
+        frame.setModalExclusionType ( Dialog.ModalExclusionType.APPLICATION_EXCLUDE );
         frame.pack ();
         frame.setLocationRelativeTo ( inspected );
         frame.setVisible ( true );
@@ -219,31 +212,94 @@ public class InterfaceInspector extends WebPanel
     }
 
     /**
-     * Returns separate {@link WebPopOver} with inspector for the specified {@link Component}.
-     * That {@link WebPopOver} will be displayed straight away near the inspected {@link Component}.
+     * Returns separate {@link WebDialog} with inspector for all visible {@link Component}s.
+     * That {@link WebDialog} will be displayed straight away on the screen.
      *
-     * @param inspected {@link Component} to inspect
-     * @return separate {@link WebPopOver} with inspector for the specified {@link Component}
+     * @param parent parent {@link Component} for {@link WebDialog}
+     * @return separate {@link WebDialog} with inspector for all visible {@link Component}s
      */
-    public static WebPopOver showPopOver ( final Component inspected )
+    public static WebDialog showDialog ( final Component parent )
     {
-        return showPopOver ( inspected, PopOverDirection.right );
+        return showDialog ( parent, null );
+    }
+
+    /**
+     * Returns separate {@link WebDialog} with inspector for the specified {@link Component}.
+     * That {@link WebDialog} will be displayed straight away on the screen.
+     *
+     * @param parent    parent {@link Component} for {@link WebDialog}
+     * @param inspected {@link Component} to inspect
+     * @return separate {@link WebDialog} with inspector for the specified {@link Component}
+     */
+    public static WebDialog showDialog ( final Component parent, final Component inspected )
+    {
+        final WebDialog dialog = new WebDialog ( parent );
+        dialog.setIconImages ( WebLookAndFeel.getImages () );
+        dialog.add ( new InterfaceInspector ( inspected ) );
+        ProprietaryUtils.setUtilityWindowType ( dialog );
+        dialog.setModalExclusionType ( Dialog.ModalExclusionType.APPLICATION_EXCLUDE );
+        dialog.setModal ( false );
+        dialog.pack ();
+        dialog.setLocationRelativeTo ( inspected );
+        // dialog.setAttachedTo ( ? );
+        dialog.setVisible ( true );
+        return dialog;
+    }
+
+    /**
+     * Returns separate {@link WebPopOver} with inspector for all visible {@link Component}s.
+     * That {@link WebPopOver} will be displayed straight away near the parent {@link Component}.
+     *
+     * @param parent parent {@link Component} for {@link WebPopOver}
+     * @return separate {@link WebPopOver} with inspector for all visible {@link Component}s
+     */
+    public static WebPopOver showPopOver ( final Component parent )
+    {
+        return showPopOver ( parent, null, PopOverDirection.right );
+    }
+
+    /**
+     * Returns separate {@link WebPopOver} with inspector for all visible {@link Component}s.
+     * That {@link WebPopOver} will be displayed straight away near the parent {@link Component}.
+     *
+     * @param parent    parent {@link Component} for {@link WebPopOver}
+     * @param direction {@link PopOverDirection}
+     * @return separate {@link WebPopOver} with inspector for all visible {@link Component}s
+     */
+    public static WebPopOver showPopOver ( final Component parent, final PopOverDirection direction )
+    {
+        return showPopOver ( parent, null, direction );
     }
 
     /**
      * Returns separate {@link WebPopOver} with inspector for the specified {@link Component}.
-     * That {@link WebPopOver} will be displayed straight away near the inspected {@link Component}.
+     * That {@link WebPopOver} will be displayed straight away near the parent {@link Component}.
      *
+     * @param parent    parent {@link Component} for {@link WebPopOver}
+     * @param inspected {@link Component} to inspect
+     * @return separate {@link WebPopOver} with inspector for the specified {@link Component}
+     */
+    public static WebPopOver showPopOver ( final Component parent, final Component inspected )
+    {
+        return showPopOver ( parent, inspected, PopOverDirection.right );
+    }
+
+    /**
+     * Returns separate {@link WebPopOver} with inspector for the specified {@link Component}.
+     * That {@link WebPopOver} will be displayed straight away near the parent {@link Component}.
+     *
+     * @param parent    parent {@link Component} for {@link WebPopOver}
      * @param inspected {@link Component} to inspect
      * @param direction {@link PopOverDirection}
      * @return separate {@link WebPopOver} with inspector for the specified {@link Component}
      */
-    public static WebPopOver showPopOver ( final Component inspected, final PopOverDirection direction )
+    public static WebPopOver showPopOver ( final Component parent, final Component inspected, final PopOverDirection direction )
     {
-        final WebPopOver popOver = new WebPopOver ( inspected );
+        final WebPopOver popOver = new WebPopOver ( parent );
         popOver.setIconImages ( WebLookAndFeel.getImages () );
         popOver.add ( new InterfaceInspector ( StyleId.inspectorPopover, inspected ) );
-        popOver.show ( inspected, direction );
+        popOver.setModalExclusionType ( Dialog.ModalExclusionType.APPLICATION_EXCLUDE );
+        popOver.show ( parent, direction );
         return popOver;
     }
 }

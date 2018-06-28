@@ -39,13 +39,12 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebPopupExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()
     {
-        return "webpopup";
+        return "popup";
     }
 
     @Override
@@ -105,7 +104,7 @@ public class WebPopupExample extends AbstractStylePreviewExample
                     popup.setResizable ( true );
                     popup.setDraggable ( true );
 
-                    final WebPanel container = new WebPanel ( new BorderLayout ( 5, 5 ) );
+                    final WebPanel container = new WebPanel ( StyleId.panelTransparent, new BorderLayout ( 5, 5 ) );
 
                     final WebLabel label = new WebLabel ( getExampleLanguagePrefix () + "label", WebLabel.CENTER );
                     container.add ( label, BorderLayout.NORTH );

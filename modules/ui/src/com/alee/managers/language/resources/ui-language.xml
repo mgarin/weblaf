@@ -2274,6 +2274,22 @@
                 </record>
             </Dictionary>
         </Dictionary>
+        <Dictionary name="InterfaceInspector" prefix="inspector">
+            <record key="windows">
+                <value lang="en">All available windows</value>
+                <value lang="ru">Все доступные окна</value>
+                <value lang="pl"></value>
+                <value lang="ar"></value>
+                <value lang="es"></value>
+                <value lang="fr"></value>
+                <value lang="pt"></value>
+                <value lang="de"></value>
+                <value lang="it"></value>
+                <value lang="tr"></value>
+                <value lang="vi"></value>
+                <value lang="hu"></value>
+            </record>
+        </Dictionary>
     </Dictionary>
     <Translations>
         <Translation lang="en" title="English" author="mgarin" />

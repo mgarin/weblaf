@@ -19,10 +19,8 @@ package com.alee.extended.inspector;
 
 import com.alee.api.ui.IconBridge;
 import com.alee.api.ui.TextBridge;
-import com.alee.extended.inspector.info.AWTComponentPreview;
-import com.alee.extended.inspector.info.ComponentPreview;
-import com.alee.extended.inspector.info.JComponentPreview;
-import com.alee.extended.inspector.info.WComponentPreview;
+import com.alee.extended.inspector.info.*;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.TreeNodeParameters;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.managers.style.StyleAdapter;
@@ -48,6 +46,15 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
         implements IconBridge<TreeNodeParameters<InterfaceTreeNode, InterfaceTree>>,
         TextBridge<TreeNodeParameters<InterfaceTreeNode, InterfaceTree>>
 {
+    /**
+     * todo 1. These nodes keep hard reference to components
+     */
+
+    /**
+     * {@link ComponentPreview} for all windows root.
+     */
+    protected static final ComponentPreview windowsPreview = new WindowsPreview ();
+
     /**
      * {@link ComponentPreview} for extended components.
      */
@@ -79,7 +86,7 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
      */
     public InterfaceTreeNode ( final InterfaceTree tree, final Component component )
     {
-        super ( Integer.toString ( component.hashCode () ), component );
+        super ( id ( component ), component );
         this.tree = tree;
         install ();
     }
@@ -87,37 +94,29 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
     @Override
     protected void setId ()
     {
-        this.id = Integer.toString ( getUserObject ().hashCode () );
+        final Component component = getUserObject ();
+        this.id = id ( component );
+    }
+
+    /**
+     * Returns {@link InterfaceTreeNode} identifier based on the specified {@link Component}.
+     *
+     * @param component {@link Component} to return {@link InterfaceTreeNode} identifier for
+     * @return {@link InterfaceTreeNode} identifier based on the specified {@link Component}
+     */
+    private static String id ( final Component component )
+    {
+        return component != null ? Integer.toString ( component.hashCode () ) : "all.windows";
     }
 
     @Override
     public Icon getIcon ( final TreeNodeParameters<InterfaceTreeNode, InterfaceTree> parameters )
-    {
-        return getIcon ();
-    }
-
-    /**
-     * Returns node {@link Icon}.
-     *
-     * @return node {@link Icon}
-     */
-    public Icon getIcon ()
     {
         return getPreview ().getIcon ( getUserObject () );
     }
 
     @Override
     public String getText ( final TreeNodeParameters<InterfaceTreeNode, InterfaceTree> parameters )
-    {
-        return getTitle ();
-    }
-
-    /**
-     * Returns node title.
-     *
-     * @return node title
-     */
-    public String getTitle ()
     {
         return getPreview ().getText ( getUserObject () );
     }
@@ -127,106 +126,110 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
      */
     protected void install ()
     {
+        // Ensure this is invoked on EDT
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Ensure this is not a root (all windows) node
         final Component component = getUserObject ();
-
-        /**
-         * Node component listener.
-         */
-        componentAdapter = new ComponentAdapter ()
-        {
-            @Override
-            public void componentResized ( final ComponentEvent e )
-            {
-                /**
-                 * We don't need to react to size changes.
-                 * Also call to {@link InterfaceTreeNode#updateNodeLater(InterfaceTree)} causes UI flickering so this is disabled.
-                 */
-            }
-
-            @Override
-            public void componentMoved ( final ComponentEvent e )
-            {
-                /**
-                 * We don't need to react to location changes.
-                 * Also call to {@link InterfaceTreeNode#updateNodeLater(InterfaceTree)} causes UI flickering so this is disabled.
-                 */
-            }
-
-            @Override
-            public void componentShown ( final ComponentEvent e )
-            {
-                updateNodeLater ( tree );
-            }
-
-            @Override
-            public void componentHidden ( final ComponentEvent e )
-            {
-                updateNodeLater ( tree );
-            }
-        };
-        component.addComponentListener ( componentAdapter );
-
-        /**
-         * It is important to avoid listening to {@link CellRendererPane}.
-         * It can generates hundreds of events and will clutter us with unnecessary updates.
-         * This will basically workaround any issues with {@link CellRendererPane} in {@link JTree}, {@link JList} and {@link JTable}.
-         */
-        if ( !( component instanceof CellRendererPane ) )
+        if ( component != null )
         {
             /**
-             * Additional container listeners.
+             * Node component listener.
              */
-            if ( component instanceof Container )
+            componentAdapter = new ComponentAdapter ()
             {
-                containerAdapter = new ContainerAdapter ()
+                @Override
+                public void componentResized ( final ComponentEvent e )
                 {
-                    @Override
-                    public void componentAdded ( final ContainerEvent e )
-                    {
-                        final Component child = e.getChild ();
-                        if ( tree.accept ( child ) )
-                        {
-                            final InterfaceTreeNode childNode = new InterfaceTreeNode ( tree, child );
-                            tree.addChildNode ( InterfaceTreeNode.this, childNode );
-                        }
-                    }
+                    /**
+                     * We don't need to react to size changes.
+                     * Also call to {@link InterfaceTreeNode#updateNodeLater(InterfaceTree)} causes UI flickering so this is disabled.
+                     */
+                }
 
-                    @Override
-                    public void componentRemoved ( final ContainerEvent e )
+                @Override
+                public void componentMoved ( final ComponentEvent e )
+                {
+                    /**
+                     * We don't need to react to location changes.
+                     * Also call to {@link InterfaceTreeNode#updateNodeLater(InterfaceTree)} causes UI flickering so this is disabled.
+                     */
+                }
+
+                @Override
+                public void componentShown ( final ComponentEvent e )
+                {
+                    updateNodeLater ( tree );
+                }
+
+                @Override
+                public void componentHidden ( final ComponentEvent e )
+                {
+                    updateNodeLater ( tree );
+                }
+            };
+            component.addComponentListener ( componentAdapter );
+
+            /**
+             * It is important to avoid listening to {@link CellRendererPane}.
+             * It can generates hundreds of events and will clutter us with unnecessary updates.
+             * This will basically workaround any issues with {@link CellRendererPane} in {@link JTree}, {@link JList} and {@link JTable}.
+             */
+            if ( !( component instanceof CellRendererPane ) )
+            {
+                /**
+                 * Additional container listeners.
+                 */
+                if ( component instanceof Container )
+                {
+                    containerAdapter = new ContainerAdapter ()
                     {
-                        final Component child = e.getChild ();
-                        if ( tree.accept ( child ) )
+                        @Override
+                        public void componentAdded ( final ContainerEvent e )
                         {
-                            final InterfaceTreeNode childNode = tree.findNode ( Integer.toString ( child.hashCode () ) );
-                            if ( childNode != null )
+                            final Component child = e.getChild ();
+                            if ( tree.accept ( child ) )
                             {
+                                final InterfaceTreeNode childNode = new InterfaceTreeNode ( tree, child );
+                                tree.addChildNode ( InterfaceTreeNode.this, childNode );
+                            }
+                        }
+
+                        @Override
+                        public void componentRemoved ( final ContainerEvent e )
+                        {
+                            final Component child = e.getChild ();
+                            if ( tree.accept ( child ) )
+                            {
+                                final String nodeId = id ( child );
+                                final InterfaceTreeNode childNode = tree.findNode ( nodeId );
                                 childNode.uninstall ();
                                 tree.removeNode ( childNode );
                             }
                         }
-                    }
-                };
-                ( ( Container ) component ).addContainerListener ( containerAdapter );
-            }
-
-            /**
-             * Additional listeners for components using WebLaF-based UI.
-             * This is checked instead of styling support to avoid issues when WebLaF is not installed as LaF.
-             */
-            if ( component instanceof JComponent )
-            {
-                final JComponent jComponent = ( JComponent ) component;
-                if ( LafUtils.hasWebLafUI ( jComponent ) )
-                {
-                    styleListener = new StyleAdapter ()
-                    {
-                        @Override
-                        public void skinUpdated ( final JComponent component, final StyleId styleId )
-                        {
-                            updateNodeLater ( tree );
-                        }
                     };
-                    StyleManager.addStyleListener ( jComponent, styleListener );
+                    ( ( Container ) component ).addContainerListener ( containerAdapter );
+                }
+
+                /**
+                 * Additional listeners for components using WebLaF-based UI.
+                 * This is checked instead of styling support to avoid issues when WebLaF is not installed as LaF.
+                 */
+                if ( component instanceof JComponent )
+                {
+                    final JComponent jComponent = ( JComponent ) component;
+                    if ( LafUtils.hasWebLafUI ( jComponent ) )
+                    {
+                        styleListener = new StyleAdapter ()
+                        {
+                            @Override
+                            public void skinUpdated ( final JComponent component, final StyleId styleId )
+                            {
+                                updateNodeLater ( tree );
+                            }
+                        };
+                        StyleManager.addStyleListener ( jComponent, styleListener );
+                    }
                 }
             }
         }
@@ -237,6 +240,9 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
      */
     protected void uninstall ()
     {
+        // Ensure this is invoked on EDT
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Destroying all child nodes first
         // We access raw children directly to ensure we don't miss out any if they are currently filtered
         for ( final InterfaceTreeNode child : tree.getExModel ().getRawChildren ( InterfaceTreeNode.this ) )
@@ -244,20 +250,24 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
             child.uninstall ();
         }
 
-        // Destroying this node
+        // Ensure this is not a root (all windows) node
         final Component component = getUserObject ();
-        component.removeComponentListener ( componentAdapter );
-        if ( containerAdapter != null )
+        if ( component != null )
         {
-            ( ( Container ) component ).removeContainerListener ( containerAdapter );
+            // Destroying this node
+            component.removeComponentListener ( componentAdapter );
+            if ( containerAdapter != null )
+            {
+                ( ( Container ) component ).removeContainerListener ( containerAdapter );
+            }
+            if ( styleListener != null )
+            {
+                StyleManager.removeStyleListener ( ( JComponent ) component, styleListener );
+            }
+            componentAdapter = null;
+            containerAdapter = null;
+            styleListener = null;
         }
-        if ( styleListener != null )
-        {
-            StyleManager.removeStyleListener ( ( JComponent ) component, styleListener );
-        }
-        componentAdapter = null;
-        containerAdapter = null;
-        styleListener = null;
     }
 
     /**
@@ -268,20 +278,27 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
     protected ComponentPreview getPreview ()
     {
         final Component component = getUserObject ();
-        if ( component instanceof JComponent )
+        if ( component != null )
         {
-            if ( StyleManager.isSupported ( ( JComponent ) component ) )
+            if ( component instanceof JComponent )
             {
-                return wComponentPreview;
+                if ( StyleManager.isSupported ( ( JComponent ) component ) )
+                {
+                    return wComponentPreview;
+                }
+                else
+                {
+                    return jComponentPreview;
+                }
             }
             else
             {
-                return jComponentPreview;
+                return awtComponentPreview;
             }
         }
         else
         {
-            return awtComponentPreview;
+            return windowsPreview;
         }
     }
 
@@ -311,6 +328,6 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
     @Override
     public String toString ()
     {
-        return getTitle ();
+        return getPreview ().getText ( getUserObject () );
     }
 }

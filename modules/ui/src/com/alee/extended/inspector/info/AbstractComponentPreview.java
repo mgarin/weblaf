@@ -32,7 +32,6 @@ import java.util.Map;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public abstract class AbstractComponentPreview<C extends Component> implements ComponentPreview<C>
 {
     /**

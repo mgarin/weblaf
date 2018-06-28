@@ -44,7 +44,6 @@ import java.util.Map;
  * @see InterfaceInspector
  * @see WebExTree
  */
-
 public class InterfaceTree extends WebExTree<InterfaceTreeNode>
         implements HoverListener<InterfaceTreeNode>, TreeSelectionListener, Filter<Component>
 {
@@ -217,7 +216,8 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
      */
     public void navigate ( final Component component )
     {
-        final InterfaceTreeNode node = findNode ( Integer.toString ( component.hashCode () ) );
+        final String nodeId = Integer.toString ( component.hashCode () );
+        final InterfaceTreeNode node = findNode ( nodeId );
         if ( node != null )
         {
             expandNode ( node );

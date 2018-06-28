@@ -106,8 +106,8 @@ public final class TreeUtils
      * @param parent        node to save states for
      * @param saveSelection whether to save selection states or not
      */
-    protected static void saveTreeStateImpl ( final JTree tree, final TreeState state, final UniqueNode parent,
-                                              final boolean saveSelection )
+    private static void saveTreeStateImpl ( final JTree tree, final TreeState state, final UniqueNode parent,
+                                            final boolean saveSelection )
     {
         // Saving children states first
         for ( int i = 0; i < parent.getChildCount (); i++ )
@@ -153,7 +153,7 @@ public final class TreeUtils
      * @param treeState tree expansion and selection states
      * @param root      node to restore state for
      */
-    protected static void setTreeState ( final JTree tree, final TreeState treeState, final Object root )
+    public static void setTreeState ( final JTree tree, final TreeState treeState, final Object root )
     {
         setTreeState ( tree, treeState, root, true );
     }
@@ -167,7 +167,7 @@ public final class TreeUtils
      * @param root             node to restore state for
      * @param restoreSelection whether to restore selection states or not
      */
-    protected static void setTreeState ( final JTree tree, final TreeState treeState, final Object root, final boolean restoreSelection )
+    public static void setTreeState ( final JTree tree, final TreeState treeState, final Object root, final boolean restoreSelection )
     {
         if ( !( root instanceof UniqueNode ) )
         {

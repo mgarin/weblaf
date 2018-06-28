@@ -42,7 +42,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class JOptionPaneExample extends AbstractStylePreviewExample
 {
     @Override

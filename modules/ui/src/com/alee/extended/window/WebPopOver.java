@@ -270,18 +270,6 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
         getRootPane ().setWindowDecorationStyle ( JRootPane.NONE );
         setUndecorated ( true );
         setWindowOpaque ( false );
-
-        // Removing all listeners on window close event
-        final PopOverCloseListener closeListener = new PopOverCloseListener ()
-        {
-            @Override
-            public void popOverClosed ()
-            {
-                fireClosed ();
-            }
-        };
-        addComponentListener ( closeListener );
-        addWindowListener ( closeListener );
     }
 
     @Override
@@ -333,9 +321,6 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
         // Displaying popover
         setVisible ( true );
 
-        // Performing post-open operations
-        postOpen ();
-
         return this;
     }
 
@@ -371,9 +356,6 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
 
         // Displaying popover
         setVisible ( true );
-
-        // Performing post-open operations
-        postOpen ();
 
         return this;
     }
@@ -588,9 +570,6 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
         // Displaying popover
         setVisible ( true );
 
-        // Performing post-open operations
-        postOpen ();
-
         return this;
     }
 
@@ -620,17 +599,6 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
         {
             fireReopened ();
         }
-    }
-
-    /**
-     * Performs popover post-open operations.
-     */
-    protected void postOpen ()
-    {
-        // Fire opened event
-        // Note that if this pop-over is modal this event will be fired only after it is closed
-        // Unfortunately there is no good way to provide this event after dialog is opened but before it is closed in that case
-        fireOpened ();
     }
 
     /**

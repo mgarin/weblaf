@@ -25,7 +25,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WindowsGroup extends AbstractExampleGroup
 {
     @Override
@@ -40,8 +39,9 @@ public class WindowsGroup extends AbstractExampleGroup
         return CollectionUtils.<Class>asList (
                 JFrameExample.class,
                 JDialogExample.class,
-                JOptionPaneExample.class,
                 WebPopupExample.class,
+                WebPopOverExample.class,
+                JOptionPaneExample.class,
                 WebNotificationExample.class
         );
     }

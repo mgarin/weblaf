@@ -28,7 +28,6 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public class AWTComponentPreview<C extends Component> extends AbstractComponentPreview<C>
 {
     @Override

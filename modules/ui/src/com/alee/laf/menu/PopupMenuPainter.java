@@ -33,7 +33,6 @@ import java.awt.*;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public class PopupMenuPainter<C extends JPopupMenu, U extends WPopupMenuUI> extends AbstractPopupPainter<C, U>
         implements IPopupMenuPainter<C, U>
 {

@@ -1076,25 +1076,30 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * Scrolls tree view to specified node.
      *
      * @param node     node to scroll to
-     * @param centered whether or not should center specified node in the middle of view bounds if possible
+     * @param centered whether or not should vertically center specified node in view bounds
      */
     public void scrollToNode ( final N node, final boolean centered )
     {
-        final Rectangle bounds = getNodeBounds ( node );
-        if ( bounds != null )
+        final Rectangle nodeBounds = getNodeBounds ( node );
+        if ( nodeBounds != null )
         {
+            if ( node.getParent () != null )
+            {
+                final int indent = ( getUI ().getLeftChildIndent () + getUI ().getRightChildIndent () ) * 2;
+                nodeBounds.x -= indent;
+                nodeBounds.width += indent;
+            }
+            final Dimension visibleBounds = getVisibleRect ().getSize ();
+            if ( nodeBounds.width > visibleBounds.width )
+            {
+                nodeBounds.width = visibleBounds.width;
+            }
             if ( centered )
             {
-                final Dimension size = getVisibleRect ().getSize ();
-                if ( size.width > bounds.width )
-                {
-                    bounds.x = bounds.x + bounds.width / 2 - size.width / 2;
-                    bounds.width = size.width;
-                }
-                bounds.y = bounds.y + bounds.height / 2 - size.height / 2;
-                bounds.height = size.height;
+                nodeBounds.y = nodeBounds.y + nodeBounds.height / 2 - visibleBounds.height / 2;
+                nodeBounds.height = visibleBounds.height;
             }
-            scrollRectToVisible ( bounds );
+            scrollRectToVisible ( nodeBounds );
         }
     }
 

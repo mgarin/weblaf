@@ -603,18 +603,44 @@ public final class ProprietaryUtils
      * Sets specified {@link Window} type to {@code Window.Type.POPUP}.
      * Temporary substitute for JDK7+ {@code Window#setType(Window.Type)} method.
      * Also {@code Window.Type.POPUP} is not set for Unix systems due to window prioritization issues.
+     * todo Simplify upon migration to JDK7+
      *
      * @param window {@link Window} to change type for
      */
     public static void setPopupWindowType ( final Window window )
     {
-        if ( SystemUtils.isJava7orAbove () && !SystemUtils.isUnix () )
+        setWindowType ( window, "POPUP" );
+    }
+
+    /**
+     * Sets specified {@link Window} type to {@code Window.Type.UTILITY}.
+     * Temporary substitute for JDK7+ {@code Window#setType(Window.Type)} method.
+     * todo Simplify upon migration to JDK7+
+     *
+     * @param window {@link Window} to change type for
+     */
+    public static void setUtilityWindowType ( final Window window )
+    {
+        setWindowType ( window, "UTILITY" );
+    }
+
+    /**
+     * Sets specified {@link Window} type to {@code Window.Type.<typeName>}.
+     * Temporary substitute for JDK7+ {@code Window#setType(Window.Type)} method.
+     * todo Simplify upon migration to JDK7+
+     *
+     * @param window   {@link Window} to change type for
+     * @param typeName {@code Window.Type} enumeration literal name
+     */
+    private static void setWindowType ( final Window window, final String typeName )
+    {
+        if ( SystemUtils.isJava7orAbove () )
         {
             try
             {
                 //
                 final Class type = ReflectUtils.getInnerClass ( Window.class, "Type" );
-                final Object popup = ReflectUtils.getStaticFieldValue ( type, "POPUP" );
+                final Object popup = ReflectUtils.getStaticFieldValue ( type, typeName );
                 ReflectUtils.callMethod ( window, "setType", popup );
             }
             catch ( final Exception e )

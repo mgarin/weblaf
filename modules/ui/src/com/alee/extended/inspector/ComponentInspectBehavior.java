@@ -88,7 +88,8 @@ public final class ComponentInspectBehavior implements Behavior
                     final MouseEvent mouseEvent = ( MouseEvent ) event;
                     final Component source = ( Component ) event.getSource ();
                     final Component component = SwingUtils.getTopComponentAt ( source, mouseEvent.getPoint () );
-                    if ( CoreSwingUtils.isAncestorOf ( ComponentInspectBehavior.this.root, component ) )
+                    if ( component != null && component.isShowing () && ( ComponentInspectBehavior.this.root == null ||
+                            CoreSwingUtils.isAncestorOf ( ComponentInspectBehavior.this.root, component ) ) )
                     {
                         // Performing on-event actions
                         if ( Objects.equals ( eventId, MouseEvent.MOUSE_PRESSED ) )
@@ -167,19 +168,14 @@ public final class ComponentInspectBehavior implements Behavior
 
     /**
      * Displays hover {@link ComponentHighlighter}.
+     * If another {@link ComponentHighlighter} was already displaed it will be hidden.
      *
      * @param component component to display {@link ComponentHighlighter} for
      */
     protected void showInspector ( final Component component )
     {
-        // Hiding inspector first
         hideInspector ();
-
-        // Displaying inspector
-        if ( CoreSwingUtils.isAncestorOf ( root, component ) && component != hoverHighlighter.getComponent () )
-        {
-            hoverHighlighter.install ( component );
-        }
+        hoverHighlighter.install ( component );
     }
 
     /**
@@ -187,9 +183,6 @@ public final class ComponentInspectBehavior implements Behavior
      */
     protected void hideInspector ()
     {
-        if ( hoverHighlighter.isShowing () )
-        {
-            hoverHighlighter.uninstall ();
-        }
+        hoverHighlighter.uninstall ();
     }
 }
