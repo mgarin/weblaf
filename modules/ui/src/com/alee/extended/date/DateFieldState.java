@@ -72,6 +72,16 @@ public class DateFieldState implements Mergeable, Cloneable, Serializable
     }
 
     /**
+     * Returns {@link WebDateField} selected time
+     *
+     * @return {@link WebDateField} selected time
+     */
+    public Long time ()
+    {
+        return time;
+    }
+
+    /**
      * Applies this {@link DateFieldState} to the specified {@link WebDateField}.
      *
      * @param dateField {@link WebDateField} to apply this {@link DateFieldState} to

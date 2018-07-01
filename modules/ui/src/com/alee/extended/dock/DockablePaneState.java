@@ -74,13 +74,23 @@ public class DockablePaneState implements Mergeable, Cloneable, Serializable
     }
 
     /**
+     * Returns {@link WebDockablePane} root element.
+     *
+     * @return {@link WebDockablePane} root element
+     */
+    public DockableContainer root ()
+    {
+        return root;
+    }
+
+    /**
      * Applies this {@link DockablePaneState} to the specified {@link WebDockablePane}.
      *
      * @param dockablePane {@link WebDockablePane} to apply this {@link DockablePaneState} to
      */
     public void apply ( final WebDockablePane dockablePane )
     {
-        if ( root != null  )
+        if ( root != null )
         {
             dockablePane.setState ( root );
         }

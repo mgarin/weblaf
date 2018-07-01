@@ -69,6 +69,16 @@ public class GradientColorChooserState implements Mergeable, Cloneable, Serializ
     }
 
     /**
+     * Returns {@link GradientData} of the {@link WebGradientColorChooser}.
+     *
+     * @return {@link GradientData} of the {@link WebGradientColorChooser}
+     */
+    public GradientData gradientData ()
+    {
+        return gradientData;
+    }
+
+    /**
      * Applies this {@link GradientColorChooserState} to the specified {@link WebGradientColorChooser}.
      *
      * @param gradientColorChooser {@link WebGradientColorChooser} to apply this {@link GradientColorChooserState} to

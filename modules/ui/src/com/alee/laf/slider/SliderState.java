@@ -72,6 +72,16 @@ public class SliderState implements Mergeable, Cloneable, Serializable
     }
 
     /**
+     * Returns {@link JSlider} value.
+     *
+     * @return {@link JSlider} value
+     */
+    public Integer value ()
+    {
+        return value;
+    }
+
+    /**
      * Applies this {@link SliderState} to the specified {@link JSlider}.
      *
      * @param slider {@link JSlider} to apply this {@link SliderState} to

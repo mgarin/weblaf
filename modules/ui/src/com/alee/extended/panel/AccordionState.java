@@ -65,6 +65,16 @@ public class AccordionState implements Mergeable, Cloneable, Serializable
     }
 
     /**
+     * Returns indices selected in {@link WebAccordion}.
+     *
+     * @return indices selected in {@link WebAccordion}
+     */
+    public List<Integer> getSelectedIndices ()
+    {
+        return selectedIndices;
+    }
+
+    /**
      * Applies this {@link AccordionState} to the specified {@link WebAccordion}.
      *
      * @param accordion {@link WebAccordion} to apply this {@link AccordionState} to

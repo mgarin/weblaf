@@ -71,6 +71,16 @@ public class CollapsiblePaneState implements Mergeable, Cloneable, Serializable
     }
 
     /**
+     * Returns whether or not {@link WebCollapsiblePane} is expanded.
+     *
+     * @return {@code true} if {@link WebCollapsiblePane} is expanded, {@code false} otherwise
+     */
+    public Boolean isExpanded ()
+    {
+        return expanded != null && expanded;
+    }
+
+    /**
      * Applies this {@link CollapsiblePaneState} to the specified {@link WebCollapsiblePane}.
      *
      * @param collapsiblePane {@link WebCollapsiblePane} to apply this {@link CollapsiblePaneState} to

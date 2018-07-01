@@ -72,6 +72,16 @@ public class ComboBoxState implements Mergeable, Cloneable, Serializable
     }
 
     /**
+     * Returns {@link JComboBox} selected index.
+     *
+     * @return {@link JComboBox} selected index
+     */
+    public Integer selectedIndex ()
+    {
+        return selectedIndex;
+    }
+
+    /**
      * Applies this {@link ComboBoxState} to the specified {@link JComboBox}.
      *
      * @param comboBox {@link JComboBox} to apply this {@link ComboBoxState} to

@@ -72,6 +72,16 @@ public class TabbedPaneState implements Mergeable, Cloneable, Serializable
     }
 
     /**
+     * Returns {@link JTabbedPane} selected tab index.
+     *
+     * @return {@link JTabbedPane} selected tab index
+     */
+    public Integer selectedIndex ()
+    {
+        return selectedIndex;
+    }
+
+    /**
      * Applies this {@link TabbedPaneState} to the specified {@link JTabbedPane}.
      *
      * @param tabbedPane {@link JTabbedPane} to apply this {@link TabbedPaneState} to

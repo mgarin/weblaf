@@ -72,6 +72,16 @@ public class ButtonState implements Mergeable, Cloneable, Serializable
     }
 
     /**
+     * Returns whether or not {@link AbstractButton} is selected.
+     *
+     * @return {@code true} if {@link AbstractButton} is selected, {@code false} otherwise
+     */
+    public boolean isSelected ()
+    {
+        return selected != null && selected;
+    }
+
+    /**
      * Applies this {@link ButtonState} to the specified {@link AbstractButton}.
      *
      * @param button {@link AbstractButton} to apply this {@link ButtonState} to

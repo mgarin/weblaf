@@ -80,6 +80,26 @@ public class TextComponentState implements Mergeable, Cloneable, Serializable
     }
 
     /**
+     * Returns {@link JTextComponent} text.
+     *
+     * @return {@link JTextComponent} text
+     */
+    public String text ()
+    {
+        return text;
+    }
+
+    /**
+     * Returns {@link JTextComponent} caret position.
+     *
+     * @return {@link JTextComponent} caret position
+     */
+    public Integer caretPosition ()
+    {
+        return caretPosition;
+    }
+
+    /**
      * Applies this {@link TextComponentState} to the specified {@link JTextComponent}.
      *
      * @param textComponent {@link JTextComponent} to apply this {@link TextComponentState} to

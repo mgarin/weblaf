@@ -182,6 +182,36 @@ public class WindowState implements Mergeable, Cloneable, Serializable
     }
 
     /**
+     * Returns {@link Window} location.
+     *
+     * @return {@link Window} location
+     */
+    public Point location ()
+    {
+        return location;
+    }
+
+    /**
+     * Returns {@link Window} bounds.
+     *
+     * @return {@link Window} bounds
+     */
+    public Dimension size ()
+    {
+        return size;
+    }
+
+    /**
+     * Returns {@link Frame}-exclusive state.
+     *
+     * @return {@link Frame}-exclusive state
+     */
+    public Integer state ()
+    {
+        return state;
+    }
+
+    /**
      * Returns settings retrieved from the specified {@link JRootPane}'s {@link Window}.
      * Calling this method when this {@link WindowState} is not empty will apply settings from the specified {@link JRootPane}'s
      * {@link Window} on top of settings in this {@link WindowState}.

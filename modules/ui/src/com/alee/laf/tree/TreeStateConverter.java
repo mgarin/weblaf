@@ -57,7 +57,7 @@ public class TreeStateConverter extends ReflectionConverter
     public void marshal ( final Object source, final HierarchicalStreamWriter writer, final MarshallingContext context )
     {
         final TreeState treeState = ( TreeState ) source;
-        for ( final Map.Entry<String, NodeState> entry : treeState.getStates ().entrySet () )
+        for ( final Map.Entry<String, NodeState> entry : treeState.states ().entrySet () )
         {
             final String nodeId = entry.getKey ();
             final NodeState nodeState = entry.getValue ();

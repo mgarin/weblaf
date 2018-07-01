@@ -68,7 +68,7 @@ public class TreeState implements Mergeable, Cloneable, Serializable
      *
      * @return all node states
      */
-    public Map<String, NodeState> getStates ()
+    public Map<String, NodeState> states ()
     {
         return states;
     }

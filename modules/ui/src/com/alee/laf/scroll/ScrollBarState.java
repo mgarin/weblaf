@@ -72,6 +72,16 @@ public class ScrollBarState implements Mergeable, Cloneable, Serializable
     }
 
     /**
+     * Returns {@link JScrollBar} value.
+     *
+     * @return {@link JScrollBar} value
+     */
+    public Integer value ()
+    {
+        return value;
+    }
+
+    /**
      * Applies this {@link ScrollBarState} to the specified {@link JScrollBar}.
      *
      * @param scrollBar {@link JScrollBar} to apply this {@link ScrollBarState} to

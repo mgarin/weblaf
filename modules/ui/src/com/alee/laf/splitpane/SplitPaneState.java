@@ -72,6 +72,16 @@ public class SplitPaneState implements Mergeable, Cloneable, Serializable
     }
 
     /**
+     * Returns {@link JSplitPane} divider location.
+     *
+     * @return {@link JSplitPane} divider location
+     */
+    public Integer dividerLocation ()
+    {
+        return dividerLocation;
+    }
+
+    /**
      * Applies this {@link SplitPaneState} to the specified {@link JSplitPane}.
      *
      * @param splitPane {@link JSplitPane} to apply this {@link SplitPaneState} to
