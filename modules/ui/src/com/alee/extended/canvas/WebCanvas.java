@@ -47,7 +47,6 @@ import java.util.List;
  * @see CanvasPainter
  * @see WebComponent
  */
-
 public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Stateful
 {
     /**

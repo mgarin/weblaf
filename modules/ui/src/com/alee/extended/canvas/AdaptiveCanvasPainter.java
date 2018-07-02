@@ -28,7 +28,6 @@ import com.alee.painter.Painter;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public final class AdaptiveCanvasPainter<C extends WebCanvas, U extends WCanvasUI> extends AdaptivePainter<C, U>
         implements ICanvasPainter<C, U>
 {

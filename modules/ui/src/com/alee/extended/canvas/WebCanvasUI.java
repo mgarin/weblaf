@@ -33,7 +33,6 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**

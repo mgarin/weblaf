@@ -26,9 +26,10 @@ import java.io.Serializable;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
+ * @see com.alee.extended.dock.WebDockableFrame
  * @see com.alee.extended.dock.WebDockablePane
+ * @see com.alee.managers.drag.DragManager
  */
-
 public class FrameDragData implements Identifiable, Serializable
 {
     /**
@@ -43,7 +44,6 @@ public class FrameDragData implements Identifiable, Serializable
      */
     public FrameDragData ( final String id )
     {
-        super ();
         this.id = id;
     }
 

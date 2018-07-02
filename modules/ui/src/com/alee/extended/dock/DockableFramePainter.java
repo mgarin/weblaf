@@ -30,7 +30,6 @@ import com.alee.painter.decoration.IDecoration;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  */
-
 public class DockableFramePainter<C extends WebDockableFrame, U extends WDockableFrameUI, D extends IDecoration<C, D>>
         extends AbstractContainerPainter<C, U, D> implements IDockableFramePainter<C, U>
 {

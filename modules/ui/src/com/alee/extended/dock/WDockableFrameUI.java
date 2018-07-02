@@ -33,7 +33,6 @@ import java.awt.*;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  * @see WebDockablePane
  */
-
 public abstract class WDockableFrameUI<C extends WebDockableFrame> extends ComponentUI implements WebUI<C>
 {
     /**

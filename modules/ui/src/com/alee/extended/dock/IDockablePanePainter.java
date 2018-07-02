@@ -27,7 +27,6 @@ import com.alee.painter.SpecificPainter;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  */
-
 public interface IDockablePanePainter<C extends WebDockablePane, U extends WDockablePaneUI> extends SpecificPainter<C, U>
 {
     /**

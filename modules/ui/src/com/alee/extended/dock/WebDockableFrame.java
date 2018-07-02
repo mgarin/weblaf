@@ -47,7 +47,6 @@ import java.util.List;
  * @see DockablePanePainter
  * @see WebContainer
  */
-
 public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFrameUI> implements Identifiable, Stateful
 {
     /**

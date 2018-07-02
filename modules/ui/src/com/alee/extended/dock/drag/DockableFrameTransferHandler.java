@@ -23,9 +23,10 @@ import javax.swing.*;
 import java.awt.datatransfer.Transferable;
 
 /**
+ * Custom {@link TransferHandler} for {@link WebDockableFrame}.
+ *
  * @author Mikle Garin
  */
-
 public class DockableFrameTransferHandler extends TransferHandler
 {
     @Override

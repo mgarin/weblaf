@@ -51,7 +51,6 @@ import static com.alee.api.data.Orientation.vertical;
  * @see WebDockablePane
  * @see DockablePaneModel
  */
-
 public class WebDockablePaneModel extends AbstractGroupingLayout implements DockablePaneModel
 {
     /**

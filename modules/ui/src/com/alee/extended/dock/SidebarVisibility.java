@@ -23,7 +23,6 @@ package com.alee.extended.dock;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  */
-
 public enum SidebarVisibility
 {
     /**

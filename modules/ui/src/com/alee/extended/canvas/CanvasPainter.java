@@ -29,7 +29,6 @@ import com.alee.painter.decoration.IDecoration;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-
 public class CanvasPainter<C extends WebCanvas, U extends WCanvasUI, D extends IDecoration<C, D>>
         extends AbstractDecorationPainter<C, U, D> implements ICanvasPainter<C, U>
 {

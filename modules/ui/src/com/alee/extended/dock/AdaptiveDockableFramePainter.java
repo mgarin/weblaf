@@ -29,7 +29,6 @@ import com.alee.painter.Painter;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  */
-
 public final class AdaptiveDockableFramePainter<C extends WebDockableFrame, U extends WDockableFrameUI> extends AdaptivePainter<C, U>
         implements IDockableFramePainter<C, U>
 {

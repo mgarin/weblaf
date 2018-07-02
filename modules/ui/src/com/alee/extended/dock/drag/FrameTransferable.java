@@ -23,13 +23,14 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
 /**
- * Custom Transferable for {@link com.alee.extended.dock.WebDockableFrame}.
+ * Custom {@link Transferable} for {@link com.alee.extended.dock.WebDockableFrame}.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
+ * @see com.alee.extended.dock.WebDockableFrame
  * @see com.alee.extended.dock.WebDockablePane
+ * @see com.alee.managers.drag.DragManager
  */
-
 public class FrameTransferable implements Transferable
 {
     /**
@@ -43,18 +44,17 @@ public class FrameTransferable implements Transferable
     public static final DataFlavor[] flavors = new DataFlavor[]{ dataFlavor };
 
     /**
-     * {@link com.alee.extended.dock.drag.FrameDragData} instance.
+     * {@link FrameDragData} instance.
      */
     private final FrameDragData data;
 
     /**
-     * Constructs new FrameTransferable for the specified FrameDragData.
+     * Constructs new {@link FrameTransferable} for the specified {@link FrameDragData}.
      *
-     * @param data {@link com.alee.extended.dock.drag.FrameDragData}
+     * @param data {@link FrameDragData}
      */
     public FrameTransferable ( final FrameDragData data )
     {
-        super ();
         this.data = data;
     }
 

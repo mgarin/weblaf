@@ -30,14 +30,14 @@ import java.awt.image.BufferedImage;
 import java.lang.ref.WeakReference;
 
 /**
- * Custom DragViewHandler for WebDocumentPane document.
+ * Custom {@link ComponentDragViewHandler} for {@link WebDockableFrame} document.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
+ * @see WebDockableFrame
  * @see com.alee.extended.dock.WebDockablePane
  * @see com.alee.managers.drag.DragManager
  */
-
 public class FrameDragViewHandler extends ComponentDragViewHandler<WebDockableFrame, FrameDragData>
 {
     /**
