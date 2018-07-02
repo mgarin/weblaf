@@ -17,11 +17,12 @@
 
 package com.alee.laf.desktoppane;
 
+import com.alee.api.jdk.Consumer;
+import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -189,6 +190,12 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSup
     }
 
     @Override
+    protected LayoutManager createLayoutManager ()
+    {
+        return new InternalFrameLayout ();
+    }
+
+    @Override
     public int getBaseline ( final JComponent c, final int width, final int height )
     {
         return PainterSupport.getBaseline ( c, this, painter, width, height );
@@ -212,12 +219,133 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSup
     @Override
     public Dimension getMinimumSize ( final JComponent c )
     {
-        return getPreferredSize ( c );
+        // return frame.getLayout ().minimumLayoutSize ( c );
+        return null;
     }
 
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        // return PainterSupport.getPreferredSize ( c, painter );
+        return null;
+    }
+
+    /**
+     * Custom {@link LayoutManager} for {@link JInternalFrame}.
+     * Also unlike {@link BasicInternalFrameUI.Handler} you can easily override this one.
+     *
+     * @see BasicInternalFrameUI.Handler
+     */
+    protected class InternalFrameLayout extends AbstractLayoutManager
+    {
+        @Override
+        public void layoutContainer ( final Container container )
+        {
+            final Insets insets = frame.getInsets ();
+            int cx = insets.left;
+            int cy = insets.top;
+            int cw = frame.getWidth () - insets.left - insets.right;
+            int ch = frame.getHeight () - insets.top - insets.bottom;
+
+            final JComponent northPane = getNorthPane ();
+            if ( northPane != null )
+            {
+                final Dimension northSize = northPane.getPreferredSize ();
+                northPane.setBounds ( cx, cy, cw, northSize.height );
+                cy += northSize.height;
+                ch -= northSize.height;
+            }
+
+            final JComponent southPane = getSouthPane ();
+            if ( southPane != null )
+            {
+                final Dimension southSize = southPane.getPreferredSize ();
+                southPane.setBounds ( cx, frame.getHeight () - insets.bottom - southSize.height, cw, southSize.height );
+                ch -= southSize.height;
+            }
+
+            final JComponent westPane = getWestPane ();
+            if ( westPane != null )
+            {
+                final Dimension westSize = westPane.getPreferredSize ();
+                westPane.setBounds ( cx, cy, westSize.width, ch );
+                cw -= westSize.width;
+                cx += westSize.width;
+            }
+
+            final JComponent eastPane = getEastPane ();
+            if ( eastPane != null )
+            {
+                final Dimension eastSize = eastPane.getPreferredSize ();
+                eastPane.setBounds ( cw - eastSize.width, cy, eastSize.width, ch );
+                cw -= eastSize.width;
+            }
+
+            final JRootPane rootPane = frame.getRootPane ();
+            if ( rootPane != null )
+            {
+                rootPane.setBounds ( cx, cy, cw, ch );
+            }
+        }
+
+        @Override
+        public Dimension preferredLayoutSize ( final Container container )
+        {
+            final Dimension ps = new Dimension ( frame.getRootPane ().getPreferredSize () );
+
+            final Insets insets = frame.getInsets ();
+            ps.width += insets.left + insets.right;
+            ps.height += insets.top + insets.bottom;
+
+            final JComponent northPane = getNorthPane ();
+            if ( northPane != null )
+            {
+                final Dimension north = northPane.getPreferredSize ();
+                ps.width = Math.max ( north.width, ps.width );
+                ps.height += north.height;
+            }
+
+            final JComponent southPane = getSouthPane ();
+            if ( southPane != null )
+            {
+                final Dimension south = southPane.getPreferredSize ();
+                ps.width = Math.max ( south.width, ps.width );
+                ps.height += south.height;
+            }
+
+            final JComponent eastPane = getEastPane ();
+            if ( eastPane != null )
+            {
+                final Dimension east = eastPane.getPreferredSize ();
+                ps.width += east.width;
+                ps.height = Math.max ( east.height, ps.height );
+            }
+
+            final JComponent westPane = getWestPane ();
+            if ( westPane != null )
+            {
+                final Dimension west = westPane.getPreferredSize ();
+                ps.width += west.width;
+                ps.height = Math.max ( west.height, ps.height );
+            }
+
+            return ps;
+        }
+
+        /**
+         * The minimum size of the internal frame only takes into account the title pane and internal frame insets.
+         * That allows you to resize the frames to the point where just the title pane is visible.
+         */
+        @Override
+        public Dimension minimumLayoutSize ( final Container container )
+        {
+            final Dimension ms = getNorthPane () != null ? getNorthPane ().getMinimumSize () : new Dimension ();
+
+            final Insets insets = frame.getInsets ();
+            ms.width += insets.left + insets.right;
+            ms.height += insets.top + insets.bottom;
+
+            return ms;
+        }
     }
 }
