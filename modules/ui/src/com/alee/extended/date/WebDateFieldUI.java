@@ -50,8 +50,7 @@ import java.util.Date;
  * @param <C> component type
  * @author Mikle Garin
  */
-public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C>
-        implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * todo 1. Change popover to popup-based window

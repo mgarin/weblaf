@@ -49,18 +49,8 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
      */
     public static final String DATE_PROPERTY = "date";
     public static final String DATE_FORMAT_PROPERTY = "dateFormat";
-    public static final String CALENDAR_CUSTOMIZER_PROPERTY = "calendarCustomizer";
     public static final String ALLOW_USER_INPUT_PROPERTY = "allowUserInput";
-
-    /**
-     * Date display format.
-     */
-    protected DateFormat dateFormat = new SimpleDateFormat ( "dd.MM.yyyy", LanguageManager.getLocale () );
-
-    /**
-     * Calendar component customizer.
-     */
-    protected Customizer<WebCalendar> calendarCustomizer;
+    public static final String CALENDAR_CUSTOMIZER_PROPERTY = "calendarCustomizer";
 
     /**
      * Currently selected date.
@@ -68,10 +58,20 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
     protected Date date;
 
     /**
+     * Date display format.
+     */
+    protected DateFormat dateFormat;
+
+    /**
      * Indicating whether manual user input allowed or not.
      * This would commonly enable text date input field.
      */
-    protected boolean allowUserInput = true;
+    protected boolean allowUserInput;
+
+    /**
+     * Calendar component customizer.
+     */
+    protected Customizer<WebCalendar> calendarCustomizer;
 
     /**
      * Constructs new date field.
@@ -110,6 +110,10 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
     public WebDateField ( final StyleId id, final Date date )
     {
         super ();
+        this.date = null;
+        this.dateFormat = new SimpleDateFormat ( "dd.MM.yyyy", LanguageManager.getLocale () );
+        this.allowUserInput = true;
+        this.calendarCustomizer = null;
         setDate ( date );
         updateUI ();
         setStyleId ( id );

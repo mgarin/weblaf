@@ -22,19 +22,18 @@ import com.alee.laf.button.WebToggleButton;
 import java.util.Date;
 
 /**
- * This interface allows you to provide custom date buttons customizer into WebCalendar component.
+ * This interface allows you to customize {@link WebCalendar}'s {@link WebToggleButton}s representing {@link Date}s.
  *
  * @author Mikle Garin
  * @see WebCalendar
  */
-
 public interface DateCustomizer
 {
     /**
-     * Customize single date button.
+     * Customizes {@link WebToggleButton} representing single {@link Date}.
      *
-     * @param button button to customize
-     * @param date   date
+     * @param button {@link WebToggleButton} to customize
+     * @param date   {@link Date}
      */
     public void customize ( WebToggleButton button, Date date );
 }

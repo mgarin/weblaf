@@ -21,17 +21,16 @@ import java.util.Date;
 import java.util.EventListener;
 
 /**
- * Date listener for {@link com.alee.extended.date.WebDateField} component.
+ * {@link WebDateField} date change listener.
  *
  * @author Mikle Garin
  */
-
 public interface DateListener extends EventListener
 {
     /**
-     * Informs about selected date change.
+     * Informs about selected {@link Date} change.
      *
-     * @param date selected date
+     * @param date newly selected {@link Date}
      */
     public void dateChanged ( Date date );
 }

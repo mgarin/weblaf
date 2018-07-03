@@ -28,8 +28,7 @@ import com.alee.painter.Painter;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
-public final class AdaptiveDateFieldPainter<C extends WebDateField, U extends WDateFieldUI> extends AdaptivePainter<C, U>
+public final class AdaptiveDateFieldPainter<C extends WebDateField, U extends WDateFieldUI<C>> extends AdaptivePainter<C, U>
         implements IDateFieldPainter<C, U>
 {
     /**

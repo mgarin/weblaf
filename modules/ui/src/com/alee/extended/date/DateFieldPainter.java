@@ -29,8 +29,7 @@ import com.alee.painter.decoration.IDecoration;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-
-public class DateFieldPainter<C extends WebDateField, U extends WDateFieldUI, D extends IDecoration<C, D>>
+public class DateFieldPainter<C extends WebDateField, U extends WDateFieldUI<C>, D extends IDecoration<C, D>>
         extends AbstractDecorationPainter<C, U, D> implements IDateFieldPainter<C, U>
 {
     /**

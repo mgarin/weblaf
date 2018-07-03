@@ -53,9 +53,8 @@ import java.util.List;
  * Custom calendar component.
  *
  * @author Mikle Garin
- * @see com.alee.extended.date.WebDateField
+ * @see WebDateField
  */
-
 public class WebCalendar extends WebPanel implements LanguageListener
 {
     /**

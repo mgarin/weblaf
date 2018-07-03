@@ -29,7 +29,6 @@ import javax.swing.plaf.ComponentUI;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public abstract class WDateFieldUI<C extends WebDateField> extends ComponentUI implements WebUI<C>
 {
     /**
