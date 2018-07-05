@@ -160,16 +160,16 @@ public final class HotkeyManager
 
     /**
      * Returns whether at least one hotkey for the specified key event exists or not.
+     * todo Might need a rework since events like Ctrl+Alt+A won't trigger Ctrl+A hotkey
      *
      * @param keyEvent key event to search hotkeys for
      * @return true if at least one hotkey for the specified key event exists, false otherwise
      */
     private static boolean hotkeyForEventExists ( final KeyEvent keyEvent )
     {
-        final int hotkeyHash = SwingUtils.hotkeyToString ( keyEvent ).hashCode ();
         for ( final HotkeyInfo hotkeyInfo : globalHotkeys )
         {
-            if ( hotkeyInfo.getHotkeyData ().hashCode () == hotkeyHash )
+            if ( hotkeyInfo.getHotkeyData ().isTriggered ( keyEvent ) )
             {
                 return true;
             }
@@ -179,7 +179,7 @@ public final class HotkeyManager
             @Override
             public boolean test ( final JComponent component, final HotkeyInfo hotkeyInfo )
             {
-                return hotkeyInfo.getHotkeyData ().hashCode () == hotkeyHash;
+                return hotkeyInfo.getHotkeyData ().isTriggered ( keyEvent );
             }
         } );
     }
