@@ -198,7 +198,7 @@ public class StyleRange implements MergeBehavior<StyleRange>, Cloneable
         {
             throw new IllegalArgumentException ( "Style length cannot be zero or less than zero" );
         }
-        if ( Objects.notEquals ( style, -1, Font.PLAIN, Font.BOLD, Font.BOLD | Font.ITALIC ) )
+        if ( Objects.notEquals ( style, -1, Font.PLAIN, Font.BOLD, Font.ITALIC, Font.BOLD | Font.ITALIC ) )
         {
             throw new IllegalArgumentException ( "Unknown font style: " + style );
         }
