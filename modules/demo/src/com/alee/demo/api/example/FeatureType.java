@@ -22,7 +22,6 @@ package com.alee.demo.api.example;
  *
  * @author Mikle Garin
  */
-
 public enum FeatureType
 {
     /**
@@ -38,5 +37,10 @@ public enum FeatureType
     /**
      * WebLaF utility.
      */
-    utility
+    utility,
+
+    /**
+     * WebLaF settings.
+     */
+    settings
 }

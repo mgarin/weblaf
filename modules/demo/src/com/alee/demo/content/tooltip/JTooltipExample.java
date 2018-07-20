@@ -30,7 +30,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class JTooltipExample extends AbstractStylePreviewExample
 {
     @Override
@@ -60,8 +59,9 @@ public class JTooltipExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final BasicTooltip e1 = new BasicTooltip ( FeatureState.updated, StyleId.tooltip );
-        return CollectionUtils.<Preview>asList ( e1 );
+        return CollectionUtils.<Preview>asList (
+                new BasicTooltip ( FeatureState.updated, StyleId.tooltip )
+        );
     }
 
     /**

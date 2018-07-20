@@ -27,7 +27,6 @@ import javax.swing.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public abstract class WToolBarSeparatorUI<C extends JToolBar.Separator> extends WSeparatorUI<C>
 {
     /**

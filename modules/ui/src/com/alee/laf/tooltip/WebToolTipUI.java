@@ -33,7 +33,6 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public class WebToolTipUI<C extends JToolTip> extends WToolTipUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -78,6 +77,18 @@ public class WebToolTipUI<C extends JToolTip> extends WToolTipUI<C> implements S
     public Shape getShape ()
     {
         return PainterSupport.getShape ( toolTip, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( toolTip, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( toolTip, painter, enabled );
     }
 
     @Override
@@ -130,6 +141,12 @@ public class WebToolTipUI<C extends JToolTip> extends WToolTipUI<C> implements S
                 WebToolTipUI.this.painter = newPainter;
             }
         }, this.painter, painter, IToolTipPainter.class, AdaptiveToolTipPainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

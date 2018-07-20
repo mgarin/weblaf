@@ -29,7 +29,6 @@ import javax.swing.plaf.LabelUI;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public abstract class WLabelUI<C extends JLabel> extends LabelUI implements WebUI<C>
 {
     /**

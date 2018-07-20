@@ -68,10 +68,11 @@ public class WebNotificationExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final BasicNotificationPreview e1 = new BasicNotificationPreview ( "basic", FeatureState.release, StyleId.notification );
-        final OptionalNotificationPreview e2 = new OptionalNotificationPreview ( "optional", FeatureState.release, StyleId.notification );
-        final CustomNotificationPreview e3 = new CustomNotificationPreview ( "custom", FeatureState.release, StyleId.notification );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3 );
+        return CollectionUtils.<Preview>asList (
+                new BasicNotificationPreview ( "basic", FeatureState.release, StyleId.notification ),
+                new OptionalNotificationPreview ( "optional", FeatureState.release, StyleId.notification ),
+                new CustomNotificationPreview ( "custom", FeatureState.release, StyleId.notification )
+        );
     }
 
     /**

@@ -33,7 +33,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class JLabelExample extends AbstractStylePreviewExample
 {
     @Override
@@ -63,13 +62,14 @@ public class JLabelExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final BasicLabel e1 = new BasicLabel ( "basic", FeatureState.updated, StyleId.label );
-        final BasicLabel e2 = new BasicLabel ( "shadow", FeatureState.updated, StyleId.labelShadow );
-        final BasicLabel e3 = new BasicLabel ( "tag", FeatureState.release, StyleId.labelTag );
-        final BasicLabel e4 = new BasicLabel ( "ccw", FeatureState.release, StyleId.labelVerticalCCW );
-        final BasicLabel e5 = new BasicLabel ( "cw", FeatureState.release, StyleId.labelVerticalCW );
-        final SeparatorLabel e6 = new SeparatorLabel ( "separator", FeatureState.beta, StyleId.labelSeparator );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3, e4, e5, e6 );
+        return CollectionUtils.<Preview>asList (
+                new BasicLabel ( "basic", FeatureState.updated, StyleId.label ),
+                new BasicLabel ( "shadow", FeatureState.updated, StyleId.labelShadow ),
+                new BasicLabel ( "tag", FeatureState.release, StyleId.labelTag ),
+                new BasicLabel ( "ccw", FeatureState.release, StyleId.labelVerticalCCW ),
+                new BasicLabel ( "cw", FeatureState.release, StyleId.labelVerticalCW ),
+                new SeparatorLabel ( "separator", FeatureState.beta, StyleId.labelSeparator )
+        );
     }
 
     /**

@@ -42,7 +42,6 @@ import java.awt.event.HierarchyListener;
  *
  * @author Mikle Garin
  */
-
 public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -95,6 +94,18 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
     public Shape getShape ()
     {
         return PainterSupport.getShape ( optionPane, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( optionPane, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( optionPane, painter, enabled );
     }
 
     @Override
@@ -590,6 +601,12 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
                 WebOptionPaneUI.this.painter = newPainter;
             }
         }, this.painter, painter, IOptionPanePainter.class, AdaptiveOptionPanePainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

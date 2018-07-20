@@ -42,7 +42,6 @@ import java.beans.PropertyChangeListener;
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
-
 public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -201,6 +200,18 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
     }
 
     @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( toolBar, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( toolBar, painter, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return PainterSupport.getMargin ( toolBar );
@@ -250,6 +261,12 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
                 WebToolBarUI.this.painter = newPainter;
             }
         }, this.painter, painter, IToolBarPainter.class, AdaptiveToolBarPainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

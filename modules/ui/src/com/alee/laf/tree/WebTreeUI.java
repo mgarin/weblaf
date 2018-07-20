@@ -39,7 +39,6 @@ import java.util.Enumeration;
  *
  * @author Mikle Garin
  */
-
 public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -181,6 +180,18 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
     public Shape getShape ()
     {
         return PainterSupport.getShape ( tree, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( tree, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( tree, painter, enabled );
     }
 
     @Override
@@ -437,6 +448,12 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
     protected TreeToolTipProvider getToolTipProvider ()
     {
         return tree instanceof WebTree ? ( ( WebTree ) tree ).getToolTipProvider () : null;
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

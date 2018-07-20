@@ -29,7 +29,6 @@ import javax.swing.plaf.ComponentUI;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public abstract class WStatusBarUI<C extends WebStatusBar> extends ComponentUI implements WebUI<C>
 {
     /**

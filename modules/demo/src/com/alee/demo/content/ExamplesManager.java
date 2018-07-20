@@ -25,6 +25,7 @@ import com.alee.demo.content.chooser.ChoosersGroup;
 import com.alee.demo.content.container.ContainersGroup;
 import com.alee.demo.content.data.DataGroup;
 import com.alee.demo.content.desktoppane.DesktopPaneGroup;
+import com.alee.demo.content.features.FeaturesGroup;
 import com.alee.demo.content.image.ImageGroup;
 import com.alee.demo.content.label.LabelsGroup;
 import com.alee.demo.content.menu.MenusGroup;
@@ -94,6 +95,7 @@ public final class ExamplesManager
             groups.add ( new DesktopPaneGroup () );
             groups.add ( new ImageGroup () );
             groups.add ( new AnimationGroup () );
+            groups.add ( new FeaturesGroup () );
         }
     }
 

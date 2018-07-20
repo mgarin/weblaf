@@ -32,7 +32,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class JRadioButtonExample extends AbstractStylePreviewExample
 {
     @Override
@@ -62,10 +61,11 @@ public class JRadioButtonExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final TextRadioButton e1 = new TextRadioButton ( "basic", StyleId.radiobutton, "Simple button text" );
-        final TextRadioButton e2 = new TextRadioButton ( "styled", StyleId.radiobuttonStyled, "{Styled:b} {button:u} {text:c(red)}" );
-        final TextRadioButton e3 = new TextRadioButton ( "link", StyleId.radiobuttonLink, "Link-like {radio:b} button" );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3 );
+        return CollectionUtils.<Preview>asList (
+                new TextRadioButton ( "basic", StyleId.radiobutton, "Simple button text" ),
+                new TextRadioButton ( "styled", StyleId.radiobuttonStyled, "{Styled:b} {button:u} {text:c(red)}" ),
+                new TextRadioButton ( "link", StyleId.radiobuttonLink, "Link-like {radio:b} button" )
+        );
     }
 
     /**

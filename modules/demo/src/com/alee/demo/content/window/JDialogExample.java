@@ -67,9 +67,10 @@ public class JDialogExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final DialogPreview e1 = new DialogPreview ( "basic", FeatureState.updated, StyleId.dialog );
-        final DialogPreview e2 = new DialogPreview ( "decorated", FeatureState.updated, StyleId.dialogDecorated );
-        return CollectionUtils.<Preview>asList ( e1, e2 );
+        return CollectionUtils.<Preview>asList (
+                new DialogPreview ( "basic", FeatureState.updated, StyleId.dialog ),
+                new DialogPreview ( "decorated", FeatureState.updated, StyleId.dialogDecorated )
+        );
     }
 
     /**

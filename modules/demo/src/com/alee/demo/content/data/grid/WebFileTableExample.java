@@ -32,7 +32,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebFileTableExample extends AbstractStylePreviewExample
 {
     @Override
@@ -56,10 +55,11 @@ public class WebFileTableExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final BasicTable basic = new BasicTable ( StyleId.filetable );
-        final ScrollableTable scrollable = new ScrollableTable ( StyleId.filetable );
-        final EditableTable editable = new EditableTable ( StyleId.filetable );
-        return CollectionUtils.<Preview>asList ( basic, scrollable, editable );
+        return CollectionUtils.<Preview>asList (
+                new BasicTable ( StyleId.filetable ),
+                new ScrollableTable ( StyleId.filetable ),
+                new EditableTable ( StyleId.filetable )
+        );
     }
 
     /**

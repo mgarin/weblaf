@@ -31,7 +31,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class JCheckBoxExample extends AbstractStylePreviewExample
 {
     @Override
@@ -61,10 +60,11 @@ public class JCheckBoxExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final TextCheckBox e1 = new TextCheckBox ( "basic", StyleId.checkbox, "Simple check text" );
-        final TextCheckBox e2 = new TextCheckBox ( "styled", StyleId.checkboxStyled, "{Styled:b} {check:u} {text:c(red)}" );
-        final TextCheckBox e3 = new TextCheckBox ( "link", StyleId.checkboxLink, "Link-like {check:b} box" );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3 );
+        return CollectionUtils.<Preview>asList (
+                new TextCheckBox ( "basic", StyleId.checkbox, "Simple check text" ),
+                new TextCheckBox ( "styled", StyleId.checkboxStyled, "{Styled:b} {check:u} {text:c(red)}" ),
+                new TextCheckBox ( "link", StyleId.checkboxLink, "Link-like {check:b} box" )
+        );
     }
 
     /**

@@ -20,7 +20,6 @@ package com.alee.demo.content.progress;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
-import com.alee.managers.animation.AnimationManager;
 import com.alee.managers.animation.easing.Quadratic;
 import com.alee.managers.animation.transition.*;
 import com.alee.managers.style.StyleId;
@@ -33,7 +32,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class JProgressBarExample extends AbstractStylePreviewExample
 {
     /**
@@ -76,29 +74,34 @@ public class JProgressBarExample extends AbstractStylePreviewExample
         progressAnimator.add ( new IdleTransition<Integer> ( 0, 1000L ) );
 
         // Progress bar examples
-        final BasicProgress e1 = new BasicProgress ( StyleId.progressbar, null );
-        final BasicProgress e2 = new BasicProgress ( StyleId.progressbar, "" );
-        final BasicProgress e3 = new BasicProgress ( StyleId.progressbar, "Sample text" );
-        final IndeterminateProgress e4 = new IndeterminateProgress ( StyleId.progressbar, null );
-        final IndeterminateProgress e5 = new IndeterminateProgress ( StyleId.progressbar, "Sample text" );
-        final VerticalProgress e6 = new VerticalProgress ( StyleId.progressbar, null );
-        final VerticalProgress e7 = new VerticalProgress ( StyleId.progressbar, "" );
-        final VerticalProgress e8 = new VerticalProgress ( StyleId.progressbar, "Sample text" );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3, e4, e5, e6, e7, e8 );
+        return CollectionUtils.<Preview>asList (
+                new BasicProgress ( StyleId.progressbar, null ),
+                new BasicProgress ( StyleId.progressbar, "" ),
+                new BasicProgress ( StyleId.progressbar, "Sample text" ),
+                new IndeterminateProgress ( StyleId.progressbar, null ),
+                new IndeterminateProgress ( StyleId.progressbar, "Sample text" ),
+                new VerticalProgress ( StyleId.progressbar, null ),
+                new VerticalProgress ( StyleId.progressbar, "" ),
+                new VerticalProgress ( StyleId.progressbar, "Sample text" )
+        );
     }
 
+    /**
+     * Ensures animation only occurs when preview becomes visible.
+     */
     @Override
     protected void displayed ()
     {
-        // Ensure animation only occurs when preview is visible
-        AnimationManager.play ( progressAnimator );
+        progressAnimator.play ();
     }
 
+    /**
+     * Ensures animation stops when preview is hidden.
+     */
     @Override
     protected void hidden ()
     {
-        // Ensure animation stops when preview is hidden
-        AnimationManager.stop ( progressAnimator );
+        progressAnimator.stop ();
     }
 
     /**

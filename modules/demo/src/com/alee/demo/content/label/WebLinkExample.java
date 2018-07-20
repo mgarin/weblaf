@@ -36,7 +36,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebLinkExample extends AbstractStylePreviewExample
 {
     @Override
@@ -66,11 +65,12 @@ public class WebLinkExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final UrlLink e1 = new UrlLink ( FeatureState.release, StyleId.link );
-        final EmailLink e2 = new EmailLink ( FeatureState.release, StyleId.link );
-        final FileLink e3 = new FileLink ( FeatureState.release, StyleId.link );
-        final ActionLink e4 = new ActionLink ( FeatureState.release, StyleId.link );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3, e4 );
+        return CollectionUtils.<Preview>asList (
+                new UrlLink ( FeatureState.release, StyleId.link ),
+                new EmailLink ( FeatureState.release, StyleId.link ),
+                new FileLink ( FeatureState.release, StyleId.link ),
+                new ActionLink ( FeatureState.release, StyleId.link )
+        );
     }
 
     /**

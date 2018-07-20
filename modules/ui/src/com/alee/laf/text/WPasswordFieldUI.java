@@ -26,7 +26,6 @@ import javax.swing.plaf.basic.BasicPasswordFieldUI;
  *
  * @author Mikle Garin
  */
-
 public abstract class WPasswordFieldUI extends BasicPasswordFieldUI implements IInputPrompt, ILeadingComponent, ITrailingComponent
 {
     /**

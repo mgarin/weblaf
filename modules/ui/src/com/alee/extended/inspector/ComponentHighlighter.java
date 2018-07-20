@@ -23,12 +23,10 @@ import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.glasspane.GlassPaneManager;
 import com.alee.managers.glasspane.WebGlassPane;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
+import com.alee.painter.PainterSupport;
 import com.alee.utils.*;
 
 import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -349,7 +347,6 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
      */
     private void paintSizeTip ( final Graphics2D g2d, final Rectangle tipBounds, final CompassDirection tipPosition )
     {
-
         final FontMetrics fm = g2d.getFontMetrics ( g2d.getFont () );
         final int shearY = LafUtils.getTextCenterShiftY ( fm );
 
@@ -396,60 +393,49 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
     {
         if ( component instanceof JComponent && LafUtils.hasWebLafUI ( ( JComponent ) component ) )
         {
-            // todo A better way to check WebLaF styling?
-            final ComponentUI ui = LafUtils.getUI ( ( JComponent ) component );
-            if ( ui != null )
+            final JComponent jComponent = ( JComponent ) component;
+
+            // Component margin
+            final Insets margin = PainterSupport.getMargin ( jComponent, true );
+            final Insets m = margin != null ? margin : emptyInsets;
+
+            // Component padding
+            final Insets padding = PainterSupport.getPadding ( jComponent, true );
+            final Insets p = padding != null ? padding : emptyInsets;
+
+            // Component painter border
+            final Insets insets = jComponent.getInsets ();
+            final Insets b;
+            if ( insets != null && ( insets.top > 0 || insets.left > 0 || insets.bottom > 0 || insets.right > 0 ) )
             {
-                // todo Probably request these settings through other means?
-                // todo Through Bounds maybe?
-
-                // Component margin
-                final Insets margin = ui instanceof MarginSupport ? ( ( MarginSupport ) ui ).getMargin () : null;
-                final Insets m = margin != null ? margin : emptyInsets;
-
-                // Component padding
-                final Insets padding = ui instanceof PaddingSupport ? ( ( PaddingSupport ) ui ).getPadding () : null;
-                final Insets p = padding != null ? padding : emptyInsets;
-
-                // Component painter border
-                final Insets insets = component instanceof JComponent ? ( ( JComponent ) component ).getInsets () : emptyInsets;
-                final Insets b;
-                if ( insets != null && ( insets.top > 0 || insets.left > 0 || insets.bottom > 0 || insets.right > 0 ) )
-                {
-                    b = new Insets ( insets.top - m.top - p.top, insets.left - m.left - p.left,
-                            insets.bottom - m.bottom - p.bottom, insets.right - m.right - p.right );
-                }
-                else
-                {
-                    b = emptyInsets;
-                }
-
-                // Computing area sizes
-                final Rectangle sr = new Rectangle ( bodyBounds );
-                final Rectangle mr = new Rectangle ( sr.x + m.left, sr.y + m.top,
-                        sr.width - m.left - m.right, sr.height - m.top - m.bottom );
-                final Rectangle br = new Rectangle ( mr.x + b.left, mr.y + b.top,
-                        mr.width - b.left - b.right, mr.height - b.top - b.bottom );
-                final Rectangle pr = new Rectangle ( br.x + p.left, br.y + p.top,
-                        br.width - p.left - p.right, br.height - p.top - p.bottom );
-
-                // Painting component margin area
-                paintComplexArea ( g2d, m, sr, mr, marginColor );
-
-                // Painting component painter border area
-                paintComplexArea ( g2d, b, mr, br, borderColor );
-
-                // Painting component padding area
-                paintComplexArea ( g2d, p, br, pr, paddingColor );
-
-                // Painting component bounds area
-                paintContentArea ( g2d, pr );
+                b = new Insets ( insets.top - m.top - p.top, insets.left - m.left - p.left,
+                        insets.bottom - m.bottom - p.bottom, insets.right - m.right - p.right );
             }
             else
             {
-                // Painting component bounds area
-                paintContentArea ( g2d, bodyBounds );
+                b = emptyInsets;
             }
+
+            // Computing area sizes
+            final Rectangle sr = new Rectangle ( bodyBounds );
+            final Rectangle mr = new Rectangle ( sr.x + m.left, sr.y + m.top,
+                    sr.width - m.left - m.right, sr.height - m.top - m.bottom );
+            final Rectangle br = new Rectangle ( mr.x + b.left, mr.y + b.top,
+                    mr.width - b.left - b.right, mr.height - b.top - b.bottom );
+            final Rectangle pr = new Rectangle ( br.x + p.left, br.y + p.top,
+                    br.width - p.left - p.right, br.height - p.top - p.bottom );
+
+            // Painting component margin area
+            paintComplexArea ( g2d, m, sr, mr, marginColor );
+
+            // Painting component painter border area
+            paintComplexArea ( g2d, b, mr, br, borderColor );
+
+            // Painting component padding area
+            paintComplexArea ( g2d, p, br, pr, paddingColor );
+
+            // Painting component bounds area
+            paintContentArea ( g2d, pr );
         }
         else
         {
@@ -470,7 +456,7 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
     private void paintComplexArea ( final Graphics2D g2d, final Insets insets, final Rectangle outer, final Rectangle inner,
                                     final Color color )
     {
-        if ( insets != emptyInsets )
+        if ( !insets.equals ( emptyInsets ) )
         {
             g2d.setPaint ( color );
             final Area ma = new Area ( outer );

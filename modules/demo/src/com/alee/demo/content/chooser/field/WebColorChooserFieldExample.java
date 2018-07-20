@@ -29,7 +29,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebColorChooserFieldExample extends AbstractStylePreviewExample
 {
     @Override
@@ -53,8 +52,9 @@ public class WebColorChooserFieldExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final ColorChooserField e1 = new ColorChooserField ( StyleId.colorchooserfield );
-        return CollectionUtils.<Preview>asList ( e1 );
+        return CollectionUtils.<Preview>asList (
+                new ColorChooserField ( StyleId.colorchooserfield )
+        );
     }
 
     /**

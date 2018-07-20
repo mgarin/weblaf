@@ -29,7 +29,6 @@ import javax.swing.plaf.ViewportUI;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public abstract class WViewportUI<C extends JViewport> extends ViewportUI implements WebUI<C>
 {
     /**

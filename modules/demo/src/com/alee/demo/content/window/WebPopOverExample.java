@@ -70,8 +70,9 @@ public class WebPopOverExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final PopOverPreview e1 = new PopOverPreview ( "basic", FeatureState.beta, StyleId.popover );
-        return CollectionUtils.<Preview>asList ( e1 );
+        return CollectionUtils.<Preview>asList (
+                new PopOverPreview ( "basic", FeatureState.beta, StyleId.popover )
+        );
     }
 
     /**

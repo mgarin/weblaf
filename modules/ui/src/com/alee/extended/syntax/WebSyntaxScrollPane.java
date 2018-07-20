@@ -253,6 +253,18 @@ public class WebSyntaxScrollPane extends RTextScrollPane
     }
 
     @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return ShapeMethodsImpl.isShapeDetectionEnabled ( this );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return MarginMethodsImpl.getMargin ( this );

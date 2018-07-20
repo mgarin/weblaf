@@ -30,7 +30,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public abstract class WComboBoxUI extends BasicComboBoxUI
 {
     /**

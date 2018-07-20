@@ -35,13 +35,12 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebSplitButtonExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()
     {
-        return "websplitbutton";
+        return "splitbutton";
     }
 
     @Override
@@ -59,11 +58,12 @@ public class WebSplitButtonExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final TextButton e1 = new TextButton ( StyleId.splitbutton );
-        final TextButton e2 = new TextButton ( StyleId.splitbuttonHover );
-        final IconButton e3 = new IconButton ( StyleId.splitbuttonIcon );
-        final IconButton e4 = new IconButton ( StyleId.splitbuttonIconHover );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3, e4 );
+        return CollectionUtils.<Preview>asList (
+                new TextButton ( StyleId.splitbutton ),
+                new TextButton ( StyleId.splitbuttonHover ),
+                new IconButton ( StyleId.splitbuttonIcon ),
+                new IconButton ( StyleId.splitbuttonIconHover )
+        );
     }
 
     /**
@@ -88,14 +88,14 @@ public class WebSplitButtonExample extends AbstractStylePreviewExample
             button.setPopupMenu ( createSamplePopupMenu ( button, false, true ) );
 
             final WebSplitButton first = new WebSplitButton ( getStyleId (), "Select one..." );
-            first.setSplitIcon ( DemoIcons.menu16 );
+            first.setMenuIcon ( DemoIcons.menu16 );
             first.setPopupMenu ( createSamplePopupMenu ( first, false, true ) );
 
             final WebSplitButton second = new WebSplitButton ( getStyleId (), "Select one...", WebLookAndFeel.getIcon ( 16 ) );
             second.setPopupMenu ( createSamplePopupMenu ( second, true, true ) );
 
             final WebSplitButton icon = new WebSplitButton ( getStyleId (), "Select one...", WebLookAndFeel.getIcon ( 16 ) );
-            icon.setSplitIcon ( DemoIcons.menu16 );
+            icon.setMenuIcon ( DemoIcons.menu16 );
             icon.setPopupMenu ( createSamplePopupMenu ( icon, true, true ) );
 
             return CollectionUtils.asList ( button, new GroupPane ( first, second ), icon );
@@ -121,7 +121,7 @@ public class WebSplitButtonExample extends AbstractStylePreviewExample
         protected List<? extends JComponent> createPreviewElements ()
         {
             final WebSplitButton button = new WebSplitButton ( getStyleId (), WebLookAndFeel.getIcon ( 16 ) );
-            button.setSplitIcon ( DemoIcons.menu16 );
+            button.setMenuIcon ( DemoIcons.menu16 );
             button.setPopupMenu ( createSamplePopupMenu ( button, true, false ) );
 
             final WebSplitButton first = new WebSplitButton ( getStyleId (), WebLookAndFeel.getIcon ( 16 ) );

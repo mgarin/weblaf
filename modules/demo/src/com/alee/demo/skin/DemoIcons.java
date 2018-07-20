@@ -24,7 +24,6 @@ import com.alee.managers.icon.LazyIcon;
  *
  * @author Mikle Garin
  */
-
 public final class DemoIcons
 {
     /**
@@ -86,6 +85,9 @@ public final class DemoIcons
     public static final LazyIcon disabled16 = new LazyIcon ( "disabled16" );
     public static final LazyIcon ltr16 = new LazyIcon ( "ltr16" );
     public static final LazyIcon rtl16 = new LazyIcon ( "rtl16" );
+    public static final LazyIcon play16 = new LazyIcon ( "play16" );
+    public static final LazyIcon pause16 = new LazyIcon ( "pause16" );
+    public static final LazyIcon indeterminate16 = new LazyIcon ( "indeterminate16" );
 
     /**
      * Social 16x16 icons.

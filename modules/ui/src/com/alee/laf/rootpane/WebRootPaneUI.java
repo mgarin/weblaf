@@ -49,7 +49,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
@@ -171,6 +170,18 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     public Shape getShape ()
     {
         return PainterSupport.getShape ( root, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( root, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( root, painter, enabled );
     }
 
     @Override
@@ -966,6 +977,12 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
         return isFrame () && ( ( frame.getExtendedState () & Frame.MAXIMIZED_BOTH ) == Frame.MAXIMIZED_BOTH ||
                 ( frame.getExtendedState () & Frame.MAXIMIZED_HORIZ ) == Frame.MAXIMIZED_HORIZ ||
                 ( frame.getExtendedState () & Frame.MAXIMIZED_VERT ) == Frame.MAXIMIZED_VERT );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

@@ -30,7 +30,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebHotkeyLabelExample extends AbstractStylePreviewExample
 {
     @Override
@@ -54,10 +53,11 @@ public class WebHotkeyLabelExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final TextHotkeyLabel e1 = new TextHotkeyLabel ( FeatureState.updated, StyleId.hotkeylabel );
-        final CodeHotkeyLabel e2 = new CodeHotkeyLabel ( FeatureState.updated, StyleId.hotkeylabel );
-        final DataHotkeyLabel e3 = new DataHotkeyLabel ( FeatureState.release, StyleId.hotkeylabel );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3 );
+        return CollectionUtils.<Preview>asList (
+                new TextHotkeyLabel ( FeatureState.updated, StyleId.hotkeylabel ),
+                new CodeHotkeyLabel ( FeatureState.updated, StyleId.hotkeylabel ),
+                new DataHotkeyLabel ( FeatureState.release, StyleId.hotkeylabel )
+        );
     }
 
     /**

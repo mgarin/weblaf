@@ -35,7 +35,6 @@ import static com.alee.painter.decoration.shape.Sides.*;
  * @author Mikle Garin
  * @see Sides
  */
-
 public final class SidesConverter extends AbstractSingleValueConverter
 {
     /**
@@ -86,6 +85,10 @@ public final class SidesConverter extends AbstractSingleValueConverter
         {
             list.add ( RIGHT );
         }
+        if ( list.isEmpty () )
+        {
+            list.add ( NONE );
+        }
         return TextUtils.listToString ( list, separator );
     }
 
@@ -99,13 +102,13 @@ public final class SidesConverter extends AbstractSingleValueConverter
     {
         try
         {
-            if ( TextUtils.isEmpty ( sides ) )
+            if ( TextUtils.notEmpty ( sides ) )
             {
                 final StringTokenizer tokenizer = new StringTokenizer ( sides, separator, false );
                 if ( tokenizer.hasMoreTokens () )
                 {
                     final String first = tokenizer.nextToken ().trim ();
-                    if ( Objects.equals ( first, TOP, LEFT, BOTTOM, RIGHT ) )
+                    if ( Objects.equals ( first, TOP, LEFT, BOTTOM, RIGHT, NONE ) )
                     {
                         final boolean top = sides.contains ( TOP );
                         final boolean left = sides.contains ( LEFT );

@@ -1001,6 +1001,18 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         return getBorderShape ();
     }
 
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return false;
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        throw new UnsupportedOperationException ( "Shape detection is not yet supported for WebStepProgress" );
+    }
+
     /**
      * Updates border shape.
      */

@@ -33,7 +33,6 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public class WebRadioButtonUI<C extends JRadioButton> extends WRadioButtonUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -78,6 +77,18 @@ public class WebRadioButtonUI<C extends JRadioButton> extends WRadioButtonUI<C> 
     public Shape getShape ()
     {
         return PainterSupport.getShape ( button, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( button, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( button, painter, enabled );
     }
 
     @Override
@@ -130,6 +141,12 @@ public class WebRadioButtonUI<C extends JRadioButton> extends WRadioButtonUI<C> 
                 WebRadioButtonUI.this.painter = newPainter;
             }
         }, this.painter, painter, IRadioButtonPainter.class, AdaptiveRadioButtonPainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

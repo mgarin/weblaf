@@ -33,7 +33,6 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public class WebStatusBarUI<C extends WebStatusBar> extends WStatusBarUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -78,6 +77,18 @@ public class WebStatusBarUI<C extends WebStatusBar> extends WStatusBarUI<C> impl
     public Shape getShape ()
     {
         return PainterSupport.getShape ( statusBar, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( statusBar, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( statusBar, painter, enabled );
     }
 
     @Override
@@ -130,6 +141,12 @@ public class WebStatusBarUI<C extends WebStatusBar> extends WStatusBarUI<C> impl
                 WebStatusBarUI.this.painter = newPainter;
             }
         }, this.painter, painter, IStatusBarPainter.class, AdaptiveStatusBarPainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

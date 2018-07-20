@@ -29,7 +29,6 @@ import javax.swing.plaf.ComponentUI;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public abstract class WImageUI<C extends WebImage> extends ComponentUI implements WebUI<C>
 {
     /**

@@ -33,7 +33,6 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public class WebPopupMenuSeparatorUI<C extends JPopupMenu.Separator> extends WPopupMenuSeparatorUI<C>
         implements ShapeSupport, MarginSupport, PaddingSupport
 {
@@ -79,6 +78,18 @@ public class WebPopupMenuSeparatorUI<C extends JPopupMenu.Separator> extends WPo
     public Shape getShape ()
     {
         return PainterSupport.getShape ( separator, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( separator, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( separator, painter, enabled );
     }
 
     @Override
@@ -131,6 +142,12 @@ public class WebPopupMenuSeparatorUI<C extends JPopupMenu.Separator> extends WPo
                 WebPopupMenuSeparatorUI.this.painter = newPainter;
             }
         }, this.painter, painter, IPopupMenuSeparatorPainter.class, AdaptivePopupMenuSeparatorPainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

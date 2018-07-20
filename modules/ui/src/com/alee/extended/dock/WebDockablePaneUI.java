@@ -667,6 +667,18 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
     }
 
     @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( pane, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( pane, painter, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return PainterSupport.getMargin ( pane );
@@ -716,6 +728,12 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
                 WebDockablePaneUI.this.painter = newPainter;
             }
         }, this.painter, painter, IDockablePanePainter.class, AdaptiveDockablePanePainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

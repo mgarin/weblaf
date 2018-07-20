@@ -33,7 +33,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebCheckBoxTreeExample extends AbstractStylePreviewExample
 {
     @Override
@@ -57,9 +56,10 @@ public class WebCheckBoxTreeExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final BasicTree basic = new BasicTree ( StyleId.checkboxtree );
-        final CustomizedTree customized = new CustomizedTree ( StyleId.checkboxtree );
-        return CollectionUtils.<Preview>asList ( basic, customized );
+        return CollectionUtils.<Preview>asList (
+                new BasicTree ( StyleId.checkboxtree ),
+                new CustomizedTree ( StyleId.checkboxtree )
+        );
     }
 
     /**

@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import java.applet.Applet;
 import java.awt.*;
+import java.awt.event.InputEvent;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -394,6 +395,17 @@ public final class CoreSwingUtils
             // Re-throwing exception with more information on the component
             throw new UtilityException ( "Component must be showing on the screen to determine its location: " + component );
         }
+    }
+
+    /**
+     * Returns whether or not specified {@link InputEvent} contains a menu shortcut key.
+     *
+     * @param event {@link InputEvent}
+     * @return {@code true} if specified {@link InputEvent} contains a menu shortcut key, {@code false} otherwise
+     */
+    public static boolean isMenuShortcutKeyDown ( final InputEvent event )
+    {
+        return ( event.getModifiers () & Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask () ) != 0;
     }
 
     /**

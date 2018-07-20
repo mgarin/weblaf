@@ -32,7 +32,6 @@ import java.awt.*;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public abstract class AdaptivePainter<C extends JComponent, U extends ComponentUI> implements SpecificPainter<C, U>
 {
     /**
@@ -95,6 +94,12 @@ public abstract class AdaptivePainter<C extends JComponent, U extends ComponentU
     public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final C c, final U ui )
     {
         return painter.getBaselineResizeBehavior ( c, ui );
+    }
+
+    @Override
+    public boolean contains ( final C c, final U ui, final Bounds bounds, final int x, final int y )
+    {
+        return painter.contains ( c, ui, bounds, x, y );
     }
 
     @Override

@@ -26,7 +26,7 @@ public final class AdaptiveSplitButtonPainter<C extends WebSplitButton, U extend
     }
 
     @Override
-    public boolean isOnSplit ()
+    public boolean isOnMenu ()
     {
         return false;
     }

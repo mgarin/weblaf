@@ -36,6 +36,10 @@ import java.awt.image.BufferedImage;
 
 public class WebDecoratedImage extends JComponent implements SwingConstants, ShapeMethods
 {
+    /**
+     * todo 1. Implement proper UI and styling
+     */
+
     private ImageIcon icon;
     private ImageIcon previewIcon;
 
@@ -596,5 +600,17 @@ public class WebDecoratedImage extends JComponent implements SwingConstants, Sha
     {
         final Point location = getPreviewLocation ();
         return getBorderShape ( location.x, location.y );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return false;
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        throw new UnsupportedOperationException ( "Shape detection is not yet supported for WebDecoratedImage" );
     }
 }

@@ -25,6 +25,7 @@ import com.alee.managers.settings.UISettingsManager;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
+import com.alee.utils.ReflectUtils;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
 
@@ -66,6 +67,20 @@ public class WebToolBarSeparator extends JToolBar.Separator implements Styleable
     {
         super ();
         setStyleId ( id );
+    }
+
+    @Override
+    public void setSeparatorSize ( final Dimension size )
+    {
+        if ( size != null )
+        {
+            ReflectUtils.setFieldValueSafely ( this, "separatorSize", size );
+        }
+        else
+        {
+            updateUI ();
+        }
+        this.invalidate ();
     }
 
     @Override
@@ -150,6 +165,18 @@ public class WebToolBarSeparator extends JToolBar.Separator implements Styleable
     public Shape getShape ()
     {
         return ShapeMethodsImpl.getShape ( this );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return ShapeMethodsImpl.isShapeDetectionEnabled ( this );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
     @Override

@@ -68,9 +68,10 @@ public class WebPopupExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final PopupPreview e1 = new PopupPreview ( "basic", FeatureState.release, StyleId.popup );
-        final PopupPreview e2 = new PopupPreview ( "undecorated", FeatureState.release, StyleId.popupUndecorated );
-        return CollectionUtils.<Preview>asList ( e1, e2 );
+        return CollectionUtils.<Preview>asList (
+                new PopupPreview ( "basic", FeatureState.release, StyleId.popup ),
+                new PopupPreview ( "undecorated", FeatureState.release, StyleId.popupUndecorated )
+        );
     }
 
     /**

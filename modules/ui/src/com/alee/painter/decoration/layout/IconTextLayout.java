@@ -174,7 +174,7 @@ public class IconTextLayout<C extends JComponent, D extends IDecoration<C, D>, I
 
         // Calculating smallest content bounds required for text and icon
         final Rectangle b = new Rectangle ( 0, 0, iconTextPS.width, iconTextPS.height );
-        if ( halign == LEFT || halign == LEADING && ltr )
+        if ( halign == LEFT || halign == LEADING && ltr || halign == TRAILING && !ltr )
         {
             b.x = bounds.x + lw;
         }

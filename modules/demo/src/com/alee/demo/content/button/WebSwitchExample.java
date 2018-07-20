@@ -17,8 +17,8 @@
 
 package com.alee.demo.content.button;
 
-import com.alee.demo.skin.DemoIcons;
 import com.alee.demo.api.example.*;
+import com.alee.demo.skin.DemoIcons;
 import com.alee.extended.button.WebSwitch;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
@@ -29,13 +29,12 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebSwitchExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()
     {
-        return "webswitch";
+        return "switch";
     }
 
     @Override
@@ -53,9 +52,10 @@ public class WebSwitchExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final TextSwitch e1 = new TextSwitch ( StyleId.wswitch );
-        final IconSwitch e2 = new IconSwitch ( StyleId.wswitch );
-        return CollectionUtils.<Preview>asList ( e1, e2 );
+        return CollectionUtils.<Preview>asList (
+                new TextSwitch ( StyleId.wswitch ),
+                new IconSwitch ( StyleId.wswitch )
+        );
     }
 
     /**

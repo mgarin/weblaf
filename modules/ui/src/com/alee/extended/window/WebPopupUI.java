@@ -33,7 +33,6 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public class WebPopupUI<C extends WebPopup> extends WPopupUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -78,6 +77,18 @@ public class WebPopupUI<C extends WebPopup> extends WPopupUI<C> implements Shape
     public Shape getShape ()
     {
         return PainterSupport.getShape ( popup, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( popup, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( popup, painter, enabled );
     }
 
     @Override
@@ -130,6 +141,12 @@ public class WebPopupUI<C extends WebPopup> extends WPopupUI<C> implements Shape
                 WebPopupUI.this.painter = newPainter;
             }
         }, this.painter, painter, IPopupPainter.class, AdaptivePopupPainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

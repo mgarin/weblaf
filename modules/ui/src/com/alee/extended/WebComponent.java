@@ -132,6 +132,18 @@ public abstract class WebComponent<C extends WebComponent<C, U>, U extends Compo
     }
 
     @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return ShapeMethodsImpl.isShapeDetectionEnabled ( this );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return MarginMethodsImpl.getMargin ( this );

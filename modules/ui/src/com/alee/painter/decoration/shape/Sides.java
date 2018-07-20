@@ -55,6 +55,7 @@ public final class Sides implements Mergeable, Cloneable, Serializable
     public static final String LEFT = "left";
     public static final String BOTTOM = "bottom";
     public static final String RIGHT = "right";
+    public static final String NONE = "none";
 
     /**
      * Whether or not top (north) side should be displayed.
@@ -131,6 +132,16 @@ public final class Sides implements Mergeable, Cloneable, Serializable
         this.left = left;
         this.bottom = bottom;
         this.right = right;
+    }
+
+    /**
+     * Returns whether or not at least one side should be displayed.
+     *
+     * @return {@code true} if at least one side should be displayed, {@code false} otherwise
+     */
+    public boolean isAny ()
+    {
+        return top || left || bottom || right;
     }
 
     @Override

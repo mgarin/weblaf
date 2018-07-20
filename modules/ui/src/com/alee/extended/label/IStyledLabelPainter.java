@@ -27,8 +27,7 @@ import com.alee.laf.label.IAbstractLabelPainter;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  */
-
-public interface IStyledLabelPainter<C extends WebStyledLabel, U extends WStyledLabelUI> extends IAbstractLabelPainter<C, U>
+public interface IStyledLabelPainter<C extends WebStyledLabel, U extends WStyledLabelUI<C>> extends IAbstractLabelPainter<C, U>
 {
     /**
      * This interface doesn't offer any additional methods to implement.

@@ -35,7 +35,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class JPanelExample extends AbstractStylePreviewExample
 {
     @Override

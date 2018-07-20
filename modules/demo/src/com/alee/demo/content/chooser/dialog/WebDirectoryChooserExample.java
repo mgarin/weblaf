@@ -39,7 +39,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebDirectoryChooserExample extends AbstractStylePreviewExample
 {
     /**
@@ -75,9 +74,10 @@ public class WebDirectoryChooserExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final StaticDirectoryChooserDialog basicChooser = new StaticDirectoryChooserDialog ( StyleId.directorychooser );
-        final CustomDirectoryChooserDialog customChooser = new CustomDirectoryChooserDialog ( StyleId.directorychooser );
-        return CollectionUtils.<Preview>asList ( basicChooser, customChooser );
+        return CollectionUtils.<Preview>asList (
+                new StaticDirectoryChooserDialog ( StyleId.directorychooser ),
+                new CustomDirectoryChooserDialog ( StyleId.directorychooser )
+        );
     }
 
     /**

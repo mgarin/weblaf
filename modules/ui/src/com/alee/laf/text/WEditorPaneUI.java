@@ -26,7 +26,6 @@ import javax.swing.plaf.basic.BasicEditorPaneUI;
  *
  * @author Mikle Garin
  */
-
 public abstract class WEditorPaneUI extends BasicEditorPaneUI implements IInputPrompt
 {
     /**

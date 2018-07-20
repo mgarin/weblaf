@@ -19,6 +19,11 @@ package com.alee.managers.style;
 
 import com.alee.api.jdk.BiConsumer;
 import com.alee.api.jdk.Function;
+import com.alee.extended.breadcrumb.BreadcrumbDescriptor;
+import com.alee.extended.breadcrumb.BreadcrumbElementShape;
+import com.alee.extended.breadcrumb.BreadcrumbLayout;
+import com.alee.extended.breadcrumb.BreadcrumbProgressBackground;
+import com.alee.extended.breadcrumb.element.*;
 import com.alee.extended.button.SplitButtonDescriptor;
 import com.alee.extended.canvas.CanvasDescriptor;
 import com.alee.extended.canvas.Gripper;
@@ -259,16 +264,19 @@ public final class StyleManager
         XmlUtils.processAnnotations ( WebShape.class );
         XmlUtils.processAnnotations ( EllipseShape.class );
         XmlUtils.processAnnotations ( ArrowShape.class );
+        XmlUtils.processAnnotations ( BreadcrumbElementShape.class );
         XmlUtils.processAnnotations ( WebShadow.class );
         XmlUtils.processAnnotations ( ExpandingShadow.class );
         XmlUtils.processAnnotations ( AbstractBorder.class );
         XmlUtils.processAnnotations ( LineBorder.class );
         XmlUtils.processAnnotations ( AbstractBackground.class );
+        XmlUtils.processAnnotations ( AbstractClipBackground.class );
         XmlUtils.processAnnotations ( ColorBackground.class );
         XmlUtils.processAnnotations ( GradientBackground.class );
         XmlUtils.processAnnotations ( PresetTextureBackground.class );
         XmlUtils.processAnnotations ( AlphaLayerBackground.class );
         XmlUtils.processAnnotations ( MovingHighlightBackground.class );
+        XmlUtils.processAnnotations ( BreadcrumbProgressBackground.class );
         XmlUtils.processAnnotations ( TextureType.class );
         XmlUtils.processAnnotations ( GradientType.class );
         XmlUtils.processAnnotations ( GradientColor.class );
@@ -313,12 +321,29 @@ public final class StyleManager
         XmlUtils.processAnnotations ( PopOverPainter.class );
         XmlUtils.processAnnotations ( SelectablePanelPainter.class );
         XmlUtils.processAnnotations ( SyntaxPanelPainter.class );
+        XmlUtils.processAnnotations ( BreadcrumbPanelPainter.class );
+        XmlUtils.processAnnotations ( BreadcrumbLabelPainter.class );
+        XmlUtils.processAnnotations ( BreadcrumbStyledLabelPainter.class );
+        XmlUtils.processAnnotations ( BreadcrumbLinkPainter.class );
+        XmlUtils.processAnnotations ( BreadcrumbButtonPainter.class );
+        XmlUtils.processAnnotations ( BreadcrumbToggleButtonPainter.class );
+        XmlUtils.processAnnotations ( BreadcrumbSplitButtonPainter.class );
+        XmlUtils.processAnnotations ( BreadcrumbComboBoxPainter.class );
+        XmlUtils.processAnnotations ( BreadcrumbDateFieldPainter.class );
+        XmlUtils.processAnnotations ( BreadcrumbCheckBoxPainter.class );
+        XmlUtils.processAnnotations ( BreadcrumbTristateCheckBoxPainter.class );
+        XmlUtils.processAnnotations ( BreadcrumbRadioButtonPainter.class );
+        XmlUtils.processAnnotations ( BreadcrumbTextFieldPainter.class );
+        XmlUtils.processAnnotations ( BreadcrumbFormattedTextFieldPainter.class );
+        XmlUtils.processAnnotations ( BreadcrumbPasswordFieldPainter.class );
 
         // Layout aliases
         XmlUtils.processAnnotations ( WebScrollPaneLayout.class );
         XmlUtils.processAnnotations ( WebScrollPaneLayout.UIResource.class );
         XmlUtils.processAnnotations ( WebViewportLayout.class );
         XmlUtils.processAnnotations ( WebViewportLayout.UIResource.class );
+        XmlUtils.processAnnotations ( BreadcrumbLayout.class );
+        XmlUtils.processAnnotations ( BreadcrumbLayout.UIResource.class );
 
         // Workaround for ScrollPaneLayout due to neccessity of its usage
         XmlUtils.omitField ( ScrollPaneLayout.class, "viewport" );
@@ -383,6 +408,7 @@ public final class StyleManager
          * Container-related components.
          */
         registerComponentDescriptor ( new PanelDescriptor () );
+        registerComponentDescriptor ( new BreadcrumbDescriptor () );
         registerComponentDescriptor ( new TabbedPaneDescriptor () );
         registerComponentDescriptor ( new SplitPaneDividerDescriptor () );
         registerComponentDescriptor ( new SplitPaneDescriptor () );

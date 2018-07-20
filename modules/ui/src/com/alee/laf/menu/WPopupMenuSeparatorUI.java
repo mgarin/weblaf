@@ -27,7 +27,6 @@ import javax.swing.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public abstract class WPopupMenuSeparatorUI<C extends JPopupMenu.Separator> extends WSeparatorUI<C>
 {
     /**

@@ -143,6 +143,21 @@
             </component>
         </style>
 
+        <!-- Preview title and content separator -->
+        <style type="separator" id="separator">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <SeparatorStripes>
+                            <Stripe>
+                                <color>220,220,220</color>
+                            </Stripe>
+                        </SeparatorStripes>
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
     </style>
 
     <!-- Placeholder label -->

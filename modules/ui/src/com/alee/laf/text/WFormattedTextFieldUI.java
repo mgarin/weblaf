@@ -26,7 +26,6 @@ import javax.swing.plaf.basic.BasicFormattedTextFieldUI;
  *
  * @author Mikle Garin
  */
-
 public abstract class WFormattedTextFieldUI extends BasicFormattedTextFieldUI implements IInputPrompt, ILeadingComponent, ITrailingComponent
 {
     /**

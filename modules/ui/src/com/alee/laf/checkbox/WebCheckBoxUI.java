@@ -33,7 +33,6 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public class WebCheckBoxUI<C extends JCheckBox> extends WCheckBoxUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -78,6 +77,18 @@ public class WebCheckBoxUI<C extends JCheckBox> extends WCheckBoxUI<C> implement
     public Shape getShape ()
     {
         return PainterSupport.getShape ( button, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( button, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( button, painter, enabled );
     }
 
     @Override
@@ -140,6 +151,12 @@ public class WebCheckBoxUI<C extends JCheckBox> extends WCheckBoxUI<C> implement
             return painter.getIconBounds ();
         }
         return null;
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

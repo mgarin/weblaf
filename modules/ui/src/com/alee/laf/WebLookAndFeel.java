@@ -30,6 +30,7 @@ import com.alee.managers.icon.LazyIcon;
 import com.alee.managers.style.ComponentDescriptor;
 import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleManager;
+import com.alee.painter.Painter;
 import com.alee.skin.web.WebSkin;
 import com.alee.utils.*;
 import com.alee.utils.laf.WebBorder;
@@ -40,6 +41,7 @@ import com.alee.utils.swing.WeakComponentDataList;
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
 import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicLookAndFeel;
 import javax.swing.text.DefaultEditorKit;
 import java.awt.*;
@@ -59,7 +61,6 @@ import java.util.List;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLaF">How to use WebLaF</a>
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-build-WebLaF-from-sources">How to build WebLaF from sources</a>
  */
-
 public class WebLookAndFeel extends BasicLookAndFeel
 {
     /**
@@ -175,6 +176,25 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * Whether to hide component mnemonics by default or not.
      */
     protected static boolean isMnemonicHidden = true;
+
+    /**
+     * Whether or not component's custom {@link Shape}s should be used for better mouse events detection.
+     * This option basically enhances {@link JComponent#contains(int, int)} method to be able to detect component {@link Shape}s.
+     *
+     * Downside of this enhancement is a slightly reduced overall mouse events performance, although it shouldn't be noticeable on the UI.
+     * Actual difference is between 0.5 and 2-4 microseconds per {@link JComponent#contains(int, int)} call.
+     * This might seem to be a lot and mouse movement over UI indeed generates a lot of mouse events which in turn do multiple calls to
+     * {@link JComponent#contains(int, int)}, but those are still far from hitting the point where it will affect UI responsiveness.
+     *
+     * Best solution overall - if you want to both keep performance and have neat shapes detection - is to enable this settings only
+     * for certain components while leaving this feature disabled for others. It is possible to do just that using
+     * {@link com.alee.managers.style.ShapeSupport} API available in all WebLaF components and providing the setting through component
+     * style - that way you will ensure that it is enabled only for components that actually use some sort of complex shape.
+     *
+     * @see com.alee.painter.PainterSupport#contains(JComponent, ComponentUI, Painter, int, int)
+     * @see com.alee.managers.style.ShapeSupport
+     */
+    protected static boolean shapeDetectionEnabled = true;
 
     /**
      * Global {@link EventListenerList} for various listeners that can be registered for some global events.
@@ -914,6 +934,26 @@ public class WebLookAndFeel extends BasicLookAndFeel
             isMnemonicHidden = false;
         }
         return isMnemonicHidden;
+    }
+
+    /**
+     * Returns whether or not component's custom {@link Shape}s are used for better mouse events detection.
+     *
+     * @return {@code true} if component's custom {@link Shape}s are used for better mouse events detection, {@code false} otherwise
+     */
+    public static boolean isShapeDetectionEnabled ()
+    {
+        return shapeDetectionEnabled;
+    }
+
+    /**
+     * Sets whether or not component's custom {@link Shape}s should be used for better mouse events detection.
+     *
+     * @param enabled whether or not component's custom {@link Shape}s should be used for better mouse events detection
+     */
+    public static void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        WebLookAndFeel.shapeDetectionEnabled = enabled;
     }
 
     /**

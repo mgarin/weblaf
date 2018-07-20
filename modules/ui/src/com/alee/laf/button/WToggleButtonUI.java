@@ -25,7 +25,6 @@ import javax.swing.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public abstract class WToggleButtonUI<C extends JToggleButton> extends WButtonUI<C>
 {
     @Override

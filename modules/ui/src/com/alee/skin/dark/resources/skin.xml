@@ -101,7 +101,6 @@
     <!--<include>resources/filedrop.xml</include>-->
     <include>resources/collapsiblepane.xml</include>
     <!--<include>resources/accordion.xml</include>-->
-    <!--<include>resources/breadcrumb.xml</include>-->
     <include>resources/syntaxarea.xml</include>
     <include>resources/syntaxpanel.xml</include>
     <!--<include>resources/componentpane.xml</include>-->
@@ -112,5 +111,6 @@
     <include>resources/interfaceinspector.xml</include>
     <include>resources/ninepatcheditor.xml</include>
     <include>resources/styleeditor.xml</include>
+    <include>resources/breadcrumb.xml</include>
 
 </skin>

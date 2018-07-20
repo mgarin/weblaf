@@ -9,8 +9,7 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
-public interface IRadioButtonPainter<C extends JRadioButton, U extends WRadioButtonUI> extends IAbstractStateButtonPainter<C, U>
+public interface IRadioButtonPainter<C extends JRadioButton, U extends WRadioButtonUI<C>> extends IAbstractStateButtonPainter<C, U>
 {
     /**
      * This interface doesn't offer any additional methods to implement.

@@ -15,12 +15,24 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.demo.content.window;
+package com.alee.extended.breadcrumb.element;
+
+import com.alee.extended.breadcrumb.WebBreadcrumb;
+import com.alee.painter.SpecificPainter;
+
+import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
 
 /**
+ * Interface implemented by {@link com.alee.painter.Painter}s that should be recognized as a {@link WebBreadcrumb} element painters.
+ *
+ * @param <C> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
-
-public class WebInnerNotificationExample
+public interface BreadcrumbElementPainter<C extends JComponent, U extends ComponentUI> extends SpecificPainter<C, U>
 {
+    /**
+     * This interface doesn't offer any additional methods to implement.
+     */
 }

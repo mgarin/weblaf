@@ -16,8 +16,7 @@ import java.util.List;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-
-public class TristateCheckBoxPainter<C extends WebTristateCheckBox, U extends WTristateCheckBoxUI, D extends IDecoration<C, D>>
+public class TristateCheckBoxPainter<C extends WebTristateCheckBox, U extends WTristateCheckBoxUI<C>, D extends IDecoration<C, D>>
         extends AbstractStateButtonPainter<C, U, D> implements ITristateCheckBoxPainter<C, U>
 {
     @Override

@@ -435,6 +435,18 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
     }
 
     @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( dateField, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( dateField, painter, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return PainterSupport.getMargin ( dateField );
@@ -484,6 +496,12 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
                 WebDateFieldUI.this.painter = newPainter;
             }
         }, this.painter, painter, IDateFieldPainter.class, AdaptiveDateFieldPainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

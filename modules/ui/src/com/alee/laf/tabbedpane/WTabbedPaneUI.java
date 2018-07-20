@@ -28,7 +28,6 @@ import java.util.Vector;
  *
  * @author Mikle Garin
  */
-
 public abstract class WTabbedPaneUI extends WebBasicTabbedPaneUI
 {
     public abstract TabbedPaneStyle getTabbedPaneStyle ();

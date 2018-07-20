@@ -35,7 +35,6 @@ import java.awt.*;
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
-
 public class WebTextPaneUI extends WTextPaneUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -94,6 +93,18 @@ public class WebTextPaneUI extends WTextPaneUI implements ShapeSupport, MarginSu
     public Shape getShape ()
     {
         return PainterSupport.getShape ( textPane, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( textPane, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( textPane, painter, enabled );
     }
 
     @Override
@@ -162,6 +173,12 @@ public class WebTextPaneUI extends WTextPaneUI implements ShapeSupport, MarginSu
             this.inputPrompt = text;
             textPane.repaint ();
         }
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

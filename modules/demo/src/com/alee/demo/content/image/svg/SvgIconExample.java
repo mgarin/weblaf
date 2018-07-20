@@ -36,7 +36,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class SvgIconExample extends AbstractPreviewExample
 {
     @Override
@@ -54,10 +53,11 @@ public class SvgIconExample extends AbstractPreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final SvgIconPreview e1 = new SvgIconPreview ( "basic" );
-        final SvgIconPreview e2 = new SvgIconPreview ( "grayscale", new SvgGrayscale () );
-        final SvgIconPreview e3 = new SvgIconPreview ( "modified", new SvgRedStroke () );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3 );
+        return CollectionUtils.<Preview>asList (
+                new SvgIconPreview ( "basic" ),
+                new SvgIconPreview ( "grayscale", new SvgGrayscale () ),
+                new SvgIconPreview ( "modified", new SvgRedStroke () )
+        );
     }
 
     /**

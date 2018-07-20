@@ -24,7 +24,6 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
  *
  * @author Mikle Garin
  */
-
 public abstract class WScrollBarUI extends BasicScrollBarUI
 {
     /**

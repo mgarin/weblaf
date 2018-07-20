@@ -3,6 +3,7 @@ package com.alee.extended.button;
 import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.AbstractButtonPainter;
+import com.alee.managers.icon.Icons;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
 
@@ -23,69 +24,69 @@ import java.util.List;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-
-public class SplitButtonPainter<C extends WebSplitButton, U extends WSplitButtonUI, D extends IDecoration<C, D>>
+public class SplitButtonPainter<C extends WebSplitButton, U extends WSplitButtonUI<C>, D extends IDecoration<C, D>>
         extends AbstractButtonPainter<C, U, D> implements ISplitButtonPainter<C, U>
 {
     /**
      * todo 1. Replace custom split button painting with button component
      * todo 2. Replace custom separator painting with separator component
+     * todo 3. Add appropriate border to incorporate two extra components
      */
 
     /**
      * Style settings.
-     * todo This should be in separator style
+     * todo This should be in separator & button styles
      */
     protected Color splitLineColor;
     protected Color splitLineDisabledColor;
-    protected int splitIconGap;
+    protected int menuIconGap;
     protected int contentGap;
 
     /**
      * Listeners.
      */
-    protected transient MouseAdapter splitButtonTracker;
+    protected transient MouseAdapter menuButtonTracker;
     protected transient PropertyChangeListener popupMenuPropertyChangeListener;
 
     /**
      * Runtime variables.
      */
-    protected transient boolean onSplit;
+    protected transient boolean onMenu;
 
     @Override
     protected void installPropertiesAndListeners ()
     {
         super.installPropertiesAndListeners ();
-        installSplitButtonListeners ();
+        installMenuButtonListeners ();
     }
 
     @Override
     protected void uninstallPropertiesAndListeners ()
     {
-        uninstallSplitButtonListeners ();
+        uninstallMenuButtonListeners ();
         super.uninstallPropertiesAndListeners ();
     }
 
     /**
-     * Installs split button mouseover listener.
+     * Installs menu button mouseover listener.
      */
-    protected void installSplitButtonListeners ()
+    protected void installMenuButtonListeners ()
     {
         // todo Should be replaced with state-based settings
-        onSplit = false;
-        splitButtonTracker = new MouseAdapter ()
+        onMenu = false;
+        menuButtonTracker = new MouseAdapter ()
         {
             @Override
             public void mouseMoved ( final MouseEvent e )
             {
-                // Saving old split mouseover state
-                final boolean wasOnSplit = onSplit;
+                // Saving old menu button mouseover state
+                final boolean wasOnMenu = onMenu;
 
-                // Updating split mouseover state
-                onSplit = getSplitButtonHitbox ( component ).contains ( e.getPoint () );
+                // Updating menu button mouseover state
+                onMenu = getMenuButtonHitbox ( component ).contains ( e.getPoint () );
 
                 // Repainting button if state has changed
-                if ( wasOnSplit != onSplit )
+                if ( wasOnMenu != onMenu )
                 {
                     repaint ();
                 }
@@ -94,21 +95,21 @@ public class SplitButtonPainter<C extends WebSplitButton, U extends WSplitButton
             @Override
             public void mouseExited ( final MouseEvent e )
             {
-                // Saving old split mouseover state
-                final boolean wasOnSplit = onSplit;
+                // Saving old menu button mouseover state
+                final boolean wasOnMenu = onMenu;
 
-                // Resetting split mouseover state
-                onSplit = false;
+                // Resetting menu button mouseover state
+                onMenu = false;
 
                 // Repainting button if state has changed
-                if ( wasOnSplit != onSplit )
+                if ( wasOnMenu != onMenu )
                 {
                     repaint ();
                 }
             }
         };
-        component.addMouseListener ( splitButtonTracker );
-        component.addMouseMotionListener ( splitButtonTracker );
+        component.addMouseListener ( menuButtonTracker );
+        component.addMouseMotionListener ( menuButtonTracker );
 
         popupMenuPropertyChangeListener = new PropertyChangeListener ()
         {
@@ -125,16 +126,16 @@ public class SplitButtonPainter<C extends WebSplitButton, U extends WSplitButton
     }
 
     /**
-     * Uninstalls split button mouseover listener.
+     * Uninstalls menu button mouseover listener.
      */
-    protected void uninstallSplitButtonListeners ()
+    protected void uninstallMenuButtonListeners ()
     {
         uninstallPopupMenuPropertyChangeListener ( component.getPopupMenu () );
         popupMenuPropertyChangeListener = null;
-        component.removeMouseMotionListener ( splitButtonTracker );
-        component.removeMouseListener ( splitButtonTracker );
-        splitButtonTracker = null;
-        onSplit = false;
+        component.removeMouseMotionListener ( menuButtonTracker );
+        component.removeMouseListener ( menuButtonTracker );
+        menuButtonTracker = null;
+        onMenu = false;
     }
 
     @Override
@@ -143,13 +144,13 @@ public class SplitButtonPainter<C extends WebSplitButton, U extends WSplitButton
         // Perform basic actions on property changes
         super.propertyChanged ( property, oldValue, newValue );
 
-        // Updating border on split icon change
-        if ( Objects.equals ( property, WebSplitButton.SPLIT_ICON_PROPERTY ) )
+        // Updating border on menu icon change
+        if ( Objects.equals ( property, WebSplitButton.MENU_ICON_PROPERTY ) )
         {
             updateBorder ();
         }
 
-        // Updating border on split icon change
+        // Updating border on popup menu change
         if ( Objects.equals ( property, WebSplitButton.POPUP_MENU_PROPERTY ) )
         {
             uninstallPopupMenuPropertyChangeListener ( ( JPopupMenu ) oldValue );
@@ -192,29 +193,29 @@ public class SplitButtonPainter<C extends WebSplitButton, U extends WSplitButton
     }
 
     /**
-     * Returns gap between split icon and split part sides.
+     * Returns gap between menu icon and menu button part sides.
      *
-     * @return gap between split icon and split part sides
+     * @return gap between menu icon and menu button part sides
      */
-    public int getSplitIconGap ()
+    public int getMenuIconGap ()
     {
-        return splitIconGap;
+        return menuIconGap;
     }
 
     /**
-     * Sets gap between split icon and split part sides
+     * Sets gap between menu icon and menu button part sides
      *
-     * @param splitIconGap gap between split icon and split part sides
+     * @param menuIconGap gap between menu icon and menu button part sides
      */
-    public void setSplitIconGap ( final int splitIconGap )
+    public void setMenuIconGap ( final int menuIconGap )
     {
-        this.splitIconGap = splitIconGap;
+        this.menuIconGap = menuIconGap;
     }
 
     /**
-     * Returns gap between split part and button content.
+     * Returns gap between menu button part and button content.
      *
-     * @return gap between split part and button content
+     * @return gap between menu button part and button content
      */
     public int getContentGap ()
     {
@@ -222,9 +223,9 @@ public class SplitButtonPainter<C extends WebSplitButton, U extends WSplitButton
     }
 
     /**
-     * Sets gap between split part and button content.
+     * Sets gap between menu button part and button content.
      *
-     * @param contentGap gap between split part and button content
+     * @param contentGap gap between menu button part and button content
      */
     public void setContentGap ( final int contentGap )
     {
@@ -232,32 +233,25 @@ public class SplitButtonPainter<C extends WebSplitButton, U extends WSplitButton
     }
 
     @Override
-    public boolean isOnSplit ()
+    public boolean isOnMenu ()
     {
-        return onSplit;
+        return onMenu;
     }
 
     @Override
     protected Insets getBorder ()
     {
-        final Insets border = super.getBorder ();
-        final Icon splitIcon = component.getSplitIcon ();
         final Insets result;
-        if ( splitIcon != null )
+        final Insets border = super.getBorder ();
+        final Icon menuIcon = getMenuIcon ();
+        final int extra = contentGap + 1 + menuIconGap + menuIcon.getIconWidth () + menuIconGap;
+        if ( border != null )
         {
-            final int right = contentGap + 1 + splitIconGap + splitIcon.getIconWidth () + splitIconGap;
-            if ( border != null )
-            {
-                result = new Insets ( border.top, border.left, border.bottom, border.right + right );
-            }
-            else
-            {
-                result = new Insets ( 0, 0, 0, right );
-            }
+            result = new Insets ( border.top, border.left, border.bottom, border.right + extra );
         }
         else
         {
-            result = border;
+            result = new Insets ( 0, 0, 0, extra );
         }
         return result;
     }
@@ -265,54 +259,56 @@ public class SplitButtonPainter<C extends WebSplitButton, U extends WSplitButton
     @Override
     protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final C c, final U ui )
     {
-        // Painting split button
-        paintSplitButton ( g2d, bounds, c );
+        // Painting menu button
+        paintMenuButton ( g2d, bounds, c );
     }
 
     /**
-     * Paints split button.
+     * Paints menu button.
      *
-     * @param g2d    graphics context
+     * @param g2d    {@link Graphics2D}
      * @param bounds painting bounds
-     * @param c      split button
+     * @param c      {@link WebSplitButton}
      */
-    protected void paintSplitButton ( final Graphics2D g2d, final Rectangle bounds, final C c )
+    protected void paintMenuButton ( final Graphics2D g2d, final Rectangle bounds, final C c )
     {
-        // Painting split button icon
-        final Icon splitIcon = component.getSplitIcon ();
-        final Rectangle br = getSplitButtonBounds ( bounds, c );
-        final int ix = br.x + br.width / 2 - splitIcon.getIconWidth () / 2;
-        final int iy = br.y + br.height / 2 - splitIcon.getIconHeight () / 2;
-        splitIcon.paintIcon ( component, g2d, ix, iy );
+        // Painting menu button icon
+        final Icon menuIcon = getMenuIcon ();
+        final Rectangle br = getMenuButtonBounds ( bounds, c );
+        final int ix = br.x + br.width / 2 - menuIcon.getIconWidth () / 2;
+        final int iy = br.y + br.height / 2 - menuIcon.getIconHeight () / 2;
+        menuIcon.paintIcon ( component, g2d, ix, iy );
 
-        // Painting split button line
-        final Rectangle lr = getSplitLineBounds ( bounds, c );
+        // Painting menu button side line
+        final Rectangle lr = getMenuButtonLineBounds ( bounds, c );
         g2d.setPaint ( c.isEnabled () ? splitLineColor : splitLineDisabledColor );
         g2d.drawLine ( lr.x, lr.y, lr.x, lr.y + lr.height );
     }
 
     /**
-     * Returns bounds of the split button part.
+     * Returns bounds of the menu button part.
      *
      * @param b painting bounds
-     * @param c split button
-     * @return bounds of the split button part
+     * @param c {@link WebSplitButton}
+     * @return bounds of the menu button part
      */
-    protected Rectangle getSplitButtonBounds ( final Rectangle b, final C c )
+    protected Rectangle getMenuButtonBounds ( final Rectangle b, final C c )
     {
         final Insets i = c.getInsets ();
-        final int x = b.x + ( ltr ? b.width - i.right + contentGap + 1 + splitIconGap : i.left - contentGap - 1 - splitIconGap );
-        return new Rectangle ( x, b.y + i.top, component.getSplitIcon ().getIconWidth (), b.height - i.top - i.bottom );
+        final int iconWidth = getMenuIcon ().getIconWidth ();
+        final int x = b.x + ( ltr ? b.width - i.right + contentGap + 1 + menuIconGap :
+                i.left - contentGap - 1 - menuIconGap - iconWidth );
+        return new Rectangle ( x, b.y + i.top, iconWidth, b.height - i.top - i.bottom );
     }
 
     /**
-     * Returns bounds of the split line part.
+     * Returns bounds of the menu line part.
      *
      * @param b painting bounds
-     * @param c split button
-     * @return bounds of the split line part
+     * @param c {@link WebSplitButton}
+     * @return bounds of the menu line part
      */
-    protected Rectangle getSplitLineBounds ( final Rectangle b, final C c )
+    protected Rectangle getMenuButtonLineBounds ( final Rectangle b, final C c )
     {
         final Insets i = c.getInsets ();
         final int x = b.x + ( ltr ? b.width - i.right + contentGap : i.left - contentGap );
@@ -320,14 +316,25 @@ public class SplitButtonPainter<C extends WebSplitButton, U extends WSplitButton
     }
 
     /**
-     * Returns split button part hitbox.
+     * Returns menu button part hitbox.
      *
-     * @param c split button
-     * @return split button part hitbox
+     * @param c {@link WebSplitButton}
+     * @return menu button part hitbox
      */
-    protected Rectangle getSplitButtonHitbox ( final C c )
+    protected Rectangle getMenuButtonHitbox ( final C c )
     {
         final Insets i = c.getInsets ();
         return new Rectangle ( ltr ? c.getWidth () - i.right : 0, 0, ltr ? i.right : i.left, c.getHeight () );
+    }
+
+    /**
+     * Returns menu {@link Icon}.
+     *
+     * @return menu {@link Icon}
+     */
+    protected Icon getMenuIcon ()
+    {
+        final Icon customIcon = component.getMenuIcon ();
+        return customIcon != null ? customIcon : Icons.downSmall;
     }
 }

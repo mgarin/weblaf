@@ -2,7 +2,7 @@
 
     <!-- com.alee.laf.radiobutton.WebRadioButton -->
 
-    <!-- Radiobutton -->
+    <!-- Radio button -->
     <style type="radiobutton">
         <painter>
             <decorations>
@@ -51,7 +51,7 @@
         </painter>
     </style>
 
-    <!-- Radiobutton supporting styled text -->
+    <!-- Radio button supporting styled text -->
     <style type="radiobutton" id="styled">
         <painter>
             <decorations>
@@ -69,7 +69,7 @@
         </painter>
     </style>
 
-    <!-- Link-like radiobutton -->
+    <!-- Link-like radio button -->
     <style type="radiobutton" id="link" extends="styled">
         <painter>
             <decorations>

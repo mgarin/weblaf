@@ -29,7 +29,6 @@ import javax.swing.plaf.ToolTipUI;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public abstract class WToolTipUI<C extends JToolTip> extends ToolTipUI implements WebUI<C>
 {
     /**

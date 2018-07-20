@@ -232,6 +232,7 @@ public class MovingHighlightBackground<C extends JComponent, D extends IDecorati
                 }
             }
 
+            final Shape ocl = GraphicsUtils.intersectClip ( g2d, shape );
             final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
             final Paint op = GraphicsUtils.setupPaint ( g2d, paint );
 
@@ -239,6 +240,7 @@ public class MovingHighlightBackground<C extends JComponent, D extends IDecorati
 
             GraphicsUtils.restorePaint ( g2d, op );
             GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );
+            GraphicsUtils.restoreClip ( g2d, ocl );
         }
     }
 }

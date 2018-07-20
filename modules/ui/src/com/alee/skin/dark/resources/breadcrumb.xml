@@ -1,0 +1,957 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.breadcrumb.WebBreadcrumb -->
+
+    <!-- Breadcrumb -->
+    <style type="breadcrumb">
+        <component>
+            <opaque>false</opaque>
+            <layout class="BreadcrumbLayout$UIResource" overlap="9" />
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="2" />
+                    <WebShadow type="outer" width="2" />
+                    <LineBorder color="20,20,20" />
+                    <ColorBackground color="68,68,68" />
+                </decoration>
+                <decoration states="focused">
+                    <LineBorder color="black" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Label -->
+        <style type="label" id="label" padding="2,5,2,5">
+            <painter class="BreadcrumbLabelPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" corners="right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <LineBorder color="20,20,20" />
+                        <LabelLayout padding="0,0,0,8" />
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="right" corners="left,right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <LineBorder color="20,20,20" />
+                        <LabelLayout padding="0,8,0,8" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="none" corners="left" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <LineBorder color="20,20,20" />
+                        <LabelLayout padding="0,8,0,0" />
+                    </decoration>
+                    <decoration states="single">
+                        <BreadcrumbElementShape sides="none" corners="none" cornerWidth="6" round="1" />
+                        <LabelLayout padding="0,0,0,0" />
+                    </decoration>
+                    <decoration states="progress">
+                        <BreadcrumbProgressBackground id="progress">
+                            <GradientBackground>
+                                <color>30,110,45</color>
+                                <color>20,100,35</color>
+                            </GradientBackground>
+                            <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="1" duration="1s" delay="4s" />
+                        </BreadcrumbProgressBackground>
+                    </decoration>
+                    <decoration states="indeterminate">
+                        <GradientBackground>
+                            <color>50,50,130</color>
+                            <color>40,40,120</color>
+                        </GradientBackground>
+                        <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="2" duration="1.5s" delay="0s" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Styled label -->
+        <style type="styledlabel" id="styledlabel" padding="2,5,2,5">
+            <painter class="BreadcrumbStyledLabelPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" corners="right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <LineBorder color="20,20,20" />
+                        <LabelLayout padding="0,0,0,8" />
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="right" corners="left,right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <LineBorder color="20,20,20" />
+                        <LabelLayout padding="0,8,0,8" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="none" corners="left" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <LineBorder color="20,20,20" />
+                        <LabelLayout padding="0,8,0,0" />
+                    </decoration>
+                    <decoration states="single">
+                        <BreadcrumbElementShape sides="none" corners="none" cornerWidth="6" round="1" />
+                        <LabelLayout padding="0,0,0,0" />
+                    </decoration>
+                    <decoration states="progress">
+                        <BreadcrumbProgressBackground id="progress">
+                            <GradientBackground>
+                                <color>30,110,45</color>
+                                <color>20,100,35</color>
+                            </GradientBackground>
+                            <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="1" duration="1s" delay="4s" />
+                        </BreadcrumbProgressBackground>
+                    </decoration>
+                    <decoration states="indeterminate">
+                        <GradientBackground>
+                            <color>50,50,130</color>
+                            <color>40,40,120</color>
+                        </GradientBackground>
+                        <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="2" duration="1.5s" delay="0s" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Link -->
+        <style type="link" id="link" padding="2,5,2,5">
+            <painter class="BreadcrumbLinkPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" corners="right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <LineBorder color="20,20,20" />
+                        <LabelLayout padding="0,0,0,8" />
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="right" corners="left,right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <LineBorder color="20,20,20" />
+                        <LabelLayout padding="0,8,0,8" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="none" corners="left" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <LineBorder color="20,20,20" />
+                        <LabelLayout padding="0,8,0,0" />
+                    </decoration>
+                    <decoration states="single">
+                        <BreadcrumbElementShape sides="none" corners="none" cornerWidth="6" round="1" />
+                        <LabelLayout padding="0,0,0,0" />
+                    </decoration>
+                    <decoration states="progress">
+                        <BreadcrumbProgressBackground id="progress">
+                            <GradientBackground>
+                                <color>30,110,45</color>
+                                <color>20,100,35</color>
+                            </GradientBackground>
+                            <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="1" duration="1s" delay="4s" />
+                        </BreadcrumbProgressBackground>
+                    </decoration>
+                    <decoration states="indeterminate">
+                        <GradientBackground>
+                            <color>50,50,130</color>
+                            <color>40,40,120</color>
+                        </GradientBackground>
+                        <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="2" duration="1.5s" delay="0s" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Button -->
+        <style type="button" id="button">
+            <painter class="BreadcrumbButtonPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" corners="right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <ButtonLayout padding="0,0,0,8" />
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="right" corners="left,right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <ButtonLayout padding="0,8,0,8" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="none" corners="left" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <ButtonLayout padding="0,8,0,0" />
+                    </decoration>
+                    <decoration states="single">
+                        <BreadcrumbElementShape sides="none" corners="none" cornerWidth="6" round="1" />
+                        <ButtonLayout padding="0,0,0,0" />
+                    </decoration>
+                    <decoration states="progress">
+                        <BreadcrumbProgressBackground id="progress">
+                            <GradientBackground>
+                                <color>30,110,45</color>
+                                <color>20,100,35</color>
+                            </GradientBackground>
+                            <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="1" duration="1s" delay="4s" />
+                        </BreadcrumbProgressBackground>
+                    </decoration>
+                    <decoration states="indeterminate">
+                        <GradientBackground>
+                            <color>50,50,130</color>
+                            <color>40,40,120</color>
+                        </GradientBackground>
+                        <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="2" duration="1.5s" delay="0s" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Toggle button -->
+        <style type="togglebutton" id="togglebutton">
+            <painter class="BreadcrumbToggleButtonPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" corners="right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <ButtonLayout padding="0,0,0,8" />
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="right" corners="left,right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <ButtonLayout padding="0,8,0,8" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="none" corners="left" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <ButtonLayout padding="0,8,0,0" />
+                    </decoration>
+                    <decoration states="single">
+                        <BreadcrumbElementShape sides="none" corners="none" cornerWidth="6" round="1" />
+                        <ButtonLayout padding="0,0,0,0" />
+                    </decoration>
+                    <decoration states="progress">
+                        <BreadcrumbProgressBackground id="progress">
+                            <GradientBackground>
+                                <color>30,110,45</color>
+                                <color>20,100,35</color>
+                            </GradientBackground>
+                            <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="1" duration="1s" delay="4s" />
+                        </BreadcrumbProgressBackground>
+                    </decoration>
+                    <decoration states="indeterminate">
+                        <GradientBackground>
+                            <color>50,50,130</color>
+                            <color>40,40,120</color>
+                        </GradientBackground>
+                        <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="2" duration="1.5s" delay="0s" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Split button -->
+        <style type="splitbutton" id="splitbutton" padding="2,5,2,5">
+            <painter class="BreadcrumbSplitButtonPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" corners="right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <ButtonLayout padding="0,0,0,8" />
+                        <!-- todo Border -->
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="right" corners="left,right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <ButtonLayout padding="0,8,0,8" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="none" corners="left" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <ButtonLayout padding="0,8,0,0" />
+                    </decoration>
+                    <decoration states="single">
+                        <BreadcrumbElementShape sides="none" corners="none" cornerWidth="6" round="1" />
+                        <ButtonLayout padding="0,0,0,0" />
+                    </decoration>
+                    <decoration states="progress">
+                        <BreadcrumbProgressBackground id="progress">
+                            <GradientBackground>
+                                <color>30,110,45</color>
+                                <color>20,100,35</color>
+                            </GradientBackground>
+                            <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="1" duration="1s" delay="4s" />
+                        </BreadcrumbProgressBackground>
+                    </decoration>
+                    <decoration states="indeterminate">
+                        <GradientBackground>
+                            <color>50,50,130</color>
+                            <color>40,40,120</color>
+                        </GradientBackground>
+                        <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="2" duration="1.5s" delay="0s" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Combobox -->
+        <style type="combobox" id="combobox" padding="0,5,0,5">
+            <painter class="BreadcrumbComboBoxPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" corners="right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <!-- todo Border -->
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="right" corners="left,right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="none" corners="left" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                    </decoration>
+                    <decoration states="single">
+                        <BreadcrumbElementShape sides="none" corners="none" cornerWidth="6" round="1" />
+                    </decoration>
+                    <decoration states="progress">
+                        <BreadcrumbProgressBackground id="progress">
+                            <GradientBackground>
+                                <color>30,110,45</color>
+                                <color>20,100,35</color>
+                            </GradientBackground>
+                            <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="1" duration="1s" delay="4s" />
+                        </BreadcrumbProgressBackground>
+                    </decoration>
+                    <decoration states="indeterminate">
+                        <GradientBackground>
+                            <color>50,50,130</color>
+                            <color>40,40,120</color>
+                        </GradientBackground>
+                        <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="2" duration="1.5s" delay="0s" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Date field -->
+        <style type="datefield" id="datefield" padding="0,5,0,5">
+            <painter class="BreadcrumbDateFieldPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" corners="right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <!-- todo Border -->
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="right" corners="left,right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="none" corners="left" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                    </decoration>
+                    <decoration states="single">
+                        <BreadcrumbElementShape sides="none" corners="none" cornerWidth="6" round="1" />
+                    </decoration>
+                    <decoration states="progress">
+                        <BreadcrumbProgressBackground id="progress">
+                            <GradientBackground>
+                                <color>30,110,45</color>
+                                <color>20,100,35</color>
+                            </GradientBackground>
+                            <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="1" duration="1s" delay="4s" />
+                        </BreadcrumbProgressBackground>
+                    </decoration>
+                    <decoration states="indeterminate">
+                        <GradientBackground>
+                            <color>50,50,130</color>
+                            <color>40,40,120</color>
+                        </GradientBackground>
+                        <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="2" duration="1.5s" delay="0s" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Checkbox -->
+        <style type="checkbox" id="checkbox" padding="2,5,2,5">
+            <painter class="BreadcrumbCheckBoxPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" corners="right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <LineBorder color="20,20,20" />
+                        <ButtonLayout padding="0,0,0,8" />
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="right" corners="left,right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <LineBorder color="20,20,20" />
+                        <ButtonLayout padding="0,8,0,8" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="none" corners="left" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <LineBorder color="20,20,20" />
+                        <ButtonLayout padding="0,8,0,0" />
+                    </decoration>
+                    <decoration states="single">
+                        <BreadcrumbElementShape sides="none" corners="none" cornerWidth="6" round="1" />
+                        <ButtonLayout padding="0,0,0,0" />
+                    </decoration>
+                    <decoration states="progress">
+                        <BreadcrumbProgressBackground id="progress">
+                            <GradientBackground>
+                                <color>30,110,45</color>
+                                <color>20,100,35</color>
+                            </GradientBackground>
+                            <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="1" duration="1s" delay="4s" />
+                        </BreadcrumbProgressBackground>
+                    </decoration>
+                    <decoration states="indeterminate">
+                        <GradientBackground>
+                            <color>50,50,130</color>
+                            <color>40,40,120</color>
+                        </GradientBackground>
+                        <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="2" duration="1.5s" delay="0s" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Tristate checkbox -->
+        <style type="tristatecheckbox" id="tristatecheckbox" padding="2,5,2,5">
+            <painter class="BreadcrumbTristateCheckBoxPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" corners="right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <LineBorder color="20,20,20" />
+                        <ButtonLayout padding="0,0,0,8" />
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="right" corners="left,right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <LineBorder color="20,20,20" />
+                        <ButtonLayout padding="0,8,0,8" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="none" corners="left" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <LineBorder color="20,20,20" />
+                        <ButtonLayout padding="0,8,0,0" />
+                    </decoration>
+                    <decoration states="single">
+                        <BreadcrumbElementShape sides="none" corners="none" cornerWidth="6" round="1" />
+                        <ButtonLayout padding="0,0,0,0" />
+                    </decoration>
+                    <decoration states="progress">
+                        <BreadcrumbProgressBackground id="progress">
+                            <GradientBackground>
+                                <color>30,110,45</color>
+                                <color>20,100,35</color>
+                            </GradientBackground>
+                            <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="1" duration="1s" delay="4s" />
+                        </BreadcrumbProgressBackground>
+                    </decoration>
+                    <decoration states="indeterminate">
+                        <GradientBackground>
+                            <color>50,50,130</color>
+                            <color>40,40,120</color>
+                        </GradientBackground>
+                        <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="2" duration="1.5s" delay="0s" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Radio button -->
+        <style type="radiobutton" id="radiobutton" padding="2,5,2,5">
+            <painter class="BreadcrumbRadioButtonPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" corners="right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <LineBorder color="20,20,20" />
+                        <ButtonLayout padding="0,0,0,8" />
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="right" corners="left,right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <LineBorder color="20,20,20" />
+                        <ButtonLayout padding="0,8,0,8" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="none" corners="left" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <LineBorder color="20,20,20" />
+                        <ButtonLayout padding="0,8,0,0" />
+                    </decoration>
+                    <decoration states="single">
+                        <BreadcrumbElementShape sides="none" corners="none" cornerWidth="6" round="1" />
+                        <ButtonLayout padding="0,0,0,0" />
+                    </decoration>
+                    <decoration states="progress">
+                        <BreadcrumbProgressBackground id="progress">
+                            <GradientBackground>
+                                <color>30,110,45</color>
+                                <color>20,100,35</color>
+                            </GradientBackground>
+                            <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="1" duration="1s" delay="4s" />
+                        </BreadcrumbProgressBackground>
+                    </decoration>
+                    <decoration states="indeterminate">
+                        <GradientBackground>
+                            <color>50,50,130</color>
+                            <color>40,40,120</color>
+                        </GradientBackground>
+                        <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="2" duration="1.5s" delay="0s" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Text field -->
+        <style type="textfield" id="textfield" padding="2,10,2,10">
+            <painter class="BreadcrumbTextFieldPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" corners="right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <!-- todo Border -->
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="right" corners="left,right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="none" corners="left" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                    </decoration>
+                    <decoration states="single">
+                        <BreadcrumbElementShape sides="none" corners="none" cornerWidth="6" round="1" />
+                    </decoration>
+                    <decoration states="progress">
+                        <BreadcrumbProgressBackground id="progress">
+                            <GradientBackground>
+                                <color>30,110,45</color>
+                                <color>20,100,35</color>
+                            </GradientBackground>
+                            <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="1" duration="1s" delay="4s" />
+                        </BreadcrumbProgressBackground>
+                    </decoration>
+                    <decoration states="indeterminate">
+                        <GradientBackground>
+                            <color>50,50,130</color>
+                            <color>40,40,120</color>
+                        </GradientBackground>
+                        <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="2" duration="1.5s" delay="0s" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Formatted text field -->
+        <style type="formattedtextfield" id="formattedtextfield" padding="2,10,2,10">
+            <painter class="BreadcrumbFormattedTextFieldPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" corners="right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <!-- todo Border -->
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="right" corners="left,right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="none" corners="left" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                    </decoration>
+                    <decoration states="single">
+                        <BreadcrumbElementShape sides="none" corners="none" cornerWidth="6" round="1" />
+                    </decoration>
+                    <decoration states="progress">
+                        <BreadcrumbProgressBackground id="progress">
+                            <GradientBackground>
+                                <color>30,110,45</color>
+                                <color>20,100,35</color>
+                            </GradientBackground>
+                            <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="1" duration="1s" delay="4s" />
+                        </BreadcrumbProgressBackground>
+                    </decoration>
+                    <decoration states="indeterminate">
+                        <GradientBackground>
+                            <color>50,50,130</color>
+                            <color>40,40,120</color>
+                        </GradientBackground>
+                        <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="2" duration="1.5s" delay="0s" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Password field -->
+        <style type="passwordfield" id="passwordfield" padding="2,10,2,10">
+            <painter class="BreadcrumbPasswordFieldPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" corners="right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <!-- todo Border -->
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="right" corners="left,right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="none" corners="left" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                    </decoration>
+                    <decoration states="single">
+                        <BreadcrumbElementShape sides="none" corners="none" cornerWidth="6" round="1" />
+                    </decoration>
+                    <decoration states="progress">
+                        <BreadcrumbProgressBackground id="progress">
+                            <GradientBackground>
+                                <color>30,110,45</color>
+                                <color>20,100,35</color>
+                            </GradientBackground>
+                            <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="1" duration="1s" delay="4s" />
+                        </BreadcrumbProgressBackground>
+                    </decoration>
+                    <decoration states="indeterminate">
+                        <GradientBackground>
+                            <color>50,50,130</color>
+                            <color>40,40,120</color>
+                        </GradientBackground>
+                        <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,210" passes="2" duration="1.5s" delay="0s" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Panel -->
+        <style type="panel" id="panel" extends="transparent" padding="2,10,2,10">
+            <painter class="BreadcrumbPanelPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" corners="right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <LineBorder color="20,20,20" />
+                        <!-- todo Border -->
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="right" corners="left,right" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <LineBorder color="20,20,20" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="none" corners="left" cornerWidth="6" round="1" />
+                        <WebShadow type="outer" width="3" />
+                        <LineBorder color="20,20,20" />
+                    </decoration>
+                    <decoration states="single">
+                        <BreadcrumbElementShape sides="none" corners="none" cornerWidth="6" round="1" />
+                    </decoration>
+                    <decoration states="progress">
+                        <BreadcrumbProgressBackground id="progress">
+                            <GradientBackground>
+                                <color>81,85,87</color>
+                                <color>47,51,53</color>
+                            </GradientBackground>
+                            <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,50" passes="1" duration="1s" delay="4s" />
+                        </BreadcrumbProgressBackground>
+                    </decoration>
+                    <decoration states="indeterminate">
+                        <GradientBackground>
+                            <color>50,50,130</color>
+                            <color>40,40,120</color>
+                        </GradientBackground>
+                        <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="47,51,53" passes="2" duration="1.5s" delay="0s" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+    </style>
+
+    <!-- Undecorated breadcrumb -->
+    <style type="breadcrumb" id="undecorated">
+        <painter>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Separated breadcrumb -->
+    <style type="breadcrumb" id="separated">
+        <component>
+            <layout class="BreadcrumbLayout$UIResource" overlap="7" />
+        </component>
+
+        <!-- Label -->
+        <style type="label" id="label">
+            <painter class="BreadcrumbLabelPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" />
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="left,right" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="left" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Styled label -->
+        <style type="styledlabel" id="styledlabel">
+            <painter class="BreadcrumbStyledLabelPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" />
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="left,right" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="left" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Link -->
+        <style type="link" id="link">
+            <painter class="BreadcrumbLinkPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" />
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="left,right" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="left" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Button -->
+        <style type="button" id="button">
+            <painter class="BreadcrumbButtonPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" />
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="left,right" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="left" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Togle button -->
+        <style type="togglebutton" id="togglebutton">
+            <painter class="BreadcrumbToggleButtonPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" />
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="left,right" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="left" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Split button -->
+        <style type="splitbutton" id="splitbutton">
+            <painter class="BreadcrumbSplitButtonPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" />
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="left,right" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="left" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Combobox -->
+        <style type="combobox" id="combobox">
+            <painter class="BreadcrumbComboBoxPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" />
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="left,right" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="left" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Date field -->
+        <style type="datefield" id="datefield">
+            <painter class="BreadcrumbDateFieldPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" />
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="left,right" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="left" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Checkbox -->
+        <style type="checkbox" id="checkbox">
+            <painter class="BreadcrumbCheckBoxPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" />
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="left,right" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="left" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Tristate checkbox -->
+        <style type="tristatecheckbox" id="tristatecheckbox">
+            <painter class="BreadcrumbTristateCheckBoxPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" />
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="left,right" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="left" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Radio button -->
+        <style type="radiobutton" id="radiobutton">
+            <painter class="BreadcrumbRadioButtonPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" />
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="left,right" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="left" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Text field -->
+        <style type="textfield" id="textfield">
+            <painter class="BreadcrumbTextFieldPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" />
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="left,right" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="left" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Formatted text field -->
+        <style type="formattedtextfield" id="formattedtextfield">
+            <painter class="BreadcrumbFormattedTextFieldPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" />
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="left,right" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="left" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Password field -->
+        <style type="passwordfield" id="passwordfield">
+            <painter class="BreadcrumbPasswordFieldPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" />
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="left,right" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="left" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Panel -->
+        <style type="panel" id="panel">
+            <painter class="BreadcrumbPanelPainter">
+                <decorations>
+                    <decoration states="first">
+                        <BreadcrumbElementShape sides="right" />
+                    </decoration>
+                    <decoration states="middle">
+                        <BreadcrumbElementShape sides="left,right" />
+                    </decoration>
+                    <decoration states="last">
+                        <BreadcrumbElementShape sides="left" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+    </style>
+
+    <!-- Separated undecorated breadcrumb -->
+    <style type="breadcrumb" extends="separated" id="separated-undecorated">
+        <painter>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

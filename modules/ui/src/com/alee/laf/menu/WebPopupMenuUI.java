@@ -17,12 +17,12 @@
 
 package com.alee.laf.menu;
 
+import com.alee.api.jdk.Consumer;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.SwingUtils;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -33,7 +33,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public class WebPopupMenuUI extends WPopupMenuUI implements ShapeSupport, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
@@ -89,6 +88,18 @@ public class WebPopupMenuUI extends WPopupMenuUI implements ShapeSupport, Margin
     public Shape getShape ()
     {
         return PainterSupport.getShape ( popupMenu, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( popupMenu, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( popupMenu, painter, enabled );
     }
 
     @Override
@@ -194,6 +205,12 @@ public class WebPopupMenuUI extends WPopupMenuUI implements ShapeSupport, Margin
 
         // Returning actual popup
         return p;
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

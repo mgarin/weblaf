@@ -68,15 +68,10 @@ public class WebSplitButton extends JButton implements ActionListener, Styleable
      */
 
     /**
-     * Default split button icon.
-     */
-    public static final ImageIcon defaultSplitIcon = new ImageIcon ( WebSplitButton.class.getResource ( "icons/splitIcon.png" ) );
-
-    /**
      * Component properties.
      */
     public static final String POPUP_MENU_PROPERTY = "popupMenu";
-    public static final String SPLIT_ICON_PROPERTY = "splitIcon";
+    public static final String MENU_ICON_PROPERTY = "menuIcon";
 
     /**
      * Whether should always display popup menu when button is clicked or not.
@@ -95,9 +90,9 @@ public class WebSplitButton extends JButton implements ActionListener, Styleable
     protected JPopupMenu popupMenu;
 
     /**
-     * Split button icon.
+     * Menu icon.
      */
-    protected Icon splitIcon;
+    protected Icon menuIcon;
 
     /**
      * Constructs new split button.
@@ -418,6 +413,18 @@ public class WebSplitButton extends JButton implements ActionListener, Styleable
     }
 
     @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return ShapeMethodsImpl.isShapeDetectionEnabled ( this );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return MarginMethodsImpl.getMargin ( this );
@@ -530,25 +537,25 @@ public class WebSplitButton extends JButton implements ActionListener, Styleable
     }
 
     /**
-     * Returns split button icon.
+     * Returns menu icon.
      *
-     * @return split button icon
+     * @return menu icon
      */
-    public Icon getSplitIcon ()
+    public Icon getMenuIcon ()
     {
-        return splitIcon != null ? splitIcon : defaultSplitIcon;
+        return menuIcon;
     }
 
     /**
-     * Sets split button icon
+     * Sets menu icon
      *
-     * @param splitIcon new split button icon
+     * @param menuIcon new menu icon
      */
-    public void setSplitIcon ( final Icon splitIcon )
+    public void setMenuIcon ( final Icon menuIcon )
     {
-        final Icon oldIcon = this.splitIcon;
-        this.splitIcon = splitIcon;
-        firePropertyChange ( SPLIT_ICON_PROPERTY, oldIcon, splitIcon );
+        final Icon oldIcon = this.menuIcon;
+        this.menuIcon = menuIcon;
+        firePropertyChange ( MENU_ICON_PROPERTY, oldIcon, menuIcon );
     }
 
     /**

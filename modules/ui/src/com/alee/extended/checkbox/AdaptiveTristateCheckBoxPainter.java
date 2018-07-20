@@ -13,8 +13,7 @@ import java.awt.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
-public final class AdaptiveTristateCheckBoxPainter<C extends WebTristateCheckBox, U extends WebTristateCheckBoxUI>
+public final class AdaptiveTristateCheckBoxPainter<C extends WebTristateCheckBox, U extends WTristateCheckBoxUI<C>>
         extends AdaptivePainter<C, U> implements ITristateCheckBoxPainter<C, U>
 {
     /**

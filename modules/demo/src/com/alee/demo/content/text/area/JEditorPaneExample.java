@@ -30,7 +30,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class JEditorPaneExample extends AbstractStylePreviewExample
 {
     @Override
@@ -60,10 +59,11 @@ public class JEditorPaneExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final BasicPane e1 = new BasicPane ( "basic", StyleId.editorpane );
-        final ScrollablePane e2 = new ScrollablePane ( "scrollable", StyleId.editorpane );
-        final ReadOnlyPane e3 = new ReadOnlyPane ( "readonly", StyleId.editorpane );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3 );
+        return CollectionUtils.<Preview>asList (
+                new BasicPane ( "basic", StyleId.editorpane ),
+                new ScrollablePane ( "scrollable", StyleId.editorpane ),
+                new ReadOnlyPane ( "readonly", StyleId.editorpane )
+        );
     }
 
     /**

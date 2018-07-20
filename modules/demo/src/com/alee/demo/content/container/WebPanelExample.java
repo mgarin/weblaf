@@ -33,7 +33,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebPanelExample extends AbstractStylePreviewExample
 {
     @Override

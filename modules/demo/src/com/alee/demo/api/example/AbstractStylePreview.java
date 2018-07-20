@@ -24,7 +24,6 @@ import com.alee.managers.style.StyleId;
  *
  * @author Mikle Garin
  */
-
 public abstract class AbstractStylePreview extends AbstractTitledPreview
 {
     /**

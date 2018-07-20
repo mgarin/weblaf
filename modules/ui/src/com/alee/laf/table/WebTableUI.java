@@ -46,7 +46,6 @@ import java.util.Date;
  *
  * @author Mikle Garin
  */
-
 public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupport, PaddingSupport, ScrollPaneCornerProvider
 {
     /**
@@ -164,6 +163,18 @@ public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupp
     }
 
     @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( table, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( table, painter, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return PainterSupport.getMargin ( table );
@@ -219,6 +230,12 @@ public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupp
     public JComponent getCorner ( final Corner type )
     {
         return type == Corner.upperTrailing ? new WebCanvas ( StyleId.tableCorner.at ( table ), type.name () ) : null;
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

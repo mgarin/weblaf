@@ -24,7 +24,6 @@ import javax.swing.plaf.FileChooserUI;
  *
  * @author Mikle Garin
  */
-
 public abstract class WFileChooserUI extends FileChooserUI
 {
     /**

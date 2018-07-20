@@ -27,8 +27,7 @@ import com.alee.extended.label.IStyledLabelPainter;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLink">How to use WebLink</a>
  */
-
-public interface ILinkPainter<C extends WebLink, U extends WLinkUI> extends IStyledLabelPainter<C, U>
+public interface ILinkPainter<C extends WebLink, U extends WLinkUI<C>> extends IStyledLabelPainter<C, U>
 {
     /**
      * This interface doesn't offer any additional methods to implement.

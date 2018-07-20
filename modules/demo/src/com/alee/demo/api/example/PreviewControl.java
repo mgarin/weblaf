@@ -17,21 +17,11 @@
 
 package com.alee.demo.api.example;
 
-import com.alee.managers.style.Skin;
-
 /**
  * @author Mikle Garin
  */
-
 public interface PreviewControl
 {
-    /**
-     * Applies specified skin to preview elements.
-     *
-     * @param skin skin to apply
-     */
-    public void applySkin ( Skin skin );
-
     /**
      * Applies specified enabled state to preview elements.
      *

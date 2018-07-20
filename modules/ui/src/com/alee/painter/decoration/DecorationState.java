@@ -17,6 +17,11 @@
 
 package com.alee.painter.decoration;
 
+import com.alee.extended.breadcrumb.element.BreadcrumbElementUtils;
+
+import javax.swing.*;
+import java.util.List;
+
 /**
  * Base decoration states used by WebLaF decoration painters.
  *
@@ -25,7 +30,6 @@ package com.alee.painter.decoration;
  * @see com.alee.painter.decoration.AbstractDecorationPainter#getDecorationStates()
  * @see com.alee.painter.decoration.IDecoration
  */
-
 public interface DecorationState
 {
     /**
@@ -316,6 +320,7 @@ public interface DecorationState
      * Used to provide progress bar type for progress bar painter.
      *
      * @see com.alee.laf.progressbar.ProgressBarPainter#getDecorationStates()
+     * @see BreadcrumbElementUtils#addBreadcrumbElementStates(JComponent, List)
      */
     public static final String progress = "progress";
 
@@ -323,6 +328,7 @@ public interface DecorationState
      * Used to provide progress bar type for progress bar painter.
      *
      * @see com.alee.laf.progressbar.ProgressBarPainter#getDecorationStates()
+     * @see BreadcrumbElementUtils#addBreadcrumbElementStates(JComponent, List)
      */
     public static final String indeterminate = "indeterminate";
 
@@ -330,6 +336,7 @@ public interface DecorationState
      * Used to provide indication of component having minimum current value.
      *
      * @see com.alee.laf.progressbar.ProgressBarPainter#getDecorationStates()
+     * @see BreadcrumbElementUtils#addBreadcrumbElementStates(JComponent, List)
      */
     public static final String minimum = "minimum";
 
@@ -337,6 +344,7 @@ public interface DecorationState
      * Used to provide indication of component having non-minimum and non-maximum current value.
      *
      * @see com.alee.laf.progressbar.ProgressBarPainter#getDecorationStates()
+     * @see BreadcrumbElementUtils#addBreadcrumbElementStates(JComponent, List)
      */
     public static final String intermediate = "intermediate";
 
@@ -344,6 +352,7 @@ public interface DecorationState
      * Used to provide indication of component having maximum current value.
      *
      * @see com.alee.laf.progressbar.ProgressBarPainter#getDecorationStates()
+     * @see BreadcrumbElementUtils#addBreadcrumbElementStates(JComponent, List)
      */
     public static final String maximum = "maximum";
 
@@ -420,6 +429,38 @@ public interface DecorationState
      * @see com.alee.laf.tree.GroupedTreeRowPainter#getDecorationStates()
      */
     public static final String innerOdd = "inner-odd";
+
+    /**
+     * First element in the group.
+     * Only applicable if there are at least two or more elements available in the group.
+     *
+     * @see BreadcrumbElementUtils#addBreadcrumbElementStates(JComponent, List)
+     */
+    public static final String first = "first";
+
+    /**
+     * Middle element in the group.
+     * Only exists if there are at least three or more elements available in the group.
+     *
+     * @see BreadcrumbElementUtils#addBreadcrumbElementStates(JComponent, List)
+     */
+    public static final String middle = "middle";
+
+    /**
+     * Last element in the group.
+     * Only exists if there are at least two or more elements available in the group.
+     *
+     * @see BreadcrumbElementUtils#addBreadcrumbElementStates(JComponent, List)
+     */
+    public static final String last = "last";
+
+    /**
+     * Single element in the group.
+     * Special type used for case when element is alone in the breadcrumb in the group.
+     *
+     * @see BreadcrumbElementUtils#addBreadcrumbElementStates(JComponent, List)
+     */
+    public static final String single = "single";
 
     /**
      * Natively decorated window.

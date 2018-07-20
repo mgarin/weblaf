@@ -745,8 +745,12 @@ public final class StyleId implements Identifiable
     public static final StyleId filelist = StyleId.of ( "filelist" );
     public static final StyleId filelistNonOpaque = StyleId.of ( "filelist-non-opaque" );
     public static final StyleId filelistTransparent = StyleId.of ( "filelist-transparent" );
-    public static final StyleId filelistTiles = StyleId.of ( "tiles" );
-    public static final StyleId filelistIcons = StyleId.of ( "icons" );
+    public static final StyleId filelistTiles = StyleId.of ( "filelist-tiles" );
+    public static final StyleId filelistTilesNonOpaque = StyleId.of ( "filelist-tiles-non-opaque" );
+    public static final StyleId filelistTilesTransparent = StyleId.of ( "filelist-tiles-transparent" );
+    public static final StyleId filelistIcons = StyleId.of ( "filelist-icons" );
+    public static final StyleId filelistIconsNonOpaque = StyleId.of ( "filelist-icons-non-opaque" );
+    public static final StyleId filelistIconsTransparent = StyleId.of ( "filelist-icons-transparent" );
     public static final ChildStyleId filelistCellRenderer = ChildStyleId.of ( "renderer" );
     public static final ChildStyleId filelistCellRendererIcon = ChildStyleId.of ( "icon" );
     public static final ChildStyleId filelistCellRendererName = ChildStyleId.of ( "name" );
@@ -838,10 +842,24 @@ public final class StyleId implements Identifiable
      * {@link com.alee.extended.breadcrumb.WebBreadcrumb} style identifiers.
      */
     public static final StyleId breadcrumb = StyleId.of ( "breadcrumb" );
-    public static final StyleId breadcrumbLabel = StyleId.of ( "breadcrumb-label" );
-    public static final StyleId breadcrumbButton = StyleId.of ( "breadcrumb-button" );
-    public static final StyleId breadcrumbToggleButton = StyleId.of ( "breadcrumb-togglebutton" );
-    public static final StyleId breadcrumbPanel = StyleId.of ( "breadcrumb-panel" );
+    public static final StyleId breadcrumbUndecorated = StyleId.of ( "undecorated" );
+    public static final StyleId breadcrumbSeparated = StyleId.of ( "separated" );
+    public static final StyleId breadcrumbSeparatedUndecorated = StyleId.of ( "separated-undecorated" );
+    public static final ChildStyleId breadcrumbLabel = ChildStyleId.of ( "label" );
+    public static final ChildStyleId breadcrumbStyledLabel = ChildStyleId.of ( "styledlabel" );
+    public static final ChildStyleId breadcrumbLink = ChildStyleId.of ( "link" );
+    public static final ChildStyleId breadcrumbButton = ChildStyleId.of ( "button" );
+    public static final ChildStyleId breadcrumbToggleButton = ChildStyleId.of ( "togglebutton" );
+    public static final ChildStyleId breadcrumbSplitButton = ChildStyleId.of ( "splitbutton" );
+    public static final ChildStyleId breadcrumbComboBox = ChildStyleId.of ( "combobox" );
+    public static final ChildStyleId breadcrumbDateField = ChildStyleId.of ( "datefield" );
+    public static final ChildStyleId breadcrumbCheckBox = ChildStyleId.of ( "checkbox" );
+    public static final ChildStyleId breadcrumbTristateCheckBox = ChildStyleId.of ( "tristatecheckbox" );
+    public static final ChildStyleId breadcrumbRadioButton = ChildStyleId.of ( "radiobutton" );
+    public static final ChildStyleId breadcrumbTextField = ChildStyleId.of ( "textfield" );
+    public static final ChildStyleId breadcrumbFormattedTextField = ChildStyleId.of ( "formattedtextfield" );
+    public static final ChildStyleId breadcrumbPasswordField = ChildStyleId.of ( "passwordfield" );
+    public static final ChildStyleId breadcrumbPanel = ChildStyleId.of ( "panel" );
 
     /**
      * {@link com.alee.extended.syntax.WebSyntaxArea} and {@link com.alee.extended.syntax.WebSyntaxScrollPane} style identifiers.

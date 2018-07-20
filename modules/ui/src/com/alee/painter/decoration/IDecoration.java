@@ -118,10 +118,21 @@ public interface IDecoration<C extends JComponent, I extends IDecoration<C, I>>
     public boolean hasContent ();
 
     /**
+     * Returns whether or not specified (x,y) location is contained within the shape of the component.
+     *
+     * @param c      {@link JComponent}
+     * @param bounds bounds to check
+     * @param x      X coordinate
+     * @param y      Y coordinate
+     * @return {@code true} if specified (x,y) location is contained within the shape of the component, {@code false} otherwise
+     */
+    public boolean contains ( C c, Bounds bounds, int x, int y );
+
+    /**
      * Returns decoration baseline within the specified bounds, measured from the top of the bounds.
      * A return value less than {@code 0} indicates this decoration does not have a reasonable baseline.
      *
-     * @param c      aligned component
+     * @param c      aligned {@link JComponent}
      * @param bounds bounds to get the baseline for
      * @return decoration baseline within the specified bounds, measured from the top of the bounds
      */

@@ -17,129 +17,138 @@
 
 package com.alee.utils.swing.extensions;
 
+import com.alee.api.jdk.BiConsumer;
+
 import java.awt.*;
 import java.util.List;
 
 /**
- * This interface provides a set of methods that should be added into containers.
+ * This interface provides a set of methods that should be added into {@link Container}s.
  *
+ * @param <C> {@link Container} type
  * @author Mikle Garin
  * @see MethodExtension
  * @see com.alee.utils.swing.extensions.ContainerMethodsImpl
  */
-
 public interface ContainerMethods<C extends Container> extends MethodExtension
 {
     /**
-     * Returns whether the specified component belongs to this container or not.
+     * Returns whether the specified {@link Component} belongs to this {@link Container} or not.
      *
-     * @param component component to process
-     * @return true if the specified component belongs to this container, false otherwise
+     * @param component {@link Component} to process
+     * @return {@code true} if the specified {@link Component} belongs to this {@link Container}, {@code false} otherwise
      */
     public boolean contains ( Component component );
 
     /**
-     * Adds all components from the list into the container.
+     * Adds all {@link Component}s from the list into this {@link Container}.
      *
-     * @param components components to add into container
-     * @return this container
+     * @param components {@link Component}s to add into this {@link Container}
+     * @return this {@link Container}
      */
     public C add ( List<? extends Component> components );
 
     /**
-     * Adds all components from the list into the container under the specified index.
+     * Adds all {@link Component}s from the list into this {@link Container} under the specified index.
      *
-     * @param components components to add into container
-     * @param index      index where components should be placed
-     * @return this container
+     * @param components {@link Component}s to add into this {@link Container}
+     * @param index      index where {@link Component}s should be placed
+     * @return this {@link Container}
      */
     public C add ( List<? extends Component> components, int index );
 
     /**
-     * Adds all components from the list into the container under the specified constraints.
+     * Adds all {@link Component}s from the list into this {@link Container} under the specified constraints.
      *
-     * @param components  components to add into container
-     * @param constraints constraints for all components
-     * @return this container
+     * @param components  {@link Component}s to add into this {@link Container}
+     * @param constraints constraints for all {@link Component}s
+     * @return this {@link Container}
      */
     public C add ( List<? extends Component> components, Object constraints );
 
     /**
-     * Adds all specified components into the panel.
-     * Useful for layouts like FlowLayout and some others.
-     * This method is a fix for {@link #add(java.awt.Component...)} method usage in case of two components.
+     * Adds all specified {@link Component}s into this {@link Container}.
+     * This method is a fix for {@link #add(java.awt.Component...)} method usage in case of two {@link Component}s.
      *
-     * @param component1 component to add into panel
-     * @param component2 component to add into panel
-     * @return this panel
+     * @param component1 {@link Component} to add into this {@link Container}
+     * @param component2 {@link Component} to add into this {@link Container}
+     * @return this {@link Container}
      */
     public C add ( Component component1, Component component2 );
 
     /**
-     * Adds all specified components into the container.
-     * Useful for layouts like FlowLayout and some others.
+     * Adds all specified {@link Component}s into this {@link Container}.
      *
-     * @param components components to add into container
-     * @return this container
+     * @param components {@link Component}s to add into this {@link Container}
+     * @return this {@link Container}
      */
     public C add ( Component... components );
 
     /**
-     * Removes all components from the list from the container.
+     * Removes all {@link Component}s from the list from this {@link Container}.
      *
-     * @param components components to remove from container
-     * @return this container
+     * @param components components to remove from {@link Container}
+     * @return this {@link Container}
      */
     public C remove ( List<? extends Component> components );
 
     /**
-     * Removes all specified components from the container.
+     * Removes all specified {@link Component}s from this {@link Container}.
      *
-     * @param components components to remove from container
-     * @return this container
+     * @param components components to remove from {@link Container}
+     * @return this {@link Container}
      */
     public C remove ( Component... components );
 
     /**
-     * Removes all children with the specified component class type.
+     * Removes all children with the specified {@link Component} {@link Class} type from this {@link Container}.
      *
-     * @param componentClass class type of child components to be removed
-     * @return this container
+     * @param componentClass {@link Class} type of child {@link Component}s to be removed
+     * @return this {@link Container}
      */
     public C removeAll ( Class<? extends Component> componentClass );
 
     /**
-     * Returns first component contained in this container.
+     * Returns first {@link Component} contained in this {@link Container}.
      *
-     * @return first component contained in this container
+     * @return first {@link Component} contained in this {@link Container}
      */
     public Component getFirstComponent ();
 
     /**
-     * Returns last component contained in this container.
+     * Returns last {@link Component} contained in this {@link Container}.
      *
-     * @return last component contained in this container
+     * @return last {@link Component} contained in this {@link Container}
      */
     public Component getLastComponent ();
 
     /**
-     * Makes all container child component widths equal.
+     * Makes all {@link Container} child {@link Component} widths equal.
      *
-     * @return this container
+     * @return this {@link Container}
      */
     public C equalizeComponentsWidth ();
 
     /**
-     * Makes all container child component heights equal.
+     * Makes all {@link Container} child {@link Component} heights equal.
      *
-     * @return this container
+     * @return this {@link Container}
      */
     public C equalizeComponentsHeight ();
 
     /**
-     * Makes all container child component sizes equal.
+     * Makes all {@link Container} child {@link Component} sizes equal.
      *
-     * @return this container
+     * @return this {@link Container}
      */
     public C equalizeComponentsSize ();
+
+    /**
+     * Provides all child {@link Component}s into the specified {@link BiConsumer}.
+     *
+     * @param consumer child {@link Component}s {@link BiConsumer}
+     * @param <T>      child {@link Component}s type
+     * @return this {@link Container}
+     */
+    public <T extends Component> C forEach ( BiConsumer<Integer, T> consumer );
 }

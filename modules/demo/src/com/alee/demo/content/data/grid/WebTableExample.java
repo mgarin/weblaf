@@ -53,10 +53,11 @@ public class WebTableExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final BasicTable basic = new BasicTable ( StyleId.table );
-        final ScrollableTable scrollable = new ScrollableTable ( StyleId.table );
-        final EditableTable editable = new EditableTable ( StyleId.table );
-        return CollectionUtils.<Preview>asList ( basic, scrollable, editable );
+        return CollectionUtils.<Preview>asList (
+                new BasicTable ( StyleId.table ),
+                new ScrollableTable ( StyleId.table ),
+                new EditableTable ( StyleId.table )
+        );
     }
 
     /**

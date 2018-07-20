@@ -29,7 +29,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class JPasswordFieldExample extends AbstractStylePreviewExample
 {
     @Override
@@ -59,10 +58,11 @@ public class JPasswordFieldExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final BasicField e1 = new BasicField ( "basic", StyleId.passwordfield );
-        final BasicField e2 = new BasicField ( "transparent", StyleId.passwordfieldTransparent );
-        final BasicField e3 = new BasicField ( "nofocus", StyleId.passwordfieldNoFocus );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3 );
+        return CollectionUtils.<Preview>asList (
+                new BasicField ( "basic", StyleId.passwordfield ),
+                new BasicField ( "transparent", StyleId.passwordfieldTransparent ),
+                new BasicField ( "nofocus", StyleId.passwordfieldNoFocus )
+        );
     }
 
     /**

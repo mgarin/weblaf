@@ -24,7 +24,6 @@ import javax.swing.plaf.basic.BasicPopupMenuUI;
  *
  * @author Mikle Garin
  */
-
 public abstract class WPopupMenuUI extends BasicPopupMenuUI
 {
     /**

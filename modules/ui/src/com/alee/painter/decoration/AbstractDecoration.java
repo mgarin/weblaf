@@ -218,6 +218,12 @@ public abstract class AbstractDecoration<C extends JComponent, I extends Abstrac
     }
 
     @Override
+    public boolean contains ( final C c, final Bounds bounds, final int x, final int y )
+    {
+        return bounds.get ().contains ( x, y );
+    }
+
+    @Override
     public int getBaseline ( final C c, final Bounds bounds )
     {
         return -1;

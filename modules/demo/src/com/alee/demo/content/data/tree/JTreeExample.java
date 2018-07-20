@@ -59,9 +59,10 @@ public class JTreeExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final BasicTree basic = new BasicTree ( StyleId.tree );
-        final EditableTree editable = new EditableTree ( StyleId.tree );
-        return CollectionUtils.<Preview>asList ( basic, editable );
+        return CollectionUtils.<Preview>asList (
+                new BasicTree ( StyleId.tree ),
+                new EditableTree ( StyleId.tree )
+        );
     }
 
     /**

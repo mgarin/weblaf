@@ -24,6 +24,7 @@ import com.alee.laf.panel.PanelPainter;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.panel.WebPanelUI;
 import com.alee.managers.style.Bounds;
+import com.alee.managers.style.ShapeMethodsImpl;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.ShapeUtils;
@@ -40,6 +41,7 @@ import java.beans.PropertyChangeListener;
 /**
  * @author Mikle Garin
  */
+@Deprecated
 public class WebButtonPopup extends WebInnerPopup
 {
     private static final ImmutableList<String> BUTTON_PROPERTIES = new ImmutableList<String> (
@@ -584,6 +586,18 @@ public class WebButtonPopup extends WebInnerPopup
         return getPopupShape ( this );
     }
 
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return ShapeMethodsImpl.isShapeDetectionEnabled ( this );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
+    }
+
     public void showPopup ()
     {
         PopupManager.showPopup ( button, this, false );
@@ -621,7 +635,8 @@ public class WebButtonPopup extends WebInnerPopup
     /**
      * Custom button popup painter.
      */
-    protected class ButtonPopupPainter<D extends IDecoration<WebButtonPopup, D>> extends PanelPainter<WebButtonPopup, WebPanelUI, D>
+    protected class ButtonPopupPainter<D extends IDecoration<WebButtonPopup, D>>
+            extends PanelPainter<WebButtonPopup, WebPanelUI<WebButtonPopup>, D>
     {
         @Override
         public void paint ( final Graphics2D g2d, final WebButtonPopup c, final WebPanelUI ui, final Bounds bounds )

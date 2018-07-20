@@ -13,9 +13,8 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
-public final class AdaptiveButtonPainter<C extends JButton, U extends WButtonUI> extends AdaptivePainter<C, U>
-        implements IButtonPainter<C, U>
+public final class AdaptiveButtonPainter<C extends JButton, U extends WButtonUI<C>>
+        extends AdaptivePainter<C, U> implements IButtonPainter<C, U>
 {
     /**
      * Constructs new {@link AdaptiveButtonPainter} for the specified {@link Painter}.

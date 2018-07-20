@@ -33,7 +33,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public class WebDesktopPaneUI extends BasicDesktopPaneUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -91,6 +90,18 @@ public class WebDesktopPaneUI extends BasicDesktopPaneUI implements ShapeSupport
     }
 
     @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( desktopPane, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( desktopPane, painter, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return PainterSupport.getMargin ( desktopPane );
@@ -140,6 +151,12 @@ public class WebDesktopPaneUI extends BasicDesktopPaneUI implements ShapeSupport
                 WebDesktopPaneUI.this.painter = newPainter;
             }
         }, this.painter, painter, IDesktopPanePainter.class, AdaptiveDesktopPanePainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

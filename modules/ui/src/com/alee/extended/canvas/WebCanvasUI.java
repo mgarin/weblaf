@@ -80,6 +80,18 @@ public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements Sh
     }
 
     @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( canvas, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( canvas, painter, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return PainterSupport.getMargin ( canvas );
@@ -129,6 +141,12 @@ public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements Sh
                 WebCanvasUI.this.painter = newPainter;
             }
         }, this.painter, painter, ICanvasPainter.class, AdaptiveCanvasPainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

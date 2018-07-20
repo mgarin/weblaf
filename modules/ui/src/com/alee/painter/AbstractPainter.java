@@ -44,7 +44,6 @@ import java.util.Map;
  * @author Alexandr Zernov
  * @see Painter
  */
-
 public abstract class AbstractPainter<C extends JComponent, U extends ComponentUI> implements Painter<C, U>
 {
     /**
@@ -569,14 +568,8 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
             // Adding margin size
             if ( !isSectionPainter () )
             {
-                final Insets margin = PainterSupport.getMargin ( component );
-                if ( margin != null )
-                {
-                    border.top += margin.top;
-                    border.left += ltr ? margin.left : margin.right;
-                    border.bottom += margin.bottom;
-                    border.right += ltr ? margin.right : margin.left;
-                }
+                final Insets margin = PainterSupport.getMargin ( component, true );
+                SwingUtils.increase ( border, margin );
             }
 
             // Adding painter border size
@@ -592,14 +585,8 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
             // Adding padding size
             if ( !isSectionPainter () )
             {
-                final Insets padding = PainterSupport.getPadding ( component );
-                if ( padding != null )
-                {
-                    border.top += padding.top;
-                    border.left += ltr ? padding.left : padding.right;
-                    border.bottom += padding.bottom;
-                    border.right += ltr ? padding.right : padding.left;
-                }
+                final Insets padding = PainterSupport.getPadding ( component, true );
+                SwingUtils.increase ( border, padding );
             }
         }
         else
@@ -621,6 +608,16 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
     protected Insets getBorder ()
     {
         return null;
+    }
+
+    /**
+     * Custom check is written to avoid {@link Component#inside(int, int)} deprecated method usage.
+     * Default implementation simply checks that point is within component bounds.
+     */
+    @Override
+    public boolean contains ( final C c, final U ui, final Bounds bounds, final int x, final int y )
+    {
+        return bounds.get ().contains ( x, y );
     }
 
     @Override

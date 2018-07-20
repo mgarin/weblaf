@@ -36,7 +36,6 @@ import java.beans.PropertyChangeListener;
  *
  * @author Mikle Garin
  */
-
 public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -132,6 +131,18 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSup
     }
 
     @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( frame, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( frame, painter, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return PainterSupport.getMargin ( frame );
@@ -193,6 +204,12 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSup
     protected LayoutManager createLayoutManager ()
     {
         return new InternalFrameLayout ();
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

@@ -29,7 +29,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebTextAreaExample extends AbstractStylePreviewExample
 {
     @Override
@@ -53,9 +52,10 @@ public class WebTextAreaExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final PromptArea e1 = new PromptArea ( "prompt", StyleId.textarea );
-        final DecoratedArea e2 = new DecoratedArea ( "decorated", StyleId.textareaDecorated );
-        return CollectionUtils.<Preview>asList ( e1, e2 );
+        return CollectionUtils.<Preview>asList (
+                new PromptArea ( "prompt", StyleId.textarea ),
+                new DecoratedArea ( "decorated", StyleId.textareaDecorated )
+        );
     }
 
     /**

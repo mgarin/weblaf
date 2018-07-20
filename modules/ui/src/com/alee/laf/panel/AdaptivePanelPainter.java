@@ -30,8 +30,8 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
-public final class AdaptivePanelPainter<C extends JPanel, U extends WebPanelUI> extends AdaptivePainter<C, U> implements IPanelPainter<C, U>
+public final class AdaptivePanelPainter<C extends JPanel, U extends WebPanelUI<C>>
+        extends AdaptivePainter<C, U> implements IPanelPainter<C, U>
 {
     /**
      * Constructs new {@link AdaptivePanelPainter} for the specified painter.

@@ -34,7 +34,6 @@ import java.awt.*;
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
-
 public class WebSplitPaneUI<C extends JSplitPane> extends WSplitPaneUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -77,6 +76,18 @@ public class WebSplitPaneUI<C extends JSplitPane> extends WSplitPaneUI<C> implem
     public Shape getShape ()
     {
         return PainterSupport.getShape ( splitPane, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( splitPane, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( splitPane, painter, enabled );
     }
 
     @Override
@@ -129,6 +140,12 @@ public class WebSplitPaneUI<C extends JSplitPane> extends WSplitPaneUI<C> implem
                 WebSplitPaneUI.this.painter = newPainter;
             }
         }, this.painter, painter, ISplitPanePainter.class, AdaptiveSplitPanePainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

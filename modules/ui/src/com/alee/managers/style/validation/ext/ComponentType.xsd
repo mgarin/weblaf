@@ -63,6 +63,7 @@
             <xs:enumeration value="dockableframe" />
             <xs:enumeration value="optionpane" />
             <xs:enumeration value="datefield" />
+            <xs:enumeration value="breadcrumb" />
         </xs:restriction>
     </xs:simpleType>
 

@@ -18,7 +18,7 @@
 package com.alee.extended.syntax;
 
 import com.alee.laf.panel.IPanelPainter;
-import com.alee.laf.panel.WebPanelUI;
+import com.alee.laf.panel.WPanelUI;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.AbstractPainter;
 import com.alee.utils.GraphicsUtils;
@@ -37,9 +37,9 @@ import java.awt.*;
  * @see com.alee.painter.AbstractPainter
  * @see com.alee.painter.Painter
  */
-
 @XStreamAlias ( "SyntaxPanelPainter" )
-public class SyntaxPanelPainter<C extends JPanel, U extends WebPanelUI> extends AbstractPainter<C, U> implements IPanelPainter<C, U>
+public class SyntaxPanelPainter<C extends JPanel, U extends WPanelUI<C>>
+        extends AbstractPainter<C, U> implements IPanelPainter<C, U>
 {
     /**
      * Used colors.

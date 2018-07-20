@@ -34,7 +34,6 @@ import java.awt.*;
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
-
 public class WebDesktopIconUI extends BasicDesktopIconUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -134,6 +133,18 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements ShapeSupport
     }
 
     @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( desktopIcon, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( desktopIcon, painter, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return PainterSupport.getMargin ( desktopIcon );
@@ -183,6 +194,12 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements ShapeSupport
                 WebDesktopIconUI.this.painter = newPainter;
             }
         }, this.painter, painter, IDesktopIconPainter.class, AdaptiveDesktopIconPainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

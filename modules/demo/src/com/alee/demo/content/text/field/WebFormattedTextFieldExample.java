@@ -33,7 +33,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebFormattedTextFieldExample extends AbstractStylePreviewExample
 {
     @Override
@@ -57,10 +56,11 @@ public class WebFormattedTextFieldExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final BasicFormattedField e1 = new BasicFormattedField ( "currency", "####", null, DemoIcons.dollar16, 10 );
-        final BasicFormattedField e2 = new BasicFormattedField ( "phone", "# (###) ###-##-##", null, DemoIcons.phone16, 12 );
-        final BasicFormattedField e3 = new BasicFormattedField ( "fraction", "##.##", 77.77, DemoIcons.hourglass16, 5 );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3 );
+        return CollectionUtils.<Preview>asList (
+                new BasicFormattedField ( "currency", "####", null, DemoIcons.dollar16, 10 ),
+                new BasicFormattedField ( "phone", "# (###) ###-##-##", null, DemoIcons.phone16, 12 ),
+                new BasicFormattedField ( "fraction", "##.##", 77.77, DemoIcons.hourglass16, 5 )
+        );
     }
 
     /**

@@ -25,7 +25,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class AnimationGroup extends AbstractExampleGroup
 {
     @Override

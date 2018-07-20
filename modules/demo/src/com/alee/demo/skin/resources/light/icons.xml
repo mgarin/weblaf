@@ -98,6 +98,15 @@
         <SvgFill selector="svg" color="100,100,100" />
         <SvgTransform selector="svg" rotate="180" />
     </SvgIcon>
+    <SvgIcon id="play16" path="general/play.svg" size="16,16">
+        <SvgFill selector="svg" color="100,100,100" />
+    </SvgIcon>
+    <SvgIcon id="pause16" path="general/pause.svg" size="16,16">
+        <SvgFill selector="svg" color="100,100,100" />
+    </SvgIcon>
+    <SvgIcon id="indeterminate16" path="general/indeterminate.svg" size="16,16">
+        <SvgFill selector="svg" color="100,100,100" />
+    </SvgIcon>
 
     <!-- Social 16x16 icons -->
     <SvgIcon id="facebook16" path="social/facebook.svg" size="16,16">

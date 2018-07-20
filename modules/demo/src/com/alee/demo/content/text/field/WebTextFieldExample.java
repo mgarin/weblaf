@@ -17,9 +17,9 @@
 
 package com.alee.demo.content.text.field;
 
+import com.alee.demo.api.example.*;
 import com.alee.demo.skin.DemoIcons;
 import com.alee.demo.skin.DemoStyles;
-import com.alee.demo.api.example.*;
 import com.alee.extended.image.WebImage;
 import com.alee.laf.text.WebTextField;
 import com.alee.managers.style.StyleId;
@@ -31,7 +31,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebTextFieldExample extends AbstractStylePreviewExample
 {
     @Override
@@ -55,10 +54,11 @@ public class WebTextFieldExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final InputPromptField e1 = new InputPromptField ( StyleId.textfield );
-        final LeadingComponentField e2 = new LeadingComponentField ( StyleId.textfield );
-        final TrailingComponentField e3 = new TrailingComponentField ( StyleId.textfield );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3 );
+        return CollectionUtils.<Preview>asList (
+                new InputPromptField ( StyleId.textfield ),
+                new LeadingComponentField ( StyleId.textfield ),
+                new TrailingComponentField ( StyleId.textfield )
+        );
     }
 
     /**

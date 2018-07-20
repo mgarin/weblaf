@@ -46,7 +46,6 @@ import java.util.List;
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
-
 public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -300,6 +299,18 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
     }
 
     @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( fileChooser, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( fileChooser, painter, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return PainterSupport.getMargin ( fileChooser );
@@ -416,6 +427,12 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
         {
             return FileChooserType.custom;
         }
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

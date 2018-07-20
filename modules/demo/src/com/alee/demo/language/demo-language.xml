@@ -147,8 +147,8 @@
                     <value lang="ru">Wiki статья:</value>
                 </record>
                 <record key="none">
-                    <value lang="en">No wiki for this component yet</value>
-                    <value lang="ru">Пока-что wiki для данного компонента нет</value>
+                    <value lang="en">No wiki articles for this component</value>
+                    <value lang="ru">Статей по данному компоненту нет</value>
                 </record>
             </Dictionary>
         </Dictionary>
@@ -601,7 +601,7 @@
                     </record>
                 </Dictionary>
             </Dictionary>
-            <Dictionary prefix="webtristatecheckbox">
+            <Dictionary prefix="tristatecheckbox">
                 <record key="title">
                     <value lang="en">WebTristateCheckBox</value>
                     <value lang="ru">WebTristateCheckBox</value>
@@ -649,7 +649,7 @@
                     </record>
                 </Dictionary>
             </Dictionary>
-            <Dictionary prefix="websplitbutton">
+            <Dictionary prefix="splitbutton">
                 <record key="title">
                     <value lang="en">WebSplitButton</value>
                     <value lang="ru">WebSplitButton</value>
@@ -667,7 +667,7 @@
                     </record>
                 </Dictionary>
             </Dictionary>
-            <Dictionary prefix="webswitch">
+            <Dictionary prefix="switch">
                 <record key="title">
                     <value lang="en">WebSwitch</value>
                     <value lang="ru">WebSwitch</value>
@@ -1317,7 +1317,7 @@
                     </record>
                 </Dictionary>
             </Dictionary>
-            <Dictionary prefix="webmultisplitpane">
+            <Dictionary prefix="multisplitpane">
                 <record key="title">
                     <value lang="en">WebMultiSplitPane</value>
                     <value lang="ru">WebMultiSplitPane</value>
@@ -1458,6 +1458,58 @@
                     <record key="title">
                         <value lang="en">Bottom WebCollapsiblePane</value>
                         <value lang="ru">Bottom WebCollapsiblePane</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="breadcrumb">
+                <record key="title">
+                    <value lang="en">WebBreadcrumb</value>
+                    <value lang="ru">WebBreadcrumb</value>
+                </record>
+                <Dictionary prefix="data">
+                    <record key="sample">
+                        <value lang="en">Sample</value>
+                        <value lang="ru">Простые</value>
+                    </record>
+                    <record key="elements">
+                        <value lang="en">Elements</value>
+                        <value lang="ru">Элементы</value>
+                    </record>
+                    <record key="menu1">
+                        <value lang="en">Sample JMenuItem</value>
+                        <value lang="ru">Простой JMenuItem</value>
+                    </record>
+                    <record key="menu2">
+                        <value lang="en">Within JPopupMenu</value>
+                        <value lang="ru">Внутри JPopupMenu</value>
+                    </record>
+                    <record key="menu3">
+                        <value lang="en">Attached to WebSplitButton</value>
+                        <value lang="ru">Добавленного в WebSplitButton</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="basic">
+                    <record key="title">
+                        <value lang="en">Basic style</value>
+                        <value lang="ru">Базовая стилизация</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="undecorated">
+                    <record key="title">
+                        <value lang="en">Undecorated</value>
+                        <value lang="ru">Не декорированный</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="separated">
+                    <record key="title">
+                        <value lang="en">With separated elements</value>
+                        <value lang="ru">С отдельными элементами</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="separated-undecorated">
+                    <record key="title">
+                        <value lang="en">Undecorated{br}With separated elements</value>
+                        <value lang="ru">Не декорированный{br}С отдельными элементами</value>
                     </record>
                 </Dictionary>
             </Dictionary>
@@ -2467,6 +2519,62 @@
                 <record key="duration">
                     <value lang="en">Duration:</value>
                     <value lang="ru">Длительность:</value>
+                </record>
+            </Dictionary>
+        </Dictionary>
+        <Dictionary prefix="features">
+            <record key="title">
+                <value lang="en">Other Features</value>
+                <value lang="ru">Другие Возможности</value>
+            </record>
+            <Dictionary prefix="shapedetection">
+                <record key="title">
+                    <value lang="en">Component shape detection</value>
+                    <value lang="ru">Определение форм компонентов</value>
+                </record>
+                <record key="examples">
+                    <value lang="en">Shape detection examples</value>
+                    <value lang="ru">Примеры определения формы</value>
+                </record>
+                <record key="info1">
+                    <value lang="en">Try hovering and clicking components below around their {visual:b} border,{br}ones with WebLaF shape detection enabled will only react to mouse events within border bounds.</value>
+                    <value lang="ru">Попробуйте навести мышь и покликать около {визуальных:b} бордеров компонентов,{br}приведённых ниже - те что используют расширенное определение форм будут реагировать{br}только на события в рамках своего визуального бордера.</value>
+                </record>
+                <record key="basic">
+                    <value lang="en">Basic {Swing:b}</value>
+                    <value lang="ru">Базовое в {Swing:b}</value>
+                </record>
+                <record key="advanced">
+                    <value lang="en">Advanced {WebLaF:b}</value>
+                    <value lang="ru">Расширенное в {WebLaF:b}</value>
+                </record>
+                <record key="button">
+                    <value lang="en">Click me!</value>
+                    <value lang="ru">Кликни меня!</value>
+                </record>
+                <record key="textarea">
+                    <value lang="en" state="input-prompt">Simple text area</value>
+                    <value lang="ru" state="input-prompt">Простая текстовая область</value>
+                </record>
+                <record key="mouseevents">
+                    <value lang="en">Mouse events preview</value>
+                    <value lang="ru">Просмотр событий мыши</value>
+                </record>
+                <record key="enabled">
+                    <value lang="en">{Advanced shape detection enabled globally:b}</value>
+                    <value lang="ru">{Включить глобальное определение форм:b}</value>
+                </record>
+                <record key="info2">
+                    <value lang="en">Try changing {global:b} shape detection setting above,{br}decorated panel below will display locations of received mouse events:</value>
+                    <value lang="ru">Попробуйте изменить {глобальное:b} определение форм выше,{br}декорированная панель ниже покажет вам места событий мыши:</value>
+                </record>
+                <record key="info3">
+                    <value lang="en">These dots are generated on each {mouseMoved:b} event received by the area,{br}simple {MouseMotionListener:b} is used to receive these events.</value>
+                    <value lang="ru">По одной точке создаётся на каждое {mouseMoved:b} событие полученное областью,{br}простой {MouseMotionListener:b} использован для получения этих событий.</value>
+                </record>
+                <record key="info4">
+                    <value lang="en">WebLaF's advanced shape detection filters out events occuring outside of the decoration.{br}By default it is globally enabled for all components that support WebLaF styling.{br}It can be forcefully enabled or disabled globally or separately for each component instance.</value>
+                    <value lang="ru">WebLaF опреление форм фильтрует события происходящие вне декораций компонента.{br}По умолчанию определение форм включено глобально для всех компонентов, поддерживающих WebLaF стилизацию.{br}Оно может быть насильно включено или отключено глобально или отдельно для каждого инстанса компонента.</value>
                 </record>
             </Dictionary>
         </Dictionary>

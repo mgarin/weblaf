@@ -23,9 +23,7 @@ import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.layout.TableLayout;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.separator.WebSeparator;
-import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -37,7 +35,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public abstract class AbstractTitledPreview extends AbstractPreview
 {
     /**
@@ -169,15 +166,6 @@ public abstract class AbstractTitledPreview extends AbstractPreview
      * @return preview content component
      */
     protected abstract List<? extends JComponent> createPreviewElements ();
-
-    @Override
-    public void applySkin ( final Skin skin )
-    {
-        for ( final JComponent component : getPreviewElements () )
-        {
-            StyleManager.setSkin ( component, skin, true );
-        }
-    }
 
     @Override
     public void applyEnabled ( final boolean enabled )

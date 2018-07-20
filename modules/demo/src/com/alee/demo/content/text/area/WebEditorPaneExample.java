@@ -29,7 +29,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebEditorPaneExample extends AbstractStylePreviewExample
 {
     @Override
@@ -53,9 +52,10 @@ public class WebEditorPaneExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final PromptPane e1 = new PromptPane ( "prompt", StyleId.editorpane );
-        final DecoratedPane e2 = new DecoratedPane ( "decorated", StyleId.editorpaneDecorated );
-        return CollectionUtils.<Preview>asList ( e1, e2 );
+        return CollectionUtils.<Preview>asList (
+                new PromptPane ( "prompt", StyleId.editorpane ),
+                new DecoratedPane ( "decorated", StyleId.editorpaneDecorated )
+        );
     }
 
     /**

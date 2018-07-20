@@ -99,7 +99,7 @@
     </style>
 
     <!-- File list with tiles view -->
-    <style type="list" id="tiles" extends="filelist">
+    <style type="list" id="filelist-tiles" extends="filelist">
         <component class="com.alee.extended.list.WebFileList">
             <preferredColumnCount>3</preferredColumnCount>
             <preferredRowCount>6</preferredRowCount>
@@ -107,13 +107,41 @@
         </component>
     </style>
 
+    <!-- Non-opaque file list with tiles view -->
+    <style type="list" id="filelist-tiles-non-opaque" extends="filelist-tiles">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
+    <!-- Transparent file list with tiles view -->
+    <style type="list" id="filelist-tiles-transparent" extends="filelist-tiles-non-opaque">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
     <!-- File list with icons view -->
-    <style type="list" id="icons" extends="filelist">
+    <style type="list" id="filelist-icons" extends="filelist">
         <component class="com.alee.extended.list.WebFileList">
             <preferredColumnCount>7</preferredColumnCount>
             <preferredRowCount>5</preferredRowCount>
             <fileListViewType>icons</fileListViewType>
         </component>
+    </style>
+
+    <!-- Non-opaque file list with icons view -->
+    <style type="list" id="filelist-icons-non-opaque" extends="filelist-icons">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
+    <!-- Transparent file list with icons view -->
+    <style type="list" id="filelist-icons-transparent" extends="filelist-icons-non-opaque">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
     </style>
 
 </skin>

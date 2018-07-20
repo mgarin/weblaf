@@ -33,7 +33,6 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public class WebSplitButtonUI<C extends WebSplitButton> extends WSplitButtonUI<C>
         implements ShapeSupport, MarginSupport, PaddingSupport, SwingConstants
 {
@@ -82,6 +81,18 @@ public class WebSplitButtonUI<C extends WebSplitButton> extends WSplitButtonUI<C
     }
 
     @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( button, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( button, painter, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return PainterSupport.getMargin ( button );
@@ -108,7 +119,7 @@ public class WebSplitButtonUI<C extends WebSplitButton> extends WSplitButtonUI<C
     @Override
     public boolean isOnSplit ()
     {
-        return painter != null && painter.isOnSplit ();
+        return painter != null && painter.isOnMenu ();
     }
 
     /**
@@ -137,6 +148,12 @@ public class WebSplitButtonUI<C extends WebSplitButton> extends WSplitButtonUI<C
                 WebSplitButtonUI.this.painter = newPainter;
             }
         }, this.painter, painter, ISplitButtonPainter.class, AdaptiveSplitButtonPainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

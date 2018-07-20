@@ -38,7 +38,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class JMenuBarExample extends AbstractStylePreviewExample
 {
     @Override
@@ -68,9 +67,10 @@ public class JMenuBarExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final MenuBarPreview e1 = new MenuBarPreview ( "basic", FeatureState.updated, StyleId.menubar );
-        final MenuBarPreview e2 = new MenuBarPreview ( "undecorated", FeatureState.updated, StyleId.menubarUndecorated );
-        return CollectionUtils.<Preview>asList ( e1, e2 );
+        return CollectionUtils.<Preview>asList (
+                new MenuBarPreview ( "basic", FeatureState.updated, StyleId.menubar ),
+                new MenuBarPreview ( "undecorated", FeatureState.updated, StyleId.menubarUndecorated )
+        );
     }
 
     /**

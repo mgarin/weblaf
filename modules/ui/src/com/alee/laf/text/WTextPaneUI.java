@@ -26,7 +26,6 @@ import javax.swing.plaf.basic.BasicTextPaneUI;
  *
  * @author Mikle Garin
  */
-
 public abstract class WTextPaneUI extends BasicTextPaneUI implements IInputPrompt
 {
     /**

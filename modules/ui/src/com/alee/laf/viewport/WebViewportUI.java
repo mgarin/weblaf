@@ -37,7 +37,6 @@ import java.awt.*;
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
-
 public class WebViewportUI<C extends JViewport> extends WViewportUI<C> implements ShapeSupport
 {
     /**
@@ -88,6 +87,18 @@ public class WebViewportUI<C extends JViewport> extends WViewportUI<C> implement
         return PainterSupport.getShape ( viewport, painter );
     }
 
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( viewport, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( viewport, painter, enabled );
+    }
+
     /**
      * Returns viewport painter.
      *
@@ -114,6 +125,12 @@ public class WebViewportUI<C extends JViewport> extends WViewportUI<C> implement
                 WebViewportUI.this.painter = newPainter;
             }
         }, this.painter, painter, IViewportPainter.class, AdaptiveViewportPainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

@@ -15,8 +15,7 @@ import java.util.List;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-
-public class CheckBoxPainter<C extends JCheckBox, U extends WCheckBoxUI, D extends IDecoration<C, D>>
+public class CheckBoxPainter<C extends JCheckBox, U extends WCheckBoxUI<C>, D extends IDecoration<C, D>>
         extends AbstractStateButtonPainter<C, U, D> implements ICheckBoxPainter<C, U>
 {
     @Override

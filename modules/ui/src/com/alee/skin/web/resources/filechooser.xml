@@ -73,7 +73,7 @@
                 </style>
 
                 <!-- Files list scrollpane -->
-                <style type="scrollpane" id="view">
+                <style type="scrollpane" id="view" extends="hovering">
                     <painter>
                         <decorations>
                             <decoration>
@@ -84,11 +84,11 @@
                     </painter>
 
                     <!-- Files list -->
-                    <style type="list" id="file-tiles" extends="tiles" />
-                    <style type="list" id="file-icons" extends="icons" />
+                    <style type="list" id="file-tiles" extends="filelist-tiles-non-opaque" />
+                    <style type="list" id="file-icons" extends="filelist-icons-non-opaque" />
 
                     <!-- Files table -->
-                    <style type="table" id="file-table" extends="filetable" />
+                    <style type="table" id="file-table" extends="filetable-non-opaque" />
 
                 </style>
 

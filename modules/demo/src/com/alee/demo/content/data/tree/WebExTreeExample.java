@@ -32,7 +32,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebExTreeExample extends AbstractStylePreviewExample
 {
     @Override
@@ -56,10 +55,11 @@ public class WebExTreeExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final BasicTree basic = new BasicTree ( StyleId.tree );
-        final EditableTree editable = new EditableTree ( StyleId.tree );
-        final DragAndDropTree drag = new DragAndDropTree ( StyleId.tree );
-        return CollectionUtils.<Preview>asList ( basic, editable, drag );
+        return CollectionUtils.<Preview>asList (
+                new BasicTree ( StyleId.tree ),
+                new EditableTree ( StyleId.tree ),
+                new DragAndDropTree ( StyleId.tree )
+        );
     }
 
     /**
@@ -80,7 +80,7 @@ public class WebExTreeExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebExTree tree = new WebExTree ( getStyleId (), createDataProvider () );
+            final WebExTree tree = new WebExTree ( getStyleId (), new SampleExDataProvider () );
             tree.setVisibleRowCount ( 8 );
             return CollectionUtils.asList ( new WebScrollPane ( tree ).setPreferredWidth ( 200 ) );
         }
@@ -104,7 +104,7 @@ public class WebExTreeExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebExTree tree = new WebExTree ( getStyleId (), createDataProvider () );
+            final WebExTree tree = new WebExTree ( getStyleId (), new SampleExDataProvider () );
             tree.setVisibleRowCount ( 8 );
             tree.setEditable ( true );
             return CollectionUtils.asList ( new WebScrollPane ( tree ).setPreferredWidth ( 200 ) );
@@ -129,7 +129,7 @@ public class WebExTreeExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebExTree left = new WebExTree ( getStyleId (), createDataProvider () );
+            final WebExTree left = new WebExTree ( getStyleId (), new SampleExDataProvider () );
             left.setVisibleRowCount ( 8 );
             left.setEditable ( true );
             left.setTransferHandler ( createTransferHandler () );
@@ -137,7 +137,7 @@ public class WebExTreeExample extends AbstractStylePreviewExample
             left.setDropMode ( DropMode.ON_OR_INSERT );
             final WebScrollPane leftScroll = new WebScrollPane ( left ).setPreferredWidth ( 200 );
 
-            final WebExTree right = new WebExTree ( getStyleId (), createDataProvider () );
+            final WebExTree right = new WebExTree ( getStyleId (), new SampleExDataProvider () );
             right.setVisibleRowCount ( 8 );
             right.setEditable ( true );
             right.setTransferHandler ( createTransferHandler () );
@@ -147,17 +147,6 @@ public class WebExTreeExample extends AbstractStylePreviewExample
 
             return CollectionUtils.asList ( leftScroll, rightScroll );
         }
-    }
-
-    /**
-     * Returns sample tree data provider.
-     * It will provide all tree data we need instead of the model.
-     *
-     * @return sample tree data provider
-     */
-    protected static ExTreeDataProvider<SampleNode> createDataProvider ()
-    {
-        return new SampleExDataProvider ();
     }
 
     /**

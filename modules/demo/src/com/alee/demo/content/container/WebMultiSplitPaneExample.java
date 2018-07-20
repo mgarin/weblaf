@@ -38,13 +38,12 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebMultiSplitPaneExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()
     {
-        return "webmultisplitpane";
+        return "multisplitpane";
     }
 
     @Override

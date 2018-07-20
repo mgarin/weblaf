@@ -21,10 +21,7 @@ import com.alee.laf.WebUI;
 import com.alee.utils.LafUtils;
 
 import javax.swing.*;
-import javax.swing.border.AbstractBorder;
-import javax.swing.border.Border;
 import javax.swing.plaf.PanelUI;
-import java.awt.*;
 
 /**
  * Pluggable look and feel interface for {@link JPanel} component.
@@ -32,7 +29,6 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public abstract class WPanelUI<C extends JPanel> extends PanelUI implements WebUI<C>
 {
     /**
@@ -102,29 +98,5 @@ public abstract class WPanelUI<C extends JPanel> extends PanelUI implements WebU
     protected void uninstallListeners ()
     {
         // Do nothing by default
-    }
-
-    @Override
-    public int getBaseline ( final JComponent c, final int width, final int height )
-    {
-        super.getBaseline ( c, width, height );
-        final Border border = c.getBorder ();
-        if ( border instanceof AbstractBorder )
-        {
-            return ( ( AbstractBorder ) border ).getBaseline ( c, width, height );
-        }
-        return -1;
-    }
-
-    @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
-    {
-        super.getBaselineResizeBehavior ( c );
-        final Border border = c.getBorder ();
-        if ( border instanceof AbstractBorder )
-        {
-            return ( ( AbstractBorder ) border ).getBaselineResizeBehavior ( c );
-        }
-        return Component.BaselineResizeBehavior.OTHER;
     }
 }

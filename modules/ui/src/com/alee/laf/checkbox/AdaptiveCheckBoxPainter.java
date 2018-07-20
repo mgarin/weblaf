@@ -14,9 +14,8 @@ import java.awt.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
-public final class AdaptiveCheckBoxPainter<C extends JCheckBox, U extends WCheckBoxUI> extends AdaptivePainter<C, U>
-        implements ICheckBoxPainter<C, U>
+public final class AdaptiveCheckBoxPainter<C extends JCheckBox, U extends WCheckBoxUI<C>>
+        extends AdaptivePainter<C, U> implements ICheckBoxPainter<C, U>
 {
     /**
      * Constructs new {@link AdaptiveCheckBoxPainter} for the specified painter.

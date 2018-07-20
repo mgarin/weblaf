@@ -29,7 +29,6 @@ import javax.swing.plaf.ProgressBarUI;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public abstract class WProgressBarUI<C extends JProgressBar> extends ProgressBarUI implements WebUI<C>
 {
     /**

@@ -28,7 +28,6 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public abstract class WCheckBoxUI<C extends JCheckBox> extends WButtonUI<C>
 {
     @Override

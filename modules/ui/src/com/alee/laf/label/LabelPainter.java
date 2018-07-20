@@ -30,9 +30,8 @@ import javax.swing.*;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-
-public class LabelPainter<C extends JLabel, U extends WLabelUI, D extends IDecoration<C, D>> extends AbstractLabelPainter<C, U, D>
-        implements ILabelPainter<C, U>
+public class LabelPainter<C extends JLabel, U extends WLabelUI<C>, D extends IDecoration<C, D>>
+        extends AbstractLabelPainter<C, U, D> implements ILabelPainter<C, U>
 {
     /**
      * Implementation is used completely from {@link AbstractLabelPainter}.

@@ -33,7 +33,6 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public class WebToggleButtonUI<C extends JToggleButton> extends WToggleButtonUI<C>
         implements ShapeSupport, MarginSupport, PaddingSupport, SwingConstants
 {
@@ -79,6 +78,18 @@ public class WebToggleButtonUI<C extends JToggleButton> extends WToggleButtonUI<
     public Shape getShape ()
     {
         return PainterSupport.getShape ( button, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( button, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( button, painter, enabled );
     }
 
     @Override
@@ -131,6 +142,12 @@ public class WebToggleButtonUI<C extends JToggleButton> extends WToggleButtonUI<
                 WebToggleButtonUI.this.painter = newPainter;
             }
         }, this.painter, painter, IToggleButtonPainter.class, AdaptiveToggleButtonPainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

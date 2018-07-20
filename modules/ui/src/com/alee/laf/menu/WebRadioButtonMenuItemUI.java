@@ -33,7 +33,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public class WebRadioButtonMenuItemUI extends BasicRadioButtonMenuItemUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -78,6 +77,18 @@ public class WebRadioButtonMenuItemUI extends BasicRadioButtonMenuItemUI impleme
     public Shape getShape ()
     {
         return PainterSupport.getShape ( menuItem, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( menuItem, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( menuItem, painter, enabled );
     }
 
     @Override
@@ -130,6 +141,12 @@ public class WebRadioButtonMenuItemUI extends BasicRadioButtonMenuItemUI impleme
                 WebRadioButtonMenuItemUI.this.painter = newPainter;
             }
         }, this.painter, painter, IRadioButtonMenuItemPainter.class, AdaptiveRadioButtonMenuItemPainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

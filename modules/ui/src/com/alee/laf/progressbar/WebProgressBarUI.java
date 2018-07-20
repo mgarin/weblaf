@@ -44,7 +44,6 @@ import java.beans.PropertyChangeListener;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public class WebProgressBarUI<C extends JProgressBar> extends WProgressBarUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -121,6 +120,18 @@ public class WebProgressBarUI<C extends JProgressBar> extends WProgressBarUI<C> 
     }
 
     @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( progressBar, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( progressBar, painter, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return PainterSupport.getMargin ( progressBar );
@@ -170,6 +181,12 @@ public class WebProgressBarUI<C extends JProgressBar> extends WProgressBarUI<C> 
                 WebProgressBarUI.this.painter = newPainter;
             }
         }, this.painter, painter, IProgressBarPainter.class, AdaptiveProgressBarPainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

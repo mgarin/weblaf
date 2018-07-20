@@ -42,7 +42,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -113,6 +112,18 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
     public Shape getShape ()
     {
         return PainterSupport.getShape ( scrollbar, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( scrollbar, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( scrollbar, painter, enabled );
     }
 
     @Override
@@ -234,6 +245,12 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
     protected Dimension getMinimumThumbSize ()
     {
         return minimumThumbSize;
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

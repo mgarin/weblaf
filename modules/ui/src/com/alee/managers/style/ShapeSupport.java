@@ -17,6 +17,8 @@
 
 package com.alee.managers.style;
 
+import com.alee.laf.WebLookAndFeel;
+
 import java.awt.*;
 
 /**
@@ -31,9 +33,25 @@ import java.awt.*;
 public interface ShapeSupport
 {
     /**
-     * Returns component shape.
+     * Returns component {@link Shape}.
      *
-     * @return component shape
+     * @return component {@link Shape}
      */
     public Shape getShape ();
+
+    /**
+     * Returns whether or not component's custom {@link Shape} is used for better mouse events detection.
+     * If it wasn't explicitly specified - {@link WebLookAndFeel#isShapeDetectionEnabled()} is used as result.
+     *
+     * @return {@code true} if component's custom {@link Shape} is used for better mouse events detection, {@code false} otherwise
+     */
+    public boolean isShapeDetectionEnabled ();
+
+    /**
+     * Sets whether or not component's custom {@link Shape} should be used for better mouse events detection.
+     * It can be enabled globally through {@link com.alee.laf.WebLookAndFeel#setShapeDetectionEnabled(boolean)}.
+     *
+     * @param enabled whether or not component's custom {@link Shape} should be used for better mouse events detection
+     */
+    public void setShapeDetectionEnabled ( boolean enabled );
 }

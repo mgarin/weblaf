@@ -23,14 +23,13 @@ import java.awt.*;
  * @author Mikle Garin
  * @see com.alee.extended.layout.VerticalFlowLayout
  */
-
 public class HorizontalFlowLayout extends AbstractLayoutManager
 {
     /**
      * todo 1. Add horizontal alignment setting
      */
 
-    protected int gap;
+    protected int hgap;
     protected boolean fillLast;
 
     public HorizontalFlowLayout ()
@@ -38,25 +37,25 @@ public class HorizontalFlowLayout extends AbstractLayoutManager
         this ( 2 );
     }
 
-    public HorizontalFlowLayout ( final int gap )
+    public HorizontalFlowLayout ( final int hgap )
     {
-        this ( gap, false );
+        this ( hgap, false );
     }
 
-    public HorizontalFlowLayout ( final int gap, final boolean fillLast )
+    public HorizontalFlowLayout ( final int hgap, final boolean fillLast )
     {
-        this.gap = gap;
+        this.hgap = hgap;
         this.fillLast = fillLast;
     }
 
     public int getHorizontalGap ()
     {
-        return gap;
+        return hgap;
     }
 
-    public void setHorizGap ( final int gap )
+    public void setHorizontalGap ( final int hgap )
     {
-        this.gap = gap;
+        this.hgap = hgap;
     }
 
     public boolean isFillLast ()
@@ -129,28 +128,29 @@ public class HorizontalFlowLayout extends AbstractLayoutManager
         return getLayoutSize ( container, true );
     }
 
-    protected Dimension getLayoutSize ( final Container container, final boolean min )
+    protected Dimension getLayoutSize ( final Container container, final boolean minimum )
     {
-        final int count = container.getComponentCount ();
         final Dimension size = new Dimension ( 0, 0 );
-        for ( int i = 0; i < count; i++ )
+
+        for ( int i = 0; i < container.getComponentCount (); i++ )
         {
             final Component c = container.getComponent ( i );
             if ( c.isVisible () )
             {
-                final Dimension tmp = min ? c.getMinimumSize () : c.getPreferredSize ();
-                size.height = Math.max ( tmp.height, size.height );
+                final Dimension tmp = minimum ? c.getMinimumSize () : c.getPreferredSize ();
                 size.width += tmp.width;
-                size.width += getHorizontalGap ();
+                if ( i > 0 )
+                {
+                    size.width += getHorizontalGap ();
+                }
+                size.height = Math.max ( tmp.height, size.height );
             }
         }
-        if ( size.width > 0 )
-        {
-            size.width -= getHorizontalGap ();
-        }
+
         final Insets border = container.getInsets ();
         size.width += border.left + border.right;
         size.height += border.top + border.bottom;
+
         return size;
     }
 }

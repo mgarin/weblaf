@@ -46,6 +46,35 @@ public final class ShapeMethodsImpl
     }
 
     /**
+     * Returns whether or not component's custom {@link Shape} is used for better mouse events detection.
+     * If it wasn't explicitly specified - {@link com.alee.laf.WebLookAndFeel#isShapeDetectionEnabled()} is used as result.
+     *
+     * @param component {@link JComponent}
+     * @return {@code true} if component's custom {@link Shape} is used for better mouse events detection, {@code false} otherwise
+     */
+    public static boolean isShapeDetectionEnabled ( final JComponent component )
+    {
+        final ShapeSupport ui = getShapeSupportUI ( component );
+        return ui != null && ui.isShapeDetectionEnabled ();
+    }
+
+    /**
+     * Sets whether or not component's custom {@link Shape} should be used for better mouse events detection.
+     * It can be enabled globally through {@link com.alee.laf.WebLookAndFeel#setShapeDetectionEnabled(boolean)}.
+     *
+     * @param component {@link JComponent}
+     * @param enabled   whether or not component's custom {@link Shape} should be used for better mouse events detection
+     */
+    public static void setShapeDetectionEnabled ( final JComponent component, final boolean enabled )
+    {
+        final ShapeSupport ui = getShapeSupportUI ( component );
+        if ( ui != null )
+        {
+            ui.setShapeDetectionEnabled ( enabled );
+        }
+    }
+
+    /**
      * Returns UI with shape support.
      *
      * @param component component to retrieve UI from

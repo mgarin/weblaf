@@ -35,8 +35,7 @@ import java.util.List;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLink">How to use WebLink</a>
  * @see WebLink
  */
-
-public class LinkPainter<C extends WebLink, U extends WLinkUI, D extends IDecoration<C, D>>
+public class LinkPainter<C extends WebLink, U extends WLinkUI<C>, D extends IDecoration<C, D>>
         extends AbstractDecorationPainter<C, U, D> implements ILinkPainter<C, U>
 {
     @Override

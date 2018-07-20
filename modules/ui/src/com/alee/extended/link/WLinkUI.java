@@ -32,7 +32,6 @@ import java.awt.event.MouseEvent;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLink">How to use WebLink</a>
  * @see WebLink
  */
-
 public abstract class WLinkUI<C extends WebLink> extends WStyledLabelUI<C>
 {
     /**

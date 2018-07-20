@@ -32,7 +32,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebFileListExample extends AbstractStylePreviewExample
 {
     @Override
@@ -56,11 +55,12 @@ public class WebFileListExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final IconsFileList icons = new IconsFileList ( StyleId.filelistIcons );
-        final TilesFileList tiles = new TilesFileList ( StyleId.filelistTiles );
-        final ScrollableList scrollable = new ScrollableList ( StyleId.filelistIcons );
-        final EditableList editable = new EditableList ( StyleId.filelistTiles );
-        return CollectionUtils.<Preview>asList ( icons, tiles, scrollable, editable );
+        return CollectionUtils.<Preview>asList (
+                new IconsFileList ( StyleId.filelistIcons ),
+                new TilesFileList ( StyleId.filelistTiles ),
+                new ScrollableList ( StyleId.filelistIcons ),
+                new EditableList ( StyleId.filelistTiles )
+        );
     }
 
     /**

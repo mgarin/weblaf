@@ -1028,6 +1028,25 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     }
 
     @Override
+    public boolean contains ( final C c, final U ui, final Bounds bounds, final int x, final int y )
+    {
+        final D decoration = getDecoration ();
+        if ( isDecorationAvailable ( decoration ) )
+        {
+            // Creating additional bounds
+            final Bounds marginBounds = new Bounds ( bounds, BoundsType.margin, c, decoration );
+
+            // Using decoration contains method
+            return decoration.contains ( c, marginBounds, x, y );
+        }
+        else
+        {
+            // Using default contains method
+            return super.contains ( c, ui, bounds, x, y );
+        }
+    }
+
+    @Override
     public int getBaseline ( final C c, final U ui, final Bounds bounds )
     {
         final D decoration = getDecoration ();

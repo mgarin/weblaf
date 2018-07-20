@@ -28,8 +28,7 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
-public interface IPanelPainter<C extends JPanel, U extends WPanelUI> extends SpecificPainter<C, U>
+public interface IPanelPainter<C extends JPanel, U extends WPanelUI<C>> extends SpecificPainter<C, U>
 {
     /**
      * This interface doesn't offer any additional methods to implement.

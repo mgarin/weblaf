@@ -33,7 +33,6 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public class WebSeparatorUI<C extends JSeparator> extends WSeparatorUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -78,6 +77,18 @@ public class WebSeparatorUI<C extends JSeparator> extends WSeparatorUI<C> implem
     public Shape getShape ()
     {
         return PainterSupport.getShape ( separator, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( separator, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( separator, painter, enabled );
     }
 
     @Override
@@ -130,6 +141,12 @@ public class WebSeparatorUI<C extends JSeparator> extends WSeparatorUI<C> implem
                 WebSeparatorUI.this.painter = newPainter;
             }
         }, this.painter, painter, ISeparatorPainter.class, AdaptiveSeparatorPainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

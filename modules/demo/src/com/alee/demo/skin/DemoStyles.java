@@ -25,7 +25,6 @@ import com.alee.managers.style.StyleId;
  *
  * @author Mikle Garin
  */
-
 public final class DemoStyles
 {
     /**
@@ -74,6 +73,15 @@ public final class DemoStyles
      */
     public static final StyleId easingEastBar = StyleId.of ( "easing-east-bar" );
     public static final StyleId easingSouthBar = StyleId.of ( "easing-south-bar" );
+    public static final StyleId shapedetectionTitle = StyleId.of ( "shape-detection-title" );
+    public static final StyleId shapedetectionSubTitle = StyleId.of ( "shape-detection-sub-title" );
+    public static final StyleId shapedetectionTestPanel = StyleId.of ( "shape-detection-test-panel" );
+    public static final StyleId shapedetectionTestPanelLeft = StyleId.of ( "shape-detection-test-panel-left" );
+    public static final StyleId shapedetectionTestPanelRight = StyleId.of ( "shape-detection-test-panel-right" );
+    public static final StyleId shapedetectionBoundsPanel = StyleId.of ( "shape-detection-bounds-panel" );
+    public static final StyleId shapedetectionButton = StyleId.of ( "shape-detection-button" );
+    public static final StyleId shapedetectionTextArea = StyleId.of ( "shape-detection-textarea" );
+    public static final StyleId shapedetectionDecoratedPanel = StyleId.of ( "shape-detection-decorated-panel" );
 
     /**
      * Example styles.

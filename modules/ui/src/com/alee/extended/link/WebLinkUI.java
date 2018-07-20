@@ -35,7 +35,6 @@ import java.awt.*;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLink">How to use WebLink</a>
  * @see WebLink
  */
-
 public class WebLinkUI<C extends WebLink> extends WLinkUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -80,6 +79,18 @@ public class WebLinkUI<C extends WebLink> extends WLinkUI<C> implements ShapeSup
     public Shape getShape ()
     {
         return PainterSupport.getShape ( label, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( label, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( label, painter, enabled );
     }
 
     @Override
@@ -132,6 +143,12 @@ public class WebLinkUI<C extends WebLink> extends WLinkUI<C> implements ShapeSup
                 WebLinkUI.this.painter = newPainter;
             }
         }, this.painter, painter, ILinkPainter.class, AdaptiveLinkPainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

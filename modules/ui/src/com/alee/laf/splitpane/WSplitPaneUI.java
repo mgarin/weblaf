@@ -41,7 +41,6 @@ import java.util.List;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public abstract class WSplitPaneUI<C extends JSplitPane> extends SplitPaneUI implements WebUI<C>
 {
     /**

@@ -20,7 +20,6 @@ import java.util.List;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-
 public abstract class AbstractButtonPainter<C extends AbstractButton, U extends ButtonUI, D extends IDecoration<C, D>>
         extends AbstractDecorationPainter<C, U, D> implements IAbstractButtonPainter<C, U>, ChangeListener
 {

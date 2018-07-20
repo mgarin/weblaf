@@ -34,7 +34,6 @@ import com.alee.laf.text.WebTextField;
 import com.alee.managers.animation.easing.*;
 import com.alee.managers.animation.transition.Transition;
 import com.alee.managers.animation.transition.TransitionAdapter;
-import com.alee.managers.style.Skin;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.MathUtils;
@@ -53,7 +52,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class EasingExample extends AbstractPreviewExample
 {
     @Override
@@ -83,8 +81,9 @@ public class EasingExample extends AbstractPreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final EasingGraphPreview preview = new EasingGraphPreview ();
-        return CollectionUtils.<Preview>asList ( preview );
+        return CollectionUtils.<Preview>asList (
+                new EasingGraphPreview ()
+        );
     }
 
     /**
@@ -148,7 +147,7 @@ public class EasingExample extends AbstractPreviewExample
                         final Easing easing = ( Easing ) easingChooser.getSelectedValue ();
                         easingGraph.preview ( easing, duration > 100L ? duration : 100L );
                     }
-                    catch ( final Exception e )
+                    catch ( final Exception ignored )
                     {
                         // Ignored
                     }
@@ -207,15 +206,11 @@ public class EasingExample extends AbstractPreviewExample
         }
 
         @Override
-        public void applySkin ( final Skin skin )
-        {
-            // todo
-        }
-
-        @Override
         public void applyEnabled ( final boolean enabled )
         {
-            // todo
+            /**
+             * Not available for this example.
+             */
         }
     }
 

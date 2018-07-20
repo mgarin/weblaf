@@ -30,8 +30,7 @@ import com.alee.painter.decoration.IDecoration;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  */
-
-public class StyledLabelPainter<C extends WebStyledLabel, U extends WStyledLabelUI, D extends IDecoration<C, D>>
+public class StyledLabelPainter<C extends WebStyledLabel, U extends WStyledLabelUI<C>, D extends IDecoration<C, D>>
         extends AbstractLabelPainter<C, U, D> implements IStyledLabelPainter<C, U>
 {
     /**

@@ -29,7 +29,6 @@ import javax.swing.plaf.SeparatorUI;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public abstract class WSeparatorUI<C extends JSeparator> extends SeparatorUI implements WebUI<C>
 {
     /**

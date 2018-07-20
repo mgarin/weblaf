@@ -9,8 +9,7 @@ import com.alee.laf.radiobutton.IAbstractStateButtonPainter;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
-public interface ITristateCheckBoxPainter<C extends WebTristateCheckBox, U extends WTristateCheckBoxUI>
+public interface ITristateCheckBoxPainter<C extends WebTristateCheckBox, U extends WTristateCheckBoxUI<C>>
         extends IAbstractStateButtonPainter<C, U>
 {
     /**

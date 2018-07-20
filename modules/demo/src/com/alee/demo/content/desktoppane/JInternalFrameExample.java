@@ -22,7 +22,6 @@ import com.alee.demo.api.example.wiki.OracleWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.demo.content.SampleData;
 import com.alee.managers.language.UILanguageManager;
-import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
@@ -36,7 +35,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class JInternalFrameExample extends AbstractPreviewExample
 {
     @Override
@@ -66,8 +64,9 @@ public class JInternalFrameExample extends AbstractPreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final InternalFramePreview preview = new InternalFramePreview ();
-        return CollectionUtils.<Preview>asList ( preview );
+        return CollectionUtils.<Preview>asList (
+                new InternalFramePreview ()
+        );
     }
 
     /**
@@ -98,10 +97,12 @@ public class JInternalFrameExample extends AbstractPreviewExample
                 addInternalFrame ( desktopPane, 1 );
                 addInternalFrame ( desktopPane, 2 );
             }
-            catch ( final PropertyVetoException ex )
+            catch ( final PropertyVetoException ignored )
             {
-                // Unfortunately some JInternalFrame methods throw non-runtime exceptions
-                // These exceptions are hidden in WebInternalFrame methods for convenience
+                /**
+                 * Unfortunately some JInternalFrame methods throw non-runtime exceptions.
+                 * These exceptions are hidden in WebInternalFrame for convenience so you can use it instead.
+                 */
             }
 
             return desktopPane;
@@ -151,10 +152,12 @@ public class JInternalFrameExample extends AbstractPreviewExample
                             internalFrame.setIcon ( !internalFrame.isIcon () );
                         }
                     }
-                    catch ( final PropertyVetoException ex )
+                    catch ( final PropertyVetoException ignored )
                     {
-                        // Unfortunately some JInternalFrame methods throw non-runtime exceptions
-                        // These exceptions are hidden in WebInternalFrame for convenience so you can use it instead
+                        /**
+                         * Unfortunately some JInternalFrame methods throw non-runtime exceptions.
+                         * These exceptions are hidden in WebInternalFrame for convenience so you can use it instead.
+                         */
                     }
                 }
             } );
@@ -164,12 +167,6 @@ public class JInternalFrameExample extends AbstractPreviewExample
             internalFrame.setClosed ( true );
             internalFrame.setLocation ( 150 + 25 * index, 25 + 25 * index );
             internalFrame.pack ();
-        }
-
-        @Override
-        public void applySkin ( final Skin skin )
-        {
-            // todo
         }
 
         @Override

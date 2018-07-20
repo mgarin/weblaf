@@ -17,13 +17,13 @@
 
 package com.alee.laf.spinner;
 
+import com.alee.api.jdk.Consumer;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.icon.Icons;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -36,7 +36,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public class WebSpinnerUI extends BasicSpinnerUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -150,6 +149,18 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeSupport, Margin
     }
 
     @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( spinner, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( spinner, painter, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return PainterSupport.getMargin ( spinner );
@@ -199,6 +210,12 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeSupport, Margin
                 WebSpinnerUI.this.painter = newPainter;
             }
         }, this.painter, painter, ISpinnerPainter.class, AdaptiveSpinnerPainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

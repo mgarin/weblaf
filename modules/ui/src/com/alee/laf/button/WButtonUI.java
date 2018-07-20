@@ -30,7 +30,6 @@ import javax.swing.plaf.ButtonUI;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public abstract class WButtonUI<C extends AbstractButton> extends ButtonUI implements WebUI<C>
 {
     /**

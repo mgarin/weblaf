@@ -30,8 +30,8 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
-public final class AdaptiveLabelPainter<C extends JLabel, U extends WebLabelUI> extends AdaptivePainter<C, U> implements ILabelPainter<C, U>
+public final class AdaptiveLabelPainter<C extends JLabel, U extends WLabelUI<C>>
+        extends AdaptivePainter<C, U> implements ILabelPainter<C, U>
 {
     /**
      * Constructs new AdaptiveLabelPainter for the specified painter.

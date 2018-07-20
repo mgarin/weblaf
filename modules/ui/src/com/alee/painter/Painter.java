@@ -39,7 +39,6 @@ import java.awt.*;
  * @see com.alee.painter.decoration.AbstractDecorationPainter
  * @see com.alee.painter.decoration.AbstractSectionDecorationPainter
  */
-
 public interface Painter<C extends JComponent, U extends ComponentUI>
 {
     /**
@@ -83,12 +82,24 @@ public interface Painter<C extends JComponent, U extends ComponentUI>
     public Boolean isOpaque ();
 
     /**
+     * Returns whether or not specified (x,y) location is contained within the shape of the component.
+     *
+     * @param c      {@link JComponent}
+     * @param ui     {@link ComponentUI}
+     * @param bounds bounds to check
+     * @param x      X coordinate
+     * @param y      Y coordinate
+     * @return {@code true} if specified (x,y) location is contained within the shape of the component, {@code false} otherwise
+     */
+    public boolean contains ( C c, U ui, Bounds bounds, int x, int y );
+
+    /**
      * Returns component baseline within the specified bounds, measured from the top of the bounds.
      * A return value less than {@code 0} indicates this component does not have a reasonable baseline.
      * This method is primarily meant for {@code java.awt.LayoutManager}s to align components along their baseline.
      *
-     * @param c      aligned component
-     * @param ui     aligned component UI
+     * @param c      aligned {@link JComponent}
+     * @param ui     aligned {@link ComponentUI}
      * @param bounds bounds to get the baseline for
      * @return component baseline within the specified bounds, measured from the top of the bounds
      */

@@ -65,9 +65,10 @@ public class JFrameExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final FramePreview e1 = new FramePreview ( "basic", FeatureState.updated, StyleId.frame );
-        final FramePreview e2 = new FramePreview ( "decorated", FeatureState.updated, StyleId.frameDecorated );
-        return CollectionUtils.<Preview>asList ( e1, e2 );
+        return CollectionUtils.<Preview>asList (
+                new FramePreview ( "basic", FeatureState.updated, StyleId.frame ),
+                new FramePreview ( "decorated", FeatureState.updated, StyleId.frameDecorated )
+        );
     }
 
     /**

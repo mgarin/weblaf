@@ -47,7 +47,6 @@ import java.util.Map;
  *
  * @author Mikle Garin
  */
-
 public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -483,6 +482,18 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
     }
 
     @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( scrollpane, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( scrollpane, painter, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return PainterSupport.getMargin ( scrollpane );
@@ -605,6 +616,12 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
             scrollpane.remove ( corner );
         }
         cornersCache.clear ();
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

@@ -32,7 +32,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class JToggleButtonExample extends AbstractStylePreviewExample
 {
     @Override
@@ -62,11 +61,12 @@ public class JToggleButtonExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final TextToggleButton e1 = new TextToggleButton ( StyleId.togglebutton );
-        final TextToggleButton e2 = new TextToggleButton ( StyleId.togglebuttonHover );
-        final IconToggleButton e3 = new IconToggleButton ( StyleId.togglebuttonIcon );
-        final IconToggleButton e4 = new IconToggleButton ( StyleId.togglebuttonIconHover );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3, e4 );
+        return CollectionUtils.<Preview>asList (
+                new TextToggleButton ( StyleId.togglebutton ),
+                new TextToggleButton ( StyleId.togglebuttonHover ),
+                new IconToggleButton ( StyleId.togglebuttonIcon ),
+                new IconToggleButton ( StyleId.togglebuttonIconHover )
+        );
     }
 
     /**

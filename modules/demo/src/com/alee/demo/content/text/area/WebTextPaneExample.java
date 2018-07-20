@@ -29,7 +29,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebTextPaneExample extends AbstractStylePreviewExample
 {
     @Override
@@ -53,9 +52,10 @@ public class WebTextPaneExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final PromptPane e1 = new PromptPane ( "prompt", StyleId.textpane );
-        final DecoratedPane e2 = new DecoratedPane ( "decorated", StyleId.textpaneDecorated );
-        return CollectionUtils.<Preview>asList ( e1, e2 );
+        return CollectionUtils.<Preview>asList (
+                new PromptPane ( "prompt", StyleId.textpane ),
+                new DecoratedPane ( "decorated", StyleId.textpaneDecorated )
+        );
     }
 
     /**

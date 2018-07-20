@@ -38,7 +38,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class JToolBarExample extends AbstractStylePreviewExample
 {
     @Override
@@ -68,11 +67,12 @@ public class JToolBarExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final ToolBarPreview e1 = new ToolBarPreview ( "basic", FeatureState.updated, StyleId.toolbar );
-        final ToolBarPreview e2 = new ToolBarPreview ( "undecorated", FeatureState.updated, StyleId.toolbarUndecorated );
-        final ToolBarPreview e3 = new ToolBarPreview ( "attached-north", FeatureState.updated, StyleId.toolbarAttachedNorth );
-        final ToolBarPreview e4 = new ToolBarPreview ( "attached-south", FeatureState.updated, StyleId.toolbarAttachedSouth );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3, e4 );
+        return CollectionUtils.<Preview>asList (
+                new ToolBarPreview ( "basic", FeatureState.updated, StyleId.toolbar ),
+                new ToolBarPreview ( "undecorated", FeatureState.updated, StyleId.toolbarUndecorated ),
+                new ToolBarPreview ( "attached-north", FeatureState.updated, StyleId.toolbarAttachedNorth ),
+                new ToolBarPreview ( "attached-south", FeatureState.updated, StyleId.toolbarAttachedSouth )
+        );
     }
 
     /**

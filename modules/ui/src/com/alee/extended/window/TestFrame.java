@@ -23,7 +23,6 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.version.VersionManager;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SystemUtils;
-import com.alee.utils.laf.WebBorder;
 
 import javax.swing.*;
 import java.awt.*;
@@ -619,7 +618,7 @@ public class TestFrame extends JFrame
         container = new JPanel ( layout );
         if ( margin != null )
         {
-            container.setBorder ( new WebBorder ( margin ) );
+            container.setBorder ( BorderFactory.createEmptyBorder ( margin.top, margin.left, margin.bottom, margin.right ) );
         }
         for ( final Component component : components )
         {

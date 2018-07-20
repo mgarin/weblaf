@@ -34,7 +34,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class JColorChooserExample extends AbstractStylePreviewExample
 {
     @Override
@@ -64,7 +63,9 @@ public class JColorChooserExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        return CollectionUtils.<Preview>asList ( new ColorChooserDialog ( StyleId.textfield ) );
+        return CollectionUtils.<Preview>asList (
+                new ColorChooserDialog ( StyleId.textfield )
+        );
     }
 
     /**

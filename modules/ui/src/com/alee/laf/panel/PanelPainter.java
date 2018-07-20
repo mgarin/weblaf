@@ -31,9 +31,8 @@ import javax.swing.*;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-
-public class PanelPainter<C extends JPanel, U extends WPanelUI, D extends IDecoration<C, D>> extends AbstractContainerPainter<C, U, D>
-        implements IPanelPainter<C, U>
+public class PanelPainter<C extends JPanel, U extends WPanelUI<C>, D extends IDecoration<C, D>>
+        extends AbstractContainerPainter<C, U, D> implements IPanelPainter<C, U>
 {
     /**
      * Implementation is used completely from {@link AbstractContainerPainter}.

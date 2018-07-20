@@ -26,7 +26,6 @@ import javax.swing.plaf.basic.BasicTextFieldUI;
  *
  * @author Mikle Garin
  */
-
 public abstract class WTextFieldUI extends BasicTextFieldUI implements IInputPrompt, ILeadingComponent, ITrailingComponent
 {
     /**

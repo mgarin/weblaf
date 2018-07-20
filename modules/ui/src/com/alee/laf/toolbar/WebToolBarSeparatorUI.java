@@ -33,7 +33,6 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public class WebToolBarSeparatorUI<C extends JToolBar.Separator> extends WToolBarSeparatorUI<C>
         implements ShapeSupport, MarginSupport, PaddingSupport
 {
@@ -79,6 +78,18 @@ public class WebToolBarSeparatorUI<C extends JToolBar.Separator> extends WToolBa
     public Shape getShape ()
     {
         return PainterSupport.getShape ( separator, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( separator, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( separator, painter, enabled );
     }
 
     @Override
@@ -131,6 +142,12 @@ public class WebToolBarSeparatorUI<C extends JToolBar.Separator> extends WToolBa
                 WebToolBarSeparatorUI.this.painter = newPainter;
             }
         }, this.painter, painter, IToolBarSeparatorPainter.class, AdaptiveToolBarSeparatorPainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

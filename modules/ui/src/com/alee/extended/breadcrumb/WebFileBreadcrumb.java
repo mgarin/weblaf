@@ -18,6 +18,7 @@
 package com.alee.extended.breadcrumb;
 
 import com.alee.extended.layout.VerticalFlowLayout;
+import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.ListCellParameters;
 import com.alee.laf.list.WebList;
@@ -51,14 +52,45 @@ public class WebFileBreadcrumb extends WebBreadcrumb
     public static ImageIcon dateIcon = new ImageIcon ( WebFileBreadcrumb.class.getResource ( "icons/file/date.png" ) );
     public static ImageIcon sizeIcon = new ImageIcon ( WebFileBreadcrumb.class.getResource ( "icons/file/size.png" ) );
 
-    private boolean displayFileIcon = WebFileBreadcrumbStyle.displayFileIcon;
-    private boolean displayFileName = WebFileBreadcrumbStyle.displayFileName;
-    private boolean displayFileTip = WebFileBreadcrumbStyle.displayFileTip;
-    private int fileNameLength = WebFileBreadcrumbStyle.fileNameLength;
-    private int listFileNameLength = WebFileBreadcrumbStyle.listFileNameLength;
-    private boolean showFullNameInTip = WebFileBreadcrumbStyle.showFullNameInTip;
-    private int maxVisibleListFiles = WebFileBreadcrumbStyle.maxVisibleListFiles;
-    private boolean autoExpandLastElement = WebFileBreadcrumbStyle.autoExpandLastElement;
+    /**
+     * Display file icon on file plate
+     */
+    private boolean displayFileIcon = true;
+
+    /**
+     * Display file name on file plate
+     */
+    private boolean displayFileName = true;
+
+    /**
+     * Display file type, size and modification date tip on file plate
+     */
+    private boolean displayFileTip = true;
+
+    /**
+     * Shorten file name inside file plate to specified symbols amount (0 to disable)
+     */
+    private int fileNameLength = 0;
+
+    /**
+     * Shorten file name inside file plate popup list to specified symbols amount (0 to disable)
+     */
+    private int listFileNameLength = 30;
+
+    /**
+     * Display full file name inside tip if needed
+     */
+    private boolean showFullNameInTip = true;
+
+    /**
+     * Maximum visible rows in file list inside file plate popups
+     */
+    private int maxVisibleListFiles = 8;
+
+    /**
+     * Auto expand last selected breadcrumb element menu
+     */
+    private boolean autoExpandLastElement = false;
 
     private File root;
     private File currentFile;
@@ -76,30 +108,7 @@ public class WebFileBreadcrumb extends WebBreadcrumb
     public WebFileBreadcrumb ( final File root )
     {
         super ();
-        initialize ();
         setRoot ( root );
-    }
-
-    private void initialize ()
-    {
-        setEncloseLastElement ( WebFileBreadcrumbStyle.encloseLastElement );
-
-        //        setClipProvider ( new ShapeProvider ()
-        //        {
-        //            public Shape provideShape ()
-        //            {
-        //                if ( !isUndecorated () && !isPaintRight () )
-        //                {
-        //                    return new Rectangle ( 0, 0,
-        //                            getWidth () - getInsets ().right - WebBreadcrumbStyle.shadeWidth -
-        //                                    getElementOverlap (), getHeight () ); // ltr support needed
-        //                }
-        //                else
-        //                {
-        //                    return null;
-        //                }
-        //            }
-        //        } );
     }
 
     public File getRoot ()
@@ -227,7 +236,7 @@ public class WebFileBreadcrumb extends WebBreadcrumb
     private void updatePath ()
     {
         // Disabling auto-update for the update time
-        setAutoUpdate ( false );
+        /*setAutoUpdate ( false );*/
 
         // Clearing current breadcrumb content
         removeAll ();
@@ -242,7 +251,7 @@ public class WebFileBreadcrumb extends WebBreadcrumb
         addFile ( root );
 
         // Restoring auto-update
-        setAutoUpdate ( true );
+        /*setAutoUpdate ( true );*/
     }
 
     private void addFile ( final File file )
@@ -250,7 +259,7 @@ public class WebFileBreadcrumb extends WebBreadcrumb
         if ( file.isDirectory () )
         {
             boolean showFullName = showFullNameInTip;
-            final WebBreadcrumbButton fileButton = new WebBreadcrumbButton ();
+            final WebButton fileButton = new WebButton ();
             if ( displayFileIcon )
             {
                 fileButton.setIcon ( FileUtils.getFileIcon ( file ) );
@@ -288,7 +297,7 @@ public class WebFileBreadcrumb extends WebBreadcrumb
         else
         {
             boolean showFullName = showFullNameInTip;
-            final WebBreadcrumbLabel fileButton = new WebBreadcrumbLabel ();
+            final WebLabel fileButton = new WebLabel ();
             if ( displayFileIcon )
             {
                 fileButton.setIcon ( FileUtils.getFileIcon ( file ) );
@@ -308,7 +317,7 @@ public class WebFileBreadcrumb extends WebBreadcrumb
         }
     }
 
-    private void showFilesPopup ( final File[] files, final WebBreadcrumbButton fileButton )
+    private void showFilesPopup ( final File[] files, final WebButton fileButton )
     {
         final WebWindow window = new WebWindow ( CoreSwingUtils.getWindowAncestor ( fileButton ) );
         window.setCloseOnFocusLoss ( true );

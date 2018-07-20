@@ -25,7 +25,6 @@ import javax.swing.plaf.basic.BasicListUI;
  *
  * @author Mikle Garin
  */
-
 public abstract class WListUI extends BasicListUI
 {
     /**

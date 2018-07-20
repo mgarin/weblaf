@@ -26,7 +26,6 @@ import javax.swing.plaf.basic.BasicTextAreaUI;
  *
  * @author Mikle Garin
  */
-
 public abstract class WTextAreaUI extends BasicTextAreaUI implements IInputPrompt
 {
     /**

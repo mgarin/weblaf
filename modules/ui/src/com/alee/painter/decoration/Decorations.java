@@ -36,7 +36,7 @@ import java.util.List;
  * @author Mikle Garin
  * @see IDecoration
  */
-@XStreamAlias ( "Decorations" )
+@XStreamAlias ( "decorations" )
 public final class Decorations<C extends JComponent, D extends IDecoration<C, D>>
         implements Iterable<D>, Overwriting, Cloneable, Serializable
 {

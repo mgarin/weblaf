@@ -22,6 +22,7 @@ import com.alee.api.jdk.Objects;
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
+import com.alee.laf.list.WebList;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.style.*;
@@ -31,6 +32,7 @@ import com.alee.painter.PainterSupport;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.swing.EditabilityListener;
 import com.alee.utils.swing.VisibilityListener;
 
@@ -42,6 +44,7 @@ import javax.swing.plaf.basic.ComboPopup;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -52,7 +55,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -263,6 +265,18 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     }
 
     @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( comboBox, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( comboBox, painter, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return PainterSupport.getMargin ( comboBox );
@@ -386,8 +400,29 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
             @Override
             protected JList createList ()
             {
-                //noinspection UnnecessaryLocalVariable
-                final JList list = super.createList ();
+                final WebList list = new WebList ( comboBox.getModel () )
+                {
+                    @Override
+                    public void processMouseEvent ( MouseEvent e )
+                    {
+                        if ( CoreSwingUtils.isMenuShortcutKeyDown ( e ) )
+                        {
+                            /**
+                             * Fix for 4234053. Filter out the Control Key from the list.
+                             * ie., don't allow CTRL key deselection.
+                             */
+                            final Toolkit toolkit = Toolkit.getDefaultToolkit ();
+                            e = new MouseEvent ( ( Component ) e.getSource (), e.getID (), e.getWhen (),
+                                    e.getModifiers () ^ toolkit.getMenuShortcutKeyMask (),
+                                    e.getX (), e.getY (),
+                                    e.getXOnScreen (), e.getYOnScreen (),
+                                    e.getClickCount (),
+                                    e.isPopupTrigger (),
+                                    MouseEvent.NOBUTTON );
+                        }
+                        super.processMouseEvent ( e );
+                    }
+                };
 
                 // Adding combobox reference for internal usage
                 list.putClientProperty ( COMBOBOX_INSTANCE, comboBox );
@@ -543,6 +578,12 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     public JList getListBox ()
     {
         return listBox;
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

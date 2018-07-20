@@ -17,11 +17,11 @@
 
 package com.alee.laf.label;
 
+import com.alee.api.jdk.Consumer;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -32,7 +32,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public class WebLabelUI extends WLabelUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -75,6 +74,18 @@ public class WebLabelUI extends WLabelUI implements ShapeSupport, MarginSupport,
     public Shape getShape ()
     {
         return PainterSupport.getShape ( label, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( label, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( label, painter, enabled );
     }
 
     @Override
@@ -127,6 +138,12 @@ public class WebLabelUI extends WLabelUI implements ShapeSupport, MarginSupport,
                 WebLabelUI.this.painter = newPainter;
             }
         }, this.painter, painter, ILabelPainter.class, AdaptiveLabelPainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

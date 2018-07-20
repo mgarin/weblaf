@@ -30,11 +30,16 @@ import java.util.List;
  * @author Mikle Garin
  * @author Michka Popoff
  */
-
 public class WebCollapsiblePaneExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()
+    {
+        return "collapsiblepane";
+    }
+
+    @Override
+    protected String getStyleFileName ()
     {
         return "collapsiblepane";
     }
@@ -48,11 +53,12 @@ public class WebCollapsiblePaneExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final BasicCollapsiblePanePreview e1 = new BasicCollapsiblePanePreview ( WebCollapsiblePane.TOP );
-        final BasicCollapsiblePanePreview e2 = new BasicCollapsiblePanePreview ( WebCollapsiblePane.LEFT );
-        final BasicCollapsiblePanePreview e3 = new BasicCollapsiblePanePreview ( WebCollapsiblePane.RIGHT );
-        final BasicCollapsiblePanePreview e4 = new BasicCollapsiblePanePreview ( WebCollapsiblePane.BOTTOM );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3, e4 );
+        return CollectionUtils.<Preview>asList (
+                new BasicCollapsiblePanePreview ( WebCollapsiblePane.TOP ),
+                new BasicCollapsiblePanePreview ( WebCollapsiblePane.LEFT ),
+                new BasicCollapsiblePanePreview ( WebCollapsiblePane.RIGHT ),
+                new BasicCollapsiblePanePreview ( WebCollapsiblePane.BOTTOM )
+        );
     }
 
     /**

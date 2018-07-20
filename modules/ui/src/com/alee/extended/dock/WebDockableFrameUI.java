@@ -524,6 +524,18 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
     }
 
     @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( frame, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( frame, painter, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return PainterSupport.getMargin ( frame );
@@ -573,6 +585,12 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
                 WebDockableFrameUI.this.painter = newPainter;
             }
         }, this.painter, painter, IDockableFramePainter.class, AdaptiveDockableFramePainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

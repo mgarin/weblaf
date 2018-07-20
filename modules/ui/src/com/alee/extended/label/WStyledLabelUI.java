@@ -29,7 +29,6 @@ import javax.swing.*;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  * @see WebStyledLabel
  */
-
 public abstract class WStyledLabelUI<C extends WebStyledLabel> extends WLabelUI<C> implements SwingConstants
 {
     @Override

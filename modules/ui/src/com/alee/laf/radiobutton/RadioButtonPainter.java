@@ -16,8 +16,7 @@ import java.util.List;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-
-public class RadioButtonPainter<C extends JRadioButton, U extends WRadioButtonUI, D extends IDecoration<C, D>>
+public class RadioButtonPainter<C extends JRadioButton, U extends WRadioButtonUI<C>, D extends IDecoration<C, D>>
         extends AbstractStateButtonPainter<C, U, D> implements IRadioButtonPainter<C, U>
 {
     @Override

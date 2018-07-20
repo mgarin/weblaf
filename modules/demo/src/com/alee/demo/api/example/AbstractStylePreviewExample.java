@@ -29,7 +29,6 @@ import java.io.File;
 /**
  * @author Mikle Garin
  */
-
 public abstract class AbstractStylePreviewExample extends AbstractPreviewExample implements Example
 {
     @Override

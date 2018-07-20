@@ -114,9 +114,9 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
         this.dateFormat = new SimpleDateFormat ( "dd.MM.yyyy", LanguageManager.getLocale () );
         this.allowUserInput = true;
         this.calendarCustomizer = null;
-        setDate ( date );
         updateUI ();
         setStyleId ( id );
+        setDate ( date );
     }
 
     @Override

@@ -17,5 +17,5 @@ public interface ISplitButtonPainter<C extends WebSplitButton, U extends WSplitB
      *
      * @return true if mouse is currently over the split menu button, false otherwise
      */
-    public boolean isOnSplit ();
+    public boolean isOnMenu ();
 }

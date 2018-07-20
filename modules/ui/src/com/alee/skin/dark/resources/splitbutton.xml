@@ -7,7 +7,7 @@
         <painter>
             <splitLineColor>20,20,20</splitLineColor>
             <splitLineDisabledColor>68,72,74</splitLineDisabledColor>
-            <splitIconGap>4</splitIconGap>
+            <menuIconGap>4</menuIconGap>
             <contentGap>6</contentGap>
             <decorations>
                 <decoration>
@@ -68,7 +68,7 @@
     <!-- Icon-only split button -->
     <style type="splitbutton" id="icon" padding="2">
         <painter>
-            <splitIconGap>2</splitIconGap>
+            <menuIconGap>2</menuIconGap>
             <contentGap>2</contentGap>
             <decorations>
                 <decoration>

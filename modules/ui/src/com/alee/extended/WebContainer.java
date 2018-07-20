@@ -17,6 +17,7 @@
 
 package com.alee.extended;
 
+import com.alee.api.jdk.BiConsumer;
 import com.alee.utils.swing.extensions.ContainerMethods;
 import com.alee.utils.swing.extensions.ContainerMethodsImpl;
 
@@ -116,5 +117,11 @@ public abstract class WebContainer<C extends WebContainer<C, U>, U extends Compo
     public C equalizeComponentsSize ()
     {
         return ContainerMethodsImpl.equalizeComponentsSize ( this );
+    }
+
+    @Override
+    public <T extends Component> C forEach ( final BiConsumer<Integer, T> consumer )
+    {
+        return ContainerMethodsImpl.forEach ( this, consumer );
     }
 }

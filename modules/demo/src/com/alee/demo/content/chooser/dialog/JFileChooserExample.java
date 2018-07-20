@@ -39,7 +39,6 @@ import java.util.List;
 /**
  * @author Michka Popoff
  */
-
 public class JFileChooserExample extends AbstractStylePreviewExample
 {
     /**
@@ -81,9 +80,10 @@ public class JFileChooserExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final OpenFileChooserDialog open = new OpenFileChooserDialog ( StyleId.filechooser );
-        final SaveFileChooserDialog save = new SaveFileChooserDialog ( StyleId.filechooser );
-        return CollectionUtils.<Preview>asList ( open, save );
+        return CollectionUtils.<Preview>asList (
+                new OpenFileChooserDialog ( StyleId.filechooser ),
+                new SaveFileChooserDialog ( StyleId.filechooser )
+        );
     }
 
     /**

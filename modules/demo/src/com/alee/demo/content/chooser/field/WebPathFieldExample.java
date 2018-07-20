@@ -29,7 +29,6 @@ import java.util.List;
 /**
  * @author Michka Popoff
  */
-
 public class WebPathFieldExample extends AbstractStylePreviewExample
 {
     @Override
@@ -53,8 +52,9 @@ public class WebPathFieldExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final PathField e1 = new PathField ( StyleId.pathfield );
-        return CollectionUtils.<Preview>asList ( e1 );
+        return CollectionUtils.<Preview>asList (
+                new PathField ( StyleId.pathfield )
+        );
     }
 
     /**

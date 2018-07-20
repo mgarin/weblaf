@@ -17,9 +17,9 @@
 
 package com.alee.demo.content.text.field;
 
+import com.alee.demo.api.example.*;
 import com.alee.demo.skin.DemoIcons;
 import com.alee.demo.skin.DemoStyles;
-import com.alee.demo.api.example.*;
 import com.alee.extended.image.WebImage;
 import com.alee.laf.text.WebPasswordField;
 import com.alee.managers.style.StyleId;
@@ -31,7 +31,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebPasswordFieldExample extends AbstractStylePreviewExample
 {
     @Override
@@ -55,10 +54,11 @@ public class WebPasswordFieldExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final InputPromptField e1 = new InputPromptField ( StyleId.passwordfield );
-        final LeadingComponentField e2 = new LeadingComponentField ( StyleId.passwordfield );
-        final TrailingComponentField e3 = new TrailingComponentField ( StyleId.passwordfield );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3 );
+        return CollectionUtils.<Preview>asList (
+                new InputPromptField ( StyleId.passwordfield ),
+                new LeadingComponentField ( StyleId.passwordfield ),
+                new TrailingComponentField ( StyleId.passwordfield )
+        );
     }
 
     /**

@@ -100,39 +100,42 @@ public class TableRowHeightOptimizer extends AbstractComponentBehavior<JTable> i
     public void tableChanged ( final TableModelEvent event )
     {
         int maxHeight = initialRowHeight;
-        final TableModel model = component.getModel ();
-        if ( model.getRowCount () > 0 )
+        if ( component.getColumnCount () > 0 )
         {
-            final Rectangle vr = component.getVisibleRect ();
-            if ( vr.width > 0 && vr.height > 0 )
+            final TableModel model = component.getModel ();
+            if ( model.getRowCount () > 0 )
             {
-                final Point upperLeft = vr.getLocation ();
-                final Point lowerRight = new Point ( vr.x + vr.width, vr.y + vr.height );
-                final int rMin = component.rowAtPoint ( upperLeft );
-                final int rMax = component.rowAtPoint ( lowerRight );
-                final int cStart = component.columnAtPoint ( upperLeft );
-                final int cEnd = component.columnAtPoint ( lowerRight );
-                final int cMin = Math.min ( cStart, cEnd );
-                final int cMax = Math.max ( cEnd, cStart );
-                for ( int row = rMin; row <= rMax; row++ )
+                final Rectangle vr = component.getVisibleRect ();
+                if ( vr.width > 0 && vr.height > 0 )
                 {
-                    for ( int col = cMin; col < cMax; col++ )
+                    final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
+                    final Point upperLeft = new Point ( ltr ? vr.x + 1 : vr.x + vr.width - 1, vr.y + 1 );
+                    final Point lowerLeft = new Point ( ltr ? vr.x + 1 : vr.x + vr.width - 1, vr.y + vr.height - 1 );
+                    final Point upperRight = new Point ( ltr ? vr.x + vr.width - 1 : vr.x + 1, vr.y + 1 );
+                    final int rMin = Math.max ( 0, component.rowAtPoint ( upperLeft ) );
+                    final int rMax = Math.min ( component.getRowCount () - 1, component.rowAtPoint ( lowerLeft ) );
+                    final int cMin = Math.max ( 0, component.columnAtPoint ( upperLeft ) );
+                    final int cMax = Math.min ( component.getColumnCount () - 1, component.columnAtPoint ( upperRight ) );
+                    for ( int row = rMin; row <= rMax; row++ )
                     {
-                        final TableCellRenderer cellRenderer = component.getCellRenderer ( row, col );
-                        final Component renderer = component.prepareRenderer ( cellRenderer, row, col );
+                        for ( int col = cMin; col < cMax; col++ )
+                        {
+                            final TableCellRenderer cellRenderer = component.getCellRenderer ( row, col );
+                            final Component renderer = component.prepareRenderer ( cellRenderer, row, col );
+                            final Dimension ps = renderer.getPreferredSize ();
+                            maxHeight = Math.max ( maxHeight, ps.height );
+                        }
+                    }
+                }
+                else
+                {
+                    for ( int col = 0; col < component.getColumnCount (); col++ )
+                    {
+                        final TableCellRenderer cellRenderer = component.getCellRenderer ( 0, col );
+                        final Component renderer = component.prepareRenderer ( cellRenderer, 0, col );
                         final Dimension ps = renderer.getPreferredSize ();
                         maxHeight = Math.max ( maxHeight, ps.height );
                     }
-                }
-            }
-            else
-            {
-                for ( int col = 0; col < component.getColumnCount (); col++ )
-                {
-                    final TableCellRenderer cellRenderer = component.getCellRenderer ( 0, col );
-                    final Component renderer = component.prepareRenderer ( cellRenderer, 0, col );
-                    final Dimension ps = renderer.getPreferredSize ();
-                    maxHeight = Math.max ( maxHeight, ps.height );
                 }
             }
         }

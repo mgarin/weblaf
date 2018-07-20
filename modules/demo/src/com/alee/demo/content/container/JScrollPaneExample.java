@@ -32,7 +32,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class JScrollPaneExample extends AbstractStylePreviewExample
 {
     @Override

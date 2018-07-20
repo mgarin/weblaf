@@ -31,13 +31,12 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebTristateCheckBoxExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()
     {
-        return "webtristatecheckbox";
+        return "tristatecheckbox";
     }
 
     @Override
@@ -52,19 +51,14 @@ public class WebTristateCheckBoxExample extends AbstractStylePreviewExample
         return FeatureType.extended;
     }
 
-    //    @Override
-    //    public WikiPage getWikiPage ()
-    //    {
-    //        return new WebLafWikiPage ( "How to Use Tristate Check Boxes" );
-    //    }
-
     @Override
     protected List<Preview> createPreviews ()
     {
-        final TextCheckBox e1 = new TextCheckBox ( "basic", StyleId.tristatecheckbox, "Simple check text" );
-        final TextCheckBox e2 = new TextCheckBox ( "styled", StyleId.tristatecheckboxStyled, "{Styled:b} {check:u} {text:c(red)}" );
-        final TextCheckBox e3 = new TextCheckBox ( "link", StyleId.tristatecheckboxLink, "Link-like {tristate check:b} box" );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3 );
+        return CollectionUtils.<Preview>asList (
+                new TextCheckBox ( "basic", StyleId.tristatecheckbox, "Simple check text" ),
+                new TextCheckBox ( "styled", StyleId.tristatecheckboxStyled, "{Styled:b} {check:u} {text:c(red)}" ),
+                new TextCheckBox ( "link", StyleId.tristatecheckboxLink, "Link-like {tristate check:b} box" )
+        );
     }
 
     /**

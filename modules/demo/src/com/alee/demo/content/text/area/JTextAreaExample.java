@@ -30,7 +30,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class JTextAreaExample extends AbstractStylePreviewExample
 {
     @Override
@@ -60,11 +59,12 @@ public class JTextAreaExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final BasicArea e1 = new BasicArea ( "basic", StyleId.textarea );
-        final FixedArea e2 = new FixedArea ( "fixed", StyleId.textarea );
-        final ScrollableArea e3 = new ScrollableArea ( "scrollable", StyleId.textarea );
-        final ReadOnlyArea e4 = new ReadOnlyArea ( "readonly", StyleId.textarea );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3, e4 );
+        return CollectionUtils.<Preview>asList (
+                new BasicArea ( "basic", StyleId.textarea ),
+                new FixedArea ( "fixed", StyleId.textarea ),
+                new ScrollableArea ( "scrollable", StyleId.textarea ),
+                new ReadOnlyArea ( "readonly", StyleId.textarea )
+        );
     }
 
     /**

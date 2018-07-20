@@ -127,4 +127,58 @@
     <style type="panel" id="easing-east-bar" extends="transparent" padding="55,0,55,55" />
     <style type="panel" id="easing-south-bar" extends="transparent" padding="0,25,25,25" />
 
+    <!-- Shape detection example -->
+    <style type="styledlabel" id="shape-detection-title" extends="separator" padding="25,0,0,0" />
+    <style type="styledlabel" id="shape-detection-sub-title" padding="25,25,0,25" />
+    <style type="panel" id="shape-detection-test-panel" extends="transparent" padding="25,25,25,25" />
+    <style type="panel" id="shape-detection-test-panel-left" extends="transparent" padding="25,25,25,12" />
+    <style type="panel" id="shape-detection-test-panel-right" extends="transparent" padding="25,12,25,25" />
+    <style type="button" id="shape-detection-button" padding="15">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="20" />
+                    <WebShadow type="outer" width="15" />
+                </decoration>
+                <decoration states="hover">
+                    <WebShadow type="inner" opacity="1" width="10" color="100,80,250" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+    <style type="textarea" id="shape-detection-textarea" extends="decorated" padding="15">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="20" />
+                    <WebShadow type="outer" width="15" />
+                </decoration>
+                <decoration states="hover">
+                    <WebShadow type="inner" opacity="1" width="10" color="100,80,250" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+    <style type="panel" id="shape-detection-bounds-panel" extends="transparent">
+        <painter>
+            <decorations>
+                <decoration>
+                    <BoundsShape />
+                    <LineBorder stroke="basic;1;round;round;0;4,5" color="lightGray" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+    <style type="panel" id="shape-detection-decorated-panel" extends="transparent">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="25" />
+                    <WebShadow type="outer" width="25" />
+                    <LineBorder stroke="basic;1;round;round;0;4,5" color="lightGray" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
 </skin>

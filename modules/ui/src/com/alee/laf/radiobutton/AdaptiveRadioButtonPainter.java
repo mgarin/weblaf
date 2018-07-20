@@ -14,9 +14,8 @@ import java.awt.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
-public final class AdaptiveRadioButtonPainter<C extends JRadioButton, U extends WRadioButtonUI> extends AdaptivePainter<C, U>
-        implements IRadioButtonPainter<C, U>
+public final class AdaptiveRadioButtonPainter<C extends JRadioButton, U extends WRadioButtonUI<C>>
+        extends AdaptivePainter<C, U> implements IRadioButtonPainter<C, U>
 {
     /**
      * Constructs new {@link AdaptiveRadioButtonPainter} for the specified painter.

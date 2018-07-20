@@ -33,7 +33,6 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public class WebPanelUI<C extends JPanel> extends WPanelUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -78,6 +77,18 @@ public class WebPanelUI<C extends JPanel> extends WPanelUI<C> implements ShapeSu
     public Shape getShape ()
     {
         return PainterSupport.getShape ( panel, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( panel, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( panel, painter, enabled );
     }
 
     @Override
@@ -130,6 +141,12 @@ public class WebPanelUI<C extends JPanel> extends WPanelUI<C> implements ShapeSu
                 WebPanelUI.this.painter = newPainter;
             }
         }, this.painter, painter, IPanelPainter.class, AdaptivePanelPainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

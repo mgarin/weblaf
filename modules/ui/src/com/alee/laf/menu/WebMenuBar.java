@@ -17,6 +17,7 @@
 
 package com.alee.laf.menu;
 
+import com.alee.api.jdk.BiConsumer;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
 import com.alee.managers.language.updaters.LanguageUpdater;
@@ -161,6 +162,18 @@ public class WebMenuBar extends JMenuBar implements Styleable, Paintable, ShapeM
     }
 
     @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return ShapeMethodsImpl.isShapeDetectionEnabled ( this );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return MarginMethodsImpl.getMargin ( this );
@@ -290,6 +303,12 @@ public class WebMenuBar extends JMenuBar implements Styleable, Paintable, ShapeM
     public WebMenuBar equalizeComponentsSize ()
     {
         return ContainerMethodsImpl.equalizeComponentsSize ( this );
+    }
+
+    @Override
+    public <T extends Component> WebMenuBar forEach ( final BiConsumer<Integer, T> consumer )
+    {
+        return ContainerMethodsImpl.forEach ( this, consumer );
     }
 
     @Override

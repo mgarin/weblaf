@@ -25,7 +25,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class ContainersGroup extends AbstractExampleGroup
 {
     @Override
@@ -45,7 +44,8 @@ public class ContainersGroup extends AbstractExampleGroup
                 WebMultiSplitPaneExample.class,
                 JToolBarExample.class,
                 GroupPaneExample.class,
-                WebCollapsiblePaneExample.class
+                WebCollapsiblePaneExample.class,
+                WebBreadcrumbExample.class
         );
     }
 }

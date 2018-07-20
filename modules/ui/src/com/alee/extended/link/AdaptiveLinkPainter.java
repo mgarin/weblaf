@@ -30,8 +30,8 @@ import com.alee.painter.Painter;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLink">How to use WebLink</a>
  * @see WebLink
  */
-
-public final class AdaptiveLinkPainter<C extends WebLink, U extends WLinkUI> extends AdaptivePainter<C, U> implements ILinkPainter<C, U>
+public final class AdaptiveLinkPainter<C extends WebLink, U extends WLinkUI<C>>
+        extends AdaptivePainter<C, U> implements ILinkPainter<C, U>
 {
     /**
      * Constructs new {@link AdaptiveLinkPainter} for the specified painter.

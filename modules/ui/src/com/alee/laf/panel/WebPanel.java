@@ -17,6 +17,7 @@
 
 package com.alee.laf.panel;
 
+import com.alee.api.jdk.BiConsumer;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
 import com.alee.managers.language.updaters.LanguageUpdater;
@@ -207,6 +208,18 @@ public class WebPanel extends JPanel implements Styleable, Paintable, ShapeMetho
     }
 
     @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return ShapeMethodsImpl.isShapeDetectionEnabled ( this );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return MarginMethodsImpl.getMargin ( this );
@@ -336,6 +349,12 @@ public class WebPanel extends JPanel implements Styleable, Paintable, ShapeMetho
     public WebPanel equalizeComponentsSize ()
     {
         return ContainerMethodsImpl.equalizeComponentsSize ( this );
+    }
+
+    @Override
+    public <T extends Component> WebPanel forEach ( final BiConsumer<Integer, T> consumer )
+    {
+        return ContainerMethodsImpl.forEach ( this, consumer );
     }
 
     @Override

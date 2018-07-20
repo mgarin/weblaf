@@ -17,10 +17,6 @@
 
 package com.alee.demo.content.data.tree;
 
-/**
- * @author Mikle Garin
- */
-
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.WebLafWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
@@ -40,7 +36,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebAsyncTreeExample extends AbstractStylePreviewExample
 {
     @Override
@@ -70,10 +65,11 @@ public class WebAsyncTreeExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final BasicTree basic = new BasicTree ( StyleId.tree );
-        final EditableTree editable = new EditableTree ( StyleId.tree );
-        final DragAndDropTree drag = new DragAndDropTree ( StyleId.tree );
-        return CollectionUtils.<Preview>asList ( basic, editable, drag );
+        return CollectionUtils.<Preview>asList (
+                new BasicTree ( StyleId.tree ),
+                new EditableTree ( StyleId.tree ),
+                new DragAndDropTree ( StyleId.tree )
+        );
     }
 
     /**

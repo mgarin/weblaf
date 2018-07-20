@@ -55,6 +55,7 @@ import java.util.List;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
+ * @see StyleSettings
  * @see StyledLabelDescriptor
  * @see WStyledLabelUI
  * @see WebStyledLabelUI
@@ -154,11 +155,10 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
      * Constructs label with the specified preferences.
      *
      * @param text text or translation key
-     * @param data language data, may not be passed
      */
-    public WebStyledLabel ( final String text, final Object... data )
+    public WebStyledLabel ( final String text )
     {
-        this ( StyleId.auto, text, data );
+        this ( StyleId.auto, text );
     }
 
     /**
@@ -178,11 +178,10 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
      *
      * @param text text or translation key
      * @param icon label icon
-     * @param data language data, may not be passed
      */
-    public WebStyledLabel ( final String text, final Icon icon, final Object... data )
+    public WebStyledLabel ( final String text, final Icon icon )
     {
-        this ( StyleId.auto, text, icon, data );
+        this ( StyleId.auto, text, icon );
     }
 
     /**
@@ -247,11 +246,10 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
      *
      * @param id   style ID
      * @param text text or translation key
-     * @param data language data, may not be passed
      */
-    public WebStyledLabel ( final StyleId id, final String text, final Object... data )
+    public WebStyledLabel ( final StyleId id, final String text )
     {
-        this ( id, text, null, LEADING, data );
+        this ( id, text, null, LEADING );
     }
 
     /**
@@ -273,11 +271,10 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
      * @param id   style ID
      * @param text text or translation key
      * @param icon label icon
-     * @param data language data, may not be passed
      */
-    public WebStyledLabel ( final StyleId id, final String text, final Icon icon, final Object... data )
+    public WebStyledLabel ( final StyleId id, final String text, final Icon icon )
     {
-        this ( id, text, icon, LEADING, data );
+        this ( id, text, icon, LEADING );
     }
 
     /**
@@ -701,6 +698,18 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
     public Shape getShape ()
     {
         return ShapeMethodsImpl.getShape ( this );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return ShapeMethodsImpl.isShapeDetectionEnabled ( this );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
     @Override

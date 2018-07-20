@@ -38,7 +38,6 @@ import java.beans.PropertyChangeListener;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebMultiSplitPane">How to use WebMultiSplitPane</a>
  * @see WebMultiSplitPane
  */
-
 public class WebMultiSplitPaneUI<C extends WebMultiSplitPane> extends WMultiSplitPaneUI<C>
         implements ShapeSupport, MarginSupport, PaddingSupport, PropertyChangeListener
 {
@@ -127,6 +126,18 @@ public class WebMultiSplitPaneUI<C extends WebMultiSplitPane> extends WMultiSpli
     }
 
     @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( multisplitpane, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( multisplitpane, painter, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return PainterSupport.getMargin ( multisplitpane );
@@ -176,6 +187,12 @@ public class WebMultiSplitPaneUI<C extends WebMultiSplitPane> extends WMultiSpli
                 WebMultiSplitPaneUI.this.painter = newPainter;
             }
         }, this.painter, painter, IMultiSplitPanePainter.class, AdaptiveMultiSplitPanePainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

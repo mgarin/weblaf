@@ -352,6 +352,31 @@ public class WebDecoration<C extends JComponent, I extends WebDecoration<C, I>> 
     }
 
     @Override
+    public boolean contains ( final C c, final Bounds b, final int x, final int y )
+    {
+        final boolean contains;
+        if ( isVisible () )
+        {
+            final IShape shape = getShape ();
+            if ( shape != null )
+            {
+                final Rectangle bounds = b.get ();
+                final Shape backgroundShape = shape.getShape ( ShapeType.background, bounds, c, this );
+                contains = backgroundShape.contains ( x, y );
+            }
+            else
+            {
+                contains = super.contains ( c, b, x, y );
+            }
+        }
+        else
+        {
+            contains = super.contains ( c, b, x, y );
+        }
+        return contains;
+    }
+
+    @Override
     public Shape provideShape ( final C component, final Rectangle bounds )
     {
         // todo Add ShapeType into PainterShapeProvider interface

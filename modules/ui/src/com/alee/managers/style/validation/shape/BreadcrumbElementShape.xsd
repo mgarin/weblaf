@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractShape.xsd" />
+    <xs:include schemaLocation="../ext/Round.xsd" />
+    <xs:include schemaLocation="../ext/Sides.xsd" />
+
+    <!-- com.alee.extended.breadcrumb.BreadcrumbElementShape -->
+    <xs:complexType name="BreadcrumbElementShape">
+        <xs:complexContent>
+            <xs:extension base="AbstractShape">
+
+                <!-- Displayed decoration sides -->
+                <xs:attribute name="sides" type="Sides" />
+
+                <!-- Displayed decoration corners -->
+                <xs:attribute name="corners" type="Sides" />
+
+                <!-- Decoration corners width -->
+                <xs:attribute name="cornerWidth" type="xs:integer" />
+
+                <!-- Decoration corners rounding -->
+                <xs:attribute name="round" type="Round" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

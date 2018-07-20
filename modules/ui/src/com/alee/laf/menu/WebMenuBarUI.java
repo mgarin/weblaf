@@ -34,7 +34,6 @@ import java.awt.*;
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
-
 public class WebMenuBarUI extends BasicMenuBarUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -121,6 +120,18 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeSupport, Margin
     }
 
     @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( menuBar, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( menuBar, painter, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return PainterSupport.getMargin ( menuBar );
@@ -170,6 +181,12 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeSupport, Margin
                 WebMenuBarUI.this.painter = newPainter;
             }
         }, this.painter, painter, IMenuBarPainter.class, AdaptiveMenuBarPainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

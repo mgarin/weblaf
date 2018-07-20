@@ -37,7 +37,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class GroupPaneExample extends AbstractStylePreviewExample
 {
     @Override
@@ -55,10 +54,11 @@ public class GroupPaneExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final ButtonsGrouping e1 = new ButtonsGrouping ( FeatureState.release, StyleId.grouppane );
-        final MixedGrouping e2 = new MixedGrouping ( FeatureState.release, StyleId.grouppane );
-        final GridGrouping e3 = new GridGrouping ( FeatureState.release, StyleId.grouppane );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3 );
+        return CollectionUtils.<Preview>asList (
+                new ButtonsGrouping ( FeatureState.release, StyleId.grouppane ),
+                new MixedGrouping ( FeatureState.release, StyleId.grouppane ),
+                new GridGrouping ( FeatureState.release, StyleId.grouppane )
+        );
     }
 
     /**

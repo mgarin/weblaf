@@ -103,6 +103,18 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
         return PainterSupport.getShape ( tabPane, painter );
     }
 
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( tabPane, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( tabPane, painter, enabled );
+    }
+
     /**
      * Returns tabbed pane painter.
      *
@@ -197,6 +209,12 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
     public SectionPainter getBackgroundPainterAt ( final int tabIndex )
     {
         return backgroundPainterAt.get ( tabIndex );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

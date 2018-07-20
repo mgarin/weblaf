@@ -22,6 +22,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.style.ShapeMethods;
+import com.alee.managers.style.ShapeMethodsImpl;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.*;
 import com.alee.utils.laf.ShadeType;
@@ -1116,6 +1117,18 @@ public class WebCustomTooltip extends JComponent implements ShapeMethods
     public Shape getShape ()
     {
         return getTooltipShape ( getActualDisplayWay (), true );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return ShapeMethodsImpl.isShapeDetectionEnabled ( this );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
     /**

@@ -28,7 +28,6 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public abstract class WRadioButtonUI<C extends JRadioButton> extends WButtonUI<C>
 {
     @Override

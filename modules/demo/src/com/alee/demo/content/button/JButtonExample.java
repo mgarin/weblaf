@@ -32,7 +32,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class JButtonExample extends AbstractStylePreviewExample
 {
     @Override
@@ -62,11 +61,12 @@ public class JButtonExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final TextButton e1 = new TextButton ( StyleId.button );
-        final TextButton e2 = new TextButton ( StyleId.buttonHover );
-        final IconButton e3 = new IconButton ( StyleId.buttonIcon );
-        final IconButton e4 = new IconButton ( StyleId.buttonIconHover );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3, e4 );
+        return CollectionUtils.<Preview>asList (
+                new TextButton ( StyleId.button ),
+                new TextButton ( StyleId.buttonHover ),
+                new IconButton ( StyleId.buttonIcon ),
+                new IconButton ( StyleId.buttonIconHover )
+        );
     }
 
     /**

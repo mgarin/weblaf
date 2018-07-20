@@ -28,9 +28,8 @@ import com.alee.painter.Painter;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  * @see WebStyledLabel
  */
-
-public final class AdaptiveStyledLabelPainter<C extends WebStyledLabel, U extends WStyledLabelUI> extends AdaptivePainter<C, U>
-        implements IStyledLabelPainter<C, U>
+public final class AdaptiveStyledLabelPainter<C extends WebStyledLabel, U extends WStyledLabelUI<C>>
+        extends AdaptivePainter<C, U> implements IStyledLabelPainter<C, U>
 {
     /**
      * Constructs new {@link AdaptiveStyledLabelPainter} for the specified painter.

@@ -48,7 +48,6 @@ import java.lang.ref.WeakReference;
  *
  * @author Mikle Garin
  */
-
 public final class PainterSupport
 {
     /**
@@ -74,9 +73,22 @@ public final class PainterSupport
     /**
      * Paddings saved per-component instance.
      * todo These settings should be completely moved into {@link AbstractPainter} upon multiple painters elimination
+     *
+     * @see #getPadding(JComponent)
+     * @see #setPadding(JComponent, Insets)
      */
     private static final WeakComponentData<JComponent, Insets> paddings =
             new WeakComponentData<JComponent, Insets> ( "PainterSupport.padding", 200 );
+
+    /**
+     * Shape detection settings saved per-component instance.
+     * todo These settings should be completely moved into {@link AbstractPainter} upon multiple painters elimination
+     *
+     * @see #isShapeDetectionEnabled(JComponent, Painter)
+     * @see #setShapeDetectionEnabled(JComponent, Painter, boolean)
+     */
+    private static final WeakComponentData<JComponent, Boolean> shapeDetectionEnabled =
+            new WeakComponentData<JComponent, Boolean> ( "PainterSupport.shapeDetectionEnabled", 200 );
 
     /**
      * Returns either the specified painter if it is not an adapted painter or the adapted painter.
@@ -308,23 +320,39 @@ public final class PainterSupport
      */
     public static Insets getMargin ( final JComponent component )
     {
-        /*if ( component instanceof MarginSupport )
+        final Insets margin = margins.get ( component );
+        return margin != null ? new Insets ( margin.top, margin.left, margin.bottom, margin.right ) : null;
+    }
+
+    /**
+     * Returns current component margin.
+     * Might return {@code null} which is basically the same as an empty [0,0,0,0] margin.
+     *
+     * @param component        component to retrieve margin from
+     * @param applyOrientation whether or not {@link ComponentOrientation} of the specified {@link JComponent} should be applied to margin
+     * @return current component margin
+     */
+    public static Insets getMargin ( final JComponent component, final boolean applyOrientation )
+    {
+        final Insets result;
+        if ( applyOrientation )
         {
-            return ( ( MarginSupport ) component ).getMargin ();
-        }
-        else
-        {
-            final ComponentUI ui = LafUtils.getUI ( component );
-            if ( ui instanceof MarginSupport )
+            final Insets margin = margins.get ( component );
+            if ( margin != null )
             {
-                return ( ( MarginSupport ) ui ).getMargin ();
+                final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
+                result = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
             }
             else
             {
-                return null;
+                result = null;
             }
-        }*/
-        return margins.get ( component );
+        }
+        else
+        {
+            result = getMargin ( component );
+        }
+        return result;
     }
 
     /**
@@ -352,7 +380,39 @@ public final class PainterSupport
      */
     public static Insets getPadding ( final JComponent component )
     {
-        return paddings.get ( component );
+        final Insets padding = paddings.get ( component );
+        return padding != null ? new Insets ( padding.top, padding.left, padding.bottom, padding.right ) : null;
+    }
+
+    /**
+     * Returns current component padding.
+     * Might return {@code null} which is basically the same as an empty [0,0,0,0] padding.
+     *
+     * @param component component to retrieve padding from
+     * @param applyOrientation whether or not {@link ComponentOrientation} of the specified {@link JComponent} should be applied to padding
+     * @return current component padding
+     */
+    public static Insets getPadding ( final JComponent component, final boolean applyOrientation )
+    {
+        final Insets result;
+        if ( applyOrientation )
+        {
+            final Insets padding = paddings.get ( component );
+            if ( padding != null )
+            {
+                final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
+                result = new Insets ( padding.top, ltr ? padding.left : padding.right, padding.bottom, ltr ? padding.right : padding.left );
+            }
+            else
+            {
+                result = null;
+            }
+        }
+        else
+        {
+            result = getPadding ( component );
+        }
+        return result;
     }
 
     /**
@@ -372,11 +432,11 @@ public final class PainterSupport
     }
 
     /**
-     * Returns component shape according to its painter.
+     * Returns component {@link Shape}.
      *
-     * @param component component painter is applied to
-     * @param painter   component painter
-     * @return component shape according to its painter
+     * @param component {@link JComponent} to return {@link Shape} for
+     * @param painter   {@link Painter} currently used by the {@link JComponent}
+     * @return component {@link Shape}
      */
     public static Shape getShape ( final JComponent component, final Painter painter )
     {
@@ -388,6 +448,58 @@ public final class PainterSupport
         {
             return BoundsType.margin.bounds ( component );
         }
+    }
+
+    /**
+     * Returns whether or not component's custom {@link Shape} is used for better mouse events detection.
+     * If it wasn't explicitly specified - {@link WebLookAndFeel#isShapeDetectionEnabled()} is used as result.
+     *
+     * @param component {@link JComponent} to return {@link Shape} for
+     * @param painter   {@link Painter} currently used by the {@link JComponent}
+     * @return {@code true} if component's custom {@link Shape} is used for better mouse events detection, {@code false} otherwise
+     */
+    public static boolean isShapeDetectionEnabled ( final JComponent component, final Painter painter )
+    {
+        final Boolean enabled = shapeDetectionEnabled.get ( component );
+        return enabled != null ? enabled : WebLookAndFeel.isShapeDetectionEnabled ();
+    }
+
+    /**
+     * Sets whether or not component's custom {@link Shape} should be used for better mouse events detection.
+     * It can be enabled globally through {@link com.alee.laf.WebLookAndFeel#setShapeDetectionEnabled(boolean)}.
+     *
+     * @param component {@link JComponent} to return {@link Shape} for
+     * @param painter   {@link Painter} currently used by the {@link JComponent}
+     * @param enabled   whether or not component's custom {@link Shape} should be used for better mouse events detection
+     */
+    public static void setShapeDetectionEnabled ( final JComponent component, final Painter painter, final boolean enabled )
+    {
+        shapeDetectionEnabled.set ( component, enabled );
+    }
+
+    /**
+     * Returns whether or not specified (x,y) location is contained within the shape of the component.
+     *
+     * @param component {@link JComponent}
+     * @param ui        {@link ComponentUI}
+     * @param painter   {@link Painter}
+     * @param x         X coordinate
+     * @param y         Y coordinate
+     * @return {@code true} if specified (x,y) location is contained within the shape of the component, {@code false} otherwise
+     */
+    public static boolean contains ( final JComponent component, final ComponentUI ui,
+                                     final Painter painter, final int x, final int y )
+    {
+        final boolean contains;
+        if ( painter != null && isShapeDetectionEnabled ( component, painter ) )
+        {
+            contains = painter.contains ( component, ui, new Bounds ( component ), x, y );
+        }
+        else
+        {
+            contains = 0 <= x && x < component.getWidth () && 0 <= y && y < component.getHeight ();
+        }
+        return contains;
     }
 
     /**

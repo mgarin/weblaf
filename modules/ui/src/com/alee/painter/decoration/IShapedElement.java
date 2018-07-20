@@ -28,18 +28,17 @@ import java.awt.*;
  * @param <I> element type
  * @author Mikle Garin
  */
-
 public interface IShapedElement<C extends JComponent, D extends IDecoration<C, D>, I extends IShapedElement<C, D, I>>
         extends IDecoratonElement<C, D, I>
 {
     /**
-     * Paints element using the specified shape.
+     * Paints this element using the specified {@link Shape}.
      *
-     * @param g2d    graphics context
+     * @param g2d    {@link Graphics2D}
      * @param bounds painting bounds
-     * @param c      painted component
-     * @param d      painted decoration state
-     * @param shape  element shape
+     * @param c      {@link JComponent} that is being painted
+     * @param d      {@link IDecoration} state
+     * @param shape  {@link Shape} of the painted element
      */
     public void paint ( Graphics2D g2d, Rectangle bounds, C c, D d, Shape shape );
 }

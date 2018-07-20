@@ -34,7 +34,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -161,6 +160,18 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
     }
 
     @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( list, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( list, painter, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return PainterSupport.getMargin ( list );
@@ -241,6 +252,12 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
     public CellRendererPane getCellRendererPane ()
     {
         return rendererPane;
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

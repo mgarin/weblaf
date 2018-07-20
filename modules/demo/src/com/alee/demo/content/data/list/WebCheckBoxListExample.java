@@ -32,7 +32,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebCheckBoxListExample extends AbstractStylePreviewExample
 {
     @Override
@@ -56,10 +55,11 @@ public class WebCheckBoxListExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final BasicList basic = new BasicList ( StyleId.checkboxlist );
-        final ScrollableList scrollable = new ScrollableList ( StyleId.checkboxlist );
-        final EditableList editable = new EditableList ( StyleId.checkboxlist );
-        return CollectionUtils.<Preview>asList ( basic, scrollable, editable );
+        return CollectionUtils.<Preview>asList (
+                new BasicList ( StyleId.checkboxlist ),
+                new ScrollableList ( StyleId.checkboxlist ),
+                new EditableList ( StyleId.checkboxlist )
+        );
     }
 
     /**

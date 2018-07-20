@@ -27,7 +27,6 @@ import javax.swing.*;
  *
  * @author Mikle Garin
  */
-
 public interface Example extends ExampleElement
 {
     /**

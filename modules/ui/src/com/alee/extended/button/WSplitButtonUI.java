@@ -25,7 +25,6 @@ import com.alee.laf.button.WButtonUI;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public abstract class WSplitButtonUI<C extends WebSplitButton> extends WButtonUI<C>
 {
     @Override

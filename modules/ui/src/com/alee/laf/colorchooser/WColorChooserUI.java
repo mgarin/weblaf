@@ -25,7 +25,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public abstract class WColorChooserUI extends BasicColorChooserUI
 {
     /**

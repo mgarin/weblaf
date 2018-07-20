@@ -35,7 +35,6 @@ import java.awt.*;
  * @author Michka Popoff
  * @author Alexandr Zernov
  */
-
 public class WebSliderUI extends BasicSliderUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -93,6 +92,18 @@ public class WebSliderUI extends BasicSliderUI implements ShapeSupport, MarginSu
     }
 
     @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( slider, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( slider, painter, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return PainterSupport.getMargin ( slider );
@@ -142,6 +153,12 @@ public class WebSliderUI extends BasicSliderUI implements ShapeSupport, MarginSu
                 WebSliderUI.this.painter = newPainter;
             }
         }, this.painter, painter, ISliderPainter.class, AdaptiveSliderPainter.class );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override

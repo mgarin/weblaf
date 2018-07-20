@@ -25,7 +25,6 @@ import com.alee.laf.button.WButtonUI;
  * @param <C> component type
  * @author Mikle Garin
  */
-
 public abstract class WTristateCheckBoxUI<C extends WebTristateCheckBox> extends WButtonUI<C>
 {
     @Override

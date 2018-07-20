@@ -31,7 +31,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class JListExample extends AbstractStylePreviewExample
 {
     @Override
@@ -61,9 +60,10 @@ public class JListExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final BasicList basic = new BasicList ( StyleId.list );
-        final ScrollableList scrollable = new ScrollableList ( StyleId.list );
-        return CollectionUtils.<Preview>asList ( basic, scrollable );
+        return CollectionUtils.<Preview>asList (
+                new BasicList ( StyleId.list ),
+                new ScrollableList ( StyleId.list )
+        );
     }
 
     /**

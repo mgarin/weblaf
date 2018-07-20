@@ -33,7 +33,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebDateFieldExample extends AbstractStylePreviewExample
 {
     @Override
@@ -57,8 +56,9 @@ public class WebDateFieldExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final DateField e1 = new DateField ( StyleId.datefield );
-        return CollectionUtils.<Preview>asList ( e1 );
+        return CollectionUtils.<Preview>asList (
+                new DateField ( StyleId.datefield )
+        );
     }
 
     /**

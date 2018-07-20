@@ -31,7 +31,6 @@ import javax.swing.plaf.ComponentUI;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebMultiSplitPane">How to use WebMultiSplitPane</a>
  * @see WebMultiSplitPane
  */
-
 public abstract class WMultiSplitPaneUI<C extends WebMultiSplitPane> extends ComponentUI implements WebUI<C>
 {
     /**

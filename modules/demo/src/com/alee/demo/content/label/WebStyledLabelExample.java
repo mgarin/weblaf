@@ -34,7 +34,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebStyledLabelExample extends AbstractStylePreviewExample
 {
     @Override
@@ -64,13 +63,14 @@ public class WebStyledLabelExample extends AbstractStylePreviewExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final StyledLabel e1 = new StyledLabel ( "basic", FeatureState.updated, StyleId.styledlabel );
-        final StyledLabel e2 = new StyledLabel ( "shadow", FeatureState.updated, StyleId.styledlabelShadow );
-        final StyledLabel e3 = new StyledLabel ( "tag", FeatureState.release, StyleId.styledlabelTag );
-        final StyledLabel e4 = new StyledLabel ( "ccw", FeatureState.release, StyleId.styledlabelVerticalCCW );
-        final StyledLabel e5 = new StyledLabel ( "cw", FeatureState.release, StyleId.styledlabelVerticalCW );
-        final SeparatorStyledLabel e6 = new SeparatorStyledLabel ( "separator", FeatureState.beta, StyleId.styledlabelSeparator );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3, e4, e5, e6 );
+        return CollectionUtils.<Preview>asList (
+                new StyledLabel ( "basic", FeatureState.updated, StyleId.styledlabel ),
+                new StyledLabel ( "shadow", FeatureState.updated, StyleId.styledlabelShadow ),
+                new StyledLabel ( "tag", FeatureState.release, StyleId.styledlabelTag ),
+                new StyledLabel ( "ccw", FeatureState.release, StyleId.styledlabelVerticalCCW ),
+                new StyledLabel ( "cw", FeatureState.release, StyleId.styledlabelVerticalCW ),
+                new SeparatorStyledLabel ( "separator", FeatureState.beta, StyleId.styledlabelSeparator )
+        );
     }
 
     /**

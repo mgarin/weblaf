@@ -37,7 +37,6 @@ import java.awt.*;
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
-
 public class WebPasswordFieldUI extends WPasswordFieldUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
@@ -103,6 +102,18 @@ public class WebPasswordFieldUI extends WPasswordFieldUI implements ShapeSupport
     public Shape getShape ()
     {
         return PainterSupport.getShape ( field, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( field, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( field, painter, enabled );
     }
 
     @Override
@@ -261,6 +272,12 @@ public class WebPasswordFieldUI extends WPasswordFieldUI implements ShapeSupport
     public JComponent removeTrailingComponent ()
     {
         return setTrailingComponent ( null );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override
