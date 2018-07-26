@@ -12,7 +12,7 @@
             <decorations>
                 <decoration>
                     <BoundsShape />
-                    <ColorBackground color="68,68,68" />
+                    <ColorBackground color="106,110,112" />
                 </decoration>
             </decorations>
         </painter>
