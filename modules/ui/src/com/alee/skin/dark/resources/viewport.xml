@@ -6,10 +6,16 @@
     <style type="viewport">
         <component>
             <opaque>false</opaque>
-            <background>68,68,68</background>
             <layout class="WebViewportLayout$UIResource" />
         </component>
-        <painter />
+        <painter>
+            <decorations>
+                <decoration>
+                    <BoundsShape />
+                    <ColorBackground color="68,68,68" />
+                </decoration>
+            </decorations>
+        </painter>
     </style>
 
 </skin>

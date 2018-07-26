@@ -47,11 +47,6 @@ import java.util.Map;
 public abstract class AbstractPainter<C extends JComponent, U extends ComponentUI> implements Painter<C, U>
 {
     /**
-     * Painter listeners.
-     */
-    protected transient final List<PainterListener> listeners;
-
-    /**
      * Listeners.
      */
     protected transient PropertyChangeListener propertyChangeListener;
@@ -81,18 +76,12 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
      */
     protected transient boolean ltr;
 
-    /**
-     * Constructs new {@link AbstractPainter}.
-     */
-    public AbstractPainter ()
-    {
-        super ();
-        listeners = new ArrayList<PainterListener> ( 1 );
-    }
-
     @Override
     public void install ( final C c, final U ui )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Saving references
         this.component = c;
         this.ui = ui;
@@ -114,6 +103,9 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
     @Override
     public void uninstall ( final C c, final U ui )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Additional actions before uninstallation
         beforeUninstall ();
 
@@ -195,10 +187,14 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
      * Returns whether or not this painter is allowed to update component settings and visual state.
      * By default it is determined by the painter type, for example any SectionPainter should avoid updating settings.
      *
-     * @return true if this painter is allowed to update component settings and visual state, false otherwise
+     * @return {@code true} if this painter is allowed to update component settings and visual state, {@code false} otherwise
      */
     protected boolean isSettingsUpdateAllowed ()
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Actual updateability check
         return isInstalled () && !isSectionPainter ();
     }
 
@@ -206,7 +202,7 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
      * Returns whether or not this is a section painter.
      * Some internal behaviors might vary depending on what this method returns.
      *
-     * @return true if this is a section painter, false otherwise
+     * @return {@code true} if this is a section painter, {@code false} otherwise
      */
     protected boolean isSectionPainter ()
     {
@@ -364,9 +360,10 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
     {
         if ( SystemUtils.isUnix () )
         {
-            // todo This part of code is only here until #401 issue fix for Unix systems
-            // todo The problem with this workaround is that it provides bounds which are only relevant within paint run
-            // todo In general we want to have bounds which are relevant related
+            /**
+             * This part of code is only here until #401 issue fix for Unix systems.
+             * The problem with this workaround is that it provides bounds which are only relevant within paint run.
+             */
 
             // Translating to section coordinates
             g2d.translate ( bounds.x, bounds.y );
@@ -638,24 +635,6 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
         return SwingUtils.increase ( new Dimension ( 0, 0 ), getCompleteBorder () );
     }
 
-    @Override
-    public void addPainterListener ( final PainterListener listener )
-    {
-        synchronized ( listeners )
-        {
-            listeners.add ( listener );
-        }
-    }
-
-    @Override
-    public void removePainterListener ( final PainterListener listener )
-    {
-        synchronized ( listeners )
-        {
-            listeners.remove ( listener );
-        }
-    }
-
     /**
      * Updates component with complete border.
      * This border takes painter borders and component margin and padding into account.
@@ -706,13 +685,7 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
     {
         if ( isSettingsUpdateAllowed () && component.isShowing () )
         {
-            synchronized ( listeners )
-            {
-                for ( final PainterListener listener : listeners )
-                {
-                    listener.repaint ( x, y, width, height );
-                }
-            }
+            component.repaint ( x, y, width, height );
         }
     }
 
@@ -721,19 +694,10 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
      */
     protected void revalidate ()
     {
+        updateBorder ();
         if ( isSettingsUpdateAllowed () )
         {
-            // Updating border to have correct size
-            updateBorder ();
-
-            // Revalidating layout
-            synchronized ( listeners )
-            {
-                for ( final PainterListener listener : listeners )
-                {
-                    listener.revalidate ();
-                }
-            }
+            component.revalidate ();
         }
     }
 
@@ -745,12 +709,10 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
     {
         if ( isSettingsUpdateAllowed () )
         {
-            synchronized ( listeners )
+            final Boolean opaque = isOpaque ();
+            if ( opaque != null )
             {
-                for ( final PainterListener listener : listeners )
-                {
-                    listener.updateOpacity ();
-                }
+                LookAndFeel.installProperty ( component, WebLookAndFeel.OPAQUE_PROPERTY, opaque ? Boolean.TRUE : Boolean.FALSE );
             }
         }
     }
@@ -761,21 +723,8 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
      */
     protected void updateAll ()
     {
-        if ( isSettingsUpdateAllowed () )
-        {
-            updateBorder ();
-            synchronized ( listeners )
-            {
-                for ( final PainterListener listener : listeners )
-                {
-                    listener.updateOpacity ();
-                    listener.revalidate ();
-                    if ( component.isShowing () )
-                    {
-                        listener.repaint ();
-                    }
-                }
-            }
-        }
+        updateOpacity ();
+        revalidate ();
+        repaint ();
     }
 }

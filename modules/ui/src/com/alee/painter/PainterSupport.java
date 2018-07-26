@@ -28,7 +28,6 @@ import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.general.Pair;
 import com.alee.utils.swing.WeakComponentData;
 
 import javax.swing.*;
@@ -36,7 +35,6 @@ import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
 import javax.swing.plaf.ComponentUI;
 import java.awt.*;
-import java.lang.ref.WeakReference;
 
 /**
  * This class provides utilities for linking {@link Painter}s with component UIs.
@@ -57,8 +55,8 @@ public final class PainterSupport
      * @see #installPainter(JComponent, Painter)
      * @see #uninstallPainter(JComponent, Painter)
      */
-    private static final WeakComponentData<JComponent, Pair<Painter, PainterListener>> installedPainters =
-            new WeakComponentData<JComponent, Pair<Painter, PainterListener>> ( "PainterSupport.painter", 200 );
+    private static final WeakComponentData<JComponent, Painter> installedPainters =
+            new WeakComponentData<JComponent, Painter> ( "PainterSupport.painter", 200 );
 
     /**
      * Margins saved per-component instance.
@@ -188,55 +186,8 @@ public final class PainterSupport
                     LookAndFeel.installProperty ( component, WebLookAndFeel.OPAQUE_PROPERTY, opaque ? Boolean.TRUE : Boolean.FALSE );
                 }
 
-                // Creating weak references to use them inside the listener
-                // Otherwise we will force it to keep strong reference to component and painter if we use them directly
-                final WeakReference<JComponent> c = new WeakReference<JComponent> ( component );
-                final WeakReference<Painter> p = new WeakReference<Painter> ( painter );
-
-                // Adding painter listener
-                final PainterListener listener = new PainterListener ()
-                {
-                    @Override
-                    public void repaint ()
-                    {
-                        // Forcing component to be repainted
-                        c.get ().repaint ();
-                    }
-
-                    @Override
-                    public void repaint ( final int x, final int y, final int width, final int height )
-                    {
-                        // Forcing component to be repainted
-                        c.get ().repaint ( x, y, width, height );
-                    }
-
-                    @Override
-                    public void revalidate ()
-                    {
-                        // Forcing layout updates
-                        c.get ().revalidate ();
-                    }
-
-                    @Override
-                    public void updateOpacity ()
-                    {
-                        // Updating component opacity according to painter
-                        final Painter painter = p.get ();
-                        if ( painter != null )
-                        {
-                            final Boolean opaque = painter.isOpaque ();
-                            if ( opaque != null )
-                            {
-                                LookAndFeel.installProperty ( c.get (), WebLookAndFeel.OPAQUE_PROPERTY,
-                                        opaque ? Boolean.TRUE : Boolean.FALSE );
-                            }
-                        }
-                    }
-                };
-                painter.addPainterListener ( listener );
-
                 // Saving painter-listener pair
-                installedPainters.set ( component, new Pair<Painter, PainterListener> ( painter, listener ) );
+                installedPainters.set ( component, painter );
             }
             else
             {
@@ -262,14 +213,9 @@ public final class PainterSupport
         {
             if ( installedPainters.contains ( component ) )
             {
-
-                final Pair<Painter, PainterListener> installed = installedPainters.get ( component );
-                final Painter installedPainter = installed.getKey ();
+                final Painter installedPainter = installedPainters.get ( component );
                 if ( installedPainter == painter )
                 {
-                    // Removing custom listener
-                    installedPainter.removePainterListener ( installed.getValue () );
-
                     // Uninstalling painter
                     installedPainter.uninstall ( component, LafUtils.getUI ( component ) );
 
@@ -388,7 +334,7 @@ public final class PainterSupport
      * Returns current component padding.
      * Might return {@code null} which is basically the same as an empty [0,0,0,0] padding.
      *
-     * @param component component to retrieve padding from
+     * @param component        component to retrieve padding from
      * @param applyOrientation whether or not {@link ComponentOrientation} of the specified {@link JComponent} should be applied to padding
      * @return current component padding
      */

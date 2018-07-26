@@ -113,16 +113,4 @@ public abstract class AdaptivePainter<C extends JComponent, U extends ComponentU
     {
         return painter.getPreferredSize ();
     }
-
-    @Override
-    public void addPainterListener ( final PainterListener listener )
-    {
-        painter.addPainterListener ( listener );
-    }
-
-    @Override
-    public void removePainterListener ( final PainterListener listener )
-    {
-        painter.removePainterListener ( listener );
-    }
 }

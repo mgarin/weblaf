@@ -135,20 +135,4 @@ public interface Painter<C extends JComponent, U extends ComponentUI>
      * @return preferred size required for proper painting of the view provided by this painter
      */
     public Dimension getPreferredSize ();
-
-    /**
-     * Adds specified listener to this painter.
-     *
-     * @param listener painter listener to add
-     * @see PainterListener
-     */
-    public void addPainterListener ( PainterListener listener );
-
-    /**
-     * Removes specified listener from this painter.
-     *
-     * @param listener painter listener to remove
-     * @see PainterListener
-     */
-    public void removePainterListener ( PainterListener listener );
 }
