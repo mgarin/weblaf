@@ -33,7 +33,6 @@ import java.util.List;
  * @see AsyncTreeModel
  * @see AsyncUniqueNode
  */
-
 public interface AsyncTreeDataProvider<N extends AsyncUniqueNode> extends Serializable
 {
     /**

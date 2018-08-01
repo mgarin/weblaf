@@ -34,6 +34,7 @@ import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.TextUtils;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
 
@@ -247,6 +248,16 @@ public class WebFormattedTextField extends JFormattedTextField implements IInput
             }
         }
         return b;
+    }
+
+    /**
+     * Returns whether or not this editor is empty.
+     *
+     * @return {@code true} if this editor is empty, {@code false} otherwise
+     */
+    public boolean isEmpty ()
+    {
+        return TextUtils.isEmpty ( getText () );
     }
 
     /**

@@ -33,13 +33,12 @@ import java.util.*;
  * {@link WebTreeModel} extension that is based on data from {@link ExTreeDataProvider}.
  * All data is always instantly loaded based on the provided {@link ExTreeDataProvider} which allows sorting and filtering for all nodes.
  *
- * @param <N> node type
+ * @param <N> {@link AsyncUniqueNode} type
  * @author Mikle Garin
  * @see WebExTree
  * @see ExTreeDataProvider
  */
-
-public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N>
+public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implements FilterableNodes<N>, SortableNodes<N>
 {
     /**
      * {@link WebTree} that uses this model
@@ -75,6 +74,16 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N>
      * Cached when root is requested for the first time.
      */
     protected final N rootNode;
+
+    /**
+     * {@link Filter} for {@link AsyncUniqueNode}s.
+     */
+    protected Filter<N> filter;
+
+    /**
+     * {@link Comparator} for {@link AsyncUniqueNode}s.
+     */
+    protected Comparator<N> comparator;
 
     /**
      * Constructs default ex tree model using custom data provider.
@@ -115,8 +124,7 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N>
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Retrieving root node
-        final ExTreeDataProvider<N> dataProvider = getDataProvider ();
-        final N rootNode = dataProvider.getRoot ();
+        final N rootNode = getDataProvider ().getRoot ();
 
         // Caching root node
         cacheNodeById ( rootNode );
@@ -142,8 +150,7 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N>
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Loading children
-        final ExTreeDataProvider<N> dataProvider = getDataProvider ();
-        final List<N> children = dataProvider.getChildren ( parent );
+        final List<N> children = getDataProvider ().getChildren ( parent );
 
         // Caching nodes
         setRawChildren ( parent, children );
@@ -382,6 +389,9 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N>
     @Override
     public void removeNodesFromParent ( final N parent )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Clearing node children caches
         clearRawChildren ( parent, false );
 
@@ -392,6 +402,9 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N>
     @Override
     public void removeNodesFromParent ( final N[] nodes )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Redirecting to another method
         removeNodesFromParent ( CollectionUtils.toList ( nodes ) );
     }
@@ -425,6 +438,80 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N>
 
         // Removing actual nodes if it is needed, nodes might not be present in the tree due to filtering
         super.removeNodesFromParent ( visible );
+    }
+
+    @Override
+    public Filter<N> getFilter ()
+    {
+        return filter;
+    }
+
+    @Override
+    public void setFilter ( final Filter<N> filter )
+    {
+        this.filter = filter;
+        filter ();
+    }
+
+    @Override
+    public void clearFilter ()
+    {
+        setFilter ( null );
+    }
+
+    @Override
+    public void filter ()
+    {
+        filterAndSort ( getRootNode (), true );
+    }
+
+    @Override
+    public void filter ( final N node )
+    {
+        filterAndSort ( node, false );
+    }
+
+    @Override
+    public void filter ( final N node, final boolean recursively )
+    {
+        filterAndSort ( node, recursively );
+    }
+
+    @Override
+    public Comparator<N> getComparator ()
+    {
+        return comparator;
+    }
+
+    @Override
+    public void setComparator ( final Comparator<N> comparator )
+    {
+        this.comparator = comparator;
+        sort ();
+    }
+
+    @Override
+    public void clearComparator ()
+    {
+        setComparator ( null );
+    }
+
+    @Override
+    public void sort ()
+    {
+        filterAndSort ( getRootNode (), true );
+    }
+
+    @Override
+    public void sort ( final N node )
+    {
+        filterAndSort ( node, false );
+    }
+
+    @Override
+    public void sort ( final N node, final boolean recursively )
+    {
+        filterAndSort ( node, recursively );
     }
 
     /**
@@ -512,15 +599,16 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N>
             final ExTreeDataProvider<N> dataProvider = getDataProvider ();
 
             // Filtering children
-            final Filter<N> filter = dataProvider.getChildrenFilter ( parent, children );
-            result = filter != null ? CollectionUtils.filter ( children, filter ) : CollectionUtils.copy ( children );
+            final Filter<N> dataProviderFilter = dataProvider.getChildrenFilter ( parent, children );
+            final Filter<N> treeFilter = tree instanceof FilterableNodes ? ( ( FilterableNodes<N> ) tree ).getFilter () : null;
+            final Filter<N> modelFilter = getFilter ();
+            result = CollectionUtils.filter ( children, dataProviderFilter, treeFilter, modelFilter );
 
             // Sorting children
-            final Comparator<N> comparator = dataProvider.getChildrenComparator ( parent, result );
-            if ( comparator != null )
-            {
-                Collections.sort ( result, comparator );
-            }
+            final Comparator<N> dataProviderComparator = dataProvider.getChildrenComparator ( parent, result );
+            final Comparator<N> treeComparator = tree instanceof SortableNodes ? ( ( SortableNodes<N> ) tree ).getComparator () : null;
+            final Comparator<N> modelComparator = getComparator ();
+            CollectionUtils.sort ( result, dataProviderComparator, treeComparator, modelComparator );
         }
         else
         {
@@ -542,6 +630,18 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N>
     }
 
     /**
+     * Returns raw parent for the specified {@link UniqueNode}.
+     *
+     * @param node {@link UniqueNode} to find raw parent for
+     * @return raw parent for the specified {@link UniqueNode}
+     */
+    public N getRawParent ( final N node )
+    {
+        final N parent = ( N ) node.getParent ();
+        return parent != null ? parent : findParent ( node.getId () );
+    }
+
+    /**
      * Returns raw children for the specified {@link UniqueNode}.
      *
      * @param parent {@link UniqueNode} to return raw children for
@@ -555,6 +655,23 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N>
             throw new RuntimeException ( "Raw children are not available for node: " + parent );
         }
         return children;
+    }
+
+    /**
+     * Returns child {@link UniqueNode} at the specified index in parent {@link UniqueNode}.
+     *
+     * @param parent parent {@link UniqueNode}
+     * @param index  child {@link UniqueNode} index
+     * @return child {@link UniqueNode} at the specified index in parent {@link UniqueNode}
+     */
+    public N getRawChildAt ( final N parent, final int index )
+    {
+        final List<N> children = rawNodeChildrenCache.get ( parent.getId () );
+        if ( children == null )
+        {
+            throw new RuntimeException ( "Raw children are not available for node: " + parent );
+        }
+        return children.get ( index );
     }
 
     /**

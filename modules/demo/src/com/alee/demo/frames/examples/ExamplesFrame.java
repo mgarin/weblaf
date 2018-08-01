@@ -28,13 +28,16 @@ import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.GroupingType;
 import com.alee.extended.tree.WebTreeFilterField;
 import com.alee.laf.label.WebLabel;
+import com.alee.laf.scroll.ScrollPaneState;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.laf.tree.TreeNodeEventRunnable;
+import com.alee.laf.tree.TreeState;
 import com.alee.managers.hotkey.Hotkey;
-import com.alee.managers.tooltip.TooltipWay;
+import com.alee.managers.settings.Configuration;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.tooltip.TooltipManager;
+import com.alee.managers.tooltip.TooltipWay;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.KeyEventRunnable;
 import com.alee.utils.swing.extensions.MouseEventRunnable;
@@ -84,7 +87,9 @@ public final class ExamplesFrame extends WebDockableFrame
                 open ( node );
             }
         } );
+        examplesTree.registerSettings ( new Configuration<TreeState> ( "ExamplesTree" ) );
         final WebScrollPane examplesTreeScroll = new WebScrollPane ( StyleId.scrollpaneTransparentHovering, examplesTree );
+        examplesTreeScroll.registerSettings ( new Configuration<ScrollPaneState> ( "ExamplesScroll" ) );
 
         // Filtering field
         final WebTreeFilterField filter = new WebTreeFilterField ( DemoStyles.filterfield, examplesTree );
@@ -124,9 +129,6 @@ public final class ExamplesFrame extends WebDockableFrame
         // Frame UI composition
         final WebSeparator separator = new WebSeparator ( StyleId.separatorHorizontal );
         add ( new GroupPanel ( GroupingType.fillLast, 0, false, filter, separator, examplesTreeScroll ) );
-
-        // Expand tree
-        examplesTree.expandAll ();
     }
 
     /**

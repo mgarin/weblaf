@@ -21,7 +21,8 @@ import com.alee.api.jdk.Objects;
 import com.alee.api.jdk.Predicate;
 import com.alee.demo.api.example.*;
 import com.alee.demo.content.SampleData;
-import com.alee.extended.tree.WebCheckBoxTree;
+import com.alee.extended.tree.ExTreeDataProvider;
+import com.alee.extended.tree.WebExCheckBoxTree;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.managers.style.StyleId;
@@ -33,18 +34,18 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-public class WebCheckBoxTreeExample extends AbstractStylePreviewExample
+public class WebExCheckBoxTreeExample extends AbstractStylePreviewExample
 {
     @Override
     public String getId ()
     {
-        return "checkboxtree";
+        return "excheckboxtree";
     }
 
     @Override
     protected String getStyleFileName ()
     {
-        return "checkboxtree";
+        return "excheckboxtree";
     }
 
     @Override
@@ -57,13 +58,13 @@ public class WebCheckBoxTreeExample extends AbstractStylePreviewExample
     protected List<Preview> createPreviews ()
     {
         return CollectionUtils.<Preview>asList (
-                new BasicTree ( StyleId.checkboxtree ),
-                new CustomizedTree ( StyleId.checkboxtree )
+                new BasicTree ( StyleId.excheckboxtree ),
+                new CustomizedTree ( StyleId.excheckboxtree )
         );
     }
 
     /**
-     * Basic {@link WebCheckBoxTree} preview.
+     * Basic extended tree preview.
      */
     protected class BasicTree extends AbstractStylePreview
     {
@@ -74,20 +75,20 @@ public class WebCheckBoxTreeExample extends AbstractStylePreviewExample
          */
         public BasicTree ( final StyleId styleId )
         {
-            super ( WebCheckBoxTreeExample.this, "basic", FeatureState.updated, styleId );
+            super ( WebExCheckBoxTreeExample.this, "basic", FeatureState.updated, styleId );
         }
 
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebCheckBoxTree tree = new WebCheckBoxTree ( getStyleId () );
+            final WebExCheckBoxTree tree = new WebExCheckBoxTree ( getStyleId () );
             tree.setVisibleRowCount ( 8 );
             return CollectionUtils.asList ( new WebScrollPane ( tree ).setPreferredWidth ( 200 ) );
         }
     }
 
     /**
-     * Customized and editable {@link WebCheckBoxTree} preview.
+     * Editable extended tree preview.
      */
     protected class CustomizedTree extends AbstractStylePreview
     {
@@ -98,13 +99,14 @@ public class WebCheckBoxTreeExample extends AbstractStylePreviewExample
          */
         public CustomizedTree ( final StyleId styleId )
         {
-            super ( WebCheckBoxTreeExample.this, "custom", FeatureState.updated, styleId );
+            super ( WebExCheckBoxTreeExample.this, "custom", FeatureState.updated, styleId );
         }
 
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebCheckBoxTree tree = new WebCheckBoxTree ( getStyleId (), SampleData.createCheckBoxTreeModel () );
+            final ExTreeDataProvider<UniqueNode> dataProvider = SampleData.createCheckBoxTreeDataProvider ();
+            final WebExCheckBoxTree tree = new WebExCheckBoxTree ( getStyleId (), dataProvider );
             tree.setEditable ( true );
             tree.setVisibleRowCount ( 13 );
             tree.setCheckBoxEnabledStateProvider ( new Predicate<UniqueNode> ()

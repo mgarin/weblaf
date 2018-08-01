@@ -42,7 +42,10 @@ public class TreesGroup extends AbstractExampleGroup
                 WebTreeExample.class,
                 WebExTreeExample.class,
                 WebAsyncTreeExample.class,
-                WebCheckBoxTreeExample.class
+                WebFileTreeExample.class,
+                WebCheckBoxTreeExample.class,
+                WebExCheckBoxTreeExample.class,
+                WebTreeFilterFieldExample.class
         );
     }
 }

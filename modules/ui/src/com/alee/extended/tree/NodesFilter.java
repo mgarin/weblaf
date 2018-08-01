@@ -17,37 +17,28 @@
 
 package com.alee.extended.tree;
 
-import java.util.EventListener;
-import java.util.List;
+import com.alee.utils.compare.Filter;
+
+import javax.swing.tree.TreeNode;
 
 /**
- * This listener interface provide various asynchronous tree events.
+ * Special {@link Filter} extension for {@link TreeNode}s filtering.
+ * Provides additional methods to clear filter caches.
  *
- * @param <N> custom node type
+ * @param <N> {@link TreeNode} type
  * @author Mikle Garin
  */
-public interface AsyncTreeListener<N extends AsyncUniqueNode> extends EventListener
+public interface NodesFilter<N extends TreeNode> extends Filter<N>
 {
     /**
-     * Invoked when children load operation starts.
-     *
-     * @param parent node which children are being loaded
+     * Clears filter cache for all {@link TreeNode}s.
      */
-    public void loadStarted ( N parent );
+    public void clearCache ();
 
     /**
-     * Invoked when children load operation finishes.
+     * Clears filter cache for the specified {@link TreeNode}.
      *
-     * @param parent node which children were loaded
-     * @param children loaded child nodes
+     * @param node {@link TreeNode} to clear filter cache for
      */
-    public void loadCompleted ( N parent, List<N> children );
-
-    /**
-     * Invoked when children load operation failed.
-     *
-     * @param parent node which children were loaded
-     * @param cause  children load failure cause
-     */
-    public void loadFailed ( N parent, Throwable cause );
+    public void clearCache ( N node );
 }

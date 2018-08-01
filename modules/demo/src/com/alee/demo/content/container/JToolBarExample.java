@@ -113,7 +113,7 @@ public class JToolBarExample extends AbstractStylePreviewExample
             toolBar.addSeparator ( new Dimension ( 10, 10 ) );
 
             toolBar.add ( new WebLabel ( getExampleLanguageKey ( "label1" ) ) );
-            toolBar.add ( new WebComboBox ( SampleData.createSampleListData () ) );
+            toolBar.add ( new WebComboBox ( SampleData.createComboBoxModel () ) );
 
             return CollectionUtils.asList ( toolBar );
         }

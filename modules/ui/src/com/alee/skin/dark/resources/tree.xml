@@ -84,7 +84,21 @@
         <style type="styledlabel" id="renderer" padding="4,4,4,6" />
 
         <!-- Text field cell editor -->
-        <style type="textfield" id="editor" extends="nofocus" />
+        <style type="textfield" id="editor" padding="0,3,0,2">
+            <painter>
+                <decorations overwrite="true">
+                    <decoration>
+                        <WebShape round="2" />
+                        <LineBorder color="black" />
+                        <ColorBackground color="106,110,112" />
+                    </decoration>
+                </decorations>
+            </painter>
+
+            <!-- Cell editor icon -->
+            <style type="image" id="icon" padding="0,0,0,4" />
+
+        </style>
 
     </style>
 

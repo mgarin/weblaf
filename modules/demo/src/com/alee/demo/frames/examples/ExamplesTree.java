@@ -25,7 +25,6 @@ import com.alee.managers.language.LanguageSensitive;
 /**
  * @author Mikle Garin
  */
-
 public final class ExamplesTree extends WebExTree<ExamplesTreeNode> implements LanguageSensitive
 {
     /**
@@ -33,16 +32,12 @@ public final class ExamplesTree extends WebExTree<ExamplesTreeNode> implements L
      */
     public ExamplesTree ()
     {
-        super ( DemoStyles.examplesTree );
-
-        // Tree settings
+        super ( DemoStyles.examplesTree, new ExamplesTreeDataProvider () );
         setEditable ( false );
         setRootVisible ( false );
         setShowsRootHandles ( true );
         setMultiplySelectionAllowed ( false );
         setSelectionStyle ( TreeSelectionStyle.line );
-
-        // Data provider
-        setDataProvider ( new ExamplesTreeDataProvider () );
+        expandAll ();
     }
 }

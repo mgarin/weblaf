@@ -54,6 +54,12 @@ public class WebScrollBar extends JScrollBar implements Styleable, Paintable, Sh
         LanguageEventMethods, SettingsMethods, FontMethods<WebScrollBar>, SizeMethods<WebScrollBar>
 {
     /**
+     * Properties.
+     */
+    public static final String HORIZONTAL_SCROLL_BAR_PROPERTY = "horizontalScrollBar";
+    public static final String VERTICAL_SCROLL_BAR_PROPERTY = "verticalScrollBar";
+
+    /**
      * Constructs new scroll bar.
      */
     public WebScrollBar ()

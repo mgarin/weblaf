@@ -30,7 +30,7 @@ import java.io.File;
  * @author Mikle Garin
  */
 public class FileTreeNode extends AsyncUniqueNode<FileTreeNode, File>
-        implements TextBridge<TreeNodeParameters<FileTreeNode, WebAsyncTree>>
+        implements TextBridge<TreeNodeParameters<FileTreeNode, WebAsyncTree<FileTreeNode>>>
 {
     /**
      * Root node ID.
@@ -80,14 +80,14 @@ public class FileTreeNode extends AsyncUniqueNode<FileTreeNode, File>
     }
 
     @Override
-    public Icon getNodeIcon ( final TreeNodeParameters<FileTreeNode, WebAsyncTree> parameters )
+    public Icon getNodeIcon ( final TreeNodeParameters<FileTreeNode, WebAsyncTree<FileTreeNode>> parameters )
     {
         final File file = getUserObject ();
         return file != null ? FileUtils.getFileIcon ( file, false ) : null;
     }
 
     @Override
-    public String getText ( final TreeNodeParameters<FileTreeNode, WebAsyncTree> parameters )
+    public String getText ( final TreeNodeParameters<FileTreeNode, WebAsyncTree<FileTreeNode>> parameters )
     {
         return getTitle ();
     }

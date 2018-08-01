@@ -18,6 +18,7 @@
 package com.alee.demo;
 
 import com.alee.api.data.CompassDirection;
+import com.alee.api.jdk.SerializableSupplier;
 import com.alee.demo.api.example.Example;
 import com.alee.demo.api.example.ExampleData;
 import com.alee.demo.content.ExamplesManager;
@@ -44,6 +45,7 @@ import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.tab.*;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanel;
+import com.alee.laf.rootpane.WindowState;
 import com.alee.laf.toolbar.WebToolBar;
 import com.alee.laf.window.WebFrame;
 import com.alee.managers.language.LM;
@@ -51,6 +53,7 @@ import com.alee.managers.language.LanguageLocaleUpdater;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.data.Dictionary;
 import com.alee.managers.notification.NotificationManager;
+import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleId;
@@ -116,25 +119,34 @@ public final class DemoApplication extends WebFrame
     }
 
     /**
-     * Displays demo application.
+     * Constructs new {@link DemoApplication}.
      */
-    public void display ()
+    private DemoApplication ()
     {
-        initialize ();
-        setVisible ( true );
-        examplesFrame.requestFocusInWindow ();
-    }
-
-    /**
-     * Initializes demo application content.
-     */
-    private void initialize ()
-    {
+        super ();
+        setIconImages ( WebLookAndFeel.getImages () );
         updateTitle ();
         initializeDocks ();
         initializeToolBar ();
         initializeStatus ();
-        setupFrame ();
+        setDefaultCloseOperation ( WindowConstants.EXIT_ON_CLOSE );
+        registerSettings ( new Configuration<WindowState> ( "application", new SerializableSupplier<WindowState> ()
+        {
+            @Override
+            public WindowState get ()
+            {
+                return new WindowState ( new Dimension ( 1200, 820 ) );
+            }
+        } ) );
+    }
+
+    /**
+     * Displays demo application.
+     */
+    public void display ()
+    {
+        setVisible ( true );
+        examplesFrame.requestFocusInWindow ();
     }
 
     /**
@@ -277,17 +289,6 @@ public final class DemoApplication extends WebFrame
 
         // Custom status bar margin for notification manager
         NotificationManager.setMargin ( 0, 0, memoryBar.getPreferredSize ().height, 0 );
-    }
-
-    /**
-     * Initializes demo application frame.
-     */
-    private void setupFrame ()
-    {
-        setIconImages ( WebLookAndFeel.getImages () );
-        setDefaultCloseOperation ( WindowConstants.EXIT_ON_CLOSE );
-        setSize ( 1200, 820 );
-        setLocationRelativeTo ( null );
     }
 
     /**

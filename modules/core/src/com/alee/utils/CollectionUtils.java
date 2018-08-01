@@ -831,12 +831,49 @@ public final class CollectionUtils
      */
     public static <T> ArrayList<T> filter ( final Collection<T> collection, final Filter<T> filter )
     {
+        final ArrayList<T> filtered;
+        if ( filter != null )
+        {
+            filtered = new ArrayList<T> ( collection.size () );
+            for ( final T element : collection )
+            {
+                if ( filter.accept ( element ) )
+                {
+                    filtered.add ( element );
+                }
+            }
+        }
+        else
+        {
+            filtered = new ArrayList<T> ( collection );
+        }
+        return filtered;
+    }
+
+    /**
+     * Returns list of elements filtered from collection.
+     *
+     * @param collection collection to filter
+     * @param filters    filters to process
+     * @param <T>        elements type
+     * @return list of elements filtered from collection
+     */
+    public static <T> ArrayList<T> filter ( final Collection<T> collection, final Filter<T>... filters )
+    {
         final ArrayList<T> filtered = new ArrayList<T> ( collection.size () );
         for ( final T element : collection )
         {
-            if ( filter.accept ( element ) )
+            for ( int i = 0; i < filters.length; i++ )
             {
-                filtered.add ( element );
+                final Filter<T> filter = filters[ i ];
+                if ( filter != null && !filter.accept ( element ) )
+                {
+                    break;
+                }
+                else if ( i == filters.length - 1 )
+                {
+                    filtered.add ( element );
+                }
             }
         }
         return filtered;
@@ -847,8 +884,9 @@ public final class CollectionUtils
      *
      * @param list {@link List} to distinct
      * @param <T>  elements type
+     * @return same {@link List} with non-distinct elements removed
      */
-    public static <T> void distinct ( final List<T> list )
+    public static <T> List<T> distinct ( final List<T> list )
     {
         final Set<T> seen = new HashSet<T> ( list.size () );
         final Iterator<T> iterator = list.iterator ();
@@ -864,6 +902,7 @@ public final class CollectionUtils
                 iterator.remove ();
             }
         }
+        return list;
     }
 
     /**
@@ -872,17 +911,42 @@ public final class CollectionUtils
      * @param list       {@link List} to sort
      * @param comparator {@link Comparator}
      * @param <T>        elements type
+     * @return same {@link List} but sorted according to the specified {@link Comparator}
      */
-    public static <T> void sort ( final List<T> list, final Comparator<T> comparator )
+    public static <T> List<T> sort ( final List<T> list, final Comparator<T> comparator )
     {
-        final Object[] array = list.toArray ();
-        Arrays.sort ( array, ( Comparator ) comparator );
-        final ListIterator<T> iterator = list.listIterator ();
-        for ( final Object element : array )
+        if ( comparator != null )
         {
-            iterator.next ();
-            iterator.set ( ( T ) element );
+            final Object[] array = list.toArray ();
+            Arrays.sort ( array, ( Comparator ) comparator );
+            final ListIterator<T> iterator = list.listIterator ();
+            for ( final Object element : array )
+            {
+                iterator.next ();
+                iterator.set ( ( T ) element );
+            }
         }
+        return list;
+    }
+
+    /**
+     * Sorts {@link List} using the specified {@link Comparator}s.
+     *
+     * @param list        {@link List} to sort
+     * @param comparators {@link List} of {@link Comparator}s
+     * @param <T>         elements type
+     * @return same {@link List} but sorted according to the specified {@link Comparator}
+     */
+    public static <T> List<T> sort ( final List<T> list, final Comparator<T>... comparators )
+    {
+        for ( final Comparator<T> comparator : comparators )
+        {
+            if ( comparator != null )
+            {
+                sort ( list, comparator );
+            }
+        }
+        return list;
     }
 
     /**

@@ -2000,7 +2000,7 @@
                         </record>
                     </Dictionary>
                 </Dictionary>
-                <Dictionary prefix="webextree">
+                <Dictionary prefix="extree">
                     <record key="title">
                         <value lang="en">WebExTree</value>
                         <value lang="ru">WebExTree</value>
@@ -2024,7 +2024,7 @@
                         </record>
                     </Dictionary>
                 </Dictionary>
-                <Dictionary prefix="webasynctree">
+                <Dictionary prefix="asynctree">
                     <record key="title">
                         <value lang="en">WebAsyncTree</value>
                         <value lang="ru">WebAsyncTree</value>
@@ -2048,7 +2048,25 @@
                         </record>
                     </Dictionary>
                 </Dictionary>
-                <Dictionary prefix="webcheckboxtree">
+                <Dictionary prefix="filetree">
+                    <record key="title">
+                        <value lang="en">WebFileTree</value>
+                        <value lang="ru">WebFileTree</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic</value>
+                            <value lang="ru">Базовое</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="editable">
+                        <record key="title">
+                            <value lang="en">Editable</value>
+                            <value lang="ru">Редактируемое</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="checkboxtree">
                     <record key="title">
                         <value lang="en">WebCheckBoxTree</value>
                         <value lang="ru">WebCheckBoxTree</value>
@@ -2063,6 +2081,48 @@
                         <record key="title">
                             <value lang="en">Customized</value>
                             <value lang="ru">Кастомизированное</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="excheckboxtree">
+                    <record key="title">
+                        <value lang="en">WebExCheckBoxTree</value>
+                        <value lang="ru">WebExCheckBoxTree</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic</value>
+                            <value lang="ru">Базовое</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="custom">
+                        <record key="title">
+                            <value lang="en">Customized</value>
+                            <value lang="ru">Кастомизированное</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="treefilterfield">
+                    <record key="title">
+                        <value lang="en">WebTreeFilterField</value>
+                        <value lang="ru">WebTreeFilterField</value>
+                    </record>
+                    <Dictionary prefix="extree">
+                        <record key="title">
+                            <value lang="en">WebExTree</value>
+                            <value lang="ru">WebExTree</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="asynctree">
+                        <record key="title">
+                            <value lang="en">WebAsyncTree</value>
+                            <value lang="ru">WebAsyncTree</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="excheckboxtree">
+                        <record key="title">
+                            <value lang="en">WebExCheckBoxTree</value>
+                            <value lang="ru">WebExCheckBoxTree</value>
                         </record>
                     </Dictionary>
                 </Dictionary>

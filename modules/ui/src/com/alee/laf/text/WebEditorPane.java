@@ -29,6 +29,7 @@ import com.alee.managers.settings.UISettingsManager;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
+import com.alee.utils.TextUtils;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
 
@@ -146,6 +147,16 @@ public class WebEditorPane extends JEditorPane implements IInputPrompt, Styleabl
     {
         this ( id );
         setPage ( url );
+    }
+
+    /**
+     * Returns whether or not this editor is empty.
+     *
+     * @return {@code true} if this editor is empty, {@code false} otherwise
+     */
+    public boolean isEmpty ()
+    {
+        return TextUtils.isEmpty ( getText () );
     }
 
     /**

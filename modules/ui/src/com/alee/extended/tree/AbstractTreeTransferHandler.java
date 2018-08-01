@@ -38,7 +38,6 @@ import java.util.*;
  * @param <M> tree model type
  * @author Mikle Garin
  */
-
 public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extends WebTree<N>, M extends WebTreeModel<N>>
         extends TransferHandler
 {
@@ -214,7 +213,7 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
             // Excluding descendants if needed
             if ( nodesAcceptPolicy != null )
             {
-                nodesAcceptPolicy.filter ( nodes );
+                nodesAcceptPolicy.filter ( tree, nodes );
             }
 
             // Checking whether or not can drag specified nodes

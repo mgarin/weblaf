@@ -26,7 +26,6 @@ import java.util.List;
  * @param <N> node type
  * @author Mikle Garin
  */
-
 public interface AsyncTreeModelListener<N extends AsyncUniqueNode> extends EventListener
 {
     /**

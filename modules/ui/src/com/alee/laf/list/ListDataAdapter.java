@@ -15,20 +15,20 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.tree;
+package com.alee.laf.list;
 
-import java.util.List;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
 /**
- * AsyncTreeModelListener adapter class.
+ * Adapter for {@link ListDataListener}.
  *
- * @param <N> node type
  * @author Mikle Garin
  */
-public abstract class AsyncTreeModelAdapter<N extends AsyncUniqueNode> implements AsyncTreeModelListener<N>
+public class ListDataAdapter implements ListDataListener
 {
     @Override
-    public void loadStarted ( final N parent )
+    public void intervalAdded ( final ListDataEvent e )
     {
         /**
          * Do nothing by default.
@@ -36,7 +36,7 @@ public abstract class AsyncTreeModelAdapter<N extends AsyncUniqueNode> implement
     }
 
     @Override
-    public void loadCompleted ( final N parent, final List<N> children )
+    public void intervalRemoved ( final ListDataEvent e )
     {
         /**
          * Do nothing by default.
@@ -44,7 +44,7 @@ public abstract class AsyncTreeModelAdapter<N extends AsyncUniqueNode> implement
     }
 
     @Override
-    public void loadFailed ( final N parent, final Throwable cause )
+    public void contentsChanged ( final ListDataEvent e )
     {
         /**
          * Do nothing by default.

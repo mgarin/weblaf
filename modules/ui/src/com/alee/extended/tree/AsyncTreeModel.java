@@ -32,13 +32,12 @@ import java.util.*;
  * {@link WebTreeModel} extension that is based on data from {@link AsyncTreeDataProvider}.
  * It allows tree to load its data asynchronously but only supports sorting and filtering of loaded nodes.
  *
- * @param <N> node type
+ * @param <N> {@link AsyncUniqueNode} type
  * @author Mikle Garin
  * @see WebAsyncTree
  * @see AsyncTreeDataProvider
  */
-
-public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N>
+public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> implements FilterableNodes<N>, SortableNodes<N>
 {
     /**
      * todo 1. Add {@link AsyncTreeDataUpdater} support
@@ -88,6 +87,16 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N>
      * Used for quick node search within the tree.
      */
     protected transient final Map<String, N> nodeById = new HashMap<String, N> ();
+
+    /**
+     * {@link Filter} for {@link AsyncUniqueNode}s.
+     */
+    protected Filter<N> filter;
+
+    /**
+     * {@link Comparator} for {@link AsyncUniqueNode}s.
+     */
+    protected Comparator<N> comparator;
 
     /**
      * Constructs default asynchronous tree model using custom data provider.
@@ -148,7 +157,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N>
         if ( rootNode == null )
         {
             // Retrieving and caching root node
-            rootNode = dataProvider.getRoot ();
+            rootNode = getDataProvider ().getRoot ();
 
             // Caching root node by ID
             cacheNodeById ( rootNode );
@@ -167,7 +176,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N>
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Redirecting check to provider
-        return dataProvider.isLeaf ( ( N ) node );
+        return getDataProvider ().isLeaf ( ( N ) node );
     }
 
     /**
@@ -310,7 +319,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N>
                     public void run ()
                     {
                         // Loading children
-                        dataProvider.loadChildren ( parent, new NodesLoadCallback<N> ()
+                        getDataProvider ().loadChildren ( parent, new NodesLoadCallback<N> ()
                         {
                             @Override
                             public void completed ( final List<N> children )
@@ -347,14 +356,11 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N>
             else
             {
                 // Loading children
-                dataProvider.loadChildren ( parent, new NodesLoadCallback<N> ()
+                getDataProvider ().loadChildren ( parent, new NodesLoadCallback<N> ()
                 {
                     @Override
                     public void completed ( final List<N> children )
                     {
-                        // Event Dispatch Thread check
-                        WebLookAndFeel.checkEventDispatchThread ();
-
                         // Finishing children loading
                         loadChildrenCompleted ( parent, children );
                     }
@@ -362,9 +368,6 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N>
                     @Override
                     public void failed ( final Throwable cause )
                     {
-                        // Event Dispatch Thread check
-                        WebLookAndFeel.checkEventDispatchThread ();
-
                         // Canceling children loading
                         loadChildrenFailed ( parent, cause );
                     }
@@ -387,6 +390,9 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N>
      */
     protected void loadChildrenCompleted ( final N parent, final List<N> children )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Caching raw children
         rawNodeChildrenCache.put ( parent.getId (), children );
         cacheNodesById ( children );
@@ -420,6 +426,9 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N>
      */
     protected void loadChildrenFailed ( final N parent, final Throwable cause )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         // Caching children
         rawNodeChildrenCache.put ( parent.getId (), new ArrayList<N> ( 0 ) );
         nodeCached.put ( parent.getId (), true );
@@ -817,6 +826,80 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N>
         }
     }
 
+    @Override
+    public Filter<N> getFilter ()
+    {
+        return filter;
+    }
+
+    @Override
+    public void setFilter ( final Filter<N> filter )
+    {
+        this.filter = filter;
+        filter ();
+    }
+
+    @Override
+    public void clearFilter ()
+    {
+        setFilter ( null );
+    }
+
+    @Override
+    public void filter ()
+    {
+        filterAndSort ( getRootNode (), true );
+    }
+
+    @Override
+    public void filter ( final N node )
+    {
+        filterAndSort ( node, false );
+    }
+
+    @Override
+    public void filter ( final N node, final boolean recursively )
+    {
+        filterAndSort ( node, recursively );
+    }
+
+    @Override
+    public Comparator<N> getComparator ()
+    {
+        return comparator;
+    }
+
+    @Override
+    public void setComparator ( final Comparator<N> comparator )
+    {
+        this.comparator = comparator;
+        sort ();
+    }
+
+    @Override
+    public void clearComparator ()
+    {
+        setComparator ( null );
+    }
+
+    @Override
+    public void sort ()
+    {
+        filterAndSort ( getRootNode (), true );
+    }
+
+    @Override
+    public void sort ( final N node )
+    {
+        filterAndSort ( node, false );
+    }
+
+    @Override
+    public void sort ( final N node, final boolean recursively )
+    {
+        filterAndSort ( node, recursively );
+    }
+
     /**
      * Updates sorting and filtering for the specified node children.
      *
@@ -855,9 +938,6 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N>
                 @Override
                 public void loadCompleted ( final AsyncUniqueNode parent, final List children )
                 {
-                    // Event Dispatch Thread check
-                    WebLookAndFeel.checkEventDispatchThread ();
-
                     // Performing delayed filtering and sorting
                     if ( parentNode.getId ().equals ( parent.getId () ) )
                     {
@@ -869,9 +949,6 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N>
                 @Override
                 public void loadFailed ( final AsyncUniqueNode parent, final Throwable cause )
                 {
-                    // Event Dispatch Thread check
-                    WebLookAndFeel.checkEventDispatchThread ();
-
                     // Cancelling any further operations
                     if ( parentNode.getId ().equals ( parent.getId () ) )
                     {
@@ -937,29 +1014,35 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N>
     /**
      * Returns list of filtered and sorted raw children.
      *
-     * @param parentNode parent node
-     * @param children   children to filter and sort
+     * @param parent   parent node
+     * @param children children to filter and sort
      * @return list of filtered and sorted children
      */
-    protected List<N> filterAndSort ( final N parentNode, final List<N> children )
+    protected List<N> filterAndSort ( final N parent, final List<N> children )
     {
-        // Simply return an empty array if there is no children
-        if ( children == null || children.size () == 0 )
+        final List<N> result;
+        if ( CollectionUtils.notEmpty ( children ) )
         {
-            return new ArrayList<N> ( 0 );
+            // Data provider
+            final AsyncTreeDataProvider<N> dataProvider = getDataProvider ();
+
+            // Filtering children
+            final Filter<N> dataProviderFilter = dataProvider.getChildrenFilter ( parent, children );
+            final Filter<N> treeFilter = tree.getFilter ();
+            final Filter<N> modelFilter = getFilter ();
+            result = CollectionUtils.filter ( children, dataProviderFilter, treeFilter, modelFilter );
+
+            // Sorting children
+            final Comparator<N> dataProviderComparator = dataProvider.getChildrenComparator ( parent, result );
+            final Comparator<N> treeComparator = tree.getComparator ();
+            final Comparator<N> modelComparator = getComparator ();
+            CollectionUtils.sort ( result, dataProviderComparator, treeComparator, modelComparator );
         }
-
-        // Filtering children
-        final Filter<N> filter = dataProvider.getChildrenFilter ( parentNode, children );
-        final List<N> result = filter != null ? CollectionUtils.filter ( children, filter ) : CollectionUtils.copy ( children );
-
-        // Sorting children
-        final Comparator<N> comparator = dataProvider.getChildrenComparator ( parentNode, result );
-        if ( comparator != null )
+        else
         {
-            Collections.sort ( result, comparator );
+            // Simply return an empty list if there is no children
+            result = new ArrayList<N> ( 0 );
         }
-
         return result;
     }
 

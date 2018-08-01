@@ -104,6 +104,16 @@ public abstract class VisibilityBehavior<C extends Component> extends AbstractCo
         return component;
     }
 
+    /**
+     * Returns whether or not {@link Component} is currently visible.
+     *
+     * @return {@code true} if {@link Component} is currently visible, {@code false} otherwise
+     */
+    public boolean isVisible ()
+    {
+        return visible;
+    }
+
     @Override
     public void hierarchyChanged ( final HierarchyEvent e )
     {

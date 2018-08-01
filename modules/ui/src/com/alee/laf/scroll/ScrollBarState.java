@@ -34,7 +34,7 @@ import java.io.Serializable;
  * @see com.alee.managers.settings.SettingsManager
  * @see com.alee.managers.settings.SettingsProcessor
  */
-@XStreamAlias ( "ComboBoxState" )
+@XStreamAlias ( "ScrollBarState" )
 public class ScrollBarState implements Mergeable, Cloneable, Serializable
 {
     /**

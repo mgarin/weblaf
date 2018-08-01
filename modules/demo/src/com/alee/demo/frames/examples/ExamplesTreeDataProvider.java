@@ -29,7 +29,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public final class ExamplesTreeDataProvider extends AbstractExTreeDataProvider<ExamplesTreeNode>
 {
     @Override

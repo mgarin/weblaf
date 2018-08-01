@@ -34,7 +34,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 public class SampleNode extends AsyncUniqueNode<SampleNode, SampleObject>
-        implements TextBridge<TreeNodeParameters<SampleNode, WebAsyncTree>>, CloneBehavior<SampleNode>
+        implements TextBridge<TreeNodeParameters<SampleNode, WebAsyncTree<SampleNode>>>, CloneBehavior<SampleNode>
 {
     /**
      * Time spent to load node children.
@@ -83,7 +83,7 @@ public class SampleNode extends AsyncUniqueNode<SampleNode, SampleObject>
     }
 
     @Override
-    public Icon getNodeIcon ( final TreeNodeParameters<SampleNode, WebAsyncTree> parameters )
+    public Icon getNodeIcon ( final TreeNodeParameters<SampleNode, WebAsyncTree<SampleNode>> parameters )
     {
         switch ( getUserObject ().getType () )
         {
@@ -107,7 +107,7 @@ public class SampleNode extends AsyncUniqueNode<SampleNode, SampleObject>
     }
 
     @Override
-    public String getText ( final TreeNodeParameters<SampleNode, WebAsyncTree> parameters )
+    public String getText ( final TreeNodeParameters<SampleNode, WebAsyncTree<SampleNode>> parameters )
     {
         return getTitle ();
     }

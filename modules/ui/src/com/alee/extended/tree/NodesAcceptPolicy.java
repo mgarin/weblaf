@@ -19,6 +19,7 @@ package com.alee.extended.tree;
 
 import com.alee.laf.tree.TreeUtils;
 
+import javax.swing.*;
 import javax.swing.tree.TreeNode;
 import java.util.List;
 
@@ -28,7 +29,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public enum NodesAcceptPolicy
 {
     /**
@@ -103,13 +103,14 @@ public enum NodesAcceptPolicy
     descendants;
 
     /**
-     * Returns list of nodes filtered based on this {@link NodesAcceptPolicy}.
+     * Returns list of {@link TreeNode}s filtered based on this {@link NodesAcceptPolicy}.
      *
-     * @param nodes list of nodes to filter
-     * @param <N>   nodes type
-     * @return list of nodes filtered based on this {@link NodesAcceptPolicy}
+     * @param tree  containing specified {@link TreeNode}s
+     * @param nodes list of {@link TreeNode}s to filter
+     * @param <N>   {@link TreeNode} type
+     * @return list of {@link TreeNode}s filtered based on this {@link NodesAcceptPolicy}
      */
-    public <N extends TreeNode> List<N> filter ( final List<N> nodes )
+    public <N extends TreeNode> List<N> filter ( final JTree tree, final List<N> nodes )
     {
         if ( this != all )
         {
@@ -120,12 +121,12 @@ public enum NodesAcceptPolicy
                 {
                     if ( other != node )
                     {
-                        if ( this == ancestors && TreeUtils.isNodeAncestor ( node, other ) )
+                        if ( this == ancestors && TreeUtils.isNodeAncestor ( tree, node, other ) )
                         {
                             nodes.remove ( i );
                             break;
                         }
-                        else if ( this == descendants && TreeUtils.isNodeAncestor ( node, other ) )
+                        else if ( this == descendants && TreeUtils.isNodeAncestor ( tree, node, other ) )
                         {
                             nodes.remove ( i );
                             break;

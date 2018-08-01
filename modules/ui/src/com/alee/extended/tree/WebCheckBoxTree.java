@@ -47,14 +47,13 @@ import java.util.List;
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
- * @param <N> node type
+ * @param <N> {@link MutableTreeNode} type
  * @author Mikle Garin
  * @see com.alee.laf.tree.WebTree
  * @see com.alee.laf.tree.WebTreeUI
  * @see com.alee.laf.tree.TreePainter
  * @see com.alee.extended.tree.TreeCheckingModel
  */
-
 public class WebCheckBoxTree<N extends MutableTreeNode> extends WebTree<N>
 {
     /**
@@ -82,7 +81,7 @@ public class WebCheckBoxTree<N extends MutableTreeNode> extends WebTree<N>
     protected Boolean checkingEnabled;
 
     /**
-     * Wwhether partially checked node should be checked or unchecked on toggle.
+     * Whether partially checked node should be checked or unchecked on toggle.
      */
     protected Boolean checkMixedOnToggle;
 
@@ -269,7 +268,7 @@ public class WebCheckBoxTree<N extends MutableTreeNode> extends WebTree<N>
         super ( id, newModel );
 
         // Checking model
-        checkingModel = createDefaultCheckingModel ( this );
+        checkingModel = createDefaultCheckingModel ();
 
         // Actions handler
         handler = new Handler ();
@@ -525,12 +524,11 @@ public class WebCheckBoxTree<N extends MutableTreeNode> extends WebTree<N>
     /**
      * Creates and returns new default checking model for the specified checkbox tree.
      *
-     * @param checkBoxTree checkbox tree to process
      * @return new default checking model for the specified checkbox tree
      */
-    protected TreeCheckingModel<N> createDefaultCheckingModel ( final WebCheckBoxTree<N> checkBoxTree )
+    protected TreeCheckingModel<N> createDefaultCheckingModel ()
     {
-        return new DefaultTreeCheckingModel<N> ( checkBoxTree );
+        return new DefaultTreeCheckingModel<N, WebCheckBoxTree<N>> ( this );
     }
 
     /**

@@ -28,7 +28,6 @@ import java.util.List;
  * @param <N> node type
  * @author Mikle Garin
  */
-
 public abstract class AbstractAsyncTreeDataProvider<N extends AsyncUniqueNode> implements AsyncTreeDataProvider<N>
 {
     /**

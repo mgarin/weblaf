@@ -36,7 +36,7 @@ import java.awt.event.AdjustmentListener;
 public class ScrollBarSettingsProcessor extends SettingsProcessor<JScrollBar, ScrollBarState, Configuration<ScrollBarState>>
 {
     /**
-     * {@link AdjustmentListener} for tracking {@link JScrollPane} value changes.
+     * {@link AdjustmentListener} for tracking {@link JScrollBar} value changes.
      */
     protected transient AdjustmentListener adjustmentListener;
 

@@ -18,11 +18,13 @@
 package com.alee.laf.tree;
 
 import com.alee.extended.tree.AsyncTreeModel;
+import com.alee.extended.tree.ExTreeModel;
 import com.alee.extended.tree.walker.AsyncTreeWalker;
 import com.alee.laf.tree.walker.SimpleTreeWalker;
 import com.alee.laf.tree.walker.TreeWalker;
 
 import javax.swing.*;
+import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
@@ -32,7 +34,6 @@ import javax.swing.tree.TreePath;
  *
  * @author Mikle Garin
  */
-
 public final class TreeUtils
 {
     /**
@@ -116,8 +117,13 @@ public final class TreeUtils
         }
 
         // Saving parent state
+        // We make sure not to save collapsed state for hidden tree root
+        // We also make sure not to save selection state if it not explicitly requested
         final TreePath path = new TreePath ( parent.getPath () );
-        state.addState ( parent.getId (), tree.isExpanded ( path ), saveSelection && tree.isPathSelected ( path ) );
+        state.addState ( parent.getId (), new NodeState (
+                tree.getModel ().getRoot () == parent && !tree.isRootVisible () || tree.isExpanded ( path ),
+                saveSelection && tree.isPathSelected ( path )
+        ) );
     }
 
     /**
@@ -323,6 +329,70 @@ public final class TreeUtils
     }
 
     /**
+     * Returns whether or not {@code anotherNode} is an ancestor of {@code node}.
+     * If {@code anotherNode} is {@code null}, this method returns {@code false}.
+     * Note that any node is considered as an ancestor of itself.
+     * This operation is at worst O(h) where h is the distance from the root to {@code node}.
+     *
+     * Als note that unlike {@link #isNodeAncestor(TreeNode, TreeNode)} this method will make sure it takes all {@link TreeNode}s currently
+     * hidden by tree filtering into account meaning result might not be consistent with what you actually see in the tree at the time.
+     *
+     * @param tree        {@link JTree}  containing specified {@link TreeNode}s
+     * @param node        tested {@code node}
+     * @param anotherNode node to test as an ancestor of {@code node}
+     * @return {@code true} if {@code anotherNode} is an ancestor of {@code node}, {@code false} otherwise
+     */
+    public static boolean isNodeAncestor ( final JTree tree, final TreeNode node, final TreeNode anotherNode )
+    {
+        final boolean ancestor;
+        final TreeModel model = tree.getModel ();
+        if ( model instanceof ExTreeModel )
+        {
+            boolean isParent = false;
+            final ExTreeModel exTreeModel = ( ExTreeModel ) model;
+            if ( anotherNode != null )
+            {
+                TreeNode parent = node;
+                do
+                {
+                    if ( parent == anotherNode )
+                    {
+                        isParent = true;
+                        break;
+                    }
+                }
+                while ( ( parent = exTreeModel.getRawParent ( ( UniqueNode ) parent ) ) != null );
+            }
+            ancestor = isParent;
+        }
+        /* todo This should be implemented along with WebAsyncCheckBoxTree
+        else if ( model instanceof AsyncTreeModel )
+        {
+            boolean isParent = false;
+            final AsyncTreeModel asyncTreeModel = ( AsyncTreeModel ) model;
+            if ( other != null )
+            {
+                TreeNode parent = node;
+                do
+                {
+                    if ( parent == other )
+                    {
+                        isParent = true;
+                        break;
+                    }
+                }
+                while ( ( parent = asyncTreeModel.getRawParent ( ( UniqueNode ) parent ) ) != null );
+            }
+            ancestor = isParent;
+        }*/
+        else
+        {
+            ancestor = TreeUtils.isNodeAncestor ( node, anotherNode );
+        }
+        return ancestor;
+    }
+
+    /**
      * Returns number of levels above the specified {@code node}.
      * It is basically the distance from the root to the specified {@code node}.
      * Returns {@code 0} if {@code node} is the root.
@@ -339,5 +409,74 @@ public final class TreeUtils
             levels++;
         }
         return levels;
+    }
+
+    /**
+     * Expands all {@link JTree} nodes in a single call.
+     *
+     * @param tree {@link JTree} to expand all nodes for
+     */
+    public static void expandAll ( final JTree tree )
+    {
+        if ( tree instanceof WebTree )
+        {
+            final WebTree webTree = ( WebTree ) tree;
+            webTree.expandAll ();
+        }
+        else
+        {
+            int row = 0;
+            while ( row < tree.getRowCount () )
+            {
+                tree.expandRow ( row );
+                row++;
+            }
+        }
+    }
+
+    /**
+     * Expands all {@link TreeNode}s loaded within {@link JTree} in a single call.
+     *
+     * @param tree {@link JTree} to expand {@link TreeNode}s for
+     */
+    public static void expandLoaded ( final JTree tree )
+    {
+        final Object root = tree.getModel ().getRoot ();
+        if ( root instanceof TreeNode )
+        {
+            expandLoaded ( tree, ( TreeNode ) root );
+        }
+        else
+        {
+            throw new RuntimeException ( "Specified tree doesn't use TreeNodes: " + tree );
+        }
+    }
+
+    /**
+     * Expands all {@link TreeNode}s loaded within {@link JTree} in a single call.
+     *
+     * @param tree {@link JTree} to expand {@link TreeNode}s for
+     * @param node {@link TreeNode} under which all other {@link TreeNode}s should be expanded
+     */
+    public static void expandLoaded ( final JTree tree, final TreeNode node )
+    {
+        // Only expand parent for non-root nodes
+        if ( node.getParent () != null )
+        {
+            // Make sure this node's parent is expanded
+            // We do not need to expand the node itself, we only need to make sure it is visible in the tree
+            final TreePath path = getTreePath ( node.getParent () );
+            if ( !tree.isExpanded ( path ) )
+            {
+                tree.expandPath ( path );
+            }
+        }
+
+        // Expanding all child nodes
+        // We are asking node instead of tree model to avoid any additional data loading to occur
+        for ( int index = 0; index < node.getChildCount (); index++ )
+        {
+            expandLoaded ( tree, node.getChildAt ( index ) );
+        }
     }
 }

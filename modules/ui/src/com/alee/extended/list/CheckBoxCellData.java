@@ -22,10 +22,10 @@ import com.alee.utils.TextUtils;
 /**
  * This class contains minimum data for single checkbox list cell.
  *
+ * @param <T> data type
  * @author Mikle Garin
  */
-
-public class CheckBoxCellData
+public class CheckBoxCellData<T>
 {
     /**
      * Checkbox cell data ID prefix.
@@ -35,29 +35,29 @@ public class CheckBoxCellData
     /**
      * Checkbox cell data ID.
      */
-    protected String id = null;
+    protected String id;
 
     /**
      * Whether checkbox is selected or not.
      */
-    protected boolean selected = false;
+    protected boolean selected;
 
     /**
      * Whether checkbox is enabled or not.
      */
-    protected boolean enabled = true;
+    protected boolean enabled;
 
     /**
      * User object for cell rendering.
      */
-    protected Object userObject = null;
+    protected T userObject;
 
     /**
      * Constructs new {@link CheckBoxCellData} with {@code null} user object.
      */
     public CheckBoxCellData ()
     {
-        super ();
+        this ( null, false );
     }
 
     /**
@@ -65,10 +65,9 @@ public class CheckBoxCellData
      *
      * @param userObject user object
      */
-    public CheckBoxCellData ( final Object userObject )
+    public CheckBoxCellData ( final T userObject )
     {
-        super ();
-        this.userObject = userObject;
+        this ( userObject, false );
     }
 
     /**
@@ -77,10 +76,11 @@ public class CheckBoxCellData
      * @param userObject user object
      * @param selected   whether checkbox is selected or not
      */
-    public CheckBoxCellData ( final Object userObject, final boolean selected )
+    public CheckBoxCellData ( final T userObject, final boolean selected )
     {
-        super ();
+        this.id = null;
         this.selected = selected;
+        this.enabled = true;
         this.userObject = userObject;
     }
 
@@ -113,7 +113,7 @@ public class CheckBoxCellData
      *
      * @return user object
      */
-    public Object getUserObject ()
+    public T getUserObject ()
     {
         return userObject;
     }
@@ -123,7 +123,7 @@ public class CheckBoxCellData
      *
      * @param userObject new user object
      */
-    public void setUserObject ( final Object userObject )
+    public void setUserObject ( final T userObject )
     {
         this.userObject = userObject;
     }

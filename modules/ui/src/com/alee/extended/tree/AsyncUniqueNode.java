@@ -17,9 +17,7 @@
 
 package com.alee.extended.tree;
 
-import com.alee.api.ui.EmptyRenderingParameters;
 import com.alee.api.ui.IconBridge;
-import com.alee.api.ui.RenderingParameters;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.TreeNodeParameters;
 import com.alee.laf.tree.UniqueNode;
@@ -40,8 +38,8 @@ import java.util.WeakHashMap;
  * @param <T> stored object type
  * @author Mikle Garin
  */
-public abstract class AsyncUniqueNode<N extends UniqueNode<N, T>, T> extends UniqueNode<N, T>
-        implements IconBridge<TreeNodeParameters<N, WebAsyncTree>>
+public abstract class AsyncUniqueNode<N extends AsyncUniqueNode<N, T>, T>
+        extends UniqueNode<N, T> implements IconBridge<TreeNodeParameters<N, WebAsyncTree<N>>>
 {
     /**
      * todo 1. Provide an easy way to customize failed state icon
@@ -189,7 +187,7 @@ public abstract class AsyncUniqueNode<N extends UniqueNode<N, T>, T> extends Uni
     }
 
     @Override
-    public Icon getIcon ( final TreeNodeParameters<N, WebAsyncTree> parameters )
+    public Icon getIcon ( final TreeNodeParameters<N, WebAsyncTree<N>> parameters )
     {
         final Icon icon;
         if ( isLoading () )
@@ -205,19 +203,19 @@ public abstract class AsyncUniqueNode<N extends UniqueNode<N, T>, T> extends Uni
     }
 
     /**
-     * Returns load icon for this node.
-     * This icon represents node loading state.
+     * Returns load {@link Icon} for this node.
+     * This {@link Icon} represents node loading state.
      *
-     * @param parameters {@link RenderingParameters}
-     * @return load icon
+     * @param parameters {@link TreeNodeParameters}
+     * @return load {@link Icon}
      */
-    public Icon getLoadIcon ( final RenderingParameters parameters )
+    public Icon getLoadIcon ( final TreeNodeParameters<N, WebAsyncTree<N>> parameters )
     {
         return loadIconType != null ? loadIconType.getIcon () : null;
     }
 
     /**
-     * Attaches {@link ImageObserver} to the load icon of this node.
+     * Attaches {@link ImageObserver} to the load icon of this {@link AsyncUniqueNode}.
      * todo Perform this somewhere globally for all trees?
      *
      * @param tree {@link WebAsyncTree}
@@ -228,7 +226,7 @@ public abstract class AsyncUniqueNode<N extends UniqueNode<N, T>, T> extends Uni
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Proceed only if icon actually exists
-        final Icon icon = getLoadIcon ( EmptyRenderingParameters.instance () );
+        final Icon icon = getLoadIcon ( new TreeNodeParameters<N, WebAsyncTree<N>> ( tree, ( N ) this ) );
         if ( icon != null && icon instanceof ImageIcon )
         {
             final ImageIcon imageIcon = ( ImageIcon ) icon;
@@ -278,7 +276,7 @@ public abstract class AsyncUniqueNode<N extends UniqueNode<N, T>, T> extends Uni
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Proceed only if icon actually exists
-        final Icon icon = getLoadIcon ( EmptyRenderingParameters.instance () );
+        final Icon icon = getLoadIcon ( new TreeNodeParameters<N, WebAsyncTree<N>> ( tree, ( N ) this ) );
         if ( icon != null && icon instanceof ImageIcon )
         {
             final ImageIcon imageIcon = ( ImageIcon ) icon;
@@ -301,7 +299,7 @@ public abstract class AsyncUniqueNode<N extends UniqueNode<N, T>, T> extends Uni
      * @param parameters {@link TreeNodeParameters}
      * @return specific icon for this node
      */
-    public abstract Icon getNodeIcon ( TreeNodeParameters<N, WebAsyncTree> parameters );
+    public abstract Icon getNodeIcon ( TreeNodeParameters<N, WebAsyncTree<N>> parameters );
 
     /**
      * Returns failed state icon for this node.
@@ -310,7 +308,7 @@ public abstract class AsyncUniqueNode<N extends UniqueNode<N, T>, T> extends Uni
      * @param icon       node icon
      * @return failed state icon for this node
      */
-    public Icon getFailedStateIcon ( final TreeNodeParameters<N, WebAsyncTree> parameters, final Icon icon )
+    public Icon getFailedStateIcon ( final TreeNodeParameters<N, WebAsyncTree<N>> parameters, final Icon icon )
     {
         Icon failedIcon = failedStateIcons.get ( icon );
         if ( failedIcon == null )

@@ -20,15 +20,14 @@ package com.alee.demo.content.data.tree;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.WebLafWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
+import com.alee.demo.content.SampleData;
 import com.alee.extended.tree.*;
-import com.alee.extended.tree.sample.SampleAsyncDataProvider;
 import com.alee.extended.tree.sample.SampleNode;
 import com.alee.extended.tree.sample.SampleObjectType;
+import com.alee.extended.tree.sample.SampleTreeCellEditor;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.MathUtils;
-import com.alee.utils.ThreadUtils;
 
 import javax.swing.*;
 import java.util.List;
@@ -41,7 +40,7 @@ public class WebAsyncTreeExample extends AbstractStylePreviewExample
     @Override
     public String getId ()
     {
-        return "webasynctree";
+        return "asynctree";
     }
 
     @Override
@@ -66,9 +65,9 @@ public class WebAsyncTreeExample extends AbstractStylePreviewExample
     protected List<Preview> createPreviews ()
     {
         return CollectionUtils.<Preview>asList (
-                new BasicTree ( StyleId.tree ),
-                new EditableTree ( StyleId.tree ),
-                new DragAndDropTree ( StyleId.tree )
+                new BasicTree ( StyleId.asynctree ),
+                new EditableTree ( StyleId.asynctree ),
+                new DragAndDropTree ( StyleId.asynctree )
         );
     }
 
@@ -90,7 +89,8 @@ public class WebAsyncTreeExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebAsyncTree tree = new WebAsyncTree ( getStyleId (), createDataProvider () );
+            final AsyncTreeDataProvider<SampleNode> provider = SampleData.createDelayingAsyncDataProvider ();
+            final WebAsyncTree tree = new WebAsyncTree ( getStyleId (), provider );
             tree.setVisibleRowCount ( 8 );
             return CollectionUtils.asList ( new WebScrollPane ( tree ).setPreferredWidth ( 200 ) );
         }
@@ -114,9 +114,9 @@ public class WebAsyncTreeExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebAsyncTree tree = new WebAsyncTree ( getStyleId (), createDataProvider () );
+            final AsyncTreeDataProvider<SampleNode> provider = SampleData.createDelayingAsyncDataProvider ();
+            final WebAsyncTree tree = new WebAsyncTree ( getStyleId (), provider, new SampleTreeCellEditor () );
             tree.setVisibleRowCount ( 8 );
-            tree.setEditable ( true );
             return CollectionUtils.asList ( new WebScrollPane ( tree ).setPreferredWidth ( 200 ) );
         }
     }
@@ -139,51 +139,24 @@ public class WebAsyncTreeExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebAsyncTree left = new WebAsyncTree ( getStyleId (), createDataProvider () );
+            final AsyncTreeDataProvider<SampleNode> leftProvider = SampleData.createDelayingAsyncDataProvider ();
+            final WebAsyncTree left = new WebAsyncTree ( getStyleId (), leftProvider, new SampleTreeCellEditor () );
             left.setVisibleRowCount ( 8 );
-            left.setEditable ( true );
-            left.setTransferHandler ( createTransferHandler () );
             left.setDragEnabled ( true );
             left.setDropMode ( DropMode.ON_OR_INSERT );
+            left.setTransferHandler ( createTransferHandler () );
             final WebScrollPane leftScroll = new WebScrollPane ( left ).setPreferredWidth ( 200 );
 
-            final WebAsyncTree right = new WebAsyncTree ( getStyleId (), createDataProvider () );
+            final AsyncTreeDataProvider<SampleNode> rightProvider = SampleData.createDelayingAsyncDataProvider ();
+            final WebAsyncTree right = new WebAsyncTree ( getStyleId (), rightProvider, new SampleTreeCellEditor () );
             right.setVisibleRowCount ( 8 );
-            right.setEditable ( true );
-            right.setTransferHandler ( createTransferHandler () );
             right.setDragEnabled ( true );
             right.setDropMode ( DropMode.ON_OR_INSERT );
+            right.setTransferHandler ( createTransferHandler () );
             final WebScrollPane rightScroll = new WebScrollPane ( right ).setPreferredWidth ( 200 );
 
             return CollectionUtils.asList ( leftScroll, rightScroll );
         }
-    }
-
-    /**
-     * Returns sample tree data provider.
-     * It will provide all tree data we need instead of the model.
-     *
-     * @return sample tree data provider
-     */
-    protected static AsyncTreeDataProvider<SampleNode> createDataProvider ()
-    {
-        return new SampleAsyncDataProvider ()
-        {
-            /**
-             * Adds extra loading time to showcase asynchronous data loading.
-             * It only excludes root node children to avoid awkward demo startup.
-             * Stalling the thread here won't hurt the UI since it is always executed on non-EDT thread.
-             */
-            @Override
-            public void loadChildren ( final SampleNode parent, final NodesLoadCallback<SampleNode> listener )
-            {
-                if ( parent.getUserObject ().getType () != SampleObjectType.root )
-                {
-                    ThreadUtils.sleepSafely ( MathUtils.random ( 100, 2000 ) );
-                }
-                super.loadChildren ( parent, listener );
-            }
-        };
     }
 
     /**

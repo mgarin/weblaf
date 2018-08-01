@@ -28,7 +28,6 @@ import java.util.Locale;
  *
  * @author Mikle Garin
  */
-
 public class SampleAsyncDataProvider extends AbstractAsyncTreeDataProvider<SampleNode>
 {
     @Override

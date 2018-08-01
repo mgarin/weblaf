@@ -29,7 +29,6 @@ import java.util.List;
  * @param <N> node type
  * @author Mikle Garin
  */
-
 public interface TreeCheckingModel<N extends MutableTreeNode>
 {
     /**

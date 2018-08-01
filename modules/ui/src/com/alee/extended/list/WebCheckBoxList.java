@@ -35,10 +35,10 @@ import java.util.List;
  * Each cell acts as a separate checkbox, but it could be selected like the elements in simple list.
  * You can also perform mass check/uncheck operations by selection more than one checkbox and pressing space.
  *
+ * @param <T> data type
  * @author Mikle Garin
  */
-
-public class WebCheckBoxList extends WebList
+public class WebCheckBoxList<T> extends WebList
 {
     /**
      * Whether checkbox selection should be performed only when user clicks exactly on the check icon or not.
@@ -50,7 +50,7 @@ public class WebCheckBoxList extends WebList
      */
     public WebCheckBoxList ()
     {
-        this ( StyleId.checkboxlist, new CheckBoxListModel () );
+        this ( StyleId.checkboxlist, new CheckBoxListModel<T> () );
     }
 
     /**
@@ -58,7 +58,7 @@ public class WebCheckBoxList extends WebList
      *
      * @param model checkbox list model
      */
-    public WebCheckBoxList ( final CheckBoxListModel model )
+    public WebCheckBoxList ( final CheckBoxListModel<T> model )
     {
         this ( StyleId.checkboxlist, model );
     }
@@ -70,7 +70,7 @@ public class WebCheckBoxList extends WebList
      */
     public WebCheckBoxList ( final StyleId id )
     {
-        this ( id, new CheckBoxListModel () );
+        this ( id, new CheckBoxListModel<T> () );
     }
 
     /**
@@ -79,7 +79,7 @@ public class WebCheckBoxList extends WebList
      * @param id    style ID
      * @param model checkbox list model
      */
-    public WebCheckBoxList ( final StyleId id, final CheckBoxListModel model )
+    public WebCheckBoxList ( final StyleId id, final CheckBoxListModel<T> model )
     {
         super ( id, model );
 
@@ -107,9 +107,9 @@ public class WebCheckBoxList extends WebList
      *
      * @return custom checkbox list cell model
      */
-    public CheckBoxListModel getCheckBoxListModel ()
+    public CheckBoxListModel<T> getCheckBoxListModel ()
     {
-        return ( CheckBoxListModel ) getModel ();
+        return ( CheckBoxListModel<T> ) getModel ();
     }
 
     /**
@@ -164,7 +164,7 @@ public class WebCheckBoxList extends WebList
      *
      * @return list of values from checked cells
      */
-    public List<Object> getCheckedValues ()
+    public List<T> getCheckedValues ()
     {
         return getCheckBoxListModel ().getCheckedValues ();
     }
@@ -240,7 +240,7 @@ public class WebCheckBoxList extends WebList
             {
                 if ( checkOnIconOnly )
                 {
-                    final CheckBoxListModel checkBoxListModel = getCheckBoxListModel ();
+                    final CheckBoxListModel<T> checkBoxListModel = getCheckBoxListModel ();
                     final WebCheckBoxListCellRenderer renderer = getWebCheckBoxListCellRenderer ();
                     final WebCheckBoxListElement element = renderer.getElement ( list, checkBoxListModel.get ( index ) );
                     final Rectangle cellRect = getUI ().getCellBounds ( list, index, index );

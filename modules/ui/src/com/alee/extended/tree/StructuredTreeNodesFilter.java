@@ -19,7 +19,6 @@ package com.alee.extended.tree;
 
 import com.alee.api.jdk.Function;
 import com.alee.laf.tree.UniqueNode;
-import com.alee.utils.compare.Filter;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -30,17 +29,11 @@ import java.util.StringTokenizer;
  * Special smart tree filter that doesn't filter out parent nodes which has children that are accepted by filter.
  * This can be used in any kind of filter fields to provide a proper visual feedback in tree.
  *
- * @param <N> node type
+ * @param <N> {@link UniqueNode} type
  * @author Mikle Garin
  */
-
-public class StructuredTreeNodesFilter<N extends UniqueNode> implements Filter<N>
+public class StructuredTreeNodesFilter<N extends UniqueNode> implements NodesFilter<N>
 {
-    /**
-     * Original tree filter.
-     */
-    protected Filter<N> originalFilter;
-
     /**
      * Nodes text provider.
      */
@@ -70,26 +63,6 @@ public class StructuredTreeNodesFilter<N extends UniqueNode> implements Filter<N
      * Search request text.
      */
     protected String searchText = "";
-
-    /**
-     * Returns original tree filter.
-     *
-     * @return original tree filter
-     */
-    public Filter<N> getOriginalFilter ()
-    {
-        return originalFilter;
-    }
-
-    /**
-     * Sets original tree filter.
-     *
-     * @param filter original tree filter
-     */
-    public void setOriginalFilter ( final Filter<N> filter )
-    {
-        this.originalFilter = filter;
-    }
 
     /**
      * Returns nodes text provider.
@@ -199,47 +172,24 @@ public class StructuredTreeNodesFilter<N extends UniqueNode> implements Filter<N
         this.searchText = searchText;
     }
 
-    /**
-     * Clears accept states cache.
-     */
+    @Override
     public void clearCache ()
     {
         acceptStatesCache.clear ();
     }
 
-    /**
-     * Clears specific node accept state cache.
-     *
-     * @param node node to clear accept state for
-     */
+    @Override
     public void clearCache ( final N node )
     {
-        clearCache ( node.getId () );
-    }
-
-    /**
-     * Clears specific node accept state cache.
-     *
-     * @param nodeId ID of the node to clear accept state for
-     */
-    public void clearCache ( final String nodeId )
-    {
-        acceptStatesCache.remove ( nodeId );
+        acceptStatesCache.remove ( node.getId () );
     }
 
     @Override
     public boolean accept ( final N node )
     {
-        if ( originalFilter == null || originalFilter.accept ( node ) )
-        {
-            // Structured nodes filtering
-            final String searchRequest = matchCase ? searchText : searchText.toLowerCase ( Locale.ROOT );
-            return searchRequest.equals ( "" ) || acceptIncludingChildren ( node, searchRequest );
-        }
-        else
-        {
-            return false;
-        }
+        // Structured nodes filtering
+        final String searchRequest = matchCase ? searchText : searchText.toLowerCase ( Locale.ROOT );
+        return searchRequest.equals ( "" ) || acceptIncludingChildren ( node, searchRequest );
     }
 
     /**

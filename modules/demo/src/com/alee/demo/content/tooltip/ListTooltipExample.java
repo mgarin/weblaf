@@ -77,7 +77,7 @@ public class ListTooltipExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final JList table = new JList ( SampleData.createSampleListData ().toArray () );
+            final JList table = new JList ( SampleData.createListModel () );
             table.setCellRenderer ( new WebListCellRenderer ()
             {
                 @Override
@@ -110,7 +110,7 @@ public class ListTooltipExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebList table = new WebList ( SampleData.createSampleListData () );
+            final WebList table = new WebList ( SampleData.createListModel () );
             table.setToolTipProvider ( new ListToolTipProvider<SampleData.ListItem> ()
             {
                 @Override

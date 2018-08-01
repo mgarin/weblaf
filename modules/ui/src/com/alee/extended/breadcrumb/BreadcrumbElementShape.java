@@ -43,6 +43,10 @@ public class BreadcrumbElementShape<C extends JComponent, D extends WebDecoratio
         extends AbstractShape<C, D, I> implements IPartialShape<C, D, I>
 {
     /**
+     * todo 1. Add proper stretch settings to preserve shadow between components of different width
+     */
+
+    /**
      * Displayed decoration sides.
      */
     @XStreamAsAttribute

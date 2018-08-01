@@ -114,6 +114,7 @@ public class WebHotkeyField extends WebTextField
         setText ( isEmpty () ? LM.get ( EMPTY_HOTKEY_TEXT_KEY ) : getHotkeyData ().toString () );
     }
 
+    @Override
     public boolean isEmpty ()
     {
         return keyCode == null && ( !isCtrl && !isAlt && !isShift || keys.size () == 0 );

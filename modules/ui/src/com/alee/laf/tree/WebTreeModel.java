@@ -34,7 +34,6 @@ import java.util.Map;
  * @param <N> node type
  * @author Mikle Garin
  */
-
 public class WebTreeModel<N extends MutableTreeNode> extends DefaultTreeModel
 {
     /**

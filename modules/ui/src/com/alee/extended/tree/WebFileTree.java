@@ -37,7 +37,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public class WebFileTree extends WebAsyncTree<FileTreeNode>
 {
     /**
@@ -159,13 +158,12 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      */
     public WebFileTree ( final StyleId id, final List<File> rootFiles )
     {
-        super ( id, new FileTreeDataProvider ( rootFiles ) );
+        super ( id, new FileTreeDataProvider ( rootFiles ), new WebFileTreeCellEditor () );
 
         // Visual settings
         setEditable ( false );
         setShowsRootHandles ( true );
         setRootVisible ( rootFiles != null && rootFiles.size () == 1 );
-        setCellEditor ( new WebFileTreeCellEditor () );
 
         // Transfer handler
         setFilesDropSearchEnabled ( true );
@@ -290,7 +288,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
     {
         final FileTreeNode rootNode = getRootNode ();
         rootNode.setTitle ( rootName );
-        getAsyncModel ().updateNode ( rootNode );
+        getModel ().updateNode ( rootNode );
     }
 
     /**
@@ -813,7 +811,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      */
     public FileTreeNode getClosestNode ( final File file )
     {
-        return getClosestNode ( ( FileTreeNode ) getModel ().getRoot (), FileUtils.getFilePath ( file ) );
+        return getClosestNode ( getModel ().getRoot (), FileUtils.getFilePath ( file ) );
     }
 
     /**

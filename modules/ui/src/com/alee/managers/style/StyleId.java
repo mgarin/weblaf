@@ -520,6 +520,7 @@ public final class StyleId implements Identifiable
     public static final StyleId treeTransparent = StyleId.of ( "transparent" );
     public static final ChildStyleId treeCellRenderer = ChildStyleId.of ( "renderer" );
     public static final ChildStyleId treeCellEditor = ChildStyleId.of ( "editor" );
+    public static final ChildStyleId treeCellEditorIcon = ChildStyleId.of ( "icon" );
 
     /**
      * {@link com.alee.extended.tree.WebExTree} style identifiers.

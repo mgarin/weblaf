@@ -34,7 +34,6 @@ import java.util.List;
  * @see ExTreeModel
  * @see UniqueNode
  */
-
 public interface ExTreeDataProvider<N extends UniqueNode> extends Serializable
 {
     /**

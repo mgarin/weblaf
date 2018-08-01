@@ -87,12 +87,28 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
         this.configuration = configuration;
 
         // Performing initial settings load
+        loadInitialSettings ();
+
+        // Initializing processor settings
+        initialize ();
+    }
+
+    /**
+     * Loads initial settings if provided {@link Configuration} dictates so.
+     */
+    protected void loadInitialSettings ()
+    {
         if ( configuration.isLoadInitialSettings () )
         {
             load ();
         }
+    }
 
-        // Registering specific processor settings
+    /**
+     * Initializes {@link SettingsProcessor} settings.
+     */
+    protected void initialize ()
+    {
         try
         {
             register ( component () );

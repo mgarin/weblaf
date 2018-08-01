@@ -20,14 +20,14 @@ package com.alee.extended.tree;
 import java.util.List;
 
 /**
- * Custom TransferHandler for WebAsyncTree that provides a quick and convenient way to implement nodes DnD.
+ * Custom {@link javax.swing.TransferHandler} implementation for {@link WebAsyncTree} that provides a quick and convenient way to implement
+ * drag and drop for {@link AsyncUniqueNode}s within the tree or between different trees using the same type of {@link AsyncUniqueNode}s.
  *
- * @param <N> nodes type
- * @param <T> tree type
- * @param <M> tree model type
+ * @param <N> {@link AsyncUniqueNode} type
+ * @param <T> {@link WebAsyncTree} type
+ * @param <M> {@link AsyncTreeModel} type
  * @author Mikle Garin
  */
-
 public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T extends WebAsyncTree<N>, M extends AsyncTreeModel<N>>
         extends AbstractTreeTransferHandler<N, T, M>
 {
@@ -58,11 +58,14 @@ public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T exte
         this.allowUncheckedDrop = allowUncheckedDrop;
     }
 
+    /**
+     * In addition to {@link AbstractTreeTransferHandler} this method:
+     * - Doesn't allow drop on busy nodes as that might break tree model
+     * - Doesn't allow drop on a failed nodes as they are considered to have no chidren
+     */
     @Override
     protected boolean canDropTo ( final TransferSupport support, final T tree, final M model, final N destination )
     {
-        // Do not allow a drop on busy node as that might break tree model
-        // Do not allow a drop on a failed node as it is already messed
         return super.canDropTo ( support, tree, model, destination ) && !destination.isLoading () && !destination.isFailed ();
     }
 

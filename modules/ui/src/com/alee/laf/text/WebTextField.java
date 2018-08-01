@@ -33,6 +33,7 @@ import com.alee.managers.tooltip.TooltipWay;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
+import com.alee.utils.TextUtils;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
 
@@ -167,6 +168,16 @@ public class WebTextField extends JTextField implements IInputPrompt, ILeadingCo
     {
         super ( doc, text, columns );
         setStyleId ( id );
+    }
+
+    /**
+     * Returns whether or not this editor is empty.
+     *
+     * @return {@code true} if this editor is empty, {@code false} otherwise
+     */
+    public boolean isEmpty ()
+    {
+        return TextUtils.isEmpty ( getText () );
     }
 
     /**

@@ -37,36 +37,22 @@ import java.util.Map;
 public class TreeState implements Mergeable, Cloneable, Serializable
 {
     /**
-     * Tree node states.
+     * {@link NodeState}s of a single tree.
      */
-    protected Map<String, NodeState> states = new LinkedHashMap<String, NodeState> ();
+    protected final Map<String, NodeState> states;
 
     /**
-     * Constructs new object instance with empty states.
+     * Constructs new {@link TreeState} with empty states.
      */
     public TreeState ()
     {
-        super ();
+        states = new LinkedHashMap<String, NodeState> ();
     }
 
     /**
-     * Constructs new object instance with specified states.
+     * Returns all {@link NodeState}s.
      *
-     * @param states node states
-     */
-    public TreeState ( final Map<String, NodeState> states )
-    {
-        super ();
-        if ( states != null )
-        {
-            setStates ( states );
-        }
-    }
-
-    /**
-     * Returns all node states.
-     *
-     * @return all node states
+     * @return all {@link NodeState}s
      */
     public Map<String, NodeState> states ()
     {
@@ -74,32 +60,21 @@ public class TreeState implements Mergeable, Cloneable, Serializable
     }
 
     /**
-     * Sets all node states.
-     *
-     * @param states all node states
-     */
-    public void setStates ( final Map<String, NodeState> states )
-    {
-        this.states = states;
-    }
-
-    /**
      * Adds node state.
      *
-     * @param nodeId   node ID
-     * @param expanded expansion state
-     * @param selected selection state
+     * @param nodeId node identifier
+     * @param state  {@link NodeState}
      */
-    public void addState ( final String nodeId, final boolean expanded, final boolean selected )
+    public void addState ( final String nodeId, final NodeState state )
     {
-        states.put ( nodeId, new NodeState ( expanded, selected ) );
+        states.put ( nodeId, state );
     }
 
     /**
      * Returns whether node with the specified ID is expanded or not.
      *
-     * @param nodeId node ID
-     * @return true if node with the specified ID is expanded, false otherwise
+     * @param nodeId node identifier
+     * @return {@code true} if node with the specified ID is expanded, {@code false} otherwise
      */
     public boolean isExpanded ( final String nodeId )
     {
@@ -110,8 +85,8 @@ public class TreeState implements Mergeable, Cloneable, Serializable
     /**
      * Returns whether node with the specified ID is selected or not.
      *
-     * @param nodeId node ID
-     * @return true if node with the specified ID is expanded, false otherwise
+     * @param nodeId node identifier
+     * @return {@code true} if node with the specified ID is expanded, {@code false} otherwise
      */
     public boolean isSelected ( final String nodeId )
     {

@@ -29,6 +29,8 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
+ * Data provider implementation for {@link InterfaceTree}.
+ *
  * @author Mikle Garin
  */
 public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<InterfaceTreeNode> implements Filter<Component>

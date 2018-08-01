@@ -245,7 +245,7 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
 
         // Destroying all child nodes first
         // We access raw children directly to ensure we don't miss out any if they are currently filtered
-        for ( final InterfaceTreeNode child : tree.getExModel ().getRawChildren ( InterfaceTreeNode.this ) )
+        for ( final InterfaceTreeNode child : tree.getModel ().getRawChildren ( InterfaceTreeNode.this ) )
         {
             child.uninstall ();
         }
