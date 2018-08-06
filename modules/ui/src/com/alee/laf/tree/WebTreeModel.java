@@ -22,7 +22,6 @@ import com.alee.utils.CollectionUtils;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -218,14 +217,6 @@ public class WebTreeModel<N extends MutableTreeNode> extends DefaultTreeModel
                 nodesWereRemoved ( parent, indices, removed );
             }
         }
-    }
-
-    @Override
-    public void valueForPathChanged ( final TreePath path, final Object newValue )
-    {
-        final MutableTreeNode aNode = ( MutableTreeNode ) path.getLastPathComponent ();
-        // aNode.setUserObject ( newValue ); // Hidden to avoid problems
-        nodeChanged ( aNode );
     }
 
     /**

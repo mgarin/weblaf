@@ -43,37 +43,21 @@ public class SampleTreeCellEditor extends WebTreeCellEditor
         super ();
     }
 
-    /**
-     * Returns custom tree cell editor component.
-     *
-     * @param tree       tree
-     * @param value      cell value
-     * @param isSelected whether cell is selected or not
-     * @param expanded   whether cell is expanded or not
-     * @param leaf       whether cell is leaf or not
-     * @param row        cell row index
-     * @return cell editor component
-     */
     @Override
     public Component getTreeCellEditorComponent ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded,
                                                   final boolean leaf, final int row )
     {
-        // todo Use delegate instead of direct access?
         this.sampleNode = ( SampleNode ) value;
         final WebTextField editor = ( WebTextField ) super.getTreeCellEditorComponent ( tree, value, isSelected, expanded, leaf, row );
         editor.setText ( sampleNode.getTitle () );
         return editor;
     }
 
-    /**
-     * Returns current editor's value.
-     *
-     * @return current editor's value
-     */
     @Override
     public Object getCellEditorValue ()
     {
-        sampleNode.getUserObject ().setTitle ( delegate.getCellEditorValue ().toString () );
-        return sampleNode;
+        final SampleObject sampleObject = sampleNode.getUserObject ();
+        sampleObject.setTitle ( delegate.getCellEditorValue ().toString () );
+        return sampleObject;
     }
 }
