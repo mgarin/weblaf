@@ -20,6 +20,7 @@ package com.alee.laf.table;
 import com.alee.extended.behavior.AbstractComponentBehavior;
 import com.alee.extended.behavior.Behavior;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.utils.CoreSwingUtils;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -99,49 +100,60 @@ public class TableRowHeightOptimizer extends AbstractComponentBehavior<JTable> i
     @Override
     public void tableChanged ( final TableModelEvent event )
     {
-        int maxHeight = initialRowHeight;
-        if ( component.getColumnCount () > 0 )
+        /**
+         * This call must be made later due to the way {@link javax.swing.table.TableRowSorter} is implemented.
+         * Otherwise this listener will receive outdated information from the methods that go to the sorter instead of the model.
+         */
+        CoreSwingUtils.invokeLater ( new Runnable ()
         {
-            final TableModel model = component.getModel ();
-            if ( model.getRowCount () > 0 )
+            @Override
+            public void run ()
             {
-                final Rectangle vr = component.getVisibleRect ();
-                if ( vr.width > 0 && vr.height > 0 )
+                int maxHeight = initialRowHeight;
+                if ( component.getColumnCount () > 0 )
                 {
-                    final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
-                    final Point upperLeft = new Point ( ltr ? vr.x + 1 : vr.x + vr.width - 1, vr.y + 1 );
-                    final Point lowerLeft = new Point ( ltr ? vr.x + 1 : vr.x + vr.width - 1, vr.y + vr.height - 1 );
-                    final Point upperRight = new Point ( ltr ? vr.x + vr.width - 1 : vr.x + 1, vr.y + 1 );
-                    final int rMin = Math.max ( 0, component.rowAtPoint ( upperLeft ) );
-                    final int rMax = Math.min ( component.getRowCount () - 1, component.rowAtPoint ( lowerLeft ) );
-                    final int cMin = Math.max ( 0, component.columnAtPoint ( upperLeft ) );
-                    final int cMax = Math.min ( component.getColumnCount () - 1, component.columnAtPoint ( upperRight ) );
-                    for ( int row = rMin; row <= rMax; row++ )
+                    final TableModel model = component.getModel ();
+                    if ( model.getRowCount () > 0 )
                     {
-                        for ( int col = cMin; col < cMax; col++ )
+                        final Rectangle vr = component.getVisibleRect ();
+                        if ( vr.width > 0 && vr.height > 0 )
                         {
-                            final TableCellRenderer cellRenderer = component.getCellRenderer ( row, col );
-                            final Component renderer = component.prepareRenderer ( cellRenderer, row, col );
-                            final Dimension ps = renderer.getPreferredSize ();
-                            maxHeight = Math.max ( maxHeight, ps.height );
+                            final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
+                            final Point upperLeft = new Point ( ltr ? vr.x + 1 : vr.x + vr.width - 1, vr.y + 1 );
+                            final Point lowerLeft = new Point ( ltr ? vr.x + 1 : vr.x + vr.width - 1, vr.y + vr.height - 1 );
+                            final Point upperRight = new Point ( ltr ? vr.x + vr.width - 1 : vr.x + 1, vr.y + 1 );
+                            final int rMin = Math.max ( 0, component.rowAtPoint ( upperLeft ) );
+                            final int rMax = Math.min ( component.getRowCount () - 1, component.rowAtPoint ( lowerLeft ) );
+                            final int cMin = Math.max ( 0, component.columnAtPoint ( upperLeft ) );
+                            final int cMax = Math.min ( component.getColumnCount () - 1, component.columnAtPoint ( upperRight ) );
+                            for ( int row = rMin; row <= rMax; row++ )
+                            {
+                                for ( int col = cMin; col < cMax; col++ )
+                                {
+                                    final TableCellRenderer cellRenderer = component.getCellRenderer ( row, col );
+                                    final Component renderer = component.prepareRenderer ( cellRenderer, row, col );
+                                    final Dimension ps = renderer.getPreferredSize ();
+                                    maxHeight = Math.max ( maxHeight, ps.height );
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for ( int col = 0; col < component.getColumnCount (); col++ )
+                            {
+                                final TableCellRenderer cellRenderer = component.getCellRenderer ( 0, col );
+                                final Component renderer = component.prepareRenderer ( cellRenderer, 0, col );
+                                final Dimension ps = renderer.getPreferredSize ();
+                                maxHeight = Math.max ( maxHeight, ps.height );
+                            }
                         }
                     }
                 }
-                else
+                if ( maxHeight != component.getRowHeight () )
                 {
-                    for ( int col = 0; col < component.getColumnCount (); col++ )
-                    {
-                        final TableCellRenderer cellRenderer = component.getCellRenderer ( 0, col );
-                        final Component renderer = component.prepareRenderer ( cellRenderer, 0, col );
-                        final Dimension ps = renderer.getPreferredSize ();
-                        maxHeight = Math.max ( maxHeight, ps.height );
-                    }
+                    component.setRowHeight ( maxHeight );
                 }
             }
-        }
-        if ( maxHeight != component.getRowHeight () )
-        {
-            component.setRowHeight ( maxHeight );
-        }
+        } );
     }
 }

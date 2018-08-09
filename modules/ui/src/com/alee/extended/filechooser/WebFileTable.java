@@ -44,7 +44,6 @@ import java.util.List;
  * @see com.alee.laf.table.WebTableUI
  * @see com.alee.laf.table.TablePainter
  */
-
 public class WebFileTable extends WebTable implements FileTableColumns
 {
     /**
