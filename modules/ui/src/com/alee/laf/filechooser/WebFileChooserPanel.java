@@ -2409,7 +2409,7 @@ public class WebFileChooserPanel extends WebPanel
         @Override
         public boolean accept ( final File file )
         {
-            return showHiddenFiles || !file.isHidden ();
+            return showHiddenFiles || !FileUtils.isHidden ( file );
         }
     }
 }
