@@ -28,7 +28,7 @@ import java.io.Serializable;
  * @author Mikle Garin
  * @see Function
  */
-public interface SerializableBiFunction<T, U, R> extends BiFunction<T, U, T>, Serializable
+public interface SerializableBiFunction<T, U, R> extends BiFunction<T, U, R>, Serializable
 {
     /**
      * This interface doesn't offer any additional methods to implement.
