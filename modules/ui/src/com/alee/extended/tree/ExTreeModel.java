@@ -18,15 +18,13 @@
 package com.alee.extended.tree;
 
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.tree.TreeState;
-import com.alee.laf.tree.UniqueNode;
-import com.alee.laf.tree.WebTree;
-import com.alee.laf.tree.WebTreeModel;
+import com.alee.laf.tree.*;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.compare.Filter;
 
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import java.util.*;
 
 /**
@@ -41,11 +39,6 @@ import java.util.*;
 public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implements FilterableNodes<N>, SortableNodes<N>
 {
     /**
-     * {@link WebTree} that uses this model
-     */
-    protected final WebTree<N> tree;
-
-    /**
      * {@link ExTreeDataProvider} used by this model
      */
     protected final ExTreeDataProvider<N> dataProvider;
@@ -55,52 +48,53 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
      * This map contains raw children which weren't affected by sorting and filtering operations.
      * If children needs to be re-sorted or re-filtered they are simply taken from the cache and re-organized once again.
      */
-    protected final Map<String, List<N>> rawNodeChildrenCache;
+    protected transient final Map<String, List<N>> rawNodeChildrenCache;
 
     /**
      * Nodes cache.
      * Used for quick node search within the tree.
      */
-    protected final Map<String, N> nodeById;
+    protected transient final Map<String, N> nodeById;
 
     /**
      * Nodes parent cache.
      * Used for node parent retrieval within the tree.
      */
-    protected final Map<String, String> parentById;
+    protected transient final Map<String, String> parentById;
+
+    /**
+     * {@link WebTree} that uses this model
+     */
+    protected transient WebTree<N> tree;
 
     /**
      * Root node cache.
      * Cached when root is requested for the first time.
      */
-    protected final N rootNode;
+    protected transient N rootNode;
 
     /**
      * {@link Filter} for {@link AsyncUniqueNode}s.
      */
-    protected Filter<N> filter;
+    protected transient Filter<N> filter;
 
     /**
      * {@link Comparator} for {@link AsyncUniqueNode}s.
      */
-    protected Comparator<N> comparator;
+    protected transient Comparator<N> comparator;
 
     /**
      * Constructs default ex tree model using custom data provider.
      *
-     * @param tree         {@link WebTree} that uses this model
      * @param dataProvider {@link ExTreeDataProvider} this model should be based on
      */
-    public ExTreeModel ( final WebTree<N> tree, final ExTreeDataProvider<N> dataProvider )
+    public ExTreeModel ( final ExTreeDataProvider<N> dataProvider )
     {
         super ( null );
-        this.tree = tree;
         this.dataProvider = dataProvider;
         this.rawNodeChildrenCache = new HashMap<String, List<N>> ( 10 );
         this.nodeById = new HashMap<String, N> ( 50 );
         this.parentById = new HashMap<String, String> ( 50 );
-        this.rootNode = loadRootNode ();
-        loadTreeData ( getRootNode () );
     }
 
     /**
@@ -111,6 +105,31 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
     public ExTreeDataProvider<N> getDataProvider ()
     {
         return dataProvider;
+    }
+
+    /**
+     * Installs this {@link ExTreeModel} into the specified {@link WebExTree}.
+     *
+     * @param tree {@link WebExTree}
+     */
+    public void install ( final WebTree<N> tree )
+    {
+        WebLookAndFeel.checkEventDispatchThread ();
+        this.tree = tree;
+        this.rootNode = loadRootNode ();
+        loadTreeData ( getRootNode () );
+    }
+
+    /**
+     * Uninstalls this {@link ExTreeModel} from the specified {@link WebExTree}.
+     *
+     * @param tree {@link WebExTree}
+     */
+    public void uninstall ( final WebTree<N> tree )
+    {
+        WebLookAndFeel.checkEventDispatchThread ();
+        this.rootNode = null;
+        this.tree = null;
     }
 
     /**
@@ -138,9 +157,9 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
      * Note that this might take some time in case tree structure is large as it will be fully loaded.
      * Though this doesn't force any repaints or other visual updates, so the speed depends only on ExTreeDataProvider.
      *
-     * This method is mostly used to ensure that at any given time {@link WebExTree} has all of its nodes.
+     * This method is mostly used to ensure that at any given time tree has all of its nodes.
      * That heavily simplifies work with the tree in case you need to access random nodes in the tree directly.
-     * In case this is not your goal it is probably better to use {@link WebAsyncTree}.
+     * In case this is not your goal it is probably better to use {@link AsyncTreeModel}.
      *
      * @param parent node to load children for
      */
@@ -214,6 +233,23 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
 
         // Forcing children reload
         super.reload ( reloadedNode );
+    }
+
+    @Override
+    public void valueForPathChanged ( final TreePath path, final Object newValue )
+    {
+        super.valueForPathChanged ( path, newValue );
+
+        // Updating filtering and sorting for parent of this node unless it is root node
+        final N node = tree.getNodeForPath ( path );
+        if ( node != null )
+        {
+            final WebTreeNode parent = node.getParent ();
+            if ( parent != null )
+            {
+                filterAndSort ( ( N ) parent, false );
+            }
+        }
     }
 
     /**

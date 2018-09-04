@@ -143,18 +143,19 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
         cellEditor.setPreferredSize ( component.getPreferredSize () );
 
         // Updating editor styling
-        if ( component instanceof JLabel && ( ( JLabel ) component ).getIcon () != null )
+        if ( cellEditor instanceof WebTextField )
         {
-            final JLabel label = ( JLabel ) component;
-            if ( cellEditor instanceof WebTextField )
-            {
-                // Field styling
-                final WebTextField editor = ( WebTextField ) cellEditor;
-                editor.setStyleId ( StyleId.treeCellEditor.at ( tree ) );
+            // Field styling
+            final WebTextField editor = ( WebTextField ) cellEditor;
+            editor.setStyleId ( StyleId.treeCellEditor.at ( tree ) );
 
-                // Leading icon
+            // Updating leading icon styling
+            if ( component instanceof JLabel && ( ( JLabel ) component ).getIcon () != null )
+            {
+                final JLabel label = ( JLabel ) component;
                 if ( autoUpdateLeadingIcon )
                 {
+                    // Leading icon styling
                     final WebImage image = new WebImage ( StyleId.treeCellEditorIcon.at ( editor ), label.getIcon () );
                     editor.setLeadingComponent ( image );
                 }

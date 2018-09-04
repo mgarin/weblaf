@@ -17,7 +17,6 @@
 
 package com.alee.extended.tree;
 
-import com.alee.extended.tree.sample.SampleExDataProvider;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.managers.style.StyleId;
@@ -120,7 +119,7 @@ public class WebExCheckBoxTree<N extends UniqueNode> extends WebCheckBoxTree<N> 
      */
     public WebExCheckBoxTree ( final StyleId id )
     {
-        this ( id, new SampleExDataProvider (), null, null );
+        this ( id, null, null, null );
     }
 
     /**
@@ -169,8 +168,11 @@ public class WebExCheckBoxTree<N extends UniqueNode> extends WebCheckBoxTree<N> 
     public WebExCheckBoxTree ( final StyleId id, final ExTreeDataProvider dataProvider,
                                final TreeCellRenderer renderer, final TreeCellEditor editor )
     {
-        super ( id );
-        setDataProvider ( dataProvider );
+        super ( id, new EmptyTreeModel () );
+        if ( dataProvider != null )
+        {
+            setDataProvider ( dataProvider );
+        }
         if ( renderer != null )
         {
             setCellRenderer ( renderer );
@@ -197,17 +199,30 @@ public class WebExCheckBoxTree<N extends UniqueNode> extends WebCheckBoxTree<N> 
     @Override
     public void setModel ( final TreeModel newModel )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
         /**
          * Simply ignoring any models that are not {@link ExTreeModel}-based.
          * This is a workaround to avoid default model being set in {@link javax.swing.JTree}.
+         * This way we can prevent any models from being forced on us and avoid unnecessary events and UI updates.
          */
         if ( newModel instanceof ExTreeModel )
         {
+            final ExTreeModel<N> old = getModel ();
+            if ( old != null )
+            {
+                old.uninstall ( this );
+            }
+
+            final ExTreeModel model = ( ExTreeModel ) newModel;
+            model.install ( this );
+
             super.setModel ( newModel );
         }
         else if ( newModel == null )
         {
-            throw new NullPointerException ( "Non-null ExTreeModel must be provided" );
+            throw new NullPointerException ( "ExTreeModel cannot be null" );
         }
     }
 
@@ -218,28 +233,39 @@ public class WebExCheckBoxTree<N extends UniqueNode> extends WebCheckBoxTree<N> 
     }
 
     /**
-     * Returns ex tree data provider.
+     * Returns {@link ExTreeDataProvider} used by this {@link WebExCheckBoxTree}.
      *
-     * @return data provider
+     * @return {@link ExTreeDataProvider} used by this {@link WebExCheckBoxTree}
      */
     public ExTreeDataProvider<N> getDataProvider ()
     {
-        final TreeModel model = getModel ();
-        return model != null && model instanceof ExTreeModel ? getModel ().getDataProvider () : null;
+        final ExTreeModel model = getModel ();
+        return model != null ? getModel ().getDataProvider () : null;
     }
 
     /**
-     * Changes data provider for this ex tree.
+     * Sets {@link ExTreeDataProvider} used by this {@link WebExCheckBoxTree}.
      *
-     * @param dataProvider new data provider
+     * @param dataProvider new {@link ExTreeDataProvider} for this {@link WebExCheckBoxTree}
      */
     public void setDataProvider ( final ExTreeDataProvider dataProvider )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        /**
+         * Initializing new {@link ExTreeModel} based on specified {@link ExTreeDataProvider}.
+         * This is necessary as the model will keep {@link ExTreeDataProvider} instead of {@link WebExCheckBoxTree}.
+         */
         if ( dataProvider != null )
         {
             final ExTreeDataProvider<N> oldDataProvider = getDataProvider ();
-            setModel ( new ExTreeModel<N> ( this, dataProvider ) );
+            setModel ( new ExTreeModel<N> ( dataProvider ) );
             firePropertyChange ( WebLookAndFeel.TREE_DATA_PROVIDER_PROPERTY, oldDataProvider, dataProvider );
+        }
+        else
+        {
+            throw new NullPointerException ( "ExTreeDataProvider cannot be null" );
         }
     }
 

@@ -17,16 +17,12 @@
 
 package com.alee.extended.tree;
 
-import com.alee.extended.tree.sample.SampleAsyncDataProvider;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.WebTree;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.compare.Filter;
-import com.alee.utils.swing.CellEditorAdapter;
 
-import javax.swing.event.ChangeEvent;
 import javax.swing.tree.TreeCellEditor;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeModel;
@@ -60,25 +56,14 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N>
      */
 
     /**
-     * General lock.
+     * Component properties.
      */
-    protected static final Object lock = new Object ();
-
-    /**
-     * Sync loading methods and option lock.
-     */
-    protected final Object syncLoadingLock = new Object ();
+    public static final String ASYNC_LOADING_PROPERTY = "asyncLoading";
 
     /**
      * Whether to load children asynchronously or not.
      */
     protected boolean asyncLoading = true;
-
-    /**
-     * Special cell editor listener.
-     * It updates filtering and sorting after editing has finished.
-     */
-    protected CellEditorAdapter cellEditorAdapter;
 
     /**
      * Tree nodes filter.
@@ -149,7 +134,7 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N>
      */
     public WebAsyncTree ( final StyleId id )
     {
-        this ( id, new SampleAsyncDataProvider (), null, null );
+        this ( id, null, null, null );
     }
 
     /**
@@ -200,8 +185,11 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N>
     public WebAsyncTree ( final StyleId id, final AsyncTreeDataProvider dataProvider,
                           final TreeCellRenderer renderer, final TreeCellEditor editor )
     {
-        super ( id );
-        setDataProvider ( dataProvider );
+        super ( id, new EmptyTreeModel () );
+        if ( dataProvider != null )
+        {
+            setDataProvider ( dataProvider );
+        }
         if ( renderer != null )
         {
             setCellRenderer ( renderer );
@@ -217,43 +205,6 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N>
     public StyleId getDefaultStyleId ()
     {
         return StyleId.asynctree;
-    }
-
-    @Override
-    public AsyncTreeModel<N> getModel ()
-    {
-        return ( AsyncTreeModel<N> ) super.getModel ();
-    }
-
-    @Override
-    public void setModel ( final TreeModel newModel )
-    {
-        /**
-         * Simply ignoring any models that are not {@link AsyncTreeModel}-based.
-         * This is a workaround to avoid default model being set in {@link javax.swing.JTree}.
-         */
-        if ( newModel instanceof AsyncTreeModel )
-        {
-            final AsyncTreeModel<N> old = getModel ();
-            if ( old != null )
-            {
-                old.removeAsyncTreeModelListener ( this );
-            }
-            if ( newModel instanceof AsyncTreeModel )
-            {
-                synchronized ( syncLoadingLock != null ? syncLoadingLock : lock )
-                {
-                    final AsyncTreeModel model = ( AsyncTreeModel ) newModel;
-                    model.setAsyncLoading ( isAsyncLoading () );
-                    model.addAsyncTreeModelListener ( this );
-                }
-            }
-            super.setModel ( newModel );
-        }
-        else if ( newModel == null )
-        {
-            throw new NullPointerException ( "Non-null AsyncTreeModel must be provided" );
-        }
     }
 
     /**
@@ -273,14 +224,50 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N>
      */
     public void setAsyncLoading ( final boolean asyncLoading )
     {
-        synchronized ( syncLoadingLock != null ? syncLoadingLock : lock )
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Updating loading mode
+        final boolean old = this.asyncLoading;
+        this.asyncLoading = asyncLoading;
+
+        // Notifying about property change
+        firePropertyChange ( ASYNC_LOADING_PROPERTY, old, asyncLoading );
+    }
+
+    @Override
+    public AsyncTreeModel<N> getModel ()
+    {
+        return ( AsyncTreeModel<N> ) super.getModel ();
+    }
+
+    @Override
+    public void setModel ( final TreeModel newModel )
+    {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        /**
+         * Simply ignoring any models that are not {@link AsyncTreeModel}-based.
+         * This is a workaround to avoid default model being set in {@link javax.swing.JTree}.
+         * This way we can prevent any models from being forced on us and avoid unnecessary events and UI updates.
+         */
+        if ( newModel instanceof AsyncTreeModel )
         {
-            this.asyncLoading = asyncLoading;
-            final AsyncTreeModel<N> model = getModel ();
-            if ( model != null )
+            final AsyncTreeModel<N> old = getModel ();
+            if ( old != null )
             {
-                model.setAsyncLoading ( asyncLoading );
+                old.uninstall ( this );
             }
+
+            final AsyncTreeModel model = ( AsyncTreeModel ) newModel;
+            model.install ( this );
+
+            super.setModel ( newModel );
+        }
+        else if ( newModel == null )
+        {
+            throw new NullPointerException ( "AsyncTreeModel cannot be null" );
         }
     }
 
@@ -302,11 +289,22 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N>
      */
     public void setDataProvider ( final AsyncTreeDataProvider dataProvider )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        /**
+         * Initializing new {@link AsyncTreeModel} based on specified {@link AsyncTreeDataProvider}.
+         * This is necessary as the model will keep {@link AsyncTreeDataProvider} instead of {@link WebAsyncTree}.
+         */
         if ( dataProvider != null )
         {
             final AsyncTreeDataProvider<N> oldDataProvider = getDataProvider ();
-            setModel ( new AsyncTreeModel<N> ( this, dataProvider ) );
+            setModel ( new AsyncTreeModel<N> ( dataProvider ) );
             firePropertyChange ( WebLookAndFeel.TREE_DATA_PROVIDER_PROPERTY, oldDataProvider, dataProvider );
+        }
+        else
+        {
+            throw new NullPointerException ( "AsyncTreeDataProvider cannot be null" );
         }
     }
 
@@ -415,70 +413,6 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N>
     public void filterAndSort ( final N node, final boolean recursively )
     {
         getModel ().filterAndSort ( node, recursively );
-    }
-
-    /**
-     * Sets the cell editor for this tree.
-     * This method also adds cell editor listener in the provided model.
-     *
-     * @param cellEditor cell editor
-     */
-    @Override
-    public void setCellEditor ( final TreeCellEditor cellEditor )
-    {
-        // Removing cell editor listener from old cell editor
-        if ( this.cellEditor != null )
-        {
-            this.cellEditor.removeCellEditorListener ( cellEditorAdapter );
-        }
-
-        // Adding cell editor to the tree
-        super.setCellEditor ( cellEditor );
-
-        // Adding cell editor listener to new cell editor
-        if ( cellEditor != null )
-        {
-            cellEditorAdapter = new CellEditorAdapter ()
-            {
-                @Override
-                public void editingStopped ( final ChangeEvent e )
-                {
-                    //                    // Performing data update in a proper separate thread as it might take some time
-                    //                    if ( dataUpdater != null )
-                    //                    {
-                    //                        AsyncTreeQueue.execute ( WebAsyncTree.this, new Runnable ()
-                    //                        {
-                    //                            @Override
-                    //                            public void run ()
-                    //                            {
-                    //                                dataUpdater.nodeRenamed ( node, new Runnable ()
-                    //                                {
-                    //                                    @Override
-                    //                                    public void run ()
-                    //                                    {
-                    //                                        //
-                    //                                    }
-                    //                                } );
-                    //                            }
-                    //                        } );
-                    //                    }
-
-                    // Must update sorting later to avoid interfering with editing
-                    // This is important as sorting might cause consequent editing stop event
-                    CoreSwingUtils.invokeLater ( new Runnable ()
-                    {
-                        @Override
-                        public void run ()
-                        {
-                            // Updating tree sorting and filtering for parent of the edited node
-                            final N node = ( N ) cellEditor.getCellEditorValue ();
-                            filterAndSort ( ( N ) node.getParent () );
-                        }
-                    } );
-                }
-            };
-            cellEditor.addCellEditorListener ( cellEditorAdapter );
-        }
     }
 
     /**
@@ -674,13 +608,10 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N>
      */
     public void reloadSelectedNodesSync ()
     {
-        synchronized ( syncLoadingLock != null ? syncLoadingLock : lock )
-        {
-            final boolean async = isAsyncLoading ();
-            setAsyncLoading ( false );
-            reloadSelectedNodes ();
-            setAsyncLoading ( async );
-        }
+        final boolean async = isAsyncLoading ();
+        setAsyncLoading ( false );
+        reloadSelectedNodes ();
+        setAsyncLoading ( async );
     }
 
     /**
@@ -763,14 +694,11 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N>
      */
     public N reloadNodeSync ( final N node, final boolean select )
     {
-        synchronized ( syncLoadingLock != null ? syncLoadingLock : lock )
-        {
-            final boolean async = isAsyncLoading ();
-            setAsyncLoading ( false );
-            reloadNode ( node, select );
-            setAsyncLoading ( async );
-            return node;
-        }
+        final boolean async = isAsyncLoading ();
+        setAsyncLoading ( false );
+        reloadNode ( node, select );
+        setAsyncLoading ( async );
+        return node;
     }
 
     /**
@@ -846,14 +774,11 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N>
      */
     public N reloadPathSync ( final TreePath path, final boolean select )
     {
-        synchronized ( syncLoadingLock != null ? syncLoadingLock : lock )
-        {
-            final boolean async = isAsyncLoading ();
-            setAsyncLoading ( false );
-            final N node = reloadPath ( path, select );
-            setAsyncLoading ( async );
-            return node;
-        }
+        final boolean async = isAsyncLoading ();
+        setAsyncLoading ( false );
+        final N node = reloadPath ( path, select );
+        setAsyncLoading ( async );
+        return node;
     }
 
     /**

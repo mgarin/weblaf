@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.tree.sample;
+package com.alee.demo.content.data.tree.model;
 
 import com.alee.api.clone.Clone;
 import com.alee.api.clone.CloneBehavior;
@@ -44,11 +44,24 @@ public class SampleNode extends AsyncUniqueNode<SampleNode, SampleObject>
     /**
      * Constructs new {@link SampleNode}.
      *
+     * @param id    {@link SampleNode} identifier
+     * @param type  {@link SampleObject} type
+     * @param title {@link SampleObject} title
+     */
+    public SampleNode ( final String id, final SampleObjectType type, final String title )
+    {
+        this ( id, new SampleObject ( type, title ) );
+    }
+
+    /**
+     * Constructs new {@link SampleNode}.
+     *
+     * @param id         {@link SampleNode} identifier
      * @param userObject node {@link Object}
      */
-    public SampleNode ( final SampleObject userObject )
+    public SampleNode ( final String id, final SampleObject userObject )
     {
-        super ( userObject );
+        super ( id, userObject );
         this.time = 0;
     }
 
@@ -116,8 +129,7 @@ public class SampleNode extends AsyncUniqueNode<SampleNode, SampleObject>
     public SampleNode clone ( final RecursiveClone clone, final int depth )
     {
         final SampleObject userObject = clone.clone ( getUserObject (), depth + 1 );
-        final SampleNode nodeCopy = new SampleNode ( userObject );
-        nodeCopy.setId ( getId () );
+        final SampleNode nodeCopy = new SampleNode ( getId (), userObject );
         nodeCopy.setTime ( getTime () );
         return nodeCopy;
     }

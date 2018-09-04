@@ -19,11 +19,10 @@ package com.alee.demo.content.data.tree;
 
 import com.alee.demo.api.example.*;
 import com.alee.demo.content.SampleData;
+import com.alee.demo.content.data.tree.model.SampleNode;
+import com.alee.demo.content.data.tree.model.SampleTreeCellEditor;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.tree.*;
-import com.alee.extended.tree.sample.SampleExDataProvider;
-import com.alee.extended.tree.sample.SampleNode;
-import com.alee.extended.tree.sample.SampleTreeCellEditor;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
@@ -82,7 +81,8 @@ public class WebTreeFilterFieldExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebExTree tree = new WebExTree ( getStyleId (), new SampleExDataProvider (), new SampleTreeCellEditor () );
+            final ExTreeDataProvider<SampleNode> dataProvider = SampleData.createExTreeDataProvider ();
+            final WebExTree tree = new WebExTree ( getStyleId (), dataProvider, new SampleTreeCellEditor () );
             tree.setVisibleRowCount ( 8 );
 
             final WebScrollPane treeScroll = new WebScrollPane ( tree );
@@ -112,8 +112,8 @@ public class WebTreeFilterFieldExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final AsyncTreeDataProvider<SampleNode> provider = SampleData.createDelayingAsyncDataProvider ();
-            final WebAsyncTree tree = new WebAsyncTree ( getStyleId (), provider, new SampleTreeCellEditor () );
+            final AsyncTreeDataProvider<SampleNode> dataProvider = SampleData.createDelayingAsyncDataProvider ();
+            final WebAsyncTree tree = new WebAsyncTree ( getStyleId (), dataProvider, new SampleTreeCellEditor () );
             tree.setVisibleRowCount ( 8 );
 
             final WebScrollPane treeScroll = new WebScrollPane ( tree );
@@ -143,7 +143,8 @@ public class WebTreeFilterFieldExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebExCheckBoxTree tree = new WebExCheckBoxTree ( getStyleId () );
+            final ExTreeDataProvider<SampleNode> dataProvider = SampleData.createExTreeDataProvider ();
+            final WebExCheckBoxTree tree = new WebExCheckBoxTree ( getStyleId (), dataProvider, new SampleTreeCellEditor () );
             tree.setVisibleRowCount ( 8 );
 
             final WebScrollPane treeScroll = new WebScrollPane ( tree );

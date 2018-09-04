@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.tree.sample;
+package com.alee.demo.content.data.tree.model;
 
 /**
  * {@link SampleObject} types enumeration.

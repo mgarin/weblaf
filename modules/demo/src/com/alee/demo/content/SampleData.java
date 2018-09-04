@@ -17,31 +17,26 @@
 
 package com.alee.demo.content;
 
-import com.alee.api.jdk.Objects;
 import com.alee.api.ui.TextBridge;
+import com.alee.demo.content.data.tree.model.SampleAsyncDataProvider;
+import com.alee.demo.content.data.tree.model.SampleCustomizedExDataProvider;
+import com.alee.demo.content.data.tree.model.SampleExDataProvider;
+import com.alee.demo.content.data.tree.model.SampleNode;
 import com.alee.extended.tree.AbstractExTreeDataProvider;
 import com.alee.extended.tree.AsyncTreeDataProvider;
 import com.alee.extended.tree.ExTreeDataProvider;
-import com.alee.extended.tree.NodesLoadCallback;
-import com.alee.extended.tree.sample.SampleAsyncDataProvider;
-import com.alee.extended.tree.sample.SampleNode;
-import com.alee.extended.tree.sample.SampleObjectType;
 import com.alee.laf.combobox.WebComboBoxModel;
 import com.alee.laf.list.ListCellParameters;
 import com.alee.laf.list.WebListModel;
-import com.alee.laf.tree.UniqueNode;
 import com.alee.laf.tree.WebTreeModel;
 import com.alee.managers.language.LM;
 import com.alee.managers.language.LanguageSensitive;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.MathUtils;
-import com.alee.utils.ThreadUtils;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -272,23 +267,7 @@ public final class SampleData
      */
     public static AsyncTreeDataProvider<SampleNode> createDelayingAsyncDataProvider ()
     {
-        return new SampleAsyncDataProvider ()
-        {
-            /**
-             * Adds extra loading time to showcase asynchronous data loading.
-             * It only excludes root node children to avoid awkward demo startup.
-             * Stalling the thread here won't hurt the UI since it is always executed on non-EDT thread.
-             */
-            @Override
-            public void loadChildren ( final SampleNode parent, final NodesLoadCallback<SampleNode> listener )
-            {
-                if ( parent.getUserObject ().getType () != SampleObjectType.root )
-                {
-                    ThreadUtils.sleepSafely ( MathUtils.random ( 100, 2000 ) );
-                }
-                super.loadChildren ( parent, listener );
-            }
-        };
+        return new SampleAsyncDataProvider ();
     }
 
     /**
@@ -296,9 +275,29 @@ public final class SampleData
      *
      * @return sample {@link WebTreeModel} for checkbox tree
      */
-    public static WebTreeModel<UniqueNode> createCheckBoxTreeModel ()
+    public static WebTreeModel<SampleNode> createCheckBoxTreeModel ()
     {
-        return createCheckBoxTreeDataProvider ().createPlainModel ();
+        return createExTreeDataProvider ().createPlainModel ();
+    }
+
+    /**
+     * Returns sample {@link ExTreeDataProvider}.
+     *
+     * @return sample {@link ExTreeDataProvider}
+     */
+    public static AbstractExTreeDataProvider<SampleNode> createExTreeDataProvider ()
+    {
+        return new SampleExDataProvider ();
+    }
+
+    /**
+     * Returns sample {@link WebTreeModel} for checkbox tree.
+     *
+     * @return sample {@link WebTreeModel} for checkbox tree
+     */
+    public static WebTreeModel<SampleNode> createCustomizedCheckBoxTreeModel ()
+    {
+        return createCustomizedExCheckBoxTreeDataProvider ().createPlainModel ();
     }
 
     /**
@@ -306,58 +305,8 @@ public final class SampleData
      *
      * @return sample {@link ExTreeDataProvider} for checkbox tree
      */
-    public static AbstractExTreeDataProvider<UniqueNode> createCheckBoxTreeDataProvider ()
+    public static AbstractExTreeDataProvider<SampleNode> createCustomizedExCheckBoxTreeDataProvider ()
     {
-        return new AbstractExTreeDataProvider<UniqueNode> ()
-        {
-            @Override
-            public UniqueNode getRoot ()
-            {
-                return new UniqueNode ( "root", "Checkbox tree" );
-            }
-
-            @Override
-            public List<UniqueNode> getChildren ( final UniqueNode parent )
-            {
-                final List<UniqueNode> children;
-                if ( Objects.equals ( parent.getId (), "root" ) )
-                {
-                    children = CollectionUtils.asList (
-                            new UniqueNode ( "disabled", "Disabled" ),
-                            new UniqueNode ( "hidden", "Hidden" ),
-                            new UniqueNode ( "editable", "Editable" )
-                    );
-                }
-                else if ( Objects.equals ( parent.getId (), "disabled" ) )
-                {
-                    children = CollectionUtils.asList (
-                            new UniqueNode ( "Can't check this" ),
-                            new UniqueNode ( "And this one too" ),
-                            new UniqueNode ( "Not even this one" )
-                    );
-                }
-                else if ( Objects.equals ( parent.getId (), "hidden" ) )
-                {
-                    children = CollectionUtils.asList (
-                            new UniqueNode ( "No check here" ),
-                            new UniqueNode ( "And for this one" ),
-                            new UniqueNode ( "They're all gone" )
-                    );
-                }
-                else if ( Objects.equals ( parent.getId (), "editable" ) )
-                {
-                    children = CollectionUtils.asList (
-                            new UniqueNode ( "Edit this node" ),
-                            new UniqueNode ( "Or this one instead" ),
-                            new UniqueNode ( "This one is editable too" )
-                    );
-                }
-                else
-                {
-                    children = Collections.emptyList ();
-                }
-                return children;
-            }
-        };
+        return new SampleCustomizedExDataProvider ();
     }
 }

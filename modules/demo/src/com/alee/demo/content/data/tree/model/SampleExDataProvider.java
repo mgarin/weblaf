@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.tree.sample;
+package com.alee.demo.content.data.tree.model;
 
 import com.alee.extended.tree.AbstractExTreeDataProvider;
 import com.alee.utils.CollectionUtils;
@@ -33,32 +33,39 @@ public class SampleExDataProvider extends AbstractExTreeDataProvider<SampleNode>
     @Override
     public SampleNode getRoot ()
     {
-        return new SampleNode ( new SampleObject ( SampleObjectType.root, "Root" ) );
+        return new SampleNode ( "root", SampleObjectType.root, "Root" );
     }
 
     @Override
     public List<SampleNode> getChildren ( final SampleNode parent )
     {
+        final List<SampleNode> children;
         switch ( parent.getUserObject ().getType () )
         {
             case root:
             {
-                final SampleNode folder1 = new SampleNode ( new SampleObject ( SampleObjectType.folder, "Folder 1" ) );
-                final SampleNode folder2 = new SampleNode ( new SampleObject ( SampleObjectType.folder, "Folder 2" ) );
-                final SampleNode folder3 = new SampleNode ( new SampleObject ( SampleObjectType.folder, "Folder 3" ) );
-                return CollectionUtils.asList ( folder1, folder2, folder3 );
+                children = CollectionUtils.asList (
+                        new SampleNode ( "folder1", SampleObjectType.folder, "Folder 1" ),
+                        new SampleNode ( "folder2", SampleObjectType.folder, "Folder 2" ),
+                        new SampleNode ( "folder3", SampleObjectType.folder, "Folder 3" )
+                );
+                break;
             }
             case folder:
             {
-                final SampleNode leaf1 = new SampleNode ( new SampleObject ( SampleObjectType.leaf, "Leaf 1" ) );
-                final SampleNode leaf2 = new SampleNode ( new SampleObject ( SampleObjectType.leaf, "Leaf 2" ) );
-                final SampleNode leaf3 = new SampleNode ( new SampleObject ( SampleObjectType.leaf, "Leaf 3" ) );
-                return CollectionUtils.asList ( leaf1, leaf2, leaf3 );
+                children = CollectionUtils.asList (
+                        new SampleNode ( parent.getId () + ".leaf1", SampleObjectType.leaf, "Leaf 1" ),
+                        new SampleNode ( parent.getId () + ".leaf2", SampleObjectType.leaf, "Leaf 2" ),
+                        new SampleNode ( parent.getId () + ".leaf3", SampleObjectType.leaf, "Leaf 3" )
+                );
+                break;
             }
             default:
             {
-                return Collections.emptyList ();
+                children = Collections.emptyList ();
+                break;
             }
         }
+        return children;
     }
 }

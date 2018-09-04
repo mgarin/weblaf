@@ -253,18 +253,24 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     public void setCellEditor ( final TreeCellEditor cellEditor )
     {
         // Removing cell editor listeners from old cell editor
-        for ( final CellEditorListener listener : listenerList.getListeners ( CellEditorListener.class ) )
+        if ( this.cellEditor != null )
         {
-            this.cellEditor.removeCellEditorListener ( listener );
+            for ( final CellEditorListener listener : listenerList.getListeners ( CellEditorListener.class ) )
+            {
+                this.cellEditor.removeCellEditorListener ( listener );
+            }
         }
 
         // Updating cell editor
         super.setCellEditor ( cellEditor );
 
         // Adding cell editor listeners to new cell editor
-        for ( final CellEditorListener listener : listenerList.getListeners ( CellEditorListener.class ) )
+        if ( cellEditor != null )
         {
-            this.cellEditor.addCellEditorListener ( listener );
+            for ( final CellEditorListener listener : listenerList.getListeners ( CellEditorListener.class ) )
+            {
+                cellEditor.addCellEditorListener ( listener );
+            }
         }
     }
 

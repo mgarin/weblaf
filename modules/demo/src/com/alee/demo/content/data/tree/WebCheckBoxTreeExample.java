@@ -21,9 +21,11 @@ import com.alee.api.jdk.Objects;
 import com.alee.api.jdk.Predicate;
 import com.alee.demo.api.example.*;
 import com.alee.demo.content.SampleData;
+import com.alee.demo.content.data.tree.model.SampleNode;
+import com.alee.demo.content.data.tree.model.SampleTreeCellEditor;
 import com.alee.extended.tree.WebCheckBoxTree;
 import com.alee.laf.scroll.WebScrollPane;
-import com.alee.laf.tree.UniqueNode;
+import com.alee.laf.tree.WebTreeModel;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
@@ -80,7 +82,8 @@ public class WebCheckBoxTreeExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebCheckBoxTree tree = new WebCheckBoxTree ( getStyleId () );
+            final WebTreeModel<SampleNode> model = SampleData.createCheckBoxTreeModel ();
+            final WebCheckBoxTree tree = new WebCheckBoxTree ( getStyleId (), model );
             tree.setVisibleRowCount ( 8 );
             return CollectionUtils.asList ( new WebScrollPane ( tree ).setPreferredWidth ( 200 ) );
         }
@@ -104,31 +107,33 @@ public class WebCheckBoxTreeExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebCheckBoxTree tree = new WebCheckBoxTree ( getStyleId (), SampleData.createCheckBoxTreeModel () );
+            final WebTreeModel<SampleNode> model = SampleData.createCustomizedCheckBoxTreeModel ();
+            final WebCheckBoxTree tree = new WebCheckBoxTree ( getStyleId (), model );
             tree.setEditable ( true );
+            tree.setCellEditor ( new SampleTreeCellEditor () );
             tree.setVisibleRowCount ( 13 );
-            tree.setCheckBoxEnabledStateProvider ( new Predicate<UniqueNode> ()
+            tree.setCheckBoxEnabledStateProvider ( new Predicate<SampleNode> ()
             {
                 @Override
-                public boolean test ( final UniqueNode node )
+                public boolean test ( final SampleNode node )
                 {
-                    return !node.isLeaf () || Objects.notEquals ( node.getParent ().getUserObject ().toString (), "Disabled" );
+                    return !node.isLeaf () || Objects.notEquals ( node.getParent ().getId (), "disabled" );
                 }
             } );
-            tree.setCheckBoxVisibleStateProvider ( new Predicate<UniqueNode> ()
+            tree.setCheckBoxVisibleStateProvider ( new Predicate<SampleNode> ()
             {
                 @Override
-                public boolean test ( final UniqueNode node )
+                public boolean test ( final SampleNode node )
                 {
-                    return !node.isLeaf () || Objects.notEquals ( node.getParent ().getUserObject ().toString (), "Hidden" );
+                    return !node.isLeaf () || Objects.notEquals ( node.getParent ().getId (), "hidden" );
                 }
             } );
-            tree.setEditableStateProvider ( new Predicate<UniqueNode> ()
+            tree.setEditableStateProvider ( new Predicate<SampleNode> ()
             {
                 @Override
-                public boolean test ( final UniqueNode node )
+                public boolean test ( final SampleNode node )
                 {
-                    return node.isLeaf () && Objects.equals ( node.getParent ().getUserObject ().toString (), "Editable" );
+                    return node.isLeaf () && Objects.equals ( node.getParent ().getId (), "editable" );
                 }
             } );
             tree.expandAll ();

@@ -15,16 +15,17 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.tree.sample;
+package com.alee.demo.content.data.tree.model;
 
 import com.alee.extended.tree.AbstractAsyncTreeDataProvider;
 import com.alee.extended.tree.NodesLoadCallback;
 import com.alee.utils.CollectionUtils;
-
-import java.util.Locale;
+import com.alee.utils.MathUtils;
+import com.alee.utils.ThreadUtils;
 
 /**
  * Sample {@link com.alee.extended.tree.AsyncTreeDataProvider} implementation.
+ * Adds extra loading time to showcase asynchronous data loading.
  *
  * @author Mikle Garin
  */
@@ -33,42 +34,53 @@ public class SampleAsyncDataProvider extends AbstractAsyncTreeDataProvider<Sampl
     @Override
     public SampleNode getRoot ()
     {
-        return new SampleNode ( new SampleObject ( SampleObjectType.root, "Root" ) );
+        return new SampleNode ( "root", SampleObjectType.root, "Root" );
     }
 
     @Override
     public void loadChildren ( final SampleNode parent, final NodesLoadCallback<SampleNode> listener )
     {
-        if ( parent.getTitle ().toLowerCase ( Locale.ROOT ).contains ( "fail" ) )
+        // Excluding root node children to avoid awkward demo startup
+        if ( parent.getUserObject ().getType () != SampleObjectType.root )
         {
-            listener.failed ( new RuntimeException ( "Sample exception cause" ) );
+            // Stalling the thread here won't hurt the UI since it is always executed on non-EDT thread
+            ThreadUtils.sleepSafely ( MathUtils.random ( 100, 2000 ) );
         }
-        else
+
+        // Loading actual children
+        if ( !parent.getId ().equals ( "failFolder" ) )
         {
             switch ( parent.getUserObject ().getType () )
             {
                 case root:
                 {
-                    final SampleNode folder1 = new SampleNode ( new SampleObject ( SampleObjectType.folder, "Folder 1" ) );
-                    final SampleNode folder2 = new SampleNode ( new SampleObject ( SampleObjectType.folder, "Folder 2" ) );
-                    final SampleNode folder3 = new SampleNode ( new SampleObject ( SampleObjectType.folder, "Folder 3" ) );
-                    final SampleNode failFolder = new SampleNode ( new SampleObject ( SampleObjectType.folder, "Fail folder" ) );
-                    listener.completed ( CollectionUtils.asList ( folder1, folder2, folder3, failFolder ) );
+                    listener.completed ( CollectionUtils.asList (
+                            new SampleNode ( "folder1", SampleObjectType.folder, "Folder 1" ),
+                            new SampleNode ( "folder2", SampleObjectType.folder, "Folder 2" ),
+                            new SampleNode ( "folder3", SampleObjectType.folder, "Folder 3" ),
+                            new SampleNode ( "failFolder", SampleObjectType.folder, "Fail folder" )
+                    ) );
                     break;
                 }
                 case folder:
                 {
-                    final SampleNode leaf1 = new SampleNode ( new SampleObject ( SampleObjectType.leaf, "Leaf 1" ) );
-                    final SampleNode leaf2 = new SampleNode ( new SampleObject ( SampleObjectType.leaf, "Leaf 2" ) );
-                    final SampleNode leaf3 = new SampleNode ( new SampleObject ( SampleObjectType.leaf, "Leaf 3" ) );
-                    listener.completed ( CollectionUtils.asList ( leaf1, leaf2, leaf3 ) );
+                    listener.completed ( CollectionUtils.asList (
+                            new SampleNode ( parent.getId () + ".leaf1", SampleObjectType.leaf, "Leaf 1" ),
+                            new SampleNode ( parent.getId () + ".leaf2", SampleObjectType.leaf, "Leaf 2" ),
+                            new SampleNode ( parent.getId () + ".leaf3", SampleObjectType.leaf, "Leaf 3" )
+                    ) );
                     break;
                 }
                 default:
                 {
                     listener.failed ( new RuntimeException ( "Unknown parent node type" ) );
+                    break;
                 }
             }
+        }
+        else
+        {
+            listener.failed ( new RuntimeException ( "Sample exception cause" ) );
         }
     }
 

@@ -20,12 +20,15 @@ package com.alee.extended.tree;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.TreeState;
 import com.alee.laf.tree.WebTreeModel;
+import com.alee.laf.tree.WebTreeNode;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.compare.Filter;
 
+import javax.swing.event.EventListenerList;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import java.util.*;
 
 /**
@@ -44,97 +47,69 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      */
 
     /**
-     * Asynchronous tree that uses this model.
-     */
-    protected final WebAsyncTree<N> tree;
-
-    /**
-     * Asynchronous tree data provider.
+     * {@link AsyncTreeDataProvider} implementation.
+     * It is used to provide all {@link AsyncUniqueNode}s for the tree.
      */
     protected final AsyncTreeDataProvider<N> dataProvider;
 
     /**
-     * Whether to load children asynchronously or not.
+     * Event listeners.
      */
-    protected boolean asyncLoading;
+    protected transient final EventListenerList listeners;
+
+    /**
+     * Nodes cached states (parent identifier -&gt; children cached state).
+     * If child nodes for some parent node are cached then this map contains "true" value under that parent node identifier as a key.
+     */
+    protected transient final Map<String, Boolean> nodeCached;
+
+    /**
+     * Cache for children nodes returned by data provider (parent identifier -&gt; list of raw child nodes).
+     * This map contains raw children which weren't affected by sorting and filtering operations.
+     * If children needs to be re-sorted or re-filtered they are simply taken from the cache and re-organized once again.
+     */
+    protected transient final Map<String, List<N>> rawNodeChildrenCache;
+
+    /**
+     * Direct nodes cache (node identifier -&gt; node).
+     * Used for quick node search within the tree.
+     */
+    protected transient final Map<String, N> nodeById;
+
+    /**
+     * Asynchronous tree that uses this model.
+     */
+    protected transient WebAsyncTree<N> tree;
 
     /**
      * Root node cache.
      * Cached when root is requested for the first time.
      */
-    protected N rootNode;
-
-    /**
-     * Asynchronous tree listeners.
-     */
-    protected transient final List<AsyncTreeModelListener> asyncTreeModelListeners = new ArrayList<AsyncTreeModelListener> ( 1 );
-
-    /**
-     * Nodes cached states (parent ID -&gt; children cached state).
-     * If child nodes for some parent node are cached then this map contains "true" value under that parent node ID as a key.
-     */
-    protected transient final Map<String, Boolean> nodeCached = new HashMap<String, Boolean> ();
-
-    /**
-     * Cache for children nodes returned by data provider (parent ID -&gt; list of raw child nodes).
-     * This map contains raw children which weren't affected by sorting and filtering operations.
-     * If children needs to be re-sorted or re-filtered they are simply taken from the cache and re-organized once again.
-     */
-    protected transient final Map<String, List<N>> rawNodeChildrenCache = new HashMap<String, List<N>> ();
-
-    /**
-     * Direct nodes cache (node ID -&gt; node).
-     * Used for quick node search within the tree.
-     */
-    protected transient final Map<String, N> nodeById = new HashMap<String, N> ();
+    protected transient N rootNode;
 
     /**
      * {@link Filter} for {@link AsyncUniqueNode}s.
      */
-    protected Filter<N> filter;
+    protected transient Filter<N> filter;
 
     /**
      * {@link Comparator} for {@link AsyncUniqueNode}s.
      */
-    protected Comparator<N> comparator;
+    protected transient Comparator<N> comparator;
 
     /**
-     * Constructs default asynchronous tree model using custom data provider.
+     * Constructs new {@link AsyncTreeModel} with custom {@link AsyncTreeDataProvider}.
      *
-     * @param tree         asynchronous tree
-     * @param dataProvider data provider
+     * @param dataProvider {@link AsyncTreeDataProvider}
      */
-    public AsyncTreeModel ( final WebAsyncTree<N> tree, final AsyncTreeDataProvider<N> dataProvider )
+    public AsyncTreeModel ( final AsyncTreeDataProvider<N> dataProvider )
     {
         super ( null );
-        this.tree = tree;
         this.dataProvider = dataProvider;
-        this.asyncLoading = true;
-        this.rootNode = null;
-    }
-
-    /**
-     * Returns whether children are loaded asynchronously or not.
-     *
-     * @return {@code true} if children are loaded asynchronously, {@code false} otherwise
-     */
-    public boolean isAsyncLoading ()
-    {
-        return asyncLoading;
-    }
-
-    /**
-     * Sets whether to load children asynchronously or not.
-     *
-     * @param asyncLoading whether to load children asynchronously or not
-     */
-    public void setAsyncLoading ( final boolean asyncLoading )
-    {
-        // Event Dispatch Thread check
-        WebLookAndFeel.checkEventDispatchThread ();
-
-        // Updating parameter
-        this.asyncLoading = asyncLoading;
+        this.listeners = new EventListenerList ();
+        this.nodeCached = new HashMap<String, Boolean> ();
+        this.rawNodeChildrenCache = new HashMap<String, List<N>> ();
+        this.nodeById = new HashMap<String, N> ();
     }
 
     /**
@@ -145,6 +120,32 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
     public AsyncTreeDataProvider<N> getDataProvider ()
     {
         return dataProvider;
+    }
+
+    /**
+     * Installs this {@link AsyncTreeModel} into the specified {@link WebAsyncTree}.
+     *
+     * @param tree {@link WebAsyncTree}
+     */
+    public void install ( final WebAsyncTree<N> tree )
+    {
+        WebLookAndFeel.checkEventDispatchThread ();
+        this.tree = tree;
+        this.rootNode = null;
+        addAsyncTreeModelListener ( tree );
+    }
+
+    /**
+     * Uninstalls this {@link AsyncTreeModel} from the specified {@link WebAsyncTree}.
+     *
+     * @param tree {@link WebAsyncTree}
+     */
+    public void uninstall ( final WebAsyncTree<N> tree )
+    {
+        WebLookAndFeel.checkEventDispatchThread ();
+        removeAsyncTreeModelListener ( tree );
+        this.rootNode = null;
+        this.tree = null;
     }
 
     @Override
@@ -159,7 +160,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
             // Retrieving and caching root node
             rootNode = getDataProvider ().getRoot ();
 
-            // Caching root node by ID
+            // Caching root node by identifier
             cacheNodeById ( rootNode );
 
             // Adding image observer
@@ -309,7 +310,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
             }
 
             // Loading node children
-            if ( isAsyncLoading () )
+            if ( tree.isAsyncLoading () )
             {
                 // Executing children load in a separate thread to avoid locking EDT
                 // This queue will also take care of amount of threads to execute async trees requests
@@ -329,7 +330,6 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
                                     @Override
                                     public void run ()
                                     {
-                                        // Finishing children loading
                                         loadChildrenCompleted ( parent, children );
                                     }
                                 } );
@@ -343,7 +343,6 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
                                     @Override
                                     public void run ()
                                     {
-                                        // Canceling children loading
                                         loadChildrenFailed ( parent, cause );
                                     }
                                 } );
@@ -356,19 +355,19 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
             else
             {
                 // Loading children
+                // todo There is no guarantee that provider won't load children asynchronously
+                // todo Practically speaking - it's better to get rid of sync loading option in this tree and remove this part
                 getDataProvider ().loadChildren ( parent, new NodesLoadCallback<N> ()
                 {
                     @Override
                     public void completed ( final List<N> children )
                     {
-                        // Finishing children loading
                         loadChildrenCompleted ( parent, children );
                     }
 
                     @Override
                     public void failed ( final Throwable cause )
                     {
-                        // Canceling children loading
                         loadChildrenFailed ( parent, cause );
                     }
                 } );
@@ -440,6 +439,23 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
 
         // Firing load failed event
         fireChildrenLoadFailed ( parent, cause );
+    }
+
+    @Override
+    public void valueForPathChanged ( final TreePath path, final Object newValue )
+    {
+        super.valueForPathChanged ( path, newValue );
+
+        // Updating filtering and sorting for parent of this node unless it is root node
+        final N node = tree.getNodeForPath ( path );
+        if ( node != null )
+        {
+            final WebTreeNode parent = node.getParent ();
+            if ( parent != null )
+            {
+                filterAndSort ( ( N ) parent, false );
+            }
+        }
     }
 
     /**
@@ -1047,10 +1063,10 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
     }
 
     /**
-     * Looks for the node with the specified ID in the tree model and returns it or null if it was not found.
+     * Looks for the node with the specified identifier in the tree model and returns it or null if it was not found.
      *
-     * @param nodeId node ID
-     * @return node with the specified ID or null if it was not found
+     * @param nodeId node identifier
+     * @return node with the specified identifier or null if it was not found
      */
     public N findNode ( final String nodeId )
     {
@@ -1125,7 +1141,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
     }
 
     /**
-     * Caches node by its IDs.
+     * Caches node by its identifier.
      *
      * @param node node to cache
      */
@@ -1135,7 +1151,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
     }
 
     /**
-     * Caches nodes by their IDs.
+     * Caches nodes by their identifiers.
      *
      * @param nodes list of nodes to cache
      */
@@ -1145,16 +1161,6 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
         {
             nodeById.put ( node.getId (), node );
         }
-    }
-
-    /**
-     * Returns list of all available asynchronous tree model listeners.
-     *
-     * @return asynchronous tree model listeners list
-     */
-    public List<AsyncTreeModelListener> getAsyncTreeModelListeners ()
-    {
-        return CollectionUtils.copy ( asyncTreeModelListeners );
     }
 
     /**
@@ -1168,7 +1174,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Adding new listener
-        asyncTreeModelListeners.add ( listener );
+        listeners.add ( AsyncTreeModelListener.class, listener );
     }
 
     /**
@@ -1182,7 +1188,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Removing existing listener
-        asyncTreeModelListeners.remove ( listener );
+        listeners.remove ( AsyncTreeModelListener.class, listener );
     }
 
     /**
@@ -1196,7 +1202,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Firing listeners
-        for ( final AsyncTreeModelListener listener : CollectionUtils.copy ( asyncTreeModelListeners ) )
+        for ( final AsyncTreeModelListener listener : listeners.getListeners ( AsyncTreeModelListener.class ) )
         {
             listener.loadStarted ( parent );
         }
@@ -1214,7 +1220,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Firing listeners
-        for ( final AsyncTreeModelListener listener : CollectionUtils.copy ( asyncTreeModelListeners ) )
+        for ( final AsyncTreeModelListener listener : listeners.getListeners ( AsyncTreeModelListener.class ) )
         {
             listener.loadCompleted ( parent, children );
         }
@@ -1232,7 +1238,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Firing listeners
-        for ( final AsyncTreeModelListener listener : CollectionUtils.copy ( asyncTreeModelListeners ) )
+        for ( final AsyncTreeModelListener listener : listeners.getListeners ( AsyncTreeModelListener.class ) )
         {
             listener.loadFailed ( parent, cause );
         }

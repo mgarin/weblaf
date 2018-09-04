@@ -18,11 +18,11 @@
 package com.alee.demo.content.data.tree;
 
 import com.alee.demo.api.example.*;
+import com.alee.demo.content.SampleData;
+import com.alee.demo.content.data.tree.model.SampleNode;
+import com.alee.demo.content.data.tree.model.SampleObjectType;
+import com.alee.demo.content.data.tree.model.SampleTreeCellEditor;
 import com.alee.extended.tree.*;
-import com.alee.extended.tree.sample.SampleExDataProvider;
-import com.alee.extended.tree.sample.SampleNode;
-import com.alee.extended.tree.sample.SampleObjectType;
-import com.alee.extended.tree.sample.SampleTreeCellEditor;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
@@ -81,7 +81,8 @@ public class WebExTreeExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebExTree tree = new WebExTree ( getStyleId (), new SampleExDataProvider () );
+            final ExTreeDataProvider<SampleNode> dataProvider = SampleData.createExTreeDataProvider ();
+            final WebExTree tree = new WebExTree ( getStyleId (), dataProvider );
             tree.setVisibleRowCount ( 8 );
             return CollectionUtils.asList ( new WebScrollPane ( tree ).setPreferredWidth ( 200 ) );
         }
@@ -105,7 +106,8 @@ public class WebExTreeExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebExTree tree = new WebExTree ( getStyleId (), new SampleExDataProvider (), new SampleTreeCellEditor () );
+            final ExTreeDataProvider<SampleNode> dataProvider = SampleData.createExTreeDataProvider ();
+            final WebExTree tree = new WebExTree ( getStyleId (), dataProvider, new SampleTreeCellEditor () );
             tree.setVisibleRowCount ( 8 );
             return CollectionUtils.asList ( new WebScrollPane ( tree ).setPreferredWidth ( 200 ) );
         }
@@ -129,14 +131,16 @@ public class WebExTreeExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebExTree left = new WebExTree ( getStyleId (), new SampleExDataProvider (), new SampleTreeCellEditor () );
+            final ExTreeDataProvider<SampleNode> leftDataProvider = SampleData.createExTreeDataProvider ();
+            final WebExTree left = new WebExTree ( getStyleId (), leftDataProvider, new SampleTreeCellEditor () );
             left.setVisibleRowCount ( 8 );
             left.setDragEnabled ( true );
             left.setDropMode ( DropMode.ON_OR_INSERT );
             left.setTransferHandler ( createTransferHandler () );
             final WebScrollPane leftScroll = new WebScrollPane ( left ).setPreferredWidth ( 200 );
 
-            final WebExTree right = new WebExTree ( getStyleId (), new SampleExDataProvider (), new SampleTreeCellEditor () );
+            final ExTreeDataProvider<SampleNode> rightDataProvider = SampleData.createExTreeDataProvider ();
+            final WebExTree right = new WebExTree ( getStyleId (), rightDataProvider, new SampleTreeCellEditor () );
             right.setVisibleRowCount ( 8 );
             right.setDragEnabled ( true );
             right.setDropMode ( DropMode.ON_OR_INSERT );

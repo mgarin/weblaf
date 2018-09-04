@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.drag.transfer.FilesTransferHandler;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
@@ -48,11 +49,6 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * File lookup drop handler.
      */
     protected FilesTransferHandler fileLookupDropHandler = null;
-
-    /**
-     * Delayed selection ID operations lock.
-     */
-    protected final Object delayedSelectionLock = new Object ();
 
     /**
      * Delayed selection ID to determine wether it is the last one requested or not.
@@ -373,14 +369,14 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      */
     public void expandToFile ( final File file, final boolean select, final boolean expand, final Runnable finalAction )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Expanding path
         if ( file != null )
         {
-            final int selectionId;
-            synchronized ( delayedSelectionLock )
-            {
-                delayedSelectionId++;
-                selectionId = delayedSelectionId;
-            }
+            delayedSelectionId++;
+            final int selectionId = delayedSelectionId;
 
             // Expanding whole path
             final FileTreeNode node = getClosestNode ( file );
