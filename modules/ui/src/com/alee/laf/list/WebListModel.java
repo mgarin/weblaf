@@ -461,7 +461,7 @@ public class WebListModel<T> extends AbstractListModel
         CollectionUtils.distinct ( indices );
 
         // Sorting indices
-        CollectionUtils.sort ( indices, new IntegerComparator () );
+        CollectionUtils.sort ( indices, IntegerComparator.instance () );
 
         // Collecting ranges
         int rangeStart = -1;

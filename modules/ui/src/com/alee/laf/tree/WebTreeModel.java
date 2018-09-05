@@ -18,10 +18,12 @@
 package com.alee.laf.tree;
 
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.compare.IntegerComparator;
 
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -188,32 +190,43 @@ public class WebTreeModel<N extends MutableTreeNode> extends DefaultTreeModel
     {
         if ( nodes.size () > 0 )
         {
-            // Removing nodes and collecting information on the operation
-            final Map<N, Map<N, Integer>> removedNodes = new HashMap<N, Map<N, Integer>> ();
+            // Collecting nodes for each parent
+            final Map<N, List<Integer>> mappedNodes = new HashMap<N, List<Integer>> ();
             for ( final N node : nodes )
             {
                 // Empty parents are ignored as they might have been removed just now
                 final N parent = ( N ) node.getParent ();
                 if ( parent != null )
                 {
-                    final int index = parent.getIndex ( node );
-                    Map<N, Integer> indices = removedNodes.get ( parent );
-                    if ( indices == null )
+                    List<Integer> parentNodes = mappedNodes.get ( parent );
+                    if ( parentNodes == null )
                     {
-                        indices = new HashMap<N, Integer> ( nodes.size () );
-                        removedNodes.put ( parent, indices );
+                        parentNodes = new ArrayList<Integer> ( nodes.size () );
+                        mappedNodes.put ( parent, parentNodes );
                     }
-                    parent.remove ( index );
-                    indices.put ( node, index );
+                    parentNodes.add ( parent.getIndex ( node ) );
                 }
             }
 
-            // Firing nodes removal
-            for ( final Map.Entry<N, Map<N, Integer>> perParent : removedNodes.entrySet () )
+            // Removing mapped nodes
+            for ( final Map.Entry<N, List<Integer>> parentEntry : mappedNodes.entrySet () )
             {
-                final N parent = perParent.getKey ();
-                final int[] indices = CollectionUtils.toIntArray ( perParent.getValue ().values () );
-                final Object[] removed = CollectionUtils.toObjectArray ( perParent.getValue ().keySet () );
+                // Retrieving parent and sorted indices of nodes to remove
+                final N parent = parentEntry.getKey ();
+                final List<Integer> removedIndices = CollectionUtils.sort ( parentEntry.getValue (), IntegerComparator.instance () );
+
+                // Removing nodes from parent
+                final List<N> removedNodes = new ArrayList<N> ( removedIndices.size () );
+                for ( int i = removedIndices.size () - 1; i >= 0; i-- )
+                {
+                    final int index = removedIndices.get ( i );
+                    removedNodes.add ( ( N ) parent.getChildAt ( index ) );
+                    parent.remove ( index );
+                }
+
+                // Firing removal event
+                final int[] indices = CollectionUtils.toIntArray ( removedIndices );
+                final Object[] removed = CollectionUtils.toObjectArray ( removedNodes );
                 nodesWereRemoved ( parent, indices, removed );
             }
         }

@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.laf.tree.NodesRowComparator;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.laf.tree.WebTree;
 import com.alee.laf.tree.WebTreeModel;
@@ -215,6 +216,9 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
             {
                 nodesAcceptPolicy.filter ( tree, nodes );
             }
+
+            // Sorting nodes according to their position in the tree
+            CollectionUtils.sort ( nodes, new NodesRowComparator<N> ( tree ) );
 
             // Checking whether or not can drag specified nodes
             final M model = ( M ) tree.getModel ();

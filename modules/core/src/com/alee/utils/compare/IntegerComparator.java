@@ -24,9 +24,27 @@ import java.util.Comparator;
  *
  * @author Mikle Garin
  */
-
-public class IntegerComparator implements Comparator<Integer>
+public final class IntegerComparator implements Comparator<Integer>
 {
+    /**
+     * Static {@link IntegerComparator} instance.
+     */
+    private static IntegerComparator instance;
+
+    /**
+     * Returns static {@link IntegerComparator} instance.
+     *
+     * @return static {@link IntegerComparator} instance
+     */
+    public static IntegerComparator instance ()
+    {
+        if ( instance == null )
+        {
+            instance = new IntegerComparator ();
+        }
+        return instance;
+    }
+
     @Override
     public int compare ( final Integer o1, final Integer o2 )
     {
