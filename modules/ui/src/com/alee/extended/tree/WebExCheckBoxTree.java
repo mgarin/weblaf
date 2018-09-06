@@ -352,7 +352,7 @@ public class WebExCheckBoxTree<N extends UniqueNode> extends WebCheckBoxTree<N> 
      */
     public void filterAndSort ()
     {
-        getModel ().filterAndSort ( getRootNode (), true );
+        getModel ().filterAndSort ( true );
     }
 
     /**

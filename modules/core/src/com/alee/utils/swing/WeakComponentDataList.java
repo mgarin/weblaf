@@ -34,7 +34,6 @@ import java.util.List;
  * @param <E> {@link List} data type
  * @author Mikle Garin
  */
-
 public class WeakComponentDataList<C extends JComponent, E> extends WeakComponentData<C, List<E>>
 {
     /**

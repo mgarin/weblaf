@@ -48,19 +48,19 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
      * This map contains raw children which weren't affected by sorting and filtering operations.
      * If children needs to be re-sorted or re-filtered they are simply taken from the cache and re-organized once again.
      */
-    protected transient final Map<String, List<N>> rawNodeChildrenCache;
+    protected transient Map<String, List<N>> rawNodeChildrenCache;
 
     /**
      * Nodes cache.
      * Used for quick node search within the tree.
      */
-    protected transient final Map<String, N> nodeById;
+    protected transient Map<String, N> nodeById;
 
     /**
      * Nodes parent cache.
      * Used for node parent retrieval within the tree.
      */
-    protected transient final Map<String, String> parentById;
+    protected transient Map<String, String> parentById;
 
     /**
      * {@link WebTree} that uses this model
@@ -92,9 +92,6 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
     {
         super ( null );
         this.dataProvider = dataProvider;
-        this.rawNodeChildrenCache = new HashMap<String, List<N>> ( 10 );
-        this.nodeById = new HashMap<String, N> ( 50 );
-        this.parentById = new HashMap<String, String> ( 50 );
     }
 
     /**
@@ -108,28 +105,56 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
     }
 
     /**
-     * Installs this {@link ExTreeModel} into the specified {@link WebExTree}.
+     * Installs this {@link ExTreeModel} into the specified {@link WebTree}.
      *
-     * @param tree {@link WebExTree}
+     * @param tree {@link WebTree}
      */
     public void install ( final WebTree<N> tree )
     {
         WebLookAndFeel.checkEventDispatchThread ();
+        this.rawNodeChildrenCache = new HashMap<String, List<N>> ( 10 );
+        this.nodeById = new HashMap<String, N> ( 50 );
+        this.parentById = new HashMap<String, String> ( 50 );
         this.tree = tree;
         this.rootNode = loadRootNode ();
         loadTreeData ( getRootNode () );
     }
 
     /**
-     * Uninstalls this {@link ExTreeModel} from the specified {@link WebExTree}.
+     * Uninstalls this {@link ExTreeModel} from the specified {@link WebTree}.
      *
-     * @param tree {@link WebExTree}
+     * @param tree {@link WebTree}
      */
     public void uninstall ( final WebTree<N> tree )
     {
         WebLookAndFeel.checkEventDispatchThread ();
         this.rootNode = null;
         this.tree = null;
+        this.parentById = null;
+        this.nodeById = null;
+        this.rawNodeChildrenCache = null;
+    }
+
+    /**
+     * Returns whether or not this {@link ExTreeModel} is installed into some {@link WebTree}.
+     *
+     * @return {@code true} if this {@link ExTreeModel} is installed into some {@link WebTree}, {@code false} otherwise
+     */
+    public boolean isInstalled ()
+    {
+        return tree != null;
+    }
+
+    /**
+     * Checks whether or not this {@link ExTreeModel} is installed into some {@link WebTree}.
+     * If it is not installed - {@link IllegalStateException} is thrown to emphasize problem.
+     */
+    protected void checkInstalled ()
+    {
+        if ( !isInstalled () )
+        {
+            throw new IllegalStateException ( "This operation cannot be performed before model is installed into WebAsyncTree" );
+        }
     }
 
     /**
@@ -141,6 +166,9 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
+
+        // Ensure model is installed
+        checkInstalled ();
 
         // Retrieving root node
         final N rootNode = getDataProvider ().getRoot ();
@@ -165,9 +193,6 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
      */
     protected void loadTreeData ( final N parent )
     {
-        // Event Dispatch Thread check
-        WebLookAndFeel.checkEventDispatchThread ();
-
         // Loading children
         final List<N> children = getDataProvider ().getChildren ( parent );
 
@@ -196,6 +221,9 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
+        // Ensure model is installed
+        checkInstalled ();
+
         // Returning root node
         return rootNode;
     }
@@ -206,6 +234,9 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
+        // Ensure model is installed
+        checkInstalled ();
+
         // Looking for child node
         return ( N ) super.getChild ( parent, index );
     }
@@ -215,6 +246,9 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
+
+        // Ensure model is installed
+        checkInstalled ();
 
         final N reloadedNode = ( N ) node;
 
@@ -238,6 +272,10 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
     @Override
     public void valueForPathChanged ( final TreePath path, final Object newValue )
     {
+        // Ensure model is installed
+        checkInstalled ();
+
+        // Perform default operations
         super.valueForPathChanged ( path, newValue );
 
         // Updating filtering and sorting for parent of this node unless it is root node
@@ -303,6 +341,9 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
+        // Ensure model is installed
+        checkInstalled ();
+
         final N childNode = ( N ) child;
         final N parentNode = ( N ) parent;
 
@@ -338,6 +379,9 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
+
+        // Ensure model is installed
+        checkInstalled ();
 
         // Caching nodes
         addRawChildren ( parent, children, index );
@@ -375,6 +419,9 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
+        // Ensure model is installed
+        checkInstalled ();
+
         // Caching nodes
         addRawChildren ( parent, children, index );
         cacheNodesById ( children );
@@ -403,6 +450,9 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
+        // Ensure model is installed
+        checkInstalled ();
+
         final N child = ( N ) node;
         final N parent = findParent ( child.getId () );
 
@@ -428,6 +478,9 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
+        // Ensure model is installed
+        checkInstalled ();
+
         // Clearing node children caches
         clearRawChildren ( parent, false );
 
@@ -441,6 +494,9 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
+        // Ensure model is installed
+        checkInstalled ();
+
         // Redirecting to another method
         removeNodesFromParent ( CollectionUtils.toList ( nodes ) );
     }
@@ -450,6 +506,9 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
+
+        // Ensure model is installed
+        checkInstalled ();
 
         // Removing node caches
         final List<N> visible = new ArrayList<N> ( nodes.size () );
@@ -498,7 +557,7 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
     @Override
     public void filter ()
     {
-        filterAndSort ( getRootNode (), true );
+        filterAndSort ( true );
     }
 
     @Override
@@ -535,7 +594,7 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
     @Override
     public void sort ()
     {
-        filterAndSort ( getRootNode (), true );
+        filterAndSort ( true );
     }
 
     @Override
@@ -551,6 +610,16 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
     }
 
     /**
+     * Updates sorting and filtering for the root node children.
+     *
+     * @param recursively whether should update the whole children structure recursively or not
+     */
+    public void filterAndSort ( final boolean recursively )
+    {
+        filterAndSort ( null, recursively );
+    }
+
+    /**
      * Updates filtering and sorting for the specified {@link UniqueNode} children.
      *
      * @param parent      {@link UniqueNode} for which children filtering and sorting should be updated
@@ -558,27 +627,34 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
      */
     public void filterAndSort ( final N parent, final boolean recursively )
     {
-        // Event Dispatch Thread check
-        WebLookAndFeel.checkEventDispatchThread ();
-
-        // Saving tree state to restore it right after children update
-        final TreeState treeState = tree.getTreeState ( parent );
-
-        // Updating root node children
-        if ( recursively )
+        // Operation might have finished after model was removed from the tree
+        if ( isInstalled () )
         {
-            filterAndSortRecursively ( parent );
-        }
-        else
-        {
-            filterAndSort ( parent );
-        }
+            // Event Dispatch Thread check
+            WebLookAndFeel.checkEventDispatchThread ();
 
-        // Informing tree about possible major structure changes
-        nodeStructureChanged ( parent );
+            // Determining actual parent
+            final N actualParent = parent != null ? parent : getRoot ();
 
-        // Restoring tree state including all selections and expansions
-        tree.setTreeState ( treeState, parent );
+            // Saving tree state to restore it right after children update
+            final TreeState treeState = tree.getTreeState ( actualParent );
+
+            // Updating root node children
+            if ( recursively )
+            {
+                filterAndSortRecursively ( actualParent );
+            }
+            else
+            {
+                filterAndSort ( actualParent );
+            }
+
+            // Informing tree about possible major structure changes
+            nodeStructureChanged ( actualParent );
+
+            // Restoring tree state including all selections and expansions
+            tree.setTreeState ( treeState, actualParent );
+        }
     }
 
     /**
@@ -662,6 +738,10 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
      */
     public N findNode ( final String nodeId )
     {
+        // Ensure model is installed
+        checkInstalled ();
+
+        // Get node from cache
         return nodeById.get ( nodeId );
     }
 
@@ -673,6 +753,10 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
      */
     public N getRawParent ( final N node )
     {
+        // Ensure model is installed
+        checkInstalled ();
+
+        // Find actual parent
         final N parent = ( N ) node.getParent ();
         return parent != null ? parent : findParent ( node.getId () );
     }
@@ -685,6 +769,10 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
      */
     public List<N> getRawChildren ( final N parent )
     {
+        // Ensure model is installed
+        checkInstalled ();
+
+        // Get actual children from cache
         final List<N> children = rawNodeChildrenCache.get ( parent.getId () );
         if ( children == null )
         {
@@ -702,6 +790,10 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
      */
     public N getRawChildAt ( final N parent, final int index )
     {
+        // Ensure model is installed
+        checkInstalled ();
+
+        // Get actual child at specified index from cache
         final List<N> children = rawNodeChildrenCache.get ( parent.getId () );
         if ( children == null )
         {
@@ -878,6 +970,10 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
      */
     public N findParent ( final String nodeId )
     {
+        // Ensure model is installed
+        checkInstalled ();
+
+        // Get parent from cache
         final String parentId = parentById.get ( nodeId );
         return findNode ( parentId );
     }

@@ -30,7 +30,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public class BroadcastImageObserver implements ImageObserver
 {
     /**
@@ -55,7 +54,10 @@ public class BroadcastImageObserver implements ImageObserver
     {
         synchronized ( observers )
         {
-            observers.add ( observer );
+            if ( !observers.contains ( observer ) )
+            {
+                observers.add ( observer );
+            }
         }
     }
 
@@ -80,7 +82,10 @@ public class BroadcastImageObserver implements ImageObserver
      */
     public void addObserver ( final JComponent component, final ImageObserver observer )
     {
-        componentObservers.add ( component, observer );
+        if ( !componentObservers.containsData ( component, observer ) )
+        {
+            componentObservers.add ( component, observer );
+        }
     }
 
     /**

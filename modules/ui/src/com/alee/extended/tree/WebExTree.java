@@ -346,7 +346,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      */
     public void filterAndSort ()
     {
-        getModel ().filterAndSort ( getRootNode (), true );
+        getModel ().filterAndSort ( true );
     }
 
     /**

@@ -41,7 +41,6 @@ import java.util.Set;
  * @param <D> data type
  * @author Mikle Garin
  */
-
 public class WeakComponentData<C extends JComponent, D>
 {
     /**
