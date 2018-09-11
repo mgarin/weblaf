@@ -31,7 +31,6 @@ import java.io.File;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
  * @see com.alee.managers.plugin.PluginManager
  */
-
 public class DetectedPlugin<P extends Plugin>
 {
     /**

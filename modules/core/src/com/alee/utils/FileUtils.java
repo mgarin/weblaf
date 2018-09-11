@@ -1891,6 +1891,7 @@ public final class FileUtils
 
     /**
      * Downloads file from the specified url to destination file and returns it if download succeed or null if not.
+     * todo Instead of multiple methods create DownloadParameters class that would contain all of the settings
      *
      * @param url     file source url
      * @param dstFile destination file
@@ -1904,6 +1905,7 @@ public final class FileUtils
     /**
      * Downloads file from the specified url to destination file and returns it if download succeed or null if not.
      * You can observe and manipulate the download process by providing a file download listener.
+     * todo Instead of multiple methods create DownloadParameters class that would contain all of the settings
      *
      * @param url      file source url
      * @param dstFile  destination file
@@ -1917,6 +1919,7 @@ public final class FileUtils
 
     /**
      * Downloads file from the specified url to destination file and returns it if download succeed or null if not.
+     * todo Instead of multiple methods create DownloadParameters class that would contain all of the settings
      *
      * @param url         file source url
      * @param dst         destination file path
@@ -1934,6 +1937,7 @@ public final class FileUtils
     /**
      * Downloads file from the specified url to destination file and returns it if download succeed or null if not.
      * You can observe and manipulate the download process by providing a file download listener.
+     * todo Instead of multiple methods create DownloadParameters class that would contain all of the settings
      *
      * @param url         file source url
      * @param dst         destination file path
@@ -1951,6 +1955,7 @@ public final class FileUtils
 
     /**
      * Downloads file from the specified url to destination file and returns it if download succeed or null if not.
+     * todo Instead of multiple methods create DownloadParameters class that would contain all of the settings
      *
      * @param url         file source url
      * @param dstFile     destination file
@@ -1968,6 +1973,7 @@ public final class FileUtils
     /**
      * Downloads file from the specified url to destination file and returns it if download succeed or null if not.
      * You can observe and manipulate the download process by providing a file download listener.
+     * todo Instead of multiple methods create DownloadParameters class that would contain all of the settings
      *
      * @param url         file source url
      * @param dstFile     destination file

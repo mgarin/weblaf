@@ -742,7 +742,7 @@ public abstract class PluginManager<P extends Plugin>
      */
     protected boolean collectPluginInformation ( final File file )
     {
-        final DetectedPlugin<P> plugin = getPluginInformation ( file );
+        final DetectedPlugin<P> plugin = detectPlugin ( file );
         if ( plugin != null )
         {
             recentlyDetected.add ( plugin );
@@ -956,12 +956,40 @@ public abstract class PluginManager<P extends Plugin>
 
     /**
      * Returns plugin information from the specified plugin file.
+     *
+     * @param file plugin file to process
+     * @return plugin information from the specified plugin file
+     */
+    public DetectedPlugin<P> getDetectedPlugin ( final File file )
+    {
+        synchronized ( checkLock )
+        {
+            if ( file == null )
+            {
+                return null;
+            }
+            final String path = FileUtils.canonicalPath ( file );
+            if ( detectedPluginsByPath.containsKey ( path ) )
+            {
+                // Cached plugin information
+                return detectedPluginsByPath.get ( path );
+            }
+            else
+            {
+                // Loading plugin information
+                return detectPlugin ( file );
+            }
+        }
+    }
+
+    /**
+     * Returns plugin information from the specified plugin file.
      * Returns null in case plugin file cannot be read or if it is incorrect.
      *
      * @param file plugin file to process
      * @return plugin information from the specified plugin file or null
      */
-    protected DetectedPlugin<P> getPluginInformation ( final File file )
+    protected DetectedPlugin<P> detectPlugin ( final File file )
     {
         try
         {
@@ -1017,37 +1045,9 @@ public abstract class PluginManager<P extends Plugin>
         }
         catch ( final IOException e )
         {
-            LoggerFactory.getLogger ( PluginManager.class ).error ( e.toString (), e );
+            LoggerFactory.getLogger ( PluginManager.class ).warn ( "Unable to read plugin information", e );
         }
         return null;
-    }
-
-    /**
-     * Returns plugin information from the specified plugin file.
-     *
-     * @param file plugin file to process
-     * @return plugin information from the specified plugin file
-     */
-    public DetectedPlugin<P> getDetectedPlugin ( final File file )
-    {
-        synchronized ( checkLock )
-        {
-            if ( file == null )
-            {
-                return null;
-            }
-            final String path = FileUtils.canonicalPath ( file );
-            if ( detectedPluginsByPath.containsKey ( path ) )
-            {
-                // Cached plugin information
-                return detectedPluginsByPath.get ( path );
-            }
-            else
-            {
-                // Loading plugin information
-                return getPluginInformation ( file );
-            }
-        }
     }
 
     /**
@@ -1152,7 +1152,7 @@ public abstract class PluginManager<P extends Plugin>
                 {
                     final String msg = "Plugin of type '%s' cannot be loaded, required type is: %s";
                     final String fmsg = String.format ( msg, info.getType (), acceptedPluginType );
-                    LoggerFactory.getLogger ( PluginManager.class ).error ( prefix + fmsg );
+                    LoggerFactory.getLogger ( PluginManager.class ).warn ( prefix + fmsg );
 
                     dp.setStatus ( PluginStatus.failed );
                     dp.setFailureCause ( "Wrong type" );
@@ -1226,7 +1226,7 @@ public abstract class PluginManager<P extends Plugin>
                             {
                                 final String msg = "Mandatory plugin dependency was not found: %s";
                                 final String fmsg = String.format ( msg, did );
-                                LoggerFactory.getLogger ( PluginManager.class ).error ( prefix + fmsg );
+                                LoggerFactory.getLogger ( PluginManager.class ).warn ( prefix + fmsg );
 
                                 dp.setStatus ( PluginStatus.failed );
                                 dp.setFailureCause ( "Incomplete" );
@@ -1268,7 +1268,7 @@ public abstract class PluginManager<P extends Plugin>
                         {
                             final String msg = "Plugin library was not found: %s";
                             final String fmsg = String.format ( msg, file.getAbsolutePath () );
-                            LoggerFactory.getLogger ( PluginManager.class ).error ( prefix + fmsg );
+                            LoggerFactory.getLogger ( PluginManager.class ).warn ( prefix + fmsg );
 
                             dp.setStatus ( PluginStatus.failed );
                             dp.setFailureCause ( "Incomplete" );
@@ -1354,7 +1354,7 @@ public abstract class PluginManager<P extends Plugin>
                     dp.setStatus ( PluginStatus.loaded );
                     dp.setPlugin ( plugin );
                 }
-                catch ( final Throwable e )
+                catch ( final Exception e )
                 {
                     // Something happened while performing plugin class load
                     LoggerFactory.getLogger ( PluginManager.class ).error ( prefix + "Unable to initialize plugin", e );
@@ -1363,7 +1363,7 @@ public abstract class PluginManager<P extends Plugin>
                     dp.setException ( e );
                 }
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 // Something happened while checking plugin information
                 LoggerFactory.getLogger ( PluginManager.class ).error ( prefix + "Unable to initialize plugin data", e );
