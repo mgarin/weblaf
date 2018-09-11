@@ -6,7 +6,7 @@
     <style type="rootpane" id="window" />
 
     <!-- Transparent window -->
-    <style type="rootpane" id="window-transparent" extends="dialog">
+    <style type="rootpane" id="window-transparent" extends="window">
         <painter>
             <decorations overwrite="true">
                 <decoration>
