@@ -79,6 +79,7 @@
     <include>resources/internalframe.xml</include>
     <include>resources/popup.xml</include>
     <include>resources/notification.xml</include>
+    <include>resources/window.xml</include>
     <include>resources/dialog.xml</include>
     <include>resources/frame.xml</include>
     <include>resources/optionpane.xml</include>
