@@ -237,9 +237,9 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     }
 
     /**
-     * Returns whether or not this root pane uses custom decoration for its window.
+     * Returns whether or not this {@link WRootPaneUI} provides custom window decoration.
      *
-     * @return true if this root pane uses custom decoration for its window, false otherwise
+     * @return {@code true} if this {@link WRootPaneUI} provides custom window decoration, {@code false} otherwise
      */
     public boolean isDecorated ()
     {

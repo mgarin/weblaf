@@ -100,6 +100,21 @@
 
     </style>
 
+    <!-- Undecorated control-less frame -->
+    <style type="rootpane" id="frame-undecorated" extends="frame">
+        <ui>
+            <installComponents>false</installComponents>
+        </ui>
+        <painter>
+            <decorations overwrite="true">
+                <decoration>
+                    <WebShape />
+                    <ColorBackground color="68,68,68" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
     <!-- Transparent control-less frame -->
     <style type="rootpane" id="frame-transparent" extends="frame">
         <ui>

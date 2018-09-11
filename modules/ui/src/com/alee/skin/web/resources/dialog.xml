@@ -77,6 +77,21 @@
 
     </style>
 
+    <!-- Undecorated control-less dialog -->
+    <style type="rootpane" id="dialog-undecorated" extends="dialog">
+        <ui>
+            <installComponents>false</installComponents>
+        </ui>
+        <painter>
+            <decorations overwrite="true">
+                <decoration>
+                    <WebShape />
+                    <ColorBackground color="237,237,237" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
     <!-- Transparent control-less dialog -->
     <style type="rootpane" id="dialog-transparent" extends="dialog">
         <ui>

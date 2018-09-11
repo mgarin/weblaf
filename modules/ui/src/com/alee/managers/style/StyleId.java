@@ -235,13 +235,15 @@ public final class StyleId implements Identifiable
     /**
      * {@link com.alee.laf.window.WebWindow} style identifiers.
      */
-    public static final StyleId window = rootpane;
+    public static final StyleId window = StyleId.of ( "window" );
+    public static final StyleId windowTransparent = StyleId.of ( "window-transparent" );
 
     /**
      * {@link com.alee.laf.window.WebFrame} style identifiers.
      */
     public static final StyleId frame = StyleId.of ( "frame" );
     public static final StyleId frameDecorated = StyleId.of ( "frame-decorated" );
+    public static final StyleId frameUndecorated = StyleId.of ( "frame-undecorated" );
     public static final StyleId frameTransparent = StyleId.of ( "frame-transparent" );
     public static final ChildStyleId frameGlassDialog = ChildStyleId.of ( "glass-dialog" );
 
@@ -250,6 +252,7 @@ public final class StyleId implements Identifiable
      */
     public static final StyleId dialog = StyleId.of ( "dialog" );
     public static final StyleId dialogDecorated = StyleId.of ( "dialog-decorated" );
+    public static final StyleId dialogUndecorated = StyleId.of ( "dialog-undecorated" );
     public static final StyleId dialogTransparent = StyleId.of ( "dialog-transparent" );
 
     /**
