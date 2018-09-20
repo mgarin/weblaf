@@ -333,6 +333,12 @@ public final class StyleId implements Identifiable
     public static final ChildStyleId scrollbarIncreaseButton = ChildStyleId.of ( "increase" );
 
     /**
+     * {@link com.alee.laf.viewport.WebViewport} style identifiers.
+     */
+    public static final StyleId viewport = StyleId.of ( "viewport" );
+    public static final StyleId viewportTransparent = StyleId.of ( "transparent" );
+
+    /**
      * {@link com.alee.laf.scroll.WebScrollPane} style identifiers.
      */
     public static final StyleId scrollpane = StyleId.of ( "scrollpane" );
@@ -355,11 +361,6 @@ public final class StyleId implements Identifiable
      * {@link com.alee.laf.progressbar.WebProgressBar} style identifiers.
      */
     public static final StyleId progressbar = StyleId.of ( "progressbar" );
-
-    /**
-     * {@link com.alee.laf.viewport.WebViewport} style identifiers.
-     */
-    public static final StyleId viewport = StyleId.of ( "viewport" );
 
     /**
      * {@link com.alee.laf.text.WebTextField} style identifiers.

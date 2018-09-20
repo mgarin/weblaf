@@ -18,4 +18,11 @@
         </painter>
     </style>
 
+    <!-- Transparent viewport -->
+    <style type="viewport" id="transparent">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
 </skin>

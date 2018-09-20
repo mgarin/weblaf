@@ -84,6 +84,9 @@
             <opaque>false</opaque>
         </component>
 
+        <!-- Transprent viewport -->
+        <style type="viewport" id="viewport" extends="transparent" />
+
         <!-- Undecorated scrollbar -->
         <style type="scrollbar" id="scrollbar" extends="undecorated" />
 
