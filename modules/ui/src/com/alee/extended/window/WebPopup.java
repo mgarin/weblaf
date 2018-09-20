@@ -31,6 +31,7 @@ import com.alee.managers.style.StyleManager;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.EmptyComponent;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -699,7 +700,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
         if ( defaultFocus != null && WebPopup.this.isAncestorOf ( defaultFocus ) && defaultFocus.isShowing () )
         {
             // Transferring focus into specified component located inside of the popup
-            defaultFocus.requestFocusInWindow ();
+            defaultFocus.requestFocus ();
         }
         else
         {
@@ -707,10 +708,12 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
             final Component nextFocus = SwingUtils.findFocusableComponent ( this );
             if ( nextFocus != null && nextFocus.isShowing () )
             {
-                nextFocus.requestFocusInWindow ();
+                nextFocus.requestFocus ();
             }
-
-            // todo Transfer focus into popup if no focusable elements found?
+            else
+            {
+                window.requestFocus ();
+            }
         }
 
         // Animating popup display
@@ -764,7 +767,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
         final WebPopupWindow window = new WebPopupWindow ( invokerWindow );
 
         // Placing popup into window
-        window.add ( this );
+        window.setContentPane ( this );
 
         // Udating window location
         if ( invokerWindow != null )
@@ -870,6 +873,9 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     protected void completePopupHide ()
     {
         firePopupWillBeClosed ();
+
+        // Detaching this popup from window
+        window.setContentPane ( new EmptyComponent () );
 
         // Removing follow adapter
         if ( followInvoker && invokerWindow != null )

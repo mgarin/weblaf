@@ -589,6 +589,8 @@ public final class ProprietaryUtils
 
     /**
      * Returns window ancestor for specified component or {@link javax.swing.SwingUtilities.SharedOwnerFrame} if it doesn't exist.
+     * Any kinds of {@link Window}s except for {@link Dialog} and {@link Frame} are not accepted by {@link JDialog}, that is why they are
+     * filtered and {@link javax.swing.SwingUtilities.SharedOwnerFrame} is used instead in such cases.
      *
      * @param component component to process
      * @return window ancestor for specified component or {@link javax.swing.SwingUtilities.SharedOwnerFrame} if it doesn't exist

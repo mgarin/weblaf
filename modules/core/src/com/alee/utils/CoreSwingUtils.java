@@ -24,6 +24,8 @@ import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class provides a set of utilities to work with core Swing components, their settings and events.
@@ -395,6 +397,26 @@ public final class CoreSwingUtils
             // Re-throwing exception with more information on the component
             throw new UtilityException ( "Component must be showing on the screen to determine its location: " + component );
         }
+    }
+
+    /**
+     * Returns {@link List} of displayed {@link JPopupMenu}s.
+     * Multiple {@link JPopupMenu}s can be displayed in case when submenus are visible.
+     *
+     * @return {@link List} of displayed {@link JPopupMenu}s
+     */
+    public static List<JPopupMenu> getPopupMenus ()
+    {
+        final MenuElement[] selected = MenuSelectionManager.defaultManager ().getSelectedPath ();
+        final List<JPopupMenu> menus = new ArrayList<JPopupMenu> ( selected.length );
+        for ( final MenuElement element : selected )
+        {
+            if ( element instanceof JPopupMenu )
+            {
+                menus.add ( ( JPopupMenu ) element );
+            }
+        }
+        return menus;
     }
 
     /**
