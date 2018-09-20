@@ -163,6 +163,10 @@
                 <decoration visible="false" />
             </decorations>
         </painter>
+
+        <!-- Transprent viewport -->
+        <style type="viewport" id="viewport" extends="transparent" />
+
     </style>
 
     <!-- Popup scroll pane -->
