@@ -52,7 +52,7 @@ public final class UILanguageManager
      *
      * @see #getLocaleIcon(Locale)
      */
-    private static final ImageIcon UNKNOWN_LANGUAGE = new ImageIcon ( LanguageManager.class.getResource ( "icons/unknown.png" ) );
+    private static final ImageIcon UNKNOWN_LANGUAGE = new ImageIcon ( UILanguageManager.class.getResource ( "icons/unknown.png" ) );
 
     /**
      * {@link Locale} icons.
