@@ -44,14 +44,13 @@ public final class LanguageManagerTest
     public static void initialize ()
     {
         LanguageManager.initialize ();
-        LanguageManager.setLocale ( new Locale ( "en" ) );
     }
 
     /**
      * Tests supported locales output.
      */
     @Test
-    public void supportedLocalesTest ()
+    public void supportedLocales ()
     {
         // Checking default locales count
         final List<Locale> allLocales = LanguageManager.getDictionaries ().getAllLocales ();
@@ -69,8 +68,8 @@ public final class LanguageManagerTest
 
         // Adding dictionary to limit supported locales down to
         final Dictionary limiter = new Dictionary ( "limit" );
-        limiter.addRecord ( new Record ( "record", new Value ( new Locale ( "en" ), new Text ( "Test" ) ) ) );
-        limiter.addRecord ( new Record ( "record", new Value ( new Locale ( "ru" ), new Text ( "Тест" ) ) ) );
+        limiter.addRecord ( new Record ( "record", new Value ( localeFor ( "en", "" ), new Text ( "Test" ) ) ) );
+        limiter.addRecord ( new Record ( "record", new Value ( localeFor ( "ru", "" ), new Text ( "Тест" ) ) ) );
         LanguageManager.addDictionary ( limiter );
 
         // Checking limiter dictionary locales count
@@ -117,23 +116,17 @@ public final class LanguageManagerTest
     @Test
     public void accessorUsage ()
     {
-        // We explicitly set EN locale on initialization, it should still be there
-        if ( !LM.getLanguage ().getLocale ().getLanguage ().equals ( "en" ) )
+        // Updating globally used locale
+        LanguageManager.setLocale ( localeFor ( "en", "" ) );
+
+        // Checking locale in current LM supplier which should retrieve it from LanguageManager
+        if ( !LM.getLocale ().getLanguage ().equals ( "en" ) )
         {
             throw new LanguageException ( "Unexpected locale: " + LM.getLanguage ().getLocale () );
         }
 
-        // Checking core translation through LM
-        final String key = "weblaf.time.units.short.nanosecond";
-        final String expected = "ns";
-        final String result = LM.get ( key );
-        if ( !result.equals ( expected ) )
-        {
-            throw new LanguageException ( String.format (
-                    "Unexpected translation for key[%s]" + "\n" + "Expected: %s" + "\n" + "Result: %s",
-                    key, expected, result
-            ) );
-        }
+        // Checking core translation
+        checkTranslationRetrieval ( "weblaf.time.units.short.nanosecond", "ns" );
     }
 
     /**
@@ -142,56 +135,85 @@ public final class LanguageManagerTest
     @Test
     public void runtimeDictionaryUsage ()
     {
-        final String key = "weblaf.test.title";
-        final String en = "Sample test";
-        final String ru = "Простой тест";
+        final String simpleKey = "weblaf.test.title";
+        final String subdictionaryKey = "weblaf.test.sub.title";
+        final String enText = "Sample test";
+        final String ruText = "Простой тест";
 
         // Ensuring our records don't exist yet
-        checkTranslationRetrieval ( "en", "", key, key );
-        checkTranslationRetrieval ( "en", "US", key, key );
-        checkTranslationRetrieval ( "en", "GB", key, key );
-        checkTranslationRetrieval ( "ru", "", key, key );
+        checkTranslationRetrieval ( "en", "", simpleKey, simpleKey );
+        checkTranslationRetrieval ( "en", "US", simpleKey, simpleKey );
+        checkTranslationRetrieval ( "en", "GB", simpleKey, simpleKey );
+        checkTranslationRetrieval ( "ru", "", simpleKey, simpleKey );
+        checkTranslationRetrieval ( "en", "", subdictionaryKey, subdictionaryKey );
+        checkTranslationRetrieval ( "en", "US", subdictionaryKey, subdictionaryKey );
+        checkTranslationRetrieval ( "en", "GB", subdictionaryKey, subdictionaryKey );
+        checkTranslationRetrieval ( "ru", "", subdictionaryKey, subdictionaryKey );
 
         // Checking that they are also considered absent
-        checkTranslationAbsense ( "en", "", key );
-        checkTranslationAbsense ( "en", "US", key );
-        checkTranslationAbsense ( "en", "GB", key );
-        checkTranslationAbsense ( "ru", "", key );
+        checkTranslationAbsense ( "en", "", simpleKey );
+        checkTranslationAbsense ( "en", "US", simpleKey );
+        checkTranslationAbsense ( "en", "GB", simpleKey );
+        checkTranslationAbsense ( "ru", "", simpleKey );
+        checkTranslationAbsense ( "en", "", subdictionaryKey );
+        checkTranslationAbsense ( "en", "US", subdictionaryKey );
+        checkTranslationAbsense ( "en", "GB", subdictionaryKey );
+        checkTranslationAbsense ( "ru", "", subdictionaryKey );
 
-        // Creating new dictionary
+        // Creating new runtime dictionary
         final Dictionary dictionary = new Dictionary ( "weblaf.test" );
-        dictionary.addRecord ( new Record ( "title", new Value ( new Locale ( "en" ), new Text ( en ) ) ) );
-        dictionary.addRecord ( new Record ( "title", new Value ( new Locale ( "ru" ), new Text ( ru ) ) ) );
+        dictionary.addRecord ( new Record ( "title", new Value ( localeFor ( "en", "" ), new Text ( enText ) ) ) );
+        dictionary.addRecord ( new Record ( "title", new Value ( localeFor ( "ru", "" ), new Text ( ruText ) ) ) );
+        final Dictionary subdictionary = new Dictionary ( "sub" );
+        subdictionary.addRecord ( new Record ( "title", new Value ( localeFor ( "en", "" ), new Text ( enText ) ) ) );
+        subdictionary.addRecord ( new Record ( "title", new Value ( localeFor ( "ru", "" ), new Text ( ruText ) ) ) );
+        dictionary.addDictionary ( subdictionary );
 
-        // Adding dictionary
+        // Adding runtime dictionary into LanguageManager
         LanguageManager.addDictionary ( dictionary );
 
         // Ensuring our records exist now
-        checkTranslationExistence ( "en", "", key );
-        checkTranslationExistence ( "en", "US", key );
-        checkTranslationExistence ( "en", "GB", key );
-        checkTranslationExistence ( "ru", "", key );
+        checkTranslationExistence ( "en", "", simpleKey );
+        checkTranslationExistence ( "en", "US", simpleKey );
+        checkTranslationExistence ( "en", "GB", simpleKey );
+        checkTranslationExistence ( "ru", "", simpleKey );
+        checkTranslationExistence ( "en", "", subdictionaryKey );
+        checkTranslationExistence ( "en", "US", subdictionaryKey );
+        checkTranslationExistence ( "en", "GB", subdictionaryKey );
+        checkTranslationExistence ( "ru", "", subdictionaryKey );
 
         // Trying values retrieval
-        checkTranslationRetrieval ( "en", "", key, en );
-        checkTranslationRetrieval ( "en", "US", key, en );
-        checkTranslationRetrieval ( "en", "GB", key, en );
-        checkTranslationRetrieval ( "ru", "", key, ru );
+        checkTranslationRetrieval ( "en", "", simpleKey, enText );
+        checkTranslationRetrieval ( "en", "US", simpleKey, enText );
+        checkTranslationRetrieval ( "en", "GB", simpleKey, enText );
+        checkTranslationRetrieval ( "ru", "", simpleKey, ruText );
+        checkTranslationRetrieval ( "en", "", subdictionaryKey, enText );
+        checkTranslationRetrieval ( "en", "US", subdictionaryKey, enText );
+        checkTranslationRetrieval ( "en", "GB", subdictionaryKey, enText );
+        checkTranslationRetrieval ( "ru", "", subdictionaryKey, ruText );
 
         // Removing dictionary
         LanguageManager.removeDictionary ( dictionary );
 
         // Ensuring nothing was left in cache
-        checkTranslationRetrieval ( "en", "", key, key );
-        checkTranslationRetrieval ( "en", "US", key, key );
-        checkTranslationRetrieval ( "en", "GB", key, key );
-        checkTranslationRetrieval ( "ru", "", key, key );
+        checkTranslationRetrieval ( "en", "", simpleKey, simpleKey );
+        checkTranslationRetrieval ( "en", "US", simpleKey, simpleKey );
+        checkTranslationRetrieval ( "en", "GB", simpleKey, simpleKey );
+        checkTranslationRetrieval ( "ru", "", simpleKey, simpleKey );
+        checkTranslationRetrieval ( "en", "", subdictionaryKey, subdictionaryKey );
+        checkTranslationRetrieval ( "en", "US", subdictionaryKey, subdictionaryKey );
+        checkTranslationRetrieval ( "en", "GB", subdictionaryKey, subdictionaryKey );
+        checkTranslationRetrieval ( "ru", "", subdictionaryKey, subdictionaryKey );
 
         // Checking that even after our retrieval attempt records are considered absent
-        checkTranslationAbsense ( "en", "", key );
-        checkTranslationAbsense ( "en", "US", key );
-        checkTranslationAbsense ( "en", "GB", key );
-        checkTranslationAbsense ( "ru", "", key );
+        checkTranslationAbsense ( "en", "", simpleKey );
+        checkTranslationAbsense ( "en", "US", simpleKey );
+        checkTranslationAbsense ( "en", "GB", simpleKey );
+        checkTranslationAbsense ( "ru", "", simpleKey );
+        checkTranslationAbsense ( "en", "", subdictionaryKey );
+        checkTranslationAbsense ( "en", "US", subdictionaryKey );
+        checkTranslationAbsense ( "en", "GB", subdictionaryKey );
+        checkTranslationAbsense ( "ru", "", subdictionaryKey );
     }
 
     /**
@@ -200,46 +222,157 @@ public final class LanguageManagerTest
     @Test
     public void xmlDictionaryUsage ()
     {
-        // Loading dictionary
+        final String simpleKey = "weblaf.test.record";
+        final String countryKey = "weblaf.test.country.record";
+        final String multiKey = "weblaf.test.multi.record";
+        final String enText = "English";
+        final String enUsText = "US English";
+        final String enGbText = "GB English";
+        final String ruText = "Русский";
+
+        final String subdictionaryKey1 = "weblaf.test.sub.first.record";
+        final String subdictionaryKey2 = "weblaf.test.sub.first.second.record";
+        final String subdictionaryKey3 = "weblaf.test.sub.first.second.third.record";
+        final String subdictionaryText1 = "First record";
+        final String subdictionaryText2 = "Second record";
+        final String subdictionaryText3 = "Third record";
+
+        final String complexKey1 = "weblaf.test.complex.key.record.title";
+        final String complexKey2 = "weblaf.test.complex.key.sub.record.title";
+        final String complexText = "Complex record";
+
+        // Ensuring our records don't exist yet
+        checkTranslationAbsense ( "en", "", simpleKey );
+        checkTranslationAbsense ( "en", "US", simpleKey );
+        checkTranslationAbsense ( "en", "GB", simpleKey );
+        checkTranslationAbsense ( "ru", "", simpleKey );
+        checkTranslationAbsense ( "en", "", countryKey );
+        checkTranslationAbsense ( "en", "US", countryKey );
+        checkTranslationAbsense ( "en", "GB", countryKey );
+        checkTranslationAbsense ( "ru", "", countryKey );
+        checkTranslationAbsense ( "en", "", multiKey );
+        checkTranslationAbsense ( "en", "US", multiKey );
+        checkTranslationAbsense ( "en", "GB", multiKey );
+        checkTranslationAbsense ( "ru", "", multiKey );
+        checkTranslationAbsense ( "en", "", subdictionaryKey1 );
+        checkTranslationAbsense ( "en", "", subdictionaryKey2 );
+        checkTranslationAbsense ( "en", "", subdictionaryKey3 );
+        checkTranslationAbsense ( "en", "", complexKey1 );
+        checkTranslationAbsense ( "en", "", complexKey2 );
+
+        // Loading XML dictionary
         final Dictionary dictionary = new Dictionary ( LanguageManagerTest.class, "Dictionary.xml" );
 
-        // Adding dictionary
+        // Adding XML dictionary into LanguageManager
         LanguageManager.addDictionary ( dictionary );
 
         // Simple record
-        checkTranslationRetrieval ( "en", "", "weblaf.test.record", "English" );
-        checkTranslationRetrieval ( "en", "US", "weblaf.test.record", "English" );
-        checkTranslationRetrieval ( "en", "GB", "weblaf.test.record", "English" );
-        checkTranslationRetrieval ( "ru", "", "weblaf.test.record", "Русский" );
+        checkTranslationRetrieval ( "en", "", simpleKey, enText );
+        checkTranslationRetrieval ( "en", "US", simpleKey, enText );
+        checkTranslationRetrieval ( "en", "GB", simpleKey, enText );
+        checkTranslationRetrieval ( "ru", "", simpleKey, ruText );
 
         // Dictionary with country-related record
-        checkTranslationRetrieval ( "en", "", "weblaf.test.country.record", "English" );
-        checkTranslationRetrieval ( "en", "US", "weblaf.test.country.record", "US English" );
-        checkTranslationRetrieval ( "en", "GB", "weblaf.test.country.record", "GB English" );
-        checkTranslationRetrieval ( "ru", "", "weblaf.test.country.record", "Русский" );
+        checkTranslationRetrieval ( "en", "", countryKey, enText );
+        checkTranslationRetrieval ( "en", "US", countryKey, enUsText );
+        checkTranslationRetrieval ( "en", "GB", countryKey, enGbText );
+        checkTranslationRetrieval ( "ru", "", countryKey, ruText );
 
         // Dictionary with multiple records for same key
-        checkTranslationRetrieval ( "en", "", "weblaf.test.multi.record", "English" );
-        checkTranslationRetrieval ( "en", "US", "weblaf.test.multi.record", "US English" );
-        checkTranslationRetrieval ( "en", "GB", "weblaf.test.multi.record", "English" );
-        checkTranslationRetrieval ( "ru", "", "weblaf.test.multi.record", "Русский" );
+        checkTranslationRetrieval ( "en", "", multiKey, enText );
+        checkTranslationRetrieval ( "en", "US", multiKey, enUsText );
+        checkTranslationRetrieval ( "en", "GB", multiKey, enGbText );
+        checkTranslationRetrieval ( "ru", "", multiKey, ruText );
+
+        // Dictionary with records within subdictionaries
+        checkTranslationRetrieval ( "en", "", subdictionaryKey1, subdictionaryText1 );
+        checkTranslationRetrieval ( "en", "", subdictionaryKey2, subdictionaryText2 );
+        checkTranslationRetrieval ( "en", "", subdictionaryKey3, subdictionaryText3 );
+
+        // Dictionary and records with complex keys
+        checkTranslationRetrieval ( "en", "", complexKey1, complexText );
+        checkTranslationRetrieval ( "en", "", complexKey2, complexText );
 
         // Removing dictionary
         LanguageManager.removeDictionary ( dictionary );
 
         // Checking that even after our retrieval attempt records are considered absent
-        checkTranslationAbsense ( "en", "", "weblaf.test.record" );
-        checkTranslationAbsense ( "en", "US", "weblaf.test.record" );
-        checkTranslationAbsense ( "en", "GB", "weblaf.test.record" );
-        checkTranslationAbsense ( "ru", "", "weblaf.test.record" );
-        checkTranslationAbsense ( "en", "", "weblaf.test.country.record" );
-        checkTranslationAbsense ( "en", "US", "weblaf.test.country.record" );
-        checkTranslationAbsense ( "en", "GB", "weblaf.test.country.record" );
-        checkTranslationAbsense ( "ru", "", "weblaf.test.country.record" );
-        checkTranslationAbsense ( "en", "", "weblaf.test.multi.record" );
-        checkTranslationAbsense ( "en", "US", "weblaf.test.multi.record" );
-        checkTranslationAbsense ( "en", "GB", "weblaf.test.multi.record" );
-        checkTranslationAbsense ( "ru", "", "weblaf.test.multi.record" );
+        checkTranslationAbsense ( "en", "", simpleKey );
+        checkTranslationAbsense ( "en", "US", simpleKey );
+        checkTranslationAbsense ( "en", "GB", simpleKey );
+        checkTranslationAbsense ( "ru", "", simpleKey );
+        checkTranslationAbsense ( "en", "", countryKey );
+        checkTranslationAbsense ( "en", "US", countryKey );
+        checkTranslationAbsense ( "en", "GB", countryKey );
+        checkTranslationAbsense ( "ru", "", countryKey );
+        checkTranslationAbsense ( "en", "", multiKey );
+        checkTranslationAbsense ( "en", "US", multiKey );
+        checkTranslationAbsense ( "en", "GB", multiKey );
+        checkTranslationAbsense ( "ru", "", multiKey );
+        checkTranslationAbsense ( "en", "", subdictionaryKey1 );
+        checkTranslationAbsense ( "en", "", subdictionaryKey2 );
+        checkTranslationAbsense ( "en", "", subdictionaryKey3 );
+        checkTranslationAbsense ( "en", "", complexKey1 );
+        checkTranslationAbsense ( "en", "", complexKey2 );
+    }
+
+    /**
+     * Tests runtime {@link Locale} change.
+     */
+    @Test
+    public void runtimeLocaleChange ()
+    {
+        final String simpleKey = "weblaf.test.record";
+        final String countryKey = "weblaf.test.country.record";
+        final String multiKey = "weblaf.test.multi.record";
+        final String enText = "English";
+        final String enUsText = "US English";
+        final String enGbText = "GB English";
+        final String ruText = "Русский";
+
+        // Ensuring our records don't exist yet
+        checkTranslationAbsense ( "en", "", simpleKey );
+        checkTranslationAbsense ( "en", "US", simpleKey );
+        checkTranslationAbsense ( "en", "GB", simpleKey );
+        checkTranslationAbsense ( "ru", "", simpleKey );
+        checkTranslationAbsense ( "en", "", countryKey );
+        checkTranslationAbsense ( "en", "US", countryKey );
+        checkTranslationAbsense ( "en", "GB", countryKey );
+        checkTranslationAbsense ( "ru", "", countryKey );
+        checkTranslationAbsense ( "en", "", multiKey );
+        checkTranslationAbsense ( "en", "US", multiKey );
+        checkTranslationAbsense ( "en", "GB", multiKey );
+        checkTranslationAbsense ( "ru", "", multiKey );
+
+        // Loading XML dictionary
+        final Dictionary dictionary = new Dictionary ( LanguageManagerTest.class, "Dictionary.xml" );
+
+        // Adding XML dictionary into LanguageManager
+        LanguageManager.addDictionary ( dictionary );
+
+        // Checking English text
+        LanguageManager.setLocale ( localeFor ( "en", "" ) );
+        checkTranslationRetrieval ( simpleKey, enText );
+        checkTranslationRetrieval ( countryKey, enText );
+        checkTranslationRetrieval ( multiKey, enText );
+
+        // Checking English US text
+        LanguageManager.setLocale ( localeFor ( "en", "US" ) );
+        checkTranslationRetrieval ( simpleKey, enText );
+        checkTranslationRetrieval ( countryKey, enUsText );
+        checkTranslationRetrieval ( multiKey, enUsText );
+
+        // Checking English US text
+        LanguageManager.setLocale ( localeFor ( "en", "GB" ) );
+        checkTranslationRetrieval ( simpleKey, enText );
+        checkTranslationRetrieval ( countryKey, enGbText );
+        checkTranslationRetrieval ( multiKey, enGbText );
+
+        // Checking Russian text
+        LanguageManager.setLocale ( localeFor ( "ru", "" ) );
+        checkTranslationRetrieval ( simpleKey, ruText );
+        checkTranslationRetrieval ( countryKey, ruText );
+        checkTranslationRetrieval ( multiKey, ruText );
     }
 
     /**
@@ -256,6 +389,24 @@ public final class LanguageManagerTest
             throw new LanguageException ( String.format (
                     "Translation for lang[%s] country[%s] key[%s] still exists",
                     code, country, key
+            ) );
+        }
+    }
+
+    /**
+     * Asserts translation result.
+     *
+     * @param key      translation key
+     * @param expected expected translation result
+     */
+    private void checkTranslationRetrieval ( final String key, final String expected )
+    {
+        final String result = LM.get ( key );
+        if ( !result.equals ( expected ) )
+        {
+            throw new LanguageException ( String.format (
+                    "Unexpected translation for key[%s]" + "\n" + "Expected: %s" + "\n" + "Result: %s",
+                    key, expected, result
             ) );
         }
     }
@@ -301,12 +452,24 @@ public final class LanguageManagerTest
     /**
      * Returns {@link Language} for the specified code and country.
      *
-     * @param code    language code
-     * @param country language country
+     * @param code    {@link Language} code
+     * @param country {@link Language} country
      * @return {@link Language} for the specified code and country
      */
     private Language languageFor ( final String code, final String country )
     {
-        return new Language ( new Locale ( code, country ) );
+        return new Language ( localeFor ( code, country ) );
+    }
+
+    /**
+     * Returns {@link Locale} for the specified code and country.
+     *
+     * @param code    {@link Locale} code
+     * @param country {@link Locale} country
+     * @return {@link Locale} for the specified code and country
+     */
+    protected Locale localeFor ( final String code, final String country )
+    {
+        return new Locale ( code, country );
     }
 }
