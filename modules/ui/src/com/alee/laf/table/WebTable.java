@@ -58,6 +58,11 @@ public class WebTable extends JTable implements Styleable, Paintable, ShapeMetho
         LanguageMethods, LanguageEventMethods, SettingsMethods, FontMethods<WebTable>, SizeMethods<WebTable>
 {
     /**
+     * Component properties.
+     */
+    public static final String ROW_HEIGHT_PROPERTY = "rowHeight";
+
+    /**
      * Whether or not table is editable.
      * This is an additional global editable state switch for the whole table.
      * It is added for the sake of simplicity as it is missing in common {@link javax.swing.JTable}.
@@ -1256,7 +1261,7 @@ public class WebTable extends JTable implements Styleable, Paintable, ShapeMetho
                         {
                             corner = ( Component ) ( ( Class ) componentClass ).newInstance ();
                         }
-                        catch ( final Exception e )
+                        catch ( final Exception ignored )
                         {
                             // just ignore and don't set corner
                         }
