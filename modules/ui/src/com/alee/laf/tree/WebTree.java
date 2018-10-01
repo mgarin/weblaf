@@ -17,6 +17,7 @@
 
 package com.alee.laf.tree;
 
+import com.alee.api.jdk.Objects;
 import com.alee.api.jdk.Predicate;
 import com.alee.laf.tree.behavior.TreeHoverSelectionBehavior;
 import com.alee.laf.tree.behavior.TreeSelectionExpandBehavior;
@@ -64,6 +65,7 @@ import java.util.List;
  * @see JTree
  * @see WebTreeUI
  * @see TreePainter
+ * @see WebTreeModel
  */
 public class WebTree<N extends MutableTreeNode> extends JTree implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods,
         TreeEventMethods<N>, EventMethods, LanguageEventMethods, SettingsMethods, FontMethods<WebTree<N>>, SizeMethods<WebTree<N>>
@@ -544,9 +546,9 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Returns selected node bounds.
+     * Returns selected {@link MutableTreeNode} bounds.
      *
-     * @return selected node bounds
+     * @return selected {@link MutableTreeNode} bounds
      */
     public Rectangle getSelectedNodeBounds ()
     {
@@ -554,10 +556,10 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Returns node bounds.
+     * Returns {@link MutableTreeNode} bounds.
      *
-     * @param node node to process
-     * @return node bounds
+     * @param node {@link MutableTreeNode} to retrieve bounds for
+     * @return {@link MutableTreeNode} bounds
      */
     public Rectangle getNodeBounds ( final N node )
     {
@@ -565,10 +567,10 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Returns nodes combined bounds.
+     * Returns combined bounds for the {@link List} of {@link MutableTreeNode}s.
      *
-     * @param nodes nodes to process
-     * @return nodes combined bounds
+     * @param nodes {@link List} of {@link MutableTreeNode}s to combine bounds for
+     * @return combined bounds for the {@link List} of {@link MutableTreeNode}s
      */
     public Rectangle getNodeBounds ( final List<N> nodes )
     {
@@ -588,10 +590,10 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Returns row of the specified node.
+     * Returns row for the specified {@link MutableTreeNode}.
      *
-     * @param node node to find row for
-     * @return row of the specified node
+     * @param node {@link MutableTreeNode} to find row for
+     * @return row for the specified {@link MutableTreeNode}
      */
     public int getRowForNode ( final N node )
     {
@@ -599,10 +601,10 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Returns tree node for the specified row.
+     * Returns {@link MutableTreeNode} for the specified row.
      *
-     * @param row row to process
-     * @return tree node for the specified row
+     * @param row row to look for {@link MutableTreeNode} at
+     * @return {@link MutableTreeNode} for the specified row
      */
     public N getNodeForRow ( final int row )
     {
@@ -610,10 +612,10 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Returns tree path for specified node.
+     * Returns {@link TreePath} for specified {@link MutableTreeNode}.
      *
-     * @param node node to process
-     * @return tree path
+     * @param node {@link MutableTreeNode} to retrieve {@link TreePath} for
+     * @return {@link TreePath} for specified {@link MutableTreeNode}
      */
     public TreePath getPathForNode ( final N node )
     {
@@ -621,10 +623,10 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Returns tree node for specified path.
+     * Returns {@link MutableTreeNode} for specified {@link TreePath}.
      *
-     * @param path path to process
-     * @return tree node for specified path
+     * @param path {@link TreePath} to retrieve {@link MutableTreeNode} for
+     * @return {@link MutableTreeNode} for specified {@link TreePath}
      */
     public N getNodeForPath ( final TreePath path )
     {
@@ -632,10 +634,12 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Returns tree node for the specified location.
+     * Returns {@link MutableTreeNode} at the exact location.
+     * Could return {@code null} if there is no {@link MutableTreeNode} at the specified location.
+     * Could also return {@code null} if there is no {@link TreeModel} or nothing is viewable.
      *
      * @param location location to process
-     * @return tree node for the specified location
+     * @return {@link MutableTreeNode} at the exact location
      */
     public N getNodeForLocation ( final Point location )
     {
@@ -643,11 +647,13 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Returns tree node for the specified location.
+     * Returns {@link MutableTreeNode} at the exact location.
+     * Could return {@code null} if there is no {@link MutableTreeNode} at the specified location.
+     * Could also return {@code null} if there is no {@link TreeModel} or nothing is viewable.
      *
      * @param x location X coordinate
      * @param y location Y coordinate
-     * @return tree node for the specified location
+     * @return {@link MutableTreeNode} at the exact location
      */
     public N getNodeForLocation ( final int x, final int y )
     {
@@ -655,10 +661,12 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Returns the path for the node at the specified location.
+     * Returns {@link TreePath} for the {@link MutableTreeNode} at the exact location.
+     * Could return {@code null} if there is no {@link MutableTreeNode} at the specified location.
+     * Could also return {@code null} if there is no {@link TreeModel} or nothing is viewable.
      *
      * @param location location to process
-     * @return the {@code TreePath} for the node at that location
+     * @return {@link TreePath} for the {@link MutableTreeNode} at the exact location
      */
     public TreePath getPathForLocation ( final Point location )
     {
@@ -666,10 +674,10 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Returns closest tree node for the specified location.
+     * Returns {@link MutableTreeNode} closest to the specified location.
      *
      * @param location location to process
-     * @return tree node for the specified location
+     * @return {@link MutableTreeNode} closest to the specified location
      */
     public N getClosestNodeForLocation ( final Point location )
     {
@@ -677,11 +685,11 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Returns closest tree node for the specified location.
+     * Returns {@link MutableTreeNode} closest to the specified location.
      *
      * @param x location X coordinate
      * @param y location Y coordinate
-     * @return tree node for the specified location
+     * @return {@link MutableTreeNode} closest to the specified location
      */
     public N getClosestNodeForLocation ( final int x, final int y )
     {
@@ -689,10 +697,11 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Returns the path to the node that is closest to the specified location.
+     * Returns {@link TreePath} for the {@link MutableTreeNode} closest to the specified location.
+     * Could return {@code null} if there is no {@link TreeModel} or nothing is viewable.
      *
      * @param location location to process
-     * @return the {@code TreePath} for the node closest to that location, {@code null} if nothing is viewable or there is no model
+     * @return {@link TreePath} for the {@link MutableTreeNode} closest to the specified location
      */
     public TreePath getClosestPathForLocation ( final Point location )
     {
@@ -700,10 +709,10 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Returns whether specified node is selected or not.
+     * Returns whether specified {@link MutableTreeNode} is selected or not.
      *
-     * @param node node to check
-     * @return true if specified node is selected, false otherwise
+     * @param node {@link MutableTreeNode} to check
+     * @return {@code true} if specified {@link MutableTreeNode} is selected, {@code false} otherwise
      */
     public boolean isSelected ( final N node )
     {
@@ -711,9 +720,9 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Returns selected node.
+     * Returns selected {@link MutableTreeNode}.
      *
-     * @return selected node
+     * @return selected {@link MutableTreeNode}
      */
     public N getSelectedNode ()
     {
@@ -721,14 +730,27 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Returns selected nodes.
+     * Returns {@link List} of all selected {@link MutableTreeNode}s.
      *
-     * @return selected nodes
+     * @return {@link List} of all selected {@link MutableTreeNode}s
+     * @see NodesAcceptPolicy#all
      */
     public List<N> getSelectedNodes ()
     {
-        final List<N> selectedNodes = new ArrayList<N> ();
+        return getSelectedNodes ( NodesAcceptPolicy.all );
+    }
+
+    /**
+     * Returns {@link List} of selected {@link MutableTreeNode}s filtered by {@link NodesAcceptPolicy}.
+     *
+     * @param policy {@link NodesAcceptPolicy} used for filtering {@link MutableTreeNode}s
+     * @return {@link List} of selected {@link MutableTreeNode}s filtered by {@link NodesAcceptPolicy}
+     * @see NodesAcceptPolicy
+     */
+    public List<N> getSelectedNodes ( final NodesAcceptPolicy policy )
+    {
         final TreePath[] selectionPaths = getSelectionPaths ();
+        final List<N> selectedNodes = new ArrayList<N> ( selectionPaths.length );
         if ( selectionPaths != null )
         {
             for ( final TreePath path : selectionPaths )
@@ -736,14 +758,18 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
                 selectedNodes.add ( getNodeForPath ( path ) );
             }
         }
+        if ( policy != null )
+        {
+            policy.filter ( this, selectedNodes );
+        }
         return selectedNodes;
     }
 
     /**
-     * Returns only selected nodes which are currently visible in tree area.
-     * This will include nodes which are fully and partially visible in tree area.
+     * Returns {@link List} of selected {@link MutableTreeNode}s which are currently within {@link #getVisibleRect()} of this tree.
+     * This will include {@link MutableTreeNode}s that are fully visible and those that are partially visible as well.
      *
-     * @return selected nodes which are currently visible in tree area
+     * @return {@link List} of selected {@link MutableTreeNode}s which are currently within {@link #getVisibleRect()} of this tree
      */
     public List<N> getVisibleSelectedNodes ()
     {
@@ -762,9 +788,76 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Selects node under the specified point.
+     * Returns user object extracted from the selected {@link MutableTreeNode}.
      *
-     * @param point point to look for node
+     * @return user object extracted from the selected {@link MutableTreeNode}
+     */
+    public <U> U getSelectedUserObject ()
+    {
+        return getUserObject ( getSelectedNode () );
+    }
+
+    /**
+     * Returns {@link List} of user objects extracted from all selected {@link MutableTreeNode}s.
+     *
+     * @return {@link List} of user objects extracted from all selected {@link MutableTreeNode}s
+     * @see NodesAcceptPolicy#all
+     */
+    public <U> List<U> getSelectedUserObjects ()
+    {
+        return getSelectedUserObjects ( NodesAcceptPolicy.all );
+    }
+
+    /**
+     * Returns {@link List} of user objects extracted from selected {@link MutableTreeNode}s filtered by {@link NodesAcceptPolicy}.
+     *
+     * @param policy {@link NodesAcceptPolicy} used for filtering {@link MutableTreeNode}s
+     * @return {@link List} of user objects extracted from selected {@link MutableTreeNode}s filtered by {@link NodesAcceptPolicy}
+     * @see NodesAcceptPolicy
+     */
+    public <U> List<U> getSelectedUserObjects ( final NodesAcceptPolicy policy )
+    {
+        final List<N> selectedNodes = getSelectedNodes ( policy );
+        final List<U> selectedUserObjects = new ArrayList<U> ( selectedNodes.size () );
+        for ( final N selectedNode : selectedNodes )
+        {
+            selectedUserObjects.add ( ( U ) getUserObject ( selectedNode ) );
+        }
+        return selectedUserObjects;
+    }
+
+    /**
+     * Returns user object extracted from the specified {@link MutableTreeNode}.
+     * Unfortunately {@code node.getUserObject()} method is not available in {@link TreeNode} or {@link MutableTreeNode} interfaces,
+     * that is why we cannot rely on node having this method and have to manually check node type and extract user object.
+     * Although this method can be overridden to provide more options for user object extraction from the {@link MutableTreeNode}.
+     *
+     * @param node {@link MutableTreeNode} to extract user object from
+     * @param <U>  user object type
+     * @return user object extracted from the specified {@link MutableTreeNode}
+     */
+    protected <U> U getUserObject ( final N node )
+    {
+        final U selectedUserObject;
+        if ( node instanceof WebTreeNode )
+        {
+            selectedUserObject = ( U ) ( ( WebTreeNode ) node ).getUserObject ();
+        }
+        else if ( node instanceof DefaultMutableTreeNode )
+        {
+            selectedUserObject = ( U ) ( ( DefaultMutableTreeNode ) node ).getUserObject ();
+        }
+        else
+        {
+            selectedUserObject = null;
+        }
+        return selectedUserObject;
+    }
+
+    /**
+     * Selects {@link MutableTreeNode} under the specified point.
+     *
+     * @param point point to look for {@link MutableTreeNode}
      */
     public void selectNodeUnderPoint ( final Point point )
     {
@@ -772,7 +865,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Selects node under the specified point.
+     * Selects {@link MutableTreeNode} under the specified point.
      *
      * @param x point X coordinate
      * @param y point Y coordinate
@@ -783,9 +876,10 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Sets selected node.
+     * Sets specified {@link MutableTreeNode} as selected.
+     * Any other selected {@link MutableTreeNode}s will be deselected.
      *
-     * @param node node to select
+     * @param node {@link MutableTreeNode} to select
      */
     public void setSelectedNode ( final N node )
     {
@@ -797,9 +891,10 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Sets selected nodes.
+     * Sets specified {@link List} of {@link MutableTreeNode}s as selected.
+     * Any other selected {@link MutableTreeNode}s will be deselected.
      *
-     * @param nodes nodes to select
+     * @param nodes {@link List} of {@link MutableTreeNode}s to select
      */
     public void setSelectedNodes ( final List<N> nodes )
     {
@@ -812,9 +907,10 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Sets selected nodes.
+     * Sets specified {@link MutableTreeNode}s as selected.
+     * Any other selected {@link MutableTreeNode}s will be deselected.
      *
-     * @param nodes nodes to select
+     * @param nodes {@link MutableTreeNode}s to select
      */
     public void setSelectedNodes ( final N[] nodes )
     {
@@ -827,10 +923,11 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Returns first visible leaf node from the top of the tree.
-     * This doesn't include nodes under collapsed paths but does include nodes which are not in visible rect.
+     * Returns first visible leaf {@link MutableTreeNode} from the top of the tree.
+     * This doesn't include {@link MutableTreeNode}s under collapsed paths.
+     * This does include {@link MutableTreeNode}s which are not in visible rect.
      *
-     * @return first visible leaf node from the top of the tree
+     * @return first visible leaf {@link MutableTreeNode} from the top of the tree
      */
     public N getFirstVisibleLeafNode ()
     {
@@ -846,7 +943,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Selects first visible leaf node from the top of the tree.
+     * Selects first visible leaf {@link MutableTreeNode} from the top of the tree.
      */
     public void selectFirstVisibleLeafNode ()
     {
@@ -930,9 +1027,9 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Returns tree root node.
+     * Returns root {@link MutableTreeNode}.
      *
-     * @return tree root node
+     * @return root {@link MutableTreeNode}
      */
     public N getRootNode ()
     {
@@ -940,11 +1037,22 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Returns list of all nodes added into the tree.
+     * Returns {@link List} of all {@link MutableTreeNode}s available in this tree.
      *
-     * @return list of all nodes added into the tree
+     * @return {@link List} of all {@link MutableTreeNode}s available in this tree
      */
-    public List<N> getAllNodes ()
+    public List<N> getAvailableNodes ()
+    {
+        return getAvailableNodes ( getRootNode () );
+    }
+
+    /**
+     * Returns {@link List} of all {@link MutableTreeNode}s available under the specified {@link MutableTreeNode} including that node.
+     *
+     * @param parent {@link MutableTreeNode} to collect nodes for
+     * @return {@link List} of all {@link MutableTreeNode}s available under the specified {@link MutableTreeNode} including that node
+     */
+    public List<N> getAvailableNodes ( final N parent )
     {
         final List<N> nodes = new ArrayList<N> ();
         getAllNodesImpl ( nodes, getRootNode () );
@@ -952,24 +1060,40 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Collects list of all nodes added into the tree.
+     * Collects {@link List} of all {@link MutableTreeNode}s available under the specified {@link MutableTreeNode} including that node.
      *
-     * @param nodes list into which all nodes should be collected
-     * @param node  node to start collecting from
+     * @param nodes  {@link List} into which all {@link MutableTreeNode}s should be collected
+     * @param parent {@link MutableTreeNode} to start collecting from
      */
-    private void getAllNodesImpl ( final List<N> nodes, final N node )
+    private void getAllNodesImpl ( final List<N> nodes, final N parent )
     {
-        nodes.add ( node );
-        for ( int i = 0; i < node.getChildCount (); i++ )
+        nodes.add ( parent );
+        for ( int i = 0; i < parent.getChildCount (); i++ )
         {
-            getAllNodesImpl ( nodes, ( N ) node.getChildAt ( i ) );
+            getAllNodesImpl ( nodes, ( N ) parent.getChildAt ( i ) );
         }
+    }
+
+    /**
+     * Returns tree selection mode.
+     *
+     * @return tree selection mode
+     * @see TreeSelectionModel#SINGLE_TREE_SELECTION
+     * @see TreeSelectionModel#CONTIGUOUS_TREE_SELECTION
+     * @see TreeSelectionModel#DISCONTIGUOUS_TREE_SELECTION
+     */
+    public int getSelectionMode ()
+    {
+        return getSelectionModel ().getSelectionMode ();
     }
 
     /**
      * Sets tree selection mode.
      *
      * @param mode tree selection mode
+     * @see TreeSelectionModel#SINGLE_TREE_SELECTION
+     * @see TreeSelectionModel#CONTIGUOUS_TREE_SELECTION
+     * @see TreeSelectionModel#DISCONTIGUOUS_TREE_SELECTION
      */
     public void setSelectionMode ( final int mode )
     {
@@ -977,14 +1101,25 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Sets whether multiply nodes selection allowed or not.
-     * This call simply changes selection mode according to provided value.
+     * Sets whether or not multiple nodes selection is allowed.
      *
-     * @param allowed whether multiply nodes selection allowed or not
+     * @param allowed whether or not multiple nodes selection is allowed
+     * @see #setSelectionMode(int)
      */
-    public void setMultiplySelectionAllowed ( final boolean allowed )
+    public void setMultipleSelectionAllowed ( final boolean allowed )
     {
         setSelectionMode ( allowed ? DISCONTIGUOUS_TREE_SELECTION : SINGLE_TREE_SELECTION );
+    }
+
+    /**
+     * Sets whether or not multiple nodes selection is allowed.
+     *
+     * @return {@code true} if multiple nodes selection is allowed, {@code false} otherwise
+     * @see #getSelectionMode()
+     */
+    public boolean isMultipleSelectionAllowed ()
+    {
+        return Objects.equals ( getSelectionMode (), CONTIGUOUS_TREE_SELECTION, DISCONTIGUOUS_TREE_SELECTION );
     }
 
     /**
@@ -998,9 +1133,9 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Sets whether tree should automatically scroll to selection or not.
+     * Sets whether or not tree should automatically scroll to selected {@link MutableTreeNode}s.
      *
-     * @param scroll whether tree should automatically scroll to selection or not
+     * @param scroll whether or not tree should automatically scroll to selected {@link MutableTreeNode}s
      */
     public void setScrollToSelection ( final boolean scroll )
     {
@@ -1069,9 +1204,9 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Scrolls tree view to specified node.
+     * Scrolls tree view to specified {@link MutableTreeNode}.
      *
-     * @param node node to scroll to
+     * @param node {@link MutableTreeNode} to scroll tree view to
      */
     public void scrollToNode ( final N node )
     {
@@ -1079,10 +1214,10 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Scrolls tree view to specified node.
+     * Scrolls tree view to specified {@link MutableTreeNode}.
      *
-     * @param node     node to scroll to
-     * @param centered whether or not should vertically center specified node in view bounds
+     * @param node     {@link MutableTreeNode} to scroll tree view to
+     * @param centered whether or not should vertically center specified {@link MutableTreeNode} in view bounds
      */
     public void scrollToNode ( final N node, final boolean centered )
     {
@@ -1110,7 +1245,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Starts editing selected tree node.
+     * Starts editing selected {@link MutableTreeNode}.
      */
     public void startEditingSelectedNode ()
     {
@@ -1118,9 +1253,9 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Starts editing the specified node.
+     * Starts editing specified {@link MutableTreeNode}.
      *
-     * @param node tree node to edit
+     * @param node {@link MutableTreeNode} to edit
      */
     public void startEditingNode ( final N node )
     {
@@ -1139,10 +1274,10 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Forces tree node to be updated.
-     * This can be used to update node sizes/view if renderer has changed.
+     * Forces specified {@link MutableTreeNode} view update.
+     * This can be used to update {@link MutableTreeNode} renderer size/view if data it is based on has changed.
      *
-     * @param node tree node to be updated
+     * @param node {@link MutableTreeNode} to update view for
      */
     public void updateNode ( final N node )
     {
@@ -1154,10 +1289,10 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Forces tree nodes to be updated.
-     * This can be used to update nodes sizes/view if renderer has changed.
+     * Forces specified {@link MutableTreeNode}s view update.
+     * This can be used to update {@link MutableTreeNode}s renderer size/view if data it is based on has changed.
      *
-     * @param nodes tree nodes to be updated
+     * @param nodes {@link MutableTreeNode}s to update view for
      */
     public void updateNodes ( final N... nodes )
     {

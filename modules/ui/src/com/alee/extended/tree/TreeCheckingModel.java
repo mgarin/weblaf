@@ -18,6 +18,7 @@
 package com.alee.extended.tree;
 
 import com.alee.laf.checkbox.CheckState;
+import com.alee.laf.tree.NodesAcceptPolicy;
 
 import javax.swing.tree.MutableTreeNode;
 import java.util.Collection;

@@ -19,6 +19,7 @@ package com.alee.extended.tree;
 
 import com.alee.api.jdk.Predicate;
 import com.alee.laf.checkbox.CheckState;
+import com.alee.laf.tree.NodesAcceptPolicy;
 import com.alee.laf.tree.WebTree;
 import com.alee.laf.tree.WebTreeModel;
 import com.alee.managers.hotkey.Hotkey;

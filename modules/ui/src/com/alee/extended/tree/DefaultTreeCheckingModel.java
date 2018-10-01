@@ -18,6 +18,7 @@
 package com.alee.extended.tree;
 
 import com.alee.laf.checkbox.CheckState;
+import com.alee.laf.tree.NodesAcceptPolicy;
 
 import javax.swing.event.EventListenerList;
 import javax.swing.tree.MutableTreeNode;
@@ -395,7 +396,7 @@ public class DefaultTreeCheckingModel<N extends MutableTreeNode, T extends WebCh
     @Override
     public void checkAll ()
     {
-        final List<N> allNodes = checkBoxTree.getAllNodes ();
+        final List<N> allNodes = checkBoxTree.getAvailableNodes ();
 
         // Collecting state changes
         List<CheckStateChange<N>> changes = null;

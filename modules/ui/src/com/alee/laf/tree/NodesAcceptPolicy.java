@@ -15,9 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.tree;
-
-import com.alee.laf.tree.TreeUtils;
+package com.alee.laf.tree;
 
 import javax.swing.*;
 import javax.swing.tree.TreeNode;
@@ -25,9 +23,10 @@ import java.util.List;
 
 /**
  * Provides a way to conveniently filter out unwanted nodes from the provided list based on the specific policy.
- * This is mostly used in {@link WebCheckBoxTree} for different ways of providing nodes, but can also be used anywhere else.
  *
  * @author Mikle Garin
+ * @see WebTree#getSelectedNodes(NodesAcceptPolicy)
+ * @see WebTree#getSelectedUserObjects(NodesAcceptPolicy)
  */
 public enum NodesAcceptPolicy
 {
