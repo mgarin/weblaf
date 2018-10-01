@@ -46,7 +46,6 @@ import java.util.zip.ZipFile;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
  * @see Plugin
  */
-
 public abstract class PluginManager<P extends Plugin>
 {
     /**

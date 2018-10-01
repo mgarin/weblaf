@@ -36,7 +36,7 @@ public final class ExamplesTree extends WebExTree<ExamplesTreeNode> implements L
         setEditable ( false );
         setRootVisible ( false );
         setShowsRootHandles ( true );
-        setMultiplySelectionAllowed ( false );
+        setMultipleSelectionAllowed ( false );
         setSelectionStyle ( TreeSelectionStyle.line );
         expandAll ();
     }

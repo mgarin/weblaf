@@ -637,8 +637,6 @@ public class TestFrame extends JFrame
         setIconImages ( WebLookAndFeel.getImages () );
         setDefaultCloseOperation ( JFrame.DISPOSE_ON_CLOSE );
         setResizable ( true );
-        pack ();
-        setLocationRelativeTo ( null );
     }
 
     /**
@@ -661,6 +659,8 @@ public class TestFrame extends JFrame
      */
     public TestFrame displayFrame ()
     {
+        pack ();
+        setLocationRelativeTo ( null );
         setVisible ( true );
         return this;
     }
