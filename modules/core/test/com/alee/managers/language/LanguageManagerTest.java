@@ -52,14 +52,8 @@ public final class LanguageManagerTest
     @Test
     public void supportedLocales ()
     {
-        // Checking default locales count
-        final List<Locale> allLocales = LanguageManager.getDictionaries ().getAllLocales ();
-        if ( allLocales.size () != 12 )
-        {
-            throw new LanguageException ( "Incorrect core locales count: " + allLocales.size () );
-        }
-
         // Checking that all locales are supported by default
+        final List<Locale> allLocales = LanguageManager.getDictionaries ().getAllLocales ();
         final List<Locale> coreLocales = LanguageManager.getSupportedLocales ();
         if ( coreLocales.size () != allLocales.size () )
         {
