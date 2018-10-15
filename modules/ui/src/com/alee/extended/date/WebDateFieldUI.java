@@ -228,14 +228,24 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
             @Override
             public void run ( final FocusEvent e )
             {
-                final Date date = getDate ( field.getText () );
-                if ( Objects.notEquals ( date, dateField.getDate () ) )
+                // Date from the text field
+                final Date fieldDate = getDate ( field.getText () );
+                final String fieldDateText = getText ( fieldDate );
+
+                // Stored model date
+                final Date modelDate = dateField.getDate ();
+                final String modelDateText = getText ( modelDate );
+
+                // Comparing date texts instead of dates
+                // This is important to avoid issues with milliseconds precision when text is parsed into date
+                // If we compare dates - they might be different, but visually they would be exactly same within the field
+                if ( Objects.notEquals ( fieldDateText, modelDateText ) )
                 {
-                    setDate ( date, UpdateSource.field );
+                    setDate ( fieldDate, UpdateSource.field );
                 }
                 else
                 {
-                    field.setText ( getText ( date ) );
+                    field.setText ( fieldDateText );
                 }
             }
         } );

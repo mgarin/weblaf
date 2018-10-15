@@ -30,6 +30,9 @@
 
         <!-- Choose button -->
         <style type="button" id="button" extends="icon-hover">
+            <component>
+                <focusable>false</focusable>
+            </component>
             <painter>
                 <decorations>
                     <decoration>
