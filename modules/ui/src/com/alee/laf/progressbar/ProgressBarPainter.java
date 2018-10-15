@@ -1,6 +1,7 @@
 package com.alee.laf.progressbar;
 
 import com.alee.api.jdk.Objects;
+import com.alee.extended.window.TestFrame;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.BoundsType;
 import com.alee.painter.DefaultPainter;
@@ -26,7 +27,6 @@ import java.util.List;
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
-
 public class ProgressBarPainter<C extends JProgressBar, U extends WProgressBarUI, D extends IDecoration<C, D>>
         extends AbstractDecorationPainter<C, U, D> implements IProgressBarPainter<C, U>, ChangeListener
 {
@@ -270,6 +270,7 @@ public class ProgressBarPainter<C extends JProgressBar, U extends WProgressBarUI
         int h = min.height;
 
         // Text size
+        // todo Retrieve size from painter
         if ( component.isStringPainted () )
         {
             final boolean hor = isHorizontal ();
@@ -284,5 +285,16 @@ public class ProgressBarPainter<C extends JProgressBar, U extends WProgressBarUI
         // Final size
         final Insets border = component.getInsets ();
         return new Dimension ( border.left + w + border.right, border.top + h + border.bottom );
+    }
+
+    public static void main ( String[] args )
+    {
+        WebLookAndFeel.install ();
+        final WebProgressBar progressBar = new WebProgressBar ();
+        progressBar.setIndeterminate ( true );
+        progressBar.setStringPainted ( true );
+        progressBar.setString ( "" );
+        progressBar.setString ( null );
+        TestFrame.show ( progressBar );
     }
 }

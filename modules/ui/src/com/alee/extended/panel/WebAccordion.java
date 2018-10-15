@@ -60,9 +60,9 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     protected boolean fillSpace = true;
 
     /**
-     * Whether multiply expanded panes are allowed or not.
+     * Whether multiple expanded panes are allowed or not.
      */
-    protected boolean multiplySelectionAllowed = true;
+    protected boolean multipleSelectionAllowed = true;
 
     /**
      * Gap between panes for separated accordion style.
@@ -179,30 +179,30 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     }
 
     /**
-     * Returns whether multiply expanded panes are allowed or not.
+     * Returns whether multiple expanded panes are allowed or not.
      *
-     * @return whether multiply expanded panes are allowed or not
+     * @return {@code true} if multiple expanded panes are allowed, {@code false} otherwise
      */
-    public boolean isMultiplySelectionAllowed ()
+    public boolean isMultipleSelectionAllowed ()
     {
-        return multiplySelectionAllowed;
+        return multipleSelectionAllowed;
     }
 
     /**
-     * Sets whether multiply expanded panes are allowed or not.
+     * Sets whether multiple expanded panes are allowed or not.
      *
-     * @param multiplySelectionAllowed whether multiply expanded panes are allowed or not
+     * @param multipleSelectionAllowed whether multiple expanded panes are allowed or not
      */
-    public void setMultiplySelectionAllowed ( final boolean multiplySelectionAllowed )
+    public void setMultipleSelectionAllowed ( final boolean multipleSelectionAllowed )
     {
-        this.multiplySelectionAllowed = multiplySelectionAllowed;
+        this.multipleSelectionAllowed = multipleSelectionAllowed;
         updateSelections ( -1, true );
     }
 
     /**
      * Updates panes selection states.
      *
-     * @param index    index of the pane that will be left expanded in case multiply expanded panes are not allowed
+     * @param index    index of the pane that will be left expanded in case multiple expanded panes are not allowed
      * @param collapse whether allow to collapse panes or not
      */
     protected void updateSelections ( int index, final boolean collapse )
@@ -210,7 +210,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
         boolean changed = false;
         if ( collapse )
         {
-            if ( !multiplySelectionAllowed )
+            if ( !multipleSelectionAllowed )
             {
                 for ( int i = 0; i < panes.size (); i++ )
                 {
@@ -365,7 +365,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
         pane.setAnimate ( animate );
 
         // Collapsing new pane if needed
-        if ( !multiplySelectionAllowed && isAnySelected () )
+        if ( !multipleSelectionAllowed && isAnySelected () )
         {
             pane.setExpanded ( false, false );
         }
@@ -414,7 +414,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
             public void collapsing ( final WebCollapsiblePane collapsiblePane )
             {
                 // This hold additional events from firing when panes collapse due to panes selection mode
-                if ( multiplySelectionAllowed || getSelectionCount () == 0 )
+                if ( multipleSelectionAllowed || getSelectionCount () == 0 )
                 {
                     // Update selected panes
                     updateSelections ( panes.indexOf ( collapsiblePane ), false );

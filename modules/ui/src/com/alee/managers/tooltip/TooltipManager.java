@@ -55,7 +55,7 @@ public final class TooltipManager
 
     // Default settings
     private static int defaultDelay = 400;
-    private static boolean allowMultiplyTooltips = true;
+    private static boolean allowMultipleTooltips = true;
     private static boolean showHotkeysInTooltips = true;
     private static boolean showHotkeysInOneTimeTooltips = false;
 
@@ -249,7 +249,7 @@ public final class TooltipManager
     public static WebCustomTooltip addTooltip ( final JComponent component, final JComponent tooltip, final TooltipWay tooltipWay,
                                                 final int delay )
     {
-        final boolean clear = webTooltips.containsData ( component ) && !allowMultiplyTooltips;
+        final boolean clear = webTooltips.containsData ( component ) && !allowMultipleTooltips;
         return addTooltip ( component, tooltip, tooltipWay, delay, clear );
     }
 
@@ -688,14 +688,14 @@ public final class TooltipManager
      * Allow more than one tooltip per component
      */
 
-    public static boolean isAllowMultiplyTooltips ()
+    public static boolean isAllowMultipleTooltips ()
     {
-        return allowMultiplyTooltips;
+        return allowMultipleTooltips;
     }
 
-    public static void setAllowMultiplyTooltips ( final boolean allowMultiplyTooltips )
+    public static void setAllowMultipleTooltips ( final boolean allowMultipleTooltips )
     {
-        TooltipManager.allowMultiplyTooltips = allowMultiplyTooltips;
+        TooltipManager.allowMultipleTooltips = allowMultipleTooltips;
     }
 
     /**

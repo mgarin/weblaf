@@ -17,6 +17,7 @@
 
 package com.alee.laf.list;
 
+import com.alee.api.jdk.Objects;
 import com.alee.laf.list.behavior.ListHoverSelectionBehavior;
 import com.alee.laf.list.behavior.ListSelectionScrollBehavior;
 import com.alee.laf.list.editor.ListCellEditor;
@@ -203,10 +204,21 @@ public class WebList extends JList implements Styleable, Paintable, ShapeMethods
     }
 
     /**
-     * Sets whether multiply values selection allowed or not.
+     * Returns whether multiple values selection allowed or not.
+     *
+     * @return {@code true} if multiple values selection allowed, {@code false} otherwise
+     */
+    public boolean isMultipleSelectionAllowed ()
+    {
+        return Objects.equals ( getSelectionMode (), ListSelectionModel.SINGLE_INTERVAL_SELECTION,
+                ListSelectionModel.MULTIPLE_INTERVAL_SELECTION );
+    }
+
+    /**
+     * Sets whether multiple values selection allowed or not.
      * This call simply changes selection mode according to provided value.
      *
-     * @param allowed whether multiply values selection allowed or not
+     * @param allowed whether multiple values selection allowed or not
      */
     public void setMultipleSelectionAllowed ( final boolean allowed )
     {

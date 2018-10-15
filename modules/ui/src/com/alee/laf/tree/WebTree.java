@@ -1103,23 +1103,23 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     /**
      * Sets whether or not multiple nodes selection is allowed.
      *
-     * @param allowed whether or not multiple nodes selection is allowed
-     * @see #setSelectionMode(int)
-     */
-    public void setMultipleSelectionAllowed ( final boolean allowed )
-    {
-        setSelectionMode ( allowed ? DISCONTIGUOUS_TREE_SELECTION : SINGLE_TREE_SELECTION );
-    }
-
-    /**
-     * Sets whether or not multiple nodes selection is allowed.
-     *
      * @return {@code true} if multiple nodes selection is allowed, {@code false} otherwise
      * @see #getSelectionMode()
      */
     public boolean isMultipleSelectionAllowed ()
     {
         return Objects.equals ( getSelectionMode (), CONTIGUOUS_TREE_SELECTION, DISCONTIGUOUS_TREE_SELECTION );
+    }
+
+    /**
+     * Sets whether or not multiple nodes selection is allowed.
+     *
+     * @param allowed whether or not multiple nodes selection is allowed
+     * @see #setSelectionMode(int)
+     */
+    public void setMultipleSelectionAllowed ( final boolean allowed )
+    {
+        setSelectionMode ( allowed ? DISCONTIGUOUS_TREE_SELECTION : SINGLE_TREE_SELECTION );
     }
 
     /**
