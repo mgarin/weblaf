@@ -44,11 +44,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This component is basically a special container for customizable documents described by DocumentData class.
- * You can also override DocumentData class and for example include your own data into the document itself.
- *
- * This component uses either single or multiply tabbed panes and allow tabs reorder, drag, split and closeability.
- * All those features are of course configurable within the WebDocumentPane instance.
+ * {@link WebDocumentPane} is a special container for multiple documents described by {@link DocumentData} class.
+ * This component uses either single or multiple {@link JTabbedPane}s and allow tabs reorder, drag, split and closeability.
+ * It also allows usage of custom {@link DocumentData} implementations to adjust it's functionality or add custom data into it.
  *
  * @param <T> document type
  * @author Mikle Garin

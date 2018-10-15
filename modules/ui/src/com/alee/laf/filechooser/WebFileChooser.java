@@ -886,7 +886,7 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
     }
 
     /**
-     * Constructs and displays multiply files open dialog and returns selected files list as a result.
+     * Constructs and displays multiple files open dialog and returns selected files list as a result.
      *
      * @return selected files list
      */
@@ -896,7 +896,7 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
     }
 
     /**
-     * Constructs and displays multiply files open dialog and returns selected files list as a result.
+     * Constructs and displays multiple files open dialog and returns selected files list as a result.
      *
      * @param customizer file chooser customizer
      * @return selected files list
@@ -907,7 +907,7 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
     }
 
     /**
-     * Constructs and displays multiply files open dialog and returns selected files list as a result.
+     * Constructs and displays multiple files open dialog and returns selected files list as a result.
      *
      * @param parent     parent component
      * @param customizer file chooser customizer
@@ -919,7 +919,7 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
     }
 
     /**
-     * Constructs and displays multiply files open dialog and returns selected files list as a result.
+     * Constructs and displays multiple files open dialog and returns selected files list as a result.
      *
      * @param currentDirectory current file chooser directory
      * @param customizer       file chooser customizer
@@ -931,7 +931,7 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
     }
 
     /**
-     * Constructs and displays multiply files open dialog and returns selected files list as a result.
+     * Constructs and displays multiple files open dialog and returns selected files list as a result.
      *
      * @param parent           parent component
      * @param currentDirectory current file chooser directory
@@ -943,7 +943,7 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
     }
 
     /**
-     * Constructs and displays multiply files open dialog and returns selected files list as a result.
+     * Constructs and displays multiple files open dialog and returns selected files list as a result.
      *
      * @param parent           parent component
      * @param currentDirectory current file chooser directory

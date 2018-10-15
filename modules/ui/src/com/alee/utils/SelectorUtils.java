@@ -36,7 +36,7 @@ public final class SelectorUtils
 {
     /**
      * Draws web styled selection using shapes operations.
-     * This method is pretty slow and should not be used for multiply selections presentation.
+     * This method is pretty slow and should not be used for multiple selections presentation.
      */
 
     public static int halfButton = 4;

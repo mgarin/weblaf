@@ -54,9 +54,9 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
     protected boolean expandSingleNode = false;
 
     /**
-     * Whether or not should expand multiply dragged nodes when they are dropped onto the tree.
+     * Whether or not should expand multiple dragged nodes when they are dropped onto the tree.
      */
-    protected boolean expandMultiplyNodes = false;
+    protected boolean expandMultipleNodes = false;
 
     /**
      * Transferred data handlers.
@@ -136,23 +136,23 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
     }
 
     /**
-     * Returns whether or not should expand multiply dragged nodes when they are dropped onto the tree.
+     * Returns whether or not should expand multiple dragged nodes when they are dropped onto the tree.
      *
-     * @return {@code true} if should expand multiply dragged nodes when they are dropped onto the tree, {@code false} otherwise
+     * @return {@code true} if should expand multiple dragged nodes when they are dropped onto the tree, {@code false} otherwise
      */
-    public boolean isExpandMultiplyNodes ()
+    public boolean isExpandMultipleNodes ()
     {
-        return expandMultiplyNodes;
+        return expandMultipleNodes;
     }
 
     /**
-     * Sets whether or not should expand multiply dragged nodes when they are dropped onto the tree.
+     * Sets whether or not should expand multiple dragged nodes when they are dropped onto the tree.
      *
-     * @param expand whether or not should expand multiply dragged nodes when they are dropped onto the tree
+     * @param expand whether or not should expand multiple dragged nodes when they are dropped onto the tree
      */
-    public void setExpandMultiplyNodes ( final boolean expand )
+    public void setExpandMultipleNodes ( final boolean expand )
     {
-        this.expandMultiplyNodes = expand;
+        this.expandMultipleNodes = expand;
     }
 
     /**
@@ -632,7 +632,7 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
                         // Expand single dropped node
                         tree.expandNode ( dropped.get ( 0 ) );
                     }
-                    else if ( expandMultiplyNodes )
+                    else if ( expandMultipleNodes )
                     {
                         // Expand all dropped nodes
                         for ( final N node : dropped )

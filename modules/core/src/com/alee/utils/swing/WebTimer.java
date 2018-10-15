@@ -42,7 +42,6 @@ import java.util.Map;
  * @see javax.swing.Timer
  * @see com.alee.utils.swing.TimerActionListener
  */
-
 public class WebTimer implements Serializable
 {
     /**
@@ -77,7 +76,7 @@ public class WebTimer implements Serializable
 
     /**
      * Whether each action should be fired from a separate invoke and wait call or not.
-     * This might be useful if you are going to use multiply action listeners and make some interface changes on each action.
+     * This might be useful if you are going to use multiple action listeners and make some interface changes on each action.
      */
     protected boolean coalesce = true;
 
@@ -834,7 +833,7 @@ public class WebTimer implements Serializable
                         }
                     }
                 }
-                catch ( final InterruptedException e )
+                catch ( final InterruptedException ignored )
                 {
                     // Execution interrupted
                 }
@@ -901,7 +900,7 @@ public class WebTimer implements Serializable
                     // Wait for execution to stop
                     exec.join ();
                 }
-                catch ( final InterruptedException e )
+                catch ( final InterruptedException ignored )
                 {
                     // No need to log interruption
                 }

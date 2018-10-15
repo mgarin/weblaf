@@ -745,7 +745,7 @@ public class WebCheckBoxTree<N extends MutableTreeNode> extends WebTree<N>
     }
 
     /**
-     * Informs about single or multiply check state changes.
+     * Informs about single or multiple check state changes.
      *
      * @param stateChanges check state changes list
      */

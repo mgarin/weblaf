@@ -24,11 +24,10 @@ import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
- * This interface provides basic methods for drawing components or sections of components.
+ * This interface provides basic methods for drawing {@link JComponent}s or their sections.
  * Using painters you can easily change Swing and WebLaF components visual representation.
- *
- * Whether or not single painter can be used for multiply components exclusively depends on its implementation.
- * In most cases painters which does some animation won't work well with multiply components unless stated otherwise in JavaDoc.
+ * Whether or not single painter can be used for multiple {@link JComponent}s depends exclusively on its implementation.
+ * Most WebLaF painter implementations are not designed to be reused across multiple {@link JComponent}s to simplify their code and usage.
  *
  * @param <C> component type
  * @param <U> component UI type

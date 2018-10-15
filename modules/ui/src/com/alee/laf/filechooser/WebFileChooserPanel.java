@@ -148,7 +148,7 @@ public class WebFileChooserPanel extends WebPanel
     protected FileChooserViewType viewType = FileChooserViewType.tiles;
 
     /**
-     * Whether multiply files selection allowed or not.
+     * Whether multiple files selection allowed or not.
      */
     protected boolean multiSelectionEnabled = false;
 
@@ -1531,10 +1531,10 @@ public class WebFileChooserPanel extends WebPanel
     }
 
     /**
-     * Returns text representation for multiply files.
+     * Returns text representation for multiple files.
      *
      * @param files files list
-     * @return text representation for multiply files
+     * @return text representation for multiple files
      */
     protected String getMultiFilesView ( final List<File> files )
     {
@@ -2248,9 +2248,9 @@ public class WebFileChooserPanel extends WebPanel
     }
 
     /**
-     * Returns whether multiply files selection is allowed or not.
+     * Returns whether multiple files selection is allowed or not.
      *
-     * @return true if multiply files selection is allowed, false otherwise
+     * @return true if multiple files selection is allowed, false otherwise
      */
     public boolean isMultiSelectionEnabled ()
     {
@@ -2258,9 +2258,9 @@ public class WebFileChooserPanel extends WebPanel
     }
 
     /**
-     * Sets whether multiply files selection is allowed or not.
+     * Sets whether multiple files selection is allowed or not.
      *
-     * @param multiSelectionEnabled whether multiply files selection is allowed or not
+     * @param multiSelectionEnabled whether multiple files selection is allowed or not
      */
     public void setMultiSelectionEnabled ( final boolean multiSelectionEnabled )
     {

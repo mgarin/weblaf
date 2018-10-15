@@ -67,7 +67,7 @@ public final class ValueConverter implements Converter
         final Locale locale = value.getLocale ();
         writer.addAttribute ( LANGUAGE, LanguageUtils.toString ( locale ) );
 
-        // Adding either single or multiply values
+        // Adding either single or multiple values
         if ( value.textsCount () == 1 )
         {
             final Text text = value.getTexts ().get ( 0 );
@@ -131,7 +131,7 @@ public final class ValueConverter implements Converter
         }
         else
         {
-            // Saving multiply texts
+            // Saving multiple texts
             value.setTexts ( texts );
         }
 

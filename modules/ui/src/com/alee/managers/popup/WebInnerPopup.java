@@ -199,7 +199,7 @@ public class WebInnerPopup extends WebPanel implements Popup, PopupMethods
      */
     protected void focusChanged ( final boolean focused )
     {
-        // todo Replace with MultiFocusTracker (for multiply components)
+        // todo Replace with MultiFocusTracker (for multiple components)
         if ( WebInnerPopup.this.isShowing () && !focused && !isChildFocused () && closeOnFocusLoss )
         {
             hidePopup ();

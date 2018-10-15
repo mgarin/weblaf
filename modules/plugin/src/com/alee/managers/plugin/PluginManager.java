@@ -123,7 +123,7 @@ public abstract class PluginManager<P extends Plugin>
     protected Filter<DetectedPlugin<P>> pluginFilter;
 
     /**
-     * Whether should allow loading multiply plugins with the same ID or not.
+     * Whether should allow loading multiple plugins with the same ID or not.
      * In case this is set to false only the newest version of the same plugin will be loaded if more than one provided.
      */
     protected boolean allowSimilarPlugins;
@@ -326,9 +326,9 @@ public abstract class PluginManager<P extends Plugin>
     }
 
     /**
-     * Returns whether should allow loading multiply plugins with the same ID or not.
+     * Returns whether should allow loading multiple plugins with the same ID or not.
      *
-     * @return true if should allow loading multiply plugins with the same ID, false otherwise
+     * @return true if should allow loading multiple plugins with the same ID, false otherwise
      */
     public boolean isAllowSimilarPlugins ()
     {
@@ -336,9 +336,9 @@ public abstract class PluginManager<P extends Plugin>
     }
 
     /**
-     * Sets whether should allow loading multiply plugins with the same ID or not.
+     * Sets whether should allow loading multiple plugins with the same ID or not.
      *
-     * @param allow whether should allow loading multiply plugins with the same ID or not
+     * @param allow whether should allow loading multiple plugins with the same ID or not
      */
     public void setAllowSimilarPlugins ( final boolean allow )
     {

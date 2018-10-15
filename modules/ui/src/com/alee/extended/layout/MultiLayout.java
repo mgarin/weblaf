@@ -24,13 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Custom layout that allows multiply layout strategies to be applied to single container.
+ * Custom layout that allows multiple layout strategies to be applied to single container.
  * Be aware that standard Swing layouts aren't developed to be used together so they aren't suitable for this layout.
  * You will need custom layouts which work only with specific components and won't affect the same components.
  *
  * @author Mikle Garin
  */
-
 public class MultiLayout extends AbstractLayoutManager
 {
     /**

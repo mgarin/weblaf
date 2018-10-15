@@ -2569,7 +2569,7 @@ public final class SwingUtils
     @Deprecated
     public static void scrollSmoothly ( final JScrollPane scrollPane, int xValue, int yValue )
     {
-        // todo 1. Make this method multiply usage possible
+        // todo 1. Replace this method with a separate behavior or class to allow its parallel usage on multiple components
         // todo 2. Use timer instead of thread
 
         final JScrollBar hor = scrollPane.getHorizontalScrollBar ();

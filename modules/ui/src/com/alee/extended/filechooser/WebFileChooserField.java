@@ -41,7 +41,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebFileChooserField extends WebPanel
 {
     /**
@@ -50,7 +49,7 @@ public class WebFileChooserField extends WebPanel
      */
 
     /**
-     * Whether multiply files selection allowed or not.
+     * Whether multiple files selection allowed or not.
      */
     protected boolean multiSelectionEnabled = false;
 

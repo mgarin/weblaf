@@ -53,7 +53,7 @@ import java.util.List;
 public final class HotkeyManager
 {
     /**
-     * Separator used between multiply hotkeys displayed in a single line.
+     * Separator used between multiple hotkeys displayed in a single line.
      */
     private static final String HOTKEYS_SEPARATOR = ", ";
 
