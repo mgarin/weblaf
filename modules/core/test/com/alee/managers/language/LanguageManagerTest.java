@@ -367,6 +367,23 @@ public final class LanguageManagerTest
         checkTranslationRetrieval ( simpleKey, ruText );
         checkTranslationRetrieval ( countryKey, ruText );
         checkTranslationRetrieval ( multiKey, ruText );
+
+        // Removing dictionary
+        LanguageManager.removeDictionary ( dictionary );
+
+        // Checking that even after our retrieval attempt records are considered absent
+        checkTranslationAbsense ( "en", "", simpleKey );
+        checkTranslationAbsense ( "en", "US", simpleKey );
+        checkTranslationAbsense ( "en", "GB", simpleKey );
+        checkTranslationAbsense ( "ru", "", simpleKey );
+        checkTranslationAbsense ( "en", "", countryKey );
+        checkTranslationAbsense ( "en", "US", countryKey );
+        checkTranslationAbsense ( "en", "GB", countryKey );
+        checkTranslationAbsense ( "ru", "", countryKey );
+        checkTranslationAbsense ( "en", "", multiKey );
+        checkTranslationAbsense ( "en", "US", multiKey );
+        checkTranslationAbsense ( "en", "GB", multiKey );
+        checkTranslationAbsense ( "ru", "", multiKey );
     }
 
     /**
