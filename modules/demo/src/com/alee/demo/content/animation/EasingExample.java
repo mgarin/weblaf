@@ -114,7 +114,7 @@ public class EasingExample extends AbstractPreviewExample
 
             // Easing type chooser
             final WebList easingChooser = new WebList ( getAvailableEasingsAlgorithms () );
-            easingChooser.setMultiplySelectionAllowed ( false );
+            easingChooser.setMultipleSelectionAllowed ( false );
             easingChooser.setSelectedIndex ( 0 );
 
             // East bar

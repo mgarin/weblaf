@@ -208,7 +208,7 @@ public class WebList extends JList implements Styleable, Paintable, ShapeMethods
      *
      * @param allowed whether multiply values selection allowed or not
      */
-    public void setMultiplySelectionAllowed ( final boolean allowed )
+    public void setMultipleSelectionAllowed ( final boolean allowed )
     {
         setSelectionMode ( allowed ? ListSelectionModel.MULTIPLE_INTERVAL_SELECTION : ListSelectionModel.SINGLE_SELECTION );
     }
