@@ -56,7 +56,7 @@ import java.util.List;
 /**
  * {@link JTree} extension class.
  * It contains various useful methods to simplify core component usage.
- *
+ * <p>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
@@ -750,13 +750,18 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     public List<N> getSelectedNodes ( final NodesAcceptPolicy policy )
     {
         final TreePath[] selectionPaths = getSelectionPaths ();
-        final List<N> selectedNodes = new ArrayList<N> ( selectionPaths.length );
+        final List<N> selectedNodes;
         if ( selectionPaths != null )
         {
+            selectedNodes = new ArrayList<N> ( selectionPaths.length );
             for ( final TreePath path : selectionPaths )
             {
                 selectedNodes.add ( getNodeForPath ( path ) );
             }
+        }
+        else
+        {
+            selectedNodes = new ArrayList<N> ();
         }
         if ( policy != null )
         {
