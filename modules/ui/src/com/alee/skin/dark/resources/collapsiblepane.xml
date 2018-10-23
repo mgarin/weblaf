@@ -43,7 +43,11 @@
         </style>
 
         <!-- Title label -->
-        <style type="label" id="title" extends="shadow" />
+        <style type="label" id="title" extends="shadow">
+            <component>
+                <horizontalAlignment>10</horizontalAlignment>
+            </component>
+        </style>
         <style type="label" id="title-top" extends="title" padding="2,4,2,4" />
         <style type="label" id="title-left" extends="title" padding="4,2,4,2">
             <painter>

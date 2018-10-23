@@ -518,7 +518,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Lang
             default:
                 throw new IllegalArgumentException ( "Unknown title pane position specified" );
         }
-        return new WebLabel ( id.at ( this ), title, icon, WebLabel.LEADING );
+        return new WebLabel ( id.at ( this ), title, icon );
     }
 
     /**
@@ -1121,7 +1121,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Lang
         }
 
         this.content = content;
-        content.setVisible ( transitionProgress > 0f );
+        content.setVisible ( expanded || transitionProgress > 0f );
 
         contentPanel.add ( content, BorderLayout.CENTER );
         revalidate ();
