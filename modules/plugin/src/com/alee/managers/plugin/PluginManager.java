@@ -531,10 +531,17 @@ public abstract class PluginManager<P extends Plugin>
             availablePluginsById.put ( plugin.getId (), plugin );
             availablePluginsByClass.put ( plugin.getClass (), plugin );
 
+            // Adding as single recently initialized plugin
+            recentlyInitialized = CollectionUtils.asList ( plugin );
+
+            // Sorting plugins according to their initialization strategies
+            // todo Probably should optimize this and only sort upon retrieval
+            applyInitializationStrategy ();
+
             LoggerFactory.getLogger ( PluginManager.class ).info ( prefix + "Pre-loaded plugin initialized" );
 
             // Informing everyone about plugin registration
-            firePluginInitialized ( plugin );
+            firePluginsInitialized ( recentlyInitialized );
         }
     }
 
@@ -1077,10 +1084,10 @@ public abstract class PluginManager<P extends Plugin>
     {
         if ( !recentlyDetected.isEmpty () )
         {
+            LoggerFactory.getLogger ( PluginManager.class ).info ( "Initializing plugins" );
+
             // Informing about newly detected plugins
             firePluginsDetected ( recentlyDetected );
-
-            LoggerFactory.getLogger ( PluginManager.class ).info ( "Initializing plugins" );
 
             // Initializing plugins
             initializeDetectedPluginsImpl ();
@@ -1100,10 +1107,10 @@ public abstract class PluginManager<P extends Plugin>
                 }
             } );
 
+            LoggerFactory.getLogger ( PluginManager.class ).info ( "Plugins initialization finished" );
+
             // Informing about new plugins initialization
             firePluginsInitialized ( recentlyInitialized );
-
-            LoggerFactory.getLogger ( PluginManager.class ).info ( "Plugins initialization finished" );
         }
         else
         {
@@ -1468,115 +1475,111 @@ public abstract class PluginManager<P extends Plugin>
 
     /**
      * Sorting plugins according to their initialization strategies.
+     * todo Take plugin dependencies into account with top priority here
      */
     protected void applyInitializationStrategy ()
     {
-        // Skip if no available plugins
-        if ( availablePlugins.size () == 0 )
+        if ( availablePlugins.size () > 1 )
         {
-            return;
-        }
-
-        // todo Take plugin dependencies into account with top priority here
-
-        // Splitting plugins by initial groups
-        final List<P> beforeAll = new ArrayList<P> ( availablePlugins.size () );
-        final List<P> middle = new ArrayList<P> ( availablePlugins.size () );
-        final List<P> afterAll = new ArrayList<P> ( availablePlugins.size () );
-        for ( final P plugin : availablePlugins )
-        {
-            final InitializationStrategy strategy = plugin.getInitializationStrategy ();
-            if ( strategy.getId ().equals ( InitializationStrategy.ALL_ID ) )
-            {
-                switch ( strategy.getType () )
-                {
-                    case before:
-                    {
-                        beforeAll.add ( plugin );
-                        break;
-                    }
-                    case any:
-                    {
-                        middle.add ( plugin );
-                        break;
-                    }
-                    case after:
-                    {
-                        afterAll.add ( plugin );
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                middle.add ( plugin );
-            }
-        }
-
-        // Sorting plugins in appropriate order
-        // This order is not used by PluginManager itself due to possible unstructured plugin loading
-        if ( middle.size () == 0 )
-        {
-            // Combining all plugins into single list
-            availablePlugins.clear ();
-            availablePlugins.addAll ( beforeAll );
-            availablePlugins.addAll ( afterAll );
-        }
-        else
-        {
-            // Sorting middle plugins properly
-            final List<P> sortedMiddle = new ArrayList<P> ( middle );
-            for ( final P plugin : middle )
+            // Splitting plugins by initial groups
+            final List<P> beforeAll = new ArrayList<P> ( availablePlugins.size () );
+            final List<P> middle = new ArrayList<P> ( availablePlugins.size () );
+            final List<P> afterAll = new ArrayList<P> ( availablePlugins.size () );
+            for ( final P plugin : availablePlugins )
             {
                 final InitializationStrategy strategy = plugin.getInitializationStrategy ();
-                final String id = strategy.getId ();
-                if ( !plugin.getId ().equals ( id ) )
+                if ( strategy.getId ().equals ( InitializationStrategy.ALL_ID ) )
                 {
-                    final int oldIndex = sortedMiddle.indexOf ( plugin );
-                    for ( int index = 0; index < sortedMiddle.size (); index++ )
+                    switch ( strategy.getType () )
                     {
-                        if ( sortedMiddle.get ( index ).getId ().equals ( id ) )
+                        case before:
                         {
-                            switch ( strategy.getType () )
-                            {
-                                case before:
-                                {
-                                    sortedMiddle.remove ( oldIndex );
-                                    if ( oldIndex < index )
-                                    {
-                                        sortedMiddle.add ( index - 1, plugin );
-                                    }
-                                    else
-                                    {
-                                        sortedMiddle.add ( index, plugin );
-                                    }
-                                    break;
-                                }
-                                case after:
-                                {
-                                    sortedMiddle.remove ( oldIndex );
-                                    if ( oldIndex < index )
-                                    {
-                                        sortedMiddle.add ( index, plugin );
-                                    }
-                                    else
-                                    {
-                                        sortedMiddle.add ( index + 1, plugin );
-                                    }
-                                    break;
-                                }
-                            }
+                            beforeAll.add ( plugin );
+                            break;
+                        }
+                        case any:
+                        {
+                            middle.add ( plugin );
+                            break;
+                        }
+                        case after:
+                        {
+                            afterAll.add ( plugin );
                             break;
                         }
                     }
                 }
+                else
+                {
+                    middle.add ( plugin );
+                }
             }
 
-            // Combining all plugins into single list
-            availablePlugins.clear ();
-            availablePlugins.addAll ( beforeAll );
-            availablePlugins.addAll ( sortedMiddle );
-            availablePlugins.addAll ( afterAll );
+            // Sorting plugins in appropriate order
+            // This order is not used by PluginManager itself due to possible unstructured plugin loading
+            if ( middle.size () == 0 )
+            {
+                // Combining all plugins into single list
+                availablePlugins.clear ();
+                availablePlugins.addAll ( beforeAll );
+                availablePlugins.addAll ( afterAll );
+            }
+            else
+            {
+                // Sorting middle plugins properly
+                final List<P> sortedMiddle = new ArrayList<P> ( middle );
+                for ( final P plugin : middle )
+                {
+                    final InitializationStrategy strategy = plugin.getInitializationStrategy ();
+                    final String id = strategy.getId ();
+                    if ( !plugin.getId ().equals ( id ) )
+                    {
+                        final int oldIndex = sortedMiddle.indexOf ( plugin );
+                        for ( int index = 0; index < sortedMiddle.size (); index++ )
+                        {
+                            if ( sortedMiddle.get ( index ).getId ().equals ( id ) )
+                            {
+                                switch ( strategy.getType () )
+                                {
+                                    case before:
+                                    {
+                                        sortedMiddle.remove ( oldIndex );
+                                        if ( oldIndex < index )
+                                        {
+                                            sortedMiddle.add ( index - 1, plugin );
+                                        }
+                                        else
+                                        {
+                                            sortedMiddle.add ( index, plugin );
+                                        }
+                                        break;
+                                    }
+                                    case after:
+                                    {
+                                        sortedMiddle.remove ( oldIndex );
+                                        if ( oldIndex < index )
+                                        {
+                                            sortedMiddle.add ( index, plugin );
+                                        }
+                                        else
+                                        {
+                                            sortedMiddle.add ( index + 1, plugin );
+                                        }
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                // Combining all plugins into single list
+                availablePlugins.clear ();
+                availablePlugins.addAll ( beforeAll );
+                availablePlugins.addAll ( sortedMiddle );
+                availablePlugins.addAll ( afterAll );
+            }
         }
     }
 
@@ -1841,16 +1844,6 @@ public abstract class PluginManager<P extends Plugin>
                 listener.pluginsDetected ( immutable );
             }
         }
-    }
-
-    /**
-     * Informs about newly initialized plugin.
-     *
-     * @param plugin newly initialized plugin
-     */
-    public void firePluginInitialized ( final P plugin )
-    {
-        firePluginsInitialized ( CollectionUtils.asList ( plugin ) );
     }
 
     /**

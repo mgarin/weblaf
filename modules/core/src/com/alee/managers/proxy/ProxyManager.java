@@ -18,6 +18,7 @@
 package com.alee.managers.proxy;
 
 import com.alee.api.jdk.Objects;
+import com.alee.api.jdk.Supplier;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.utils.EncryptionUtils;
 import com.alee.utils.XmlUtils;
@@ -242,7 +243,14 @@ public final class ProxyManager
      */
     public static ProxySettings getProxySettings ()
     {
-        return SettingsManager.get ( SETTINGS_GROUP, PROXY_SETTINGS, getSystemProxySettings () );
+        return SettingsManager.get ( SETTINGS_GROUP, PROXY_SETTINGS, new Supplier<ProxySettings> ()
+        {
+            @Override
+            public ProxySettings get ()
+            {
+                return getSystemProxySettings ();
+            }
+        } );
     }
 
     /**
