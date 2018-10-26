@@ -310,6 +310,18 @@ public final class CollectionUtils
     }
 
     /**
+     * Returns whether or not all {@link Collection} elements are unique.
+     *
+     * @param collection {@link Collection}
+     * @param <T>        {@link Collection} element type
+     * @return {@code true} if all {@link Collection} elements are unique, {@code false} otherwise
+     */
+    public static <T> boolean areAllUnique ( final Collection<T> collection )
+    {
+        return new HashSet<T> ( collection ).size () == collection.size ();
+    }
+
+    /**
      * Adds all objects into the specified list.
      *
      * @param collection list to fill

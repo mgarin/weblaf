@@ -29,6 +29,7 @@ import com.alee.managers.settings.UISettingsManager;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.version.VersionManager;
+import com.alee.utils.XmlUtils;
 
 /**
  * WebLaF managers simple initialization class.
@@ -61,6 +62,7 @@ public final class UIManagers
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Initializing managers
+        XmlUtils.getXStream ();
         VersionManager.initialize ();
         UILanguageManager.initialize ();
         UISettingsManager.initialize ();
