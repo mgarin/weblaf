@@ -29,7 +29,7 @@ import com.alee.managers.settings.UISettingsManager;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.TextUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
 
@@ -199,7 +199,7 @@ public class WebTextArea extends JTextArea implements IInputPrompt, Styleable, P
      */
     public boolean isEmpty ()
     {
-        return TextUtils.isEmpty ( getText () );
+        return SwingUtils.isEmpty ( this );
     }
 
     /**

@@ -15,7 +15,6 @@ import javax.swing.text.JTextComponent;
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
-
 public abstract class AbstractTextAreaPainter<C extends JTextComponent, U extends BasicTextUI, D extends IDecoration<C, D>>
         extends AbstractTextEditorPainter<C, U, D> implements IAbstractTextAreaPainter<C, U>, SwingConstants
 {

@@ -47,7 +47,6 @@ import java.util.Map;
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
-
 public abstract class AbstractTextEditorPainter<C extends JTextComponent, U extends BasicTextUI, D extends IDecoration<C, D>>
         extends AbstractDecorationPainter<C, U, D> implements IAbstractTextEditorPainter<C, U>, SwingConstants
 {
@@ -123,7 +122,7 @@ public abstract class AbstractTextEditorPainter<C extends JTextComponent, U exte
         {
             states.add ( DecorationState.editable );
         }
-        if ( TextUtils.isEmpty ( component.getText () ) )
+        if ( SwingUtils.isEmpty ( component ) )
         {
             states.add ( DecorationState.empty );
         }
@@ -247,24 +246,26 @@ public abstract class AbstractTextEditorPainter<C extends JTextComponent, U exte
      */
     protected Rectangle getEditorRect ()
     {
-        final Rectangle alloc = component.getBounds ();
-        if ( alloc.width > 0 && alloc.height > 0 )
+        final Rectangle editorBounds;
+        final Dimension size = component.getSize ();
+        if ( size.width > 0 && size.height > 0 )
         {
             final Insets insets = component.getInsets ();
-            alloc.x = insets.left;
-            alloc.y = insets.top;
-            alloc.width -= insets.left + insets.right;
-            alloc.height -= insets.top + insets.bottom;
-            return alloc;
+            final Rectangle innerBounds = new Rectangle ( 0, 0, size.width, size.height );
+            editorBounds = SwingUtils.shrink ( innerBounds, insets );
         }
-        return null;
+        else
+        {
+            editorBounds = null;
+        }
+        return editorBounds;
     }
 
     @Override
     public boolean isInputPromptVisible ()
     {
         final String inputPrompt = getInputPrompt ();
-        return inputPrompt != null && !inputPrompt.isEmpty () && TextUtils.isEmpty ( component.getText () ) &&
+        return TextUtils.notEmpty ( inputPrompt ) && SwingUtils.isEmpty ( component ) &&
                 ( !inputPromptOnlyWhenEditable || component.isEditable () && component.isEnabled () ) &&
                 ( !hideInputPromptOnFocus || !isFocused () );
     }

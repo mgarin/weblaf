@@ -14,7 +14,6 @@ import javax.swing.*;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-
 public class EditorPanePainter<C extends JEditorPane, U extends WEditorPaneUI, D extends IDecoration<C, D>>
         extends AbstractTextAreaPainter<C, U, D> implements IEditorPanePainter<C, U>
 {

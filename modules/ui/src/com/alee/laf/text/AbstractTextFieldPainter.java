@@ -21,7 +21,6 @@ import java.awt.event.ComponentEvent;
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
-
 public abstract class AbstractTextFieldPainter<C extends JTextComponent, U extends BasicTextUI, D extends IDecoration<C, D>>
         extends AbstractTextEditorPainter<C, U, D> implements IAbstractTextFieldPainter<C, U>, SwingConstants
 {

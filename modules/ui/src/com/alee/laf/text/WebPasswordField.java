@@ -33,7 +33,7 @@ import com.alee.managers.tooltip.TooltipWay;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.ArrayUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
 
@@ -177,7 +177,7 @@ public class WebPasswordField extends JPasswordField implements IInputPrompt, IL
      */
     public boolean isEmpty ()
     {
-        return ArrayUtils.isEmpty ( getPassword () );
+        return SwingUtils.isEmpty ( this );
     }
 
     /**

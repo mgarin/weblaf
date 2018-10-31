@@ -14,7 +14,6 @@ import javax.swing.*;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-
 public class TextAreaPainter<C extends JTextArea, U extends WTextAreaUI, D extends IDecoration<C, D>>
         extends AbstractTextAreaPainter<C, U, D> implements ITextAreaPainter<C, U>
 {

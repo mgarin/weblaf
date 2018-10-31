@@ -37,6 +37,7 @@ import javax.swing.plaf.UIResource;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.*;
@@ -164,6 +165,40 @@ public final class SwingUtils
             component.invalidate ();
         }
         component.repaint ();
+    }
+
+    /**
+     * Removes {@link Component} from its current parent if it has one.
+     *
+     * @param component {@link Component} to remove from its parent
+     * @param update    whether or not should update parent {@link Container} layout and size
+     */
+    public static void removeFromParent ( final Component component, final boolean update )
+    {
+        if ( component != null )
+        {
+            final Container parent = component.getParent ();
+            if ( parent != null )
+            {
+                parent.remove ( component );
+                if ( update )
+                {
+                    update ( parent );
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns whether or not specified {@link JTextComponent} content is empty.
+     *
+     * @param component {@link JTextComponent} to check
+     * @return {@code true} if specified {@link JTextComponent} content is empty, {@code false} otherwise
+     */
+    public static boolean isEmpty ( final JTextComponent component )
+    {
+        final Document document = component.getDocument ();
+        return document == null || document.getLength () == 0;
     }
 
     /**

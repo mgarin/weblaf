@@ -15,7 +15,6 @@ import java.awt.*;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-
 public class FormattedTextFieldPainter<C extends JFormattedTextField, U extends WFormattedTextFieldUI, D extends IDecoration<C, D>>
         extends AbstractTextFieldPainter<C, U, D> implements IFormattedTextFieldPainter<C, U>, SwingConstants
 {

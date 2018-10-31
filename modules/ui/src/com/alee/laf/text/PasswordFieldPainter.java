@@ -15,7 +15,6 @@ import java.awt.*;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-
 public class PasswordFieldPainter<C extends JPasswordField, U extends WPasswordFieldUI, D extends IDecoration<C, D>>
         extends AbstractTextFieldPainter<C, U, D> implements IPasswordFieldPainter<C, U>, SwingConstants
 {

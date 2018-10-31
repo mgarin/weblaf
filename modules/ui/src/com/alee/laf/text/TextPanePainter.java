@@ -14,7 +14,6 @@ import javax.swing.*;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-
 public class TextPanePainter<C extends JTextPane, U extends WTextPaneUI, D extends IDecoration<C, D>>
         extends AbstractTextAreaPainter<C, U, D> implements ITextPanePainter<C, U>
 {
