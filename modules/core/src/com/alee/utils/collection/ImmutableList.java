@@ -17,25 +17,30 @@
 
 package com.alee.utils.collection;
 
+import com.alee.api.jdk.Objects;
 import com.alee.utils.ArrayUtils;
+import com.alee.utils.array.ArrayIterator;
 import com.alee.utils.array.ArrayListIterator;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 /**
  * {@link List} implementation that doesn't allow any data modifications to be done.
  * Unlike {@link java.util.Collections#unmodifiableList(List)} this implementation keeps list data copy.
- * If you need to provide an unmodifiable reference for your list use {@link java.util.Collections} implementations or write your own.
+ * If you need to provide an unmodifiable reference for your list use {@link java.util.Collections} implementation.
  *
  * @param <E> data type
  * @author Mikle Garin
  */
-public class ImmutableList<E> extends ImmutableCollection<E> implements List<E>, Cloneable, Serializable
+public class ImmutableList<E> implements List<E>, Cloneable, Serializable
 {
+    /**
+     * {@link List} data.
+     */
+    @SuppressWarnings ( "NonSerializableFieldInSerializableClass" )
+    protected final E[] data;
+
     /**
      * Constructs new {@link ImmutableList} based on the specified list data.
      *
@@ -43,7 +48,11 @@ public class ImmutableList<E> extends ImmutableCollection<E> implements List<E>,
      */
     public ImmutableList ( final E... data )
     {
-        super ( data );
+        if ( data == null )
+        {
+            throw new NullPointerException ( "ImmutableList data must not be null" );
+        }
+        this.data = data;
     }
 
     /**
@@ -53,7 +62,117 @@ public class ImmutableList<E> extends ImmutableCollection<E> implements List<E>,
      */
     public ImmutableList ( final Collection<? extends E> collection )
     {
-        super ( collection );
+        if ( collection == null )
+        {
+            throw new NullPointerException ( "ImmutableList data must not be null" );
+        }
+        this.data = ( E[] ) collection.toArray ();
+    }
+
+    @Override
+    public int size ()
+    {
+        return data.length;
+    }
+
+    @Override
+    public boolean isEmpty ()
+    {
+        return data.length == 0;
+    }
+
+    @Override
+    public boolean contains ( final Object element )
+    {
+        return ArrayUtils.contains ( element, data );
+    }
+
+    @Override
+    public Object[] toArray ()
+    {
+        return data;
+    }
+
+    @SuppressWarnings ( "SuspiciousSystemArraycopy" )
+    @Override
+    public <T> T[] toArray ( final T[] array )
+    {
+        final int size = size ();
+        if ( array.length < size () )
+        {
+            return ( T[] ) Arrays.copyOf ( data, size, data.getClass () );
+        }
+        else
+        {
+            System.arraycopy ( data, 0, array, 0, size );
+            if ( array.length > size )
+            {
+                array[ size ] = null;
+            }
+            return array;
+        }
+    }
+
+    @Override
+    public Iterator<E> iterator ()
+    {
+        return new ArrayIterator ( data )
+        {
+            @Override
+            public void remove ()
+            {
+                throw createModificationException ();
+            }
+        };
+    }
+
+    @Override
+    public boolean add ( final E element )
+    {
+        throw createModificationException ();
+    }
+
+    @Override
+    public boolean remove ( final Object element )
+    {
+        throw createModificationException ();
+    }
+
+    @Override
+    public boolean containsAll ( final Collection<?> collection )
+    {
+        for ( final Object element : collection )
+        {
+            if ( !ArrayUtils.contains ( element, data ) )
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean addAll ( final Collection<? extends E> collection )
+    {
+        throw createModificationException ();
+    }
+
+    @Override
+    public boolean removeAll ( final Collection<?> collection )
+    {
+        throw createModificationException ();
+    }
+
+    @Override
+    public boolean retainAll ( final Collection<?> collection )
+    {
+        throw createModificationException ();
+    }
+
+    @Override
+    public void clear ()
+    {
+        throw createModificationException ();
     }
 
     @Override
@@ -129,9 +248,43 @@ public class ImmutableList<E> extends ImmutableCollection<E> implements List<E>,
         return new ImmutableList<E> ( Arrays.copyOfRange ( data, fromIndex, toIndex ) );
     }
 
-    @Override
+    /**
+     * Returns new {@link UnsupportedOperationException} instance specific for this implementation.
+     *
+     * @return new {@link UnsupportedOperationException} instance specific for this implementation
+     */
     protected UnsupportedOperationException createModificationException ()
     {
-        return new UnsupportedOperationException ( "List is unmodifiable" );
+        return new UnsupportedOperationException ( "ImmutableList is unmodifiable" );
+    }
+
+    @Override
+    public int hashCode ()
+    {
+        return Objects.hash ( ( Object[] ) data );
+    }
+
+    @Override
+    public boolean equals ( final Object o )
+    {
+        if ( o == this )
+        {
+            return true;
+        }
+        else if ( o instanceof ImmutableList )
+        {
+            final ImmutableList other = ( ImmutableList ) o;
+            return Arrays.equals ( data, other.data );
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    @Override
+    public String toString ()
+    {
+        return getClass ().getSimpleName () + Arrays.toString ( data );
     }
 }

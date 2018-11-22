@@ -29,7 +29,7 @@ import java.util.Iterator;
 /**
  * {@link Collection} implementation that doesn't allow any data modifications to be done.
  * Unlike {@link java.util.Collections#unmodifiableCollection(Collection)} this implementation keeps collection data copy.
- * If you need to provide an unmodifiable reference for your collection use {@link java.util.Collections} implementations or write your own.
+ * If you need to provide an unmodifiable reference for your collection use {@link java.util.Collections} implementation.
  *
  * @param <E> data type
  * @author Mikle Garin
@@ -37,7 +37,7 @@ import java.util.Iterator;
 public class ImmutableCollection<E> implements Collection<E>, Cloneable, Serializable
 {
     /**
-     * Collection data.
+     * {@link Collection} data.
      */
     @SuppressWarnings ( "NonSerializableFieldInSerializableClass" )
     protected final E[] data;
@@ -51,7 +51,7 @@ public class ImmutableCollection<E> implements Collection<E>, Cloneable, Seriali
     {
         if ( data == null )
         {
-            throw new NullPointerException ( "Collection data must not be null" );
+            throw new NullPointerException ( "ImmutableCollection data must not be null" );
         }
         this.data = data;
     }
@@ -65,7 +65,7 @@ public class ImmutableCollection<E> implements Collection<E>, Cloneable, Seriali
     {
         if ( collection == null )
         {
-            throw new NullPointerException ( "Collection data must not be null" );
+            throw new NullPointerException ( "ImmutableCollection data must not be null" );
         }
         this.data = ( E[] ) collection.toArray ();
     }
@@ -83,9 +83,9 @@ public class ImmutableCollection<E> implements Collection<E>, Cloneable, Seriali
     }
 
     @Override
-    public boolean contains ( final Object o )
+    public boolean contains ( final Object element )
     {
-        return ArrayUtils.contains ( o, data );
+        return ArrayUtils.contains ( element, data );
     }
 
     @Override
@@ -128,13 +128,13 @@ public class ImmutableCollection<E> implements Collection<E>, Cloneable, Seriali
     }
 
     @Override
-    public boolean add ( final E e )
+    public boolean add ( final E element )
     {
         throw createModificationException ();
     }
 
     @Override
-    public boolean remove ( final Object o )
+    public boolean remove ( final Object element )
     {
         throw createModificationException ();
     }
@@ -153,19 +153,19 @@ public class ImmutableCollection<E> implements Collection<E>, Cloneable, Seriali
     }
 
     @Override
-    public boolean addAll ( final Collection<? extends E> coll )
+    public boolean addAll ( final Collection<? extends E> collection )
     {
         throw createModificationException ();
     }
 
     @Override
-    public boolean removeAll ( final Collection<?> coll )
+    public boolean removeAll ( final Collection<?> collection )
     {
         throw createModificationException ();
     }
 
     @Override
-    public boolean retainAll ( final Collection<?> coll )
+    public boolean retainAll ( final Collection<?> collection )
     {
         throw createModificationException ();
     }
@@ -183,7 +183,7 @@ public class ImmutableCollection<E> implements Collection<E>, Cloneable, Seriali
      */
     protected UnsupportedOperationException createModificationException ()
     {
-        return new UnsupportedOperationException ( "Collection is unmodifiable" );
+        return new UnsupportedOperationException ( "ImmutableCollection is unmodifiable" );
     }
 
     @Override
@@ -213,6 +213,6 @@ public class ImmutableCollection<E> implements Collection<E>, Cloneable, Seriali
     @Override
     public String toString ()
     {
-        return Arrays.toString ( data );
+        return getClass ().getSimpleName () + Arrays.toString ( data );
     }
 }
