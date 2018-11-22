@@ -677,6 +677,30 @@ public final class CollectionUtils
     }
 
     /**
+     * Returns whether {@link Collection}s are equal or not.
+     *
+     * @param collection1 first {@link Collection}
+     * @param collection2 second {@link Collection}
+     * @return {@code true} if {@link Collection}s are equal, {@code false} otherwise
+     */
+    public static boolean equals ( final Collection collection1, final Collection collection2 )
+    {
+        boolean equal = collection1.size () == collection2.size ();
+        if ( equal )
+        {
+            for ( final Object element : collection1 )
+            {
+                if ( !collection2.contains ( element ) )
+                {
+                    equal = false;
+                    break;
+                }
+            }
+        }
+        return equal;
+    }
+
+    /**
      * Returns whether {@link List}s are equal or not.
      *
      * @param list1         first {@link List}
