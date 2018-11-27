@@ -1109,9 +1109,9 @@ public final class CollectionUtils
      * @return {@link Collection} if not empty
      * @throws RuntimeException if {@link Collection} is empty
      */
-    public static <T extends Collection<?>> T requireNonNull ( final T collection, final Supplier<RuntimeException> exceptionSupplier )
+    public static <T extends Collection<?>> T requireNotEmpty ( final T collection, final Supplier<RuntimeException> exceptionSupplier )
     {
-        if ( collection == null )
+        if ( isEmpty ( collection ) )
         {
             throw exceptionSupplier.get ();
         }
