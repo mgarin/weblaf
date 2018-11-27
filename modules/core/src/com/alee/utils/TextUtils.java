@@ -174,6 +174,34 @@ public final class TextUtils
     }
 
     /**
+     * Returns whether the first {@link String} equals to second one.
+     * This method will compare {@link String} even if they are null without throwing any exceptions.
+     *
+     * @param string      {@link String} to compare
+     * @param compareWith {@link String} to compare with
+     * @return {@code true} if the first {@link String} equals second one, {@code false} otherwise
+     */
+    @SuppressWarnings ( "StringEquality" )
+    public static boolean equals ( final String string, final String compareWith )
+    {
+        return string == compareWith || string != null && string.equals ( compareWith );
+    }
+
+    /**
+     * Returns whether the first {@link String} equals to second one ignoring case.
+     * This method will compare {@link String} even if they are null without throwing any exceptions.
+     *
+     * @param string      {@link String} to compare
+     * @param compareWith {@link String} to compare with
+     * @return {@code true} if the first {@link String} equals second one ignoring case, {@code false} otherwise
+     */
+    @SuppressWarnings ( "StringEquality" )
+    public static boolean equalsIgnoreCase ( final String string, final String compareWith )
+    {
+        return string == compareWith || string != null && string.equalsIgnoreCase ( compareWith );
+    }
+
+    /**
      * Returns list of strings based on single pattern parsed using different number values in range.
      *
      * @param pattern values pattern
