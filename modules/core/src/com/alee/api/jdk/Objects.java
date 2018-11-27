@@ -17,6 +17,7 @@
 
 package com.alee.api.jdk;
 
+import com.alee.managers.language.LM;
 import com.alee.utils.UtilityException;
 
 import java.util.Arrays;
@@ -141,33 +142,53 @@ public final class Objects
     }
 
     /**
-     * Checks that the specified object reference is not {@code null}.
+     * Checks that the specified {@link Object} is not {@code null} and throws a {@link NullPointerException} if it is.
      *
-     * @param obj the object reference to check for nullity
-     * @param <T> the type of the reference
-     * @return {@code obj} if not {@code null}
-     * @throws NullPointerException if {@code obj} is {@code null}
+     * @param object {@link Object} to check for being null
+     * @param <T>    {@link Object} type
+     * @return {@link Object} if not {@code null}
+     * @throws NullPointerException if {@link Object} is {@code null}
      */
-    public static <T> T requireNonNull ( final T obj )
+    public static <T> T requireNonNull ( final T object )
     {
-        return requireNonNull ( obj, "Object must not be null" );
+        return requireNonNull ( object, "Object must not be null" );
     }
 
     /**
-     * Checks that the specified object reference is not {@code null} and throws a customized {@link NullPointerException} if it is.
+     * Checks that the specified {@link Object} is not {@code null} and throws a customized {@link NullPointerException} if it is.
      *
-     * @param obj     the object reference to check for nullity
-     * @param message detail message to be used in the event that a {@link NullPointerException} is thrown
-     * @param <T>     the type of the reference
-     * @return {@code obj} if not {@code null}
-     * @throws NullPointerException if {@code obj} is {@code null}
+     * @param object  {@link Object} to check for being null
+     * @param message detailed message used in {@link NullPointerException}
+     * @param <T>     {@link Object} type
+     * @return {@link Object} if not {@code null}
+     * @throws NullPointerException if {@link Object} is {@code null}
      */
-    public static <T> T requireNonNull ( final T obj, final String message )
+    public static <T> T requireNonNull ( final T object, final String message )
     {
-        if ( obj == null )
+        if ( object == null )
         {
-            throw new NullPointerException ( message );
+            throw new NullPointerException (
+                    LM.contains ( message ) ? LM.get ( message ) : message
+            );
         }
-        return obj;
+        return object;
+    }
+
+    /**
+     * Checks that the specified {@link Object} is not {@code null} and throws a customized {@link RuntimeException} if it is.
+     *
+     * @param object            {@link Object} to check for being null
+     * @param exceptionSupplier {@link Supplier} for a customized {@link RuntimeException}
+     * @param <T>               {@link Object} type
+     * @return {@link Object} if not {@code null}
+     * @throws RuntimeException if {@link Object} is {@code null}
+     */
+    public static <T> T requireNonNull ( final T object, final Supplier<RuntimeException> exceptionSupplier )
+    {
+        if ( object == null )
+        {
+            throw exceptionSupplier.get ();
+        }
+        return object;
     }
 }

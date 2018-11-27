@@ -19,6 +19,7 @@ package com.alee.utils;
 
 import com.alee.api.jdk.Function;
 import com.alee.api.jdk.Objects;
+import com.alee.api.jdk.Supplier;
 import com.alee.utils.compare.Filter;
 
 import java.util.*;
@@ -1097,5 +1098,23 @@ public final class CollectionUtils
         }
         range.add ( to );
         return range;
+    }
+
+    /**
+     * Checks that the specified {@link Collection} is not empty and throws a customized {@link RuntimeException} if it is.
+     *
+     * @param collection        {@link Collection} to check for emptiness
+     * @param exceptionSupplier {@link Supplier} for a customized exception
+     * @param <T>               {@link Collection} type
+     * @return {@link Collection} if not empty
+     * @throws RuntimeException if {@link Collection} is empty
+     */
+    public static <T extends Collection<?>> T requireNonNull ( final T collection, final Supplier<RuntimeException> exceptionSupplier )
+    {
+        if ( collection == null )
+        {
+            throw exceptionSupplier.get ();
+        }
+        return collection;
     }
 }
