@@ -30,7 +30,7 @@ import java.util.Collection;
 public class ArrayListAggregator<T>
 {
     /**
-     * Agrigated {@link ArrayList}.
+     * Aggregated {@link ArrayList}.
      */
     private final ArrayList<T> list;
 
