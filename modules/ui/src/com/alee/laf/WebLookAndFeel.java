@@ -154,6 +154,18 @@ public class WebLookAndFeel extends BasicLookAndFeel
     protected static boolean forceSingleEventsThread = false;
 
     /**
+     * Whether or not library should also enforce Event Dispatch Thread usage for {@link Component} events.
+     * Enabling this might allow you to find out places where you are firing {@link Component} events outside of EDT.
+     * By default it is disabled to avoid affecting application performance.
+     */
+    protected static boolean useStrictEventThreadListeners = false;
+
+    /**
+     * Forced Event Dispatch Thread lsiteners mix.
+     */
+    protected static final StrictEventThreadListeners STRICT_EDT_LISTENERS = new StrictEventThreadListeners ();
+
+    /**
      * Special handler for exceptions thrown when any UI operation is executed outside of the Event Dispatch Thread.
      */
     protected static NonEventThreadHandler nonEventThreadHandler = new ExceptionNonEventThreadHandler ();
@@ -1073,6 +1085,26 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
+     * Returns whether or not library should enforce Event Dispatch Thread usage for {@link Component} events.
+     *
+     * @return {@code true} if library should enforce Event Dispatch Thread usage for {@link Component} events, {@code false} otherwise
+     */
+    public static boolean isUseStrictEventThreadListeners ()
+    {
+        return useStrictEventThreadListeners;
+    }
+
+    /**
+     * Sets whether or not library should enforce Event Dispatch Thread usage for {@link Component} events.
+     *
+     * @param strict hether or not library should enforce Event Dispatch Thread usage for {@link Component} events
+     */
+    public static void setUseStrictEventThreadListeners ( final boolean strict )
+    {
+        WebLookAndFeel.useStrictEventThreadListeners = strict;
+    }
+
+    /**
      * Returns special handler for exceptions thrown when any UI operation is executed outside of the Event Dispatch Thread.
      *
      * @return special handler for exceptions thrown when any UI operation is executed outside of the Event Dispatch Thread.
@@ -1105,6 +1137,48 @@ public class WebLookAndFeel extends BasicLookAndFeel
                 final String msg = "This operation is only permitted on the Event Dispatch Thread. Current thread is: %s";
                 handler.handle ( new LookAndFeelException ( String.format ( msg, Thread.currentThread ().getName () ) ) );
             }
+        }
+    }
+
+    /**
+     * Installs listeners checking Event Dispatch Thread into the specified {@link Component}.
+     *
+     * @param component {@link Component}
+     */
+    public static void installEventDispatchThreadCheckers ( final Component component )
+    {
+        WebLookAndFeel.checkEventDispatchThread ();
+        if ( isForceSingleEventsThread () && isUseStrictEventThreadListeners () )
+        {
+            component.addHierarchyListener ( STRICT_EDT_LISTENERS );
+            component.addPropertyChangeListener ( STRICT_EDT_LISTENERS );
+            component.addComponentListener ( STRICT_EDT_LISTENERS );
+            component.addMouseListener ( STRICT_EDT_LISTENERS );
+            component.addMouseWheelListener ( STRICT_EDT_LISTENERS );
+            component.addMouseMotionListener ( STRICT_EDT_LISTENERS );
+            component.addKeyListener ( STRICT_EDT_LISTENERS );
+            component.addFocusListener ( STRICT_EDT_LISTENERS );
+        }
+    }
+
+    /**
+     * Uninstalls listeners checking Event Dispatch Thread from the specified {@link Component}.
+     *
+     * @param component {@link Component}
+     */
+    public static void uninstallEventDispatchThreadCheckers ( final Component component )
+    {
+        WebLookAndFeel.checkEventDispatchThread ();
+        if ( isForceSingleEventsThread () && isUseStrictEventThreadListeners () )
+        {
+            component.removeFocusListener ( STRICT_EDT_LISTENERS );
+            component.removeKeyListener ( STRICT_EDT_LISTENERS );
+            component.removeMouseMotionListener ( STRICT_EDT_LISTENERS );
+            component.removeMouseWheelListener ( STRICT_EDT_LISTENERS );
+            component.removeMouseListener ( STRICT_EDT_LISTENERS );
+            component.removeComponentListener ( STRICT_EDT_LISTENERS );
+            component.removePropertyChangeListener ( STRICT_EDT_LISTENERS );
+            component.removeHierarchyListener ( STRICT_EDT_LISTENERS );
         }
     }
 

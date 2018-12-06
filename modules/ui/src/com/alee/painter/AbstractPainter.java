@@ -79,8 +79,8 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
     @Override
     public void install ( final C c, final U ui )
     {
-        // Event Dispatch Thread check
-        WebLookAndFeel.checkEventDispatchThread ();
+        // Event Dispatch Thread checkers
+        WebLookAndFeel.installEventDispatchThreadCheckers ( c );
 
         // Saving references
         this.component = c;
@@ -103,8 +103,8 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
     @Override
     public void uninstall ( final C c, final U ui )
     {
-        // Event Dispatch Thread check
-        WebLookAndFeel.checkEventDispatchThread ();
+        // Event Dispatch Thread checkers
+        WebLookAndFeel.uninstallEventDispatchThreadCheckers ( c );
 
         // Additional actions before uninstallation
         beforeUninstall ();
