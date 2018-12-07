@@ -18,35 +18,36 @@
 package com.alee.api.clone.behavior;
 
 import com.alee.api.clone.Clone;
+import com.alee.api.clone.CloneBehavior;
 import com.alee.api.clone.GlobalCloneBehavior;
 import com.alee.api.clone.RecursiveClone;
-import com.alee.utils.ReflectUtils;
 
 /**
- * {@link GlobalCloneBehavior} for objects implementing {@link Cloneable}.
+ * {@link GlobalCloneBehavior} for objects implementing {@link CloneBehavior}.
  *
- * @param <T> {@link Cloneable} type
+ * @param <T> {@link CloneBehavior} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Clone">How to use Clone</a>
  * @see Clone
- * @see Cloneable
+ * @see CloneBehavior
  */
-public class CloneableCloneBehavior<T extends Cloneable> implements GlobalCloneBehavior<T>
+public class RedefinedCloneBehavior<T extends CloneBehavior<T>> implements GlobalCloneBehavior<T>
 {
     @Override
     public boolean supports ( final RecursiveClone clone, final Object object )
     {
-        return object instanceof Cloneable;
+        return object instanceof CloneBehavior;
     }
 
     @Override
     public T clone ( final RecursiveClone clone, final T object, final int depth )
     {
         /**
-         * Using standard {@link Object#clone()} method.
-         * This is only called in case object is instance of {@link Cloneable}.
+         * Using special behavior predefined in the object within {@link CloneBehavior#clone(RecursiveClone, int)} method.
+         * This is the recommended way of providing clone behavior within the object itself.
+         * {@link GlobalCloneBehavior} can also be created to support object from within {@link Clone} itself.
          */
-        return ReflectUtils.cloneSafely ( object );
+        return object.clone ( clone, depth );
     }
 
     @Override

@@ -23,6 +23,7 @@ import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.reflection.ModifierType;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -186,9 +187,11 @@ public final class Clone implements Serializable
     }
 
     /**
-     * Returns {@link Clone} algorithm that is able to clone basic object types.
+     * Returns {@link Clone} algorithm that is able to clone basic object types as well as simple {@link Collection}s and {@link Map}s.
+     * This algorithm is most useful for cases when you don't want to clone any unwanted objects and only focus on few basic types and
+     * some extra types which have strictly defined clone behavior through implementing {@link CloneBehavior}.
      *
-     * @return {@link Clone} algorithm that is able to clone basic object types
+     * @return {@link Clone} algorithm that is able to clone basic object types as well as simple {@link Collection}s and {@link Map}s
      */
     public static Clone basic ()
     {
@@ -199,7 +202,7 @@ public final class Clone implements Serializable
             clone = new Clone (
                     new ExceptionUnknownResolver (),
                     new BasicCloneBehavior (),
-                    new CloneableCloneBehavior ( CloneableCloneBehavior.Policy.strict ),
+                    new RedefinedCloneBehavior (),
                     new ArrayCloneBehavior (),
                     new MapCloneBehavior (),
                     new SetCloneBehavior (),
@@ -213,6 +216,8 @@ public final class Clone implements Serializable
     /**
      * Returns {@link Clone} algorithm that can also clone custom objects through {@link ReflectionCloneBehavior}.
      * Be careful when using this clone algorithm as it will go through all object references and will clone any existing fields.
+     * This algorithm is most useful for cases of cloning complex multi-level structures of objects where defining every clone operation
+     * can be difficult and vulnerable to mistakes.
      *
      * @return {@link Clone} algorithm that can also clone custom objects through {@link ReflectionCloneBehavior}
      */
@@ -225,11 +230,43 @@ public final class Clone implements Serializable
             clone = new Clone (
                     new ExceptionUnknownResolver (),
                     new BasicCloneBehavior (),
-                    new CloneableCloneBehavior ( CloneableCloneBehavior.Policy.strict ),
+                    new RedefinedCloneBehavior (),
                     new ArrayCloneBehavior (),
                     new MapCloneBehavior (),
                     new SetCloneBehavior (),
                     new CollectionCloneBehavior (),
+                    new ReflectionCloneBehavior ( ReflectionCloneBehavior.Policy.cloneable, ModifierType.STATIC )
+            );
+            commons.put ( identifier, clone );
+        }
+        return clone;
+    }
+
+    /**
+     * Returns {@link Clone} algorithm similar to {@link #deep()} that also uses base {@link Object#clone()} API.
+     * Be careful when using this clone algorithm as it will go through all object references and will clone any existing fields.
+     * Also anything that implements {@link Cloneable} (except for {@link Collection}s and {@link Map}s) will be cloned through
+     * {@link Object#clone()} API instead, so be careful when cloning anything using this particular {@link Clone} algorithm.
+     * Just like {@link #deep()} clone algorithm this one is most useful for cloning complex multi-level structures of objects while also
+     * honoring base {@link Object#clone()} API while going through the structure of objects.
+     *
+     * @return {@link Clone} algorithm similar to {@link #deep()} that also uses base {@link Object#clone()} API
+     */
+    public static Clone adaptive ()
+    {
+        final String identifier = "adaptive";
+        Clone clone = commonInstance ( identifier );
+        if ( clone == null )
+        {
+            clone = new Clone (
+                    new ExceptionUnknownResolver (),
+                    new BasicCloneBehavior (),
+                    new RedefinedCloneBehavior (),
+                    new ArrayCloneBehavior (),
+                    new MapCloneBehavior (),
+                    new SetCloneBehavior (),
+                    new CollectionCloneBehavior (),
+                    new CloneableCloneBehavior (),
                     new ReflectionCloneBehavior ( ReflectionCloneBehavior.Policy.cloneable, ModifierType.STATIC )
             );
             commons.put ( identifier, clone );
