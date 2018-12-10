@@ -845,15 +845,6 @@ public abstract class PluginManager<P extends Plugin>
                                 root.add ( plugin );
                             }
                         }
-                        else
-                        {
-                            // Updating plugin status
-                            plugin.setStatus ( PluginStatus.failed );
-
-                            // Saving list of missing dependencies
-                            final String missing = TextUtils.listToString ( missingDependencies, "\n" );
-                            plugin.setFailureCause ( "Plugin has missing dependencies:\n" + missing );
-                        }
                     }
                     else
                     {
@@ -884,9 +875,8 @@ public abstract class PluginManager<P extends Plugin>
                 final List<DetectedPlugin<P>> sorted = new TopologicalSorter<DetectedPlugin<P>> ( graph ).list ();
 
                 // Adding plugins which didn't get into graph into the end
-                // There might be such plugin for example in case it has some side dependencies
-                // It might still be properly initialized, we just don't know anything about its dependencies
-                // Such plugins should be initialized after anything else to increase their chances to load
+                // There might be plugins with some side dependencies and they might still be properly initialized
+                // Plugins that have missing dependencies will also be added into this list and taken care of later
                 for ( final DetectedPlugin<P> plugin : recentlyDetected )
                 {
                     if ( !sorted.contains ( plugin ) )
