@@ -450,11 +450,11 @@ public abstract class PluginManager<P extends Plugin>
             {
                 if ( manager.isParentManager ( PluginManager.this ) )
                 {
-                    // Warning about circular references
+                    // Circular references error
                     final String parentClass = ReflectUtils.getClassName ( manager.getClass () );
                     final String thisClass = ReflectUtils.getClassName ( PluginManager.this.getClass () );
                     final String msg = "%s already have %s as parent";
-                    LoggerFactory.getLogger ( PluginManager.class ).warn ( String.format ( msg, parentClass, thisClass ) );
+                    LoggerFactory.getLogger ( PluginManager.class ).error ( String.format ( msg, parentClass, thisClass ) );
                 }
                 parentManagers.add ( manager );
             }
@@ -462,7 +462,7 @@ public abstract class PluginManager<P extends Plugin>
             {
                 final String parentClass = ReflectUtils.getClassName ( manager.getClass () );
                 final String msg = "%s was already added as a parent";
-                LoggerFactory.getLogger ( PluginManager.class ).warn ( String.format ( msg, parentClass ) );
+                LoggerFactory.getLogger ( PluginManager.class ).error ( String.format ( msg, parentClass ) );
             }
         }
     }
@@ -485,7 +485,7 @@ public abstract class PluginManager<P extends Plugin>
             {
                 final String parentName = ReflectUtils.getClassName ( manager.getClass () );
                 final String msg = "%s was not added as a parent";
-                LoggerFactory.getLogger ( PluginManager.class ).warn ( String.format ( msg, parentName ) );
+                LoggerFactory.getLogger ( PluginManager.class ).error ( String.format ( msg, parentName ) );
             }
         }
     }
@@ -698,7 +698,7 @@ public abstract class PluginManager<P extends Plugin>
         else
         {
             final String msg = "Plugins directory is not yet specified";
-            LoggerFactory.getLogger ( PluginManager.class ).warn ( msg );
+            LoggerFactory.getLogger ( PluginManager.class ).error ( msg );
             return false;
         }
     }
@@ -899,7 +899,7 @@ public abstract class PluginManager<P extends Plugin>
             }
             catch ( final Exception e )
             {
-                LoggerFactory.getLogger ( PluginManager.class ).warn ( "Unable to perform proper dependencies sorting", e );
+                LoggerFactory.getLogger ( PluginManager.class ).error ( "Unable to perform proper dependencies sorting", e );
             }
         }
     }
@@ -1051,7 +1051,7 @@ public abstract class PluginManager<P extends Plugin>
         }
         catch ( final IOException e )
         {
-            LoggerFactory.getLogger ( PluginManager.class ).warn ( "Unable to read plugin information", e );
+            LoggerFactory.getLogger ( PluginManager.class ).error ( "Unable to read plugin information", e );
         }
         return null;
     }
@@ -1158,7 +1158,7 @@ public abstract class PluginManager<P extends Plugin>
                 {
                     final String msg = "Plugin of type '%s' cannot be loaded, required type is: %s";
                     final String fmsg = String.format ( msg, info.getType (), acceptedPluginType );
-                    LoggerFactory.getLogger ( PluginManager.class ).warn ( prefix + fmsg );
+                    LoggerFactory.getLogger ( PluginManager.class ).info ( prefix + fmsg );
 
                     dp.setStatus ( PluginStatus.failed );
                     dp.setFailureCause ( "Wrong type" );
@@ -1172,7 +1172,7 @@ public abstract class PluginManager<P extends Plugin>
                 if ( isDeprecatedVersion ( dp ) )
                 {
                     final String msg = "This plugin is deprecated, newer version loaded instead";
-                    LoggerFactory.getLogger ( PluginManager.class ).warn ( prefix + msg );
+                    LoggerFactory.getLogger ( PluginManager.class ).error ( prefix + msg );
 
                     dp.setStatus ( PluginStatus.failed );
                     dp.setFailureCause ( "Deprecated" );
@@ -1186,7 +1186,7 @@ public abstract class PluginManager<P extends Plugin>
                 if ( isSameVersionAlreadyLoaded ( dp, detectedPlugins ) )
                 {
                     final String msg = "Plugin is duplicate, it will be loaded from another file";
-                    LoggerFactory.getLogger ( PluginManager.class ).warn ( prefix + msg );
+                    LoggerFactory.getLogger ( PluginManager.class ).error ( prefix + msg );
 
                     dp.setStatus ( PluginStatus.failed );
                     dp.setFailureCause ( "Duplicate" );
@@ -1232,7 +1232,7 @@ public abstract class PluginManager<P extends Plugin>
                             {
                                 final String msg = "Mandatory plugin dependency was not found: %s";
                                 final String fmsg = String.format ( msg, did );
-                                LoggerFactory.getLogger ( PluginManager.class ).warn ( prefix + fmsg );
+                                LoggerFactory.getLogger ( PluginManager.class ).error ( prefix + fmsg );
 
                                 dp.setStatus ( PluginStatus.failed );
                                 dp.setFailureCause ( "Incomplete" );
@@ -1274,7 +1274,7 @@ public abstract class PluginManager<P extends Plugin>
                         {
                             final String msg = "Plugin library was not found: %s";
                             final String fmsg = String.format ( msg, file.getAbsolutePath () );
-                            LoggerFactory.getLogger ( PluginManager.class ).warn ( prefix + fmsg );
+                            LoggerFactory.getLogger ( PluginManager.class ).error ( prefix + fmsg );
 
                             dp.setStatus ( PluginStatus.failed );
                             dp.setFailureCause ( "Incomplete" );
@@ -1380,6 +1380,7 @@ public abstract class PluginManager<P extends Plugin>
         }
 
         // Checking for same/similar libraries used within plugins
+        // todo There should be a flag for libraries to specify when duplicates usage is intended
         boolean sameLibrariesInPlugins = false;
         for ( final Map.Entry<String, Map<PluginLibrary, PluginInformation>> libraries : pluginLibraries.entrySet () )
         {
@@ -1394,7 +1395,7 @@ public abstract class PluginManager<P extends Plugin>
                     final String libraryVersion = library.getKey ().getVersion ();
                     sb.append ( "[ " ).append ( plugin.toString () ).append ( ", version " ).append ( libraryVersion ).append ( " ] " );
                 }
-                LoggerFactory.getLogger ( PluginManager.class ).warn ( sb.toString () );
+                LoggerFactory.getLogger ( PluginManager.class ).info ( sb.toString () );
                 sameLibrariesInPlugins = true;
                 break;
             }
@@ -1402,7 +1403,7 @@ public abstract class PluginManager<P extends Plugin>
         if ( sameLibrariesInPlugins )
         {
             final String msg = "Make sure that the same library usage within different plugins was actually your intent";
-            LoggerFactory.getLogger ( PluginManager.class ).warn ( msg );
+            LoggerFactory.getLogger ( PluginManager.class ).info ( msg );
         }
     }
 
