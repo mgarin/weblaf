@@ -298,8 +298,17 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     @Override
     public void setTitleComponent ( final JComponent title )
     {
-        this.titleComponent = title;
-        root.revalidate ();
+        final boolean decorated = titleComponent != null;
+        if ( decorated )
+        {
+            root.remove ( titleComponent );
+        }
+        titleComponent = title;
+        if ( decorated )
+        {
+            root.add ( titleComponent );
+            root.revalidate ();
+        }
     }
 
     @Override
@@ -565,60 +574,62 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
      */
     protected void createTitleComponent ()
     {
-        // Title panel
-        final StyleId titlePanelId = StyleId.rootpaneTitlePanel.at ( root );
-        titleComponent = new WebPanel ( titlePanelId, new BorderLayout ( 0, 0 ) );
-
-        // Window icon
-        titleIcon = new WebImage ( StyleId.rootpaneTitleIcon.at ( titleComponent ), getWindowImage () );
-        titleComponent.add ( titleIcon, BorderLayout.LINE_START );
-
-        // Window title
-        titleLabel = new WebLabel ( StyleId.rootpaneTitleLabel.at ( titleComponent ), getWindowTitle () );
-        titleLabel.setFont ( WebLookAndFeel.globalWindowFont );
-        titleLabel.setFontSize ( 13 );
-        titleLabel.addComponentListener ( new ComponentAdapter ()
+        if ( titleComponent == null )
         {
-            /**
-             * Saving initial alignment to avoid overwriting provided by the style.
-             */
-            private final int initialAlignment = titleLabel.getHorizontalAlignment ();
+            // Title panel
+            final StyleId titlePanelId = StyleId.rootpaneTitlePanel.at ( root );
+            titleComponent = new WebPanel ( titlePanelId, new BorderLayout ( 0, 0 ) );
 
-            @Override
-            public void componentResized ( final ComponentEvent e )
+            // Window icon
+            titleIcon = new WebImage ( StyleId.rootpaneTitleIcon.at ( titleComponent ), getWindowImage () );
+            titleComponent.add ( titleIcon, BorderLayout.LINE_START );
+
+            // Window title
+            titleLabel = new WebLabel ( StyleId.rootpaneTitleLabel.at ( titleComponent ), getWindowTitle () );
+            titleLabel.setFont ( WebLookAndFeel.globalWindowFont );
+            titleLabel.setFontSize ( 13 );
+            titleLabel.addComponentListener ( new ComponentAdapter ()
             {
-                // Changing title horizontal alignment to avoid title jumping left/right
-                final boolean trimmed = titleLabel.getOriginalPreferredSize ().width > titleLabel.getWidth ();
-                final boolean ltr = titleLabel.getComponentOrientation ().isLeftToRight ();
-                final int alignment = trimmed ? ltr ? LEADING : TRAILING : initialAlignment;
-                titleLabel.setHorizontalAlignment ( alignment );
-            }
-        } );
-        titleComponent.add ( titleLabel, BorderLayout.CENTER );
+                /**
+                 * Saving initial alignment to avoid overwriting provided by the style.
+                 */
+                private final int initialAlignment = titleLabel.getHorizontalAlignment ();
 
-        // Listen to window icon and title changes
-        windowTitleListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
+                @Override
+                public void componentResized ( final ComponentEvent e )
+                {
+                    // Changing title horizontal alignment to avoid title jumping left/right
+                    final boolean trimmed = titleLabel.getOriginalPreferredSize ().width > titleLabel.getWidth ();
+                    final boolean ltr = titleLabel.getComponentOrientation ().isLeftToRight ();
+                    final int alignment = trimmed ? ltr ? LEADING : TRAILING : initialAlignment;
+                    titleLabel.setHorizontalAlignment ( alignment );
+                }
+            } );
+            titleComponent.add ( titleLabel, BorderLayout.CENTER );
+
+            // Listen to window icon and title changes
+            windowTitleListener = new PropertyChangeListener ()
             {
-                final String property = evt.getPropertyName ();
-                if ( Objects.equals ( property, WebLookAndFeel.ICON_IMAGE_PROPERTY ) )
+                @Override
+                public void propertyChange ( final PropertyChangeEvent evt )
                 {
-                    titleIcon.setImage ( getWindowImage () );
+                    final String property = evt.getPropertyName ();
+                    if ( Objects.equals ( property, WebLookAndFeel.ICON_IMAGE_PROPERTY ) )
+                    {
+                        titleIcon.setImage ( getWindowImage () );
+                    }
+                    else if ( Objects.equals ( property, WebLookAndFeel.TITLE_PROPERTY ) )
+                    {
+                        titleLabel.setText ( getWindowTitle () );
+                    }
                 }
-                else if ( Objects.equals ( property, WebLookAndFeel.TITLE_PROPERTY ) )
-                {
-                    titleLabel.setText ( getWindowTitle () );
-                }
-            }
-        };
-        window.addPropertyChangeListener ( windowTitleListener );
+            };
+            window.addPropertyChangeListener ( windowTitleListener );
 
-        // Installing window decoration behavior
-        decorationBehavior = new WindowDecorationBehavior ( this );
-        decorationBehavior.install ();
-
+            // Installing window decoration behavior
+            decorationBehavior = new WindowDecorationBehavior ( this );
+            decorationBehavior.install ();
+        }
         root.add ( titleComponent );
     }
 
