@@ -28,7 +28,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public class WebRootPaneLayout extends AbstractLayoutManager
 {
     @Override

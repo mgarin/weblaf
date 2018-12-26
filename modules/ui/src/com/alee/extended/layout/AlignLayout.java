@@ -31,7 +31,6 @@ import java.util.Map;
  *
  * @author Mikle Garin
  */
-
 public class AlignLayout extends AbstractLayoutManager implements SwingConstants
 {
     /**
@@ -57,34 +56,62 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
     /**
      * Constraints cache for added components.
      */
-    protected final Map<Component, String> constraints = new HashMap<Component, String> ();
+    protected final Map<Component, String> constraints;
 
     /**
      * Horizontal gap between components.
      */
-    protected int hgap = 0;
+    protected int hgap;
 
     /**
      * Vertical gap between components.
      */
-    protected int vgap = 0;
+    protected int vgap;
 
     /**
-     * Whether components should fill all available horizontal space or not.
+     * Whether or not components should fill all available horizontal space.
      */
-    protected boolean hfill = false;
+    protected boolean hfill;
 
     /**
-     * Whether components should fill all available vertical space or not.
+     * Whether or not components should fill all available vertical space.
      */
-    protected boolean vfill = false;
+    protected boolean vfill;
 
     /**
-     * Constructs new align layout.
+     * Constructs new {@link AlignLayout}.
      */
     public AlignLayout ()
     {
-        super ();
+        this ( 0, 0, false, false );
+    }
+
+    /**
+     * Constructs new align layout.
+     *
+     * @param hgap horizontal gap between components
+     * @param vgap vertical gap between components
+     */
+    public AlignLayout ( final int hgap, final int vgap )
+    {
+        this ( hgap, vgap, false, false );
+    }
+
+    /**
+     * Constructs new align layout.
+     *
+     * @param hgap  horizontal gap between components
+     * @param vgap  vertical gap between components
+     * @param hfill whether or not components should fill all available horizontal space
+     * @param vfill whether or not components should fill all available vertical space
+     */
+    public AlignLayout ( final int hgap, final int vgap, final boolean hfill, final boolean vfill )
+    {
+        this.constraints = new HashMap<Component, String> ();
+        this.hgap = 0;
+        this.vgap = 0;
+        this.hfill = false;
+        this.vfill = false;
     }
 
     /**
@@ -240,11 +267,11 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
                 }
                 else if ( halign == CENTER )
                 {
-                    x = container.getWidth () / 2 - ps.width / 2;
+                    x = insets.left + cw / 2 - Math.min ( ps.width / 2, cw / 2 );
                 }
                 else if ( halign == RIGHT )
                 {
-                    x = container.getWidth () - ps.width - insets.right;
+                    x = container.getWidth () - Math.min ( ps.width, cw ) - insets.right;
                 }
                 else
                 {
@@ -266,11 +293,11 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
                 }
                 else if ( valign == CENTER )
                 {
-                    y = container.getHeight () / 2 - ps.height / 2;
+                    y = insets.top + ch / 2 - Math.min ( ps.width / 2, ch / 2 );
                 }
                 else if ( valign == BOTTOM )
                 {
-                    y = container.getHeight () - ps.height - insets.bottom;
+                    y = container.getHeight () - Math.min ( ps.height, ch ) - insets.bottom;
                 }
                 else
                 {
@@ -279,8 +306,8 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
             }
 
             // Determining width and height
-            final int width = isHfill () ? cw : ps.width;
-            final int height = isVfill () ? ch : ps.height;
+            final int width = isHfill () ? cw : Math.min ( ps.width, cw );
+            final int height = isVfill () ? ch : Math.min ( ps.height, ch );
 
             // Placing component
             component.setBounds ( x, y, width, height );
