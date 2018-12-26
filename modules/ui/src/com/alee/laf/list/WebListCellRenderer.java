@@ -149,7 +149,7 @@ public class WebListCellRenderer<V, C extends JList, P extends ListCellParameter
         setComponentOrientation ( orientationForValue ( parameters ) );
         setFont ( fontForValue ( parameters ) );
         setForeground ( foregroundForValue ( parameters ) );
-        setHorizontalTextAlignment ( horizontalAlignmentForValue ( parameters ) );
+        setHorizontalAlignment ( horizontalAlignmentForValue ( parameters ) );
         setIcon ( iconForValue ( parameters ) );
         setText ( textForValue ( parameters ) );
     }
