@@ -20,7 +20,6 @@ package com.alee.laf.scroll;
 import com.alee.api.data.Corner;
 import com.alee.api.jdk.Consumer;
 import com.alee.extended.canvas.WebCanvas;
-import com.alee.laf.LookAndFeelException;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
@@ -296,7 +295,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
                                 }
                                 else
                                 {
-                                    if ( leftToRight && direction < 0 || !leftToRight && direction > 0 )
+                                    if ( leftToRight ? direction < 0 : direction > 0 )
                                     {
                                         // Scroll left
                                         viewRect.x -= unitIncr;
@@ -309,7 +308,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
                                             }
                                         }
                                     }
-                                    else if ( leftToRight && direction > 0 || !leftToRight && direction < 0 )
+                                    else
                                     {
                                         // Scroll right
                                         viewRect.x += unitIncr;
@@ -321,10 +320,6 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
                                                 break;
                                             }
                                         }
-                                    }
-                                    else
-                                    {
-                                        throw new LookAndFeelException ( "Non-sensical ComponentOrientation / scroll direction" );
                                     }
                                 }
                             }
@@ -594,10 +589,14 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
             }
             else if ( view instanceof JComponent )
             {
-                final ComponentUI ui = LafUtils.getUI ( ( JComponent ) view );
-                if ( ui != null && ui instanceof ScrollPaneCornerProvider )
+                final JComponent jView = ( JComponent ) view;
+                if ( LafUtils.hasUI ( jView ) )
                 {
-                    scp = ( ScrollPaneCornerProvider ) ui;
+                    final ComponentUI ui = LafUtils.getUI ( jView );
+                    if ( ui instanceof ScrollPaneCornerProvider )
+                    {
+                        scp = ( ScrollPaneCornerProvider ) ui;
+                    }
                 }
             }
         }
