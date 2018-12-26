@@ -18,22 +18,21 @@
 package com.alee.extended.panel;
 
 import com.alee.extended.layout.AlignLayout;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * Custom panel that aligns contained component.
+ * Custom panel using {@link AlignLayout}.
  *
  * @author Mikle Garin
  */
-
 public class AlignPanel extends WebPanel implements SwingConstants
 {
     /**
-     * Constructs new align panel.
+     * Constructs new {@link AlignPanel}.
      *
      * @param component component to align
      * @param halign    horizontal alignment
@@ -41,7 +40,20 @@ public class AlignPanel extends WebPanel implements SwingConstants
      */
     public AlignPanel ( final Component component, final int halign, final int valign )
     {
-        super ( StyleId.panelTransparent, new AlignLayout () );
+        this ( StyleId.panelTransparent, component, halign, valign );
+    }
+
+    /**
+     * Constructs new {@link AlignPanel}.
+     *
+     * @param id        style ID
+     * @param component component to align
+     * @param halign    horizontal alignment
+     * @param valign    vertical alignment
+     */
+    public AlignPanel ( final StyleId id, final Component component, final int halign, final int valign )
+    {
+        super ( id, new AlignLayout () );
         add ( component, halign + AlignLayout.SEPARATOR + valign );
     }
 }

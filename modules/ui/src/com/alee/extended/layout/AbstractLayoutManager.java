@@ -25,7 +25,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public abstract class AbstractLayoutManager implements LayoutManager2
 {
     @Override
@@ -54,7 +53,9 @@ public abstract class AbstractLayoutManager implements LayoutManager2
      */
     public void addComponent ( final Component component, final Object constraints )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**
@@ -64,7 +65,9 @@ public abstract class AbstractLayoutManager implements LayoutManager2
      */
     public void removeComponent ( final Component component )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
@@ -94,6 +97,8 @@ public abstract class AbstractLayoutManager implements LayoutManager2
     @Override
     public void invalidateLayout ( final Container container )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }
