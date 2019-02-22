@@ -25,10 +25,7 @@ import com.alee.utils.ReflectUtils;
 import com.alee.utils.collection.ImmutableCollection;
 import com.alee.utils.collection.ImmutableList;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * {@link GlobalCloneBehavior} for {@link Collection}s.
@@ -53,12 +50,14 @@ public class CollectionCloneBehavior implements GlobalCloneBehavior<Collection>
             /**
              * Creating new {@link Collection} instance.
              * All most commonly used {@link Collection} types are processed separately.
+             * todo Probably better/separate solution for immutable & singleton lists?
              */
             final Collection collectionCopy;
             final Class<? extends Collection> collectionClass = collection.getClass ();
             if ( collectionClass == ImmutableCollection.class ||
                     collectionClass == ImmutableList.class ||
-                    collectionClass == ArrayList.class )
+                    collectionClass == ArrayList.class ||
+                    collectionClass.getCanonicalName ().equals ( "java.util.Collections.SingletonList" ) )
             {
                 // ArrayList instance
                 collectionCopy = new ArrayList ( collection.size () );
@@ -107,6 +106,10 @@ public class CollectionCloneBehavior implements GlobalCloneBehavior<Collection>
             else if ( collection instanceof ImmutableList )
             {
                 result = new ImmutableList ( collectionCopy );
+            }
+            else if ( collectionClass.getCanonicalName ().equals ( "java.util.Collections.SingletonList" ) )
+            {
+                result = Collections.singletonList ( collectionCopy.iterator ().next () );
             }
             else
             {
