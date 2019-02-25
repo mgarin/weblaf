@@ -18,6 +18,8 @@
 package com.alee.utils;
 
 import com.alee.api.jdk.Function;
+import com.alee.api.jdk.Supplier;
+import com.alee.managers.language.LM;
 import com.alee.utils.compare.Filter;
 import com.alee.utils.xml.ColorConverter;
 import com.alee.utils.xml.InsetsConverter;
@@ -1043,6 +1045,54 @@ public final class TextUtils
     }
 
     /**
+     * Checks that the specified text is not {@code null} or empty and throws a {@link NullPointerException} if it is.
+     *
+     * @param text text to check for being {@code null} or empty
+     * @return text if not {@code null} or empty
+     * @throws NullPointerException if text is {@code null} or empty
+     */
+    public static String requireNonEmpty ( final String text )
+    {
+        return requireNonEmpty ( text, "Text must not be empty" );
+    }
+
+    /**
+     * Checks that the specified text is not {@code null} or empty and throws a {@link NullPointerException} if it is.
+     *
+     * @param text    text to check for being {@code null} or empty
+     * @param message detailed message used in {@link NullPointerException}
+     * @return text if not {@code null} or empty
+     * @throws NullPointerException if text is {@code null} or empty
+     */
+    public static String requireNonEmpty ( final String text, final String message )
+    {
+        if ( text == null )
+        {
+            throw new NullPointerException (
+                    LM.contains ( message ) ? LM.get ( message ) : message
+            );
+        }
+        return text;
+    }
+
+    /**
+     * Checks that the specified text is not {@code null} or empty and throws a {@link RuntimeException} if it is.
+     *
+     * @param text              text to check for being {@code null} or empty
+     * @param exceptionSupplier {@link Supplier} for a customized {@link RuntimeException}
+     * @return text if not {@code null} or empty
+     * @throws RuntimeException if text is {@code null} or empty
+     */
+    public static String requireNonEmpty ( final String text, final Supplier<RuntimeException> exceptionSupplier )
+    {
+        if ( text == null )
+        {
+            throw exceptionSupplier.get ();
+        }
+        return text;
+    }
+
+    /**
      * Creates new string filled with specified amount of same characters.
      *
      * @param character character to fill string with
@@ -1231,7 +1281,7 @@ public final class TextUtils
             }
             else
             {
-                stringBuilder.append ( getSettingKey ( object ) );
+                stringBuilder.append ( getSettingKey ( null ) );
             }
         }
         return stringBuilder.toString ();
