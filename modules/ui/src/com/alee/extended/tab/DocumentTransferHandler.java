@@ -157,12 +157,20 @@ public class DocumentTransferHandler extends TransferHandler
         try
         {
             final Transferable t = support.getTransferable ();
-            if ( t.isDataFlavorSupported ( dataFlavor ) && t.getTransferData ( dataFlavor ) != null )
+            if ( t.isDataFlavorSupported ( dataFlavor ) )
             {
-                final WebDocumentPane dp = paneData.getDocumentPane ();
-                final DocumentPaneTransferInfo td = ( DocumentPaneTransferInfo ) t.getTransferData ( transferFlavor );
-                final boolean allowed = dp.isDragBetweenPanesEnabled () && td.getDragBetweenPanesEnabled ();
-                return allowed || dp.getId ().equals ( td.getDocumentPaneId () );
+                final Object transferData = t.getTransferData ( transferFlavor );
+                if ( transferData instanceof DocumentPaneTransferInfo )
+                {
+                    final DocumentPaneTransferInfo info = ( DocumentPaneTransferInfo ) transferData;
+                    final WebDocumentPane dp = paneData.getDocumentPane ();
+                    final boolean allowed = dp.isDragBetweenPanesEnabled () && info.getDragBetweenPanesEnabled ();
+                    return allowed || dp.getId ().equals ( info.getDocumentPaneId () );
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
