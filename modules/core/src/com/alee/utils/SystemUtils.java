@@ -730,7 +730,7 @@ public final class SystemUtils
      */
     public static Rectangle getDeviceBounds ( final Component component, final boolean applyScreenInsets )
     {
-        final Rectangle bounds = CoreSwingUtils.getBoundsOnScreen ( component );
+        final Rectangle bounds = CoreSwingUtils.getBoundsOnScreen ( component, true );
         return getDeviceBounds ( bounds, applyScreenInsets );
     }
 

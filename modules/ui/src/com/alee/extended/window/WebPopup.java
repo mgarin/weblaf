@@ -56,7 +56,7 @@ import java.lang.ref.WeakReference;
  * @see PopupPainter
  */
 public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
-        implements Popup, PopupMethods, WindowMethods<WebPopupWindow>
+    implements Popup, PopupMethods, WindowMethods<WebPopupWindow>
 {
     /**
      * todo 1. Move all action implementations into UI
@@ -772,7 +772,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
         // Udating window location
         if ( invokerWindow != null )
         {
-            final Rectangle bos = CoreSwingUtils.getBoundsOnScreen ( invoker );
+            final Rectangle bos = CoreSwingUtils.getBoundsOnScreen ( invoker, true );
             window.setLocation ( bos.x + x, bos.y + y );
         }
         else
@@ -816,7 +816,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Ignore action if popup is being hidden or already hidden
-        if ( hiding || window == null || window != null && !window.isShowing () )
+        if ( hiding || window == null || !window.isShowing () )
         {
             return;
         }
@@ -906,7 +906,6 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
      */
     protected void showAnimationStepPerformed ()
     {
-        // Do nothing by default
         // todo Replace with appropriate listeners
     }
 
@@ -916,8 +915,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
      */
     protected void hideAnimationStepPerformed ()
     {
-        // Do nothing by default
-        //        // todo Replace with appropriate listeners
+        // todo Replace with appropriate listeners
     }
 
     @Override

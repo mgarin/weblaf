@@ -28,8 +28,8 @@ import com.alee.utils.xml.RectangleConverter;
 
 import java.awt.*;
 import java.lang.reflect.Array;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 /**
  * This class provides a set of utilities to work with various text usage cases.
@@ -42,8 +42,8 @@ public final class TextUtils
      * Separators used to determine words in text.
      */
     private static final List<Character> textSeparators = CollectionUtils.asList (
-            ' ', '.', ',', ':', ';', '/', '|', '{', '}', '[', ']', '(', ')', '<', '>',
-            '\\', '\n', '\t', '\'', '\'', '-', '+', '*', '%', '$', '#', '@', '!', '~', '^', '&', '?'
+        ' ', '.', ',', ':', ';', '/', '|', '{', '}', '[', ']', '(', ')', '<', '>',
+        '\\', '\n', '\t', '\'', '\'', '-', '+', '*', '%', '$', '#', '@', '!', '~', '^', '&', '?'
     );
 
     /**
@@ -261,7 +261,7 @@ public final class TextUtils
      */
     public static Integer findFirstNumber ( final String text )
     {
-        final StringBuilder sb = new StringBuilder ( "" );
+        final StringBuilder sb = new StringBuilder ();
         for ( int j = 0; j < text.length (); j++ )
         {
             final char ch = text.charAt ( j );
@@ -564,7 +564,7 @@ public final class TextUtils
     public static String shortenText ( final String text, final int maxLength, final boolean addDots )
     {
         return text.length () <= maxLength ? text :
-                text.substring ( 0, maxLength > 3 && addDots ? maxLength - 3 : maxLength ) + ( addDots ? "..." : "" );
+            text.substring ( 0, maxLength > 3 && addDots ? maxLength - 3 : maxLength ) + ( addDots ? "..." : "" );
     }
 
     /**
@@ -578,7 +578,7 @@ public final class TextUtils
     public static String shortenTextEnd ( final String text, final int maxLength, final boolean addDots )
     {
         return text.length () <= maxLength ? text :
-                ( addDots ? "..." : "" ) + text.substring ( text.length () - ( maxLength > 3 && addDots ? maxLength - 3 : maxLength ) );
+            ( addDots ? "..." : "" ) + text.substring ( text.length () - ( maxLength > 3 && addDots ? maxLength - 3 : maxLength ) );
     }
 
     /**
@@ -1066,10 +1066,10 @@ public final class TextUtils
      */
     public static String requireNonEmpty ( final String text, final String message )
     {
-        if ( text == null )
+        if ( isEmpty ( text ) )
         {
             throw new NullPointerException (
-                    LM.contains ( message ) ? LM.get ( message ) : message
+                LM.contains ( message ) ? LM.get ( message ) : message
             );
         }
         return text;
@@ -1085,7 +1085,7 @@ public final class TextUtils
      */
     public static String requireNonEmpty ( final String text, final Supplier<RuntimeException> exceptionSupplier )
     {
-        if ( text == null )
+        if ( isEmpty ( text ) )
         {
             throw exceptionSupplier.get ();
         }
@@ -1153,7 +1153,7 @@ public final class TextUtils
             {
                 final int start = i - exp.length () + 1;
                 final String part = text.substring ( start, start + exp.length () );
-                builder.append ( text.substring ( prev, start ) );
+                builder.append ( text, prev, start );
                 builder.append ( replacer.apply ( part ) );
                 prev = start + exp.length ();
                 match = 0;
@@ -1197,7 +1197,7 @@ public final class TextUtils
     public static String generateId ( final String prefix, final String suffix )
     {
         return ( prefix == null ? defaultIdPrefix : prefix ) + "-" + generateId ( idPartLength ) + "-" + generateId ( idPartLength ) + "-" +
-                generateId ( idPartLength ) + "-" + generateId ( idPartLength ) + "-" + ( suffix == null ? defaultIdSuffix : suffix );
+            generateId ( idPartLength ) + "-" + generateId ( idPartLength ) + "-" + ( suffix == null ? defaultIdSuffix : suffix );
     }
 
     /**

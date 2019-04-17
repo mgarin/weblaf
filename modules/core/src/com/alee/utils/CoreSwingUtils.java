@@ -130,16 +130,38 @@ public final class CoreSwingUtils
     }
 
     /**
-     * Returns component bounds on screen.
+     * Returns {@link Component} bounds on screen, either only visible or complete ones.
+     * Visible only bounds will only include part of the {@link Component} that is actually visible on the screen.
+     * Complete {@link Component} bounds might include parts that are not actually visible on the screen due to layout or scroll pane.
      *
-     * @param component component to process
-     * @return component bounds on screen
+     * @param component   {@link Component} to process
+     * @param visibleOnly whether or not only visible {@link Component} part bounds should be returned
+     * @return {@link Component} bounds on screen, either only visible or complete ones
      */
-    public static Rectangle getBoundsOnScreen ( final Component component )
+    public static Rectangle getBoundsOnScreen ( final Component component, final boolean visibleOnly )
     {
+        final Rectangle bounds;
         final Point los = locationOnScreen ( component );
         final Dimension size = component.getSize ();
-        return new Rectangle ( los, size );
+        if ( visibleOnly )
+        {
+            final Rectangle visible;
+            if ( component instanceof JComponent )
+            {
+                visible = ( ( JComponent ) component ).getVisibleRect ();
+            }
+            else
+            {
+                visible = new Rectangle ();
+                computeVisibleRect ( component, visible );
+            }
+            bounds = new Rectangle ( los.x + visible.x, los.y + visible.y, visible.width, visible.height );
+        }
+        else
+        {
+            bounds = new Rectangle ( los, size );
+        }
+        return bounds;
     }
 
     /**
@@ -152,7 +174,7 @@ public final class CoreSwingUtils
     public static Rectangle getBoundsInWindow ( final Component component )
     {
         return component instanceof Window || component instanceof JApplet ? getRootPane ( component ).getBounds () :
-                getRelativeBounds ( component, getRootPane ( component ) );
+            getRelativeBounds ( component, getRootPane ( component ) );
     }
 
     /**
@@ -222,11 +244,11 @@ public final class CoreSwingUtils
                 if ( window.isShowing () )
                 {
                     if ( window instanceof Dialog && !( ( Dialog ) window ).isUndecorated () ||
-                            window instanceof Frame && !( ( Frame ) window ).isUndecorated () )
+                        window instanceof Frame && !( ( Frame ) window ).isUndecorated () )
                     {
                         // Calculating exact decoration insets based on root pane insets
-                        final Rectangle wlos = CoreSwingUtils.getBoundsOnScreen ( window );
-                        final Rectangle rlos = CoreSwingUtils.getBoundsOnScreen ( rootPane );
+                        final Rectangle wlos = CoreSwingUtils.getBoundsOnScreen ( window, false );
+                        final Rectangle rlos = CoreSwingUtils.getBoundsOnScreen ( rootPane, false );
                         insets.top = rlos.y - wlos.y;
                         insets.left = rlos.x - wlos.x;
                         insets.bottom = wlos.y + wlos.height - rlos.y - rlos.height;
@@ -342,7 +364,7 @@ public final class CoreSwingUtils
             if ( vr.width > 0 && vr.height > 0 )
             {
                 // Ensure that mouse is hovering the component right now
-                if ( getBoundsOnScreen ( component ).contains ( getMouseLocation () ) )
+                if ( getBoundsOnScreen ( component, true ).contains ( getMouseLocation () ) )
                 {
                     hover = true;
                 }

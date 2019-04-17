@@ -144,7 +144,7 @@ public class DockableFrameElement extends AbstractDockableElement
      */
     public void saveFloatingBounds ( final WebDockableFrame frame )
     {
-        final Rectangle bounds = CoreSwingUtils.getBoundsOnScreen ( frame );
+        final Rectangle bounds = CoreSwingUtils.getBoundsOnScreen ( frame, false );
         setFloatingBounds ( bounds );
     }
 

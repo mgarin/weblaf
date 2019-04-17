@@ -175,37 +175,31 @@ public class PopOverPainter<C extends JRootPane, U extends WRootPaneUI> extends 
             @Override
             public void displayed ()
             {
-                if ( popOver != null )
-                {
-                    /**
-                     * Notifying popover listeners.
-                     * Note that if this pop-over is modal this event will be fired only after it is closed.
-                     * Unfortunately there is no good way to provide this event after dialog is opened but before it is closed in that case.
-                     */
-                    popOver.fireOpened ();
+                /**
+                 * Notifying popover listeners.
+                 * Note that if this pop-over is modal this event will be fired only after it is closed.
+                 * Unfortunately there is no good way to provide this event after dialog is opened but before it is closed in that case.
+                 */
+                popOver.fireOpened ();
 
-                    /**
-                     * Notifying L&F about opened window.
-                     */
-                    WebLookAndFeel.fireWindowDisplayed ( popOver );
-                }
+                /**
+                 * Notifying L&F about opened window.
+                 */
+                WebLookAndFeel.fireWindowDisplayed ( popOver );
             }
 
             @Override
             public void hidden ()
             {
-                if ( popOver != null )
-                {
-                    /**
-                     * Notifying popover listeners.
-                     */
-                    popOver.fireClosed ();
+                /**
+                 * Notifying popover listeners.
+                 */
+                popOver.fireClosed ();
 
-                    /**
-                     * Notifying L&F about closed window.
-                     */
-                    WebLookAndFeel.fireWindowHidden ( popOver );
-                }
+                /**
+                 * Notifying L&F about closed window.
+                 */
+                WebLookAndFeel.fireWindowHidden ( popOver );
             }
         };
         windowVisibilityBehavior.install ();
@@ -476,7 +470,7 @@ public class PopOverPainter<C extends JRootPane, U extends WRootPaneUI> extends 
     {
         if ( invoker.isShowing () )
         {
-            updatePopOverLocation ( popOver, invoker, CoreSwingUtils.getBoundsOnScreen ( invoker ) );
+            updatePopOverLocation ( popOver, invoker, CoreSwingUtils.getBoundsOnScreen ( invoker, true ) );
         }
     }
 

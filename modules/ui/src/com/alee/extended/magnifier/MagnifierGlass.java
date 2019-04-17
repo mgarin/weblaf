@@ -504,7 +504,7 @@ public class MagnifierGlass extends JComponent
 
             // Filling-in image content
             final Point mp = CoreSwingUtils.getMouseLocation ();
-            final Rectangle gb = CoreSwingUtils.getBoundsOnScreen ( zoomProvider );
+            final Rectangle gb = CoreSwingUtils.getBoundsOnScreen ( zoomProvider, false );
             if ( gb.contains ( mp ) )
             {
                 // Configuring graphics
@@ -563,7 +563,7 @@ public class MagnifierGlass extends JComponent
             else if ( position == MagnifierPosition.nearCursor )
             {
                 final WebGlassPane glassPane = GlassPaneManager.getGlassPane ( zoomProvider );
-                final Rectangle bos = CoreSwingUtils.getBoundsOnScreen ( glassPane );
+                final Rectangle bos = CoreSwingUtils.getBoundsOnScreen ( glassPane, false );
                 final Point rmp = new Point ( mp.x - bos.x, mp.y - bos.y );
                 final Dimension ps = getPreferredSize ();
                 final int mx;
