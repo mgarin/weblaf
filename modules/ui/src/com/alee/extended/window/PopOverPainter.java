@@ -470,7 +470,7 @@ public class PopOverPainter<C extends JRootPane, U extends WRootPaneUI> extends 
     {
         if ( invoker.isShowing () )
         {
-            updatePopOverLocation ( popOver, invoker, CoreSwingUtils.getBoundsOnScreen ( invoker, true ) );
+            updatePopOverLocation ( popOver, invoker, CoreSwingUtils.getBoundsOnScreen ( invoker, false ) );
         }
     }
 

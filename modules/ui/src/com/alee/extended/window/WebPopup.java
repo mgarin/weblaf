@@ -772,7 +772,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
         // Udating window location
         if ( invokerWindow != null )
         {
-            final Rectangle bos = CoreSwingUtils.getBoundsOnScreen ( invoker, true );
+            final Rectangle bos = CoreSwingUtils.getBoundsOnScreen ( invoker, false );
             window.setLocation ( bos.x + x, bos.y + y );
         }
         else

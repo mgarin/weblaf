@@ -39,7 +39,6 @@ import java.awt.*;
  * @see PopOverDirection
  * @see PopOverAlignment
  */
-
 public class WebPopOver extends WebDialog implements PopOverEventMethods
 {
     /**
