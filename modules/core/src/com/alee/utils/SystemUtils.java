@@ -181,12 +181,23 @@ public final class SystemUtils
      * Returns whether application is running on the specified java version and above or not.
      *
      * @param version version number
+     * @return {@code true} if the application is running on the specified java version and above, {@code false} otherwise
+     */
+    public static boolean isJavaVersionOrAbove ( final double version )
+    {
+        return isJavaVersionOrAbove ( version, 0, 0 );
+    }
+
+    /**
+     * Returns whether application is running on the specified java version and above or not.
+     *
+     * @param version version number
      * @param update  update number
      * @return {@code true} if the application is running on the specified java version and above, {@code false} otherwise
      */
-    public static boolean isJavaVersion ( final double version, final int update )
+    public static boolean isJavaVersionOrAbove ( final double version, final int update )
     {
-        return getJavaVersion ().compareTo ( version, 0, update ) >= 0;
+        return isJavaVersionOrAbove ( version, 0, update );
     }
 
     /**
@@ -197,7 +208,7 @@ public final class SystemUtils
      * @param update update number
      * @return {@code true} if the application is running on the specified java version and above, {@code false} otherwise
      */
-    public static boolean isJavaVersion ( final double major, final int minor, final int update )
+    public static boolean isJavaVersionOrAbove ( final double major, final int minor, final int update )
     {
         return getJavaVersion ().compareTo ( major, minor, update ) >= 0;
     }
@@ -209,7 +220,7 @@ public final class SystemUtils
      */
     public static boolean isJava6orAbove ()
     {
-        return getJavaVersion ().compareTo ( 1.6, 0, 0 ) >= 0;
+        return isJavaVersionOrAbove ( 1.6 );
     }
 
     /**
@@ -219,7 +230,7 @@ public final class SystemUtils
      */
     public static boolean isJava7orAbove ()
     {
-        return getJavaVersion ().compareTo ( 1.7, 0, 0 ) >= 0;
+        return isJavaVersionOrAbove ( 1.7 );
     }
 
     /**
@@ -229,7 +240,7 @@ public final class SystemUtils
      */
     public static boolean isJava8orAbove ()
     {
-        return getJavaVersion ().compareTo ( 1.8, 0, 0 ) >= 0;
+        return isJavaVersionOrAbove ( 1.8 );
     }
 
     /**
@@ -239,7 +250,7 @@ public final class SystemUtils
      */
     public static boolean isJava9orAbove ()
     {
-        return getJavaVersion ().compareTo ( 9.0, 0, 0 ) >= 0;
+        return isJavaVersionOrAbove ( 9.0 );
     }
 
     /**
@@ -249,7 +260,7 @@ public final class SystemUtils
      */
     public static boolean isJava10orAbove ()
     {
-        return getJavaVersion ().compareTo ( 10.0, 0, 0 ) >= 0;
+        return isJavaVersionOrAbove ( 10.0 );
     }
 
     /**

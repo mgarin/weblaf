@@ -485,6 +485,7 @@ public final class NativeFonts
      * @return native Windows {@link FontUIResource} for the {@link Font} key and {@link Font} size key
      * @see com.sun.java.swing.plaf.windows.WindowsLookAndFeel.WindowsFontProperty#configureValue(Object)
      */
+    @SuppressWarnings ( "JavadocReference" )
     private static FontUIResource getWindowsFont ( final String fontKey, final Supplier<FontUIResource> fallback )
     {
         Font font;
@@ -639,11 +640,11 @@ public final class NativeFonts
     }
 
     /**
-     * Returns native Mac OS X {@link FontUIResource} using the specified retrieval method name.
+     * Returns native Unix {@link FontUIResource} using the specified retrieval method name.
      *
      * @param region   {@link Region} to retrieve font for
      * @param fallback {@link Supplier} for the fallback {@link FontUIResource}
-     * @return native Mac OS X {@link FontUIResource} using the specified retrieval method name
+     * @return native Unix {@link FontUIResource} using the specified retrieval method name
      */
     private static FontUIResource getUnixFont ( final Region region, final Supplier<FontUIResource> fallback )
     {
@@ -658,7 +659,7 @@ public final class NativeFonts
                     final Object style = ReflectUtils.callMethod ( factory, "getStyle", null, region );
                     try
                     {
-                        if ( SystemUtils.isJava9orAbove () )
+                        if ( SystemUtils.isJava9orAbove () || SystemUtils.isJavaVersionOrAbove ( 1.8, 211 ) )
                         {
                             font = ReflectUtils.callMethod ( style, "getDefaultFont" );
                         }
@@ -850,7 +851,7 @@ public final class NativeFonts
                             }
                         }
                         defaultGTKFont = ReflectUtils.callStaticMethod ( "com.sun.java.swing.plaf.gtk.PangoFonts",
-                                "lookupFont", ( String ) fontName );
+                            "lookupFont", ( String ) fontName );
                         defaultGTKFontAvailable = true;
                     }
                     catch ( final Exception e )
