@@ -78,7 +78,7 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
      * Global text style.
      * It can be specified to add an additional {@link StyleRange} with range [0,text.length].
      * It uses the style part of the standard styled text syntax.
-     *
+     * <p>
      * Here are a few examples of what can be provided here:
      * 1. "u;b" - underlined bold text
      * 2. "b;c(red)" - bold red text
@@ -384,7 +384,7 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
                     if ( ( maximumRows <= 0 || maximumRows > 0 && rowCount < maximumRows ) &&
                             y + maxRowHeight + Math.max ( 0, rowGap ) <= endY )
                     {
-                        int availLength = s.length () * widthLeft / strWidth + 1; // Optimistic prognoses
+                        int availLength = ( int ) ( ( long ) s.length () * widthLeft / strWidth ) + 1; // Optimistic prognoses
                         int firstWordOffset = Math.max ( 0, TextUtils.findFirstWordFromIndex ( s, 0 ) );
                         int nextRowStartInSubString = 0;
 
