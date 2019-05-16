@@ -130,6 +130,28 @@ public final class CoreSwingUtils
     }
 
     /**
+     * Returns whether or not specified {@link Component} is actually visible on screen.
+     * Note that this method does not account for any other windows that may overlay current one, that needs to be checked separately.
+     *
+     * @param component {@link Component} to check visibility on screen for
+     * @return {@code true} if specified {@link Component} is actually visible on screen, {@code false} otherwise
+     */
+    public static boolean isVisibleOnScreen ( final Component component )
+    {
+        final boolean visible;
+        if ( component.isShowing () )
+        {
+            final Rectangle bounds = getBoundsOnScreen ( component, true );
+            visible = bounds.width > 0 && bounds.height > 0;
+        }
+        else
+        {
+            visible = false;
+        }
+        return visible;
+    }
+
+    /**
      * Returns {@link Component} bounds on screen, either only visible or complete ones.
      * Visible only bounds will only include part of the {@link Component} that is actually visible on the screen.
      * Complete {@link Component} bounds might include parts that are not actually visible on the screen due to layout or scroll pane.
