@@ -876,7 +876,7 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N>
      * @param pathNodeIds node path IDs
      * @param listener    async path expansion listener
      */
-    public void expandPath ( final List<String> pathNodeIds, final AsyncPathExpansionListener listener )
+    public void expandPath ( final List<String> pathNodeIds, final AsyncPathExpansionListener<N> listener )
     {
         expandPath ( pathNodeIds, true, true, listener );
     }
@@ -903,7 +903,7 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N>
      * @param expandLastNode whether should expand last found path node or not
      * @param listener       async path expansion listener
      */
-    public void expandPath ( final List<String> pathNodeIds, final boolean expandLastNode, final AsyncPathExpansionListener listener )
+    public void expandPath ( final List<String> pathNodeIds, final boolean expandLastNode, final AsyncPathExpansionListener<N> listener )
     {
         expandPath ( pathNodeIds, expandLastNode, true, listener );
     }
@@ -933,7 +933,7 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N>
      * @param listener       async path expansion listener
      */
     public void expandPath ( final List<String> pathNodeIds, final boolean expandLastNode, final boolean selectLastNode,
-                             final AsyncPathExpansionListener listener )
+                             final AsyncPathExpansionListener<N> listener )
     {
         final List<String> ids = CollectionUtils.copy ( pathNodeIds );
         for ( int initial = 0; initial < ids.size (); initial++ )
@@ -971,7 +971,7 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N>
      * @param listener       async path expansion listener
      */
     protected void expandPathImpl ( final N currentNode, final List<String> leftToExpand, final boolean expandLastNode,
-                                    final boolean selectLastNode, final AsyncPathExpansionListener listener )
+                                    final boolean selectLastNode, final AsyncPathExpansionListener<N> listener )
     {
         // There is still more to load
         if ( leftToExpand.size () > 0 )
@@ -1091,6 +1091,7 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N>
         if ( selectLastNode )
         {
             setSelectedNode ( lastFoundNode );
+            scrollToNode ( lastFoundNode );
         }
         if ( expandLastNode )
         {
