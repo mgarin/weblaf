@@ -67,18 +67,6 @@ public class WebViewportLayout extends AbstractLayoutManager implements Mergeabl
         final Dimension extentSize = viewport.toViewCoordinates ( vpSize );
         final Dimension viewSize = new Dimension ( viewPrefSize );
 
-        if ( scrollableView != null )
-        {
-            if ( scrollableView.getScrollableTracksViewportWidth () )
-            {
-                viewSize.width = vpSize.width;
-            }
-            if ( scrollableView.getScrollableTracksViewportHeight () )
-            {
-                viewSize.height = vpSize.height;
-            }
-        }
-
         /**
          * Adding extra width/height to the view size whenever it should include hovering scroll bar.
          */
@@ -99,6 +87,7 @@ public class WebViewportLayout extends AbstractLayoutManager implements Mergeabl
                     if ( vsb != null && vsb.isShowing () )
                     {
                         viewSize.width += vsb.getPreferredSize ().width;
+                        extentSize.width += vsb.getPreferredSize ().width;
                     }
                 }
 
@@ -112,8 +101,24 @@ public class WebViewportLayout extends AbstractLayoutManager implements Mergeabl
                     if ( hsb != null && hsb.isShowing () )
                     {
                         viewSize.height += hsb.getPreferredSize ().height;
+                        extentSize.height += hsb.getPreferredSize ().height;
                     }
                 }
+            }
+        }
+
+        /**
+         * Adjusting view size to match tracked view size.
+         */
+        if ( scrollableView != null )
+        {
+            if ( scrollableView.getScrollableTracksViewportWidth () )
+            {
+                viewSize.width = vpSize.width;
+            }
+            if ( scrollableView.getScrollableTracksViewportHeight () )
+            {
+                viewSize.height = vpSize.height;
             }
         }
 
@@ -123,8 +128,7 @@ public class WebViewportLayout extends AbstractLayoutManager implements Mergeabl
          * If the new viewport size would leave empty space to the right of the view, right justify the view or left justify
          * the view when the width of the view is smaller than the container.
          */
-        if ( scrollableView == null ||
-                viewport.getParent () == null ||
+        if ( scrollableView == null || viewport.getParent () == null ||
                 viewport.getParent ().getComponentOrientation ().isLeftToRight () )
         {
             if ( viewPosition.x + extentSize.width > viewSize.width )

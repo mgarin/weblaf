@@ -23,7 +23,6 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.io.Serializable;
 
 /**
  * Replacement for default Swing {@link ScrollPaneLayout} used within {@link JScrollPane} to layout components.
@@ -36,7 +35,7 @@ import java.io.Serializable;
  * @author Mikle Garin
  */
 @XStreamAlias ( "WebScrollPaneLayout" )
-public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneConstants, Mergeable, Cloneable, Serializable
+public class WebScrollPaneLayout extends ScrollPaneLayout implements Mergeable, Cloneable
 {
     /**
      * {@link ScrollBarSettings} for vertical scroll bar.
@@ -618,8 +617,7 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
         }
 
         /**
-         * If a scroll bar is going to appear, factor its preferred size in.
-         * Though if {@link ScrollBarSettings#isExtending()} is {@code false} then scroll bar sizes are completely ignored.
+         * Factor bar pref size in if it is going to appear and take extra space (allowed by policy, not hovering or at least extending).
          *
          * If the scrollbars policy is AS_NEEDED, this can be a little tricky:
          *
@@ -631,8 +629,7 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
          * extentSize) to the preferredSize of the view. Although we're not responsible for laying out the view we'll assume that the
          * JViewport will always give it its preferredSize.
          */
-        if ( vsb != null && vsbPolicy != VERTICAL_SCROLLBAR_NEVER &&
-                ( !vpos.isHovering () || vpos.isHovering () && vpos.isExtending () ) )
+        if ( vsb != null && vsbPolicy != VERTICAL_SCROLLBAR_NEVER && ( !vpos.isHovering () || vpos.isExtending () ) )
         {
             if ( vsbPolicy == VERTICAL_SCROLLBAR_ALWAYS )
             {
@@ -651,8 +648,7 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
                 }
             }
         }
-        if ( hsb != null && hsbPolicy != HORIZONTAL_SCROLLBAR_NEVER &&
-                ( !hpos.isHovering () || hpos.isHovering () && hpos.isExtending () ) )
+        if ( hsb != null && hsbPolicy != HORIZONTAL_SCROLLBAR_NEVER && ( !hpos.isHovering () || hpos.isExtending () ) )
         {
             if ( hsbPolicy == HORIZONTAL_SCROLLBAR_ALWAYS )
             {
@@ -740,20 +736,19 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements ScrollPaneC
         }
 
         /**
-         * If a scrollbar might appear, factor its minimum size in.
-         * Though if {@link ScrollBarSettings#isExtending()} is {@code false} then scroll bar sizes are completely ignored.
+         * Factor bar min size in if it is going to appear and take extra space (allowed by policy, not hovering or at least extending).
          */
-        if ( vpos.isExtending () && vsb != null && vsbPolicy != VERTICAL_SCROLLBAR_NEVER )
+        if ( vsb != null && vsbPolicy != VERTICAL_SCROLLBAR_NEVER && ( !vpos.isHovering () || vpos.isExtending () ) )
         {
-            final Dimension size = vsb.getMinimumSize ();
-            minWidth += size.width;
-            minHeight = Math.max ( minHeight, size.height );
+            final Dimension vms = vsb.getMinimumSize ();
+            minWidth += vms.width;
+            minHeight = Math.max ( minHeight, vms.height );
         }
-        if ( hpos.isExtending () && hsb != null && hsbPolicy != HORIZONTAL_SCROLLBAR_NEVER )
+        if ( hsb != null && hsbPolicy != HORIZONTAL_SCROLLBAR_NEVER && ( !hpos.isHovering () || hpos.isExtending () ) )
         {
-            final Dimension size = hsb.getMinimumSize ();
-            minWidth = Math.max ( minWidth, size.width );
-            minHeight += size.height;
+            final Dimension hms = hsb.getMinimumSize ();
+            minWidth = Math.max ( minWidth, hms.width );
+            minHeight += hms.height;
         }
 
         return new Dimension ( minWidth, minHeight );
